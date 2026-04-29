@@ -9,7 +9,7 @@ import com.azure.resourcemanager.managedops.fluent.models.ManagedOpInner;
 import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
 import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import com.azure.resourcemanager.managedops.models.ManagedOpsProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -25,9 +25,9 @@ public final class ManagedOpInnerTests {
             model.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("xwczbyscnp",
             model.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 
@@ -39,8 +39,8 @@ public final class ManagedOpInnerTests {
                     new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("ufhfcbjysa"))
                 .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("ithxqhabifpi"))
                 .withUserAssignedManagedIdentityId("xwczbyscnp")
-                .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE)));
+                .withDefenderForServers(DesiredEnablementState.DISABLE)
+                .withDefenderCspm(DesiredEnablementState.DISABLE)));
         model = BinaryData.fromObject(model).toObject(ManagedOpInner.class);
         Assertions.assertEquals("ufhfcbjysa",
             model.properties().desiredConfiguration().changeTrackingAndInventory().logAnalyticsWorkspaceId());
@@ -48,9 +48,9 @@ public final class ManagedOpInnerTests {
             model.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("xwczbyscnp",
             model.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 }

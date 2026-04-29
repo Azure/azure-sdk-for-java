@@ -26,7 +26,7 @@ public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"dg\",\"virtualPath\":\"gsj\"},{\"content\":\"nwqjnoba\",\"virtualPath\":\"hdd\"}],\"protectedFiles\":[{\"virtualPath\":\"egfnmntfpmvmemfn\",\"contentHash\":\"dwvvba\"},{\"virtualPath\":\"lllchpodb\",\"contentHash\":\"vwrdnhfukuvsj\"},{\"virtualPath\":\"wsmystuluqypf\",\"contentHash\":\"lerchpq\"}],\"package\":{\"data\":\"pjbabwidfc\",\"protectedFiles\":[\"puunnoxyhkxgqd\",\"rihpfhoq\",\"aaewdaomdjv\",\"pjxxkzb\"]},\"rootFile\":\"sgeivsiy\"},\"id\":\"kdncj\",\"name\":\"xonbzoggculapz\",\"type\":\"y\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"ydzgkrvqeevtoe\",\"virtualPath\":\"yutnwytpzdmov\"}],\"protectedFiles\":[{\"virtualPath\":\"aawzqadfl\",\"contentHash\":\"ur\"},{\"virtualPath\":\"laecxndticok\",\"contentHash\":\"zmlqtmldgxo\"}],\"package\":{\"data\":\"rclnpkc\",\"protectedFiles\":[\"zriykhy\",\"wf\"]},\"rootFile\":\"lboxqvkjl\"},\"id\":\"ho\",\"name\":\"dynhdwdigum\",\"type\":\"nraauzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,26 +36,35 @@ public final class ConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NginxConfigurationResponse response = manager.configurations()
-            .define("xrxc")
-            .withExistingNginxDeployment("ctxtgzukxi", "mmqtgqqqxhr")
+            .define("fcvlerch")
+            .withExistingNginxDeployment("hfuk", "vsjcswsmystuluqy")
             .withProperties(new NginxConfigurationRequestProperties()
-                .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("fku").withVirtualPath("cxkdmligovi"),
-                    new NginxConfigurationFile().withContent("xk").withVirtualPath("loazuruocbgoo")))
-                .withProtectedFiles(
-                    Arrays.asList(new NginxConfigurationProtectedFileRequest().withContent("oybfhjxakvvj")
-                        .withVirtualPath("lordilmywwtkgkxn")
-                        .withContentHash("dabg")))
-                .withPackageProperty(new NginxConfigurationPackage().withData("dtj")
-                    .withProtectedFiles(Arrays.asList("bcihxuuwhc", "yxccyb", "payakkud")))
-                .withRootFile("xgwjplmagstcyoh"))
+                .withFiles(Arrays
+                    .asList(new NginxConfigurationFile().withContent("pfhoqcaaewdao").withVirtualPath("jvlpjxxkzbr")))
+                .withProtectedFiles(Arrays.asList(
+                    new NginxConfigurationProtectedFileRequest().withContent("ivsiy")
+                        .withVirtualPath("kdncj")
+                        .withContentHash("onbzoggculapzwy"),
+                    new NginxConfigurationProtectedFileRequest().withContent("gogtqxepnylbf")
+                        .withVirtualPath("jlyjtlvofq")
+                        .withContentHash("vfcibyfmowux"),
+                    new NginxConfigurationProtectedFileRequest().withContent("jpvd")
+                        .withVirtualPath("fzwiivwzjbhyz")
+                        .withContentHash("jrkambtrnegvmnv"),
+                    new NginxConfigurationProtectedFileRequest().withContent("eqvldspast")
+                        .withVirtualPath("kkdmfl")
+                        .withContentHash("stmjlxrri")))
+                .withPackageProperty(new NginxConfigurationPackage().withData("apeewchpxlkt")
+                    .withProtectedFiles(Arrays.asList("ziycslevufuztck", "yhjtqedcgzu")))
+                .withRootFile("mmrqz"))
             .create();
 
-        Assertions.assertEquals("dg", response.properties().files().get(0).content());
-        Assertions.assertEquals("gsj", response.properties().files().get(0).virtualPath());
-        Assertions.assertEquals("egfnmntfpmvmemfn", response.properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("dwvvba", response.properties().protectedFiles().get(0).contentHash());
-        Assertions.assertEquals("pjbabwidfc", response.properties().packageProperty().data());
-        Assertions.assertEquals("puunnoxyhkxgqd", response.properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("sgeivsiy", response.properties().rootFile());
+        Assertions.assertEquals("ydzgkrvqeevtoe", response.properties().files().get(0).content());
+        Assertions.assertEquals("yutnwytpzdmov", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("aawzqadfl", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("ur", response.properties().protectedFiles().get(0).contentHash());
+        Assertions.assertEquals("rclnpkc", response.properties().packageProperty().data());
+        Assertions.assertEquals("zriykhy", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("lboxqvkjl", response.properties().rootFile());
     }
 }

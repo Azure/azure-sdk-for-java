@@ -38,12 +38,8 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsImpl
         String deploymentStacksWhatIfResultName, Context context) {
         Response<DeploymentStacksWhatIfResultInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
     }
 
     public DeploymentStacksWhatIfResult getByResourceGroup(String resourceGroupName,

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
 import com.azure.resourcemanager.managedops.models.DesiredConfigurationUpdate;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class DesiredConfigurationUpdateTests {
@@ -15,17 +15,17 @@ public final class DesiredConfigurationUpdateTests {
         DesiredConfigurationUpdate model
             = BinaryData.fromString("{\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Enable\"}")
                 .toObject(DesiredConfigurationUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DesiredConfigurationUpdate model
-            = new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-                .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE);
+            = new DesiredConfigurationUpdate().withDefenderForServers(DesiredEnablementState.DISABLE)
+                .withDefenderCspm(DesiredEnablementState.ENABLE);
         model = BinaryData.fromObject(model).toObject(DesiredConfigurationUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
     }
 }

@@ -12,9 +12,9 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"snapshotId\":\"flrwd\",\"created\":\"2021-03-11T09:23:13Z\",\"provisioningState\":\"xyjrxsagafcnih\"},\"location\":\"wqapnedgfbcvk\",\"id\":\"q\",\"name\":\"pkeqdcvdrhvoo\",\"type\":\"sotbob\"},{\"properties\":{\"snapshotId\":\"pcjwv\",\"created\":\"2021-08-23T07:09:01Z\",\"provisioningState\":\"d\"},\"location\":\"mgxcxrslpm\",\"id\":\"wuoegrpk\",\"name\":\"jw\",\"type\":\"iyq\"}],\"nextLink\":\"uicpd\"}")
+            "{\"value\":[{\"properties\":{\"snapshotId\":\"bobzdopcjwvnhd\",\"created\":\"2021-11-29T05:13:59Z\",\"provisioningState\":\"gx\"},\"location\":\"xrslpm\",\"id\":\"wuoegrpk\",\"name\":\"jw\",\"type\":\"iyq\"},{\"properties\":{\"snapshotId\":\"i\",\"created\":\"2021-04-15T16:21:59Z\",\"provisioningState\":\"gk\"},\"location\":\"zl\",\"id\":\"bmpaxmodfvu\",\"name\":\"fy\",\"type\":\"sbpfvmwyhr\"}],\"nextLink\":\"uyfta\"}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("wqapnedgfbcvk", model.value().get(0).location());
-        Assertions.assertEquals("uicpd", model.nextLink());
+        Assertions.assertEquals("xrslpm", model.value().get(0).location());
+        Assertions.assertEquals("uyfta", model.nextLink());
     }
 }

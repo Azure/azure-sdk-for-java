@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.0.1 (2026-03-13)
+
+### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 2026-03-13. The Azure Neon Postgres service has been permanently retired. The migration guide for Neon Postgres from Azure is available at https://neon.com/docs/import/migrate-from-azure-native. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.0.0 (2025-04-21)
 
 - Azure Resource Manager Neon Postgres client library for Java. This package contains Microsoft Azure SDK for Neon Postgres Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

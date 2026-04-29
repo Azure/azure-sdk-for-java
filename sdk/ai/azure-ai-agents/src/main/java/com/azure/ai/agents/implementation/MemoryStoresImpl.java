@@ -181,7 +181,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteMemoryStore(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalDeleteMemoryStore(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -192,7 +192,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteMemoryStoreSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> internalDeleteMemoryStoreSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -203,7 +203,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> searchMemories(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalSearchMemories(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
@@ -215,11 +215,11 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> searchMemoriesSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData searchMemoriesRequest, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> internalSearchMemoriesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores/{name}:update_memories")
         @ExpectedResponses({ 202 })
@@ -227,7 +227,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateMemories(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalUpdateMemories(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
@@ -239,11 +239,11 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateMemoriesSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateMemoriesRequest, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> internalUpdateMemoriesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores/{name}/updates/{update_id}")
         @ExpectedResponses({ 200 })
@@ -273,11 +273,11 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteScope(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData deleteScopeRequest, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> internalDeleteScope(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores/{name}:delete_scope")
         @ExpectedResponses({ 200 })
@@ -285,11 +285,11 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteScopeSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData deleteScopeRequest, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> internalDeleteScopeSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -858,10 +858,11 @@ public final class MemoryStoresImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteMemoryStoreWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> internalDeleteMemoryStoreWithResponseAsync(String name,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteMemoryStore(this.client.getEndpoint(), name,
+        return FluxUtil.withContext(context -> service.internalDeleteMemoryStore(this.client.getEndpoint(), name,
             foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -888,10 +889,10 @@ public final class MemoryStoresImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> internalDeleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.deleteMemoryStoreSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteMemoryStoreSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -959,14 +960,14 @@ public final class MemoryStoresImpl {
      * @return memory search response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> searchMemoriesWithResponseAsync(String name, BinaryData searchMemoriesRequest,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> internalSearchMemoriesWithResponseAsync(String name,
+        BinaryData searchMemoriesRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.searchMemories(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.internalSearchMemories(this.client.getEndpoint(), name,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest,
+            requestOptions, context));
     }
 
     /**
@@ -1033,12 +1034,12 @@ public final class MemoryStoresImpl {
      * @return memory search response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> searchMemoriesWithResponse(String name, BinaryData searchMemoriesRequest,
+    public Response<BinaryData> internalSearchMemoriesWithResponse(String name, BinaryData searchMemoriesRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.searchMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalSearchMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1126,14 +1127,14 @@ public final class MemoryStoresImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> updateMemoriesWithResponseAsync(String name, BinaryData updateMemoriesRequest,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> internalUpdateMemoriesWithResponseAsync(String name,
+        BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMemories(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.internalUpdateMemories(this.client.getEndpoint(), name,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest,
+            requestOptions, context));
     }
 
     /**
@@ -1218,12 +1219,12 @@ public final class MemoryStoresImpl {
      * @return provides the status of a memory store update operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateMemoriesWithResponse(String name, BinaryData updateMemoriesRequest,
+    private Response<BinaryData> internalUpdateMemoriesWithResponse(String name, BinaryData updateMemoriesRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalUpdateMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1310,10 +1311,11 @@ public final class MemoryStoresImpl {
      * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemoriesWithModelAsync(
-        String name, BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
+    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult>
+        beginInternalUpdateMemoriesWithModelAsync(String name, BinaryData updateMemoriesRequest,
+            RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.updateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
+            () -> this.internalUpdateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1408,10 +1410,10 @@ public final class MemoryStoresImpl {
      * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult>
-        beginUpdateMemoriesWithModel(String name, BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
+    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginInternalUpdateMemoriesWithModel(
+        String name, BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.updateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
+            () -> this.internalUpdateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1506,10 +1508,10 @@ public final class MemoryStoresImpl {
      * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginUpdateMemoriesAsync(String name, BinaryData updateMemoriesRequest,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginInternalUpdateMemoriesAsync(String name,
+        BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.updateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
+            () -> this.internalUpdateMemoriesWithResponseAsync(name, updateMemoriesRequest, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1603,10 +1605,10 @@ public final class MemoryStoresImpl {
      * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUpdateMemories(String name, BinaryData updateMemoriesRequest,
+    public SyncPoller<BinaryData, BinaryData> beginInternalUpdateMemories(String name, BinaryData updateMemoriesRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.updateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
+            () -> this.internalUpdateMemoriesWithResponse(name, updateMemoriesRequest, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1800,14 +1802,14 @@ public final class MemoryStoresImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteScopeWithResponseAsync(String name, BinaryData deleteScopeRequest,
+    public Mono<Response<BinaryData>> internalDeleteScopeWithResponseAsync(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteScope(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
-            context));
+        return FluxUtil.withContext(context -> service.internalDeleteScope(this.client.getEndpoint(), name,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest,
+            requestOptions, context));
     }
 
     /**
@@ -1845,12 +1847,12 @@ public final class MemoryStoresImpl {
      * @return response for deleting memories from a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Response<BinaryData> internalDeleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.deleteScopeSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteScopeSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
             Context.NONE);
     }

@@ -47,12 +47,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     public Response<GlobalRulestackResource> getWithResponse(String globalRulestackName, Context context) {
         Response<GlobalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(globalRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GlobalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GlobalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public GlobalRulestackResource get(String globalRulestackName) {
@@ -88,12 +84,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         GlobalRulestackResourceUpdate properties, Context context) {
         Response<GlobalRulestackResourceInner> inner
             = this.serviceClient().updateWithResponse(globalRulestackName, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GlobalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GlobalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public GlobalRulestackResource update(String globalRulestackName, GlobalRulestackResourceUpdate properties) {
@@ -133,12 +125,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
 
     public Response<Changelog> getChangeLogWithResponse(String globalRulestackName, Context context) {
         Response<ChangelogInner> inner = this.serviceClient().getChangeLogWithResponse(globalRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ChangelogImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ChangelogImpl(inner.getValue(), this.manager()));
     }
 
     public Changelog getChangeLog(String globalRulestackName) {
@@ -154,12 +142,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context) {
         Response<AdvSecurityObjectListResponseInner> inner = this.serviceClient()
             .listAdvancedSecurityObjectsWithResponse(globalRulestackName, type, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AdvSecurityObjectListResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AdvSecurityObjectListResponseImpl(inner.getValue(), this.manager()));
     }
 
     public AdvSecurityObjectListResponse listAdvancedSecurityObjects(String globalRulestackName,
@@ -177,12 +161,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         String appPrefix, String skip, Integer top, Context context) {
         Response<ListAppIdResponseInner> inner = this.serviceClient()
             .listAppIdsWithResponse(globalRulestackName, appIdVersion, appPrefix, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ListAppIdResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ListAppIdResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ListAppIdResponse listAppIds(String globalRulestackName) {
@@ -198,12 +178,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         Context context) {
         Response<CountriesResponseInner> inner
             = this.serviceClient().listCountriesWithResponse(globalRulestackName, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CountriesResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CountriesResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CountriesResponse listCountries(String globalRulestackName) {
@@ -218,12 +194,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
     public Response<ListFirewallsResponse> listFirewallsWithResponse(String globalRulestackName, Context context) {
         Response<ListFirewallsResponseInner> inner
             = this.serviceClient().listFirewallsWithResponse(globalRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ListFirewallsResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ListFirewallsResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ListFirewallsResponse listFirewalls(String globalRulestackName) {
@@ -239,12 +211,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         String skip, Integer top, Context context) {
         Response<PredefinedUrlCategoriesResponseInner> inner
             = this.serviceClient().listPredefinedUrlCategoriesWithResponse(globalRulestackName, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PredefinedUrlCategoriesResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PredefinedUrlCategoriesResponseImpl(inner.getValue(), this.manager()));
     }
 
     public PredefinedUrlCategoriesResponse listPredefinedUrlCategories(String globalRulestackName) {
@@ -261,12 +229,8 @@ public final class GlobalRulestacksImpl implements GlobalRulestacks {
         SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
         Response<SecurityServicesResponseInner> inner
             = this.serviceClient().listSecurityServicesWithResponse(globalRulestackName, type, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SecurityServicesResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SecurityServicesResponseImpl(inner.getValue(), this.manager()));
     }
 
     public SecurityServicesResponse listSecurityServices(String globalRulestackName, SecurityServicesTypeEnum type) {

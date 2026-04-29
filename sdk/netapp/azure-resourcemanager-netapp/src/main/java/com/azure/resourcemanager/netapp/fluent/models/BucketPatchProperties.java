@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.BucketPatchPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerPatchProperties;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
@@ -20,11 +21,6 @@ import java.io.IOException;
  */
 @Fluent
 public final class BucketPatchProperties implements JsonSerializable<BucketPatchProperties> {
-    /*
-     * The volume path mounted inside the bucket.
-     */
-    private String path;
-
     /*
      * File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the
      * user's username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be
@@ -47,30 +43,25 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
      */
     private BucketPatchPermissions permissions;
 
+    /*
+     * Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     */
+    private AzureKeyVaultDetails akvDetails;
+
     /**
      * Creates an instance of BucketPatchProperties class.
      */
     public BucketPatchProperties() {
-    }
-
-    /**
-     * Get the path property: The volume path mounted inside the bucket.
-     * 
-     * @return the path value.
-     */
-    public String path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The volume path mounted inside the bucket.
-     * 
-     * @param path the path value to set.
-     * @return the BucketPatchProperties object itself.
-     */
-    public BucketPatchProperties withPath(String path) {
-        this.path = path;
-        return this;
     }
 
     /**
@@ -147,6 +138,46 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
     }
 
     /**
+     * Get the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @return the akvDetails value.
+     */
+    public AzureKeyVaultDetails akvDetails() {
+        return this.akvDetails;
+    }
+
+    /**
+     * Set the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @param akvDetails the akvDetails value to set.
+     * @return the BucketPatchProperties object itself.
+     */
+    public BucketPatchProperties withAkvDetails(AzureKeyVaultDetails akvDetails) {
+        this.akvDetails = akvDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +189,9 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
         if (server() != null) {
             server().validate();
         }
+        if (akvDetails() != null) {
+            akvDetails().validate();
+        }
     }
 
     /**
@@ -166,10 +200,10 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("fileSystemUser", this.fileSystemUser);
         jsonWriter.writeJsonField("server", this.server);
         jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
+        jsonWriter.writeJsonField("akvDetails", this.akvDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,9 +222,7 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("path".equals(fieldName)) {
-                    deserializedBucketPatchProperties.path = reader.getString();
-                } else if ("fileSystemUser".equals(fieldName)) {
+                if ("fileSystemUser".equals(fieldName)) {
                     deserializedBucketPatchProperties.fileSystemUser = FileSystemUser.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBucketPatchProperties.provisioningState
@@ -200,6 +232,8 @@ public final class BucketPatchProperties implements JsonSerializable<BucketPatch
                 } else if ("permissions".equals(fieldName)) {
                     deserializedBucketPatchProperties.permissions
                         = BucketPatchPermissions.fromString(reader.getString());
+                } else if ("akvDetails".equals(fieldName)) {
+                    deserializedBucketPatchProperties.akvDetails = AzureKeyVaultDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

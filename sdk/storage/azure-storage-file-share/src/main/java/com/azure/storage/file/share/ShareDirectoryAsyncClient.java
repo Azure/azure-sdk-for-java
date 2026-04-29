@@ -346,7 +346,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), null, context));
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -367,7 +368,7 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), null, context)
+                posixProperties.getFileMode(), filePropertySemantics, context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -448,14 +449,14 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), null, context)
-                    .onErrorResume(
-                        t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                        t -> {
-                            HttpResponse response = ((ShareStorageException) t).getResponse();
-                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                response.getHeaders(), null));
-                        });
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(),
+                options.getFilePropertySemantics(), context).onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

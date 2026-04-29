@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class AgentDetails implements JsonSerializable<AgentDetails> {
 
     /*
-     * The object type, which is always 'agent'.
-     */
-    @Generated
-    private final AgentObjectType object = AgentObjectType.AGENT;
-
-    /*
      * The unique identifier of the agent.
      */
     @Generated
@@ -39,31 +33,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The latest version of the agent.
      */
     @Generated
-    private final AgentObjectVersions versions;
-
-    /**
-     * Creates an instance of AgentDetails class.
-     *
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param versions the versions value to set.
-     */
-    @Generated
-    private AgentDetails(String id, String name, AgentObjectVersions versions) {
-        this.id = id;
-        this.name = name;
-        this.versions = versions;
-    }
-
-    /**
-     * Get the object property: The object type, which is always 'agent'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public AgentObjectType getObject() {
-        return this.object;
-    }
+    private final AgentDetailsVersions versions;
 
     /**
      * Get the id property: The unique identifier of the agent.
@@ -91,7 +61,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the versions value.
      */
     @Generated
-    public AgentObjectVersions getVersions() {
+    public AgentDetailsVersions getVersions() {
         return this.versions;
     }
 
@@ -102,7 +72,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
@@ -123,7 +93,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
-            AgentObjectVersions versions = null;
+            AgentDetailsVersions versions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -132,12 +102,42 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("versions".equals(fieldName)) {
-                    versions = AgentObjectVersions.fromJson(reader);
+                    versions = AgentDetailsVersions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new AgentDetails(id, name, versions);
         });
+    }
+
+    /**
+     * Creates an instance of AgentDetails class.
+     *
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param versions the versions value to set.
+     */
+    @Generated
+    private AgentDetails(String id, String name, AgentDetailsVersions versions) {
+        this.id = id;
+        this.name = name;
+        this.versions = versions;
+    }
+
+    /*
+     * The object type, which is always 'agent'.
+     */
+    @Generated
+    private final AgentObjectType objectType = AgentObjectType.AGENT;
+
+    /**
+     * Get the objectType property: The object type, which is always 'agent'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public AgentObjectType getObjectType() {
+        return this.objectType;
     }
 }

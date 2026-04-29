@@ -151,13 +151,13 @@
 /sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
 # ServiceLabel: %azure-spring
@@ -273,6 +273,12 @@
 # ServiceLabel: %Confidential Ledger
 # ServiceOwners:                                                   @amruthashree18 @musabbir
 
+# PRLabel: %Cognitive - Content Understanding
+/sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw
+
+# ServiceLabel: %Cognitive - Content Understanding
+# ServiceOwners:                                                   @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw
+
 # PRLabel: %Container Registry
 /sdk/containerregistry/                                            @alzimmermsft @Azure/azsdk-acr @Azure/azure-java-sdk
 
@@ -356,7 +362,7 @@
 
 # AzureSdkOwners:                                                  @Azure/azure-sdk-write-keyvault
 # ServiceLabel: %KeyVault
-# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
+# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault
 
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                                  @Azure/azure-java-sdk @Harshan01 @mitsha-microsoft @ninallam @prativen
@@ -422,6 +428,12 @@
 # ServiceLabel: %Operator Nexus - Network Cloud
 # ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
 
+# PRLabel: %Planetary Computer
+/sdk/planetarycomputer/                                            @chahibi @mandarinamdar @karthick-rn
+
+# ServiceLabel: %Planetary Computer
+# ServiceOwners:                                                   @chahibi @mandarinamdar @karthick-rn
+
 # PRLabel: %Purview
 /sdk/purview/                                                      @Azure/azure-java-sdk @yifan-zhou922
 
@@ -454,11 +466,11 @@
 # ServiceLabel: %Service Bus %Track 1
 
 # PRLabel: %Speech Transcription
-/sdk/transcription/azure-ai-speech-transcription/                  @amber-yujueWang @Azure/azure-java-sdk @rhurey @xitzhang
+/sdk/transcription/azure-ai-speech-transcription/                  @amber-yujueWang @Azure/azure-java-sdk @rhurey @xitzhang @pankopon @emilyjiji
 
-# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang
+# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang @pankopon @emilyjiji
 # ServiceLabel: %Speech Transcription
-# ServiceOwners:                                                   @amber-yujueWang @rhurey @xitzhang
+# ServiceOwners:                                                   @amber-yujueWang @rhurey @xitzhang @pankopon @emilyjiji
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @alzimmermsft @Azure/azure-java-sdk @browndav-msft @gunjansingh-msft @ibrandes @kyleknap @seanmcc-msft

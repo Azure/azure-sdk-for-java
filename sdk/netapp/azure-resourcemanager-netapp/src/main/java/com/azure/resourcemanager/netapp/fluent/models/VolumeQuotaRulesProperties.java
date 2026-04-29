@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.ProvisioningState;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import java.io.IOException;
 
 /**
@@ -31,7 +31,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
     /*
      * Type of quota
      */
-    private Type quotaType;
+    private QuotaType quotaType;
 
     /*
      * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’
@@ -79,7 +79,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
      * 
      * @return the quotaType value.
      */
-    public Type quotaType() {
+    public QuotaType quotaType() {
         return this.quotaType;
     }
 
@@ -89,7 +89,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulesProperties object itself.
      */
-    public VolumeQuotaRulesProperties withQuotaType(Type quotaType) {
+    public VolumeQuotaRulesProperties withQuotaType(QuotaType quotaType) {
         this.quotaType = quotaType;
         return this;
     }
@@ -159,7 +159,7 @@ public final class VolumeQuotaRulesProperties implements JsonSerializable<Volume
                 } else if ("quotaSizeInKiBs".equals(fieldName)) {
                     deserializedVolumeQuotaRulesProperties.quotaSizeInKiBs = reader.getNullable(JsonReader::getLong);
                 } else if ("quotaType".equals(fieldName)) {
-                    deserializedVolumeQuotaRulesProperties.quotaType = Type.fromString(reader.getString());
+                    deserializedVolumeQuotaRulesProperties.quotaType = QuotaType.fromString(reader.getString());
                 } else if ("quotaTarget".equals(fieldName)) {
                     deserializedVolumeQuotaRulesProperties.quotaTarget = reader.getString();
                 } else {

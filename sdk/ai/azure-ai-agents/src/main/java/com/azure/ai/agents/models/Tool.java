@@ -114,15 +114,15 @@ public class Tool implements JsonSerializable<Tool> {
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
-                    return LocalShellToolParam.fromJson(readerToUse.reset());
+                    return LocalShellToolParameter.fromJson(readerToUse.reset());
                 } else if ("shell".equals(discriminatorValue)) {
-                    return FunctionShellToolParam.fromJson(readerToUse.reset());
+                    return FunctionShellToolParameter.fromJson(readerToUse.reset());
                 } else if ("custom".equals(discriminatorValue)) {
-                    return CustomToolParam.fromJson(readerToUse.reset());
+                    return CustomToolParameter.fromJson(readerToUse.reset());
                 } else if ("web_search_preview".equals(discriminatorValue)) {
                     return WebSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("apply_patch".equals(discriminatorValue)) {
-                    return ApplyPatchToolParam.fromJson(readerToUse.reset());
+                    return ApplyPatchToolParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

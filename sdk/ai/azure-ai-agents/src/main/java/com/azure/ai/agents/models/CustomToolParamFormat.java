@@ -78,9 +78,9 @@ public class CustomToolParamFormat implements JsonSerializable<CustomToolParamFo
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("text".equals(discriminatorValue)) {
-                    return CustomTextFormatParam.fromJson(readerToUse.reset());
+                    return CustomTextFormatParameter.fromJson(readerToUse.reset());
                 } else if ("grammar".equals(discriminatorValue)) {
-                    return CustomGrammarFormatParam.fromJson(readerToUse.reset());
+                    return CustomGrammarFormatParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

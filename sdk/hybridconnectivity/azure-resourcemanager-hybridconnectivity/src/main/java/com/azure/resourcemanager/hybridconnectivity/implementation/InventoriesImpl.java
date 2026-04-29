@@ -31,12 +31,8 @@ public final class InventoriesImpl implements Inventories {
         String inventoryId, Context context) {
         Response<InventoryResourceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, solutionConfiguration, inventoryId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new InventoryResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new InventoryResourceImpl(inner.getValue(), this.manager()));
     }
 
     public InventoryResource get(String resourceUri, String solutionConfiguration, String inventoryId) {

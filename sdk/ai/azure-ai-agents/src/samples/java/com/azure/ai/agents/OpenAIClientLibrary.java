@@ -17,8 +17,8 @@ import com.openai.models.responses.ResponseCreateParams;
  */
 public class OpenAIClientLibrary {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         OpenAIClient client = OpenAIOkHttpClient.builder()
                 .baseUrl(endpoint.endsWith("/") ? endpoint + "openai/v1" : endpoint + "/openai/v1")

@@ -53,8 +53,8 @@ public final class CodeInterpreterTool extends Tool {
      *
      * @return the container value.
      */
-    @Generated
-    public BinaryData getContainer() {
+    BinaryData getContainer() {
+        // AI Tooling: union type
         return this.container;
     }
 
@@ -117,9 +117,71 @@ public final class CodeInterpreterTool extends Tool {
      * @param container the container value to set.
      * @return the CodeInterpreterTool object itself.
      */
-    @Generated
-    public CodeInterpreterTool setContainer(BinaryData container) {
+    CodeInterpreterTool setContainer(BinaryData container) {
+        // AI Tooling: union type
         this.container = container;
         return this;
+    }
+
+    /**
+     * Set the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     *
+     * @param containerId the container ID string to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    public CodeInterpreterTool setContainer(String containerId) {
+        // AI Tooling: union type
+        this.container = BinaryData.fromString(containerId);
+        return this;
+    }
+
+    /**
+     * Set the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     *
+     * @param container the {@link AutoCodeInterpreterToolParameter} to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    public CodeInterpreterTool setContainer(AutoCodeInterpreterToolParameter container) {
+        // AI Tooling: union type
+        this.container = BinaryData.fromObject(container);
+        return this;
+    }
+
+    /**
+     * Get the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     *
+     * @return the container value as a String.
+     */
+    public String getContainerAsString() {
+        // AI Tooling: union type
+        if (this.container == null) {
+            return null;
+        }
+        return this.container.toObject(String.class);
+    }
+
+    /**
+     * Get the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     *
+     * @return the container value as an {@link AutoCodeInterpreterToolParameter}.
+     */
+    public AutoCodeInterpreterToolParameter getContainerAsAutoCodeInterpreterToolParameter() {
+        // AI Tooling: union type
+        if (this.container == null) {
+            return null;
+        }
+        return this.container.toObject(AutoCodeInterpreterToolParameter.class);
     }
 }

@@ -4,24 +4,85 @@
 
 package com.azure.resourcemanager.netapp.models;
 
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of ListQuotaReportResponse.
+ * Quota Report for volume.
  */
-public interface ListQuotaReportResponse {
-    /**
-     * Gets the value property: List of quota reports.
-     * 
-     * @return the value value.
+@Immutable
+public final class ListQuotaReportResponse implements JsonSerializable<ListQuotaReportResponse> {
+    /*
+     * List of quota reports
      */
-    List<QuotaReport> value();
+    private List<QuotaReport> quotaReportRecords;
 
     /**
-     * Gets the inner com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner object.
-     * 
-     * @return the inner object.
+     * Creates an instance of ListQuotaReportResponse class.
      */
-    ListQuotaReportResponseInner innerModel();
+    private ListQuotaReportResponse() {
+    }
+
+    /**
+     * Get the quotaReportRecords property: List of quota reports.
+     * 
+     * @return the quotaReportRecords value.
+     */
+    public List<QuotaReport> quotaReportRecords() {
+        return this.quotaReportRecords;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (quotaReportRecords() != null) {
+            quotaReportRecords().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("quotaReportRecords", this.quotaReportRecords,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListQuotaReportResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListQuotaReportResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListQuotaReportResponse.
+     */
+    public static ListQuotaReportResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListQuotaReportResponse deserializedListQuotaReportResponse = new ListQuotaReportResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quotaReportRecords".equals(fieldName)) {
+                    List<QuotaReport> quotaReportRecords = reader.readArray(reader1 -> QuotaReport.fromJson(reader1));
+                    deserializedListQuotaReportResponse.quotaReportRecords = quotaReportRecords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListQuotaReportResponse;
+        });
+    }
 }

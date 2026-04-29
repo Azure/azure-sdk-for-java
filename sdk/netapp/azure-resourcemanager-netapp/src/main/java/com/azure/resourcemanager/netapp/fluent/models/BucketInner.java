@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CredentialsStatus;
@@ -220,6 +221,49 @@ public final class BucketInner extends ProxyResource {
             this.innerProperties = new BucketProperties();
         }
         this.innerProperties().withPermissions(permissions);
+        return this;
+    }
+
+    /**
+     * Get the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @return the akvDetails value.
+     */
+    public AzureKeyVaultDetails akvDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().akvDetails();
+    }
+
+    /**
+     * Set the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @param akvDetails the akvDetails value to set.
+     * @return the BucketInner object itself.
+     */
+    public BucketInner withAkvDetails(AzureKeyVaultDetails akvDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BucketProperties();
+        }
+        this.innerProperties().withAkvDetails(akvDetails);
         return this;
     }
 

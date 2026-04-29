@@ -30,12 +30,8 @@ public final class GuestSubscriptionsImpl implements GuestSubscriptions {
     public Response<GuestSubscription> getWithResponse(String location, String guestSubscriptionId, Context context) {
         Response<GuestSubscriptionInner> inner
             = this.serviceClient().getWithResponse(location, guestSubscriptionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GuestSubscriptionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GuestSubscriptionImpl(inner.getValue(), this.manager()));
     }
 
     public GuestSubscription get(String location, String guestSubscriptionId) {

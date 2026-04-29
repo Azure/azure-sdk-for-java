@@ -80,7 +80,7 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName);
+    PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName);
 
     /**
      * List all Caches within the Capacity Pool.
@@ -94,8 +94,7 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context);
+    PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
      * This operation will list the cluster peering command, cluster peering passphrase and the vserver peering command.
@@ -159,6 +158,34 @@ public interface Caches {
      */
     void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context);
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName);
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+        Context context);
 
     /**
      * Get the details of the specified Cache.

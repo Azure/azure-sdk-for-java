@@ -44,6 +44,6 @@ public enum VoiceLiveServiceVersion implements ServiceVersion {
      * @return The latest {@link VoiceLiveServiceVersion}.
      */
     public static VoiceLiveServiceVersion getLatest() {
-        return V2025_10_01;
+        return V2026_01_01_PREVIEW;
     }
 }

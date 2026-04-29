@@ -31,12 +31,8 @@ public final class SecretSyncsImpl implements SecretSyncs {
         Context context) {
         Response<SecretSyncInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, secretSyncName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SecretSyncImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SecretSyncImpl(inner.getValue(), this.manager()));
     }
 
     public SecretSync getByResourceGroup(String resourceGroupName, String secretSyncName) {

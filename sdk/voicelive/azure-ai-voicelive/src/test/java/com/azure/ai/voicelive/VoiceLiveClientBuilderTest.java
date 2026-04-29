@@ -173,7 +173,7 @@ class VoiceLiveClientBuilderTest {
         assertDoesNotThrow(() -> {
             VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
                 .credential(mockKeyCredential)
-                .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
+                .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
                 .buildAsyncClient();
 
             assertNotNull(client);
@@ -189,7 +189,7 @@ class VoiceLiveClientBuilderTest {
         assertDoesNotThrow(() -> {
             VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
                 .credential(mockKeyCredential)
-                .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
+                .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
                 .buildAsyncClient();
 
             assertNotNull(client);
@@ -201,6 +201,6 @@ class VoiceLiveClientBuilderTest {
         // Test that all methods return the builder for chaining
         assertSame(clientBuilder, clientBuilder.endpoint("https://test.cognitiveservices.azure.com"));
         assertSame(clientBuilder, clientBuilder.credential(mockKeyCredential));
-        assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2025_10_01));
+        assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW));
     }
 }

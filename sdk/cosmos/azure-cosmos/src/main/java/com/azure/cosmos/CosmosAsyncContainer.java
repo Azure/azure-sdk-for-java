@@ -60,6 +60,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -98,29 +99,65 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides methods for interacting with child resources (Items, Scripts, Conflicts)
  */
 public class CosmosAsyncContainer {
+    private static ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor partitionKeyAccessor() {
+        return ImplementationBridgeHelpers.PartitionKeyHelper.getPartitionKeyAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor itemOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.CosmosReadManyRequestOptionsAccessor readManyOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.CosmosReadManyByPartitionKeysRequestOptionsAccessor readManyByPkOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.getCosmosReadManyByPartitionKeysRequestOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor() {
+        return ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor batchRequestOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor itemOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
-    private static final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
-        ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
-    private static final ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.CosmosReadManyRequestOptionsAccessor readManyOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
-    private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
-        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor batchRequestOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+
+    // Sentinel values for CosmosQueryRequestOptions.maxDegreeOfParallelism used when no
+    // caller-supplied value is present: 0 == "uninitialized / SDK-chooses",
+    // -1 == "unbounded" (the value RxDocumentClientImpl interprets as no concurrency cap).
+    private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = 0;
+    private static final int UNBOUNDED_MAX_DEGREE_OF_PARALLELISM = -1;
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -139,6 +176,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String readManyItemsSpanName;
+    private final String readManyByPartitionKeysSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -172,6 +210,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
+        this.readManyByPartitionKeysSpanName = "readManyByPartitionKeys." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -386,12 +425,12 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemWithTrackingId(Class<T> itemType,
                                                                       String itemId,
-                                                                      Document doc,
+                                                                      Object item,
                                                                       RequestOptions requestOptions,
                                                                       String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
-        return replaceItemInternalCore(itemType, itemId, doc, requestOptions, trackingId)
+        return replaceItemInternalCore(itemType, itemId, item, requestOptions, trackingId)
             .onErrorResume(throwable -> {
                 Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -414,7 +453,7 @@ public class CosmosAsyncContainer {
                         .readDocument(getItemLink(itemId), requestOptions)
                         .map(response -> {
                             mergeDiagnostics(response, cosmosException);
-                            return itemResponseAccessor
+                            return itemResponseAccessor()
                                 .createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer());
                         })
                         .single();
@@ -428,8 +467,8 @@ public class CosmosAsyncContainer {
                     })
                     .flatMap(readResponse -> {
                         if (readResponse.getStatusCode() == 200
-                        && itemResponseAccessor.hasTrackingId(readResponse, trackingId)) {
-                            return Mono.just(itemResponseAccessor.withRemappedStatusCode(
+                        && itemResponseAccessor().hasTrackingId(readResponse, trackingId)) {
+                            return Mono.just(itemResponseAccessor().withRemappedStatusCode(
                                 readResponse,
                                 200,
                                 cosmosException.getRequestCharge(),
@@ -487,16 +526,14 @@ public class CosmosAsyncContainer {
                             PartitionKeyDefinition pkDef = collection.getPartitionKey();
                             PartitionKeyInternal partitionKeyInternal = PartitionKeyHelper
                                 .extractPartitionKeyValueFromDocument(internalObjectNode, pkDef);
-                            PartitionKey partitionKey = ImplementationBridgeHelpers
-                                .PartitionKeyHelper
-                                    .getPartitionKeyAccessor()
+                            PartitionKey partitionKey = partitionKeyAccessor()
                                     .toPartitionKey(partitionKeyInternal);
                             readRequestOptions.setPartitionKey(partitionKey);
 
                             return clientWrapper.readDocument(getItemLink(itemId), readRequestOptions)
                                                 .map(response -> {
                                                     mergeDiagnostics(response, cosmosException);
-                                                    return itemResponseAccessor
+                                                    return itemResponseAccessor()
                                                         .createCosmosItemResponse(
                                                             response, itemType, readRequestOptions.getEffectiveItemSerializer());
                                                 }).single();
@@ -511,8 +548,8 @@ public class CosmosAsyncContainer {
                     })
                     .flatMap(readResponse -> {
                         if (readResponse.getStatusCode() == 200
-                        && itemResponseAccessor.hasTrackingId(readResponse, trackingId)) {
-                            return Mono.just(itemResponseAccessor.withRemappedStatusCode(
+                        && itemResponseAccessor().hasTrackingId(readResponse, trackingId)) {
+                            return Mono.just(itemResponseAccessor().withRemappedStatusCode(
                                 readResponse,
                                 201,
                                 cosmosException.getRequestCharge(),
@@ -530,7 +567,7 @@ public class CosmosAsyncContainer {
             requestOptionsContentResponseEnabled = options.isContentResponseOnWriteEnabled();
         }
 
-        return clientAccessor.isEffectiveContentResponseOnWriteEnabled(
+        return clientAccessor().isEffectiveContentResponseOnWriteEnabled(
             this.database.getClient(), requestOptionsContentResponseEnabled);
     }
 
@@ -538,7 +575,7 @@ public class CosmosAsyncContainer {
         checkNotNull(options, "Argument 'options' must not be null.");
 
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Create, ResourceType.Document, requestOptions, this.createItemSpanName);
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
@@ -577,30 +614,30 @@ public class CosmosAsyncContainer {
                                String spanName) {
         CosmosAsyncClient client = this.database.getClient();
         CosmosDiagnosticsThresholds thresholds = requestOptions != null
-            ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
-            : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
-        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+            ? clientAccessor().getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
+            : clientAccessor().getEffectiveDiagnosticsThresholds(client, null);
+        CosmosDiagnosticsContext cosmosCtx = ctxAccessor().create(
             spanName,
-            clientAccessor.getAccountTagValue(client),
+            clientAccessor().getAccountTagValue(client),
             BridgeInternal.getServiceEndpoint(client),
             database.getId(),
             getId(),
             resourceType,
             operationType,
             null,
-            clientAccessor.getEffectiveConsistencyLevel(client, operationType, requestOptions.getConsistencyLevel()),
-            clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestOptions.getReadConsistencyStrategy()),
+            clientAccessor().getEffectiveConsistencyLevel(client, operationType, requestOptions.getConsistencyLevel()),
+            clientAccessor().getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestOptions.getReadConsistencyStrategy()),
             null,
             thresholds,
             null,
-            clientAccessor.getConnectionMode(client),
-            clientAccessor.getUserAgent(client),
+            clientAccessor().getConnectionMode(client),
+            clientAccessor().getUserAgent(client),
             null,
             null,
             requestOptions);
 
-        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(requestOptions, cosmosCtx);
-        clientAccessor.getOperationPolicies(client).forEach(policy -> {
+        CosmosOperationDetails operationDetails = operationDetailsAccessor().create(requestOptions, cosmosCtx);
+        clientAccessor().getOperationPolicies(client).forEach(policy -> {
             try {
                 policy.process(operationDetails);
             } catch (RuntimeException exception) {
@@ -625,7 +662,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> itemResponseAccessor.createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
+                   .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
                    .single();
     }
 
@@ -713,8 +750,8 @@ public class CosmosAsyncContainer {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
             CosmosQueryRequestOptions requestOptions = options != null ?
-                queryOptionsAccessor.clone(options) : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor.getImpl(requestOptions);
+                queryOptionsAccessor().clone(options) : new CosmosQueryRequestOptions();
+            CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor().getImpl(requestOptions);
             applyPolicies(OperationType.ReadFeed, ResourceType.Document, optionsImpl, this.readAllItemsSpanName);
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
@@ -723,7 +760,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Document,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
                 requestOptions,
                 pagedFluxOptions
             );
@@ -838,8 +875,8 @@ public class CosmosAsyncContainer {
     @Deprecated
     public Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
 
-        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
-        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
+        List<String> preferredRegions = clientAccessor().getPreferredRegions(this.database.getClient());
+        boolean endpointDiscoveryEnabled = clientAccessor().isEndpointDiscoveryEnabled(this.database.getClient());
 
         checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
 
@@ -1012,13 +1049,13 @@ public class CosmosAsyncContainer {
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, boolean isParameterized) {
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosQueryRequestOptions options = cosmosQueryRequestOptions != null ?
-            queryOptionsAccessor.clone(cosmosQueryRequestOptions): new CosmosQueryRequestOptions();
-        CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor.getImpl(options);
+            queryOptionsAccessor().clone(cosmosQueryRequestOptions): new CosmosQueryRequestOptions();
+        CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor().getImpl(options);
         applyPolicies(OperationType.Query, ResourceType.Document, optionsImpl, this.queryItemsSpanName);
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
 
-            ShowQueryMode showQueryMode = clientTelemetryConfigAccessor.showQueryMode(client.getClientTelemetryConfig());
+            ShowQueryMode showQueryMode = clientTelemetryConfigAccessor().showQueryMode(client.getClientTelemetryConfig());
 
             if(ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode) && isParameterized) {
 
@@ -1035,7 +1072,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(options, spanName),
                 options,
                 pagedFluxOptions
             );
@@ -1057,8 +1094,8 @@ public class CosmosAsyncContainer {
             CosmosAsyncClient client = this.getDatabase().getClient();
             String spanName = this.queryItemsSpanName;
             CosmosQueryRequestOptions options = cosmosQueryRequestOptions != null ?
-                queryOptionsAccessor.clone(cosmosQueryRequestOptions): new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor.getImpl(options);
+                queryOptionsAccessor().clone(cosmosQueryRequestOptions): new CosmosQueryRequestOptions();
+            CosmosQueryRequestOptionsBase<?> optionsImpl = queryOptionsAccessor().getImpl(options);
             applyPolicies(OperationType.Query, ResourceType.Document, optionsImpl, spanName);
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
@@ -1067,7 +1104,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Document,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(options, spanName),
                 options,
                 pagedFluxOptions
             );
@@ -1268,7 +1305,7 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptionsInternal = ModelBridgeInternal.toRequestOptions(requestOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.batchSpanName);
 
-        boolean disableRetryForThrottledBatchRequest = batchRequestOptionsAccessor.shouldDisableRetryForThrottledBatchRequest(requestOptions);
+        boolean disableRetryForThrottledBatchRequest = batchRequestOptionsAccessor().shouldDisableRetryForThrottledBatchRequest(requestOptions);
         return withContext(context -> {
             final BatchExecutor executor =
                 new BatchExecutor(
@@ -1355,8 +1392,8 @@ public class CosmosAsyncContainer {
             bulkOptions = new CosmosBulkExecutionOptions();
         }
 
-        CosmosBulkExecutionOptions clonedOptions = bulkExecutionOptionsAccessor.clone(bulkOptions);
-        CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor.getImpl(clonedOptions);
+        CosmosBulkExecutionOptions clonedOptions = bulkExecutionOptionsAccessor().clone(bulkOptions);
+        CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor().getImpl(clonedOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.bulkSpanName);
 
         return Flux.deferContextual(context -> {
@@ -1539,10 +1576,10 @@ public class CosmosAsyncContainer {
 
         CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
             ? new CosmosQueryRequestOptions()
-            : queryOptionsAccessor.clone(readManyOptionsAccessor.getImpl(requestOptions));
+            : queryOptionsAccessor().clone(readManyOptionsAccessor().getImpl(requestOptions));
         queryRequestOptions.setMaxDegreeOfParallelism(-1);
         queryRequestOptions.setQueryName("readMany");
-        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor.getImpl(queryRequestOptions);
+        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
         applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
 
         CosmosAsyncClient client = this.getDatabase().getClient();
@@ -1555,7 +1592,7 @@ public class CosmosAsyncContainer {
             this.getId(),
             ResourceType.Document,
             OperationType.Query,
-            queryOptionsAccessor.getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
+            queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyItemsSpanName),
             queryRequestOptions,
             fluxOptions
         );
@@ -1564,7 +1601,7 @@ public class CosmosAsyncContainer {
             .getAsyncDocumentClient(this.getDatabase())
             .readMany(itemIdentityList, BridgeInternal.getLink(this), state, classType);
 
-        RequestOptions options = queryOptionsAccessor.toRequestOptions(queryRequestOptions);
+        RequestOptions options = queryOptionsAccessor().toRequestOptions(queryRequestOptions);
 
         return client
             .getDiagnosticsProvider()
@@ -1575,6 +1612,238 @@ public class CosmosAsyncContainer {
                 client,
                 options,
                 context);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, null, null, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, null, requestOptions, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, customQuery, null, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is allowed for single-path partition key containers — it
+     * queries documents where the partition key path is absent (generates
+     * {@code NOT IS_DEFINED(...)}). For hierarchical (multi-path) partition key containers,
+     * {@link PartitionKey#NONE} is rejected because {@code addNoneValue()} is not supported
+     * with multiple paths.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        if (partitionKeys.isEmpty()) {
+            throw new IllegalArgumentException("Argument 'partitionKeys' must not be empty.");
+        }
+
+        for (PartitionKey pk : partitionKeys) {
+            if (pk == null) {
+                throw new IllegalArgumentException(
+                    "Argument 'partitionKeys' must not contain null elements.");
+            }
+        }
+
+        List<PartitionKey> partitionKeysSnapshot = new ArrayList<>(partitionKeys);
+
+        return UtilBridgeInternal.createCosmosPagedFlux(
+            readManyByPartitionKeysInternalFunc(partitionKeysSnapshot, customQuery, requestOptions, classType));
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeysInternalFunc(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        CosmosAsyncClient client = this.getDatabase().getClient();
+
+        // Extract continuation token before entering the reactive chain.
+        // It will be set on the cloned CosmosQueryRequestOptions so that
+        // QueryFeedOperationState picks it up automatically.
+        String requestContinuation = requestOptions != null
+            ? readManyByPkOptionsAccessor().getContinuationToken(requestOptions)
+            : null;
+
+        // Resolve the max-concurrent-batch-prefetch knob. Unlike queryItems (which fans out
+        // many small reads across partitions), readManyByPartitionKeys typically returns large
+        // result sets per partition, so a conservative default avoids overwhelming individual
+        // partitions with parallel requests and spiking RU consumption.
+        Integer prefetchOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxConcurrentBatchPrefetch(requestOptions)
+            : null;
+        int maxConcurrentBatchPrefetch = prefetchOverride != null
+            ? prefetchOverride
+            : Math.max(1, Math.min(Configs.getCPUCnt(), 8));
+
+        // Resolve the max-batch-size (PKs per batch per physical partition).
+        // Per-request setting takes precedence over the global system property default.
+        Integer batchSizeOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxBatchSize(requestOptions)
+            : null;
+        int maxBatchSize = batchSizeOverride != null
+            ? batchSizeOverride
+            : Configs.getReadManyByPkMaxBatchSize();
+
+        return (pagedFluxOptions -> {
+            CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
+                ? new CosmosQueryRequestOptions()
+                : queryOptionsAccessor().clone(readManyByPkOptionsAccessor().getImpl(requestOptions));
+            // CosmosQueryRequestOptionsBase initializes MaxDegreeOfParallelism to 0 (the
+            // "uninitialized / SDK-chooses" sentinel); -1 is the "unbounded" sentinel that
+            // RxDocumentClientImpl recognizes for query parallelism. Honor any caller-provided
+            // value but default the uninitialized case to unbounded for readManyByPartitionKeys.
+            // CosmosReadManyRequestOptions does not currently expose MDOP, so this only matters
+            // if it is plumbed through in the future.
+            // When cloning from CosmosReadManyByPartitionKeysRequestOptionsImpl (which does not
+            // define maxDegreeOfParallelism), the cloned CosmosQueryRequestOptions may have a
+            // null backing Integer. Guard against NPE from auto-unboxing by checking for null.
+            Integer mdop = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxDegreeOfParallelism();
+            if (mdop == null || mdop == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
+                queryRequestOptions.setMaxDegreeOfParallelism(UNBOUNDED_MAX_DEGREE_OF_PARALLELISM);
+            }
+
+            // maxItemCount lives in CosmosQueryRequestOptionsImpl but is not copied by the
+            // clone path through CosmosQueryRequestOptionsBase, so propagate it explicitly.
+            Integer maxItems = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxItemCount();
+            if (maxItems == null && requestOptions != null) {
+                Integer userMaxItems = readManyByPkOptionsAccessor().getImpl(requestOptions).getMaxItemCount();
+                if (userMaxItems != null) {
+                    ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(queryRequestOptions, userMaxItems);
+                }
+            }
+
+            queryRequestOptions.setQueryName("readManyByPartitionKeys");
+
+            // Set the composite continuation token on the cloned query options so that
+            // QueryFeedOperationState carries it through to RxDocumentClientImpl.
+            if (requestContinuation != null) {
+                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                    queryRequestOptions, requestContinuation);
+            }
+
+            CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
+            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeysSpanName);
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
+                this.readManyByPartitionKeysSpanName,
+                database.getId(),
+                this.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeysSpanName),
+                queryRequestOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return CosmosBridgeInternal
+                .getAsyncDocumentClient(this.getDatabase())
+                .readManyByPartitionKeys(
+                    partitionKeys,
+                    customQuery,
+                    BridgeInternal.getLink(this),
+                    state,
+                    maxConcurrentBatchPrefetch,
+                    maxBatchSize,
+                    classType)
+                .map(response -> prepareFeedResponse(response, false));
+        });
     }
 
     /**
@@ -1649,7 +1918,7 @@ public class CosmosAsyncContainer {
 
         requestOptions.setPartitionKey(partitionKey);
 
-        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor.getImpl(requestOptions);
+        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(requestOptions);
         applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
@@ -1661,7 +1930,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Document,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName),
                 requestOptions,
                 pagedFluxOptions
             );
@@ -1737,7 +2006,6 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
         T item, String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
-        Document doc = InternalObjectNode.fromObject(item);
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
@@ -1745,7 +2013,7 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         final CosmosItemRequestOptions requestOptions = options;
-        return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
+        return withContext(context -> replaceItemInternal(itemType, itemId, item, requestOptions, context));
     }
 
     /**
@@ -1913,7 +2181,7 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         requestOptions.setEffectiveItemSerializer(this.database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         return withContext(context -> deleteAllItemsByPartitionKeyInternal(partitionKey, requestOptions, context));
     }
@@ -1999,7 +2267,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Conflict,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, this.readAllConflictsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, this.readAllConflictsSpanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -2007,7 +2275,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setFeedOperationState(state);
 
             return database.getDocClientWrapper().readConflicts(getLink(), state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -2055,7 +2323,7 @@ public class CosmosAsyncContainer {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             CosmosAsyncClient client = this.getDatabase().getClient();
-            String operationId = queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName);
+            String operationId = queryOptionsAccessor().getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName);
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
@@ -2064,7 +2332,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 ResourceType.Conflict,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName),
+                queryOptionsAccessor().getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName),
                 requestOptions,
                 pagedFluxOptions
             );
@@ -2072,7 +2340,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setFeedOperationState(state);
 
             return database.getDocClientWrapper().queryConflicts(getLink(), query, state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     response.getCosmosDiagnostics()));
@@ -2158,7 +2426,7 @@ public class CosmosAsyncContainer {
         Context context) {
 
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Delete, ResourceType.Document, requestOptions, this.deleteItemSpanName);
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
@@ -2180,7 +2448,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
-            .map(response -> itemResponseAccessor.createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
+            .map(response -> itemResponseAccessor().createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
             .single();
         CosmosAsyncClient client = database.getClient();
         return client
@@ -2206,7 +2474,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .deleteAllDocumentsByPartitionKey(getLink(), partitionKey, requestOptions)
-            .map(response -> itemResponseAccessor.createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
+            .map(response -> itemResponseAccessor().createCosmosItemResponse(response, Object.class, CosmosItemSerializer.DEFAULT_SERIALIZER))
             .single();
         CosmosAsyncClient client = database.getClient();
         return client
@@ -2228,7 +2496,7 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternalCore(
         Class<T> itemType,
         String itemId,
-        Document doc,
+        Object item,
         RequestOptions requestOptions,
         String trackingId) {
 
@@ -2236,8 +2504,8 @@ public class CosmosAsyncContainer {
 
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, requestOptions)
-                   .map(response -> itemResponseAccessor.createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
+                   .replaceDocument(getItemLink(itemId), item, requestOptions)
+                   .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
                    .single();
     }
 
@@ -2261,13 +2529,13 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
         Class<T> itemType,
         String itemId,
-        Document doc,
+        Object item,
         CosmosItemRequestOptions options,
         Context context) {
 
         checkNotNull(options, "Argument 'options' must not be null.");
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Replace, ResourceType.Document, requestOptions, this.replaceItemSpanName);
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
@@ -2280,9 +2548,9 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUIDs.nonBlockingRandomUUID().toString();
-            responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, requestOptions, trackingId);
+            responseMono = this.replaceItemWithTrackingId(itemType, itemId, item, requestOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, requestOptions, null);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, item, requestOptions, null);
         }
 
         CosmosAsyncClient client = database
@@ -2310,7 +2578,7 @@ public class CosmosAsyncContainer {
         Context context,
         Class<T> itemType) {
 
-        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(options);
+        RequestOptions requestOptions = itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Patch, ResourceType.Document, requestOptions, this.patchItemSpanName);
 
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
@@ -2326,7 +2594,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .patchDocument(getItemLink(itemId), cosmosPatchOperations, requestOptions)
-            .map(response -> itemResponseAccessor.createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()));
+            .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()));
 
         CosmosAsyncClient client = database
             .getClient();
@@ -2350,7 +2618,7 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         applyPolicies(OperationType.Upsert, ResourceType.Document, requestOptions, this.upsertItemSpanName);
 
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
@@ -2365,8 +2633,8 @@ public class CosmosAsyncContainer {
             .upsertDocument(this.getLink(), item,
                 effectiveOptions,
                 true)
-            .map(response -> itemResponseAccessor.createCosmosItemResponse(
-                response, itemType, requestOptions.getEffectiveItemSerializer()))
+            .map(response -> itemResponseAccessor().createCosmosItemResponse(
+                response, itemType, effectiveOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();
@@ -2391,12 +2659,12 @@ public class CosmosAsyncContainer {
         CosmosItemRequestOptions options, Class<T> itemType,
         Context context) {
         RequestOptions requestOptions =
-            itemOptionsAccessor.toRequestOptions(options);
+            itemOptionsAccessor().toRequestOptions(options);
         requestOptions.setEffectiveItemSerializer(database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         applyPolicies(OperationType.Read, ResourceType.Document, requestOptions, this.readItemSpanName);
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
             .readDocument(getItemLink(itemId), requestOptions)
-            .map(response -> itemResponseAccessor.createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
+            .map(response -> itemResponseAccessor().createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();

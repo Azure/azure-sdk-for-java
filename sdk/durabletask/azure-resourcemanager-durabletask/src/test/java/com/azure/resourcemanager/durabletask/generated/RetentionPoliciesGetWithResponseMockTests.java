@@ -22,7 +22,7 @@ public final class RetentionPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1054713689,\"orchestrationState\":\"Failed\"}]},\"id\":\"hy\",\"name\":\"ltrpmopj\",\"type\":\"cma\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"retentionPolicies\":[{\"retentionPeriodInDays\":540005244,\"orchestrationState\":\"Completed\"}]},\"id\":\"xb\",\"name\":\"ybsrfbjfdtwss\",\"type\":\"t\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class RetentionPoliciesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RetentionPolicy response
-            = manager.retentionPolicies().getWithResponse("ysou", "q", com.azure.core.util.Context.NONE).getValue();
+        RetentionPolicy response = manager.retentionPolicies()
+            .getWithResponse("hxcr", "bfovasrruvwbhsq", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(1054713689, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.FAILED,
+        Assertions.assertEquals(540005244, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             response.properties().retentionPolicies().get(0).orchestrationState());
     }
 }

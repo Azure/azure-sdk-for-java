@@ -13,24 +13,24 @@ public final class TargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetDetails model = BinaryData.fromString(
-            "{\"filePrefix\":\"kdwzbaiuebbaumny\",\"restoreTargetLocationType\":\"AzureFiles\",\"url\":\"ped\",\"targetResourceArmId\":\"jn\"}")
+            "{\"filePrefix\":\"edeojnabc\",\"restoreTargetLocationType\":\"AzureFiles\",\"url\":\"smtxpsieb\",\"targetResourceArmId\":\"hvpesapskrdqm\"}")
             .toObject(TargetDetails.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.filePrefix());
+        Assertions.assertEquals("edeojnabc", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES, model.restoreTargetLocationType());
-        Assertions.assertEquals("ped", model.url());
-        Assertions.assertEquals("jn", model.targetResourceArmId());
+        Assertions.assertEquals("smtxpsieb", model.url());
+        Assertions.assertEquals("hvpesapskrdqm", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDetails model = new TargetDetails().withFilePrefix("kdwzbaiuebbaumny")
+        TargetDetails model = new TargetDetails().withFilePrefix("edeojnabc")
             .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_FILES)
-            .withUrl("ped")
-            .withTargetResourceArmId("jn");
+            .withUrl("smtxpsieb")
+            .withTargetResourceArmId("hvpesapskrdqm");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.filePrefix());
+        Assertions.assertEquals("edeojnabc", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES, model.restoreTargetLocationType());
-        Assertions.assertEquals("ped", model.url());
-        Assertions.assertEquals("jn", model.targetResourceArmId());
+        Assertions.assertEquals("smtxpsieb", model.url());
+        Assertions.assertEquals("hvpesapskrdqm", model.targetResourceArmId());
     }
 }

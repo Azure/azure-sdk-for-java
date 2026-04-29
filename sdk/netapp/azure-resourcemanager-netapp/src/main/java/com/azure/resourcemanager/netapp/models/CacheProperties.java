@@ -21,7 +21,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     /*
      * The file path of the Cache.
      */
-    private String filepath;
+    private String filePath;
 
     /*
      * Maximum storage quota allowed for a file system in bytes. Valid values are in the range 50GiB to 1PiB. Values
@@ -149,22 +149,22 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     }
 
     /**
-     * Get the filepath property: The file path of the Cache.
+     * Get the filePath property: The file path of the Cache.
      * 
-     * @return the filepath value.
+     * @return the filePath value.
      */
-    public String filepath() {
-        return this.filepath;
+    public String filePath() {
+        return this.filePath;
     }
 
     /**
-     * Set the filepath property: The file path of the Cache.
+     * Set the filePath property: The file path of the Cache.
      * 
-     * @param filepath the filepath value to set.
+     * @param filePath the filePath value to set.
      * @return the CacheProperties object itself.
      */
-    public CacheProperties withFilepath(String filepath) {
-        this.filepath = filepath;
+    public CacheProperties withFilePath(String filePath) {
+        this.filePath = filePath;
         return this;
     }
 
@@ -574,9 +574,9 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (filepath() == null) {
+        if (filePath() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property filepath in model CacheProperties"));
+                .log(new IllegalArgumentException("Missing required property filePath in model CacheProperties"));
         }
         if (exportPolicy() != null) {
             exportPolicy().validate();
@@ -619,7 +619,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("filepath", this.filepath);
+        jsonWriter.writeStringField("filePath", this.filePath);
         jsonWriter.writeLongField("size", this.size);
         jsonWriter.writeStringField("cacheSubnetResourceId", this.cacheSubnetResourceId);
         jsonWriter.writeStringField("peeringSubnetResourceId", this.peeringSubnetResourceId);
@@ -660,8 +660,8 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("filepath".equals(fieldName)) {
-                    deserializedCacheProperties.filepath = reader.getString();
+                if ("filePath".equals(fieldName)) {
+                    deserializedCacheProperties.filePath = reader.getString();
                 } else if ("size".equals(fieldName)) {
                     deserializedCacheProperties.size = reader.getLong();
                 } else if ("cacheSubnetResourceId".equals(fieldName)) {
