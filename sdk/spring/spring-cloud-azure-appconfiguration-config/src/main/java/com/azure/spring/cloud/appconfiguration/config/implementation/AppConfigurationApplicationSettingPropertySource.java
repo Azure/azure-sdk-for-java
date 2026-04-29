@@ -88,7 +88,9 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
         List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
+        
         for (ConfigurationSetting setting : settings) {
+            replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
                 keyPrefixTrimValues.add(keyFilter.substring(0, keyFilter.length() - 1));

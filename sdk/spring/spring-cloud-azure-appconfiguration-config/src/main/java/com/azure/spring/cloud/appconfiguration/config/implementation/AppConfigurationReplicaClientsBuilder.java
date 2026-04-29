@@ -176,6 +176,9 @@ public class AppConfigurationReplicaClientsBuilder {
 
         if (configStore.isLoadBalancingEnabled()) {
             Collections.shuffle(clients);
+            for (AppConfigurationReplicaClient client : clients) {
+                client.getTracingInfo().setUsesLoadBalancing(true);
+            }
         }
 
         return clients;
@@ -213,7 +216,7 @@ public class AppConfigurationReplicaClientsBuilder {
         if (clientCustomizer != null) {
             clientCustomizer.customize(builder, endpoint);
         }
-        return new AppConfigurationReplicaClient(endpoint, originEndpoint, builder.buildClient());
+        return new AppConfigurationReplicaClient(endpoint, originEndpoint, builder.buildClient(), tracingInfo);
     }
 
     private ConfigurationClientBuilder createBuilderInstance() {

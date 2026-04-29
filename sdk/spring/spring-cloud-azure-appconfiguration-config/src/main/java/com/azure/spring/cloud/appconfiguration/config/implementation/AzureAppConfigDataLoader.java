@@ -325,6 +325,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
             false);
 
+        if (nextClient != null) {
+            nextClient.getTracingInfo().setFailoverRequest(true);
+        }
+
         String scenario = resource.isRefresh() ? "refresh" : "startup";
         String nextAction = nextClient != null ? "Trying next replica." : "No more replicas available.";
         logger.warn("Azure App Configuration replica " + client.getEndpoint()

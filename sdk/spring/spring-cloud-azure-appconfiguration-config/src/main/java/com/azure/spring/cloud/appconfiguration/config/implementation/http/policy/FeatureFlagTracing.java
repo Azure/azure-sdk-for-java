@@ -17,6 +17,10 @@ public class FeatureFlagTracing {
 
     private static final String FILTER_TYPE_DELIMITER = "+";
 
+    private static final String FEATURE_FLAG_USES_TELEMETRY_TAG = "Telemetry";
+
+    private static final String FEATURE_FLAG_USES_SEED_TAG = "Seed";
+
     private static final List<String> PERCENTAGE_FILTER_NAMES = Arrays.asList("Percentage", "Microsoft.Percentage",
         "PercentageFilter", "Microsoft.PercentageFilter");
 
@@ -34,6 +38,12 @@ public class FeatureFlagTracing {
 
     private Boolean usesTargetingFilter = false;
 
+    private Boolean usesTelemetry = false;
+
+    private Boolean usesSeed = false;
+
+    private Integer maxVariants = null;
+
     boolean usesAnyFilter() {
         return usesCustomFilter || usesPercentageFilter || usesTimeWindowFilter || usesTargetingFilter;
     }
@@ -43,6 +53,9 @@ public class FeatureFlagTracing {
         usesPercentageFilter = false;
         usesTimeWindowFilter = false;
         usesTargetingFilter = false;
+        usesTelemetry = false;
+        usesSeed = false;
+        maxVariants = null;
     }
 
     public void updateFeatureFilterTelemetry(String filterName) {
@@ -55,6 +68,58 @@ public class FeatureFlagTracing {
         } else {
             usesCustomFilter = true;
         }
+    }
+
+    /**
+     * Sets whether telemetry is used.
+     * @param usesTelemetry whether telemetry is used
+     */
+    public void setUsesTelemetry(Boolean usesTelemetry) {
+        this.usesTelemetry = usesTelemetry;
+    }
+
+    /**
+     * Sets whether seed is used.
+     * @param usesSeed whether seed is used
+     */
+    public void setUsesSeed(Boolean usesSeed) {
+        this.usesSeed = usesSeed;
+    }
+
+    /**
+     * Updates max variants if the new size is larger.
+     * @param size size of variants
+     */
+    public void updateMaxVariants(int size) {
+        if (maxVariants == null || size > maxVariants) {
+            maxVariants = size;
+        }
+    }
+
+    /**
+     * Gets the max variants value.
+     * @return max variants or null if not set
+     */
+    public Integer getMaxVariants() {
+        return maxVariants;
+    }
+
+    /**
+     * Creates the FFFeatures string for correlation context.
+     * @return FFFeatures string with telemetry and seed tags
+     */
+    public String createFFFeaturesString() {
+        StringBuilder sb = new StringBuilder();
+        if (usesSeed) {
+            sb.append(FEATURE_FLAG_USES_SEED_TAG);
+        }
+        if (usesTelemetry) {
+            if (sb.length() > 0) {
+                sb.append(FILTER_TYPE_DELIMITER);
+            }
+            sb.append(FEATURE_FLAG_USES_TELEMETRY_TAG);
+        }
+        return sb.toString();
     }
 
     @Override

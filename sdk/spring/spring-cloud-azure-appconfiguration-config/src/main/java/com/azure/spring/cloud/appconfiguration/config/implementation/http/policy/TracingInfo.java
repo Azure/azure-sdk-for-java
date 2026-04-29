@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AI_CHAT_COMPLETION_FEATURE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AI_CONFIGURATION_FEATURE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.APP_CONFIG_AICC_MIME_PROFILE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.APP_CONFIG_AI_MIME_PROFILE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LOAD_BALANCING_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SNAPSHOT_REFERENCE_TAG;
 
 import org.springframework.util.StringUtils;
 
@@ -14,6 +20,8 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.RequestType
 
 public class TracingInfo {
 
+    private static final String DELIMITER = "+";
+
     private boolean isKeyVaultConfigured = false;
 
     private int replicaCount;
@@ -22,11 +30,59 @@ public class TracingInfo {
 
     private final Configuration configuration;
 
+    private boolean usesLoadBalancing = false;
+
+    private boolean usesAiConfiguration = false;
+
+    private boolean usesAiccConfiguration = false;
+
+    private boolean isFailoverRequest = false;
+
     public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.replicaCount = replicaCount;
         this.featureFlagTracing = new FeatureFlagTracing();
         this.configuration = configuration;
+    }
+
+    /**
+     * Sets whether load balancing is enabled.
+     * @param usesLoadBalancing whether load balancing is enabled
+     */
+    public void setUsesLoadBalancing(boolean usesLoadBalancing) {
+        this.usesLoadBalancing = usesLoadBalancing;
+    }
+
+    /**
+     * Sets whether this is a failover request.
+     * @param isFailoverRequest whether this is a failover request
+     */
+    public void setFailoverRequest(boolean isFailoverRequest) {
+        this.isFailoverRequest = isFailoverRequest;
+    }
+
+    /**
+     * Resets AI configuration tracing flags.
+     */
+    public void resetAiConfigurationTracing() {
+        this.usesAiConfiguration = false;
+        this.usesAiccConfiguration = false;
+    }
+
+    /**
+     * Updates AI configuration tracing based on content type.
+     * @param contentType the content type to analyze
+     */
+    public void updateAiConfigurationTracing(String contentType) {
+        if (contentType == null || usesAiccConfiguration) {
+            return;
+        }
+        if (contentType.contains(APP_CONFIG_AI_MIME_PROFILE)) {
+            usesAiConfiguration = true;
+            if (contentType.contains(APP_CONFIG_AICC_MIME_PROFILE)) {
+                usesAiccConfiguration = true;
+            }
+        }
     }
 
     String getValue(boolean watchRequests, boolean pushRefresh, FeatureFlagTracing featureFlagTracing) {
@@ -41,30 +97,79 @@ public class TracingInfo {
         RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
         StringBuilder sb = new StringBuilder();
 
-        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=" + requestTypeValue);
+        // Key-value pairs
+        sb.append(RequestTracingConstants.REQUEST_TYPE_KEY).append("=").append(requestTypeValue);
 
-        if (this.featureFlagTracing.usesAnyFilter()) {
-            sb.append(",Filter=").append(this.featureFlagTracing.toString());
+        if (replicaCount > 0) {
+            sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
         }
 
         String hostType = getHostType();
         if (!hostType.isEmpty()) {
             sb.append(",").append(RequestTracingConstants.HOST_TYPE_KEY).append("=").append(hostType);
         }
+
+        if (this.featureFlagTracing.usesAnyFilter()) {
+            sb.append(",").append(RequestTracingConstants.FILTER_KEY).append("=").append(this.featureFlagTracing.toString());
+        }
+
+        // Max variants
+        if (this.featureFlagTracing.getMaxVariants() != null && this.featureFlagTracing.getMaxVariants() > 0) {
+            sb.append(",").append(RequestTracingConstants.MAX_VARIANTS_KEY).append("=").append(this.featureFlagTracing.getMaxVariants());
+        }
+
+        // FFFeatures
+        String ffFeatures = this.featureFlagTracing.createFFFeaturesString();
+        if (StringUtils.hasText(ffFeatures)) {
+            sb.append(",").append(RequestTracingConstants.FF_FEATURES_KEY).append("=").append(ffFeatures);
+        }
+
+        // Features
+        String features = createFeaturesString();
+        if (StringUtils.hasText(features)) {
+            sb.append(",").append(RequestTracingConstants.FEATURES_KEY).append("=").append(features);
+        }
+
+        // Feature management version
+        sb = getFeatureManagementUsage(sb);
+
+        // Tags
         if (isKeyVaultConfigured) {
             sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
         }
-        
+
         if (pushRefresh) {
             sb.append(",").append(PUSH_REFRESH);
         }
 
-        if (replicaCount > 0) {
-            sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
+        if (isFailoverRequest) {
+            sb.append(",").append(RequestTracingConstants.FAILOVER_TAG);
         }
-        
-        sb = getFeatureManagementUsage(sb);
 
+        return sb.toString();
+    }
+
+    /**
+     * Creates the Features string for correlation context.
+     * @return Features string with load balancing, AI, and snapshot reference tags
+     */
+    private String createFeaturesString() {
+        StringBuilder sb = new StringBuilder();
+        if (usesLoadBalancing) {
+            sb.append(LOAD_BALANCING_FEATURE);
+        }
+        if (usesAiConfiguration) {
+            if (sb.length() > 0) {
+                sb.append(DELIMITER);
+            }
+            sb.append(AI_CONFIGURATION_FEATURE);
+        }
+        if (usesAiccConfiguration) {
+            if (sb.length() > 0) {
+                sb.append(DELIMITER);
+            }
+            sb.append(AI_CHAT_COMPLETION_FEATURE);
+        }
         return sb.toString();
     }
 
@@ -90,12 +195,12 @@ public class TracingInfo {
 
         return hostType.toString();
     }
-    
+
     private static StringBuilder getFeatureManagementUsage(StringBuilder sb) {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         Package ff = loader.getDefinedPackage("com.azure.spring.cloud.feature.management.models");
         if (ff != null && StringUtils.hasText(ff.getImplementationVersion())) {
-            sb.append(",FMSpVer=").append(ff.getImplementationVersion());
+            sb.append(",").append(RequestTracingConstants.FM_SPRING_VER_KEY).append("=").append(ff.getImplementationVersion());
         }
         return sb;
     }

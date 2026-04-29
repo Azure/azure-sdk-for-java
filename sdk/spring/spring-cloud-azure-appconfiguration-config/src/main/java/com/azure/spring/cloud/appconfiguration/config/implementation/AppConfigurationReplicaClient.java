@@ -22,6 +22,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -43,6 +44,8 @@ class AppConfigurationReplicaClient {
 
     private final ConfigurationClient client;
 
+    private final TracingInfo tracingInfo;
+
     private Instant backoffEndTime;
 
     private int failedAttempts;
@@ -52,11 +55,14 @@ class AppConfigurationReplicaClient {
      * @param endpoint client endpoint
      * @param originClient origin client identifier
      * @param client Configuration Client to App Configuration store
+     * @param tracingInfo tracing info for this client
      */
-    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client) {
+    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client,
+        TracingInfo tracingInfo) {
         this.endpoint = endpoint;
         this.originClient = originClient;
         this.client = client;
+        this.tracingInfo = tracingInfo;
         this.backoffEndTime = Instant.now().minusMillis(INITIAL_BACKOFF_OFFSET_MS);
         this.failedAttempts = 0;
     }
@@ -96,6 +102,13 @@ class AppConfigurationReplicaClient {
      */
     String getOriginClient() {
         return originClient;
+    }
+
+    /**
+     * @return tracingInfo for this client
+     */
+    TracingInfo getTracingInfo() {
+        return tracingInfo;
     }
 
     /**
