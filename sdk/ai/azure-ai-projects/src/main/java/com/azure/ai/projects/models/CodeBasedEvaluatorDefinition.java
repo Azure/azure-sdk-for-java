@@ -87,7 +87,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
         jsonWriter.writeStringField("code_text", this.codeText);
         jsonWriter.writeStringField("entry_point", this.entryPoint);
         jsonWriter.writeStringField("image_tag", this.imageTag);
-        jsonWriter.writeStringField("blob_uri", this.blobUri);
+        jsonWriter.writeStringField("blob_uri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -127,7 +127,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
                 } else if ("image_tag".equals(fieldName)) {
                     deserializedCodeBasedEvaluatorDefinition.imageTag = reader.getString();
                 } else if ("blob_uri".equals(fieldName)) {
-                    deserializedCodeBasedEvaluatorDefinition.blobUri = reader.getString();
+                    deserializedCodeBasedEvaluatorDefinition.blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -167,12 +167,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      */
     @Generated
     private String imageTag;
-
-    /*
-     * The blob URI for the evaluator storage
-     */
-    @Generated
-    private String blobUri;
 
     /**
      * Creates an instance of CodeBasedEvaluatorDefinition class.
@@ -239,25 +233,31 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
         return this;
     }
 
-    /**
-     * Get the blobUri property: The blob URI for the evaluator storage.
-     *
-     * @return the blobUri value.
+    /*
+     * The blob URI for the evaluator storage
      */
     @Generated
-    public String getBlobUri() {
-        return this.blobUri;
+    private String blobUrl;
+
+    /**
+     * Get the blobUrl property: The blob URI for the evaluator storage.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 
     /**
-     * Set the blobUri property: The blob URI for the evaluator storage.
+     * Set the blobUrl property: The blob URI for the evaluator storage.
      *
-     * @param blobUri the blobUri value to set.
+     * @param blobUrl the blobUrl value to set.
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    public CodeBasedEvaluatorDefinition setBlobUri(String blobUri) {
-        this.blobUri = blobUri;
+    public CodeBasedEvaluatorDefinition setBlobUrl(String blobUrl) {
+        this.blobUrl = blobUrl;
         return this;
     }
 }

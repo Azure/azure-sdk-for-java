@@ -8,7 +8,7 @@ import com.azure.ai.projects.implementation.models.CreateSkillRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
 import com.azure.ai.projects.models.DeleteSkillResponse;
 import com.azure.ai.projects.models.PageOrder;
-import com.azure.ai.projects.models.SkillObject;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -333,14 +333,15 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject createSkill(String name, String description, String instructions, Map<String, String> metadata) {
+    public SkillDetails createSkill(String name, String description, String instructions,
+        Map<String, String> metadata) {
         // Generated convenience method for createSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateSkillRequest createSkillRequestObj = new CreateSkillRequest(name).setDescription(description)
             .setInstructions(instructions)
             .setMetadata(metadata);
         BinaryData createSkillRequest = BinaryData.fromObject(createSkillRequestObj);
-        return createSkillWithResponse(createSkillRequest, requestOptions).getValue().toObject(SkillObject.class);
+        return createSkillWithResponse(createSkillRequest, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
@@ -357,12 +358,12 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject createSkill(String name) {
+    public SkillDetails createSkill(String name) {
         // Generated convenience method for createSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateSkillRequest createSkillRequestObj = new CreateSkillRequest(name);
         BinaryData createSkillRequest = BinaryData.fromObject(createSkillRequestObj);
-        return createSkillWithResponse(createSkillRequest, requestOptions).getValue().toObject(SkillObject.class);
+        return createSkillWithResponse(createSkillRequest, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
@@ -379,10 +380,10 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject createSkillFromPackage(BinaryData body) {
+    public SkillDetails createSkillFromPackage(BinaryData body) {
         // Generated convenience method for createSkillFromPackageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillFromPackageWithResponse(body, requestOptions).getValue().toObject(SkillObject.class);
+        return createSkillFromPackageWithResponse(body, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
@@ -399,10 +400,10 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject getSkill(String skillName) {
+    public SkillDetails getSkill(String skillName) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillWithResponse(skillName, requestOptions).getValue().toObject(SkillObject.class);
+        return getSkillWithResponse(skillName, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
@@ -448,7 +449,7 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkillObject> listSkills(Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -464,7 +465,7 @@ public final class SkillsClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listSkills(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
     /**
@@ -479,11 +480,11 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SkillObject> listSkills() {
+    public PagedIterable<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSkills(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
     /**
@@ -508,7 +509,7 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject updateSkill(String skillName, String description, String instructions,
+    public SkillDetails updateSkill(String skillName, String description, String instructions,
         Map<String, String> metadata) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -516,7 +517,7 @@ public final class SkillsClient {
             = new UpdateSkillRequest().setDescription(description).setInstructions(instructions).setMetadata(metadata);
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
         return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).getValue()
-            .toObject(SkillObject.class);
+            .toObject(SkillDetails.class);
     }
 
     /**
@@ -533,13 +534,13 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillObject updateSkill(String skillName) {
+    public SkillDetails updateSkill(String skillName) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest();
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
         return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).getValue()
-            .toObject(SkillObject.class);
+            .toObject(SkillDetails.class);
     }
 
     /**
