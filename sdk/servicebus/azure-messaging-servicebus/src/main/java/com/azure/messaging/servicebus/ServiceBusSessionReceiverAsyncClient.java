@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
 /**
@@ -344,7 +345,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSessions(OffsetDateTime updatedAfter) {
         if (updatedAfter == null) {
-            return new PagedFlux<>(() -> monoError(LOGGER, new NullPointerException("'updatedAfter' cannot be null.")));
+            return pagedFluxError(LOGGER, new NullPointerException("'updatedAfter' cannot be null."));
         }
         return listSessionsInternal(updatedAfter);
     }
