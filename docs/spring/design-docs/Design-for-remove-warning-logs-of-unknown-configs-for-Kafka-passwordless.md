@@ -32,7 +32,7 @@ We should consider preventing those warning logs being printed.
 ```
 ##  2. <a name='Causeanalysis'></a>Cause analysis
 The warning logs are caused because, in the mentioned 3 cases from the feature spec, there are spring cloud azure credential/profile related properties in the application context, and we put all those credential/profile properties to the client portion of Kafka properties. Here the client portion of Kafka properties refers to:
-1. For Spring Boot Kafka properties with the prefix as `spring.kafka.`, we put those Azure properties to KafkaProperties bean in the portion like [spring.kafka.producer.properties.{key}](https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/kafka/KafkaProperties.java#L517);
+1. For Spring Boot Kafka properties with the prefix as `spring.kafka.`, we put those Azure properties to KafkaProperties bean in the portion like spring.kafka.producer.properties.{key};
 
 2. For SCS Kafka binder properties with the prefix as `spring.cloud.stream.kafka.binder.`, we put those Azure properties to the KafkaBinderConfigurationProperties bean in the portion like [spring.cloud.stream.kafka.binder.producer-properties.{key}](https://github.com/spring-cloud/spring-cloud-stream-binder-kafka/blob/main/spring-cloud-stream-binder-kafka-core/src/main/java/org/springframework/cloud/stream/binder/kafka/properties/KafkaBinderConfigurationProperties.java#L89).
 

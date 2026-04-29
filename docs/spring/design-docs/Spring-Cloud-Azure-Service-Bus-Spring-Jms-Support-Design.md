@@ -76,4 +76,4 @@ In the spring-cloud-azure-auto-configure lib, under the package of `com.azure.sp
 
 - You should not increase the number of concurrent consumers for a JMS topic. This leads to concurrent consumption of the same message, which is hardly ever desirable.
 
-- JmsPoolConnectionFactory provide multiple connections which should be used if one connection does not satisfy your need. please refer [which-is-better-pooledconnectionfactory-or-cachingconnectionfactory](https://coderedirect.com/questions/246352/which-is-better-pooledconnectionfactory-or-cachingconnectionfactory)
+- JmsPoolConnectionFactory provide multiple connections which should be used if one connection does not satisfy your need.
