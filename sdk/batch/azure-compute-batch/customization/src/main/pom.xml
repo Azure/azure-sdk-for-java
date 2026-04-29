@@ -12,7 +12,7 @@
   </parent>
 
   <name>Microsoft Azure client library for Batch</name>
-  <description>This package contains Microsoft Azure Batch client library.</description>
+  <description>This package contains the Microsoft Azure Batch client library.</description>
 
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-compute-batch-customization</artifactId>
