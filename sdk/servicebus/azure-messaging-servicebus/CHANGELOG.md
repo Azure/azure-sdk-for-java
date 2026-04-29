@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `listSessions()` and `listSessions(OffsetDateTime updatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages; the `updatedAfter` overload returns sessions whose state was updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation, exposing parity with Track 1's `IMessageSessionEntity.getMessageSessions()`. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
+
 ### Breaking Changes
 
 ### Bugs Fixed
