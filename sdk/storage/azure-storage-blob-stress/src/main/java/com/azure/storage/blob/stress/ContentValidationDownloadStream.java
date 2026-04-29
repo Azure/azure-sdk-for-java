@@ -15,7 +15,7 @@ import java.io.IOException;
 
 /**
  * Streaming blob download with
- * {@link BlobDownloadStreamOptions#setResponseChecksumAlgorithm} enabled.
+ * {@link BlobDownloadStreamOptions#setContentValidationAlgorithm} enabled.
  * Verifies the correctness of the download response content via CRC.
  */
 public class ContentValidationDownloadStream extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
@@ -37,7 +37,7 @@ public class ContentValidationDownloadStream extends BlobScenarioBase<ContentVal
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
             syncClient.downloadStreamWithResponse(outputStream,
                 new BlobDownloadStreamOptions()
-                    .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span);
             outputStream.close();
             originalContent.checkMatch(outputStream.getContentInfo(), span).block();
@@ -48,7 +48,7 @@ public class ContentValidationDownloadStream extends BlobScenarioBase<ContentVal
     protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadStreamWithResponse(
             new BlobDownloadStreamOptions()
-                .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()))
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
     }
 

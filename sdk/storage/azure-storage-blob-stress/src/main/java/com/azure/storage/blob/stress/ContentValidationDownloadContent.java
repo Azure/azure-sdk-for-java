@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * Download content with
- * {@link BlobDownloadContentOptions#setResponseChecksumAlgorithm} enabled.
+ * {@link BlobDownloadContentOptions#setContentValidationAlgorithm} enabled.
  * Verifies the correctness of the download response content via CRC.
  */
 public class ContentValidationDownloadContent extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
@@ -34,7 +34,7 @@ public class ContentValidationDownloadContent extends BlobScenarioBase<ContentVa
         originalContent.checkMatch(
             syncClient.downloadContentWithResponse(
                 new BlobDownloadContentOptions()
-                    .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
                 null, span).getValue(),
             span).block();
     }
@@ -43,7 +43,7 @@ public class ContentValidationDownloadContent extends BlobScenarioBase<ContentVa
     protected Mono<Void> runInternalAsync(Context span) {
         return asyncClient.downloadContentWithResponse(
             new BlobDownloadContentOptions()
-                .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()))
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
             .flatMap(r -> originalContent.checkMatch(r.getValue(), span));
     }
 

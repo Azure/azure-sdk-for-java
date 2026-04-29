@@ -18,7 +18,7 @@ import java.io.InputStream;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Open input stream with {@link BlobInputStreamOptions#setResponseChecksumAlgorithm} enabled (sync only).
+ * Open input stream with {@link BlobInputStreamOptions#setContentValidationAlgorithm} enabled (sync only).
  * Verifies the correctness of the download response content via CRC.
  */
 public class ContentValidationOpenInputStream extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
@@ -38,7 +38,7 @@ public class ContentValidationOpenInputStream extends BlobScenarioBase<ContentVa
     protected void runInternal(Context span) throws IOException {
         try (InputStream stream = syncClient.openInputStream(
             new BlobInputStreamOptions()
-                .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
             span)) {
             try (CrcInputStream crcStream = new CrcInputStream(stream)) {
                 byte[] buffer = new byte[8192];

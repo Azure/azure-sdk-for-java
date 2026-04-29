@@ -22,7 +22,7 @@ import java.util.UUID;
 
 /**
  * Download to file with
- * {@link BlobDownloadToFileOptions#setResponseChecksumAlgorithm} enabled.
+ * {@link BlobDownloadToFileOptions#setContentValidationAlgorithm} enabled.
  * Verifies the correctness of the download response content via CRC.
  */
 public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
@@ -50,7 +50,7 @@ public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentVal
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
         BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString())
             .setParallelTransferOptions(parallelTransferOptions)
-            .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm());
+            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
@@ -67,7 +67,7 @@ public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentVal
             path -> asyncClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(path.toString())
                     .setParallelTransferOptions(parallelTransferOptions)
-                    .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()))
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             ContentValidationDownloadToFile::deleteFile);
     }

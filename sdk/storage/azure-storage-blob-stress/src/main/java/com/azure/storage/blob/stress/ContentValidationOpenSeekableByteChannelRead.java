@@ -19,7 +19,7 @@ import java.nio.channels.Channels;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Seekable byte channel read with {@link BlobSeekableByteChannelReadOptions#setResponseChecksumAlgorithm}
+ * Seekable byte channel read with {@link BlobSeekableByteChannelReadOptions#setContentValidationAlgorithm}
  * enabled (sync only).
  * Verifies the correctness of the download response content via CRC.
  */
@@ -41,7 +41,7 @@ public class ContentValidationOpenSeekableByteChannelRead
     protected void runInternal(Context span) throws IOException {
         BlobSeekableByteChannelReadResult result = syncClient.openSeekableByteChannelRead(
             new BlobSeekableByteChannelReadOptions()
-                .setResponseChecksumAlgorithm(options.getResponseChecksumAlgorithm()),
+                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
             span);
         try (CrcInputStream crcStream = new CrcInputStream(Channels.newInputStream(result.getChannel()))) {
             byte[] buffer = new byte[8192];
