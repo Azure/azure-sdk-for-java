@@ -116,6 +116,7 @@ public class TracingInfoTest {
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
         tracingInfo.setUsesLoadBalancing(true);
         String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=LB"));
     }
 
     @Test
