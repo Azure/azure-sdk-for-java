@@ -61,7 +61,7 @@ A message listener container is used to receive messages from a JMS message queu
 ## Auto-Configure
 In the spring-cloud-azure-auto-configure lib, under the package of `com.azure.spring.cloud.autoconfigure.jms`, provive the auto-configure configuration for spring jms support for Service Bus.
 - ServiceBusJmsAutoConfiguration is the entry class for the auto-configuration.
-- ServiceBusJmsConnectionFactoryConfiguration declares implementations for Caching and Pooled Support of ConectionFactory. i.e. CachingConnectionFactory,JmsPoolConnectionFactory.
+- ServiceBusJmsConnectionFactoryConfiguration declares implementations for Caching and Pooled Support of ConnectionFactory. i.e. CachingConnectionFactory,JmsPoolConnectionFactory.
 - ServiceBusJmsContainerConfiguration declares bean of JmsListenerContainerFactory both for queue and topic of Service Bus.
 - Under the properties folder, ServiceBusJmsProperties provide the auto-configure properties.
 

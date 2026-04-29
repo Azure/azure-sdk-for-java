@@ -11,7 +11,7 @@ The scope to describe passwordless connection support can be divided into 4 dime
 - Hosting environments
 - Developing frameworks in use
 
-The credential free support should cover all user scenarios combined with the above four dimentions, because a developer may want to use a certain Java framework to connect one Azure service without credentials, and he/she may deploy the application on a certain environment for production requirements.
+The credential free support should cover all user scenarios combined with the above four dimensions, because a developer may want to use a certain Java framework to connect one Azure service without credentials, and he/she may deploy the application on a certain environment for production requirements.
 
 ## Passwordless connections approaches
 To connect to an Azure service in a passwordless way, the possible approaches include:
@@ -66,7 +66,7 @@ For the approach of Managed Identities, the user scenarios should cover all comb
 
 2. How to configure Managed Identities for their applications which is built with various spring eco-system frameworks and then connect to an Azure service:
 
-   To achieve passwordless connection with Managed Identities, developers shoule be able to configure the Managed Identities to applications which can be built with various spring frameworks towards different Azure services. The user scenarios for each service should cover below cases:
+   To achieve passwordless connection with Managed Identities, developers should be able to configure the Managed Identities to applications which can be built with various spring frameworks towards different Azure services. The user scenarios for each service should cover below cases:
    - With a Spring Cloud Azure Managed Identities OAuth library, developers can use any of the supported spring projects to configure Managed Identities and connect to the associated Azure service.
    - Developers can find reference documentations of the above library for guidance of feature introduction, working principle and supported configuration.
    - Developers can find samples to experience how to use the above library to set up an application connecting to Azure services with Managed Identities. 
@@ -75,7 +75,7 @@ For the approach of Managed Identities, the user scenarios should cover all comb
 ## Key Vault
 For passwordless connection with Key Vault, the user scenarios should cover all combinations with the above developing frameworks, hosting environments and Azure services. For each case, developers can find `samples` to learn about:
 1. how they should store credentials in Key Vault, including what credentials and secret names should be set towards different spring projects and target services
-2. how they can create and configure Managed Identites used for Key Vault connection in differenct hosting environments
+2. how they can create and configure Managed Identities used for Key Vault connection in different hosting environments
 3. how they can leverage Managed Identities to connect to Key Vault via `spring-cloud-azure-starter-keyvault-secrets`
 
 Besides, when developers need to remove credentials from their existing applications, they should be able to refer to `quick-start` documentations to help transform to passwordless applications via Key Vault.
@@ -116,7 +116,7 @@ The final deliveries should include:
     </tr>
 </table>
 
-### 2. Reference documentaion:
+### 2. Reference documentation:
 <table>
     <tr>
         <td>Resource type</td>
@@ -225,7 +225,7 @@ The final deliveries should include:
 ### 5. Samples:
 We need to establish two sample projects to illustrate the usage of Managed Identities and Key Vault for passwordless connection to all the suppported Azure services with various spring projects.
    1. For Managed Identities usage:
-      - The sample project lists the links of each hosting service's Managed Identities guidance documentaion
+      - The sample project lists the links of each hosting service's Managed Identities guidance documentation
       - The sample project lists the links of each hosting service's deployment guidance documentation
       - The sample project imports the dependencies of our Spring Cloud Azure Managed Identities OAuth libraries and configure the necessary Managed Identities.
       - The sample interacts with Event Hubs/Service Bus from 3 mentioned spring Kafka projects, 3 mentioned Spring Cloud Azure Event Hubs projects and 3 mentioned Spring Cloud Azure Service Bus projects
@@ -233,7 +233,7 @@ We need to establish two sample projects to illustrate the usage of Managed Iden
       - The sample interacts with one of MySQL/PostgreSQL databases from 2 mentioned spring data projects, which we will use maven profiles and spring profiles to enable developers for selection
       - The sample authenticates with Azure AD from spring security framework
    2. For Key Vault usage:
-      - The sample project lists the links of each hosting service's Managed Identities guidance documentaion
+      - The sample project lists the links of each hosting service's Managed Identities guidance documentation
       - The sample project lists the links of each hosting service's deployment guidance documentation
       - The sample interacts with Event Hubs/Service Bus from 3 mentioned spring Kafka projects, 3 mentioned Spring Cloud Azure Event Hubs projects and 3 mentioned Spring Cloud Azure Service Bus projects
       - The sample interacts with Storage Blobs/Storage Queues from 2 mentioned Spring Cloud Azure Storage Blobs projects and 2 mentioned Spring Cloud Azure Storage Queues projects

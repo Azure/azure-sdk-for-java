@@ -70,7 +70,7 @@ There are two design docs for the spring cloud azure core module:
 - [Spring Cloud Azure Core design]
 - [Spring Credential]
 
-The spring cloud azure core module is the key component to achive goals 1~4, to be more specific, it needs to cover below sub-goals:
+The spring cloud azure core module is the key component to achieve goals 1~4, to be more specific, it needs to cover below sub-goals:
 
 - Provide a common template of configuring all the Azure SDK clients, no matter which protocol it uses, HTTP or AMQP.
 - Provide the ability to configure every single configuration item the Azure SDK clients expose. To be more specific:

@@ -158,7 +158,7 @@ So, the whole flow for SCS Kafka Binder application should be:
            storeKey: true
            debug: true
            serviceName: kafka
-           principal: pricipal-value
+           principal: principal-value
    ```
    But in both boot and binder, such properties won't be passed to Kafka client portion. So, should we take it into consideration when detecting user configurations?
 

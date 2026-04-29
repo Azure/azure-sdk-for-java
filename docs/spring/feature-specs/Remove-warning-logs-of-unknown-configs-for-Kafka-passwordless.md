@@ -10,7 +10,7 @@
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 ## <a name='Problemstatement'></a>Problem statement
-As is reported in https://github.com/Azure/azure-sdk-for-java/issues/30800#issuecomment-1254620865, when using Event Hubs for Kafka passwordless-conneciton, there are a batch of warning logs saying, "The configuration 'xxx' was supplied but isn't a known config".
+As is reported in https://github.com/Azure/azure-sdk-for-java/issues/30800#issuecomment-1254620865, when using Event Hubs for Kafka passwordless-connection, there are a batch of warning logs saying, "The configuration 'xxx' was supplied but isn't a known config".
 We should consider preventing those warning logs being printed.
 ```java
 2022-09-22 14:51:10.825  WARN 30520 --- [           main] o.a.k.clients.consumer.ConsumerConfig    : The configuration 'azure.profile.environment.gallery-endpoint' was supplied but isn't a known config.
@@ -69,6 +69,6 @@ We should make sure there won't be any warning logs in the above 3 cases. That's
 ## <a name='Exitcriteria'></a>Exit criteria
 1. With all the above mentioned 3 scenarios, the application can connect successfully without warning logs of "The configuration 'xxx' was supplied but isn't a known config".
 2. We should make sure the existing functions won't be broken by this feature:
-   1. We developers set customzied properties from Spring Cloud Azure properties, Spring Boot Kafka properties and SCS Kafka binder properties, then those configuration should still take effects to the Event Hubs connection.
+   1. We developers set customized properties from Spring Cloud Azure properties, Spring Boot Kafka properties and SCS Kafka binder properties, then those configuration should still take effects to the Event Hubs connection.
    2. When developers set properties from Spring Boot Kafka properties, we should make sure it can be passed to SCS Kafka without warnings.
 

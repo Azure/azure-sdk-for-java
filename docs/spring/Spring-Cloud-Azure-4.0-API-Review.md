@@ -1,6 +1,6 @@
 - [Why do we need spring-cloud-azure-core, spring-cloud-azure-service, and spring-cloud-azure-resourcemanager](#why-do-we-need-spring-cloud-azure-core-spring-cloud-azure-service-and-spring-cloud-azure-resourcemanager)
   * [Why do we need spring-cloud-azure-core, spring-cloud-azure-service](#why-do-we-need-spring-cloud-azure-core-spring-cloud-azure-service)
-  * [Why do we need those *ClientBuilderFactorys](#why-do-we-need-those-clientbuilderfactorys)
+  * [Why do we need those *ClientBuilderFactories](#why-do-we-need-those-clientbuilderFactories)
   * [Why spring-cloud-azure-core depends on `storage-blob` and `storage-file-share`](#why-spring-cloud-azure-core-depends-on-storage-blob-and-storage-file-share)
   * [What does spring-cloud-azure-resourcemanager provide](#what-does-spring-cloud-azure-resourcemanager-provide)
 - [spring-cloud-azure-core](#spring-cloud-azure-core)
@@ -55,7 +55,7 @@ Take [how we auto-configure](https://github.com/Azure/azure-sdk-for-java/blob/96
 ```
 The `BlobServiceClientBuilder` we create above has many problems, it only supports the `Shared Key` credential and it only configures **3** options, but the `BlobServiceClientBuilder` has **17** methods to configure a client. Of course, we can change the code here in the `spring-cloud-azure-autoconfigure` module. But what if we want to `construct a BlobServiceClientBuilder` in Spring modules other than the `spring-cloud-azure-autoconfigure` module? We definitely don't want to write such code twice or many more times. So there has to be a module to put such `construct an Azure service client builder` operations, it could be in `spring-cloud-azure-core` or `spring-cloud-azure-service`. To keep our `spring-cloud-azure-core` as thin as possible, we chose to put them in the `spring-cloud-azure-service` module.
 
-### Why do we need those *ClientBuilderFactorys
+### Why do we need those *ClientBuilderFactories
 The SDK clients can be categorized into three types, at least the ones we're supporting, the HTTP-based, the AMQP-based, the other. `azure-core` abstracts the common options that could be configured to SDK clients, such as `Configuration`, `ClientOptions`, `HttpPipelinePolicy`, and etc. But each SDK client builder doesn't have such a common pattern, which suits the builders themselves but is not very handy for a framework user like us. For example, the `TokenCredential` is supposed to support by all Azure SDK clients, even if they are not now; the `HttpClient` is also configurable for all HTTP-based clients. 
 
 In a Spring Boot application, it's natural for users to want to apply the same `TokenCredential` or `HttpClient` objects to some or all Azure SDK clients. If we extract the `construct an Azure service client builder` to a method, the method would have to take such parameters. Such as:
@@ -65,7 +65,7 @@ public BlobServiceClientBuilder buildBlobServiceClientBuilder(StorageProperties 
 }
 ```
 
-And the methods are not convenient for us to use extension points provided by the Spring framework, such as `BeanPostProcessor` and `BeanFactoryPostProcessor`, when extending them we'll be able to configure the Spring beans we create in an easy and consistent way. Just like what we do to inject the default `TokenCredential` to all *ClientBuilderFactorys:
+And the methods are not convenient for us to use extension points provided by the Spring framework, such as `BeanPostProcessor` and `BeanFactoryPostProcessor`, when extending them we'll be able to configure the Spring beans we create in an easy and consistent way. Just like what we do to inject the default `TokenCredential` to all *ClientBuilderFactories:
 ```java
 static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
@@ -97,7 +97,7 @@ So the *ClientBuilderFactory are created for two main purposes:
 - Provide methods for us to pass in the `shared objects` users want to configure for many or all Azure SDK clients.
 - Extract the common building logic based on the client type, HTTP, or AMQP. 
 
-❗❗❗ These *ClientBuilderFactorys are **not APIs** and won't be directly used by the users. 
+❗❗❗ These *ClientBuilderFactories are **not APIs** and won't be directly used by the users. 
 
 ### Why spring-cloud-azure-core depends on `storage-blob` and `storage-file-share`
 Quote @Strong Liu: 
@@ -170,7 +170,7 @@ This is a Azure Storage Blob implementation of Spring ProtocolResolver, Resource
 
 ## spring-cloud-azure-service
 
-❗❗❗ These *ClientBuilderFactorys are **not APIs** and won't be directly used by the users. 
+❗❗❗ These *ClientBuilderFactories are **not APIs** and won't be directly used by the users. 
 
 Most of classes in this module are **SPIs** instead of APIs, and they won't be directly used by application users. 
 
@@ -190,7 +190,7 @@ User applications won't directly depend on this artifact, and the Spring Boot co
 - azure-messaging-eventhubs (**Optional**)
 - azure-messaging-servicebus (**Optional**)
 - azure-security-keyvault-certificates  (**Optional**)
-- azure-security-keyvault-serets  (**Optional**)
+- azure-security-keyvault-secrets  (**Optional**)
 - azure-storage-blob (**Optional**)
 - azure-storage-fileshare (**Optional**)
 - azure-storage-queue (**Optional**)
@@ -247,7 +247,7 @@ public interface RecordMessageProcessingListener extends MessageProcessingListen
 
 #### Perf and scalability 
 
-Since this module only contains the *ClientBuilderFactorys, so there should not be performance or scalability issues. 
+Since this module only contains the *ClientBuilderFactories, so there should not be performance or scalability issues. 
 
 ## spring-cloud-azure-resourcemanager
 

@@ -112,6 +112,7 @@
     "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
+    "sdk/docs/spring/**",
     "sdk/spring/azure-spring-data-cosmos/**",
     "sdk/cosmos/azure-cosmos-kafka-connect/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
