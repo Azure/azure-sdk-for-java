@@ -1,6 +1,6 @@
 - [Why do we need spring-cloud-azure-core, spring-cloud-azure-service, and spring-cloud-azure-resourcemanager](#why-do-we-need-spring-cloud-azure-core-spring-cloud-azure-service-and-spring-cloud-azure-resourcemanager)
   * [Why do we need spring-cloud-azure-core, spring-cloud-azure-service](#why-do-we-need-spring-cloud-azure-core-spring-cloud-azure-service)
-  * [Why do we need those *ClientBuilderFactories](#why-do-we-need-those-clientbuilderFactories)
+  * [Why do we need those ClientBuilderFactories](#why-do-we-need-those-clientbuilderfactories)
   * [Why spring-cloud-azure-core depends on `storage-blob` and `storage-file-share`](#why-spring-cloud-azure-core-depends-on-storage-blob-and-storage-file-share)
   * [What does spring-cloud-azure-resourcemanager provide](#what-does-spring-cloud-azure-resourcemanager-provide)
 - [spring-cloud-azure-core](#spring-cloud-azure-core)
@@ -55,7 +55,7 @@ Take [how we auto-configure](https://github.com/Azure/azure-sdk-for-java/blob/96
 ```
 The `BlobServiceClientBuilder` we create above has many problems, it only supports the `Shared Key` credential and it only configures **3** options, but the `BlobServiceClientBuilder` has **17** methods to configure a client. Of course, we can change the code here in the `spring-cloud-azure-autoconfigure` module. But what if we want to `construct a BlobServiceClientBuilder` in Spring modules other than the `spring-cloud-azure-autoconfigure` module? We definitely don't want to write such code twice or many more times. So there has to be a module to put such `construct an Azure service client builder` operations, it could be in `spring-cloud-azure-core` or `spring-cloud-azure-service`. To keep our `spring-cloud-azure-core` as thin as possible, we chose to put them in the `spring-cloud-azure-service` module.
 
-### Why do we need those *ClientBuilderFactories
+### Why do we need those ClientBuilderFactories
 The SDK clients can be categorized into three types, at least the ones we're supporting, the HTTP-based, the AMQP-based, the other. `azure-core` abstracts the common options that could be configured to SDK clients, such as `Configuration`, `ClientOptions`, `HttpPipelinePolicy`, and etc. But each SDK client builder doesn't have such a common pattern, which suits the builders themselves but is not very handy for a framework user like us. For example, the `TokenCredential` is supposed to support by all Azure SDK clients, even if they are not now; the `HttpClient` is also configurable for all HTTP-based clients. 
 
 In a Spring Boot application, it's natural for users to want to apply the same `TokenCredential` or `HttpClient` objects to some or all Azure SDK clients. If we extract the `construct an Azure service client builder` to a method, the method would have to take such parameters. Such as:

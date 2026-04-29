@@ -31,7 +31,7 @@ Out Auto-configuration is based on the Spring JMS API.
 
 A message listener container is used to receive messages from a JMS message queue and drive the MessageListener that is injected into it. The following is the class paradigm.
 
-![image-20220104143919471](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/image-20220104143919471.png)
+![image-20220104143919471](./resources/image-20220104143919471.png)
 
 
 
@@ -45,7 +45,7 @@ A message listener container is used to receive messages from a JMS message queu
 
   The following is the class paradigm.
 
-![image-20220104144247619](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/image-20220104144247619.png)
+![image-20220104144247619](./resources/image-20220104144247619.png)
 
 ### JmsPoolConnectionFactory
 
@@ -55,7 +55,7 @@ A message listener container is used to receive messages from a JMS message queu
 
   The following is the class paradigm.
 
-![image-20220104144548593](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/image-20220104144548593.png)
+![image-20220104144548593](./resources/image-20220104144548593.png)
 
 
 ## Auto-Configure

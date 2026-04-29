@@ -54,7 +54,7 @@ The main goal is to make it easier and more convenient for users to use Azure se
 
 # Analysis
 In order to achieve the goals, we are going to making the following changes:	
-1. In order to achieve the goals 1~4, we redesigned our [spring cloud azure core](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Core-design) module, which provides an abstraction layer between upper Azure Spring projects and Azure SDKs. 
+1. In order to achieve the goals 1~4, we redesigned our Spring-Cloud-Azure-Core-design module, which provides an abstraction layer between upper Azure Spring projects and Azure SDKs. 
 2. In order to achieve the goals 5~7, we redesigned our directories, module structures, naming and dependencies.
    1. We divided our modules from one folder into several different folders, which is align with spring project.
    2. We unified the naming of our modules.
@@ -124,14 +124,14 @@ We unified our module names to follow the same convention: `spring-[cloud|messag
 
 ##### Expected structure for Azure EventHubs.
 
-- This is the expected structure for Azure EventHubs. Check this [design doc](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Messaging-design#spring-support-for-azure-event-hubs) for more info.
+- This is the expected structure for Azure EventHubs. Check this Spring-Cloud-Azure-Messaging-design for more info.
   ![mermaid-diagram-20211013135354](https://user-images.githubusercontent.com/63028776/137075027-a819bc3a-9e8f-4469-84c0-07bf3687f485.png)
 
 
 
 ##### Expected structure for Service Bus
 
-- This is the expected structure for Service Bus. Check this [design doc](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Messaging-design#spring-support-for-azure-service-bus) for more info.
+- This is the expected structure for Service Bus. Check Spring-Cloud-Azure-Messaging-design for more info.
   ![mermaid-diagram-20211013135242](https://user-images.githubusercontent.com/63028776/137074908-abb66807-4a51-4b99-929d-1fee3eb8baf2.png)
 
 
@@ -158,13 +158,3 @@ Remove all unrelated files in starters, to keep pom only in starters.
 ## Success Criteria
 - All Spring cloud azure 4.0 libraries release.
 - All tests(IT/UT) pass with test Coverage > 90%
-
-
-[Spring Cloud Azure auto configure design]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-auto-configure-design
-[Spring Cloud Azure Core design]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Core-design
-[Spring Cloud Azure Messaging design]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Messaging-design
-[Design for directory, module name and package path for Spring Cloud Azure messaging]: https://github.com/Azure/azure-sdk-for-java/wiki/Design-for-directory%2C-module-name-and-package-path-for-Spring-Cloud-Azure-messaging
-[Support all data plane sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Spring-support-all-data-plane-sdk-design
-[Spring Credential]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Credential
-[comment]: <> "Design for releasing Spring Cloud Azure 4.0 libraries ."
-[comment]: <> "Docs for Spring Cloud Azure 4.0 Migration "

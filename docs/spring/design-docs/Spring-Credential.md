@@ -18,7 +18,7 @@ The [AMQP Claims-Based-Authorization (CBS)][amqp-cbs] specification draft builds
 
 ### Authorize with Shared Key Credentials
 #### Storage
-A client using Shared Key passes a header with every request that is signed using the storage account access key. For more information, see [Authorize with Shared Key](https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key).
+A client using Shared Key passes a header with every request that is signed using the storage account access key. For more information, see [Authorize with Shared Key](https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key).
 
 A request using Shared Key authorization would be like this:
 ```
@@ -71,7 +71,7 @@ You can sign a SAS token with a user delegation key or with a storage account ke
 [eventhubs-client-builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubClientBuilder.java
 [servicebus-client-builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
 
-[sas-best-practices]: https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview?toc=/azure/storage/blobs/toc.json#best-practices-when-using-sas
-[sas-uri-png]: https://docs.microsoft.com/en-us/azure/storage/common/media/storage-sas-overview/sas-storage-uri.png
-[sas-101]: https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works
-[amqp-cbs]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-protocol-guide#claims-based-authorization
+[sas-best-practices]: https://docs.microsoft.com/azure/storage/common/storage-sas-overview?toc=/azure/storage/blobs/toc.json#best-practices-when-using-sas
+[sas-uri-png]: https://docs.microsoft.com/azure/storage/common/media/storage-sas-overview/sas-storage-uri.png
+[sas-101]: https://docs.microsoft.com/azure/storage/common/storage-sas-overview#how-a-shared-access-signature-works
+[amqp-cbs]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-protocol-guide#claims-based-authorization

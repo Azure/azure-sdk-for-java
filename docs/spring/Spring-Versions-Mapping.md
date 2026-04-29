@@ -47,7 +47,7 @@ Table 2: Mapping from **Spring Boot** / **Spring Cloud** version to **Spring Clo
 
 **NOTE**: **Spring Cloud Azure** 4.x.x have all reached end of life status and only support hotfixes of 4.19.0 until June 2025. So if you use Spring Boot 3, please upgrade to 5.x.
 
-**NOTE**: **Spring Cloud Azure** 3.x.x have all reached end of life status and are no longer supported. Please upgrade to 4.x. You can refer to [Migration Guide for 4.0](https://learn.microsoft.com/en-us/azure/developer/java/spring-framework/migration-guide-for-4.0) to migrate to 4.x.
+**NOTE**: **Spring Cloud Azure** 3.x.x have all reached end of life status and are no longer supported. Please upgrade to 4.x. You can refer to [Migration Guide for 4.0](https://learn.microsoft.com/azure/developer/java/spring-framework/migration-guide-for-4.0) to migrate to 4.x.
 
 ### I'm Using Spring Boot Version X
 If you are using **Spring Boot** in your project, you can find related **Spring Cloud Azure** version from above table. For example: if you are using **Spring Boot** 4.0.x, you should use **Spring Cloud Azure**.
@@ -73,7 +73,7 @@ Now that you know which version to use, you can add the **spring-cloud-azure-dep
 </dependencyManagement>
 ```
 
-You can refer to [Reference Doc](https://learn.microsoft.com/en-us/azure/developer/java/spring-framework/developer-guide-overview#setting-up-dependencies) to get more information about setting up dependencies.
+You can refer to [Reference Doc](https://learn.microsoft.com/azure/developer/java/spring-framework/developer-guide-overview#setting-up-dependencies) to get more information about setting up dependencies.
 
 ## If My Spring Boot Version Can Not Found in Above Table
 If your **Spring Boot** version cannot be found in above table, you can upgrade your **Spring Boot** version, or asking help by creating a new issue in [azure-sdk-for-java repo](https://github.com/Azure/azure-sdk-for-java/issues).
@@ -81,7 +81,7 @@ If your **Spring Boot** version cannot be found in above table, you can upgrade 
 ## If I'm Using Spring Cloud Azure 3.x.x
 **Spring Cloud Azure** 3.x.x has reached end of life status and is no longer supported. 
 
- - It's suggested to upgrade to the latest version of 4.x. Please refer to [Migration Guide for 4.0](https://learn.microsoft.com/en-us/azure/developer/java/spring-framework/migration-guide-for-4.0) to get more information about how to do migration.
+ - It's suggested to upgrade to the latest version of 4.x. Please refer to [Migration Guide for 4.0](https://learn.microsoft.com/azure/developer/java/spring-framework/migration-guide-for-4.0) to get more information about how to do migration.
  - If you still want to use 3.x.x, please import bom like this:
 
 ```xml

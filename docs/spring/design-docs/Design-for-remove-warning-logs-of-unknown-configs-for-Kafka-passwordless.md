@@ -1,20 +1,4 @@
 
-* [Context](#Context)
-* [Cause analysis](#Causeanalysis)
-* [Solution design](#Solutiondesign)
-* [Implementation design](#Implementationdesign)
-	* [Spring Kafka in Spring Boot applications](#SpringKafkainSpringBootapplications)
-		* [Merge Azure properties](#MergeAzureproperties)
-		* [Convert to JAAS configuration](#ConverttoJAASconfiguration)
-		* [Put to Kafka client properties](#PuttoKafkaclientproperties)
-		*  [Remove Azure configuration](#RemoveAzureconfiguration)
-	* [SCS Kafka applications](#SCSKafkaapplications)
-		* [Merge Azure properties](#MergeAzureproperties-1)
-		* [Convert to JAAS configuration](#ConverttoJAASconfiguration-1)
-		* [Put to Kafka client properties](#PuttoKafkaclientproperties-1)
-		*  [Remove Azure configuration](#RemoveAzureconfiguration-1)
-* [Needs to confirm](#Needstoconfirm)
-
 
 ##  1. <a name='Context'></a>Context
 As is reported in https://github.com/Azure/azure-sdk-for-java/issues/30800#issuecomment-1254620865, when using Event Hubs for Kafka passwordless-connection, there are a batch of warning logs saying, "The configuration 'xxx' was supplied but isn't a known config".
@@ -74,16 +58,16 @@ For the Spring Boot Kafka autoconfiguration, the properties can be divided into 
 4. `Admin` client properties which can only apply to the KafkaAdmin client.
 
 <p align="center">
-   <img src="https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/sp-kafka-prop-code.png" height="450" />
+   <img src="./resources/sp-kafka-prop-code.png" height="450" />
 </p>
 
 For each of the above 4 parts, the properties can be further divided into `kafka-defined` and `customized` ones, where the `sasl.jaas.config` is the former one, and any our Azure properties are the latter. The below picture shows the workflow of how the client properties are finally built from Spring Boot Kafka properties. Taking the producer as an example, the `kafka-defined` properties in default part will be passed upward to `kafka-defined` properties in the producer and get merged/overridden. Same for the `customized` configs.
 
-![sp-kafka-properties](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/sp-kafka-properties.png)
+![sp-kafka-properties](./resources/sp-kafka-properties.png)
 
 When merging Azure credential/profile properties, we should take configuration from 3 sources into consideration with the priority from low to high: Spring Cloud Azure properties, Kafka default properties and client properties. To make the merging process easier, we can use a Map for the merged properties and then just iterate the sources and store to the Map. Thus, we can use an Object of `Jaas` to abstract those configurations which are actually the LoginModule-option member within it. And use an Object of `JaasResolver` to perform the merge process.
 
-<img src="https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/jaas-object.png" height="250" />
+<img src="./resources/jaas-object.png" height="250" />
 
 ####  4.1.2. <a name='ConverttoJAASconfiguration'></a>Convert to JAAS configuration
 To convert the merged properties to a String of JAAS patter, we can just override the `toString` method of `Jaas`.
@@ -97,7 +81,7 @@ We should make sure both the client and default parts get removed. To make sure 
 So, the whole flow for Spring Boot Kafka application should be:
 
 <p align="center">
-    <img src="https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/sp-kafka-bpp.png" height="500" />
+    <img src="./resources/sp-kafka-bpp.png" height="500" />
 </p>
 
 ###  4.2. <a name='SCSKafkaapplications'></a>SCS Kafka applications
@@ -110,12 +94,12 @@ For the SCS Kafka autoconfiguration, the properties can be divided into 4 parts:
 4. `Consumer` client properties which can only apply to the KafkaConsumer client.
 
 <p align="center">
-   <img src="https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/scs-kafka-prop-code.png" height="450" />
+   <img src="./resources/scs-kafka-prop-code.png" height="450" />
 </p>
 
 For each of the above 4 parts, the properties can be further divided into `kafka-defined` and `customized` ones. However, the difference between SCS and Spring Boot Kafka is that the `customized` configs in `default` properties won't be passed upwards to the producer or consumer. The below picture shows the workflow of how the client properties are finally built from SCS Kafka Binder properties. 
 
-![scs-kafka-properties](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/scs-kafka-properties.png)
+![scs-kafka-properties](./resources/scs-kafka-properties.png)
 
 When merging Azure credential/profile properties, we should take configuration from 3 sources into consideration with the priority from low to high: Spring Boot Kafka properties (merged with Spring Cloud Azure), Binder Kafka default properties and client properties. However, when parsing the default portion, we should manually collect the Azure properties if any.
 
@@ -131,7 +115,7 @@ Same as boot.
 
 So, the whole flow for SCS Kafka Binder application should be:
 
-<img src="https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/scs-kafka-bpp.png" height="500" />
+<img src="./resources/scs-kafka-bpp.png" height="500" />
 
 ##  5. <a name='Needstoconfirm'></a>Needs to confirm
 1. What if developers configure JAAS configuration via [static JAAS config file](https://kafka.apache.org/documentation/#security_client_staticjaas)?

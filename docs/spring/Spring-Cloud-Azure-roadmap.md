@@ -8,7 +8,7 @@ This page list our (spring cloud azure) team's roadmap, things are expected to c
 
 ### Security
 
-* Support [Azure Private Link](https://docs.microsoft.com/en-us/azure/private-link/private-link-overview) in all supported azure services
+* Support [Azure Private Link](https://docs.microsoft.com/azure/private-link/private-link-overview) in all supported azure services
 * ✅ Support credential-free connection for 3rd party libraries
 
 ### Messaging
@@ -19,7 +19,7 @@ This page list our (spring cloud azure) team's roadmap, things are expected to c
 
 * ✅ Support Spring Framework 6 and Spring Boot 3.
 * Support Spring Native.
-* ✅ Multi-version support policy (N - 2), see https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping for more detail about the version supported by Spring Cloud Azure
+* ✅ Multi-version support policy (N - 2), see Spring-Versions-Mapping for more detail about the version supported by Spring Cloud Azure
 
 ### Development Experience
 

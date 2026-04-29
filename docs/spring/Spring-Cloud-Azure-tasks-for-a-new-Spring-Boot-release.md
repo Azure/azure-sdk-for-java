@@ -40,6 +40,6 @@ Sample PR: [#24670](https://github.com/Azure/azure-sdk-for-java/pull/24670).
 
   - [ ] [azure-spring-boot-samples](https://github.com/Azure-Samples/azure-spring-boot-samples)
   - [ ] [Reference doc](https://github.com/microsoft/spring-cloud-azure/tree/docs/docs/src/main/asciidoc).
-  - [ ] [MS docs](https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/).
-  - [ ] [Wiki page: Spring Cloud Azure Timeline](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Cloud-Azure-Timeline)
-  - [ ] [Wiki page: Spring Versions Mapping](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping)
+  - [ ] [MS docs](https://docs.microsoft.com/azure/developer/java/spring-framework/).
+  - [ ] [Wiki page: Spring Cloud Azure Timeline](./Spring-Cloud-Azure-Timeline)
+  - [ ] [Wiki page: Spring Versions Mapping](./Spring-Versions-Mapping)

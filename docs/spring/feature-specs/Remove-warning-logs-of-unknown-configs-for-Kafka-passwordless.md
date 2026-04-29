@@ -1,8 +1,3 @@
-<!-- vscode-markdown-toc -->
-* [Problem statement](#Problemstatement)
-* [User scenarios](#Userscenarios)
-* [Goal](#Goal)
-* [Exit criteria](#Exitcriteria)
 
 <!-- vscode-markdown-toc-config
 	numbering=false

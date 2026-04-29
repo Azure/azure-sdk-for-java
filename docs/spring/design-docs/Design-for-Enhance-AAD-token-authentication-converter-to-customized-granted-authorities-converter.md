@@ -23,7 +23,7 @@ Let's see the related classes structure and what happened:
 
 ## 1.1 Class diagram relationship before version 3.7
 
-![class-diagram-relationship](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/class-diagram-relationship.png)
+![class-diagram-relationship](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/class-diagram-relationship.png)
 
 - The `AADJwtBearerTokenAuthenticationConverter` was used in the default configuration `AADResourceServerWebSecurityConfigurerAdapter` as a custom JWT authentication converter for the Resource Server scenario.
 
@@ -36,7 +36,7 @@ The PR [Deprecate AADB2CJwtBearerTokenAuthenticationConverter](https://github.co
 
 The below methods are removed, and they are not added back to the subclass `AADJwtBearerTokenAuthenticationConverter`.
 
-![breaking-changes](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/breaking-changes.png)
+![breaking-changes](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/breaking-changes.png)
 
 # 2 Cause analysis
 This PR [Deprecate AADB2CJwtBearerTokenAuthenticationConverter](https://github.com/Azure/azure-sdk-for-java/pull/23444) has removed the class `AbstractJwtBearerTokenAuthenticationConverter` and hardcoded the Aad JWT granted authorities converter `AADJwtGrantedAuthoritiesConverter`, this is the blocker for the customer upgrade to 3.8 or 4.0.
@@ -47,7 +47,7 @@ This PR [Deprecate AADB2CJwtBearerTokenAuthenticationConverter](https://github.c
 
 New Class diagram relationship:
 
-![new-class-diagram-relationship](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/new-class-diagram-relationship.png)
+![new-class-diagram-relationship](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/new-class-diagram-relationship.png)
 
 ## 2.2 Subjective reasons
 - There was no design review to ensure the rationality and accuracy of this modification
@@ -65,18 +65,18 @@ New Class diagram relationship:
 
 A token authentication converter is required to define a security configurer `JwtConfigurer`, which is a part of the security configurer `OAuth2ResourceServerConfigurer`.
 
-![token-authentication-converter](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/token-authentication-converter.png)
+![token-authentication-converter](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/token-authentication-converter.png)
 
 ### 3.2.1 Enhance the deprecated AadJwtBearerTokenAuthenticationConverter for 4.x
 
 At present, the converter [AadJwtBearerTokenAuthenticationConverter](https://github.com/Azure/azure-sdk-for-java/blob/e62ae49cc9d0c6a3cf9d5bfd56ff1840db175772/sdk/spring/spring-cloud-azure-autoconfigure/src/main/java/com/azure/spring/cloud/autoconfigure/aad/AadJwtBearerTokenAuthenticationConverter.java#L74) has missing function and does not support customized JWT granted authorities converter.
 
-![enhance-deprecated-converter](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/enhance-deprecated-converter.png)
+![enhance-deprecated-converter](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/enhance-deprecated-converter.png)
 
 **Solution**
 Make the class `AadJwtBearerTokenAuthenticationConverter` support customized JWT granted authorities converter, not only the converter `AadJwtGrantedAuthoritiesConverter`.
 
-![solution-enhance-deprecated-converter](https://github.com/Azure/azure-sdk-for-java/wiki/spring/design-docs/resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/solution-enhance-deprecated-converter.png)
+![solution-enhance-deprecated-converter](./resources/design-for-enhance-aad-token-authentication-converter-to-customized-granted-authorities-converter/solution-enhance-deprecated-converter.png)
 
 ### 3.2.2 Use Spring Security JwtAuthenticationConverter for 6.x
 
