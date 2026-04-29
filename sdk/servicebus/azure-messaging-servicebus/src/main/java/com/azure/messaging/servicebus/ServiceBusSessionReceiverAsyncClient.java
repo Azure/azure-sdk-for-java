@@ -29,7 +29,6 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -170,7 +169,6 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * trip without escaping.
      */
     private static final char CURSOR_SEPARATOR = '|';
-    private static final HttpHeaders EMPTY_HEADERS = new HttpHeaders(Collections.emptyMap());
 
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -421,7 +419,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                         = Base64.getUrlEncoder().withoutPadding().encodeToString(last.getBytes(StandardCharsets.UTF_8));
                     continuationToken = result.getNextSkip() + String.valueOf(CURSOR_SEPARATOR) + encoded;
                 }
-                return new PagedResponseBase<Void, String>(null, 200, EMPTY_HEADERS, sessionIds, continuationToken,
+                // Allocate a fresh HttpHeaders per page so callers cannot mutate a shared
+                // instance (HttpHeaders is mutable and PagedResponseBase exposes the reference
+                // via getHeaders()).
+                return new PagedResponseBase<Void, String>(null, 200, new HttpHeaders(), sessionIds, continuationToken,
                     null);
             });
     }
