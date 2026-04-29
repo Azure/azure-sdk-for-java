@@ -109,7 +109,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
     /**
      * Reads {@code Content-Length} as a {@code long}, returning {@code null} when the header is missing or
-     * unparseable so callers can simply skip decoding for non-bodied responses.
+     * not parseable so callers can simply skip decoding for non-bodied responses.
      */
     private static Long getContentLength(HttpHeaders headers) {
         String value = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
