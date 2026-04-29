@@ -4,9 +4,16 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.testng.annotations.Test;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  * Unit tests for the WorkloadId RNTBD header definition in RntbdConstants.
@@ -78,38 +85,38 @@ public class RntbdWorkloadIdTests {
             .doesNotContain(RntbdConstants.RntbdRequestHeader.WorkloadId);
     }
 
-    /**
-     * Verifies that valid workload ID values (1-50) can be parsed from String to int
-     * and cast to byte without data loss. Note: the SDK itself does not validate the
-     * range — this test confirms the encoding path works for expected values.
-     */
     @Test(groups = { "unit" })
-    public void workloadIdValidValues() {
-        // Test valid range 1-50 — SDK does NOT validate, just verify the values parse correctly
-        String[] validValues = {"1", "25", "50"};
-        for (String value : validValues) {
-            int parsed = Integer.parseInt(value);
-            byte byteVal = (byte) parsed;
-            assertThat(byteVal).isBetween((byte) 1, (byte) 50);
-        }
+    public void workloadIdIsEncodedOnRntbdRequestHeaders() {
+        RntbdRequestHeaders requestHeaders = createRequestHeaders("15");
+
+        RntbdToken workloadIdToken = requestHeaders.get(RntbdConstants.RntbdRequestHeader.WorkloadId);
+        assertThat(workloadIdToken.isPresent()).isTrue();
+        assertThat(workloadIdToken.getValue(Byte.class)).isEqualTo((byte) 15);
     }
 
-    /**
-     * Verifies that out-of-range workload ID values (0, 51, -1, 100) do not cause
-     * exceptions in the SDK's parsing path. The SDK intentionally does not validate
-     * the range — invalid values are accepted and sent to the service, which silently
-     * ignores them.
-     */
     @Test(groups = { "unit" })
-    public void workloadIdInvalidValuesAcceptedBySdk() {
-        // SDK does NOT validate range — service silently ignores invalid values
-        // These should not throw exceptions in SDK
-        String[] invalidValues = {"0", "51", "-1", "100"};
-        for (String value : invalidValues) {
-            int parsed = Integer.parseInt(value);
-            byte byteVal = (byte) parsed;
-            // SDK accepts any integer value that fits in a byte
-            assertThat(byteVal).isNotNull();
-        }
+    public void nonNumericWorkloadIdDoesNotThrowAndIsIgnored() {
+        assertThatCode(() -> createRequestHeaders("not-a-number")).doesNotThrowAnyException();
+
+        RntbdRequestHeaders requestHeaders = createRequestHeaders("not-a-number");
+        RntbdToken workloadIdToken = requestHeaders.get(RntbdConstants.RntbdRequestHeader.WorkloadId);
+        assertThat(workloadIdToken.isPresent()).isFalse();
+    }
+
+    private static RntbdRequestHeaders createRequestHeaders(String workloadId) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            null,
+            OperationType.Create,
+            ResourceType.Document);
+
+        request.getHeaders().put(HttpConstants.HttpHeaders.WORKLOAD_ID, workloadId);
+
+        RntbdRequestFrame frame = new RntbdRequestFrame(
+            UUID.randomUUID(),
+            RntbdConstants.RntbdOperationType.Create,
+            RntbdConstants.RntbdResourceType.Document);
+
+        RntbdRequestArgs args = new RntbdRequestArgs(request, new Uri("prefix://someUri"));
+        return new RntbdRequestHeaders(args, frame);
     }
 }

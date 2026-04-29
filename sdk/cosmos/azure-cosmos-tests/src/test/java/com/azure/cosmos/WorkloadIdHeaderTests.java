@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * <ol>
  *   <li><b>Public API surface</b> — {@link CosmosHeaderName} constants, {@code CosmosClientBuilder.additionalHeaders()},
  *       and that {@code setAdditionalHeaders()} is callable on every request options class.</li>
- *   <li><b>Validation</b> — non-numeric workload-id rejected at builder and request-options levels;
+ *   <li><b>Validation</b> — null and non-numeric workload-id rejected at builder and request-options levels;
  *       out-of-range values accepted (range enforcement is the backend's responsibility).</li>
  *   <li><b>Internal wiring</b> — headers set via {@code setAdditionalHeaders()} actually reach
  *       {@code RequestOptions.getHeaders()}, which is what {@code RxDocumentClientImpl.getRequestHeaders()}
@@ -128,7 +128,7 @@ public class WorkloadIdHeaderTests {
     }
 
     // ==============================================================================================
-    // 3. Validation — non-numeric rejected, out-of-range accepted
+    // 3. Validation — null/non-numeric rejected, out-of-range accepted
     // ==============================================================================================
 
     @Test(groups = { "unit" })
@@ -146,6 +146,19 @@ public class WorkloadIdHeaderTests {
     }
 
     @Test(groups = { "unit" })
+    public void nullWorkloadIdRejectedAtBuilderLevel() {
+        Map<CosmosHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosHeaderName.WORKLOAD_ID, null);
+
+        assertThatThrownBy(() -> new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .additionalHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("must not be null");
+    }
+
+    @Test(groups = { "unit" })
     public void nonNumericWorkloadIdRejectedAtItemRequestOptionsLevel() {
         Map<CosmosHeaderName, String> headers = new HashMap<>();
         headers.put(CosmosHeaderName.WORKLOAD_ID, "abc");
@@ -153,6 +166,16 @@ public class WorkloadIdHeaderTests {
         assertThatThrownBy(() -> new CosmosItemRequestOptions().setAdditionalHeaders(headers))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("abc");
+    }
+
+    @Test(groups = { "unit" })
+    public void nullWorkloadIdRejectedAtItemRequestOptionsLevel() {
+        Map<CosmosHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosHeaderName.WORKLOAD_ID, null);
+
+        assertThatThrownBy(() -> new CosmosItemRequestOptions().setAdditionalHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("must not be null");
     }
 
     @Test(groups = { "unit" })

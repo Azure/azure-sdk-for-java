@@ -837,10 +837,10 @@ public class Utils {
 
     /**
      * Validates all entries in an additional-headers map.
-     * Currently validates that {@link CosmosHeaderName#WORKLOAD_ID} values are valid integers.
+     * Currently validates that {@link CosmosHeaderName#WORKLOAD_ID} values are non-null valid integers.
      *
      * @param additionalHeaders the map to validate (may be null — no-op in that case)
-     * @throws IllegalArgumentException if any header value fails validation
+     * @throws IllegalArgumentException if any header value fails validation (including null workload-id values)
      */
     public static void validateAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
         if (additionalHeaders == null) {
@@ -850,7 +850,12 @@ public class Utils {
             CosmosHeaderName key = entry.getKey();
             String value = entry.getValue();
 
-            if (CosmosHeaderName.WORKLOAD_ID.equals(key) && value != null) {
+            if (CosmosHeaderName.WORKLOAD_ID.equals(key)) {
+                if (value == null) {
+                    throw new IllegalArgumentException(
+                        "Invalid value for header '" + key.getHeaderName() + "'. The value must not be null.");
+                }
+
                 try {
                     Integer.parseInt(value);
                 } catch (NumberFormatException e) {

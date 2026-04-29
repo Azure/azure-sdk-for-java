@@ -50,7 +50,7 @@ import scala.collection.JavaConverters._
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   // Spark-side mapping of known header name strings to CosmosHeaderName instances.
-  // This follows the same pattern as CosmosPriorityLevel in the Kafka connector:
+  // This follows the same pattern as CosmosPriorityLevel in the Spark connector:
   // the connector defines its own known-values mapping and converts to SDK types,
   // rather than relying on a fromString() public API on the SDK type.
   private val knownHeaders: Map[String, CosmosHeaderName] = Map(
