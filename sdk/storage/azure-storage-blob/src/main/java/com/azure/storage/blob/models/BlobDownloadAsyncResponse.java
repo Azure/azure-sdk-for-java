@@ -13,7 +13,6 @@ import com.azure.core.util.io.IOUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,18 +29,8 @@ import java.util.function.BiFunction;
 public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>>
     implements Closeable {
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlobDownloadAsyncResponse.class);
-
     static {
-        BlobDownloadAsyncResponseConstructorProxy
-            .setAccessor(new BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor() {
-                @Override
-                public BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-                    DownloadRetryOptions retryOptions) {
-                    return new BlobDownloadAsyncResponse(sourceResponse, onErrorResume, retryOptions);
-                }
-            });
+        BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
     }
 
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
@@ -67,6 +56,13 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         this.retryOptions = null;
     }
 
+    /**
+     * Constructs a {@link BlobDownloadAsyncResponse}.
+     *
+     * @param sourceResponse The initial Stream Response
+     * @param onErrorResume Function used to resume.
+     * @param retryOptions Retry options.
+     */
     BlobDownloadAsyncResponse(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
@@ -99,12 +95,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      */
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
-        LOGGER.atVerbose()
-            .addKeyValue("thread", Thread.currentThread().getName())
-            .log("BlobDownloadAsyncResponse.writeValueToAsync entry");
         if (sourceResponse != null) {
-            LOGGER.atVerbose()
-                .log("BlobDownloadAsyncResponse.writeValueToAsync using sourceResponse (IOUtils.transfer)");
             return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse, onErrorResume,
                 progressReporter, retryOptions.getMaxRetryRequests());
         } else if (super.getValue() != null) {

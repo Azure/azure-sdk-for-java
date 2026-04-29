@@ -6,7 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -18,7 +18,7 @@ public final class BlockBlobStageBlockOptions {
     private final BinaryData data;
     private String leaseId;
     private byte[] contentMd5;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobStageBlockOptions}.
@@ -101,24 +101,25 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlockBlobStageBlockOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public BlockBlobStageBlockOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

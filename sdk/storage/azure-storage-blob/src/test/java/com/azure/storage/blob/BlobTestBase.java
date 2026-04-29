@@ -61,6 +61,9 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -91,6 +94,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -904,6 +909,37 @@ public class BlobTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
     }
 
+    /**
+     * Pseudorandom {@link Random} seeded from {@code testResourceNamer.randomUuid()} so values replay in playback
+     * mode (unlike {@link java.util.concurrent.ThreadLocalRandom}).
+     */
+    protected Random newRandomFromNamer() {
+        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
+        return new Random(seed);
+    }
+
+    /**
+     * Pseudorandom int in {@code [origin, bound)} from the namer. Consumes one recorded UUID.
+     */
+    protected int randomIntFromNamer(int origin, int bound) {
+        int span = bound - origin;
+        if (span <= 0) {
+            throw new IllegalArgumentException("bound must be greater than origin");
+        }
+        return origin + newRandomFromNamer().nextInt(span);
+    }
+
+    /**
+     * Pseudorandom long in {@code [origin, bound)} from the namer. Consumes one recorded UUID.
+     */
+    protected long randomLongFromNamer(long origin, long bound) {
+        long span = bound - origin;
+        if (span <= 0) {
+            throw new IllegalArgumentException("bound must be greater than origin");
+        }
+        return origin + Math.floorMod(newRandomFromNamer().nextLong(), span);
+    }
+
     /*https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy#creating-or-modifying-a-stored-access-policy
     Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
     */
@@ -1343,5 +1379,143 @@ public class BlobTestBase extends TestProxyTestBase {
 
             return next.process();
         };
+    }
+
+    protected static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, true);
+    }
+
+    protected static boolean hasOnlyStructuredMessageDownloadHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, false);
+    }
+
+    private static boolean hasStructuredMessageRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
+        boolean requireStructuredContentLength) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        // Only consider requests where any of the structured-message or CRC64-related headers is present.
+        List<HttpHeaders> headersWithContentValidation = recordedRequestHeaders.stream().filter(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return bodyType != null || contentLength != null || contentCrc64 != null;
+        }).collect(Collectors.toList());
+        // If no requests had any content-validation headers at all, we cannot claim structured-message was applied.
+        if (headersWithContentValidation.isEmpty()) {
+            return false;
+        }
+        // All requests that used any content-validation header must be consistent structured-message requests.
+        return headersWithContentValidation.stream().allMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            if (!StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType) || contentCrc64 != null) {
+                return false;
+            }
+            if (!requireStructuredContentLength) {
+                return true;
+            }
+            // Require non-blank content length that parses as non-negative long (same format as policy uses).
+            // Rejects empty string, whitespace, or non-numeric values so we never return true when
+            // structured message was not actually applied.
+            if (contentLength == null || contentLength.trim().isEmpty()) {
+                return false;
+            }
+            try {
+                return Long.parseLong(contentLength.trim()) >= 0;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        });
+    }
+
+    protected static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        // Only consider requests where any of the structured-message or CRC64-related headers is present.
+        List<HttpHeaders> headersWithContentValidation = recordedRequestHeaders.stream().filter(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return bodyType != null || contentLength != null || contentCrc64 != null;
+        }).collect(Collectors.toList());
+        // If no requests had any content-validation headers at all, we cannot claim CRC64 was applied.
+        if (headersWithContentValidation.isEmpty()) {
+            return false;
+        }
+        // All requests that used any content-validation header must be consistent CRC64-only requests.
+        return headersWithContentValidation.stream().allMatch(headers -> {
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            // Require CRC64 header to be present and non-blank (policy sets Base64-encoded 8 bytes).
+            // Reject empty/whitespace so we never return true when CRC64 was not actually applied.
+            if (contentCrc64 == null || contentCrc64.trim().isEmpty() || bodyType != null || contentLength != null) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    protected static boolean hasNoContentValidationHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        return recordedRequestHeaders.stream().allMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            // All three must be absent (null). If any header is present, even with empty value, we return false.
+            return bodyType == null && contentLength == null && contentCrc64 == null;
+        });
+    }
+
+    /**
+    * Creates a BlobClient that records all outgoing request headers into the supplied list.
+    * Each test should use its own list so tests can run concurrently.
+    */
+    protected BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
+    }
+
+    /**
+    * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
+    */
+    protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
+    }
+
+    protected static long expectedStructuredMessageEncodedLength(int unencodedContentBytes) {
+        return new StructuredMessageEncoder(unencodedContentBytes,
+            StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64)
+                .getEncodedMessageLength();
+    }
+
+    /**
+     * Sum of encoded lengths per block upload (each HTTP request carries its own structured message wrapper).
+     */
+    protected static long expectedStructuredMessageEncodedLengthChunked(int totalUnencodedBytes, long blockSizeBytes) {
+        long sum = 0;
+        int remaining = totalUnencodedBytes;
+        while (remaining > 0) {
+            int chunk = (int) Math.min(remaining, blockSizeBytes);
+            sum += expectedStructuredMessageEncodedLength(chunk);
+            remaining -= chunk;
+        }
+        return sum;
     }
 }

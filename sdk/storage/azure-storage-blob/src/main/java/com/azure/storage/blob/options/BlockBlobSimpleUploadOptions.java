@@ -9,8 +9,9 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -33,7 +34,7 @@ public class BlockBlobSimpleUploadOptions {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobSimpleUploadOptions}.
@@ -297,24 +298,25 @@ public class BlockBlobSimpleUploadOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will compute and send checksums for upload validation.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlockBlobSimpleUploadOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public BlockBlobSimpleUploadOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

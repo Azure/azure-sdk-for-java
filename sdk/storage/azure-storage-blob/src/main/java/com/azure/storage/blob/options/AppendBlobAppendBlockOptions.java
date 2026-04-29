@@ -6,8 +6,9 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -18,12 +19,12 @@ import java.nio.ByteBuffer;
  */
 @Fluent
 public final class AppendBlobAppendBlockOptions {
-    private final InputStream bodyStream;
-    private final Flux<ByteBuffer> bodyFlux;
+    private final InputStream dataStream;
+    private final Flux<ByteBuffer> dataFlux;
     private final long length;
     private byte[] contentMd5;
     private AppendBlobRequestConditions requestConditions;
-    private StorageChecksumAlgorithm requestChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link AppendBlobAppendBlockOptions} for use with the sync client.
@@ -38,8 +39,8 @@ public final class AppendBlobAppendBlockOptions {
         if (length < 0) {
             throw new IllegalArgumentException("'length' must be >= 0");
         }
-        this.bodyStream = data;
-        this.bodyFlux = null;
+        this.dataStream = data;
+        this.dataFlux = null;
         this.length = length;
     }
 
@@ -56,8 +57,8 @@ public final class AppendBlobAppendBlockOptions {
         if (length < 0) {
             throw new IllegalArgumentException("'length' must be >= 0");
         }
-        this.bodyStream = null;
-        this.bodyFlux = data;
+        this.dataStream = null;
+        this.dataFlux = data;
         this.length = length;
     }
 
@@ -66,8 +67,8 @@ public final class AppendBlobAppendBlockOptions {
      *
      * @return The body stream, or null.
      */
-    public InputStream getBodyStream() {
-        return bodyStream;
+    public InputStream getDataStream() {
+        return dataStream;
     }
 
     /**
@@ -75,8 +76,8 @@ public final class AppendBlobAppendBlockOptions {
      *
      * @return The body flux, or null.
      */
-    public Flux<ByteBuffer> getBodyFlux() {
-        return bodyFlux;
+    public Flux<ByteBuffer> getDataFlux() {
+        return dataFlux;
     }
 
     /**
@@ -129,24 +130,23 @@ public final class AppendBlobAppendBlockOptions {
     }
 
     /**
-     * Gets the algorithm to use for request content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
-     * @return The request checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getRequestChecksumAlgorithm() {
-        return requestChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for request content validation. When set to {@link StorageChecksumAlgorithm#AUTO},
-     * {@link StorageChecksumAlgorithm#CRC64}, or {@link StorageChecksumAlgorithm#MD5}, the SDK will compute and send
-     * checksums for upload validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation. See {@link ContentValidationAlgorithm} for more details.
      *
-     * @param requestChecksumAlgorithm The request checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public AppendBlobAppendBlockOptions setRequestChecksumAlgorithm(StorageChecksumAlgorithm requestChecksumAlgorithm) {
-        this.requestChecksumAlgorithm = requestChecksumAlgorithm;
+    public AppendBlobAppendBlockOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -26,7 +26,7 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
-    private StorageChecksumAlgorithm responseChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -169,24 +169,25 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
-     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The response checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
-        return responseChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response payload checksums during download.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlobDownloadToFileOptions setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
-        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
+    public BlobDownloadToFileOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

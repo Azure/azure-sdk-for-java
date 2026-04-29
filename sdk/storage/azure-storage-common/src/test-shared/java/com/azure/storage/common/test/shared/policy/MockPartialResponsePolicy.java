@@ -94,8 +94,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                     return Mono.just(response);
                 }
                 hits.incrementAndGet();
-                System.out.println("[MockPartialResponsePolicy] invoked. tries=" + remainingTries
-                    + ", maxBytesPerResponse=" + maxBytesPerResponse);
 
                 Flux<ByteBuffer> limitedBody = limitStreamToBytes(response.getBody(), maxBytesPerResponse);
                 return Mono.just(

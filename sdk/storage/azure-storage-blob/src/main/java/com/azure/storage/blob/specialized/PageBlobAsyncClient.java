@@ -57,9 +57,11 @@ import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -512,13 +514,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         if (options == null) {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
-        if (options.getBodyFlux() == null) {
+        if (options.getDataFlux() == null) {
             return monoError(LOGGER, new IllegalArgumentException(
                 "PageBlobUploadPagesOptions must be constructed with Flux for async client."));
         }
         try {
-            return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getBodyFlux(),
-                options.getContentMd5(), options.getRequestConditions(), options.getRequestChecksumAlgorithm(),
+            return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getDataFlux(),
+                options.getContentMd5(), options.getRequestConditions(), options.getContentValidationAlgorithm(),
                 context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -533,7 +535,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions,
-        StorageChecksumAlgorithm requestChecksumAlgorithm, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         pageBlobRequestConditions
             = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
 
@@ -542,12 +544,21 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // subscription.
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
+
+        try {
+            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, contentValidationAlgorithm);
+        } catch (IllegalArgumentException ex) {
+            return monoError(LOGGER, ex);
+        }
+
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
-        context = context == null ? Context.NONE : context;
+        long length = pageRange.getEnd() - pageRange.getStart() + 1;
+        context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,
+            false);
 
         return this.azureBlobStorage.getPageBlobs()
-            .uploadPagesWithResponseAsync(containerName, blobName, pageRange.getEnd() - pageRange.getStart() + 1, body,
-                contentMd5, null, null, pageRangeStr, pageBlobRequestConditions.getLeaseId(),
+            .uploadPagesWithResponseAsync(containerName, blobName, length, body, contentMd5, null, null, pageRangeStr,
+                pageBlobRequestConditions.getLeaseId(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),

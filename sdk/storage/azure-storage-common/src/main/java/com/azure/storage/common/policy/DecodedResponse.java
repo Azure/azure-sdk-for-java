@@ -16,52 +16,49 @@ import java.nio.charset.Charset;
  * Decoded HTTP response that wraps the original response with a decoded body stream.
  */
 class DecodedResponse extends HttpResponse {
-    private final HttpResponse originalResponse;
     private final Flux<ByteBuffer> decodedBody;
+    private final HttpHeaders httpHeaders;
+    private final int statusCode;
 
-    DecodedResponse(HttpResponse originalResponse, Flux<ByteBuffer> decodedBody) {
-        super(originalResponse.getRequest());
-        this.originalResponse = originalResponse;
+    DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
+        super(httpResponse.getRequest());
         this.decodedBody = decodedBody;
+        this.statusCode = httpResponse.getStatusCode();
+        this.httpHeaders = httpResponse.getHeaders();
     }
 
     @Override
     public int getStatusCode() {
-        return originalResponse.getStatusCode();
+        return statusCode;
     }
 
     @Override
     public String getHeaderValue(String name) {
-        return originalResponse.getHeaderValue(name);
+        return httpHeaders.getValue(name);
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return originalResponse.getHeaders();
+        return httpHeaders;
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.using(() -> originalResponse, r -> decodedBody, HttpResponse::close);
+        return decodedBody;
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return FluxUtil.collectBytesInByteBufferStream(getBody());
+        return FluxUtil.collectBytesInByteBufferStream(decodedBody);
     }
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> new String(bytes, Charset.defaultCharset()));
+        return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(String::new);
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-    }
-
-    @Override
-    public void close() {
-        originalResponse.close();
+        return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, charset));
     }
 }

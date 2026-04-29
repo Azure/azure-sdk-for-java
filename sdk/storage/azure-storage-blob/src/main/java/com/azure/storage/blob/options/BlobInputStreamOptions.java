@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -18,7 +18,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
-    private StorageChecksumAlgorithm responseChecksumAlgorithm;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
@@ -115,24 +115,24 @@ public class BlobInputStreamOptions {
     }
 
     /**
-     * Gets the algorithm to use for response content validation. Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @return The response checksum algorithm.
+     * @return The transfer validation checksum algorithm.
      */
-    public StorageChecksumAlgorithm getResponseChecksumAlgorithm() {
-        return responseChecksumAlgorithm;
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
     }
 
     /**
-     * Sets the algorithm to use for response content validation. When set to {@link StorageChecksumAlgorithm#AUTO} or
-     * {@link StorageChecksumAlgorithm#CRC64}, the SDK will validate response payload checksums during read.
-     * Default is {@link StorageChecksumAlgorithm#NONE}.
+     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
+     * for more details.
      *
-     * @param responseChecksumAlgorithm The response checksum algorithm.
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
-    public BlobInputStreamOptions setResponseChecksumAlgorithm(StorageChecksumAlgorithm responseChecksumAlgorithm) {
-        this.responseChecksumAlgorithm = responseChecksumAlgorithm;
+    public BlobInputStreamOptions setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }
