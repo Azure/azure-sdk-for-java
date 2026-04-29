@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.voicelive.telemetry;
+package com.azure.ai.voicelive.implementation.telemetry;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;

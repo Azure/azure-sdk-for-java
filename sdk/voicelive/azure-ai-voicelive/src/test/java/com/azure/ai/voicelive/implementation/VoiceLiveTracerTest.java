@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.voicelive;
+package com.azure.ai.voicelive.implementation;
 
+import com.azure.ai.voicelive.VoiceLiveAsyncClient;
+import com.azure.ai.voicelive.VoiceLiveClientBuilder;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventInputAudioBufferAppend;

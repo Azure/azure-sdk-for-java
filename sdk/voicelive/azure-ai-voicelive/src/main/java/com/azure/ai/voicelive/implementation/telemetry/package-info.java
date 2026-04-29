@@ -3,4 +3,4 @@
 /**
  * Package containing telemetry support classes for VoiceLive.
  */
-package com.azure.ai.voicelive.telemetry;
+package com.azure.ai.voicelive.implementation.telemetry;

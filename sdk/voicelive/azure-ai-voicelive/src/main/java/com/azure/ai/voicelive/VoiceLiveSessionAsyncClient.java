@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.azure.ai.voicelive.implementation.VoiceLiveTracer;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.ClientEvent;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;

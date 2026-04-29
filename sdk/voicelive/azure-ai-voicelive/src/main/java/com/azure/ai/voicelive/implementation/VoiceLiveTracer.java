@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.voicelive;
+package com.azure.ai.voicelive.implementation;
 
 import java.net.URI;
 import java.util.Base64;
@@ -24,11 +24,11 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseCreated;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
-import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDone;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemAdded;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
+import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionCreated;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
@@ -56,7 +56,7 @@ import io.opentelemetry.context.Context;
  * turn counts, interruptions, and first-token latency.
  * </p>
  */
-final class VoiceLiveTracer {
+public final class VoiceLiveTracer {
 
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveTracer.class);
 
@@ -211,7 +211,7 @@ final class VoiceLiveTracer {
      * @param model The model name.
      * @param captureContentOverride Optional override for content recording (null = use env var).
      */
-    VoiceLiveTracer(Tracer tracer, io.opentelemetry.api.metrics.Meter meter, URI endpoint, String model,
+    public VoiceLiveTracer(Tracer tracer, io.opentelemetry.api.metrics.Meter meter, URI endpoint, String model,
         Boolean captureContentOverride) {
         this.tracer = tracer;
         this.meter = meter;
@@ -240,7 +240,7 @@ final class VoiceLiveTracer {
     /**
      * Starts the parent "connect" span for the session lifetime.
      */
-    void startConnectSpan() {
+    public void startConnectSpan() {
         String spanName = model != null ? "connect " + model : "connect";
 
         SpanBuilder spanBuilder = tracer.spanBuilder(spanName)
@@ -271,7 +271,7 @@ final class VoiceLiveTracer {
      *
      * @param config The agent session configuration.
      */
-    void startConnectSpan(com.azure.ai.voicelive.models.AgentSessionConfig config) {
+    public void startConnectSpan(com.azure.ai.voicelive.models.AgentSessionConfig config) {
         // Store agent config for apply to connect span on close
         if (config != null) {
             this.agentName = config.getAgentName();
@@ -289,7 +289,7 @@ final class VoiceLiveTracer {
      *
      * @param error The error that caused the session to close, or null.
      */
-    void endConnectSpan(Throwable error) {
+    public void endConnectSpan(Throwable error) {
         Span span = connectSpan.getAndSet(null);
         connectContext.set(null);
         if (span == null) {
@@ -431,7 +431,7 @@ final class VoiceLiveTracer {
      * @param event The client event being sent.
      * @param jsonPayload The serialized JSON payload.
      */
-    void traceSend(ClientEvent event, String jsonPayload) {
+    public void traceSend(ClientEvent event, String jsonPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
@@ -493,7 +493,7 @@ final class VoiceLiveTracer {
      * @param update The parsed session update event.
      * @param rawPayload The raw JSON payload string (for message size and content recording).
      */
-    void traceRecv(SessionUpdate update, String rawPayload) {
+    public void traceRecv(SessionUpdate update, String rawPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
@@ -555,7 +555,7 @@ final class VoiceLiveTracer {
     /**
      * Traces the close operation.
      */
-    void traceClose() {
+    public void traceClose() {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
@@ -570,7 +570,7 @@ final class VoiceLiveTracer {
      *
      * @param rawPayload The raw JSON payload string.
      */
-    void traceRecvRaw(String rawPayload) {
+    public void traceRecvRaw(String rawPayload) {
         Context parentCtx = connectContext.get();
         if (parentCtx == null) {
             return;
