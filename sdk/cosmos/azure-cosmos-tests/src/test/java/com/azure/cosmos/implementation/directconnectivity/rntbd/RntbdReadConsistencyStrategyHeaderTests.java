@@ -101,7 +101,7 @@ public class RntbdReadConsistencyStrategyHeaderTests {
     @Test(groups = { "unit" })
     public void readConsistencyStrategyTokenMetadata() {
         assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.id())
-            .isEqualTo((short) 0x00F0);
+            .isEqualTo((short) 0x00FE);
         assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.type())
             .isEqualTo(RntbdTokenType.Byte);
         assertThat(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy.isRequired())
