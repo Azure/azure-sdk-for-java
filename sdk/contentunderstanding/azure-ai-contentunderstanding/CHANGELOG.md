@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added `LlmInputHelper.toLlmInput()` static helper that converts an `AnalysisResult` into LLM-ready text
+  (YAML front matter + markdown). Supports all content types (documents, images, audio, video),
+  multi-segment results, and classification hierarchies.
+- Added `ToLlmInputOptions` for controlling output (fields-only, markdown-only, custom metadata).
+
 ### Breaking Changes
 
 ### Bugs Fixed

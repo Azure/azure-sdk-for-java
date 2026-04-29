@@ -384,6 +384,19 @@ mvn exec:java \
   -Dexec.cleanupDaemonThreads=false
 ```
 
+### Convert results to LLM-ready text
+
+Use the `LlmInputHelper.toLlmInput()` helper to convert any analysis result into a text format
+that LLMs can consume directly — YAML front matter with extracted fields followed by the markdown
+body. This works with all content types (documents, images, audio, video) and handles
+multi-segment results and classification hierarchies automatically.
+
+```java
+```
+
+See the [advanced sample][java_cu_sample_to_llm_input] for output options (fields-only,
+markdown-only, custom metadata), multi-page content ranges, and multi-segment video.
+
 ## Troubleshooting
 
 ### Common issues
@@ -449,6 +462,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample17_ToLlmInput.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
