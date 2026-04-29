@@ -363,10 +363,12 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
         // Use the page-size-aware PagedFlux constructor so a caller's byPage(int) value flows
         // through to the management request's `top` parameter. When the caller doesn't request a
-        // specific page size (byPage() / no byPage()), pageSize is null and we fall back to the
-        // default. PagedFlux invokes the next-page function only when the previous PagedResponse
-        // carried a non-null continuation token, so the lambda receives a non-null token here;
-        // byPage(null) is routed to the first-page supplier above.
+        // specific page size, pageSize is null and we fall back to the default. The first lambda
+        // is the first-page retriever. The next-page retriever may also be invoked directly when
+        // a caller starts from a continuation token via byPage(token) without going through any
+        // previous PagedResponse, so it must validate the token it receives. Note: in azure-core,
+        // byPage(null) returns Flux.empty() rather than routing to the first-page retriever, so a
+        // null continuation token never reaches this lambda.
         return new PagedFlux<>(pageSize -> fetchSessionPage(lastUpdatedTime, 0, null, resolvePageSize(pageSize)),
             (continuationToken, pageSize) -> {
                 // Treat an empty continuation token as "no more pages", matching
