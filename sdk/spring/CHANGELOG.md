@@ -8,9 +8,6 @@
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.3.6.
 
-### Other Changes
-- Upgrade Spring Boot dependencies version to 3.5.14 and Spring Cloud dependencies version to 2025.0.2
-
 ### Spring Cloud Azure Autoconfigure
 
 #### Bugs Fixed
