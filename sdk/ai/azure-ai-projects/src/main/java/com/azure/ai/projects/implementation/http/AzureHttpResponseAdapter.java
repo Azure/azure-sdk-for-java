@@ -39,9 +39,7 @@ final class AzureHttpResponseAdapter implements HttpResponse {
 
     @Override
     public InputStream body() {
-        // replace with azureResponse.bodyStream() and delete FluxInputStream class from this package
-        // when new version of azure-core is released.
-        return new FluxInputStream(azureResponse.getBody());
+        return azureResponse.getBodyAsInputStreamSync();
     }
 
     @Override

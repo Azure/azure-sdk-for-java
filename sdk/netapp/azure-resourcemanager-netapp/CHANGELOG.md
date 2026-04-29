@@ -1,14 +1,140 @@
 # Release History
 
-## 2.2.0-beta.2 (Unreleased)
+## 2.2.0 (2026-04-20)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SvmPeerCommandResponse` was modified
 
-### Other Changes
+* `svmPeeringCommand()` was removed
+
+#### `models.ClusterPeerCommandResponse` was modified
+
+* `peerAcceptCommand()` was removed
+
+### Features Added
+
+* `models.BucketPatch` was added
+
+* `models.EncryptionState` was added
+
+* `models.Bucket$DefinitionStages` was added
+
+* `models.KerberosState` was added
+
+* `models.OnCertificateConflictAction` was added
+
+* `models.CacheLifeCycleState` was added
+
+* `models.SmbSettings` was added
+
+* `models.BucketServerProperties` was added
+
+* `models.Cache$UpdateStages` was added
+
+* `models.LdapServerType` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.CacheMountTargetProperties` was added
+
+* `models.BucketPermissions` was added
+
+* `models.CifsChangeNotifyState` was added
+
+* `models.SvmPeerCommandResponseProperties` was added
+
+* `models.BucketPatchPermissions` was added
+
+* `models.Bucket$Definition` was added
+
+* `models.Bucket` was added
+
+* `models.CacheProperties` was added
+
+* `models.NfsUser` was added
+
+* `models.BucketGenerateCredentials` was added
+
+* `models.Caches` was added
+
+* `models.Cache$Definition` was added
+
+* `models.CacheProvisioningState` was added
+
+* `models.OriginClusterInformation` was added
+
+* `models.BucketCredentialsExpiry` was added
+
+* `models.CacheUpdate` was added
+
+* `models.AzureKeyVaultDetails` was added
+
+* `models.PeeringPassphrases` was added
+
+* `models.Bucket$Update` was added
+
+* `models.LdapState` was added
+
+* `models.Cache$Update` was added
+
+* `models.Cache` was added
+
+* `models.CachePropertiesExportPolicy` was added
+
+* `models.ProtocolTypes` was added
+
+* `models.CifsUser` was added
+
+* `models.BucketServerPatchProperties` was added
+
+* `models.CacheUpdateProperties` was added
+
+* `models.CredentialsStatus` was added
+
+* `models.SmbEncryptionState` was added
+
+* `models.ExternalReplicationSetupStatus` was added
+
+* `models.GlobalFileLockingState` was added
+
+* `models.Cache$DefinitionStages` was added
+
+* `models.Bucket$UpdateStages` was added
+
+* `models.Buckets` was added
+
+* `models.FileSystemUser` was added
+
+* `models.ClusterPeerCommandResponseProperties` was added
+
+* `models.EnableWriteBackState` was added
+
+* `models.CredentialsAkvDetails` was added
+
+* `models.CertificateAkvDetails` was added
+
+#### `models.ReplicationObject` was modified
+
+* `externalReplicationSetupInfo()` was added
+* `externalReplicationSetupStatus()` was added
+* `mirrorState()` was added
+* `relationshipStatus()` was added
+
+#### `models.SvmPeerCommandResponse` was modified
+
+* `properties()` was added
+
+#### `NetAppFilesManager` was modified
+
+* `buckets()` was added
+* `caches()` was added
+
+#### `models.ClusterPeerCommandResponse` was modified
+
+* `properties()` was added
 
 ## 2.2.0-beta.1 (2026-03-13)
 

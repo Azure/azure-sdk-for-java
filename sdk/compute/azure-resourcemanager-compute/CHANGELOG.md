@@ -1,8 +1,16 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.58.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.57.0 (2026-04-21)
 
 ### Breaking Changes
 
@@ -14,9 +22,11 @@
 - Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.cloudServiceClient().getCloudServicesUpdateDomains()`.
 - Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.cloudServiceClient().getCloudServiceOperatingSystems()`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `ComputeRP api-version` to `2025-11-01`.
 
 ## 2.56.3 (2026-03-30)
 
@@ -29,7 +39,6 @@
 - Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.7`.
 - Upgraded `azure-resourcemanager-network` from `2.58.0` to version `2.58.1`.
 - Upgraded `azure-resourcemanager-resources` from `2.53.6` to version `2.54.0`.
-
 
 ## 2.56.2 (2026-02-26)
 
