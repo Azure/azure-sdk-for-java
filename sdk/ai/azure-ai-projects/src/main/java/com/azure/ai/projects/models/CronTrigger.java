@@ -36,7 +36,7 @@ public final class CronTrigger extends Trigger {
      * Time zone for the cron schedule.
      */
     @Generated
-    private TimeZone timeZone;
+    private String timeZone;
 
     /*
      * Start time for the cron schedule in ISO 8601 format.
@@ -77,7 +77,7 @@ public final class CronTrigger extends Trigger {
      * @return the timeZone value.
      */
     @Generated
-    public TimeZone getTimeZone() {
+    public String getTimeZone() {
         return this.timeZone;
     }
 
@@ -223,7 +223,7 @@ public final class CronTrigger extends Trigger {
      * @return the CronTrigger object itself.
      */
     @Generated
-    public CronTrigger setTimeZone(TimeZone timeZone) {
+    public CronTrigger setTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
     }

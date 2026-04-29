@@ -36,7 +36,7 @@ public final class OneTimeTrigger extends Trigger {
      * Time zone for the one-time trigger.
      */
     @Generated
-    private TimeZone timeZone;
+    private String timeZone;
 
     /**
      * Get the type property: Type of the trigger.
@@ -65,7 +65,7 @@ public final class OneTimeTrigger extends Trigger {
      * @return the timeZone value.
      */
     @Generated
-    public TimeZone getTimeZone() {
+    public String getTimeZone() {
         return this.timeZone;
     }
 
@@ -155,7 +155,7 @@ public final class OneTimeTrigger extends Trigger {
      * @return the OneTimeTrigger object itself.
      */
     @Generated
-    public OneTimeTrigger setTimeZone(TimeZone timeZone) {
+    public OneTimeTrigger setTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
     }
