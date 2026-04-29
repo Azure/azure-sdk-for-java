@@ -289,4 +289,123 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
             assertThat(capturedSelector.getTagsFilter()).containsExactly("env=staging");
         }
     }
+
+    @Test
+    public void snapshotReferenceIsResolved() throws IOException {
+        // Create a snapshot reference setting
+        String snapshotRefContentType = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+        ConfigurationSetting snapshotRef = new ConfigurationSetting()
+            .setKey("snapshot-ref-key")
+            .setValue("my-snapshot")
+            .setContentType(snapshotRefContentType);
+
+        List<ConfigurationSetting> settingsWithRef = new ArrayList<>();
+        settingsWithRef.add(snapshotRef);
+
+        // The snapshot contains regular settings
+        List<ConfigurationSetting> snapshotSettings = new ArrayList<>();
+        snapshotSettings.add(createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE));
+        snapshotSettings.add(createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE));
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(settingsWithRef);
+        when(clientMock.listSettingSnapshot(Mockito.eq("my-snapshot"), Mockito.any(Context.class)))
+            .thenReturn(snapshotSettings);
+
+        propertySource.initProperties(null, contextMock);
+
+        String[] keyNames = propertySource.getPropertyNames();
+        assertThat(keyNames).hasSize(2);
+        assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
+        assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
+    }
+
+    @Test
+    public void snapshotReferenceWithMixedSettings() throws IOException {
+        // Mix of snapshot references and regular settings
+        String snapshotRefContentType = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+        ConfigurationSetting snapshotRef = new ConfigurationSetting()
+            .setKey("snapshot-ref-key")
+            .setValue("my-snapshot")
+            .setContentType(snapshotRefContentType);
+        ConfigurationSetting regularSetting = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+            EMPTY_CONTENT_TYPE);
+
+        List<ConfigurationSetting> mixedSettings = new ArrayList<>();
+        mixedSettings.add(snapshotRef);
+        mixedSettings.add(regularSetting);
+
+        List<ConfigurationSetting> snapshotSettings = new ArrayList<>();
+        snapshotSettings.add(createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE));
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(mixedSettings);
+        when(clientMock.listSettingSnapshot(Mockito.eq("my-snapshot"), Mockito.any(Context.class)))
+            .thenReturn(snapshotSettings);
+
+        propertySource.initProperties(null, contextMock);
+
+        String[] keyNames = propertySource.getPropertyNames();
+        assertThat(keyNames).hasSize(2);
+        assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
+        assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
+    }
+
+    @Test
+    public void featureFlagsAreStrippedFromNonSnapshotSettings() throws IOException {
+        // Feature flags outside snapshots should be ignored/stripped
+        List<ConfigurationSetting> settingsWithFeatureFlag = new ArrayList<>();
+        settingsWithFeatureFlag.add(ITEM_1);
+        settingsWithFeatureFlag.add(FEATURE_FLAG);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(settingsWithFeatureFlag);
+
+        propertySource.initProperties(null, contextMock);
+
+        // Only the regular setting should be loaded as a property
+        String[] keyNames = propertySource.getPropertyNames();
+        assertThat(keyNames).hasSize(1);
+        assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
+    }
+
+    @Test
+    public void featureFlagsFromSnapshotAreCollected() throws IOException {
+        // Feature flags from snapshot references should be collected
+        String snapshotRefContentType = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+        ConfigurationSetting snapshotRef = new ConfigurationSetting()
+            .setKey("snapshot-ref-key")
+            .setValue("my-snapshot")
+            .setContentType(snapshotRefContentType);
+
+        List<ConfigurationSetting> settings = new ArrayList<>();
+        settings.add(snapshotRef);
+
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag("Beta", "/0");
+        List<ConfigurationSetting> snapshotSettings = new ArrayList<>();
+        snapshotSettings.add(createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE));
+        snapshotSettings.add(featureFlag);
+
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(settings);
+        when(clientMock.listSettingSnapshot(Mockito.eq("my-snapshot"), Mockito.any(Context.class)))
+            .thenReturn(snapshotSettings);
+
+        propertySource.initProperties(null, contextMock);
+
+        // Feature flag should be in the featureFlagsList
+        assertThat(propertySource.featureFlagsList).hasSize(1);
+        assertThat(propertySource.featureFlagsList.get(0)).isInstanceOf(FeatureFlagConfigurationSetting.class);
+
+        // Regular setting should be loaded
+        assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
+
+        // featureFlagClient should have been called
+        Mockito.verify(featureFlagClientMock).proccessFeatureFlags(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    public void featureFlagClientIsCalledOnInit() throws IOException {
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
+
+        propertySource.initProperties(null, contextMock);
+
+        Mockito.verify(featureFlagClientMock).proccessFeatureFlags(Mockito.any(), Mockito.any());
+    }
 }
