@@ -20,6 +20,7 @@
   <version>6.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
+  <description>Spring Cloud Azure Actuator</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
   <developers>
     <developer>
