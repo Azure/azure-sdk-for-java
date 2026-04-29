@@ -236,7 +236,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -336,7 +336,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
