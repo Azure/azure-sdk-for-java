@@ -1152,9 +1152,11 @@ class ManagementChannelTests {
      */
     @Test
     void getMessageSessionsNoContent() {
-        // Arrange - set response to 204
-        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NO_CONTENT.getValue());
-        responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
+        // Arrange - set response to 204. Use a local copy of applicationProperties to keep this
+        // test's response setup self-contained (matches the getMessageSessionsNotFound pattern).
+        final Map<String, Object> noContentApplicationProperties = new HashMap<>(applicationProperties);
+        noContentApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NO_CONTENT.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(noContentApplicationProperties));
         responseMessage.setBody(null);
 
         final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
