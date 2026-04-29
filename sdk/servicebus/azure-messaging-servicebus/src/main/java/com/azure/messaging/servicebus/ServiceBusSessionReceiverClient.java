@@ -228,12 +228,11 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
      * equivalent on the underlying {@code PagedFlux}).</p>
      *
-     * <p>Values at or beyond the active-messages sentinel
-     * ({@link com.azure.messaging.servicebus.implementation.ManagementConstants#ACTIVE_MESSAGES_SENTINEL},
-     * equivalent to {@code new Date(253402300800000L)} and rendered by
-     * {@code OffsetDateTime.toString()} as {@code +10000-01-01T00:00Z}, matching Track 1's
-     * {@code SessionBrowser.MAXDATE}) are clamped to that sentinel and behave the same as
-     * {@link #listSessions()}, returning sessions that have active messages.</p>
+     * <p>Values at or beyond the active-messages sentinel value
+     * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
+     * {@code +10000-01-01T00:00Z}, matching Track 1's {@code SessionBrowser.MAXDATE}) are clamped
+     * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
+     * have active messages.</p>
      *
      * @param updatedAfter Only sessions whose session state was updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
