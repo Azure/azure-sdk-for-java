@@ -618,7 +618,7 @@ public final class RntbdConstants {
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
-        ReadConsistencyStrategy((short)0x00F0, RntbdTokenType.Byte, false);
+        ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
