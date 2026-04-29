@@ -15,6 +15,7 @@
   <version>6.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
 
   <name>Spring Cloud Azure Core</name>
+  <description>Spring Cloud Azure Core</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
   <developers>
     <developer>
