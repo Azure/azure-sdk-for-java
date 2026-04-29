@@ -16,7 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriori
  */
 public final class FetchTieringCostPostSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TieringCost/FetchTieringCostForRehydrate.json
+     * x-ms-original-file: 2026-01-31-preview/TieringCost/FetchTieringCostForRehydrate.json
      */
     /**
      * Sample code: Get the rehydration cost for recovery point.
@@ -37,7 +37,7 @@ public final class FetchTieringCostPostSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TieringCost/FetchTieringCostForProtectedItem.json
+     * x-ms-original-file: 2026-01-31-preview/TieringCost/FetchTieringCostForProtectedItem.json
      */
     /**
      * Sample code: Get the tiering savings cost info for protected item.
@@ -57,7 +57,7 @@ public final class FetchTieringCostPostSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TieringCost/FetchTieringCostForPolicy.json
+     * x-ms-original-file: 2026-01-31-preview/TieringCost/FetchTieringCostForPolicy.json
      */
     /**
      * Sample code: Get the tiering savings cost info for policy.
@@ -75,7 +75,7 @@ public final class FetchTieringCostPostSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TieringCost/FetchTieringCostForVault.json
+     * x-ms-original-file: 2026-01-31-preview/TieringCost/FetchTieringCostForVault.json
      */
     /**
      * Sample code: Get the tiering savings cost info for vault.

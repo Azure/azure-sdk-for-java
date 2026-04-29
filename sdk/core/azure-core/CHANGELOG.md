@@ -1,16 +1,17 @@
 # Release History
 
-## 1.58.0-beta.1 (Unreleased)
+## 1.58.0 (2026-04-28)
 
 ### Features Added
 
 - Added `getBodyAsInputStreamSync()` method to `HttpResponse` that returns the response content as an `InputStream` synchronously. ([#48858](https://github.com/Azure/azure-sdk-for-java/pull/48858))
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.4` to `2.18.6`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
 
 ## 1.57.1 (2026-01-15)
 
