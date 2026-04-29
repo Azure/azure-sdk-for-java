@@ -8,9 +8,9 @@ import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
-import com.azure.ai.agents.models.ToolboxObject;
+import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
-import com.azure.ai.agents.models.ToolboxVersionObject;
+import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -399,7 +399,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionObject> createToolboxVersion(String toolboxName, List<Tool> tools, String description,
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String toolboxName, List<Tool> tools, String description,
         Map<String, String> metadata, ToolboxPolicies policies) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -410,7 +410,7 @@ public final class ToolboxesAsyncClient {
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -428,14 +428,14 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionObject> createToolboxVersion(String toolboxName, List<Tool> tools) {
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String toolboxName, List<Tool> tools) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -452,11 +452,11 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxObject> getToolbox(String toolboxName) {
+    public Mono<ToolboxDetails> getToolbox(String toolboxName) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getToolboxWithResponse(toolboxName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class));
     }
 
     /**
@@ -482,7 +482,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxObject> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+    public PagedFlux<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -502,11 +502,11 @@ public final class ToolboxesAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, ToolboxObject>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ToolboxDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(ToolboxObject.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -524,7 +524,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxObject> listToolboxes() {
+    public PagedFlux<ToolboxDetails> listToolboxes() {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listToolboxes(requestOptions);
@@ -532,11 +532,11 @@ public final class ToolboxesAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, ToolboxObject>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, ToolboxDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(ToolboxObject.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -566,7 +566,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionObject> listToolboxVersions(String toolboxName, Integer limit, PageOrder order,
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String toolboxName, Integer limit, PageOrder order,
         String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
@@ -588,11 +588,11 @@ public final class ToolboxesAsyncClient {
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ToolboxVersionObject>(pagedResponse.getRequest(),
+                .map(pagedResponse -> new PagedResponseBase<Void, ToolboxVersionDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionObject.class))
+                        .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
@@ -612,7 +612,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionObject> listToolboxVersions(String toolboxName) {
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String toolboxName) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(toolboxName, requestOptions);
@@ -621,11 +621,11 @@ public final class ToolboxesAsyncClient {
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, ToolboxVersionObject>(pagedResponse.getRequest(),
+                .map(pagedResponse -> new PagedResponseBase<Void, ToolboxVersionDetails>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionObject.class))
+                        .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
@@ -646,11 +646,11 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionObject> getToolboxVersion(String toolboxName, String version) {
+    public Mono<ToolboxVersionDetails> getToolboxVersion(String toolboxName, String version) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getToolboxVersionWithResponse(toolboxName, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -669,13 +669,13 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxObject> updateToolbox(String toolboxName, String defaultVersion) {
+    public Mono<ToolboxDetails> updateToolbox(String toolboxName, String defaultVersion) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
         BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
         return updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxObject.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class));
     }
 
     /**
