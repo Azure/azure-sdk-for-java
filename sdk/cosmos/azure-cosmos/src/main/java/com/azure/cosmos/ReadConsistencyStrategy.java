@@ -15,56 +15,47 @@ import java.util.Map;
 /**
  * Represents the read consistency strategies supported by the Azure Cosmos DB service.
  * <p>
- * A {@code ReadConsistencyStrategy} allows choosing the read consistency behavior independent
- * of the default consistency level configured for the database account. It can be set at the client
- * level via {@link CosmosClientBuilder#readConsistencyStrategy(ReadConsistencyStrategy)} or at
- * the request level via request options (e.g.,
- * {@link com.azure.cosmos.models.CosmosItemRequestOptions#setReadConsistencyStrategy(ReadConsistencyStrategy)}).
+ * The requested read consistency strategy can be chosen independent of the consistency level
+ * provisioned for the database account.
  * <p>
- * <b>Precedence:</b> When both {@link ConsistencyLevel} and {@link ReadConsistencyStrategy} are set, ReadConsistencyStrategy takes precedence
- * and {@code ConsistencyLevel} is ignored. When ReadConsistencyStrategy is set to {@link #DEFAULT}, the configured
- * {@code ConsistencyLevel} (or the account default) applies normally.
+ * The ReadConsistencyStrategy setting will override whatever ConsistencyLevel is chosen
+ * in RequestOptions, CosmosClient or the default consistency level for an account unless
+ * ReadConsistencyStrategy `DEFAULT` is used.
  * <p>
- * Request-level ReadConsistencyStrategy overrides client-level ReadConsistencyStrategy.
- * <p>
- * RCS only applies to read operations on documents. Write operations always use {@link #DEFAULT}
- * regardless of the configured strategy.
- * <p>
- * Supported in all connection modes: Direct, Gateway, and Gateway V2.
+ * NOTE: The ReadConsistencyStrategy is currently only working when using direct mode
  */
 @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ReadConsistencyStrategy {
 
     /**
-     * Uses the default read behavior based on the {@link ConsistencyLevel} applied to the
-     * operation, the client, or the account. When this value is set, {@code ReadConsistencyStrategy}
-     * is effectively transparent.
+     * Use the default read behavior for the consistency level applied to the operation, the client or the account
      */
     DEFAULT("Default"),
 
     /**
-     * Reads may return a subset of writes. All writes will eventually be available for reads.
+     * Eventual Consistency guarantees that reads will return a subset of writes. All writes
+     * will be eventually be available for reads.
      */
     EVENTUAL("Eventual"),
 
     /**
-     * Guarantees monotonic reads, monotonic writes, and read-your-writes within a single session.
+     * Session Consistency guarantees monotonic reads (you never read old data, then new, then old again), monotonic
+     * writes (writes are ordered) and read your writes (your writes are immediately visible to your reads) within
+     * any single session.
      */
     SESSION("Session"),
 
     /**
-     * Reads the latest committed version from the preferred read region. The region may have
-     * replication lag, but this strategy returns the most recent version that region has committed.
+     * Will read the latest committed version from the region in preferred order (which means the read region might
+     * have stale data) but this read strategy will return the latest committed version of that region
      */
     LATEST_COMMITTED("LatestCommitted"),
 
     /**
-     * Reads the latest version across all regions. Because replication with global strong consistency
-     * is synchronous, this guarantees the most recently written version is returned.
+     * Will read the latest version - since replication with global strong consistency is synchronous
+     * this read consistency strategy ensures that the latest successfully written version across regions is returned.
      *
-     * <p>Only supported for single-master accounts with {@link ConsistencyLevel#STRONG} as the
-     * default consistency level. A {@code BadRequestException} is thrown at request time if used
-     * on an account that does not meet this requirement.
+     * NOTE: Only supported for single-master accounts with Strong consistency enabled as default consistency.
      */
     GLOBAL_STRONG("GlobalStrong");
 
