@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class PrivateLinkResourcesListSupportedSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ListSupportedPrivateLinkResources.json
+     * x-ms-original-file: 2026-03-01-preview/ListSupportedPrivateLinkResources.json
      */
     /**
      * Sample code: ListSupportedPrivateLinkResources.

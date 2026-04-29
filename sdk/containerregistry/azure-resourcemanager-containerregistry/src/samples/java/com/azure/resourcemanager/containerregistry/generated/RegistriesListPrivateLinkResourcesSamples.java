@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class RegistriesListPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RegistryListPrivateLinkResources.json
+     * x-ms-original-file: 2026-01-01-preview/RegistryListPrivateLinkResources.json
      */
     /**
      * Sample code: RegistryListPrivateLinkResources.

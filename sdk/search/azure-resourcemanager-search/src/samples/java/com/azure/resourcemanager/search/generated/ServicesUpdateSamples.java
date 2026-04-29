@@ -11,6 +11,7 @@ import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.IdentityType;
 import com.azure.resourcemanager.search.models.IpRule;
+import com.azure.resourcemanager.search.models.KnowledgeRetrieval;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchBypass;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceDisableLocalAuth.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceDisableLocalAuth.json
      */
     /**
      * Sample code: SearchUpdateServiceDisableLocalAuth.
@@ -49,7 +50,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceWithSku.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithSku.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSku.
@@ -66,7 +67,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
@@ -84,12 +85,12 @@ public final class ServicesUpdateSamples {
                     .withNetworkRuleSet(new NetworkRuleSet()
                         .withIpRules(
                             Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
-                        .withBypass(SearchBypass.AZURE_SERVICES)),
+                        .withBypass(SearchBypass.AZURE_PORTAL)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceWithCmkEnforcement.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithCmkEnforcement.json
      */
     /**
      * Sample code: SearchUpdateServiceWithCmkEnforcement.
@@ -109,7 +110,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceWithDataExfiltration.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithDataExfiltration.json
      */
     /**
      * Sample code: SearchUpdateServiceWithDataExfiltration.
@@ -129,7 +130,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceToRemoveIdentity.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToRemoveIdentity.json
      */
     /**
      * Sample code: SearchUpdateServiceToRemoveIdentity.
@@ -147,7 +148,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceWithSemanticSearch.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithSemanticSearch.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSemanticSearch.
@@ -167,7 +168,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPrivateEndpoints.
@@ -186,7 +187,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPs.
@@ -201,13 +202,15 @@ public final class ServicesUpdateSamples {
                 new SearchServiceUpdate().withReplicaCount(3)
                     .withPartitionCount(1)
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withNetworkRuleSet(new NetworkRuleSet().withIpRules(
-                        Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))),
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withIpRules(
+                            Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
+                        .withBypass(SearchBypass.NONE)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateServiceAuthOptions.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceAuthOptions.json
      */
     /**
      * Sample code: SearchUpdateServiceAuthOptions.
@@ -227,7 +230,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SearchUpdateService.json
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateService.json
      */
     /**
      * Sample code: SearchUpdateService.
@@ -241,6 +244,26 @@ public final class ServicesUpdateSamples {
                 new SearchServiceUpdate()
                     .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
                     .withReplicaCount(2),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceWithKnowledgeRetrieval.
+     * 
+     * @param manager Entry point to SearchServiceManager.
+     */
+    public static void
+        searchUpdateServiceWithKnowledgeRetrieval(com.azure.resourcemanager.search.SearchServiceManager manager) {
+        manager.serviceClient()
+            .getServices()
+            .updateWithResponse("rg1", "mysearchservice",
+                new SearchServiceUpdate()
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withKnowledgeRetrieval(KnowledgeRetrieval.STANDARD),
                 com.azure.core.util.Context.NONE);
     }
 

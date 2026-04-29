@@ -12,7 +12,7 @@ import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperti
  */
 public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CreateOrUpdateSharedPrivateLinkResource.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceCreateOrUpdate.
@@ -25,7 +25,7 @@ public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
             .getSharedPrivateLinkResources()
             .createOrUpdate("rg1", "mysearchservice", "testResource", new SharedPrivateLinkResourceInner()
                 .withProperties(new SharedPrivateLinkResourceProperties().withPrivateLinkResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName")
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName")
                     .withGroupId("blob")
                     .withRequestMessage("please approve")),
                 com.azure.core.util.Context.NONE);

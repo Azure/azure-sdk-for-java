@@ -13,4 +13,5 @@ module com.azure.resourcemanager.network {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.network.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.network.models to com.azure.core;
+    opens com.azure.resourcemanager.network.implementation.models to com.azure.core;
 }

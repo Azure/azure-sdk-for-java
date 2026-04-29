@@ -31,13 +31,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     private String keyVersion;
 
     /*
-     * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
-     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-     */
-    @Generated
-    private final String vaultUri;
-
-    /*
      * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
      * managed identity instead.
      */
@@ -56,12 +49,12 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * Creates an instance of SearchResourceEncryptionKey class.
      *
      * @param keyName the keyName value to set.
-     * @param vaultUri the vaultUri value to set.
+     * @param vaultUrl the vaultUrl value to set.
      */
     @Generated
-    public SearchResourceEncryptionKey(String keyName, String vaultUri) {
+    public SearchResourceEncryptionKey(String keyName, String vaultUrl) {
         this.keyName = keyName;
-        this.vaultUri = vaultUri;
+        this.vaultUrl = vaultUrl;
     }
 
     /**
@@ -94,17 +87,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public SearchResourceEncryptionKey setKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
         return this;
-    }
-
-    /**
-     * Get the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
-     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-     *
-     * @return the vaultUri value.
-     */
-    @Generated
-    public String getVaultUri() {
-        return this.vaultUri;
     }
 
     /**
@@ -168,7 +150,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyVaultKeyName", this.keyName);
-        jsonWriter.writeStringField("keyVaultUri", this.vaultUri);
+        jsonWriter.writeStringField("keyVaultUri", this.vaultUrl);
         jsonWriter.writeStringField("keyVaultKeyVersion", this.keyVersion);
         jsonWriter.writeJsonField("accessCredentials", this.accessCredentials);
         jsonWriter.writeJsonField("identity", this.identity);
@@ -188,7 +170,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String keyName = null;
-            String vaultUri = null;
+            String vaultUrl = null;
             String keyVersion = null;
             AzureActiveDirectoryApplicationCredentials accessCredentials = null;
             SearchIndexerDataIdentity identity = null;
@@ -198,7 +180,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                 if ("keyVaultKeyName".equals(fieldName)) {
                     keyName = reader.getString();
                 } else if ("keyVaultUri".equals(fieldName)) {
-                    vaultUri = reader.getString();
+                    vaultUrl = reader.getString();
                 } else if ("keyVaultKeyVersion".equals(fieldName)) {
                     keyVersion = reader.getString();
                 } else if ("accessCredentials".equals(fieldName)) {
@@ -210,11 +192,29 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                 }
             }
             SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey
-                = new SearchResourceEncryptionKey(keyName, vaultUri);
+                = new SearchResourceEncryptionKey(keyName, vaultUrl);
             deserializedSearchResourceEncryptionKey.keyVersion = keyVersion;
             deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
             deserializedSearchResourceEncryptionKey.identity = identity;
             return deserializedSearchResourceEncryptionKey;
         });
+    }
+
+    /*
+     * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
+     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
+     */
+    @Generated
+    private final String vaultUrl;
+
+    /**
+     * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
+     *
+     * @return the vaultUrl value.
+     */
+    @Generated
+    public String getVaultUrl() {
+        return this.vaultUrl;
     }
 }

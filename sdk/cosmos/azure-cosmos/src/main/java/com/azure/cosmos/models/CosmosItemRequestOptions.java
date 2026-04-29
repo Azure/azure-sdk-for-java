@@ -29,8 +29,10 @@ import java.util.Set;
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
 public class CosmosItemRequestOptions {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
+    }
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;
@@ -82,7 +84,6 @@ public class CosmosItemRequestOptions {
             this.customOptions = new HashMap<>(options.customOptions);
         }
     }
-
 
     /**
      * Constructor
@@ -545,7 +546,7 @@ public class CosmosItemRequestOptions {
             return Duration.ofMillis(100);
         }
 
-        return thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds);
+        return diagThresholdsAccessor().getPointReadLatencyThreshold(this.thresholds);
     }
 
     /**

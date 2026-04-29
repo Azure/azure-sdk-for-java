@@ -43,6 +43,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
+    private static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor proactiveInitConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.getCosmosContainerProactiveInitConfigAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalAddressResolver.class);
 
     private final static int MaxBackupReadRegions = 3;
@@ -116,9 +124,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                     .collectionCache
                     .resolveByNameAsync(
                         null,
-                        ImplementationBridgeHelpers
-                            .CosmosContainerIdentityHelper
-                            .getCosmosContainerIdentityAccessor()
+                        containerIdentityAccessor()
                             .getContainerLink(cosmosContainerIdentity),
                         null)
                     .flatMapMany(collection -> {
@@ -135,9 +141,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 null)
                             .flatMap(valueHolder -> {
 
-                                String containerLink = ImplementationBridgeHelpers
-                                    .CosmosContainerIdentityHelper
-                                    .getCosmosContainerIdentityAccessor()
+                                String containerLink = containerIdentityAccessor()
                                     .getContainerLink(cosmosContainerIdentity);
 
                                 if (valueHolder == null || valueHolder.v == null || valueHolder.v.isEmpty()) {
@@ -171,9 +175,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         AddressInformation addressInformation =
                                                             collectionToAddresses.right;
 
-                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = ImplementationBridgeHelpers
-                                                            .CosmosContainerProactiveInitConfigHelper
-                                                            .getCosmosContainerProactiveInitConfigAccessor()
+                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = proactiveInitConfigAccessor()
                                                             .getContainerPropertiesMap(proactiveContainerInitConfig);
 
                                                         ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap

@@ -3225,4 +3225,18 @@ public class BlobApiTests extends BlobTestBase {
         assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void uploadStreamAccessTierSmart() {
+        bc = cc.getBlobClient(generateBlobName());
+        InputStream data = new ByteArrayInputStream(getRandomByteArray(Constants.KB));
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data).setTier(AccessTier.SMART);
+        bc.uploadWithResponse(options, null, Context.NONE);
+
+        Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
 }

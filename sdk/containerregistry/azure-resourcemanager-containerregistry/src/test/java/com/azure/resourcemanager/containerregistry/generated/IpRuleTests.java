@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IpRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpRule model = BinaryData.fromString("{\"action\":\"Allow\",\"value\":\"jyj\"}").toObject(IpRule.class);
+        IpRule model = BinaryData.fromString("{\"action\":\"Allow\",\"value\":\"awrlyx\"}").toObject(IpRule.class);
         Assertions.assertEquals(Action.ALLOW, model.action());
-        Assertions.assertEquals("jyj", model.ipAddressOrRange());
+        Assertions.assertEquals("awrlyx", model.ipAddressOrRange());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpRule model = new IpRule().withAction(Action.ALLOW).withIpAddressOrRange("jyj");
+        IpRule model = new IpRule().withAction(Action.ALLOW).withIpAddressOrRange("awrlyx");
         model = BinaryData.fromObject(model).toObject(IpRule.class);
         Assertions.assertEquals(Action.ALLOW, model.action());
-        Assertions.assertEquals("jyj", model.ipAddressOrRange());
+        Assertions.assertEquals("awrlyx", model.ipAddressOrRange());
     }
 }

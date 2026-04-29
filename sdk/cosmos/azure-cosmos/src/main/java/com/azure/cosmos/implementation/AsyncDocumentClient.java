@@ -412,6 +412,15 @@ public interface AsyncDocumentClient {
     String getUserAgent();
 
     /**
+     * Appends an additional suffix to the user agent string.
+     *
+     * @param suffix the suffix to append.
+     */
+    default void appendUserAgentSuffix(String suffix) {
+        // no-op default for binary compatibility
+    }
+
+    /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      * <p>
@@ -1583,6 +1592,31 @@ public interface AsyncDocumentClient {
         Class<T> klass);
 
     /**
+     * Reads many documents by partition key values.
+     * Unlike {@link #readMany(List, String, QueryFeedOperationState, Class)} this method does not require
+     * item ids - it queries all documents matching the provided partition key values.
+     * Partial hierarchical partition keys are supported and will fan out to multiple physical partitions.
+     *
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query (for projections/additional filters) - null means SELECT * FROM c
+     * @param collectionLink link for the documentcollection/container to be queried
+     * @param state the query operation state (may carry a composite continuation token via requestContinuation)
+     * @param maxConcurrentBatchPrefetch the maximum number of per-physical-partition batches whose first
+     *                                   page is prefetched concurrently. Must be &gt;= 1.
+     * @param klass class type
+     * @param <T> the type parameter
+     * @return a Flux with feed response pages of documents
+     */
+    <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        int maxConcurrentBatchPrefetch,
+        int maxBatchSize,
+        Class<T> klass);
+
+    /**
      * Read all documents of a certain logical partition.
      * <p>
      * After subscription the operation will be performed.
@@ -1648,6 +1682,7 @@ public interface AsyncDocumentClient {
      * @param group the throughput control group.
      */
     void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
+
 
     /***
      * Enable server throughput control group.

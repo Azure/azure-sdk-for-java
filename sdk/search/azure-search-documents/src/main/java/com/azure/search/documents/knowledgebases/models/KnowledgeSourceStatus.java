@@ -5,12 +5,15 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * Represents the status and synchronization history of a knowledge source.
@@ -28,7 +31,7 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
      * The synchronization interval (e.g., '1d' for daily). Null if no schedule is configured.
      */
     @Generated
-    private String synchronizationInterval;
+    private Duration synchronizationInterval;
 
     /*
      * Current synchronization state that spans multiple indexer runs.
@@ -75,21 +78,8 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
      * @return the synchronizationInterval value.
      */
     @Generated
-    public String getSynchronizationInterval() {
+    public Duration getSynchronizationInterval() {
         return this.synchronizationInterval;
-    }
-
-    /**
-     * Set the synchronizationInterval property: The synchronization interval (e.g., '1d' for daily). Null if no
-     * schedule is configured.
-     *
-     * @param synchronizationInterval the synchronizationInterval value to set.
-     * @return the KnowledgeSourceStatus object itself.
-     */
-    @Generated
-    public KnowledgeSourceStatus setSynchronizationInterval(String synchronizationInterval) {
-        this.synchronizationInterval = synchronizationInterval;
-        return this;
     }
 
     /**
@@ -169,7 +159,9 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("synchronizationStatus",
             this.synchronizationStatus == null ? null : this.synchronizationStatus.toString());
-        jsonWriter.writeStringField("synchronizationInterval", this.synchronizationInterval);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("synchronizationInterval",
+            CoreUtils.durationToStringWithDays(this.synchronizationInterval));
         jsonWriter.writeJsonField("currentSynchronizationState", this.currentSynchronizationState);
         jsonWriter.writeJsonField("lastSynchronizationState", this.lastSynchronizationState);
         jsonWriter.writeJsonField("statistics", this.statistics);
@@ -189,7 +181,8 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
     public static KnowledgeSourceStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KnowledgeSourceSynchronizationStatus synchronizationStatus = null;
-            String synchronizationInterval = null;
+            KnowledgeSourceKind kind = null;
+            Duration synchronizationInterval = null;
             SynchronizationState currentSynchronizationState = null;
             CompletedSynchronizationState lastSynchronizationState = null;
             KnowledgeSourceStatistics statistics = null;
@@ -198,8 +191,11 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 reader.nextToken();
                 if ("synchronizationStatus".equals(fieldName)) {
                     synchronizationStatus = KnowledgeSourceSynchronizationStatus.fromString(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("synchronizationInterval".equals(fieldName)) {
-                    synchronizationInterval = reader.getString();
+                    synchronizationInterval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("currentSynchronizationState".equals(fieldName)) {
                     currentSynchronizationState = SynchronizationState.fromJson(reader);
                 } else if ("lastSynchronizationState".equals(fieldName)) {
@@ -211,11 +207,53 @@ public final class KnowledgeSourceStatus implements JsonSerializable<KnowledgeSo
                 }
             }
             KnowledgeSourceStatus deserializedKnowledgeSourceStatus = new KnowledgeSourceStatus(synchronizationStatus);
+            deserializedKnowledgeSourceStatus.kind = kind;
             deserializedKnowledgeSourceStatus.synchronizationInterval = synchronizationInterval;
             deserializedKnowledgeSourceStatus.currentSynchronizationState = currentSynchronizationState;
             deserializedKnowledgeSourceStatus.lastSynchronizationState = lastSynchronizationState;
             deserializedKnowledgeSourceStatus.statistics = statistics;
             return deserializedKnowledgeSourceStatus;
         });
+    }
+
+    /*
+     * Identifies the Knowledge Source kind directly from the Status response.
+     */
+    @Generated
+    private KnowledgeSourceKind kind;
+
+    /**
+     * Get the kind property: Identifies the Knowledge Source kind directly from the Status response.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public KnowledgeSourceKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Identifies the Knowledge Source kind directly from the Status response.
+     *
+     * @param kind the kind value to set.
+     * @return the KnowledgeSourceStatus object itself.
+     */
+    @Generated
+    public KnowledgeSourceStatus setKind(KnowledgeSourceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Set the synchronizationInterval property: The synchronization interval (e.g., '1d' for daily). Null if no
+     * schedule is configured.
+     *
+     * @param synchronizationInterval the synchronizationInterval value to set.
+     * @return the KnowledgeSourceStatus object itself.
+     */
+    @Generated
+    public KnowledgeSourceStatus setSynchronizationInterval(Duration synchronizationInterval) {
+        this.synchronizationInterval = synchronizationInterval;
+        return this;
     }
 }
