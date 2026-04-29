@@ -23,6 +23,9 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusT
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -376,10 +379,20 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             final String lastSessionId;
             try {
                 final byte[] decoded = Base64.getUrlDecoder().decode(continuationToken.substring(separator + 1));
-                lastSessionId = new String(decoded, StandardCharsets.UTF_8);
+                // Strict UTF-8 decoding: a token whose payload base64-decodes cleanly but isn't valid
+                // UTF-8 must be rejected, otherwise new String(decoded, UTF_8) silently substitutes
+                // U+FFFD and we'd send a corrupted session ID to the broker as the cursor.
+                lastSessionId = StandardCharsets.UTF_8.newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(ByteBuffer.wrap(decoded))
+                    .toString();
             } catch (IllegalArgumentException ex) {
                 return monoError(LOGGER, new IllegalArgumentException(
                     "Invalid continuation token. Expected base64url-encoded UTF-8 bytes after the '|' separator.", ex));
+            } catch (CharacterCodingException ex) {
+                return monoError(LOGGER, new IllegalArgumentException(
+                    "Invalid continuation token. Decoded bytes after the '|' separator are not valid UTF-8.", ex));
             }
 
             return fetchSessionPage(lastUpdatedTime, nextSkip, lastSessionId);

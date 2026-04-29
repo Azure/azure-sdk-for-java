@@ -488,4 +488,20 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .expectError(IllegalArgumentException.class)
             .verify(DEFAULT_TIMEOUT);
     }
+
+    /**
+     * Verifies that a continuation token whose Base64 payload decodes to bytes that aren't valid
+     * UTF-8 is rejected with {@link IllegalArgumentException}. Without strict decoding,
+     * {@code new String(decoded, UTF_8)} would silently substitute U+FFFD and we'd send a
+     * corrupted session ID to the broker.
+     */
+    @Test
+    void listSessionsRejectsNonUtf8ContinuationToken() {
+        // 0xFF, 0xFE is a stray UTF-16 BOM and isn't valid UTF-8. Base64url("0xFF 0xFE") = "__4".
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("0|__4"))
+            .expectError(IllegalArgumentException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
 }

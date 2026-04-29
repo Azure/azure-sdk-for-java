@@ -133,18 +133,20 @@ class ServiceBusSessionReceiverClientTest {
 
     /**
      * Verifies that an error in the async {@code PagedFlux} (e.g., a transient broker failure)
-     * propagates out of the sync {@code PagedIterable} when iterated.
+     * propagates out of the sync {@code PagedIterable} when iterated. Uses a generic
+     * {@link RuntimeException} so the failure mode is unmistakably distinct from the eager
+     * argument validation in {@link #listSessionsRejectsNullUpdatedAfterEagerly()}.
      */
     @Test
     void listSessionsPropagatesAsyncError() {
         when(sessionAsyncClient.listSessions(any(OffsetDateTime.class)))
-            .thenReturn(new PagedFlux<>(() -> Mono.error(new NullPointerException("'updatedAfter' cannot be null."))));
+            .thenReturn(new PagedFlux<>(() -> Mono.error(new RuntimeException("Transient async failure."))));
 
         final ServiceBusSessionReceiverClient client
             = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofSeconds(5));
 
         final OffsetDateTime updatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        assertThrows(NullPointerException.class, () -> client.listSessions(updatedAfter).forEach(id -> {
+        assertThrows(RuntimeException.class, () -> client.listSessions(updatedAfter).forEach(id -> {
         }));
     }
 
