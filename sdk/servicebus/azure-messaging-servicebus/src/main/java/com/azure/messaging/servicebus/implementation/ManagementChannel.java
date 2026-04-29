@@ -522,13 +522,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }
 
         // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
-        // (1ms past 9999-12-31T23:59:59.999Z, i.e. 10000-01-01T00:00:00Z UTC). This is the wire
-        // value the broker has been validated against for years; align with it here. Any input at
-        // or beyond that instant (including OffsetDateTime.MAX, whose nanosecond precision and
-        // year-999_999_999 value would otherwise overflow java.util.Date) is clamped to it so the
-        // sentinel comparison and Date.from(...) both stay well-defined. Comparing with >= so the
-        // sentinel-equal case is also routed through the clamp explicitly (it's a no-op for equal
-        // values, but keeps the comment/code contract precise).
+        // (1ms past 9999-12-31T23:59:59.999Z, rendered by OffsetDateTime.toString() as
+        // +10000-01-01T00:00Z). This is the wire value the broker has been validated against for
+        // years; align with it here. Any input at or beyond that instant (including
+        // OffsetDateTime.MAX, whose nanosecond precision and year-999_999_999 value would otherwise
+        // overflow java.util.Date) is clamped to it so the sentinel comparison and Date.from(...)
+        // both stay well-defined. Comparing with >= so the sentinel-equal case is also routed
+        // through the clamp explicitly (it's a no-op for equal values, but keeps the comment/code
+        // contract precise).
         final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) >= 0
             ? ManagementConstants.ACTIVE_MESSAGES_SENTINEL
             : lastUpdatedTime;
