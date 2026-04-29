@@ -39,6 +39,7 @@ resource webPubSubSocketIO 'Microsoft.SignalRService/webPubSub@2024-10-01-previe
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2024-10-01-preview' = {
   name: webPubSubName
   location: location
+  kind: 'WebPubSub'
   sku: {
     name: 'Standard_S1'
     tier: 'Standard'
