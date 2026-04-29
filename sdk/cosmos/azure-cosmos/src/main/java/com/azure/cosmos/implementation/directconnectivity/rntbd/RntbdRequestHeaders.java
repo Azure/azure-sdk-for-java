@@ -855,7 +855,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     break;
                 default:
                     if (!"Default".equals(value)) {
-                        logger.warn("Unknown ReadConsistencyStrategy value '{}' — not encoded in RNTBD frame", value);
+                        throw new IllegalArgumentException(
+                            "Unknown ReadConsistencyStrategy value '" + value + "' — cannot encode in RNTBD frame");
                     }
                     break;
             }
