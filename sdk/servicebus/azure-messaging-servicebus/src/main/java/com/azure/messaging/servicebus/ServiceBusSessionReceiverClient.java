@@ -208,7 +208,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
-     * session ID. Pages are fetched lazily as the iterator advances.</p>
+     * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
+     * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
+     * equivalent on the underlying {@code PagedFlux}).</p>
      *
      * @return A {@link PagedIterable} of session ID strings.
      */
@@ -222,7 +224,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
-     * session ID. Pages are fetched lazily as the iterator advances.</p>
+     * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
+     * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
+     * equivalent on the underlying {@code PagedFlux}).</p>
      *
      * <p>Values at or beyond the active-messages sentinel
      * ({@code 10000-01-01T00:00:00Z} UTC, matching Track 1's {@code SessionBrowser.MAXDATE}) are

@@ -517,4 +517,30 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         StepVerifier.create(client.listSessions().byPage("")).expectComplete().verify(DEFAULT_TIMEOUT);
     }
+
+    /**
+     * Verifies that a caller-supplied page size from {@link PagedFlux#byPage(int)} flows through
+     * to the management request's {@code top} parameter. Without page-size propagation the broker
+     * would always be asked for the default of 100 entries even when the caller requested fewer.
+     */
+    @Test
+    void listSessionsHonorsCallerPageSize() {
+        // Caller asks for pages of 25; both first-page and next-page calls must pass top=25.
+        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(25),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("a", "b"), 2)));
+        when(
+            managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(2), eq(25), eq("b")))
+                .thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 2)));
+
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage(25)).assertNext(page -> {
+            org.junit.jupiter.api.Assertions.assertEquals(2, page.getValue().size());
+            org.junit.jupiter.api.Assertions.assertEquals("a", page.getValue().get(0));
+            org.junit.jupiter.api.Assertions.assertEquals("b", page.getValue().get(1));
+        })
+            .assertNext(page -> org.junit.jupiter.api.Assertions.assertTrue(page.getValue().isEmpty()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
 }
