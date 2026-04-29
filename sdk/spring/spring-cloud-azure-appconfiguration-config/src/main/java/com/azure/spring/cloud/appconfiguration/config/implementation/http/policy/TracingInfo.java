@@ -9,7 +9,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LOAD_BALANCING_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SNAPSHOT_REFERENCE_TAG;
 
 import org.springframework.util.StringUtils;
 
@@ -144,6 +143,7 @@ public class TracingInfo {
 
         if (isFailoverRequest) {
             sb.append(",").append(RequestTracingConstants.FAILOVER_TAG);
+            isFailoverRequest = false;
         }
 
         return sb.toString();

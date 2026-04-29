@@ -110,10 +110,10 @@ public class FeatureFlagTracing {
      */
     public String createFFFeaturesString() {
         StringBuilder sb = new StringBuilder();
-        if (usesSeed) {
+        if (Boolean.TRUE.equals(usesSeed)) {
             sb.append(FEATURE_FLAG_USES_SEED_TAG);
         }
-        if (usesTelemetry) {
+        if (Boolean.TRUE.equals(usesTelemetry)) {
             if (sb.length() > 0) {
                 sb.append(FILTER_TYPE_DELIMITER);
             }
