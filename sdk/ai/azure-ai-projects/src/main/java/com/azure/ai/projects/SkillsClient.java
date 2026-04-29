@@ -555,11 +555,10 @@ public final class SkillsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted skill Object.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteSkillResponse deleteSkill(String skillName) {
+    public void deleteSkill(String skillName) {
         // Generated convenience method for deleteSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteSkillWithResponse(skillName, requestOptions).getValue().toObject(DeleteSkillResponse.class);
+        deleteSkillWithResponse(skillName, requestOptions).getValue().toObject(DeleteSkillResponse.class);
     }
 }

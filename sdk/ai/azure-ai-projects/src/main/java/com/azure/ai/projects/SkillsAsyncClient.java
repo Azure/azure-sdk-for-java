@@ -587,14 +587,14 @@ public final class SkillsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted skill Object on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the skill is successfully deleted.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteSkillResponse> deleteSkill(String skillName) {
+    public Mono<Void> deleteSkill(String skillName) {
         // Generated convenience method for deleteSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteSkillResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DeleteSkillResponse.class))
+            .then();
     }
 }
