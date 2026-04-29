@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
-import com.azure.ai.projects.models.DeleteSkillResponse;
 import com.azure.ai.projects.models.PageOrder;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.annotation.Generated;
@@ -593,8 +592,6 @@ public final class SkillsAsyncClient {
     public Mono<Void> deleteSkill(String skillName) {
         // Generated convenience method for deleteSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteSkillResponse.class))
-            .then();
+        return deleteSkillWithResponse(skillName, requestOptions).then();
     }
 }

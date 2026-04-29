@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
-import com.azure.ai.projects.models.DeleteSkillResponse;
 import com.azure.ai.projects.models.PageOrder;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.annotation.Generated;
@@ -553,12 +552,11 @@ public final class SkillsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted skill Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSkill(String skillName) {
         // Generated convenience method for deleteSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteSkillWithResponse(skillName, requestOptions).getValue().toObject(DeleteSkillResponse.class);
+        deleteSkillWithResponse(skillName, requestOptions);
     }
 }
