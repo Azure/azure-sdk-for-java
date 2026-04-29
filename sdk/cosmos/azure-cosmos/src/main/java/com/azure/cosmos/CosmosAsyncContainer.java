@@ -1769,6 +1769,15 @@ public class CosmosAsyncContainer {
             ? prefetchOverride
             : Math.max(1, Math.min(Configs.getCPUCnt(), 8));
 
+        // Resolve the max-batch-size (PKs per batch per physical partition).
+        // Per-request setting takes precedence over the global system property default.
+        Integer batchSizeOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxBatchSize(requestOptions)
+            : null;
+        int maxBatchSize = batchSizeOverride != null
+            ? batchSizeOverride
+            : Configs.getReadManyByPkMaxBatchSize();
+
         return (pagedFluxOptions -> {
             CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
                 ? new CosmosQueryRequestOptions()
@@ -1831,6 +1840,7 @@ public class CosmosAsyncContainer {
                     BridgeInternal.getLink(this),
                     state,
                     maxConcurrentBatchPrefetch,
+                    maxBatchSize,
                     classType)
                 .map(response -> prepareFeedResponse(response, false));
         });
@@ -2624,7 +2634,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions,
                 true)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(
-                response, itemType, requestOptions.getEffectiveItemSerializer()))
+                response, itemType, effectiveOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();

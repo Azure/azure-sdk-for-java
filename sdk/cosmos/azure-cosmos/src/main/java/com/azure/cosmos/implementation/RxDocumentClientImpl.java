@@ -4374,12 +4374,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionLink,
         QueryFeedOperationState state,
         int maxConcurrentBatchPrefetch,
+        int maxBatchSize,
         Class<T> klass) {
 
         checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
         checkArgument(!partitionKeys.isEmpty(), "Argument 'partitionKeys' must not be empty.");
         checkArgument(maxConcurrentBatchPrefetch >= 1,
             "Argument 'maxConcurrentBatchPrefetch' must be greater than or equal to 1.");
+        checkArgument(maxBatchSize >= 1,
+            "Argument 'maxBatchSize' must be greater than or equal to 1.");
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
         state.registerDiagnosticsFactory(
@@ -4401,7 +4404,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper
             .fluxInlineIfPossibleAsObs(
                 () -> readManyByPartitionKeys(
-                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory, maxConcurrentBatchPrefetch, klass),
+                    partitionKeys, customQuery, collectionLink, state, diagnosticsFactory,
+                    maxConcurrentBatchPrefetch, maxBatchSize, klass),
                 staleResourceRetryPolicy
             )
             .onErrorMap(throwable -> {
@@ -4442,6 +4446,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         QueryFeedOperationState state,
         ScopedDiagnosticsFactory diagnosticsFactory,
         int maxConcurrentBatchPrefetch,
+        int maxBatchSize,
         Class<T> klass) {
 
         String requestContinuation = state.getRequestContinuation();
@@ -4548,7 +4553,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return buildSequentialFluxFromScratch(
                             normalizedPartitionKeys, customQuery, pkDefinition, routingMap,
                             resourceLink, state, diagnosticsFactory, klass,
-                            collectionRid, queryHash, partitionKeySetHash, maxConcurrentBatchPrefetch);
+                            collectionRid, queryHash, partitionKeySetHash,
+                            maxConcurrentBatchPrefetch, maxBatchSize);
                     });
             });
     }
@@ -4624,7 +4630,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionRid,
         String queryHash,
         String partitionKeySetHash,
-        int maxConcurrentBatchPrefetch) {
+        int maxConcurrentBatchPrefetch,
+        int maxBatchSize) {
 
         Map<PartitionKeyRange, List<NormalizedPartitionKey>> partitionRangePkMap =
             groupPartitionKeysByPhysicalPartition(normalizedPartitionKeys, pkDefinition, routingMap);
@@ -4643,7 +4650,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             baseParameters = new ArrayList<>();
         }
 
-        int maxPksPerPartitionQuery = Configs.getReadManyByPkMaxBatchSize();
+        int maxPksPerPartitionQuery = maxBatchSize;
 
         List<BatchDescriptor> allBatches = new ArrayList<>();
 

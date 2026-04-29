@@ -32,37 +32,6 @@ query, create, and manage Azure resources directly during a conversation.
 See the [getting started guide](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
 for setup instructions.
 
-## Azure SDK MCP Server (Java)
-
-The Azure SDK for Java ships its own MCP server for IDE-integrated automation,
-validation, and SDK-specific guidance. It is used by the Copilot agent inside
-VS Code and IntelliJ to run code-generation, build, and release workflows.
-
-Start the server (requires [PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell)):
-
-```powershell
-eng/common/mcp/azure-sdk-mcp.ps1 -Run
-```
-
-For VS Code, add the following to your MCP configuration:
-
-```json
-{
-  "servers": {
-    "azure-sdk-mcp": {
-      "type": "stdio",
-      "command": "pwsh",
-      "args": [
-        "<path-to-repo>/eng/common/mcp/azure-sdk-mcp.ps1",
-        "-Run"
-      ]
-    }
-  }
-}
-```
-
-See [`.github/copilot-instructions.md`](https://github.com/Azure/azure-sdk-for-java/blob/main/.github/copilot-instructions.md) for the full IDE setup guide.
-
 ## Azure SDK skills
 
 The Microsoft skills marketplace provides Azure SDK skills that give AI agents
@@ -105,7 +74,6 @@ For operational Azure tasks (managing resources, querying services), see the
 - [Azure SDK for Java documentation](https://learn.microsoft.com/java/api/overview/azure/)
 - [Azure SDK design guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
 - [Azure MCP Server](https://learn.microsoft.com/azure/developer/azure-mcp-server/get-started)
-- [GitHub Copilot instructions for this repo](https://github.com/Azure/azure-sdk-for-java/blob/main/.github/copilot-instructions.md)
 
 ## Feedback
 

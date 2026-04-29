@@ -458,6 +458,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
     config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
     config.readManyByPkTreatNullAsNone shouldBe false
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe None
+    config.readManyByPkMaxBatchSize shouldBe None
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -670,6 +672,72 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     )
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
     config.readManyByPkTreatNullAsNone shouldBe true
+  }
+
+  it should "parse readManyByPk maxBatchSize configuration" in {
+    // Default (not specified) should be None - SDK applies its own default
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe None
+
+    // Explicit value
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "50"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(50)
+
+    // Value below 1 should be clamped to 1
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "0"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(1)
+
+    // Large value should be accepted
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "500"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(500)
+  }
+
+  it should "parse readManyByPk maxConcurrentBatchPrefetch configuration" in {
+    // Default (not specified) should be None - SDK applies its own default
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe None
+
+    // Explicit value
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "4"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(4)
+
+    // Value above 64 should be clamped to 64
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "100"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(64)
+
+    // Value below 1 should be clamped to 1
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "0"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(1)
   }
 
   it should "throw on invalid read configuration" in {
