@@ -1174,9 +1174,8 @@ class ManagementChannelTests {
     void getMessageSessionsNotFound() {
         // Arrange - set response to 404 with the legacy SessionNotFound error-condition so
         // sendWithVerify treats it as a non-error (only 404 + MESSAGE_NOT_FOUND or SESSION_NOT_FOUND
-        // is passed through; bare 404 would surface as an error). Use a local copy of the shared
-        // applicationProperties field so the SessionNotFound error-condition doesn't leak into
-        // subsequent tests that share the field.
+        // is passed through; bare 404 would surface as an error). Use a local copy of
+        // applicationProperties to keep this test's response setup self-contained.
         final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
         responseApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
         responseApplicationProperties.put("error-condition", AmqpErrorCondition.SESSION_NOT_FOUND.getErrorCondition());
