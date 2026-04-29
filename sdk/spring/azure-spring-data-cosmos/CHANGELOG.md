@@ -1,6 +1,6 @@
 ## Release History
 
-### 6.3.0-beta.1 (Unreleased)
+### 6.3.0 (Unreleased)
 
 #### Features Added
 
