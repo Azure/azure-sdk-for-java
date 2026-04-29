@@ -13,14 +13,30 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 /**
- * Decoded HTTP response that wraps the original response with a decoded body stream.
+ * {@link HttpResponse} wrapper that exposes a decoded body stream while preserving the request, status code, and
+ * headers of the original response.
+ *
+ * <p>The policy hands this class a Flux that already represents validated, framing-stripped bytes (produced by the
+ * decoder pipeline). This class's only job is to make that Flux look like the body of the original
+ * {@link HttpResponse}. Status code, headers, and request remain identical to the underlying response so callers
+ * cannot distinguish a validated download from a normal one – the validation is transparent.</p>
  */
 class DecodedResponse extends HttpResponse {
     private final Flux<ByteBuffer> decodedBody;
     private final HttpHeaders httpHeaders;
     private final int statusCode;
 
+    /**
+     * Wraps {@code httpResponse} with a body backed by {@code decodedBody}.
+     *
+     * @param httpResponse The original response from the storage service. Its request, status code, and headers
+     * are preserved verbatim.
+     * @param decodedBody The Flux of CRC-validated, framing-stripped payload bytes produced by the decoder
+     * pipeline.
+     */
     DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
+        // Preserve the original request so retry policies, response models, and logging keep their reference chain
+        // intact.
         super(httpResponse.getRequest());
         this.decodedBody = decodedBody;
         this.statusCode = httpResponse.getStatusCode();
