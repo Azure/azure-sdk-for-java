@@ -574,6 +574,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // Accept both Object[] (the shape qpid-proton currently surfaces) and any
                 // Iterable<?> (List, Set, ...) so a future broker/library change in payload type
                 // doesn't silently produce an empty page and prematurely terminate pagination.
+                // Null entries are treated as malformed responses and fail the operation rather
+                // than surfacing the literal string "null" as a session ID to callers.
                 final List<String> sessionIds;
                 if (sessionsObj == null) {
                     sessionIds = Collections.emptyList();
@@ -581,12 +583,20 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     final Object[] sessionArray = (Object[]) sessionsObj;
                     sessionIds = new ArrayList<>(sessionArray.length);
                     for (Object id : sessionArray) {
-                        sessionIds.add(String.valueOf(id));
+                        if (id == null) {
+                            throw logger.logExceptionAsWarning(
+                                new IllegalStateException("Management response contained a null session id entry."));
+                        }
+                        sessionIds.add(id.toString());
                     }
                 } else if (sessionsObj instanceof Iterable<?>) {
                     sessionIds = new ArrayList<>();
                     for (Object id : (Iterable<?>) sessionsObj) {
-                        sessionIds.add(String.valueOf(id));
+                        if (id == null) {
+                            throw logger.logExceptionAsWarning(
+                                new IllegalStateException("Management response contained a null session id entry."));
+                        }
+                        sessionIds.add(id.toString());
                     }
                 } else {
                     sessionIds = Collections.emptyList();

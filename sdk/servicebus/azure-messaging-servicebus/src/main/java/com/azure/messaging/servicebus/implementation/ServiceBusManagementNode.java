@@ -160,8 +160,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the
      *     {@code 10000-01-01T00:00:00Z} sentinel (the implementation also accepts
-     *     {@link OffsetDateTime#MAX} and clamps it to that sentinel) so the wire timestamp matches
-     *     the {@code DateTime.MaxValue + 1ms} value used by Track 1. Pass a real timestamp to get
+     *     {@link OffsetDateTime#MAX} and clamps it to that sentinel), which matches the Track 1
+     *     Java sentinel value ({@code new Date(253402300800000L)}). Pass a real timestamp to get
      *     sessions updated since that time.
      * @param skip Pagination offset (from {@link MessageSessionsResult#getNextSkip()} of the
      *     previous page, or {@code 0} for the first page).

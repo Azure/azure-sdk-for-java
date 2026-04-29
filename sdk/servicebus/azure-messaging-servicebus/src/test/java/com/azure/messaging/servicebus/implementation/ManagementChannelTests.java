@@ -1116,13 +1116,13 @@ class ManagementChannelTests {
     }
 
     /**
-     * Verifies getMessageSessions in active-sessions mode uses the Track 1 active-messages sentinel.
+     * Verifies getMessageSessions in active-messages mode uses the Track 1 active-messages sentinel.
      * Track 1's {@code SessionBrowser.MAXDATE} is {@code new Date(253402300800000L)}
      * (10000-01-01T00:00:00Z UTC, 1 ms past 9999-12-31T23:59:59.999Z), which the broker recognizes
      * as the "list sessions with active messages" mode.
      */
     @Test
-    void getMessageSessionsActiveSessionsMode() {
+    void getMessageSessionsActiveMessagesMode() {
         // Arrange - Track 1 active-messages sentinel (10000-01-01T00:00:00Z UTC).
         final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         final String[] sessionIds = new String[] { "active-1", "active-2" };
@@ -1205,6 +1205,26 @@ class ManagementChannelTests {
                 100, null))
             .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
             .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions fails the operation when the broker payload contains a
+     * null session-id entry, rather than surfacing the literal string "null" as a session ID.
+     */
+    @Test
+    void getMessageSessionsRejectsNullSessionIdEntry() {
+        // Arrange - 200 OK with a sessions-ids array containing a null entry.
+        final Object[] sessionIds = new Object[] { "session-1", null, "session-3" };
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
             .verify(TIMEOUT);
     }
 

@@ -153,7 +153,7 @@ class ServiceBusSessionReceiverClientTest {
     /**
      * Verifies the sync wrapper rejects a null {@code updatedAfter} eagerly (immediately on the
      * call) rather than deferring the error until the {@code PagedIterable} is iterated, matching
-     * the behaviour documented on the public method.
+     * the behavior documented on the public method.
      */
     @Test
     void listSessionsRejectsNullUpdatedAfterEagerly() {
