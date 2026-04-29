@@ -371,7 +371,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                    selectedKeys.getTagsFilter());
+                    selectedKeys.getTagsFilter(), featureFlagClient);
             }
             propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);

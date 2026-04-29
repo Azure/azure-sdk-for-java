@@ -94,6 +94,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Mock
     private Context contextMock;
     
+    @Mock
+    private FeatureFlagClient featureFlagClientMock;
+    
     private MockitoSession session;
 
     @BeforeAll
@@ -117,7 +120,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null);
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null, featureFlagClientMock);
     }
 
     @AfterEach
@@ -204,7 +207,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         List<String> tagsFilter = Arrays.asList("env=prod", "team=backend");
         AppConfigurationApplicationSettingPropertySource taggedPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter, featureFlagClientMock);
 
         when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
 
@@ -226,7 +229,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
         AppConfigurationApplicationSettingPropertySource untaggedPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null);
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null, featureFlagClientMock);
 
         when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
 
@@ -248,7 +251,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         List<String> tagsFilter = new ArrayList<>();
         AppConfigurationApplicationSettingPropertySource emptyTagPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter, featureFlagClientMock);
 
         when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
 
@@ -270,7 +273,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         List<String> tagsFilter = Arrays.asList("env=staging");
         AppConfigurationApplicationSettingPropertySource multiLabelPropertySource
             = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter);
+                keyVaultClientFactoryMock, KEY_FILTER, labelFilter, tagsFilter, featureFlagClientMock);
 
         when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(testItems);
 

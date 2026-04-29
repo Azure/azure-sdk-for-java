@@ -74,6 +74,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     
     @Mock
     private Context contextMock;
+    
+    @Mock
+    private FeatureFlagClient featureFlagClientMock;
 
     private MockitoSession session;
 
@@ -88,7 +91,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null);
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, null, featureFlagClientMock);
     }
 
     @AfterEach
