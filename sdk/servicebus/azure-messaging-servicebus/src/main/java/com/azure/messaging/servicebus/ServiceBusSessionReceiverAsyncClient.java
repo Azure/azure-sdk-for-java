@@ -399,7 +399,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
 
     private Mono<PagedResponse<String>> fetchSessionPage(OffsetDateTime lastUpdatedTime, int skip,
         String lastSessionId) {
-        return connectionCacheWrapper.getConnection()
+        // Wrap each page fetch in a tracing span so distributed traces show one
+        // "ServiceBus.listSessions" span per page, matching the tracing pattern used by
+        // acceptSession/acceptNextSession in this client.
+        final Mono<PagedResponse<String>> pageMono = connectionCacheWrapper.getConnection()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.getMessageSessions(lastUpdatedTime, skip, LIST_SESSIONS_PAGE_SIZE,
                 lastSessionId))
@@ -425,6 +428,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 return new PagedResponseBase<Void, String>(null, 200, new HttpHeaders(), sessionIds, continuationToken,
                     null);
             });
+        return tracer.traceMono("ServiceBus.listSessions", pageMono);
     }
 
     @Override
