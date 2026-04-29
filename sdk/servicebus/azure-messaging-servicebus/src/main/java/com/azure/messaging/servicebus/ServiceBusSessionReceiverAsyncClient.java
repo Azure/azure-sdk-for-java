@@ -361,6 +361,13 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         // non-null continuation token, so the lambda receives a non-null token here. byPage(null)
         // is routed to the first-page supplier above, not into this lambda.
         return new PagedFlux<>(() -> fetchSessionPage(lastUpdatedTime, 0, null), continuationToken -> {
+            // Treat an empty continuation token as "no more pages", matching
+            // ServiceBusAdministrationAsyncClient.listQueuesNextPage / listRulesNextPage and the
+            // wider Azure SDK paging convention. This is tolerant of callers that persist the
+            // token to storage and read back an empty string.
+            if (continuationToken.isEmpty()) {
+                return Mono.empty();
+            }
             final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
             if (separator < 0) {
                 return monoError(LOGGER, new IllegalArgumentException(

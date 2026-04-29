@@ -504,4 +504,17 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .expectError(IllegalArgumentException.class)
             .verify(DEFAULT_TIMEOUT);
     }
+
+    /**
+     * Verifies that an empty continuation token completes the {@link PagedFlux} without error,
+     * matching the convention used by {@code ServiceBusAdministrationAsyncClient.listQueuesNextPage}
+     * and the wider Azure SDK paging APIs (null or empty token = no more pages). Tolerant of
+     * callers that persist the token to storage and read back an empty string.
+     */
+    @Test
+    void listSessionsEmptyContinuationTokenCompletes() {
+        final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
+
+        StepVerifier.create(client.listSessions().byPage("")).expectComplete().verify(DEFAULT_TIMEOUT);
+    }
 }
