@@ -130,48 +130,12 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
             }
             KnowledgeBaseAgenticReasoningActivityRecord deserializedKnowledgeBaseAgenticReasoningActivityRecord
                 = new KnowledgeBaseAgenticReasoningActivityRecord(id);
-            deserializedKnowledgeBaseAgenticReasoningActivityRecord.elapsedMs = elapsedMs;
-            deserializedKnowledgeBaseAgenticReasoningActivityRecord.error = error;
+            deserializedKnowledgeBaseAgenticReasoningActivityRecord.setElapsedMs(elapsedMs);
+            deserializedKnowledgeBaseAgenticReasoningActivityRecord.setError(error);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.type = type;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.reasoningTokens = reasoningTokens;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.retrievalReasoningEffort = retrievalReasoningEffort;
             return deserializedKnowledgeBaseAgenticReasoningActivityRecord;
         });
-    }
-
-    /*
-     * The error detail explaining why the operation failed. This property is only included when the activity does not
-     * succeed.
-     */
-    @Generated
-    private KnowledgeBaseErrorDetail error;
-
-    /*
-     * The elapsed time in milliseconds for the retrieval activity.
-     */
-    @Generated
-    private Integer elapsedMs;
-
-    /**
-     * Get the error property: The error detail explaining why the operation failed. This property is only included when
-     * the activity does not succeed.
-     *
-     * @return the error value.
-     */
-    @Generated
-    @Override
-    public KnowledgeBaseErrorDetail getError() {
-        return this.error;
-    }
-
-    /**
-     * Get the elapsedMs property: The elapsed time in milliseconds for the retrieval activity.
-     *
-     * @return the elapsedMs value.
-     */
-    @Generated
-    @Override
-    public Integer getElapsedMs() {
-        return this.elapsedMs;
     }
 }

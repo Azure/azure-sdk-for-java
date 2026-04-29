@@ -27,6 +27,7 @@ public class KnowledgeBaseRetrievalJavaDocSnippets {
         KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
+            .knowledgeBaseName("my-knowledge-base")
             .buildClient();
         // END: com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient.instantiation
         return retrievalClient;

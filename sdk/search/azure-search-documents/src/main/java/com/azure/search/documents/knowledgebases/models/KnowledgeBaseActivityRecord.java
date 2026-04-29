@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.KnowledgeBaseModelWebSummarizationActivityRecord;
 import java.io.IOException;
 
 /**
