@@ -1,13 +1,10 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-05-01)
 
 ### Features Added
 
-- Added `LlmInputHelper.toLlmInput()` static helper that converts an `AnalysisResult` into LLM-ready text
-  (YAML front matter + markdown). Supports all content types (documents, images, audio, video),
-  multi-segment results, and classification hierarchies.
-- Added `ToLlmInputOptions` for controlling output (fields-only, markdown-only, custom metadata).
+- Added `toLlmInput` helper that converts `AnalysisResult` into LLM-friendly text with YAML front matter and markdown content. Supports documents, audio/video, and classification hierarchies.
 
 ### Breaking Changes
 
