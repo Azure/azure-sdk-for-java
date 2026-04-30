@@ -45,7 +45,7 @@ Table 2: Mapping from **Spring Boot** / **Spring Cloud** version to **Spring Clo
 
 **NOTE**: **Spring Cloud Azure** 7.x now support Spring Boot 4. So if you're using Spring Boot 4, please upgrade to 7.x.
 
-**NOTE**: **Spring Cloud Azure** 4.x.x have all reached end of life status and only support hotfixes of 4.20.0 until June 2025. So if you use Spring Boot 3.5.x, please upgrade to 6.x, if you are using any other version of Spring Boot 3, please upgrade to 5.x.
+**NOTE**: **Spring Cloud Azure** 4.x.x have all reached end-of-life status, and hotfix support for 4.20.0 ended in June 2025. So if you use Spring Boot 3.5.x, please upgrade to 6.x; if you are using any other version of Spring Boot 3, please upgrade to 5.x.
 
 **NOTE**: **Spring Cloud Azure** 3.x.x have all reached end of life status and are no longer supported. Please upgrade to 4.x. You can refer to [Migration Guide for 4.0](https://learn.microsoft.com/azure/developer/java/spring-framework/migration-guide-for-4.0) to migrate to 4.x.
 
