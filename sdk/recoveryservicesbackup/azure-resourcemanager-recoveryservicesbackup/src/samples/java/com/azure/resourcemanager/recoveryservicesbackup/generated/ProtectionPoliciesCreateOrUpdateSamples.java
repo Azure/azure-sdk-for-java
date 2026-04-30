@@ -45,7 +45,7 @@ import java.util.Arrays;
  */
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Create or Update Simple Azure Vm Protection Policy.
@@ -69,7 +69,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-01-31-preview/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Workload Protection Policy.
@@ -132,7 +132,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
      * Sample code: Create or Update Daily Azure Storage Protection Policy.
@@ -182,7 +182,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
      */
     /**
      * Sample code: Create or Update Azure Storage Vault Standard Protection Policy.
@@ -237,7 +237,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
      * Sample code: Create or Update Hourly Azure Storage Protection Policy.
@@ -282,7 +282,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Vm Protection Policy.
@@ -332,7 +332,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with Hourly backup.
@@ -386,7 +386,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with daily backup.
@@ -439,7 +439,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/ProtectionPolicies_CreateOrUpdate_SapHanaDBInstance.json
+     * x-ms-original-file: 2026-01-31-preview/AzureWorkload/ProtectionPolicies_CreateOrUpdate_SapHanaDBInstance.json
      */
     /**
      * Sample code: Create or Update Sap Hana DB Instance Workload Protection Policy.

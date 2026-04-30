@@ -27,6 +27,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.storagemover.fluent.AgentsClient;
+import com.azure.resourcemanager.storagemover.fluent.ConnectionsClient;
 import com.azure.resourcemanager.storagemover.fluent.EndpointsClient;
 import com.azure.resourcemanager.storagemover.fluent.JobDefinitionsClient;
 import com.azure.resourcemanager.storagemover.fluent.JobRunsClient;
@@ -217,6 +218,20 @@ public final class StorageMoverManagementClientImpl implements StorageMoverManag
     }
 
     /**
+     * The ConnectionsClient object to access its operations.
+     */
+    private final ConnectionsClient connections;
+
+    /**
+     * Gets the ConnectionsClient object to access its operations.
+     * 
+     * @return the ConnectionsClient object.
+     */
+    public ConnectionsClient getConnections() {
+        return this.connections;
+    }
+
+    /**
      * The JobRunsClient object to access its operations.
      */
     private final JobRunsClient jobRuns;
@@ -247,13 +262,14 @@ public final class StorageMoverManagementClientImpl implements StorageMoverManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01";
+        this.apiVersion = "2025-12-01";
         this.operations = new OperationsClientImpl(this);
         this.storageMovers = new StorageMoversClientImpl(this);
         this.agents = new AgentsClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.jobDefinitions = new JobDefinitionsClientImpl(this);
+        this.connections = new ConnectionsClientImpl(this);
         this.jobRuns = new JobRunsClientImpl(this);
     }
 

@@ -1,5 +1,16 @@
 ## Release History
 
+### 1.0.0-beta.19 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed Netty ByteBuf leak in `GatewayServerErrorInjector` fault injection delay paths under HTTP/2. - See [PR 48880](https://github.com/Azure/azure-sdk-for-java/pull/48880)
+
+#### Other Changes
+
 ### 1.0.0-beta.18 (2026-03-27)
 
 #### Other Changes

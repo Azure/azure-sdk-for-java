@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotoperations.fluent.IoTOperationsManagementClient;
 import com.azure.resourcemanager.iotoperations.implementation.AkriConnectorTemplatesImpl;
 import com.azure.resourcemanager.iotoperations.implementation.AkriConnectorsImpl;
+import com.azure.resourcemanager.iotoperations.implementation.AkriServicesImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerAuthenticationsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerAuthorizationsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerListenersImpl;
@@ -41,6 +42,7 @@ import com.azure.resourcemanager.iotoperations.implementation.OperationsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.RegistryEndpointsImpl;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplates;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectors;
+import com.azure.resourcemanager.iotoperations.models.AkriServices;
 import com.azure.resourcemanager.iotoperations.models.BrokerAuthentications;
 import com.azure.resourcemanager.iotoperations.models.BrokerAuthorizations;
 import com.azure.resourcemanager.iotoperations.models.BrokerListeners;
@@ -90,6 +92,8 @@ public final class IoTOperationsManager {
     private AkriConnectorTemplates akriConnectorTemplates;
 
     private AkriConnectors akriConnectors;
+
+    private AkriServices akriServices;
 
     private final IoTOperationsManagementClient clientObject;
 
@@ -461,6 +465,18 @@ public final class IoTOperationsManager {
             this.akriConnectors = new AkriConnectorsImpl(clientObject.getAkriConnectors(), this);
         }
         return akriConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of AkriServices. It manages AkriServiceResource.
+     * 
+     * @return Resource collection API of AkriServices.
+     */
+    public AkriServices akriServices() {
+        if (this.akriServices == null) {
+            this.akriServices = new AkriServicesImpl(clientObject.getAkriServices(), this);
+        }
+        return akriServices;
     }
 
     /**

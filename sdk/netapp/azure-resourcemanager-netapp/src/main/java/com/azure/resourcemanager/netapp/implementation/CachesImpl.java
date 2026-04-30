@@ -55,16 +55,13 @@ public final class CachesImpl implements Caches {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, cacheName, context);
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName, context);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName, Context context) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InfrastructureEnc
  */
 public final class BackupResourceEncryptionConfigsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupResourceEncryptionConfig_Put.json
+     * x-ms-original-file: 2026-01-31-preview/BackupResourceEncryptionConfig_Put.json
      */
     /**
      * Sample code: Update Vault Encryption Configuration.

@@ -266,7 +266,7 @@ public interface CachesClient {
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CacheInner> listByCapacityPools(String resourceGroupName, String accountName, String poolName);
+    PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName);
 
     /**
      * List all Caches within the Capacity Pool.
@@ -281,8 +281,7 @@ public interface CachesClient {
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CacheInner> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context);
+    PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
      * This operation will list the cluster peering command, cluster peering passphrase and the vserver peering command.

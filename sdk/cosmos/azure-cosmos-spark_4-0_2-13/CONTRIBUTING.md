@@ -76,6 +76,17 @@ mvn clean install -Dgpg.skip
 mvn clean install -Dgpg.skip -DskipTests
 ```
 
+## Source aggregation and `combine.self="override"`
+
+This leaf module overrides the `build-helper-maven-plugin` executions inherited from the
+`azure-cosmos-spark_4` parent POM. Each `<execution>` in the leaf's `pom.xml` uses
+`combine.self="override"` to replace (not merge with) the parent execution of the same `<id>`.
+
+**If you add a new `<execution>` ID in `azure-cosmos-spark_4/pom.xml`**, you **must** add a
+corresponding `combine.self="override"` execution with the same ID in this module's `pom.xml`
+(and in `azure-cosmos-spark_4-1_2-13/pom.xml`). Otherwise the parent execution silently leaks
+through and may cause duplicate source paths or compilation failures.
+
 ## Version management
 Developing version naming convention is like `0.1.2-beta.1`. Release version naming convention is like `0.1.2`.
 

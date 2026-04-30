@@ -1,14 +1,13 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.13.4 (2026-04-28)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
 
 ## 1.13.3 (2026-01-15)
 

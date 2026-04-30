@@ -54,6 +54,12 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku UBUNTU2204 = fromString("Ubuntu2204");
 
     /**
+     * Use Windows2025 as the OS for node images. Unsupported for system node pools. Windows2025 supports Windows2022
+     * and Windows 2025 containers; it cannot run Windows2019 containers and vice versa.
+     */
+    public static final OSSku WINDOWS2025 = fromString("Windows2025");
+
+    /**
      * Use Ubuntu2404 as the OS for node images, however, Ubuntu 24.04 may not be supported for all nodepools. For
      * limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions.
      */

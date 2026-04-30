@@ -14,9 +14,10 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Async sample demonstrating how to analyze invoices using Content Understanding service.
@@ -51,16 +53,19 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        // Use reactive pattern: chain operations using flatMap
+        // Wait for the operation to complete and get the operation status
         // In a real application, you would use subscribe() instead of block()
-        AnalysisResult result = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = operation.last().map(pollResponse -> {
+            if (!pollResponse.getStatus().isComplete()) {
+                throw new RuntimeException("Polling did not complete: " + pollResponse.getStatus());
             }
+            if (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                throw new RuntimeException("Operation failed with status: " + pollResponse.getStatus());
+            }
+            return pollResponse.getValue();
         }).block(); // block() is used here for testing; in production, use subscribe()
+
+        AnalysisResult result = operationStatus.getResult();
         // END:ContentUnderstandingAnalyzeInvoiceAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceAsync
@@ -73,6 +78,36 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
         System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeInvoiceAsync
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceUsageAsync
+        // Get usage details from the operation status
+        UsageDetails usage = operationStatus.getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+        // END:ContentUnderstandingAnalyzeInvoiceUsageAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceUsageAsync
+        assertNotNull(usage, "Usage details should not be null");
+        assertNotNull(usage.getDocumentPagesStandard(), "Document pages (standard) should not be null");
+        assertTrue(usage.getDocumentPagesStandard() > 0, "Document pages (standard) should be positive");
+        assertNotNull(usage.getTokens(), "Tokens should not be null");
+        assertTrue(!usage.getTokens().isEmpty(), "Tokens should not be empty");
+        System.out.println("Usage details validated successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeInvoiceUsageAsync
 
         // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
         // Get the document content (invoices are documents)

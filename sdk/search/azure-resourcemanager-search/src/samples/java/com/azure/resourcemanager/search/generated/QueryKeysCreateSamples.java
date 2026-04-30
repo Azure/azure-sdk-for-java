@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class QueryKeysCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchCreateQueryKey.json
+     * x-ms-original-file: 2026-03-01-preview/SearchCreateQueryKey.json
      */
     /**
      * Sample code: SearchCreateQueryKey.

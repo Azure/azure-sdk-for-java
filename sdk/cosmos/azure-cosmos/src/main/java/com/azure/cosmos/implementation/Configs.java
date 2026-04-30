@@ -46,6 +46,7 @@ public class Configs {
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
+    private static final String BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = "COSMOS.BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
@@ -58,7 +59,7 @@ public class Configs {
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
 
-    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Thin client connect/acquire timeout - controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
     // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
     // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
     // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
@@ -117,6 +118,7 @@ public class Configs {
 
     private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
+    private static final int DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = 15;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
     private static final int DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH = 4096; //4KB
@@ -247,6 +249,11 @@ public class Configs {
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE = "COSMOS.MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
+    // readManyByPartitionKeys: max number of PK values per query per physical partition
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 100;
 
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
@@ -567,6 +574,10 @@ public class Configs {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
 
+    public int getBackgroundRefreshLocationJitterMaxInSeconds() {
+        return getJVMConfigAsInt(BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS, DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS);
+    }
+
     public static int getMaxHttpHeaderSize() {
         return getJVMConfigAsInt(MAX_HTTP_HEADER_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_REQUEST_HEADER_SIZE);
     }
@@ -678,7 +689,7 @@ public class Configs {
             }
         }
 
-        // Guard against invalid values — timeout must be at least 500ms
+        // Guard against invalid values - timeout must be at least 500ms
         if (value < 500) {
             logger.warn(
                 "Invalid thin client connection timeout: {}ms. Must be >= 500. Falling back to default: {}ms.",
@@ -814,6 +825,46 @@ public class Configs {
         }
 
         return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getReadManyByPkMaxBatchSize() {
+        Integer parsed = parsePositiveInt(System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE), READ_MANY_BY_PK_MAX_BATCH_SIZE);
+        if (parsed != null) {
+            return parsed;
+        }
+
+        parsed = parsePositiveInt(System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE), READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
+        if (parsed != null) {
+            return parsed;
+        }
+
+        return DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE;
+    }
+
+    /**
+     * Parses a non-empty string as a positive integer (>= 1). On parse failure or
+     * non-positive result, logs a WARN and returns null so the caller can fall back
+     * to its default. A null/empty input is also treated as "no value".
+     */
+    private static Integer parsePositiveInt(String value, String configName) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            int parsed = Integer.parseInt(value);
+            if (parsed < 1) {
+                logger.warn(
+                    "Ignoring invalid value '{}' for config '{}'. Value must be >= 1. Falling back to default.",
+                    value, configName);
+                return null;
+            }
+            return parsed;
+        } catch (NumberFormatException e) {
+            logger.warn(
+                "Ignoring non-numeric value '{}' for config '{}'. Falling back to default.",
+                value, configName);
+            return null;
+        }
     }
 
     public static int getMaxBulkMicroBatchConcurrency() {
