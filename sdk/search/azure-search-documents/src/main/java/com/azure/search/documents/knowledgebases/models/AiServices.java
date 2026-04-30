@@ -15,7 +15,13 @@ import java.io.IOException;
  * Parameters for AI Services.
  */
 @Fluent
-public final class AIServices implements JsonSerializable<AIServices> {
+public final class AiServices implements JsonSerializable<AiServices> {
+
+    /*
+     * The URI of the AI Services endpoint.
+     */
+    @Generated
+    private final String url;
 
     /*
      * The API key for accessing AI Services.
@@ -24,13 +30,23 @@ public final class AIServices implements JsonSerializable<AIServices> {
     private String apiKey;
 
     /**
-     * Creates an instance of AIServices class.
+     * Creates an instance of AiServices class.
      *
      * @param url the url value to set.
      */
     @Generated
-    public AIServices(String url) {
+    public AiServices(String url) {
         this.url = url;
+    }
+
+    /**
+     * Get the url property: The URI of the AI Services endpoint.
+     *
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 
     /**
@@ -47,10 +63,10 @@ public final class AIServices implements JsonSerializable<AIServices> {
      * Set the apiKey property: The API key for accessing AI Services.
      *
      * @param apiKey the apiKey value to set.
-     * @return the AIServices object itself.
+     * @return the AiServices object itself.
      */
     @Generated
-    public AIServices setApiKey(String apiKey) {
+    public AiServices setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
     }
@@ -68,16 +84,16 @@ public final class AIServices implements JsonSerializable<AIServices> {
     }
 
     /**
-     * Reads an instance of AIServices from the JsonReader.
+     * Reads an instance of AiServices from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AIServices if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * @return An instance of AiServices if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AIServices.
+     * @throws IOException If an error occurs while reading the AiServices.
      */
     @Generated
-    public static AIServices fromJson(JsonReader jsonReader) throws IOException {
+    public static AiServices fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String url = null;
             String apiKey = null;
@@ -92,25 +108,9 @@ public final class AIServices implements JsonSerializable<AIServices> {
                     reader.skipChildren();
                 }
             }
-            AIServices deserializedAIServices = new AIServices(url);
-            deserializedAIServices.apiKey = apiKey;
-            return deserializedAIServices;
+            AiServices deserializedAiServices = new AiServices(url);
+            deserializedAiServices.apiKey = apiKey;
+            return deserializedAiServices;
         });
-    }
-
-    /*
-     * The URI of the AI Services endpoint.
-     */
-    @Generated
-    private final String url;
-
-    /**
-     * Get the url property: The URI of the AI Services endpoint.
-     *
-     * @return the url value.
-     */
-    @Generated
-    public String getUrl() {
-        return this.url;
     }
 }

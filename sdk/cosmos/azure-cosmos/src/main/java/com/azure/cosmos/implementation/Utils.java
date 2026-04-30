@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosAdditionalHeaderName;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -832,5 +833,62 @@ public class Utils {
         BridgeInternal.setSubStatusCode(exceptionToThrow, substatusCode);
 
         return exceptionToThrow;
+    }
+
+
+    /**
+     * Converts internal request headers into typed additional headers exposed in public APIs.
+     *
+     * @param requestHeaders internal request headers map
+     * @return unmodifiable map of known additional headers, or {@code null} when none are set
+     */
+    public static Map<CosmosAdditionalHeaderName, String> toAdditionalHeaders(Map<String, String> requestHeaders) {
+        if (requestHeaders == null || requestHeaders.isEmpty()) {
+            return null;
+        }
+
+        Map<CosmosAdditionalHeaderName, String> additionalHeaders = new HashMap<>();
+        String workloadIdHeaderName = CosmosAdditionalHeaderName.WORKLOAD_ID.getHeaderName();
+        if (requestHeaders.containsKey(workloadIdHeaderName)) {
+            additionalHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, requestHeaders.get(workloadIdHeaderName));
+        }
+
+        if (additionalHeaders.isEmpty()) {
+            return null;
+        }
+
+        return Collections.unmodifiableMap(additionalHeaders);
+    }
+
+    /**
+     * Validates all entries in an additional-headers map.
+     * Currently validates that {@link CosmosAdditionalHeaderName#WORKLOAD_ID} values are non-empty valid integers.
+     *
+     * @param additionalHeaders the map to validate (may be null — no-op in that case)
+     * @throws IllegalArgumentException if any header value fails validation (including null or empty workload-id values)
+     */
+    public static void validateAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        if (additionalHeaders == null) {
+            return;
+        }
+        for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+            CosmosAdditionalHeaderName key = entry.getKey();
+            String value = entry.getValue();
+
+            if (CosmosAdditionalHeaderName.WORKLOAD_ID.equals(key)) {
+                if (StringUtils.isEmpty(value)) {
+                    throw new IllegalArgumentException(
+                        "Invalid value for header '" + key.getHeaderName() + "'. The value must not be null or empty.");
+                }
+
+                try {
+                    Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(
+                        "Invalid value '" + value + "' for header '" + key.getHeaderName()
+                            + "'. The value must be a valid integer.", e);
+                }
+            }
+        }
     }
 }
