@@ -79,9 +79,4 @@ class DecodedResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, charset));
     }
-
-    @Override
-    public void close() {
-        originalResponse.close();
-    }
 }
