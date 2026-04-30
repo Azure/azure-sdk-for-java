@@ -337,7 +337,7 @@ public final class LlmInputHelper {
      * <pre>
      *   contents[0] = parent doc
      *     path="input1", category=null
-     *     markdown="INVOICE\nVendor: Contoso\nTotal: $1500\n&lt;!-- PageBreak --&gt;\nRECEIPT\nStore: Fabrikam"
+     *     markdown="INVOICE\nVendor: Contoso\nTotal: $1500\n&lt;!-- PageBreak --&gt;\nRECEIPT\nStore: Northwind"
      *     segments=[
      *       { segmentId: "seg1", category: "invoice", startPageNumber: 1, span: {offset:0, length:38} },
      *       { segmentId: "seg2", category: "receipt", startPageNumber: 2, span: {offset:55, length:37} }
@@ -434,32 +434,32 @@ public final class LlmInputHelper {
         boolean includeMarkdown, Map<String, Object> metadata, boolean isMultiSegment) {
 
         // Build ordered front matter entries
-        List<String[]> fm = new ArrayList<>();
+        List<Object[]> fm = new ArrayList<>();
 
         // 1. contentType
-        fm.add(new String[] { "contentType", content.kind != null ? content.kind.toString() : "unknown" });
+        fm.add(new Object[] { "contentType", content.kind != null ? content.kind.toString() : "unknown" });
 
         // 2. user metadata
         if (metadata != null) {
             for (Map.Entry<String, Object> entry : metadata.entrySet()) {
-                fm.add(new String[] { entry.getKey(), yamlScalar(entry.getValue()) });
+                fm.add(new Object[] { entry.getKey(), entry.getValue() });
             }
         }
 
         // 3. timeRange (only multi-segment audioVisual)
         if (content.kind == AnalysisContentKind.AUDIO_VISUAL && isMultiSegment) {
-            fm.add(new String[] { "timeRange", formatTimeRange(content.startTimeMs, content.endTimeMs) });
+            fm.add(new Object[] { "timeRange", formatTimeRange(content.startTimeMs, content.endTimeMs) });
         }
 
         // 4. category
         if (content.category != null) {
-            fm.add(new String[] { "category", content.category });
+            fm.add(new Object[] { "category", content.category });
         }
 
         // 5. pages
         Object pagesVal = formatPages(content);
         if (pagesVal != null) {
-            fm.add(new String[] { "pages", pagesVal.toString() });
+            fm.add(new Object[] { "pages", pagesVal });
         }
 
         // Build complex entries separately (fields, rai_warnings need structured YAML)
@@ -591,15 +591,15 @@ public final class LlmInputHelper {
 
         // Prefer actual page numbers from the pages list
         if (content.pages != null && !content.pages.isEmpty()) {
-            List<Integer> nums = new ArrayList<>();
+            List<Integer> pageNumbers = new ArrayList<>();
             for (DocumentPage p : content.pages) {
                 if (p.getPageNumber() > 0) {
-                    nums.add(p.getPageNumber());
+                    pageNumbers.add(p.getPageNumber());
                 }
             }
-            if (!nums.isEmpty()) {
-                Collections.sort(nums);
-                return compressPageNumbers(nums);
+            if (!pageNumbers.isEmpty()) {
+                Collections.sort(pageNumbers);
+                return compressPageNumbers(pageNumbers);
             }
         }
 
@@ -704,13 +704,13 @@ public final class LlmInputHelper {
         return needsQuote ? "'" + s.replace("'", "''") + "'" : s;
     }
 
-    private static String buildFrontMatter(List<String[]> simpleEntries, Map<String, Object> fields,
+    private static String buildFrontMatter(List<Object[]> simpleEntries, Map<String, Object> fields,
         List<Map<String, String>> warnings) {
         List<String> lines = new ArrayList<>();
         lines.add("---");
 
         // Simple key-value entries
-        for (String[] entry : simpleEntries) {
+        for (Object[] entry : simpleEntries) {
             String key = yamlScalar(entry[0]);
             String val = yamlScalar(entry[1]);
             lines.add(key + ": " + val);
