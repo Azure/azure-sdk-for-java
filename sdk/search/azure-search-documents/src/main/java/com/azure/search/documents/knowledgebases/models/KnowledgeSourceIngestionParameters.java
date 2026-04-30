@@ -254,7 +254,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.aiServices = AIServices.fromJson(reader);
+                    deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -267,7 +267,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      * Optional AI Services configuration for content processing.
      */
     @Generated
-    private AIServices aiServices;
+    private AiServices aiServices;
 
     /**
      * Get the aiServices property: Optional AI Services configuration for content processing.
@@ -275,7 +275,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      * @return the aiServices value.
      */
     @Generated
-    public AIServices getAiServices() {
+    public AiServices getAiServices() {
         return this.aiServices;
     }
 
@@ -286,7 +286,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      * @return the KnowledgeSourceIngestionParameters object itself.
      */
     @Generated
-    public KnowledgeSourceIngestionParameters setAiServices(AIServices aiServices) {
+    public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
         this.aiServices = aiServices;
         return this;
     }
