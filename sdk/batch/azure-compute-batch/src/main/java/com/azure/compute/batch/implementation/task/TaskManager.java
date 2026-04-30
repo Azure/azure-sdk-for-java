@@ -204,7 +204,7 @@ public class TaskManager {
      * @param taskCreateOptions Options for configuring the task creation.
      */
     public static void createTasks(TaskSubmitter taskSubmitter, String jobId,
-        Collection<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions taskCreateOptions) {
+        List<BatchTaskCreateParameters> taskList, BatchTaskBulkCreateOptions taskCreateOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 
