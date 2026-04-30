@@ -158,7 +158,7 @@ public class CosmosClientBuilder implements
     private boolean serverCertValidationDisabled = false;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
-    private Map<CosmosHeaderName, String> additionalHeaders;
+    private Map<CosmosAdditionalHeaderName, String> additionalHeaders;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -741,23 +741,23 @@ public class CosmosClientBuilder implements
     /**
      * Sets additional HTTP headers that will be included with every request from this client.
      * <p>
-     * {@link CosmosHeaderName} defines exactly which headers are supported. Currently
-     * the only supported header is {@link CosmosHeaderName#WORKLOAD_ID}
+     * {@link CosmosAdditionalHeaderName} defines exactly which headers are supported. Currently
+     * the only supported header is {@link CosmosAdditionalHeaderName#WORKLOAD_ID}
      * ({@code x-ms-cosmos-workload-id}).
      * <p>
      * This restriction exists because in Direct mode (RNTBD), only headers with explicit
-     * encoding support are sent on the wire. Using {@link CosmosHeaderName} ensures consistent
+     * encoding support are sent on the wire. Using {@link CosmosAdditionalHeaderName} ensures consistent
      * behavior across both Gateway and Direct modes.
      * <p>
      * If the same header is also set on request options (e.g.,
      * {@code CosmosItemRequestOptions.setAdditionalHeaders(Map)}),
      * the request-level value takes precedence over the client-level value.
      *
-     * @param additionalHeaders map of {@link CosmosHeaderName} to value
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
      * @return current CosmosClientBuilder
      * @throws IllegalArgumentException if the workload-id value is not a valid integer
      */
-    public CosmosClientBuilder additionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
+    public CosmosClientBuilder additionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
         Utils.validateAdditionalHeaders(additionalHeaders);
         this.additionalHeaders = additionalHeaders != null
             ? new HashMap<>(additionalHeaders)
@@ -775,7 +775,7 @@ public class CosmosClientBuilder implements
             return null;
         }
         Map<String, String> result = new HashMap<>();
-        for (Map.Entry<CosmosHeaderName, String> entry : this.additionalHeaders.entrySet()) {
+        for (Map.Entry<CosmosAdditionalHeaderName, String> entry : this.additionalHeaders.entrySet()) {
             result.put(entry.getKey().getHeaderName(), entry.getValue());
         }
         return result;
@@ -783,10 +783,10 @@ public class CosmosClientBuilder implements
 
     /**
      * Gets the additional headers configured on this builder in their original
-     * {@code Map<CosmosHeaderName, String>} form.
+     * {@code Map<CosmosAdditionalHeaderName, String>} form.
      * @return the additional headers map, or null if not set
      */
-    Map<CosmosHeaderName, String> getAdditionalHeadersRaw() {
+    Map<CosmosAdditionalHeaderName, String> getAdditionalHeadersRaw() {
         return this.additionalHeaders;
     }
 

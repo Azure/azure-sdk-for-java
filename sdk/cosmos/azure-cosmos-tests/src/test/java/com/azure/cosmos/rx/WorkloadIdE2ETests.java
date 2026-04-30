@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosHeaderName;
+import com.azure.cosmos.CosmosAdditionalHeaderName;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -59,8 +59,8 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "15");
 
         // Clone the shared builder before setting additionalHeaders.
         // getClientBuilder() returns the same mutable instance from the data provider.
@@ -164,8 +164,8 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         // Verify per-request header override works — request-level should take precedence
         TestObject doc = TestObject.create();
 
-        Map<CosmosHeaderName, String> requestHeaders = new HashMap<>();
-        requestHeaders.put(CosmosHeaderName.WORKLOAD_ID, "30");
+        Map<CosmosAdditionalHeaderName, String> requestHeaders = new HashMap<>();
+        requestHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "30");
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions()
             .setAdditionalHeaders(requestHeaders);
@@ -211,8 +211,8 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         TestObject doc = TestObject.create();
         container.createItem(doc, new PartitionKey(doc.getMypk()), new CosmosItemRequestOptions()).block();
 
-        Map<CosmosHeaderName, String> requestHeaders = new HashMap<>();
-        requestHeaders.put(CosmosHeaderName.WORKLOAD_ID, "42");
+        Map<CosmosAdditionalHeaderName, String> requestHeaders = new HashMap<>();
+        requestHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "42");
 
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
             .setAdditionalHeaders(requestHeaders);
@@ -286,20 +286,20 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     /**
      * Verifies that the {@code CosmosClientBuilder.additionalHeaders()} API accepts
-     * a map keyed by {@link CosmosHeaderName} constants.
+     * a map keyed by {@link CosmosAdditionalHeaderName} constants.
      * <p>
-     * {@link CosmosHeaderName} has a private constructor and no public factory method,
-     * so callers can only use the predefined constants (e.g., {@link CosmosHeaderName#WORKLOAD_ID}).
+     * {@link CosmosAdditionalHeaderName} has a private constructor and no public factory method,
+     * so callers can only use the predefined constants (e.g., {@link CosmosAdditionalHeaderName#WORKLOAD_ID}).
      * This test verifies the positive case: a map with known header constants
      * is accepted by the builder without error.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void additionalHeadersOnlyAcceptKnownCosmosHeaderNames() {
-        // The type system enforces that only CosmosHeaderName instances can be used as keys.
-        // Since CosmosHeaderName has a private constructor and no public fromString(),
+    public void additionalHeadersOnlyAcceptKnownCosmosAdditionalHeaderNames() {
+        // The type system enforces that only CosmosAdditionalHeaderName instances can be used as keys.
+        // Since CosmosAdditionalHeaderName has a private constructor and no public fromString(),
         // the only valid keys are the predefined constants like WORKLOAD_ID.
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "15");
 
         // Verify builder accepts a map with known header constants — no exception thrown
         CosmosClientBuilder builder = new CosmosClientBuilder()

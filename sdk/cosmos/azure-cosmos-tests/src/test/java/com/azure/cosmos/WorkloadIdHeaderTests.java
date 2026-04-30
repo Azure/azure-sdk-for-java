@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * <p>
  * Covers three layers:
  * <ol>
- *   <li><b>Public API surface</b> — {@link CosmosHeaderName} constants, {@code CosmosClientBuilder.additionalHeaders()},
+ *   <li><b>Public API surface</b> — {@link CosmosAdditionalHeaderName} constants, {@code CosmosClientBuilder.additionalHeaders()},
  *       and that {@code setAdditionalHeaders()} is callable on every request options class.</li>
  *   <li><b>Validation</b> — null and non-numeric workload-id rejected at builder and request-options levels;
  *       out-of-range values accepted (range enforcement is the backend's responsibility).</li>
@@ -45,7 +45,7 @@ public class WorkloadIdHeaderTests {
     private static final String TEST_WORKLOAD_ID = "42";
 
     // ==============================================================================================
-    // 1. CosmosHeaderName constants
+    // 1. CosmosAdditionalHeaderName constants
     // ==============================================================================================
 
     @Test(groups = { "unit" })
@@ -55,7 +55,7 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void cosmosHeaderNameWorkloadIdValue() {
-        assertThat(CosmosHeaderName.WORKLOAD_ID.getHeaderName()).isEqualTo("x-ms-cosmos-workload-id");
+        assertThat(CosmosAdditionalHeaderName.WORKLOAD_ID.getHeaderName()).isEqualTo("x-ms-cosmos-workload-id");
     }
 
 
@@ -65,8 +65,8 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void builderStoresAdditionalHeaders() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "25");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "25");
 
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
@@ -99,8 +99,8 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void clonedBuilderPreservesAdditionalHeaders() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "25");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "25");
 
         CosmosClientBuilder original = new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
@@ -128,13 +128,13 @@ public class WorkloadIdHeaderTests {
     }
 
     // ==============================================================================================
-    // 3. Validation — null/non-numeric rejected, out-of-range accepted
+    // 3. Validation — null/empty/non-numeric rejected, out-of-range accepted
     // ==============================================================================================
 
     @Test(groups = { "unit" })
     public void nonNumericWorkloadIdRejectedAtBuilderLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "abc");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "abc");
 
         assertThatThrownBy(() -> new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
@@ -147,8 +147,8 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void nullWorkloadIdRejectedAtBuilderLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, null);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, null);
 
         assertThatThrownBy(() -> new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
@@ -159,9 +159,22 @@ public class WorkloadIdHeaderTests {
     }
 
     @Test(groups = { "unit" })
+    public void emptyWorkloadIdRejectedAtBuilderLevel() {
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "");
+
+        assertThatThrownBy(() -> new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .additionalHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("must not be null or empty");
+    }
+
+    @Test(groups = { "unit" })
     public void nonNumericWorkloadIdRejectedAtItemRequestOptionsLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "abc");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "abc");
 
         assertThatThrownBy(() -> new CosmosItemRequestOptions().setAdditionalHeaders(headers))
             .isInstanceOf(IllegalArgumentException.class)
@@ -170,8 +183,8 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void nullWorkloadIdRejectedAtItemRequestOptionsLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, null);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, null);
 
         assertThatThrownBy(() -> new CosmosItemRequestOptions().setAdditionalHeaders(headers))
             .isInstanceOf(IllegalArgumentException.class)
@@ -179,9 +192,19 @@ public class WorkloadIdHeaderTests {
     }
 
     @Test(groups = { "unit" })
+    public void emptyWorkloadIdRejectedAtItemRequestOptionsLevel() {
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "");
+
+        assertThatThrownBy(() -> new CosmosItemRequestOptions().setAdditionalHeaders(headers))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("must not be null or empty");
+    }
+
+    @Test(groups = { "unit" })
     public void nonNumericWorkloadIdRejectedAtBulkExecutionOptionsLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "not-a-number");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "not-a-number");
 
         assertThatThrownBy(() -> new CosmosBulkExecutionOptions().setAdditionalHeaders(headers))
             .isInstanceOf(IllegalArgumentException.class)
@@ -190,8 +213,8 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void nonNumericWorkloadIdRejectedAtDatabaseRequestOptionsLevel() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "not-a-number");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "not-a-number");
 
         assertThatThrownBy(() -> new CosmosDatabaseRequestOptions().setAdditionalHeaders(headers))
             .isInstanceOf(IllegalArgumentException.class)
@@ -201,8 +224,8 @@ public class WorkloadIdHeaderTests {
     /** Range validation [1, 50] is the backend's responsibility — SDK only validates integer format. */
     @Test(groups = { "unit" })
     public void outOfRangeWorkloadIdAcceptedByBuilder() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "51");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "51");
 
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint("https://test.documents.azure.com:443/")
@@ -224,8 +247,8 @@ public class WorkloadIdHeaderTests {
      */
     @DataProvider(name = "requestOptionsWithToRequestOptions")
     public Object[][] requestOptionsWithToRequestOptions() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
 
         return new Object[][] {
             // Data-plane
@@ -254,8 +277,8 @@ public class WorkloadIdHeaderTests {
     /** CosmosQueryRequestOptions uses a bridge accessor pattern (no simple toRequestOptions()). */
     @Test(groups = { "unit" })
     public void workloadIdReachesQueryRequestOptions() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
 
         RequestOptions opts = ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsHelper
@@ -268,8 +291,8 @@ public class WorkloadIdHeaderTests {
     /** CosmosChangeFeedRequestOptions uses a bridge accessor that exposes getHeaders(). */
     @Test(groups = { "unit" })
     public void workloadIdReachesChangeFeedRequestOptions() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
 
         Map<String, String> extracted = ImplementationBridgeHelpers
             .CosmosChangeFeedRequestOptionsHelper
@@ -285,8 +308,8 @@ public class WorkloadIdHeaderTests {
     /** CosmosReadManyRequestOptions uses getImpl().applyToRequestOptions(). */
     @Test(groups = { "unit" })
     public void workloadIdReachesReadManyRequestOptions() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
 
         RequestOptions opts = ImplementationBridgeHelpers
             .CosmosReadManyRequestOptionsHelper
@@ -300,8 +323,8 @@ public class WorkloadIdHeaderTests {
     /** CosmosBulkExecutionOptions delegates to an internal CosmosBatchRequestOptions. */
     @Test(groups = { "unit" })
     public void workloadIdReachesBulkExecutionOptions() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
 
         Map<String, String> extracted = reflectGetHeaders(
             new CosmosBulkExecutionOptions().setAdditionalHeaders(headers));
@@ -323,7 +346,7 @@ public class WorkloadIdHeaderTests {
 
     @Test(groups = { "unit" })
     public void emptyAdditionalHeadersDoesNotInjectWorkloadId() {
-        Map<CosmosHeaderName, String> empty = new HashMap<>();
+        Map<CosmosAdditionalHeaderName, String> empty = new HashMap<>();
         assertNoWorkloadId(reflectToRequestOptions(new CosmosItemRequestOptions().setAdditionalHeaders(empty)));
         assertNoWorkloadId(reflectToRequestOptions(new CosmosDatabaseRequestOptions().setAdditionalHeaders(empty)));
         assertNoWorkloadId(reflectToRequestOptions(new CosmosContainerRequestOptions().setAdditionalHeaders(empty)));
@@ -359,6 +382,79 @@ public class WorkloadIdHeaderTests {
     }
 
     // ==============================================================================================
+    // 7. Request options getters — getAdditionalHeaders() behavior
+    // ==============================================================================================
+
+    @DataProvider(name = "requestOptionsSupportingAdditionalHeaders")
+    public Object[][] requestOptionsSupportingAdditionalHeaders() {
+        return new Object[][] {
+            { "CosmosItemRequestOptions", new CosmosItemRequestOptions() },
+            { "CosmosBatchRequestOptions", new CosmosBatchRequestOptions() },
+            { "CosmosBulkExecutionOptions", new CosmosBulkExecutionOptions() },
+            { "CosmosQueryRequestOptions", new CosmosQueryRequestOptions() },
+            { "CosmosReadManyRequestOptions", new CosmosReadManyRequestOptions() },
+            { "CosmosChangeFeedRequestOptions", CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forFullRange()) },
+            { "CosmosDatabaseRequestOptions", new CosmosDatabaseRequestOptions() },
+            { "CosmosContainerRequestOptions", new CosmosContainerRequestOptions() },
+            { "CosmosStoredProcedureRequestOptions", new CosmosStoredProcedureRequestOptions() }
+        };
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "requestOptionsSupportingAdditionalHeaders")
+    public void allExpectedRequestOptionsClassesSupportGetAdditionalHeaders(String optionsClassName, Object requestOptions) {
+        assertThat(hasGetAdditionalHeaders(requestOptions.getClass()))
+            .as(optionsClassName + " should have getAdditionalHeaders()")
+            .isTrue();
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "requestOptionsSupportingAdditionalHeaders")
+    public void getAdditionalHeadersReturnsNullWhenUnset(String optionsClassName, Object requestOptions) {
+        assertThat(reflectGetAdditionalHeaders(requestOptions))
+            .as(optionsClassName + " should return null when no additional headers are set")
+            .isNull();
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "requestOptionsSupportingAdditionalHeaders")
+    public void getAdditionalHeadersReturnsConfiguredValue(String optionsClassName, Object requestOptions) {
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+
+        reflectSetAdditionalHeaders(requestOptions, headers);
+
+        assertThat(reflectGetAdditionalHeaders(requestOptions))
+            .as(optionsClassName + " should return configured additional headers")
+            .containsEntry(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "requestOptionsSupportingAdditionalHeaders")
+    public void getAdditionalHeadersReturnsUnmodifiableMap(String optionsClassName, Object requestOptions) {
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+
+        reflectSetAdditionalHeaders(requestOptions, headers);
+
+        Map<CosmosAdditionalHeaderName, String> returnedHeaders = reflectGetAdditionalHeaders(requestOptions);
+        assertThatThrownBy(() -> returnedHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "43"))
+            .as(optionsClassName + " should return an unmodifiable map")
+            .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "requestOptionsSupportingAdditionalHeaders")
+    public void nullOrEmptyAdditionalHeadersDoNotClearExistingValues(String optionsClassName, Object requestOptions) {
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+
+        reflectSetAdditionalHeaders(requestOptions, headers);
+        reflectSetAdditionalHeaders(requestOptions, null);
+        reflectSetAdditionalHeaders(requestOptions, new HashMap<>());
+
+        assertThat(reflectGetAdditionalHeaders(requestOptions))
+            .as(optionsClassName + " should preserve previously set headers on null/empty input")
+            .containsEntry(CosmosAdditionalHeaderName.WORKLOAD_ID, TEST_WORKLOAD_ID);
+    }
+
+    // ==============================================================================================
     // Helpers
     // ==============================================================================================
 
@@ -385,6 +481,29 @@ public class WorkloadIdHeaderTests {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private static Map<CosmosAdditionalHeaderName, String> reflectGetAdditionalHeaders(Object cosmosRequestOptions) {
+        try {
+            java.lang.reflect.Method m = cosmosRequestOptions.getClass().getMethod("getAdditionalHeaders");
+            return (Map<CosmosAdditionalHeaderName, String>) m.invoke(cosmosRequestOptions);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Failed to call getAdditionalHeaders() on " + cosmosRequestOptions.getClass().getSimpleName(), e);
+        }
+    }
+
+    private static void reflectSetAdditionalHeaders(
+        Object cosmosRequestOptions,
+        Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        try {
+            java.lang.reflect.Method m = cosmosRequestOptions.getClass().getMethod("setAdditionalHeaders", Map.class);
+            m.invoke(cosmosRequestOptions, additionalHeaders);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Failed to call setAdditionalHeaders() on " + cosmosRequestOptions.getClass().getSimpleName(), e);
+        }
+    }
+
     private static void assertNoWorkloadId(RequestOptions options) {
         Map<String, String> headers = options.getHeaders();
         if (headers != null) {
@@ -395,6 +514,15 @@ public class WorkloadIdHeaderTests {
     private static boolean hasSetAdditionalHeaders(Class<?> clazz) {
         try {
             clazz.getMethod("setAdditionalHeaders", Map.class);
+            return true;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
+
+    private static boolean hasGetAdditionalHeaders(Class<?> clazz) {
+        try {
+            clazz.getMethod("getAdditionalHeaders");
             return true;
         } catch (NoSuchMethodException e) {
             return false;

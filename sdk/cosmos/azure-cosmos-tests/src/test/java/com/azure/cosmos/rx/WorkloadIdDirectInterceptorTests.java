@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosHeaderName;
+import com.azure.cosmos.CosmosAdditionalHeaderName;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ResourceType;
@@ -66,8 +66,8 @@ public class WorkloadIdDirectInterceptorTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        Map<CosmosHeaderName, String> headers = new HashMap<>();
-        headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
+        Map<CosmosAdditionalHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "15");
 
         // Clone the shared builder before setting additionalHeaders.
         // getClientBuilder() returns the same mutable instance from the data provider.
@@ -147,8 +147,8 @@ public class WorkloadIdDirectInterceptorTests extends TestSuiteBase {
             }
         );
 
-        Map<CosmosHeaderName, String> requestHeaders = new HashMap<>();
-        requestHeaders.put(CosmosHeaderName.WORKLOAD_ID, "30");
+        Map<CosmosAdditionalHeaderName, String> requestHeaders = new HashMap<>();
+        requestHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, "30");
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions()
             .setAdditionalHeaders(requestHeaders);

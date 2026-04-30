@@ -17,13 +17,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <p>
  * This class uses the non-exhaustive final class pattern (rather than Java enum) for
  * binary compatibility when new header names are added in future releases. See
- * <a href="https://azure.github.io/azure-sdk/java_introduction.html#enumerations">Azure SDK Java Guidelines — Enumerations</a>.
+ * <a href="https://azure.github.io/azure-sdk/java_introduction.html#enumerations">Azure SDK Java Guidelines - Enumerations</a>.
  */
-public final class CosmosHeaderName {
+public final class CosmosAdditionalHeaderName {
 
     private final String headerName;
 
-    private CosmosHeaderName(String headerName) {
+    private CosmosAdditionalHeaderName(String headerName) {
         checkNotNull(headerName, "Argument 'headerName' must not be null.");
         this.headerName = headerName;
     }
@@ -32,11 +32,11 @@ public final class CosmosHeaderName {
      * The workload ID header ({@code x-ms-cosmos-workload-id}).
      * <p>
      * Valid values: a string representation of an integer (e.g., {@code "15"}).
-     * The service accepts values in the range 1–50 for Azure Monitor metrics attribution.
-     * The SDK validates that the value is a valid integer but does not enforce range limits —
+     * The service accepts values in the range 1-50 for Azure Monitor metrics attribution.
+     * The SDK validates that the value is a valid integer but does not enforce range limits -
      * range validation is the backend's responsibility.
      */
-    public static final CosmosHeaderName WORKLOAD_ID = new CosmosHeaderName(
+    public static final CosmosAdditionalHeaderName WORKLOAD_ID = new CosmosAdditionalHeaderName(
         HttpConstants.HttpHeaders.WORKLOAD_ID);
 
     /**
@@ -48,7 +48,6 @@ public final class CosmosHeaderName {
         return this.headerName;
     }
 
-
     @Override
     public String toString() {
         return this.headerName;
@@ -56,7 +55,7 @@ public final class CosmosHeaderName {
 
     @Override
     public int hashCode() {
-        return Objects.hash(CosmosHeaderName.class, this.headerName);
+        return Objects.hash(CosmosAdditionalHeaderName.class, this.headerName);
     }
 
     @Override
@@ -67,11 +66,12 @@ public final class CosmosHeaderName {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof CosmosHeaderName)) {
+        if (!(obj instanceof CosmosAdditionalHeaderName)) {
             return false;
         }
 
-        CosmosHeaderName other = (CosmosHeaderName) obj;
+        CosmosAdditionalHeaderName other = (CosmosAdditionalHeaderName) obj;
         return Objects.equals(this.headerName, other.headerName);
     }
 }
+

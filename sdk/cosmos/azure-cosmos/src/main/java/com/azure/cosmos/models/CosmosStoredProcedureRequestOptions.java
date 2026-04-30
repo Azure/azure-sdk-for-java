@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosHeaderName;
+import com.azure.cosmos.CosmosAdditionalHeaderName;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -167,7 +167,7 @@ public final class CosmosStoredProcedureRequestOptions {
     /**
      * Sets additional headers to be included with this specific request.
      * <p>
-     * The {@link CosmosHeaderName} class defines exactly which headers are supported.
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
      * This allows per-request header customization, such as setting a workload ID
      * that overrides the client-level default set via
      * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
@@ -179,20 +179,36 @@ public final class CosmosStoredProcedureRequestOptions {
      * calls are merged into the existing set. Passing {@code null} or an empty map does
      * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
      *
-     * @param additionalHeaders map of {@link CosmosHeaderName} to value
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
      * @return the CosmosStoredProcedureRequestOptions.
      * @throws IllegalArgumentException if the workload-id value is not a valid integer
      */
-    public CosmosStoredProcedureRequestOptions setAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
+    public CosmosStoredProcedureRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
         Utils.validateAdditionalHeaders(additionalHeaders);
         if (additionalHeaders != null) {
-            for (Map.Entry<CosmosHeaderName, String> entry : additionalHeaders.entrySet()) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
                 this.setHeader(entry.getKey().getHeaderName(), entry.getValue());
             }
         }
         return this;
     }
 
+    /**
+     * Gets the additional headers configured on this request options instance.
+     *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.customOptions);
+    }
+
+    /**
+     * Sets a header to be included with this specific request.
+     *
+     * @param name  the header name
+     * @param value the header value
+     * @return the CosmosStoredProcedureRequestOptions.
+     */
     CosmosStoredProcedureRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();

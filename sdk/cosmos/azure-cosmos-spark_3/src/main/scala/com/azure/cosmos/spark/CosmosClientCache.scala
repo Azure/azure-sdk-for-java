@@ -13,7 +13,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, CosmosHeaderName, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, CosmosAdditionalHeaderName, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.monitor.opentelemetry.autoconfigure.{AzureMonitorAutoConfigure, AzureMonitorAutoConfigureOptions}
 import com.azure.resourcemanager.cosmos.CosmosManager
@@ -49,24 +49,24 @@ import scala.collection.JavaConverters._
 // scalastyle:off multiple.string.literals
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
-  // Spark-side mapping of known header name strings to CosmosHeaderName instances.
+  // Spark-side mapping of known header name strings to CosmosAdditionalHeaderName instances.
   // This follows the same pattern as CosmosPriorityLevel in the Spark connector:
   // the connector defines its own known-values mapping and converts to SDK types,
   // rather than relying on a fromString() public API on the SDK type.
-  private val knownHeaders: Map[String, CosmosHeaderName] = Map(
-    CosmosHeaderName.WORKLOAD_ID.getHeaderName.toLowerCase(java.util.Locale.ROOT) -> CosmosHeaderName.WORKLOAD_ID
+  private val knownHeaders: Map[String, CosmosAdditionalHeaderName] = Map(
+    CosmosAdditionalHeaderName.WORKLOAD_ID.getHeaderName.toLowerCase(java.util.Locale.ROOT) -> CosmosAdditionalHeaderName.WORKLOAD_ID
   )
 
   /**
-   * Resolves a header name string to its CosmosHeaderName instance.
+   * Resolves a header name string to its CosmosAdditionalHeaderName instance.
    * Also serves as validation — throws IllegalArgumentException for unknown headers.
    * Called at config-parse time (fail-fast) and at client-build time (type conversion).
    *
    * @param headerName the raw header name string from user config
-   * @return the matching CosmosHeaderName instance
+   * @return the matching CosmosAdditionalHeaderName instance
    * @throws IllegalArgumentException if the header name is not recognized
    */
-  def resolveHeaderName(headerName: String): CosmosHeaderName = {
+  def resolveHeaderName(headerName: String): CosmosAdditionalHeaderName = {
     val normalized = headerName.trim.toLowerCase(java.util.Locale.ROOT)
     knownHeaders.getOrElse(normalized,
       throw new IllegalArgumentException(
@@ -739,7 +739,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       // Apply additional HTTP headers (e.g., workload-id) to the builder if configured.
       // Header name validation already happened at config-parse time in CosmosConfig.AdditionalHeadersConfig.
       if (cosmosClientConfiguration.additionalHeaders.isDefined) {
-        val headerMap = new java.util.HashMap[CosmosHeaderName, String]()
+        val headerMap = new java.util.HashMap[CosmosAdditionalHeaderName, String]()
         for ((key, value) <- cosmosClientConfiguration.additionalHeaders.get) {
           headerMap.put(resolveHeaderName(key), value)
         }
