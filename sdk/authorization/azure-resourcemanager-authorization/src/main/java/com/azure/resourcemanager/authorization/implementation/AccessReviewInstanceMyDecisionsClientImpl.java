@@ -131,7 +131,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         if (decisionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter decisionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id,
@@ -169,7 +169,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         if (decisionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter decisionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id, decisionId, accept,
@@ -261,7 +261,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -305,7 +305,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -397,7 +397,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id,
@@ -436,7 +436,7 @@ public final class AccessReviewInstanceMyDecisionsClientImpl implements AccessRe
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id, filter, accept, context)

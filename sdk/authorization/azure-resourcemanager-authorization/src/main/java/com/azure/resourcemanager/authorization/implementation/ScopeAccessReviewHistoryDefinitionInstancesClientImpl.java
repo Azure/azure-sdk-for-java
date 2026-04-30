@@ -100,7 +100,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
         if (instanceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateDownloadUri(this.client.getEndpoint(), apiVersion, scope,
@@ -139,7 +139,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
         if (instanceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateDownloadUri(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId,

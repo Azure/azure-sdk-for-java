@@ -1,10 +1,6 @@
 # Release History
 
-## 1.0.0-beta.63 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.63 (2026-04-28)
 
 ### Bugs Fixed
 
@@ -15,6 +11,11 @@
   transition to the new attribute names. The old attributes will be removed in a future release.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded OpenTelemetry from `1.49.0` to `1.58.0`.
 
 ## 1.0.0-beta.62 (2026-01-15)
 

@@ -1,18 +1,18 @@
 # Release History
 
-## 7.2.0-beta.1 (Unreleased)
+## 7.3.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds).
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixes a bug where ';' was ignored in JSON content type checking.
-
 ### Other Changes
+
+## 7.2.0 (2026-04-17)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#720-2026-04-17) for more details.
 
 ## 7.1.0 (2026-03-11)
 

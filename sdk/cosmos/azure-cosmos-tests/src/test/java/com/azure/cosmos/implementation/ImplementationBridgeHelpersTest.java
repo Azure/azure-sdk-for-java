@@ -286,6 +286,106 @@ public class ImplementationBridgeHelpersTest {
     }
 
     /**
+     * Regression test for the ClientTelemetry static-init failure when IMDS access is disabled.
+     * A fresh JVM is required so the system property is in effect before any Cosmos classes load.
+     */
+    @Test(groups = { "unit" })
+    public void cosmosClientBuildShouldSucceedWhenImdsAccessIsDisabled() throws Exception {
+        String javaHome = System.getProperty("java.home");
+        String javaBin = javaHome + java.io.File.separator + "bin" + java.io.File.separator + "java";
+        String classpath = System.getProperty("java.class.path");
+
+        List<String> command = new ArrayList<>();
+        command.add(javaBin);
+        command.add("-DCOSMOS.DISABLE_IMDS_ACCESS=true");
+
+        try {
+            int majorVersion = Integer.parseInt(System.getProperty("java.specification.version").split("\\.")[0]);
+            if (majorVersion >= 9) {
+                command.add("--add-opens");
+                command.add("java.base/java.lang=ALL-UNNAMED");
+            }
+        } catch (NumberFormatException e) {
+            // JDK 8
+        }
+
+        command.add("-cp");
+        command.add(classpath);
+        command.add(ClientTelemetryImdsDisabledChildProcess.class.getName());
+
+        ProcessBuilder pb = new ProcessBuilder(command);
+        pb.redirectErrorStream(true);
+        Process process = pb.start();
+
+        StringBuilder output = new StringBuilder();
+        Thread gobbler = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    output.append(line).append(System.lineSeparator());
+                    logger.info("[client-telemetry-imds-disabled] {}", line);
+                }
+            } catch (Exception e) {
+                // Process destroyed
+            }
+        });
+        gobbler.setDaemon(true);
+        gobbler.start();
+
+        boolean completed = process.waitFor(60, TimeUnit.SECONDS);
+        if (!completed) {
+            process.destroyForcibly();
+            gobbler.join(5000);
+            fail("ClientTelemetry IMDS-disabled regression check timed out after 60s. Output:\n" + output);
+        }
+
+        gobbler.join(5000);
+        int exitCode = process.exitValue();
+        assertThat(exitCode)
+            .as("Child JVM exited with non-zero code. Output:\n" + output)
+            .isEqualTo(0);
+    }
+
+    public static final class ClientTelemetryImdsDisabledChildProcess {
+        public static void main(String[] args) {
+            try {
+                com.azure.cosmos.CosmosAsyncClient client = new com.azure.cosmos.CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .buildAsyncClient();
+
+                client.close();
+                System.out.println("Client built successfully with IMDS access disabled.");
+                System.exit(0);
+            } catch (Throwable throwable) {
+                if (containsClientTelemetryStaticInitFailure(throwable)) {
+                    throwable.printStackTrace(System.err);
+                    System.exit(1);
+                }
+
+                System.out.println("Client reached the expected network/auth path without a ClientTelemetry static-init failure.");
+                throwable.printStackTrace(System.out);
+                System.exit(0);
+            }
+        }
+
+        private static boolean containsClientTelemetryStaticInitFailure(Throwable throwable) {
+            Throwable current = throwable;
+            while (current != null) {
+                if (current instanceof ExceptionInInitializerError
+                    || current instanceof NoClassDefFoundError
+                    || (current.getMessage() != null && current.getMessage().contains("ClientTelemetry"))) {
+                    return true;
+                }
+
+                current = current.getCause();
+            }
+
+            return false;
+        }
+    }
+
+    /**
      * Verifies that every {@code *Helper} inner class in
      * {@link ImplementationBridgeHelpers} has a resolvable accessor — i.e., calling
      * {@code getXxxAccessor()} returns a non-null value in a clean JVM.

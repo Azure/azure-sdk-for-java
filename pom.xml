@@ -131,6 +131,7 @@
     <module>sdk/healthcareapis</module>
     <module>sdk/healthdataaiservices</module>
     <module>sdk/healthinsights</module>
+    <module>sdk/horizondb</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridconnectivity</module>
     <module>sdk/hybridcontainerservice</module>

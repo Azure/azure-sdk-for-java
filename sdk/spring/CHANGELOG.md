@@ -1,7 +1,50 @@
 # Release History
-# (Unreleased)
-Upgrade Spring Boot dependencies version to 4.0.5 and Spring Cloud dependencies version to 2025.1.1
-Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
+## 7.3.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+
+- Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
+
+### Spring Cloud Azure Stream Binder Service Bus
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+
+- Add support for Spring Cloud Stream consumer retry properties (`maxAttempts`, `backOffInitialInterval`,
+  `backOffMaxInterval`, `backOffMultiplier`) to enable retry with exponential backoff for message processing
+  failures. [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
+- Add support for injecting a custom `RetryTemplate` from Spring context for advanced retry scenarios.
+  [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
+
+## 7.2.0 (2026-04-17)
+- This release is compatible with Spring Boot 4.0.0-4.0.5. (Note: 4.0.x (x>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.1. (Note: 2025.1.x (x>1) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.6.
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Features Added
+
+- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds). [#47857](https://github.com/Azure/azure-sdk-for-java/pull/47857).
+
+#### Bugs Fixed
+
+- Fixes a bug where ';' was ignored in JSON content type checking. [#48448](https://github.com/Azure/azure-sdk-for-java/pull/48448).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#720-2026-04-17) for more details.
 
 ## 6.2.0 (2026-03-25)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)

@@ -80,7 +80,6 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -91,8 +90,8 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBaseRetrievalResult>> retrieveWithResponse(String knowledgeBaseName,
-        KnowledgeBaseRetrievalOptions retrievalRequest, RequestOptions requestOptions) {
+    public Mono<Response<KnowledgeBaseRetrievalResult>>
+        retrieveWithResponse(KnowledgeBaseRetrievalOptions retrievalRequest, RequestOptions requestOptions) {
         return mapResponse(
             this.serviceClient.retrieveWithResponseAsync(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalResult.class);
@@ -143,7 +142,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedOneLake/web/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedOneLake/web/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -215,24 +214,5 @@ public final class KnowledgeBaseRetrievalAsyncClient {
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResult.class));
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBaseRetrievalResult> retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalOptions retrievalRequest) {
-        return retrieveWithResponse(knowledgeBaseName, retrievalRequest, new RequestOptions()).map(Response::getValue);
     }
 }
