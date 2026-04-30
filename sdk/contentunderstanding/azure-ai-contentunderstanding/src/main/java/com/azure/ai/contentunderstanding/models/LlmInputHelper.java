@@ -611,23 +611,23 @@ public final class LlmInputHelper {
         return start + "-" + end;
     }
 
-    static Object compressPageNumbers(List<Integer> nums) {
-        if (nums.isEmpty()) {
+    static Object compressPageNumbers(List<Integer> numbers) {
+        if (numbers.isEmpty()) {
             return 0;
         }
-        if (nums.size() == 1) {
-            return nums.get(0);
+        if (numbers.size() == 1) {
+            return numbers.get(0);
         }
         List<String> ranges = new ArrayList<>();
-        int rangeStart = nums.get(0);
-        int prev = nums.get(0);
-        for (int i = 1; i < nums.size(); i++) {
-            if (nums.get(i) == prev + 1) {
-                prev = nums.get(i);
+        int rangeStart = numbers.get(0);
+        int prev = numbers.get(0);
+        for (int i = 1; i < numbers.size(); i++) {
+            if (numbers.get(i) == prev + 1) {
+                prev = numbers.get(i);
             } else {
                 ranges.add(rangeStart == prev ? String.valueOf(rangeStart) : rangeStart + "-" + prev);
-                rangeStart = nums.get(i);
-                prev = nums.get(i);
+                rangeStart = numbers.get(i);
+                prev = numbers.get(i);
             }
         }
         ranges.add(rangeStart == prev ? String.valueOf(rangeStart) : rangeStart + "-" + prev);
