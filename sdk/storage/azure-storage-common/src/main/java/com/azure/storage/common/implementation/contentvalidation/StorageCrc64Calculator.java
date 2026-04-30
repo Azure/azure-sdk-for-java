@@ -2413,7 +2413,8 @@ public class StorageCrc64Calculator {
 
     /**
      * Computes the CRC64 checksum for a region of a byte array. Avoids copying when the caller has
-     * a view (e.g. ByteBuffer.array() with arrayOffset + position).
+     * an array view (e.g. {@link ByteBuffer#array()} with array offset and position) or when combined
+     * with {@link #compute(byte[], long)} for whole-array input.
      *
      * @param src the byte array.
      * @param offset start index (inclusive).

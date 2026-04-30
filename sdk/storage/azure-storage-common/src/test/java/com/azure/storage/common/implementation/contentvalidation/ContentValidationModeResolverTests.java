@@ -22,7 +22,9 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContentValidationModeResolverTests {
 
@@ -270,5 +272,13 @@ public class ContentValidationModeResolverTests {
         });
         assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
             .validateProgressWithContentValidation(opts, ContentValidationAlgorithm.CRC64));
+    }
+
+    @Test
+    public void isCrc64OrAutoReflectsCrc64AndAutoOnly() {
+        assertTrue(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.CRC64));
+        assertTrue(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.AUTO));
+        assertFalse(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.NONE));
+        assertFalse(ContentValidationModeResolver.isCrc64OrAuto(null));
     }
 }
