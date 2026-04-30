@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SearchDeleteService.json
+     * x-ms-original-file: 2026-03-01-preview/SearchDeleteService.json
      */
     /**
      * Sample code: SearchDeleteService.

@@ -38,6 +38,10 @@ import java.util.stream.Collectors;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    }
+
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig;
     private String activityId;
@@ -1163,15 +1167,12 @@ public class ClientSideRequestStatistics {
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
 
-
         // TODO: other system related info also can be captured using a similar approach
         String systemCpu = CpuMemoryMonitor
             .getCpuLoad()
             .toString();
 
-        return ImplementationBridgeHelpers
-            .CosmosDiagnosticsContextHelper
-            .getCosmosDiagnosticsContextAccessor()
+        return ctxAccessor()
             .createSystemUsageSnapshot(
                 systemCpu,
                 totalMemory - freeMemory + " KB",

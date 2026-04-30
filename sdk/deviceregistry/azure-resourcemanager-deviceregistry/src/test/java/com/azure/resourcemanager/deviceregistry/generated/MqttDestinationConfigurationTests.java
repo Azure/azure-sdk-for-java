@@ -14,25 +14,24 @@ public final class MqttDestinationConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MqttDestinationConfiguration model = BinaryData
-            .fromString(
-                "{\"topic\":\"plrbpbewtghf\",\"retain\":\"Never\",\"qos\":\"Qos0\",\"ttl\":6671653333153914115}")
+            .fromString("{\"topic\":\"jznb\",\"retain\":\"Keep\",\"qos\":\"Qos0\",\"ttl\":8891221399810858011}")
             .toObject(MqttDestinationConfiguration.class);
-        Assertions.assertEquals("plrbpbewtghf", model.topic());
-        Assertions.assertEquals(TopicRetainType.NEVER, model.retain());
+        Assertions.assertEquals("jznb", model.topic());
+        Assertions.assertEquals(TopicRetainType.KEEP, model.retain());
         Assertions.assertEquals(MqttDestinationQos.QOS0, model.qos());
-        Assertions.assertEquals(6671653333153914115L, model.ttl());
+        Assertions.assertEquals(8891221399810858011L, model.ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MqttDestinationConfiguration model = new MqttDestinationConfiguration().withTopic("plrbpbewtghf")
-            .withRetain(TopicRetainType.NEVER)
+        MqttDestinationConfiguration model = new MqttDestinationConfiguration().withTopic("jznb")
+            .withRetain(TopicRetainType.KEEP)
             .withQos(MqttDestinationQos.QOS0)
-            .withTtl(6671653333153914115L);
+            .withTtl(8891221399810858011L);
         model = BinaryData.fromObject(model).toObject(MqttDestinationConfiguration.class);
-        Assertions.assertEquals("plrbpbewtghf", model.topic());
-        Assertions.assertEquals(TopicRetainType.NEVER, model.retain());
+        Assertions.assertEquals("jznb", model.topic());
+        Assertions.assertEquals(TopicRetainType.KEEP, model.retain());
         Assertions.assertEquals(MqttDestinationQos.QOS0, model.qos());
-        Assertions.assertEquals(6671653333153914115L, model.ttl());
+        Assertions.assertEquals(8891221399810858011L, model.ttl());
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ResourceGuardsPatchSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ResourceGuardCRUD/PatchResourceGuard.json
+     * x-ms-original-file: 2026-03-01/ResourceGuardCRUD/PatchResourceGuard.json
      */
     /**
      * Sample code: Patch ResourceGuard.

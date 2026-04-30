@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CredentialUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"eaxib\":\"wbiexzfey\",\"qwalmuzyoxaepd\":\"ujwb\",\"d\":\"zjancuxr\",\"dbpgnxytxhp\":\"bavxbniwdjswzt\"}}")
-            .toObject(CredentialUpdate.class);
-        Assertions.assertEquals("wbiexzfey", model.tags().get("eaxib"));
+        CredentialUpdate model
+            = BinaryData.fromString("{\"tags\":{\"zmhjrunmp\":\"na\",\"nkxmyskpbhenbtk\":\"ttdbhrbnl\"}}")
+                .toObject(CredentialUpdate.class);
+        Assertions.assertEquals("na", model.tags().get("zmhjrunmp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialUpdate model = new CredentialUpdate().withTags(
-            mapOf("eaxib", "wbiexzfey", "qwalmuzyoxaepd", "ujwb", "d", "zjancuxr", "dbpgnxytxhp", "bavxbniwdjswzt"));
+        CredentialUpdate model
+            = new CredentialUpdate().withTags(mapOf("zmhjrunmp", "na", "nkxmyskpbhenbtk", "ttdbhrbnl"));
         model = BinaryData.fromObject(model).toObject(CredentialUpdate.class);
-        Assertions.assertEquals("wbiexzfey", model.tags().get("eaxib"));
+        Assertions.assertEquals("na", model.tags().get("zmhjrunmp"));
     }
 
     // Use "Map.of" if available

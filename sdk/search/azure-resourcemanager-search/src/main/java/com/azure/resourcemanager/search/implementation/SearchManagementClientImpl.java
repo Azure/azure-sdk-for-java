@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.search.fluent.AdminKeysClient;
 import com.azure.resourcemanager.search.fluent.NetworkSecurityPerimeterConfigurationsClient;
+import com.azure.resourcemanager.search.fluent.OfferingsClient;
 import com.azure.resourcemanager.search.fluent.OperationsClient;
 import com.azure.resourcemanager.search.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.search.fluent.PrivateLinkResourcesClient;
@@ -132,6 +133,20 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /**
+     * The OfferingsClient object to access its operations.
+     */
+    private final OfferingsClient offerings;
+
+    /**
+     * Gets the OfferingsClient object to access its operations.
+     * 
+     * @return the OfferingsClient object.
+     */
+    public OfferingsClient getOfferings() {
+        return this.offerings;
     }
 
     /**
@@ -278,7 +293,8 @@ public final class SearchManagementClientImpl extends AzureServiceClient impleme
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01";
+        this.apiVersion = "2026-03-01-preview";
+        this.offerings = new OfferingsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.sharedPrivateLinkResources = new SharedPrivateLinkResourcesClientImpl(this);

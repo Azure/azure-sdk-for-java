@@ -15,7 +15,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_Update.json
+     * x-ms-original-file: 2026-01-01/SnapshotPolicies_Update.json
      */
     /**
      * Sample code: SnapshotPolicies_Update.
