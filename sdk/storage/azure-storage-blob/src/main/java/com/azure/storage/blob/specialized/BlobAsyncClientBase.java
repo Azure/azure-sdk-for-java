@@ -1261,7 +1261,6 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
-
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
         BlobRequestConditions finalRequestConditions
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
