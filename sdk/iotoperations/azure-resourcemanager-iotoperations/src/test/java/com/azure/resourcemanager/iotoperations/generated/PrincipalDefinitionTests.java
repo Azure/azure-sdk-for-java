@@ -15,26 +15,24 @@ public final class PrincipalDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrincipalDefinition model = BinaryData.fromString(
-            "{\"attributes\":[{\"wfvovbv\":\"oxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"},{\"skxfbk\":\"wgxhn\",\"gklwn\":\"y\",\"vylwzbtdhxuj\":\"nhjdauw\"},{\"ow\":\"bm\",\"qlveualupjmkh\":\"wpr\",\"riplrbpbewtg\":\"xobbcswsrt\"}],\"clientIds\":[\"blcg\",\"xzvlvqhjkbegib\",\"nmxiebwwaloayqc\"],\"usernames\":[\"tzjuzgwyzmhtxo\",\"gmtsavjcbpwxqpsr\"]}")
+            "{\"attributes\":[{\"nmxiebwwaloayqc\":\"xzvlvqhjkbegib\",\"uzgwyzmhtx\":\"wrtz\",\"wxqpsrknftguvri\":\"ngmtsavjcb\"}],\"clientIds\":[\"rwmdyvxqtay\",\"iwwroyqbexrmc\",\"ibycno\"],\"usernames\":[\"nmefqsgzvahapj\"]}")
             .toObject(PrincipalDefinition.class);
-        Assertions.assertEquals("oxdjebwpuc", model.attributes().get(0).get("wfvovbv"));
-        Assertions.assertEquals("blcg", model.clientIds().get(0));
-        Assertions.assertEquals("tzjuzgwyzmhtxo", model.usernames().get(0));
+        Assertions.assertEquals("xzvlvqhjkbegib", model.attributes().get(0).get("nmxiebwwaloayqc"));
+        Assertions.assertEquals("rwmdyvxqtay", model.clientIds().get(0));
+        Assertions.assertEquals("nmefqsgzvahapj", model.usernames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrincipalDefinition model = new PrincipalDefinition()
-            .withAttributes(
-                Arrays.asList(mapOf("wfvovbv", "oxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"),
-                    mapOf("skxfbk", "wgxhn", "gklwn", "y", "vylwzbtdhxuj", "nhjdauw"),
-                    mapOf("ow", "bm", "qlveualupjmkh", "wpr", "riplrbpbewtg", "xobbcswsrt")))
-            .withClientIds(Arrays.asList("blcg", "xzvlvqhjkbegib", "nmxiebwwaloayqc"))
-            .withUsernames(Arrays.asList("tzjuzgwyzmhtxo", "gmtsavjcbpwxqpsr"));
+            .withAttributes(Arrays.asList(
+                mapOf("nmxiebwwaloayqc", "xzvlvqhjkbegib", "uzgwyzmhtx", "wrtz", "wxqpsrknftguvri", "ngmtsavjcb")))
+            .withClientIds(Arrays.asList("rwmdyvxqtay", "iwwroyqbexrmc", "ibycno"))
+            .withUsernames(Arrays.asList("nmefqsgzvahapj"));
         model = BinaryData.fromObject(model).toObject(PrincipalDefinition.class);
-        Assertions.assertEquals("oxdjebwpuc", model.attributes().get(0).get("wfvovbv"));
-        Assertions.assertEquals("blcg", model.clientIds().get(0));
-        Assertions.assertEquals("tzjuzgwyzmhtxo", model.usernames().get(0));
+        Assertions.assertEquals("xzvlvqhjkbegib", model.attributes().get(0).get("nmxiebwwaloayqc"));
+        Assertions.assertEquals("rwmdyvxqtay", model.clientIds().get(0));
+        Assertions.assertEquals("nmefqsgzvahapj", model.usernames().get(0));
     }
 
     // Use "Map.of" if available

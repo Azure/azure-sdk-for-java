@@ -49,7 +49,7 @@ Add an entry to the aggregate Javadoc POM.
 
 ### Adding to codesnippets generation
 
-See [JavaDoc with CodeSnippet](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md).
+See [JavaDoc with CodeSnippet](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md).
 
 ---
 
@@ -67,7 +67,7 @@ Run the version-update script to propagate versions across POMs:
 python eng/versioning/update_versions.py --sr
 ```
 
-See [versioning.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md) for full details.
+See [versioning.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) for full details.
 
 ---
 
@@ -122,7 +122,7 @@ All steps above plus:
 
 ## See Also
 
-- [versioning.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/versioning.md)
-- [javadocs.md](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/javadocs.md)
-- [TypeSpec Quickstart](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/typespec-quickstart.md)
-- [Building](https://github.com/g2vinay/azure-sdk-for-java/blob/consolidate-docs-v2/docs/contributor/building.md)
+- [versioning.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md)
+- [javadocs.md](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)
+- [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md)
+- [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)

@@ -3,16 +3,24 @@
 ### 4.80.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `IGNORE_UNKNOWN_RNTBD_TOKENS` SDK capability flag and propagated SDK supported capabilities to barrier requests, enabling N-Region Synchronous Commit to function correctly with backends that return new RNTBD response tokens. - See [PR 48965](https://github.com/Azure/azure-sdk-for-java/pull/48965)
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
+* Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added `CosmosReadManyByPartitionKeysRequestOptions` - a dedicated request-options type for `readManyByPartitionKeys` that exposes `setContinuationToken(String)` for resuming previous invocations and `setMaxConcurrentBatchPrefetch(int)` to bound per-call prefetch parallelism. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added `CosmosReadManyByPartitionKeysRequestOptions.setMaxBatchSize(Integer)` to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
+* Added `getCustomItemSerializer()` to `CosmosRequestContext` and `setCustomItemSerializer(CosmosItemSerializer)` to `CosmosRequestOptions` to allow overriding the custom item serializer via operation policies. - See [PR 48963](https://github.com/Azure/azure-sdk-for-java/pull/48963)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `readMany` and `readAllItems` returning incorrect results on containers whose partition key path is nested (e.g. `/address/city`) due to malformed selector generation. - See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Fixed an issue where the throughput control `throughputQueryMono` was always subscribed even when `targetThroughput` is used (not `targetThroughputThreshold`), causing unnecessary `throughputSettings/read` permission requirement for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
 * Fixed JVM `<clinit>` deadlock when multiple threads concurrently trigger Cosmos SDK class loading for the first time. - See [PR 48689](https://github.com/Azure/azure-sdk-for-java/pull/48689)
 * Fixed an issue where `CustomItemSerializer` was incorrectly applied to internal SDK query pipeline structures (e.g., `OrderByRowResult`, `Document`), causing deserialization failures in ORDER BY, GROUP BY, aggregate, DISTINCT, and hybrid search queries. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
 * Fixed an issue where `SqlParameter` ignored the configured `CustomItemSerializer`, always using the internal default serializer instead. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
 * Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
+* Fixed an issue where Netty could log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" on HTTP/2 connections when the server resets idle TCP connections by adding an exception handler on the HTTP/2 parent channel to handle these connection-level exceptions more appropriately. - See [PR 48890](https://github.com/Azure/azure-sdk-for-java/pull/48890)
+* Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
 
 #### Other Changes
 

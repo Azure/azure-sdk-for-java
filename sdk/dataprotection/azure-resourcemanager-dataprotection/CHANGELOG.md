@@ -1,14 +1,40 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (2026-04-01)
+
+- Azure Resource Manager Data Protection client library for Java. This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.DeletedBackupVault` was added
 
-### Bugs Fixed
+* `models.BlobBackupRuleMode` was added
 
-### Other Changes
+* `models.DeletedBackupVaultResource` was added
+
+* `models.DeletedBackupVaults` was added
+
+* `models.BlobBackupRuleBasedAutoProtectionSettings` was added
+
+* `models.BlobBackupPatternType` was added
+
+* `models.BlobBackupAutoProtectionSettings` was added
+
+* `models.AdlsBlobBackupDatasourceParametersForAutoProtection` was added
+
+* `models.BlobBackupAutoProtectionRule` was added
+
+* `models.ResourceDeletionInfo` was added
+
+* `models.BlobBackupDatasourceParametersForAutoProtection` was added
+
+#### `models.BackupVaultResource$Definition` was modified
+
+* `withXMsDeletedVaultId(java.lang.String)` was added
+
+#### `DataProtectionManager` was modified
+
+* `deletedBackupVaults()` was added
 
 ## 1.5.0 (2025-10-13)
 

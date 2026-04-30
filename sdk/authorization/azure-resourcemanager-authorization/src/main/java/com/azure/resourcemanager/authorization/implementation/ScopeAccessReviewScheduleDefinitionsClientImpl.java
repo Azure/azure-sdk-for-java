@@ -144,7 +144,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId,
@@ -177,7 +177,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, accept, context);
@@ -260,7 +260,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -300,7 +300,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         } else {
             properties.validate();
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -384,7 +384,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         return FluxUtil.withContext(
             context -> service.deleteById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -415,7 +415,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, context);
     }
@@ -487,7 +487,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, filter, accept, context))
@@ -520,7 +520,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, scope, filter, accept, context)
@@ -635,7 +635,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         return FluxUtil
             .withContext(
                 context -> service.stop(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, context))
@@ -666,7 +666,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter scheduleDefinitionId is required and cannot be null."));
         }
-        final String apiVersion = "undefined";
+        final String apiVersion = "2021-12-01-preview";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, context);
     }

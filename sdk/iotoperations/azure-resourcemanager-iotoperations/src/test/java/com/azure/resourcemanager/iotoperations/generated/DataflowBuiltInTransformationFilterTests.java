@@ -14,25 +14,25 @@ public final class DataflowBuiltInTransformationFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowBuiltInTransformationFilter model = BinaryData.fromString(
-            "{\"type\":\"Filter\",\"description\":\"kthumaqolbgycdui\",\"inputs\":[\"tgccymvaolpss\"],\"expression\":\"qlfmmdnbb\"}")
+            "{\"type\":\"Filter\",\"description\":\"mygtdssls\",\"inputs\":[\"mweriofzpy\",\"semwabnet\",\"hhszh\"],\"expression\":\"d\"}")
             .toObject(DataflowBuiltInTransformationFilter.class);
         Assertions.assertEquals(FilterType.FILTER, model.type());
-        Assertions.assertEquals("kthumaqolbgycdui", model.description());
-        Assertions.assertEquals("tgccymvaolpss", model.inputs().get(0));
-        Assertions.assertEquals("qlfmmdnbb", model.expression());
+        Assertions.assertEquals("mygtdssls", model.description());
+        Assertions.assertEquals("mweriofzpy", model.inputs().get(0));
+        Assertions.assertEquals("d", model.expression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowBuiltInTransformationFilter model
             = new DataflowBuiltInTransformationFilter().withType(FilterType.FILTER)
-                .withDescription("kthumaqolbgycdui")
-                .withInputs(Arrays.asList("tgccymvaolpss"))
-                .withExpression("qlfmmdnbb");
+                .withDescription("mygtdssls")
+                .withInputs(Arrays.asList("mweriofzpy", "semwabnet", "hhszh"))
+                .withExpression("d");
         model = BinaryData.fromObject(model).toObject(DataflowBuiltInTransformationFilter.class);
         Assertions.assertEquals(FilterType.FILTER, model.type());
-        Assertions.assertEquals("kthumaqolbgycdui", model.description());
-        Assertions.assertEquals("tgccymvaolpss", model.inputs().get(0));
-        Assertions.assertEquals("qlfmmdnbb", model.expression());
+        Assertions.assertEquals("mygtdssls", model.description());
+        Assertions.assertEquals("mweriofzpy", model.inputs().get(0));
+        Assertions.assertEquals("d", model.expression());
     }
 }
