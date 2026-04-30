@@ -99,24 +99,6 @@ public final class ContentValidationModeResolver {
     }
 
     /**
-     * Validates transactional checksum options. Throws if {@code contentMd5} and a non-null
-     * {@code contentValidationAlgorithm} are both set.
-     * <p>
-     * Async clients typically wrap the call in {@code try}/{@code catch} and return
-     * {@code com.azure.core.util.FluxUtil.monoError(logger, ex)} so the failure remains a deferred reactive error.
-     *
-     * @param contentMd5 Caller-provided transactional MD5, if any.
-     * @param contentValidationAlgorithm Transfer validation checksum algorithm from options.
-     * @throws IllegalArgumentException if options conflict.
-     */
-    public static void validateTransactionalChecksumOptions(byte[] contentMd5,
-        ContentValidationAlgorithm contentValidationAlgorithm) {
-        if (contentMd5 != null && contentValidationAlgorithm != null) {
-            throw new IllegalArgumentException(CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE);
-        }
-    }
-
-    /**
      * Validates transactional checksum options when MD5 may be SDK-computed. Throws if {@code computeMd5} and a
      * non-none {@code contentValidationAlgorithm} are both active.
      *
