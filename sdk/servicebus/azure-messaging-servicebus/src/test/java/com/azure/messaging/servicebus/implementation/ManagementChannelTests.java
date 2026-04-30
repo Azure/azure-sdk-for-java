@@ -1400,6 +1400,33 @@ class ManagementChannelTests {
     }
 
     /**
+     * Verifies that when the broker returns a {@code skip} that is not strictly greater than
+     * {@code requestSkip} (equal would re-fetch the same page; smaller would cursor backwards),
+     * {@code readResponseSkip} falls back to {@code requestSkip + page.size()} rather than letting
+     * a stalled or backwards cursor reach the next request and risk infinite loops or duplicates.
+     */
+    @Test
+    void getMessageSessionsFallsBackWhenServerSkipIsNotMonotonic() {
+        // Arrange - requestSkip = 10, broker reports responseSkip = 10 (stall) and 2 sessions.
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, 10);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert - cursor should advance by requestSkip + page.size() = 10 + 2 = 12 instead
+        // of stalling at 10.
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 10,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(12, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
      * Verifies that {@code getMessageSessions} includes {@code last-session-id} when the cursor is
      * the empty string, since Service Bus permits an empty session ID. Collapsing {@code ""} into
      * "no cursor" would silently restart pagination from the first page when the previous page

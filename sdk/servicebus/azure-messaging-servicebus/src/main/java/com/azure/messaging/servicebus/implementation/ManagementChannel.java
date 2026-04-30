@@ -641,15 +641,20 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * Reads the {@code skip} value the service returns alongside the session-ID page. Track 1 uses
      * this server-returned value as the cursor for the next page rather than {@code currentSkip +
      * page.size()}, so callers must propagate it verbatim. If the field is missing, non-numeric,
-     * negative, or outside the {@code int} range, fall back to advancing by the size of the page
-     * actually returned (saturating to {@link Integer#MAX_VALUE} on overflow) so a malformed
-     * response cannot stall the cursor on the same skip value or wrap into a negative cursor.
+     * negative, outside the {@code int} range, or not strictly greater than {@code requestSkip}
+     * (which would either cursor backwards or stall on the same value, risking infinite loops or
+     * duplicate results), fall back to advancing by the size of the page actually returned
+     * (saturating to {@link Integer#MAX_VALUE} on overflow) so a malformed response cannot stall
+     * the cursor on the same skip value or wrap into a negative cursor.
      */
     private static int readResponseSkip(Map<String, Object> responseBody, int requestSkip, int pageSize) {
         final Object value = responseBody.get(ManagementConstants.SKIP);
         if (value instanceof Number) {
             final long responseSkip = ((Number) value).longValue();
-            if (responseSkip >= 0 && responseSkip <= Integer.MAX_VALUE) {
+            // Require strict monotonic forward progress: responseSkip must be > requestSkip. Equal
+            // would re-fetch the same page; smaller would cursor backwards. Both risk loops and
+            // duplicate results, so fall back to the page-size-based cursor instead.
+            if (responseSkip > requestSkip && responseSkip <= Integer.MAX_VALUE) {
                 return (int) responseSkip;
             }
         }
