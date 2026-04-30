@@ -163,17 +163,21 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void publishBuffer() {
-        if (compositeByteBuf == null || compositeByteBuf.refCnt() == 0 || compositeByteBuf.readableBytes() == 0) {
-            return;
-        }
-
-        final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
-
-        if (nioBuffers.length == 0) {
+        if (compositeByteBuf == null || compositeByteBuf.refCnt() == 0) {
             return;
         }
 
         try {
+            if (compositeByteBuf.readableBytes() == 0) {
+                return;
+            }
+
+            final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
+
+            if (nioBuffers.length == 0) {
+                return;
+            }
+
             final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(nioBuffers));
             final String collected = data.toString();
             final WebPubSubMessage deserialized = messageDecoder.decode(collected);
