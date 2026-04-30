@@ -612,7 +612,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         sessionIds.add(id.toString());
                     }
                 } else {
-                    sessionIds = Collections.emptyList();
+                    // A non-null sessions-ids that's neither Object[] nor Iterable<?> indicates a
+                    // broker/library payload-shape change; surface it as a protocol error rather
+                    // than silently terminating pagination on an empty list.
+                    throw logger
+                        .logExceptionAsWarning(new IllegalStateException("Get message sessions returned an unexpected '"
+                            + ManagementConstants.SESSION_IDS + "' payload type: " + sessionsObj.getClass().getName()
+                            + ". Expected Object[] or Iterable."));
                 }
 
                 return Mono.just(new MessageSessionsResult(sessionIds, readResponseSkip(map, skip, sessionIds.size())));

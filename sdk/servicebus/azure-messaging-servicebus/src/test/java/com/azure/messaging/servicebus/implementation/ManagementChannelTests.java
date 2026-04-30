@@ -1249,6 +1249,26 @@ class ManagementChannelTests {
     }
 
     /**
+     * Verifies that getMessageSessions fails the operation when the {@code sessions-ids} value
+     * is neither {@code Object[]} nor {@code Iterable}, e.g., a String. Without this protocol
+     * check we'd silently terminate pagination on an empty list.
+     */
+    @Test
+    void getMessageSessionsRejectsUnexpectedSessionIdsPayloadType() {
+        // Arrange - 200 OK with sessions-ids set to a String (neither Object[] nor Iterable).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, "not-an-array-or-iterable");
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
      * Verifies that getMessageSessions clamps inputs at or beyond the Track 1 sentinel down to
      * the sentinel itself, both to avoid {@link java.util.Date} overflow for {@link OffsetDateTime#MAX}
      * and to keep the broker's active-messages comparison stable.
