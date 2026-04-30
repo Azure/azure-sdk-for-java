@@ -925,7 +925,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     private static final byte[] DEFAULT_MD5 = createDefaultMd5();
-    private static final String message = "Both x-ms-content-crc64 header and Content-MD5 header are present.";
+    private static final String MESSAGE = "Both x-ms-content-crc64 header and Content-MD5 header are present.";
 
     private static byte[] createDefaultMd5() {
         try {
@@ -948,7 +948,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).verifyErrorSatisfies(ex -> {
             BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
             assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(message));
+            assertTrue(e.getMessage().contains(MESSAGE));
         });
     }
 
@@ -965,7 +965,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.stageBlockWithResponse(options)).verifyErrorSatisfies(ex -> {
             BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
             assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(message));
+            assertTrue(e.getMessage().contains(MESSAGE));
         });
     }
 
@@ -985,7 +985,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.appendBlockWithResponse(options)).verifyErrorSatisfies(ex -> {
             BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
             assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(message));
+            assertTrue(e.getMessage().contains(MESSAGE));
         });
     }
 
@@ -1006,7 +1006,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadPagesWithResponse(options)).verifyErrorSatisfies(ex -> {
             BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
             assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(message));
+            assertTrue(e.getMessage().contains(MESSAGE));
         });
     }
 }

@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageRange;
@@ -1182,7 +1181,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
 
     private static final byte[] DEFAULT_MD5 = createDefaultMd5();
-    private static final String message = "Both x-ms-content-crc64 header and Content-MD5 header are present.";
+    private static final String MESSAGE = "Both x-ms-content-crc64 header and Content-MD5 header are present.";
 
     private static byte[] createDefaultMd5() {
         try {
@@ -1203,7 +1202,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         Exception ex
             = assertThrows(BlobStorageException.class, () -> client.uploadWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(message));
+        assertTrue(ex.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1217,7 +1216,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         Exception ex = assertThrows(BlobStorageException.class,
             () -> client.stageBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(message));
+        assertTrue(ex.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1235,7 +1234,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         Exception ex = assertThrows(BlobStorageException.class,
             () -> client.appendBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(message));
+        assertTrue(ex.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1253,6 +1252,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         Exception ex = assertThrows(BlobStorageException.class,
             () -> client.uploadPagesWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(message));
+        assertTrue(ex.getMessage().contains(MESSAGE));
     }
 }
