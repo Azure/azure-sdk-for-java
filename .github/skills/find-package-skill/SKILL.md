@@ -22,4 +22,6 @@ you already know the package well.
 
 | Package                    | Path                                                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------- |
+| `azure-ai-agents`          | `sdk/ai/azure-ai-agents/.github/skills/azure-ai-agents/SKILL.md`                                  |
+| `azure-ai-projects`        | `sdk/ai/azure-ai-projects/.github/skills/azure-ai-projects/SKILL.md`                              |
 | `azure-search-documents`   | `sdk/search/azure-search-documents/.github/skills/azure-search-documents/SKILL.md`                |
