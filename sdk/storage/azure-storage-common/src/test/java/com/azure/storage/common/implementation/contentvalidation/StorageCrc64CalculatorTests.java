@@ -211,4 +211,12 @@ public class StorageCrc64CalculatorTests {
             Arguments.of("889000539881195835", "2971048229276949174", "5346315327374690144", "307387",
                 "1407121768110541356", "10535852615249992663", "741189", "3634018251978804152"));
     }
+
+    @Test
+    void testComputeSliceMatchesFullArray() {
+        byte[] data = "Hello World!".getBytes();
+        long expected = StorageCrc64Calculator.compute(data, 0);
+        long actual = StorageCrc64Calculator.compute(data, 0, data.length, 0);
+        assertEquals(expected, actual);
+    }
 }
