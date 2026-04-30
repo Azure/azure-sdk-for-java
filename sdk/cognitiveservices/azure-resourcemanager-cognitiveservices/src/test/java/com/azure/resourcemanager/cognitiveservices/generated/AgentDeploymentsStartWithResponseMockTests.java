@@ -28,7 +28,7 @@ public final class AgentDeploymentsStartWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.agentDeployments()
-            .startWithResponse("hvycfjncindi", "oqkajwjuriarsbc", "lanhzcknjxizba", "dygzkztxfexwac", "yjmlxppdndzkfe",
+            .startWithResponse("nxclfrsbzrnmuv", "vp", "ofddtbfmek", "cnginxdvm", "oyqxfvgyxz",
                 com.azure.core.util.Context.NONE);
 
     }

@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"bxv\",\"isRegex\":true},\"etag\":\"zpbgkzc\",\"tags\":{\"ti\":\"iuzvkunhdimju\",\"gofmhxwrjlv\":\"zkaugpucdocfqpl\"},\"id\":\"lkv\",\"name\":\"gikyjtkak\",\"type\":\"lbis\"}";
+            = "{\"properties\":{\"pattern\":\"mkjmyitrchwudlxe\",\"isRegex\":true},\"etag\":\"pmnoejhqlf\",\"tags\":{\"oyrfgxk\":\"b\",\"a\":\"dpmypgfqvmtywh\",\"lfxampqc\":\"xpejpewpy\"},\"id\":\"g\",\"name\":\"uqxbpiatwfauje\",\"type\":\"qdtadrakgdd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("nniixyxvqba")
-            .withExistingRaiBlocklist("rnsihqhudsmus", "aawja", "xwjnfcz")
-            .withTags(mapOf("jogsyx", "e", "nrecchdidrm", "etamfddrvlkpzwb"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("jtgirnb").withIsRegex(false))
+            .define("jtv")
+            .withExistingRaiBlocklist("e", "jslkyozdsfzjue", "rhrhtsl")
+            .withTags(mapOf("ejgwe", "jqqwmtqsmoxsazu"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("xvgjbfi").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("bxv", response.properties().pattern());
+        Assertions.assertEquals("mkjmyitrchwudlxe", response.properties().pattern());
         Assertions.assertTrue(response.properties().isRegex());
-        Assertions.assertEquals("iuzvkunhdimju", response.tags().get("ti"));
+        Assertions.assertEquals("b", response.tags().get("oyrfgxk"));
     }
 
     // Use "Map.of" if available

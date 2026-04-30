@@ -13,10 +13,10 @@ public final class RaiContentFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterProperties model
-            = BinaryData.fromString("{\"name\":\"edcg\",\"isMultiLevelFilter\":true,\"source\":\"PreRun\"}")
+            = BinaryData.fromString("{\"name\":\"vvhmxtdrj\",\"isMultiLevelFilter\":false,\"source\":\"PreToolCall\"}")
                 .toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("edcg", model.name());
-        Assertions.assertTrue(model.isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN, model.source());
+        Assertions.assertEquals("vvhmxtdrj", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
     }
 }

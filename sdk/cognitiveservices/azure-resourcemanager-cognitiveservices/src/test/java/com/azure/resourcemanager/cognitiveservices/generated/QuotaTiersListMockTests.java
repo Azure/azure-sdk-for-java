@@ -23,7 +23,7 @@ public final class QuotaTiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"currentTierName\":\"anzbjekwuyckyvn\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-05-31T19:52:40Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"iwjbctvb\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2021-09-06T12:31:33Z\",\"upgradeUnavailabilityReason\":\"totdxposcslh\"}},\"id\":\"usiecktybhjuxid\",\"name\":\"hxomilddxjx\",\"type\":\"ugxwjwilmqrslaat\"}]}";
+            = "{\"value\":[{\"properties\":{\"currentTierName\":\"omfpb\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-09-10T12:31:48Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"ieztkutnjillu\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-11-22T12:59:20Z\",\"upgradeUnavailabilityReason\":\"htmjo\"}},\"id\":\"ifvulxf\",\"name\":\"ryrvjlgde\",\"type\":\"vjqwaho\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

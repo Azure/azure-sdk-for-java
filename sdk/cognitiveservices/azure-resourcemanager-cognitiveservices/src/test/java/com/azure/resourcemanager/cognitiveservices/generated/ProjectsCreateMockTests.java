@@ -27,7 +27,7 @@ public final class ProjectsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"cvnpv\",\"description\":\"hgjnaq\",\"endpoints\":{\"mwbitekdtfo\":\"pslzmvcds\"},\"isDefault\":true},\"tags\":{\"ivycpzcvdi\":\"bxqichgybfzdqe\"},\"location\":\"lrqtbhtrezp\",\"etag\":\"pryfmxmdutzfkgi\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"ccgndjgdprig\",\"principalId\":\"qyeqfcbuulpyuflq\",\"userAssignedIdentities\":{\"nmbzmecuy\":{\"principalId\":\"tujcyoh\",\"clientId\":\"imwdcsklkqnqvki\"},\"atlzmg\":{\"principalId\":\"wimbzayspzvr\",\"clientId\":\"tvfphmdzxplgtpvd\"},\"orimmo\":{\"principalId\":\"hnzrsbkkzovlzdm\",\"clientId\":\"mfwsxafofu\"}}},\"id\":\"wdehk\",\"name\":\"mvhzfovanyrvaprt\",\"type\":\"elgwewi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"cbmkakmkookbp\",\"description\":\"mgvmuy\",\"endpoints\":{\"fowzkroyr\":\"lwk\",\"zqjim\":\"urxf\"},\"isDefault\":false},\"tags\":{\"fejlzuqloiw\":\"jxx\",\"qlhchwhrktjle\":\"ayyzivrmitc\"},\"location\":\"ibfiplhxfnsm\",\"etag\":\"jow\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"mudsqcmhnxl\",\"principalId\":\"uwod\",\"userAssignedIdentities\":{\"dllc\":{\"principalId\":\"bkvnrpbjrmvg\",\"clientId\":\"plehmumk\"}}},\"id\":\"prwnhkgqggoxsst\",\"name\":\"ivrakfrryn\",\"type\":\"cwmhlymgnukxrk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,20 +37,22 @@ public final class ProjectsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .define("ktqrxqwqnjxrdf")
-            .withExistingAccount("vffhs", "pzou")
-            .withRegion("b")
-            .withTags(mapOf("qtyyqiprcltungb", "bpxtokljmtznpaxw", "kmii", "olj"))
-            .withProperties(new ProjectProperties().withDisplayName("lygtavczcxdfweap").withDescription("mlx"))
-            .withIdentity(new Identity().withType(ResourceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("bcbgv", new UserAssignedIdentity())))
+            .define("saqjmkgx")
+            .withExistingAccount("nkkw", "yqshwyqxridtt")
+            .withRegion("grssgw")
+            .withTags(mapOf("r", "qqwypvn", "od", "b"))
+            .withProperties(new ProjectProperties().withDisplayName("uuylztpz").withDescription("zevjykofve"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ozonynp", new UserAssignedIdentity(), "asormrexzvdube", new UserAssignedIdentity(), "dbakr",
+                        new UserAssignedIdentity(), "hrkombcdta", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("cvnpv", response.properties().displayName());
-        Assertions.assertEquals("hgjnaq", response.properties().description());
-        Assertions.assertEquals("bxqichgybfzdqe", response.tags().get("ivycpzcvdi"));
-        Assertions.assertEquals("lrqtbhtrezp", response.location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("cbmkakmkookbp", response.properties().displayName());
+        Assertions.assertEquals("mgvmuy", response.properties().description());
+        Assertions.assertEquals("jxx", response.tags().get("fejlzuqloiw"));
+        Assertions.assertEquals("ibfiplhxfnsm", response.location());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

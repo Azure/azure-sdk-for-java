@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ManagedNetworkSettingsBasicResourceInner;
 
@@ -23,10 +24,10 @@ public interface OutboundRulesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
-    OutboundRuleListResult post(String resourceGroupName, String accountName, String managedNetworkName,
-        ManagedNetworkSettingsBasicResourceInner body);
+    PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
+        String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body);
 
     /**
      * The POST API for updating the outbound rules of the managed network associated with the cognitive services
@@ -41,8 +42,8 @@ public interface OutboundRulesOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
-    OutboundRuleListResult post(String resourceGroupName, String accountName, String managedNetworkName,
-        ManagedNetworkSettingsBasicResourceInner body, Context context);
+    PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
+        String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body, Context context);
 }

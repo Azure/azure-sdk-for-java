@@ -23,7 +23,7 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
     @Test
     public void testCheckSkuAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"sc\",\"type\":\"erndbrnyeofltfnn\",\"skuName\":\"kadjf\",\"skuAvailable\":true,\"reason\":\"muii\",\"message\":\"ipfohykfkx\"}]}";
+            = "{\"value\":[{\"kind\":\"ky\",\"type\":\"lhjym\",\"skuName\":\"gqtagd\",\"skuAvailable\":false,\"reason\":\"soljome\",\"message\":\"fycnlb\"},{\"kind\":\"jcodkkgjiiytssi\",\"type\":\"z\",\"skuName\":\"ufqbvntnr\",\"skuAvailable\":false,\"reason\":\"orhc\",\"message\":\"xgnlykmx\"},{\"kind\":\"wzvmdoksqd\",\"type\":\"wlwxlboncqbazqic\",\"skuName\":\"hygtv\",\"skuAvailable\":true,\"reason\":\"anepubd\",\"message\":\"xyqvg\"},{\"kind\":\"aodetv\",\"type\":\"kxdxuwsaifmcwn\",\"skuName\":\"bzlehgc\",\"skuAvailable\":true,\"reason\":\"knjolgjyyxpve\",\"message\":\"zerqzevxoqei\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SkuAvailabilityListResult response = manager.resourceProviders()
-            .checkSkuAvailabilityWithResponse("flqqbtnyjpylxd",
-                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("vabm", "msxbaevwjcnkott", "wuhvaj"))
-                    .withKind("ailfemjjzak")
-                    .withType("wjiqullqxb"),
+            .checkSkuAvailabilityWithResponse("bhtmeplvuk",
+                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("brlbpgs"))
+                    .withKind("bagn")
+                    .withType("hjhgem"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sc", response.value().get(0).kind());
-        Assertions.assertEquals("erndbrnyeofltfnn", response.value().get(0).type());
-        Assertions.assertEquals("kadjf", response.value().get(0).skuName());
-        Assertions.assertTrue(response.value().get(0).skuAvailable());
-        Assertions.assertEquals("muii", response.value().get(0).reason());
-        Assertions.assertEquals("ipfohykfkx", response.value().get(0).message());
+        Assertions.assertEquals("ky", response.value().get(0).kind());
+        Assertions.assertEquals("lhjym", response.value().get(0).type());
+        Assertions.assertEquals("gqtagd", response.value().get(0).skuName());
+        Assertions.assertFalse(response.value().get(0).skuAvailable());
+        Assertions.assertEquals("soljome", response.value().get(0).reason());
+        Assertions.assertEquals("fycnlb", response.value().get(0).message());
     }
 }

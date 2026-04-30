@@ -16,19 +16,19 @@ public final class ConnectionPropertiesV2BasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"oogwxhnsduugwb\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"GoogleAdWords\",\"createdByWorkspaceArmId\":\"q\",\"error\":\"uarenlv\",\"expiryTime\":\"2021-07-13T00:13:17Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"yfedevjbo\":\"fvv\",\"minqcym\":\"lcqxypokk\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"xxewu\",\"invudbch\",\"qdtvqecrqctmxx\"],\"target\":\"ddm\",\"useWorkspaceManagedIdentity\":true},\"id\":\"ytxzvtznapxbanno\",\"name\":\"voxczytpr\",\"type\":\"nwvroevytlyokrr\"}]}")
+            "{\"nextLink\":\"uiiznktwfansnvpd\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Redis\",\"createdByWorkspaceArmId\":\"stbz\",\"error\":\"iwbuqny\",\"expiryTime\":\"2021-03-05T05:44:37Z\",\"group\":\"Azure\",\"isSharedToAll\":false,\"metadata\":{\"cez\":\"crpfbcunez\",\"sihclafzvaylp\":\"lfwyfwlwxjwetn\",\"qkc\":\"rsqqwztcm\"},\"peRequirement\":\"Required\",\"peStatus\":\"Active\",\"sharedUserList\":[\"ewzjkjexfd\"],\"target\":\"vhpsylkkshkbffmb\",\"useWorkspaceManagedIdentity\":false},\"id\":\"rgywwp\",\"name\":\"jx\",\"type\":\"nptfujgi\"}]}")
             .toObject(ConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals("oogwxhnsduugwb", model.nextLink());
-        Assertions.assertEquals(ConnectionCategory.GOOGLE_AD_WORDS, model.value().get(0).properties().category());
-        Assertions.assertEquals("uarenlv", model.value().get(0).properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T00:13:17Z"),
+        Assertions.assertEquals("uiiznktwfansnvpd", model.nextLink());
+        Assertions.assertEquals(ConnectionCategory.REDIS, model.value().get(0).properties().category());
+        Assertions.assertEquals("iwbuqny", model.value().get(0).properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T05:44:37Z"),
             model.value().get(0).properties().expiryTime());
-        Assertions.assertTrue(model.value().get(0).properties().isSharedToAll());
-        Assertions.assertEquals("fvv", model.value().get(0).properties().metadata().get("yfedevjbo"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.value().get(0).properties().peRequirement());
+        Assertions.assertFalse(model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("crpfbcunez", model.value().get(0).properties().metadata().get("cez"));
+        Assertions.assertEquals(ManagedPERequirement.REQUIRED, model.value().get(0).properties().peRequirement());
         Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.value().get(0).properties().peStatus());
-        Assertions.assertEquals("xxewu", model.value().get(0).properties().sharedUserList().get(0));
-        Assertions.assertEquals("ddm", model.value().get(0).properties().target());
-        Assertions.assertTrue(model.value().get(0).properties().useWorkspaceManagedIdentity());
+        Assertions.assertEquals("ewzjkjexfd", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("vhpsylkkshkbffmb", model.value().get(0).properties().target());
+        Assertions.assertFalse(model.value().get(0).properties().useWorkspaceManagedIdentity());
     }
 }

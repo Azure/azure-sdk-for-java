@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.RaiExternalSafetyProviderSchemaInner;
 
@@ -50,7 +49,7 @@ public interface RaiExternalSafetyProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services Rai External Safety provider Schema along with {@link Response}.
      */
-    Response<ProxyResource> createOrUpdateWithResponse(String safetyProviderName,
+    Response<RaiExternalSafetyProviderSchema> createOrUpdateWithResponse(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider, Context context);
 
     /**
@@ -64,7 +63,8 @@ public interface RaiExternalSafetyProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services Rai External Safety provider Schema.
      */
-    ProxyResource createOrUpdate(String safetyProviderName, RaiExternalSafetyProviderSchemaInner safetyProvider);
+    RaiExternalSafetyProviderSchema createOrUpdate(String safetyProviderName,
+        RaiExternalSafetyProviderSchemaInner safetyProvider);
 
     /**
      * Deletes the specified custom topic associated with the subscription.

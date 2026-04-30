@@ -24,7 +24,7 @@ public final class RaiBlocklistsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"vlgsrgkrfiz\"},\"etag\":\"ywlptyuqh\",\"tags\":{\"ykpfu\":\"cs\"},\"id\":\"ixcnpcf\",\"name\":\"kkpyycpaw\",\"type\":\"pjprdpwr\"}";
+            = "{\"properties\":{\"description\":\"jhjvmabzzbw\"},\"etag\":\"b\",\"tags\":{\"preojxrjnbsconxa\":\"afbgymqtn\"},\"id\":\"pney\",\"name\":\"hbjizqfsgnwdx\",\"type\":\"edpqlrfbo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class RaiBlocklistsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklists()
-            .define("lahovuuwx")
-            .withExistingAccount("wsaudoejtighsxj", "ytnkqb")
-            .withTags(mapOf("lyr", "w", "frolq", "oxpdxq", "u", "wnk"))
-            .withProperties(new RaiBlocklistProperties().withDescription("hjnhjiot"))
+            .define("nm")
+            .withExistingAccount("qsdb", "oksz")
+            .withTags(mapOf("fcqpol", "ztsdetjygow"))
+            .withProperties(new RaiBlocklistProperties().withDescription("pter"))
             .create();
 
-        Assertions.assertEquals("vlgsrgkrfiz", response.properties().description());
-        Assertions.assertEquals("cs", response.tags().get("ykpfu"));
+        Assertions.assertEquals("jhjvmabzzbw", response.properties().description());
+        Assertions.assertEquals("afbgymqtn", response.tags().get("preojxrjnbsconxa"));
     }
 
     // Use "Map.of" if available

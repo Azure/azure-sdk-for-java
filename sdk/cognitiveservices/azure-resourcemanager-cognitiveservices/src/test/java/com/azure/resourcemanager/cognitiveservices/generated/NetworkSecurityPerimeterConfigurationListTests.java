@@ -12,19 +12,21 @@ public final class NetworkSecurityPerimeterConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"xcczurtl\",\"provisioningIssues\":[{\"name\":\"xbkwv\",\"properties\":{}},{\"name\":\"zvd\",\"properties\":{}},{\"name\":\"d\",\"properties\":{}},{\"name\":\"mqpnoda\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"hewjptmcgsbost\",\"perimeterGuid\":\"lnd\",\"location\":\"tutmzl\"},\"resourceAssociation\":{\"name\":\"jlvfhrbbpneqv\",\"accessMode\":\"wyyu\"},\"profile\":{\"name\":\"chpp\",\"accessRulesVersion\":4561612083972163762,\"accessRules\":[{}],\"diagnosticSettingsVersion\":526653050845106445,\"enabledLogCategories\":[\"ejnhlbkpb\",\"pcpil\"]}},\"id\":\"a\",\"name\":\"zv\",\"type\":\"chndbnwie\"},{\"properties\":{\"provisioningState\":\"ewjwiuubw\",\"provisioningIssues\":[{\"name\":\"fapaqtfer\",\"properties\":{}},{\"name\":\"ex\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"xap\",\"perimeterGuid\":\"og\",\"location\":\"nobpudcdabtqwpw\"},\"resourceAssociation\":{\"name\":\"bzasqbucljgkyexa\",\"accessMode\":\"uy\"},\"profile\":{\"name\":\"ids\",\"accessRulesVersion\":2636118125611437621,\"accessRules\":[{}],\"diagnosticSettingsVersion\":4275757314520852483,\"enabledLogCategories\":[\"fqwazlnqnmcjn\",\"zqdqxt\"]}},\"id\":\"wgnyfusfzsvtui\",\"name\":\"zh\",\"type\":\"jqg\"},{\"properties\":{\"provisioningState\":\"hm\",\"provisioningIssues\":[{\"name\":\"yxynq\",\"properties\":{}},{\"name\":\"dpsovwxznptgo\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"b\",\"perimeterGuid\":\"pfhvfslk\",\"location\":\"tjlrigjksky\"},\"resourceAssociation\":{\"name\":\"ovzidsx\",\"accessMode\":\"abzmifrygznmmaxr\"},\"profile\":{\"name\":\"zob\",\"accessRulesVersion\":3393588735058009506,\"accessRules\":[{}],\"diagnosticSettingsVersion\":3557811767170936371,\"enabledLogCategories\":[\"xieixynllxec\",\"crojp\",\"slhcawjutifd\",\"fmvigorqjbttzh\"]}},\"id\":\"glka\",\"name\":\"honqjujeickpz\",\"type\":\"cpopmxel\"},{\"properties\":{\"provisioningState\":\"ltyjedexxmlfmk\",\"provisioningIssues\":[{\"name\":\"zuawxtzxpuamwa\",\"properties\":{}},{\"name\":\"rvxcush\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"ivmxyasfl\",\"perimeterGuid\":\"sgzwywakoihknsm\",\"location\":\"lmljhlnymzotq\"},\"resourceAssociation\":{\"name\":\"uzcbmqq\",\"accessMode\":\"mv\"},\"profile\":{\"name\":\"tayx\",\"accessRulesVersion\":4367486194556700788,\"accessRules\":[{}],\"diagnosticSettingsVersion\":7492914807539713666,\"enabledLogCategories\":[\"nh\",\"vsqltnzoibgsxg\",\"xfyqonmpqoxwdo\",\"dbxiqx\"]}},\"id\":\"iqbi\",\"name\":\"htmwwinh\",\"type\":\"hfqpofv\"}],\"nextLink\":\"cblembnkbwv\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"kdlpa\",\"provisioningIssues\":[{\"name\":\"x\",\"properties\":{}},{\"name\":\"lc\",\"properties\":{}},{\"name\":\"m\",\"properties\":{}},{\"name\":\"xdfgsftufqobr\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"cgcckknhxkizvyt\",\"perimeterGuid\":\"zvulj\",\"location\":\"aeranokqgukkjqnv\"},\"resourceAssociation\":{\"name\":\"ylaxxulcdi\",\"accessMode\":\"osfjbjsv\"},\"profile\":{\"name\":\"whryvycytdcl\",\"accessRulesVersion\":4919215833349894285,\"accessRules\":[{}],\"diagnosticSettingsVersion\":2808392059508100767,\"enabledLogCategories\":[\"tmvpdvjdhtt\",\"a\",\"fedxihchrphkm\",\"rjdqnsdfzp\"]}},\"id\":\"tg\",\"name\":\"ylkdghrje\",\"type\":\"utlwxezwzhok\"}],\"nextLink\":\"wnhhtqlgehgppip\"}")
             .toObject(NetworkSecurityPerimeterConfigurationList.class);
-        Assertions.assertEquals("xbkwv", model.value().get(0).properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("hewjptmcgsbost", model.value().get(0).properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("lnd", model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("tutmzl", model.value().get(0).properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("jlvfhrbbpneqv", model.value().get(0).properties().resourceAssociation().name());
-        Assertions.assertEquals("wyyu", model.value().get(0).properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("chpp", model.value().get(0).properties().profile().name());
-        Assertions.assertEquals(4561612083972163762L, model.value().get(0).properties().profile().accessRulesVersion());
-        Assertions.assertEquals(526653050845106445L,
+        Assertions.assertEquals("x", model.value().get(0).properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("cgcckknhxkizvyt", model.value().get(0).properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("zvulj", model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("aeranokqgukkjqnv",
+            model.value().get(0).properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("ylaxxulcdi", model.value().get(0).properties().resourceAssociation().name());
+        Assertions.assertEquals("osfjbjsv", model.value().get(0).properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("whryvycytdcl", model.value().get(0).properties().profile().name());
+        Assertions.assertEquals(4919215833349894285L, model.value().get(0).properties().profile().accessRulesVersion());
+        Assertions.assertEquals(2808392059508100767L,
             model.value().get(0).properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("ejnhlbkpb", model.value().get(0).properties().profile().enabledLogCategories().get(0));
-        Assertions.assertEquals("cblembnkbwv", model.nextLink());
+        Assertions.assertEquals("tmvpdvjdhtt",
+            model.value().get(0).properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("wnhhtqlgehgppip", model.nextLink());
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The routing mode that determines how requests are distributed across models.
+ * The model-router routing mode that determines how requests are distributed across models.
  */
 public final class RoutingMode extends ExpandableStringEnum<RoutingMode> {
     /**
@@ -17,14 +17,14 @@ public final class RoutingMode extends ExpandableStringEnum<RoutingMode> {
     public static final RoutingMode COST = fromString("cost");
 
     /**
-     * Balance cost and accuracy when routing requests across models.
+     * Balance cost and quality when routing requests across models.
      */
     public static final RoutingMode BALANCED = fromString("balanced");
 
     /**
-     * Route requests to maximize accuracy regardless of cost.
+     * Route requests to maximize quality regardless of cost.
      */
-    public static final RoutingMode ACCURACY = fromString("accuracy");
+    public static final RoutingMode QUALITY = fromString("quality");
 
     /**
      * Creates a new instance of RoutingMode value.

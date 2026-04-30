@@ -19,43 +19,43 @@ public final class AgentDeploymentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentDeploymentProperties model = BinaryData.fromString(
-            "{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"rzmq\",\"deploymentId\":\"cycijoclxiut\",\"state\":\"Deleted\",\"protocols\":[{\"protocol\":\"Agent\",\"version\":\"dnrqjbtxj\"}],\"agents\":[{\"agentVersion\":\"aqbzgyhfwwvuatbw\",\"agentId\":\"amteuliyslpkc\",\"agentName\":\"w\"}],\"provisioningState\":\"Canceled\",\"description\":\"xe\",\"tags\":{\"iijq\":\"wbormcqmi\"}}")
+            "{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"khychocokulehur\",\"deploymentId\":\"rqffaweyurk\",\"state\":\"Starting\",\"protocols\":[{\"protocol\":\"Agent\",\"version\":\"vjuqdbrxmrgchb\"},{\"protocol\":\"A2A\",\"version\":\"iyfjjkbajbuscg\"}],\"agents\":[{\"agentVersion\":\"ioycbl\",\"agentId\":\"p\",\"agentName\":\"lujyxkyxl\"}],\"provisioningState\":\"Updating\",\"description\":\"gkzz\",\"tags\":{\"czpgvdwnapfdq\":\"fhbzffovwmbjlzq\",\"h\":\"owftptnuwjtks\"}}")
             .toObject(AgentDeploymentProperties.class);
-        Assertions.assertEquals("xe", model.description());
-        Assertions.assertEquals("wbormcqmi", model.tags().get("iijq"));
-        Assertions.assertEquals("rzmq", model.displayName());
-        Assertions.assertEquals("cycijoclxiut", model.deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.DELETED, model.state());
+        Assertions.assertEquals("gkzz", model.description());
+        Assertions.assertEquals("fhbzffovwmbjlzq", model.tags().get("czpgvdwnapfdq"));
+        Assertions.assertEquals("khychocokulehur", model.displayName());
+        Assertions.assertEquals("rqffaweyurk", model.deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.STARTING, model.state());
         Assertions.assertEquals(AgentProtocol.AGENT, model.protocols().get(0).protocol());
-        Assertions.assertEquals("dnrqjbtxj", model.protocols().get(0).version());
-        Assertions.assertEquals("amteuliyslpkc", model.agents().get(0).agentId());
-        Assertions.assertEquals("w", model.agents().get(0).agentName());
-        Assertions.assertEquals("aqbzgyhfwwvuatbw", model.agents().get(0).agentVersion());
+        Assertions.assertEquals("vjuqdbrxmrgchb", model.protocols().get(0).version());
+        Assertions.assertEquals("p", model.agents().get(0).agentId());
+        Assertions.assertEquals("lujyxkyxl", model.agents().get(0).agentName());
+        Assertions.assertEquals("ioycbl", model.agents().get(0).agentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentDeploymentProperties model = new AgentDeploymentProperties().withDescription("xe")
-            .withTags(mapOf("iijq", "wbormcqmi"))
-            .withDisplayName("rzmq")
-            .withDeploymentId("cycijoclxiut")
-            .withState(AgentDeploymentState.DELETED)
-            .withProtocols(
-                Arrays.asList(new AgentProtocolVersion().withProtocol(AgentProtocol.AGENT).withVersion("dnrqjbtxj")))
-            .withAgents(Arrays.asList(new VersionedAgentReference().withAgentId("amteuliyslpkc")
-                .withAgentName("w")
-                .withAgentVersion("aqbzgyhfwwvuatbw")));
+        AgentDeploymentProperties model = new AgentDeploymentProperties().withDescription("gkzz")
+            .withTags(mapOf("czpgvdwnapfdq", "fhbzffovwmbjlzq", "h", "owftptnuwjtks"))
+            .withDisplayName("khychocokulehur")
+            .withDeploymentId("rqffaweyurk")
+            .withState(AgentDeploymentState.STARTING)
+            .withProtocols(Arrays.asList(
+                new AgentProtocolVersion().withProtocol(AgentProtocol.AGENT).withVersion("vjuqdbrxmrgchb"),
+                new AgentProtocolVersion().withProtocol(AgentProtocol.A2A).withVersion("iyfjjkbajbuscg")))
+            .withAgents(Arrays.asList(
+                new VersionedAgentReference().withAgentId("p").withAgentName("lujyxkyxl").withAgentVersion("ioycbl")));
         model = BinaryData.fromObject(model).toObject(AgentDeploymentProperties.class);
-        Assertions.assertEquals("xe", model.description());
-        Assertions.assertEquals("wbormcqmi", model.tags().get("iijq"));
-        Assertions.assertEquals("rzmq", model.displayName());
-        Assertions.assertEquals("cycijoclxiut", model.deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.DELETED, model.state());
+        Assertions.assertEquals("gkzz", model.description());
+        Assertions.assertEquals("fhbzffovwmbjlzq", model.tags().get("czpgvdwnapfdq"));
+        Assertions.assertEquals("khychocokulehur", model.displayName());
+        Assertions.assertEquals("rqffaweyurk", model.deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.STARTING, model.state());
         Assertions.assertEquals(AgentProtocol.AGENT, model.protocols().get(0).protocol());
-        Assertions.assertEquals("dnrqjbtxj", model.protocols().get(0).version());
-        Assertions.assertEquals("amteuliyslpkc", model.agents().get(0).agentId());
-        Assertions.assertEquals("w", model.agents().get(0).agentName());
-        Assertions.assertEquals("aqbzgyhfwwvuatbw", model.agents().get(0).agentVersion());
+        Assertions.assertEquals("vjuqdbrxmrgchb", model.protocols().get(0).version());
+        Assertions.assertEquals("p", model.agents().get(0).agentId());
+        Assertions.assertEquals("lujyxkyxl", model.agents().get(0).agentName());
+        Assertions.assertEquals("ioycbl", model.agents().get(0).agentVersion());
     }
 
     // Use "Map.of" if available

@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.OutboundRulesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.OutboundRuleBasicResourceInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.OutboundRuleListResultInner;
+import com.azure.resourcemanager.cognitiveservices.implementation.models.OutboundRuleListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -135,7 +135,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundRuleListResultInner>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<OutboundRuleListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("managedNetworkName") String managedNetworkName, @HeaderParam("Accept") String accept,
@@ -145,7 +145,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OutboundRuleListResultInner> listSync(@HostParam("endpoint") String endpoint,
+        Response<OutboundRuleListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("managedNetworkName") String managedNetworkName, @HeaderParam("Accept") String accept,
@@ -155,17 +155,15 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundRuleListResultInner>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<OutboundRuleListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OutboundRuleListResultInner> listNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<OutboundRuleListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -747,9 +745,8 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     private PagedResponse<OutboundRuleBasicResourceInner> listSinglePage(String resourceGroupName, String accountName,
         String managedNetworkName) {
         final String accept = "application/json";
-        Response<OutboundRuleListResultInner> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, managedNetworkName, accept, Context.NONE);
+        Response<OutboundRuleListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -773,9 +770,8 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     private PagedResponse<OutboundRuleBasicResourceInner> listSinglePage(String resourceGroupName, String accountName,
         String managedNetworkName, Context context) {
         final String accept = "application/json";
-        Response<OutboundRuleListResultInner> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, managedNetworkName, accept, context);
+        Response<OutboundRuleListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -861,7 +857,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<OutboundRuleListResultInner> res
+        Response<OutboundRuleListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -884,7 +880,7 @@ public final class OutboundRulesClientImpl implements OutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OutboundRuleBasicResourceInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<OutboundRuleListResultInner> res
+        Response<OutboundRuleListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

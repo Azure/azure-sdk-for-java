@@ -12,14 +12,14 @@ public final class ConnectionSharedAccessSignatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionSharedAccessSignature model
-            = BinaryData.fromString("{\"sas\":\"xdfzantkw\"}").toObject(ConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("xdfzantkw", model.sas());
+            = BinaryData.fromString("{\"sas\":\"ngz\"}").toObject(ConnectionSharedAccessSignature.class);
+        Assertions.assertEquals("ngz", model.sas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionSharedAccessSignature model = new ConnectionSharedAccessSignature().withSas("xdfzantkw");
+        ConnectionSharedAccessSignature model = new ConnectionSharedAccessSignature().withSas("ngz");
         model = BinaryData.fromObject(model).toObject(ConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("xdfzantkw", model.sas());
+        Assertions.assertEquals("ngz", model.sas());
     }
 }

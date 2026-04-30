@@ -15,20 +15,20 @@ public final class DefenderForAISettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"ivqiheb\",\"tags\":{\"izvcjfe\":\"wbzuwfmdurage\",\"ggbqi\":\"isdju\",\"m\":\"kxkbsazgakgacyr\",\"pv\":\"dmspof\"},\"id\":\"rylniofrzg\",\"name\":\"zjedmstkvnlv\",\"type\":\"bcuiiz\"}")
+            "{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"e\",\"tags\":{\"csheafidltugsr\":\"vgcxtx\",\"h\":\"smkss\"},\"id\":\"ftxfkf\",\"name\":\"egprhptil\",\"type\":\"ucb\"}")
             .toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("wbzuwfmdurage", model.tags().get("izvcjfe"));
-        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
+        Assertions.assertEquals("vgcxtx", model.tags().get("csheafidltugsr"));
+        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForAISettingInner model = new DefenderForAISettingInner()
-            .withTags(mapOf("izvcjfe", "wbzuwfmdurage", "ggbqi", "isdju", "m", "kxkbsazgakgacyr", "pv", "dmspof"))
-            .withState(DefenderForAISettingState.DISABLED);
+        DefenderForAISettingInner model
+            = new DefenderForAISettingInner().withTags(mapOf("csheafidltugsr", "vgcxtx", "h", "smkss"))
+                .withState(DefenderForAISettingState.ENABLED);
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("wbzuwfmdurage", model.tags().get("izvcjfe"));
-        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
+        Assertions.assertEquals("vgcxtx", model.tags().get("csheafidltugsr"));
+        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
     }
 
     // Use "Map.of" if available

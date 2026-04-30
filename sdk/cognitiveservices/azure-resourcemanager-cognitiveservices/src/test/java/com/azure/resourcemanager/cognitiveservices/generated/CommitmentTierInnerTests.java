@@ -13,17 +13,17 @@ public final class CommitmentTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierInner model = BinaryData.fromString(
-            "{\"kind\":\"jbfqzdk\",\"skuName\":\"jyixhaf\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"xmbjroum\",\"tier\":\"n\",\"maxCount\":63326432,\"quota\":{\"quantity\":5729494135721513095,\"unit\":\"zgfxonjtpusl\"},\"cost\":{\"commitmentMeterId\":\"pvti\",\"overageMeterId\":\"zbpdbo\"}}")
+            "{\"kind\":\"fqcvovj\",\"skuName\":\"ycsjmlbem\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"riuxegthortuda\",\"tier\":\"pjfe\",\"maxCount\":1302185073,\"quota\":{\"quantity\":3103501670005919366,\"unit\":\"bgqnz\"},\"cost\":{\"commitmentMeterId\":\"iilialwc\",\"overageMeterId\":\"ckbbcc\"}}")
             .toObject(CommitmentTierInner.class);
-        Assertions.assertEquals("jbfqzdk", model.kind());
-        Assertions.assertEquals("jyixhaf", model.skuName());
+        Assertions.assertEquals("fqcvovj", model.kind());
+        Assertions.assertEquals("ycsjmlbem", model.skuName());
         Assertions.assertEquals(HostingModel.CONNECTED_CONTAINER, model.hostingModel());
-        Assertions.assertEquals("xmbjroum", model.planType());
-        Assertions.assertEquals("n", model.tier());
-        Assertions.assertEquals(63326432, model.maxCount());
-        Assertions.assertEquals(5729494135721513095L, model.quota().quantity());
-        Assertions.assertEquals("zgfxonjtpusl", model.quota().unit());
-        Assertions.assertEquals("pvti", model.cost().commitmentMeterId());
-        Assertions.assertEquals("zbpdbo", model.cost().overageMeterId());
+        Assertions.assertEquals("riuxegthortuda", model.planType());
+        Assertions.assertEquals("pjfe", model.tier());
+        Assertions.assertEquals(1302185073, model.maxCount());
+        Assertions.assertEquals(3103501670005919366L, model.quota().quantity());
+        Assertions.assertEquals("bgqnz", model.quota().unit());
+        Assertions.assertEquals("iilialwc", model.cost().commitmentMeterId());
+        Assertions.assertEquals("ckbbcc", model.cost().overageMeterId());
     }
 }

@@ -12,9 +12,9 @@ public final class NetworkSecurityPerimeterConfigurationAssociationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationAssociationInfo model
-            = BinaryData.fromString("{\"name\":\"uhiosrsju\",\"accessMode\":\"fcdis\"}")
+            = BinaryData.fromString("{\"name\":\"yvi\",\"accessMode\":\"uwivkxoy\"}")
                 .toObject(NetworkSecurityPerimeterConfigurationAssociationInfo.class);
-        Assertions.assertEquals("uhiosrsju", model.name());
-        Assertions.assertEquals("fcdis", model.accessMode());
+        Assertions.assertEquals("yvi", model.name());
+        Assertions.assertEquals("uwivkxoy", model.accessMode());
     }
 }

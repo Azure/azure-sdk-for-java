@@ -15,21 +15,20 @@ public final class RaiBlocklistInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"kfxu\"},\"etag\":\"mdwzrmuhapfcqdps\",\"tags\":{\"vezrypqlmfeo\":\"vpsvuoymgcce\",\"edkowepbqpcrfk\":\"erqwkyhkobopg\",\"tn\":\"wccsnjvcdwxlpqek\"},\"id\":\"tjsyin\",\"name\":\"wfqatmtd\",\"type\":\"tmdvypgikdgs\"}")
+            "{\"properties\":{\"description\":\"whccs\"},\"etag\":\"kaivwit\",\"tags\":{\"wem\":\"ywuggwoluhcz\",\"sbrgz\":\"ai\",\"ggicccnxqhue\":\"wmsweypqwd\"},\"id\":\"ktt\",\"name\":\"stvlzywemhzrnc\",\"type\":\"dtclusiypb\"}")
             .toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("kfxu", model.properties().description());
-        Assertions.assertEquals("vpsvuoymgcce", model.tags().get("vezrypqlmfeo"));
+        Assertions.assertEquals("whccs", model.properties().description());
+        Assertions.assertEquals("ywuggwoluhcz", model.tags().get("wem"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistInner model
-            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("kfxu"))
-                .withTags(
-                    mapOf("vezrypqlmfeo", "vpsvuoymgcce", "edkowepbqpcrfk", "erqwkyhkobopg", "tn", "wccsnjvcdwxlpqek"));
+            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("whccs"))
+                .withTags(mapOf("wem", "ywuggwoluhcz", "sbrgz", "ai", "ggicccnxqhue", "wmsweypqwd"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("kfxu", model.properties().description());
-        Assertions.assertEquals("vpsvuoymgcce", model.tags().get("vezrypqlmfeo"));
+        Assertions.assertEquals("whccs", model.properties().description());
+        Assertions.assertEquals("ywuggwoluhcz", model.tags().get("wem"));
     }
 
     // Use "Map.of" if available

@@ -21,7 +21,7 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
     @Test
     public void testGetAssociationWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountId\":\"lcfn\"},\"etag\":\"mhsurlgwqkpmm\",\"tags\":{\"gvvjhvvlr\":\"tauolawiubmom\",\"ajnkdflqionswae\":\"ohewjj\",\"totryegpkhxrme\":\"kzfzqxjosho\"},\"id\":\"nlwkbfokxkhupz\",\"name\":\"rufgjblcdrmyfcem\",\"type\":\"t\"}";
+            = "{\"properties\":{\"accountId\":\"axyxzlbciphm\"},\"etag\":\"x\",\"tags\":{\"vonfeeqgpkr\":\"rndktx\",\"gnixxowwzkyfwnw\":\"et\",\"ldmaxxijvskwsdgk\":\"iwxeiicrmpep\"},\"id\":\"yacwrasekwefc\",\"name\":\"o\",\"type\":\"nwoqartwy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .getAssociationWithResponse("htdm", "wjekptycaydbj", "c", com.azure.core.util.Context.NONE)
+            .getAssociationWithResponse("greohtwhlpuzjp", "eezn", "angp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tauolawiubmom", response.tags().get("gvvjhvvlr"));
-        Assertions.assertEquals("lcfn", response.accountId());
+        Assertions.assertEquals("rndktx", response.tags().get("vonfeeqgpkr"));
+        Assertions.assertEquals("axyxzlbciphm", response.accountId());
     }
 }

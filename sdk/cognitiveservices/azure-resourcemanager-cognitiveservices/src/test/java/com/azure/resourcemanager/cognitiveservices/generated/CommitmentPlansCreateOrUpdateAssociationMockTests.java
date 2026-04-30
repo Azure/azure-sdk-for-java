@@ -23,7 +23,7 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
     @Test
     public void testCreateOrUpdateAssociation() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountId\":\"byfg\"},\"etag\":\"wqkjvx\",\"tags\":{\"xlcskltez\":\"pxsoohu\",\"srtmdylperpiltt\":\"ugggzlfbgrdcgu\"},\"id\":\"gczfc\",\"name\":\"fpfbodetres\",\"type\":\"gvtshu\"}";
+            = "{\"properties\":{\"accountId\":\"aqidoyzltgiomqo\"},\"etag\":\"epiaeapfsergd\",\"tags\":{\"b\":\"qnacyheq\"},\"id\":\"qncjubkhjozfymcw\",\"name\":\"bupyv\",\"type\":\"yvliq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommitmentPlanAccountAssociation response = manager.commitmentPlans()
-            .defineAssociation("dylytcovq")
-            .withExistingCommitmentPlan("koj", "zbbgspftesubzpvp")
-            .withTags(mapOf("whbwzjnufzrf", "swkjmdihdcyyyz", "qgnnbz", "m", "ubjtvgjsxmtyjjv", "tftedz",
-                "sffofwanmhksca", "vdpwwobtdphti"))
-            .withAccountId("srfjbdxzfxnx")
+            .defineAssociation("flr")
+            .withExistingCommitmentPlan("mihzbdnpxp", "cdpreyxelyicg")
+            .withTags(mapOf("landkdcdjhunhgh", "cpdwjgquxwey", "sotirei", "gawnrrnquo", "sxstcyilbvzmm", "seob", "b",
+                "cjzlquzexokjxebj"))
+            .withAccountId("sjygh")
             .create();
 
-        Assertions.assertEquals("pxsoohu", response.tags().get("xlcskltez"));
-        Assertions.assertEquals("byfg", response.accountId());
+        Assertions.assertEquals("qnacyheq", response.tags().get("b"));
+        Assertions.assertEquals("aqidoyzltgiomqo", response.accountId());
     }
 
     // Use "Map.of" if available

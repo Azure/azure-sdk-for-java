@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cognitiveservices.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -57,7 +56,7 @@ public interface RaiExternalSafetyProvidersClient {
      * @return cognitive Services Rai External Safety provider Schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProxyResource> createOrUpdateWithResponse(String safetyProviderName,
+    Response<RaiExternalSafetyProviderSchemaInner> createOrUpdateWithResponse(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider, Context context);
 
     /**
@@ -72,7 +71,8 @@ public interface RaiExternalSafetyProvidersClient {
      * @return cognitive Services Rai External Safety provider Schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProxyResource createOrUpdate(String safetyProviderName, RaiExternalSafetyProviderSchemaInner safetyProvider);
+    RaiExternalSafetyProviderSchemaInner createOrUpdate(String safetyProviderName,
+        RaiExternalSafetyProviderSchemaInner safetyProvider);
 
     /**
      * Deletes the specified custom topic associated with the subscription.

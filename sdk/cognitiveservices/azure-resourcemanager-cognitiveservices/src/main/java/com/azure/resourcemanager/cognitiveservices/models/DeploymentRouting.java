@@ -13,18 +13,18 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Routing configuration for the deployment. Specifies how requests are routed across multiple models.
+ * Routing configuration for the model-router deployment. Specifies how requests are routed across multiple models.
  */
 @Fluent
 public final class DeploymentRouting implements JsonSerializable<DeploymentRouting> {
     /*
-     * The routing mode that determines how requests are distributed across models.
+     * The model-router routing mode that determines how requests are distributed across models.
      */
     private RoutingMode mode;
 
     /*
-     * Optional. The list of models that the model router can use to route requests across. If not specified, the model
-     * router will route to all available models specified in the model-router version.
+     * Optional. The list of model-router supported models that the model router can use to route requests across. If
+     * not specified, the model router will route to all available models specified in the model-router version.
      */
     private List<DeploymentModel> models;
 
@@ -35,7 +35,7 @@ public final class DeploymentRouting implements JsonSerializable<DeploymentRouti
     }
 
     /**
-     * Get the mode property: The routing mode that determines how requests are distributed across models.
+     * Get the mode property: The model-router routing mode that determines how requests are distributed across models.
      * 
      * @return the mode value.
      */
@@ -44,7 +44,7 @@ public final class DeploymentRouting implements JsonSerializable<DeploymentRouti
     }
 
     /**
-     * Set the mode property: The routing mode that determines how requests are distributed across models.
+     * Set the mode property: The model-router routing mode that determines how requests are distributed across models.
      * 
      * @param mode the mode value to set.
      * @return the DeploymentRouting object itself.
@@ -55,8 +55,9 @@ public final class DeploymentRouting implements JsonSerializable<DeploymentRouti
     }
 
     /**
-     * Get the models property: Optional. The list of models that the model router can use to route requests across. If
-     * not specified, the model router will route to all available models specified in the model-router version.
+     * Get the models property: Optional. The list of model-router supported models that the model router can use to
+     * route requests across. If not specified, the model router will route to all available models specified in the
+     * model-router version.
      * 
      * @return the models value.
      */
@@ -65,8 +66,9 @@ public final class DeploymentRouting implements JsonSerializable<DeploymentRouti
     }
 
     /**
-     * Set the models property: Optional. The list of models that the model router can use to route requests across. If
-     * not specified, the model router will route to all available models specified in the model-router version.
+     * Set the models property: Optional. The list of model-router supported models that the model router can use to
+     * route requests across. If not specified, the model router will route to all available models specified in the
+     * model-router version.
      * 
      * @param models the models value to set.
      * @return the DeploymentRouting object itself.

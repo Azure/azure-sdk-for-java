@@ -44,11 +44,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     private List<CustomBlocklistConfig> customBlocklists;
 
     /*
-     * The list of custom rai topics.
-     */
-    private List<CustomTopicConfig> customTopics;
-
-    /*
      * The list of Safety Providers.
      */
     private List<SafetyProviderConfig> safetyProviders;
@@ -153,26 +148,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
     }
 
     /**
-     * Get the customTopics property: The list of custom rai topics.
-     * 
-     * @return the customTopics value.
-     */
-    public List<CustomTopicConfig> customTopics() {
-        return this.customTopics;
-    }
-
-    /**
-     * Set the customTopics property: The list of custom rai topics.
-     * 
-     * @param customTopics the customTopics value to set.
-     * @return the RaiPolicyProperties object itself.
-     */
-    public RaiPolicyProperties withCustomTopics(List<CustomTopicConfig> customTopics) {
-        this.customTopics = customTopics;
-        return this;
-    }
-
-    /**
      * Get the safetyProviders property: The list of Safety Providers.
      * 
      * @return the safetyProviders value.
@@ -204,7 +179,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customBlocklists", this.customBlocklists,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("customTopics", this.customTopics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("safetyProviders", this.safetyProviders,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -239,10 +213,6 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
                     List<CustomBlocklistConfig> customBlocklists
                         = reader.readArray(reader1 -> CustomBlocklistConfig.fromJson(reader1));
                     deserializedRaiPolicyProperties.customBlocklists = customBlocklists;
-                } else if ("customTopics".equals(fieldName)) {
-                    List<CustomTopicConfig> customTopics
-                        = reader.readArray(reader1 -> CustomTopicConfig.fromJson(reader1));
-                    deserializedRaiPolicyProperties.customTopics = customTopics;
                 } else if ("safetyProviders".equals(fieldName)) {
                     List<SafetyProviderConfig> safetyProviders
                         = reader.readArray(reader1 -> SafetyProviderConfig.fromJson(reader1));

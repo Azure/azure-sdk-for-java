@@ -14,30 +14,30 @@ public final class AssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssignedIdentity model = BinaryData.fromString(
-            "{\"kind\":\"AgentBlueprint\",\"type\":\"System\",\"clientId\":\"zovgkkumuikj\",\"principalId\":\"jcazt\",\"tenantId\":\"wsnsqowx\",\"subject\":\"omlik\",\"provisioningState\":\"Deleting\"}")
+            "{\"kind\":\"None\",\"type\":\"None\",\"clientId\":\"eqyj\",\"principalId\":\"eziunjxdfzant\",\"tenantId\":\"wcegyamlbn\",\"subject\":\"qa\",\"provisioningState\":\"Deleting\"}")
             .toObject(AssignedIdentity.class);
-        Assertions.assertEquals(IdentityKind.AGENT_BLUEPRINT, model.kind());
-        Assertions.assertEquals(IdentityManagementType.SYSTEM, model.type());
-        Assertions.assertEquals("zovgkkumuikj", model.clientId());
-        Assertions.assertEquals("jcazt", model.principalId());
-        Assertions.assertEquals("wsnsqowx", model.tenantId());
-        Assertions.assertEquals("omlik", model.subject());
+        Assertions.assertEquals(IdentityKind.NONE, model.kind());
+        Assertions.assertEquals(IdentityManagementType.NONE, model.type());
+        Assertions.assertEquals("eqyj", model.clientId());
+        Assertions.assertEquals("eziunjxdfzant", model.principalId());
+        Assertions.assertEquals("wcegyamlbn", model.tenantId());
+        Assertions.assertEquals("qa", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssignedIdentity model = new AssignedIdentity().withKind(IdentityKind.AGENT_BLUEPRINT)
-            .withType(IdentityManagementType.SYSTEM)
-            .withClientId("zovgkkumuikj")
-            .withPrincipalId("jcazt")
-            .withTenantId("wsnsqowx")
-            .withSubject("omlik");
+        AssignedIdentity model = new AssignedIdentity().withKind(IdentityKind.NONE)
+            .withType(IdentityManagementType.NONE)
+            .withClientId("eqyj")
+            .withPrincipalId("eziunjxdfzant")
+            .withTenantId("wcegyamlbn")
+            .withSubject("qa");
         model = BinaryData.fromObject(model).toObject(AssignedIdentity.class);
-        Assertions.assertEquals(IdentityKind.AGENT_BLUEPRINT, model.kind());
-        Assertions.assertEquals(IdentityManagementType.SYSTEM, model.type());
-        Assertions.assertEquals("zovgkkumuikj", model.clientId());
-        Assertions.assertEquals("jcazt", model.principalId());
-        Assertions.assertEquals("wsnsqowx", model.tenantId());
-        Assertions.assertEquals("omlik", model.subject());
+        Assertions.assertEquals(IdentityKind.NONE, model.kind());
+        Assertions.assertEquals(IdentityManagementType.NONE, model.type());
+        Assertions.assertEquals("eqyj", model.clientId());
+        Assertions.assertEquals("eziunjxdfzant", model.principalId());
+        Assertions.assertEquals("wcegyamlbn", model.tenantId());
+        Assertions.assertEquals("qa", model.subject());
     }
 }

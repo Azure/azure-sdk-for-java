@@ -22,7 +22,7 @@ public final class ProjectCapabilityHostsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"aiServicesConnections\":[\"ivznllas\",\"k\"],\"vectorStoreConnections\":[\"jqjpv\",\"aihxjtgzgtaiywbq\"],\"storageConnections\":[\"igbsfsgsa\"],\"threadStorageConnections\":[\"ldfmhljq\"],\"provisioningState\":\"Deleting\"},\"id\":\"mrjctryldsxeb\",\"name\":\"hsxrznmgsdaluyc\",\"type\":\"hefr\"}]}";
+            = "{\"value\":[{\"properties\":{\"aiServicesConnections\":[\"prcltung\",\"s\"],\"vectorStoreConnections\":[\"ckmiig\"],\"storageConnections\":[\"uck\",\"kdskswtiiqqc\",\"ikclsm\",\"lnssw\"],\"threadStorageConnections\":[\"dnonaaxwmgz\",\"ujlqcwnynlle\",\"q\",\"cbgvsbt\"],\"provisioningState\":\"Succeeded\"},\"id\":\"oxa\",\"name\":\"hxuvjhxm\",\"type\":\"rqstjcme\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,13 @@ public final class ProjectCapabilityHostsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ProjectCapabilityHost> response
-            = manager.projectCapabilityHosts().list("klaoa", "pohrvm", "rqra", com.azure.core.util.Context.NONE);
+        PagedIterable<ProjectCapabilityHost> response = manager.projectCapabilityHosts()
+            .list("fgsmdrjuqb", "xtokljmtz", "paxwfqty", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ivznllas", response.iterator().next().properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("jqjpv", response.iterator().next().properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("igbsfsgsa", response.iterator().next().properties().storageConnections().get(0));
-        Assertions.assertEquals("ldfmhljq", response.iterator().next().properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("prcltung", response.iterator().next().properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("ckmiig", response.iterator().next().properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("uck", response.iterator().next().properties().storageConnections().get(0));
+        Assertions.assertEquals("dnonaaxwmgz",
+            response.iterator().next().properties().threadStorageConnections().get(0));
     }
 }

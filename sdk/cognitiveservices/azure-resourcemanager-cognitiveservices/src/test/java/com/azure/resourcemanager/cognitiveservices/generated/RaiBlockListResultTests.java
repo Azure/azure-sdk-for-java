@@ -12,10 +12,10 @@ public final class RaiBlockListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"irryuzhlh\",\"value\":[{\"properties\":{\"description\":\"vqqaatjinrvgo\"},\"etag\":\"mfiibfggj\",\"tags\":{\"llqwjygvjayvblmh\":\"lvrwxkvtkk\",\"uhbxvvy\":\"k\"},\"id\":\"s\",\"name\":\"pbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"description\":\"hlmctlpdngitvgb\"},\"etag\":\"rixkwmyijejve\",\"tags\":{\"xhcexdrrvqahq\":\"bpnaixexccbdre\",\"jnhyjsvf\":\"ghtpw\",\"mtg\":\"cxzbfvoowvr\",\"y\":\"qp\"},\"id\":\"tronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"description\":\"lik\"},\"etag\":\"wslolbqp\",\"tags\":{\"elfk\":\"lmv\",\"njwmwkpnbsazejj\":\"gplcrpwjxeznoigb\",\"augzxnfaazpxdtn\":\"qkagfhsxt\"},\"id\":\"mkqjj\",\"name\":\"wuenvr\",\"type\":\"pyouaibrebqaays\"}]}")
+            "{\"nextLink\":\"gq\",\"value\":[{\"properties\":{\"description\":\"jhzi\"},\"etag\":\"gfpelolppvksrpqv\",\"tags\":{\"wib\":\"raehtwdwrft\",\"cstwity\":\"rcdlbhshfwpr\"},\"id\":\"evxccedcp\",\"name\":\"md\",\"type\":\"odn\"},{\"properties\":{\"description\":\"ltjcvnhltiugcxna\"},\"etag\":\"wxqibyq\",\"tags\":{\"lmdjrkvfgbvfvpdb\":\"owx\"},\"id\":\"acizsjqlhkrr\",\"name\":\"bdeibqipqk\",\"type\":\"hvxndzwmkrefajpj\"},{\"properties\":{\"description\":\"kqnyh\"},\"etag\":\"ij\",\"tags\":{\"bsystawfsdjpvk\":\"vfxzsjab\",\"jxbkzbzkdvn\":\"p\",\"zhjjklffhmouwq\":\"jabudurgkakmo\",\"eeyebi\":\"gzrf\"},\"id\":\"kayuhqlbjbs\",\"name\":\"bbqwrvtldg\",\"type\":\"fp\"}]}")
             .toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("irryuzhlh", model.nextLink());
-        Assertions.assertEquals("vqqaatjinrvgo", model.value().get(0).properties().description());
-        Assertions.assertEquals("lvrwxkvtkk", model.value().get(0).tags().get("llqwjygvjayvblmh"));
+        Assertions.assertEquals("gq", model.nextLink());
+        Assertions.assertEquals("jhzi", model.value().get(0).properties().description());
+        Assertions.assertEquals("raehtwdwrft", model.value().get(0).tags().get("wib"));
     }
 }

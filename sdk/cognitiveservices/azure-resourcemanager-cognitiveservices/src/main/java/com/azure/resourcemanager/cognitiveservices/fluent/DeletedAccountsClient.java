@@ -18,6 +18,30 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
  */
 public interface DeletedAccountsClient {
     /**
+     * Returns all the resources of a particular type belonging to a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AccountInner> list();
+
+    /**
+     * Returns all the resources of a particular type belonging to a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AccountInner> list(Context context);
+
+    /**
      * Returns a Cognitive Services account specified by the parameters.
      * 
      * @param location The location name.
@@ -105,28 +129,4 @@ public interface DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void purge(String location, String resourceGroupName, String accountName, Context context);
-
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AccountInner> list();
-
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AccountInner> list(Context context);
 }

@@ -15,18 +15,18 @@ public final class OutboundRuleBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Deleting\",\"errorInformation\":\"ypsjoq\",\"parentRuleNames\":[\"nkyhf\"]},\"id\":\"vsqxfxjelgcmpzqj\",\"name\":\"hhqxuwyvcacoyviv\",\"type\":\"s\"}")
+            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Inactive\",\"errorInformation\":\"edikdfrdbiq\",\"parentRuleNames\":[\"geihfql\",\"gwfiwzcxmjpby\",\"phmgtvljvrcmyfq\",\"pgxh\"]},\"id\":\"omyqwcabvnuileey\",\"name\":\"swlpaugmrmfj\",\"type\":\"rxwtoaukhfkvc\"}")
             .toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.REQUIRED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner()
-            .withProperties(new OutboundRule().withCategory(RuleCategory.REQUIRED).withStatus(RuleStatus.DELETING));
+            .withProperties(new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.INACTIVE));
         model = BinaryData.fromObject(model).toObject(OutboundRuleBasicResourceInner.class);
-        Assertions.assertEquals(RuleCategory.REQUIRED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.properties().status());
     }
 }

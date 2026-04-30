@@ -23,7 +23,7 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aiServicesConnections\":[\"lqloc\",\"vujex\",\"yglxrkgjnm\",\"paslavxjfiuofpi\"],\"vectorStoreConnections\":[\"zlvssq\",\"wjopackyhydvik\",\"fngp\"],\"storageConnections\":[\"lxgjs\",\"izwgsoriobijeiyd\",\"euynh\",\"okayrg\"],\"threadStorageConnections\":[\"ri\"],\"provisioningState\":\"Succeeded\"},\"id\":\"eoftnorwai\",\"name\":\"s\",\"type\":\"octqkmvjanxvzf\"}";
+            = "{\"properties\":{\"aiServicesConnections\":[\"vfph\",\"dzxplgtp\",\"dvatlzmgschn\",\"rsbkkzovlzdmnfmf\"],\"vectorStoreConnections\":[\"afofu\",\"orimmo\",\"zwdehkkmvhz\",\"ovanyrva\"],\"storageConnections\":[\"gelg\",\"ewikfyaqandmym\",\"qoq\"],\"threadStorageConnections\":[\"ovsfb\",\"bvzo\",\"axmfmvsmcwoxfa\"],\"provisioningState\":\"Succeeded\"},\"id\":\"qi\",\"name\":\"bsat\",\"type\":\"oiauesugmocpcj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,19 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ProjectCapabilityHost response
-            = manager.projectCapabilityHosts()
-                .define("pryj")
-                .withExistingProject("hs", "uerbgpxebjl", "dcaytujraxd")
-                .withProperties(new ProjectCapabilityHostProperties()
-                    .withAiServicesConnections(Arrays.asList("nsewouxl", "msvvylj"))
-                    .withVectorStoreConnections(Arrays.asList("e"))
-                    .withStorageConnections(Arrays.asList("ehqqylm"))
-                    .withThreadStorageConnections(Arrays.asList("wjwdsdlzmkxer", "xx", "teehk")))
-                .create();
+        ProjectCapabilityHost response = manager.projectCapabilityHosts()
+            .define("vcdsvm")
+            .withExistingProject("wmlgicvnpv", "dhgjnaqyqi", "slz")
+            .withProperties(new ProjectCapabilityHostProperties()
+                .withAiServicesConnections(Arrays.asList("tekdtfobvfiybx", "ich", "ybfzdqekivycp", "cv"))
+                .withVectorStoreConnections(Arrays.asList("ulrqtbht", "ezp"))
+                .withStorageConnections(Arrays.asList("ryfmxmdu", "zf", "giln", "udccgndjgdprig"))
+                .withThreadStorageConnections(Arrays.asList("yeqfcbuulpy", "flqjfshtu", "cyohigimwdcs", "lkq")))
+            .create();
 
-        Assertions.assertEquals("lqloc", response.properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("zlvssq", response.properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("lxgjs", response.properties().storageConnections().get(0));
-        Assertions.assertEquals("ri", response.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("vfph", response.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("afofu", response.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("gelg", response.properties().storageConnections().get(0));
+        Assertions.assertEquals("ovsfb", response.properties().threadStorageConnections().get(0));
     }
 }

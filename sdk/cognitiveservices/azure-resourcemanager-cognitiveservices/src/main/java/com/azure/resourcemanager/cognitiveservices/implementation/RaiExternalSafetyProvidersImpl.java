@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cognitiveservices.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiExternalSafetyProvidersClient;
@@ -43,14 +42,23 @@ public final class RaiExternalSafetyProvidersImpl implements RaiExternalSafetyPr
         }
     }
 
-    public Response<ProxyResource> createOrUpdateWithResponse(String safetyProviderName,
+    public Response<RaiExternalSafetyProviderSchema> createOrUpdateWithResponse(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider, Context context) {
-        return this.serviceClient().createOrUpdateWithResponse(safetyProviderName, safetyProvider, context);
+        Response<RaiExternalSafetyProviderSchemaInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(safetyProviderName, safetyProvider, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RaiExternalSafetyProviderSchemaImpl(inner.getValue(), this.manager()));
     }
 
-    public ProxyResource createOrUpdate(String safetyProviderName,
+    public RaiExternalSafetyProviderSchema createOrUpdate(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider) {
-        return this.serviceClient().createOrUpdate(safetyProviderName, safetyProvider);
+        RaiExternalSafetyProviderSchemaInner inner
+            = this.serviceClient().createOrUpdate(safetyProviderName, safetyProvider);
+        if (inner != null) {
+            return new RaiExternalSafetyProviderSchemaImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String safetyProviderName) {

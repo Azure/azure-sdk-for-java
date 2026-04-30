@@ -13,10 +13,10 @@ public final class DefenderForAISettingResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingResult model = BinaryData.fromString(
-            "{\"nextLink\":\"f\",\"value\":[{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"ibmikostbzb\",\"tags\":{\"phzfylsgcrp\":\"buqny\",\"fwyfwlwxjwet\":\"bcunezzceze\"},\"id\":\"sihclafzvaylp\",\"name\":\"rsqqwztcm\",\"type\":\"qkc\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"xfe\",\"tags\":{\"ylkkshkbffmbm\":\"kjexfdeqvhp\",\"gjxsnptfu\":\"zjrgyww\"},\"id\":\"icgaao\",\"name\":\"pttaqutd\",\"type\":\"wemxswvruunzz\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"fkimrtix\",\"tags\":{\"ixmonstshiyxg\":\"fqyinljqepqw\",\"irdsvuwcob\":\"elfclducc\"},\"id\":\"gstmninwjizciln\",\"name\":\"hgshe\",\"type\":\"jtbxqmuluxlx\"}]}")
+            "{\"nextLink\":\"dqohmc\",\"value\":[{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"etpwbralll\",\"tags\":{\"n\":\"hbqzmizakakankjp\",\"xprimrsop\":\"zhajoylhjlmuo\"},\"id\":\"ecj\",\"name\":\"eislstvasylwx\",\"type\":\"zaum\"},{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"guufuzboyjathwtz\",\"tags\":{\"mwmdxmebwjscjpa\":\"a\"},\"id\":\"xveabf\",\"name\":\"xnmwmqtibxyijddt\",\"type\":\"qcttadijaeukmrsi\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"dzaapmudqme\",\"tags\":{\"bu\":\"gp\",\"znrtffyaqit\":\"qwyxebeybpm\"},\"id\":\"heioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}]}")
             .toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("f", model.nextLink());
-        Assertions.assertEquals("buqny", model.value().get(0).tags().get("phzfylsgcrp"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.value().get(0).state());
+        Assertions.assertEquals("dqohmc", model.nextLink());
+        Assertions.assertEquals("hbqzmizakakankjp", model.value().get(0).tags().get("n"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.value().get(0).state());
     }
 }

@@ -99,9 +99,9 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     private DeploymentState deploymentState;
 
     /*
-     * Routing configuration for the deployment. This property is only applicable when the deployed model is
-     * 'model-router' version 2025-11-18 or later. Allows you to select the models subset for routing and the routing
-     * mode (balanced, accuracy, cost) for routing across all supported models or the model subset.
+     * Routing configuration for the model-router deployment. This property is only applicable when the deployed model
+     * is 'model-router' version 2025-11-18 or later. Allows you to select the models subset for routing and the routing
+     * mode (balanced, quality, cost) for routing across all supported models or the model subset.
      */
     private DeploymentRouting routing;
 
@@ -371,9 +371,10 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
-     * Get the routing property: Routing configuration for the deployment. This property is only applicable when the
-     * deployed model is 'model-router' version 2025-11-18 or later. Allows you to select the models subset for routing
-     * and the routing mode (balanced, accuracy, cost) for routing across all supported models or the model subset.
+     * Get the routing property: Routing configuration for the model-router deployment. This property is only applicable
+     * when the deployed model is 'model-router' version 2025-11-18 or later. Allows you to select the models subset for
+     * routing and the routing mode (balanced, quality, cost) for routing across all supported models or the model
+     * subset.
      * 
      * @return the routing value.
      */
@@ -382,9 +383,10 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
-     * Set the routing property: Routing configuration for the deployment. This property is only applicable when the
-     * deployed model is 'model-router' version 2025-11-18 or later. Allows you to select the models subset for routing
-     * and the routing mode (balanced, accuracy, cost) for routing across all supported models or the model subset.
+     * Set the routing property: Routing configuration for the model-router deployment. This property is only applicable
+     * when the deployed model is 'model-router' version 2025-11-18 or later. Allows you to select the models subset for
+     * routing and the routing mode (balanced, quality, cost) for routing across all supported models or the model
+     * subset.
      * 
      * @param routing the routing value to set.
      * @return the DeploymentProperties object itself.

@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.OutboundRulesOperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ManagedNetworkSettingsBasicResourceInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.OutboundRuleListResultInner;
-import com.azure.resourcemanager.cognitiveservices.models.OutboundRuleListResult;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.OutboundRuleBasicResourceInner;
+import com.azure.resourcemanager.cognitiveservices.models.OutboundRuleBasicResource;
 import com.azure.resourcemanager.cognitiveservices.models.OutboundRulesOperations;
 
 public final class OutboundRulesOperationsImpl implements OutboundRulesOperations {
@@ -25,26 +26,18 @@ public final class OutboundRulesOperationsImpl implements OutboundRulesOperation
         this.serviceManager = serviceManager;
     }
 
-    public OutboundRuleListResult post(String resourceGroupName, String accountName, String managedNetworkName,
-        ManagedNetworkSettingsBasicResourceInner body) {
-        OutboundRuleListResultInner inner
+    public PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
+        String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body) {
+        PagedIterable<OutboundRuleBasicResourceInner> inner
             = this.serviceClient().post(resourceGroupName, accountName, managedNetworkName, body);
-        if (inner != null) {
-            return new OutboundRuleListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OutboundRuleBasicResourceImpl(inner1, this.manager()));
     }
 
-    public OutboundRuleListResult post(String resourceGroupName, String accountName, String managedNetworkName,
-        ManagedNetworkSettingsBasicResourceInner body, Context context) {
-        OutboundRuleListResultInner inner
+    public PagedIterable<OutboundRuleBasicResource> post(String resourceGroupName, String accountName,
+        String managedNetworkName, ManagedNetworkSettingsBasicResourceInner body, Context context) {
+        PagedIterable<OutboundRuleBasicResourceInner> inner
             = this.serviceClient().post(resourceGroupName, accountName, managedNetworkName, body, context);
-        if (inner != null) {
-            return new OutboundRuleListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OutboundRuleBasicResourceImpl(inner1, this.manager()));
     }
 
     private OutboundRulesOperationsClient serviceClient() {

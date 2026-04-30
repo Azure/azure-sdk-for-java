@@ -15,22 +15,22 @@ public final class RaiBlocklistItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"pattern\":\"tawfsdjpvkvp\",\"isRegex\":true},\"etag\":\"kzbzkdvncjabudu\",\"tags\":{\"hmouwqlgzrfze\":\"akmokzhjjklf\",\"lbjbsyb\":\"yebizikayuh\"},\"id\":\"wrv\",\"name\":\"ldgmfpgvmpip\",\"type\":\"slthaq\"}")
+            "{\"properties\":{\"pattern\":\"ncckw\",\"isRegex\":true},\"etag\":\"whxxbuyqax\",\"tags\":{\"iolxor\":\"qztpp\"},\"id\":\"lt\",\"name\":\"lmncw\",\"type\":\"obqwcsdbnwdcfh\"}")
             .toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("tawfsdjpvkvp", model.properties().pattern());
+        Assertions.assertEquals("ncckw", model.properties().pattern());
         Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("akmokzhjjklf", model.tags().get("hmouwqlgzrfze"));
+        Assertions.assertEquals("qztpp", model.tags().get("iolxor"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistItemInner model = new RaiBlocklistItemInner()
-            .withProperties(new RaiBlocklistItemProperties().withPattern("tawfsdjpvkvp").withIsRegex(true))
-            .withTags(mapOf("hmouwqlgzrfze", "akmokzhjjklf", "lbjbsyb", "yebizikayuh"));
+            .withProperties(new RaiBlocklistItemProperties().withPattern("ncckw").withIsRegex(true))
+            .withTags(mapOf("iolxor", "qztpp"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("tawfsdjpvkvp", model.properties().pattern());
+        Assertions.assertEquals("ncckw", model.properties().pattern());
         Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("akmokzhjjklf", model.tags().get("hmouwqlgzrfze"));
+        Assertions.assertEquals("qztpp", model.tags().get("iolxor"));
     }
 
     // Use "Map.of" if available

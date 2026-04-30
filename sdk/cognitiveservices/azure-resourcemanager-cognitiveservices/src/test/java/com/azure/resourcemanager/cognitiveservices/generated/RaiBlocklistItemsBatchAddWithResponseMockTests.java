@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"eychbji\"},\"etag\":\"fsgnw\",\"tags\":{\"xi\":\"edpqlrfbo\"},\"id\":\"lnfyzav\",\"name\":\"rbypi\",\"type\":\"dbkp\"}";
+            = "{\"properties\":{\"description\":\"roqksmfxm\"},\"etag\":\"prstvkitbfj\",\"tags\":{\"rqxw\":\"otnplfacqocc\",\"a\":\"tjtdrhutfd\",\"eh\":\"txop\"},\"id\":\"dkmdzgsszx\",\"name\":\"ctkbbxuha\",\"type\":\"lsi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,13 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklistItems()
-            .batchAddWithResponse("olzkgys", "gzyy", "zoxlvoc",
-                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("dxxheigmlilwz")
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("hjvmabzzbwaybfm").withIsRegex(false)),
-                    new RaiBlocklistItemBulkRequest().withName("gymqtnapreoj")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("nbsconx").withIsRegex(false))),
+            .batchAddWithResponse("oxudnmckap", "hknqiijge", "cdgmoqu",
+                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("hkkyowltjouw")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("x").withIsRegex(true))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eychbji", response.properties().description());
-        Assertions.assertEquals("edpqlrfbo", response.tags().get("xi"));
+        Assertions.assertEquals("roqksmfxm", response.properties().description());
+        Assertions.assertEquals("otnplfacqocc", response.tags().get("rqxw"));
     }
 }

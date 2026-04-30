@@ -21,7 +21,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
@@ -88,7 +87,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProxyResource>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<RaiExternalSafetyProviderSchemaInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("safetyProviderName") String safetyProviderName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -97,7 +96,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ProxyResource> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<RaiExternalSafetyProviderSchemaInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("safetyProviderName") String safetyProviderName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
@@ -202,8 +201,8 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProxyResource>> createOrUpdateWithResponseAsync(String safetyProviderName,
-        RaiExternalSafetyProviderSchemaInner safetyProvider) {
+    private Mono<Response<RaiExternalSafetyProviderSchemaInner>> createOrUpdateWithResponseAsync(
+        String safetyProviderName, RaiExternalSafetyProviderSchemaInner safetyProvider) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -224,7 +223,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
      * @return cognitive Services Rai External Safety provider Schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProxyResource> createOrUpdateAsync(String safetyProviderName,
+    private Mono<RaiExternalSafetyProviderSchemaInner> createOrUpdateAsync(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider) {
         return createOrUpdateWithResponseAsync(safetyProviderName, safetyProvider)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -243,7 +242,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
      * @return cognitive Services Rai External Safety provider Schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProxyResource> createOrUpdateWithResponse(String safetyProviderName,
+    public Response<RaiExternalSafetyProviderSchemaInner> createOrUpdateWithResponse(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -263,7 +262,7 @@ public final class RaiExternalSafetyProvidersClientImpl implements RaiExternalSa
      * @return cognitive Services Rai External Safety provider Schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProxyResource createOrUpdate(String safetyProviderName,
+    public RaiExternalSafetyProviderSchemaInner createOrUpdate(String safetyProviderName,
         RaiExternalSafetyProviderSchemaInner safetyProvider) {
         return createOrUpdateWithResponse(safetyProviderName, safetyProvider, Context.NONE).getValue();
     }
