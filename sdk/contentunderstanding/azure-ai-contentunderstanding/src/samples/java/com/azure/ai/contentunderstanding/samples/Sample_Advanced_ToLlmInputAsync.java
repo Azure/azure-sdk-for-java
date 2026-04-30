@@ -70,19 +70,19 @@ public class Sample_Advanced_ToLlmInputAsync {
 
         // BEGIN:ContentUnderstandingToLlmInputOptionsAsync
         String fieldsOnly
-            = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeMarkdown(false));
+            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
         System.out.println("\n--- Fields only (includeMarkdown=false) ---");
         System.out.println(fieldsOnly);
 
         String markdownOnly
-            = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeFields(false));
+            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeFields(false));
         System.out.println("\n--- Markdown only (includeFields=false) ---");
         System.out.println(markdownOnly);
 
         Map<String, Object> metadata = new LinkedHashMap<>();
         metadata.put("source", "invoice.pdf");
         metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setMetadata(metadata));
+        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
         System.out.println("\n--- With metadata ---");
         System.out.println(withMetadata);
         // END:ContentUnderstandingToLlmInputOptionsAsync
@@ -160,7 +160,7 @@ public class Sample_Advanced_ToLlmInputAsync {
         Map<String, Object> audioMetadata = new LinkedHashMap<>();
         audioMetadata.put("source", "callCenterRecording.mp3");
         String audioText
-            = LlmInputHelper.toLlmInput(audioResult, new ToLlmInputOptions().setMetadata(audioMetadata));
+            = LlmInputHelper.toLlmInput(audioResult, audioMetadata);
         System.out.println("Output:");
         System.out.println(audioText);
         // END:ContentUnderstandingToLlmInputAudioAsync

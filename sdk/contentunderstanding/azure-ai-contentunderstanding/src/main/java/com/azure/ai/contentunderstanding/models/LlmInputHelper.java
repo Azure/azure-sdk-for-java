@@ -67,27 +67,52 @@ public final class LlmInputHelper {
      * @throws NullPointerException if {@code result} is null.
      */
     public static String toLlmInput(AnalysisResult result) {
-        return toLlmInput(result, null);
+        return toLlmInputCore(result, null, null);
     }
 
     /**
-     * Convert a Content Understanding analysis result into LLM-friendly text.
+     * Convert a Content Understanding analysis result into LLM-friendly text with metadata.
+     *
+     * <p>This is a convenience overload for the common case where only metadata needs
+     * to be supplied (e.g., {@code {"source": "invoice.pdf"}} for RAG pipelines).
      *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
-     * @param options optional rendering options controlling field/markdown inclusion and metadata.
-     *     Pass {@code null} for defaults (both fields and markdown included, no metadata).
+     * @param metadata user-supplied key-value pairs to include in the YAML front matter.
+     *     Keys must not conflict with helper-generated keys ({@code contentType}, {@code timeRange},
+     *     {@code category}, {@code pages}, {@code fields}, {@code rai_warnings}).
      * @return a formatted string with YAML front matter followed by markdown content.
      *     Returns an empty string when {@code result.getContents()} is empty.
      * @throws NullPointerException if {@code result} is null.
-     * @throws IllegalArgumentException if {@code options.getMetadata()} contains a reserved
-     *     front matter key.
+     * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
      */
-    public static String toLlmInput(AnalysisResult result, ToLlmInputOptions options) {
+    public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata) {
+        return toLlmInputCore(result, metadata, null);
+    }
+
+    /**
+     * Convert a Content Understanding analysis result into LLM-friendly text with metadata
+     * and rendering options.
+     *
+     * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
+     * @param metadata optional user-supplied key-value pairs to include in the YAML front matter.
+     *     Pass {@code null} for no metadata.
+     * @param options optional rendering options controlling field/markdown inclusion.
+     *     Pass {@code null} for defaults (both fields and markdown included).
+     * @return a formatted string with YAML front matter followed by markdown content.
+     *     Returns an empty string when {@code result.getContents()} is empty.
+     * @throws NullPointerException if {@code result} is null.
+     * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
+     */
+    public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata, ToLlmInputOptions options) {
+        return toLlmInputCore(result, metadata, options);
+    }
+
+    private static String toLlmInputCore(AnalysisResult result, Map<String, Object> metadata,
+        ToLlmInputOptions options) {
         Objects.requireNonNull(result, "'result' must not be null.");
 
         boolean includeFields = options == null || options.isIncludeFields();
         boolean includeMarkdown = options == null || options.isIncludeMarkdown();
-        Map<String, Object> metadata = options == null ? null : options.getMetadata();
         validateMetadata(metadata);
 
         List<AnalysisContent> contents = result.getContents();

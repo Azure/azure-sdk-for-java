@@ -88,7 +88,7 @@ public class LlmInputHelperTest {
     public void toLlmInputFieldsOnly() {
         AnalysisResult result = parseResult(SINGLE_DOC_RESULT);
         ToLlmInputOptions opts = new ToLlmInputOptions().setIncludeMarkdown(false);
-        String output = LlmInputHelper.toLlmInput(result, opts);
+        String output = LlmInputHelper.toLlmInput(result, null, opts);
 
         assertTrue(output.contains("fields:"));
         assertTrue(output.contains("VendorName: CONTOSO"));
@@ -99,7 +99,7 @@ public class LlmInputHelperTest {
     public void toLlmInputMarkdownOnly() {
         AnalysisResult result = parseResult(SINGLE_DOC_RESULT);
         ToLlmInputOptions opts = new ToLlmInputOptions().setIncludeFields(false);
-        String output = LlmInputHelper.toLlmInput(result, opts);
+        String output = LlmInputHelper.toLlmInput(result, null, opts);
 
         assertFalse(output.contains("fields:"));
         assertFalse(output.contains("VendorName"));
@@ -117,8 +117,7 @@ public class LlmInputHelperTest {
         Map<String, Object> meta = new LinkedHashMap<>();
         meta.put("source", "invoice.pdf");
         meta.put("department", "finance");
-        ToLlmInputOptions opts = new ToLlmInputOptions().setMetadata(meta);
-        String output = LlmInputHelper.toLlmInput(result, opts);
+        String output = LlmInputHelper.toLlmInput(result, meta);
 
         assertTrue(output.contains("source: invoice.pdf"));
         assertTrue(output.contains("department: finance"));
@@ -132,8 +131,7 @@ public class LlmInputHelperTest {
         AnalysisResult result = parseResult(SINGLE_DOC_RESULT);
         Map<String, Object> meta = new LinkedHashMap<>();
         meta.put("fields", "bad");
-        ToLlmInputOptions opts = new ToLlmInputOptions().setMetadata(meta);
-        assertThrows(IllegalArgumentException.class, () -> LlmInputHelper.toLlmInput(result, opts));
+        assertThrows(IllegalArgumentException.class, () -> LlmInputHelper.toLlmInput(result, meta));
     }
 
     @Test
@@ -141,8 +139,7 @@ public class LlmInputHelperTest {
         AnalysisResult result = parseResult(SINGLE_DOC_RESULT);
         Map<String, Object> meta = new LinkedHashMap<>();
         meta.put("contentType", "custom");
-        ToLlmInputOptions opts = new ToLlmInputOptions().setMetadata(meta);
-        assertThrows(IllegalArgumentException.class, () -> LlmInputHelper.toLlmInput(result, opts));
+        assertThrows(IllegalArgumentException.class, () -> LlmInputHelper.toLlmInput(result, meta));
     }
 
     // -----------------------------------------------------------------------
@@ -410,8 +407,7 @@ public class LlmInputHelperTest {
             + "  \"fields\":{\"Summary\":{\"type\":\"string\",\"valueString\":\"A call recording\"}}" + "}]" + "}";
         AnalysisResult result = parseResult(json);
         Map<String, Object> meta = Collections.singletonMap("source", "recording.mp3");
-        ToLlmInputOptions opts = new ToLlmInputOptions().setMetadata(meta);
-        String output = LlmInputHelper.toLlmInput(result, opts);
+        String output = LlmInputHelper.toLlmInput(result, meta);
 
         assertTrue(output.contains("contentType: audioVisual"));
         assertTrue(output.contains("source: recording.mp3"));

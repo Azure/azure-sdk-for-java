@@ -74,13 +74,13 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         System.out.println("[PASS] Default output: fields + markdown (" + defaultText.length() + " chars)");
 
         // Fields-only
-        String fieldsOnly = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeMarkdown(false));
+        String fieldsOnly = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
         assertTrue(fieldsOnly.contains("fields:"), "Fields-only output should still include 'fields:' block");
         assertFalse(fieldsOnly.contains(markdown), "Fields-only output should not contain the markdown body");
         System.out.println("[PASS] Fields-only output validated (" + fieldsOnly.length() + " chars)");
 
         // Markdown-only
-        String markdownOnly = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeFields(false));
+        String markdownOnly = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeFields(false));
         assertFalse(markdownOnly.contains("fields:"), "Markdown-only output should not include a 'fields:' block");
         assertTrue(markdownOnly.contains(markdown), "Markdown-only output should still include the markdown body");
         System.out.println("[PASS] Markdown-only output validated (" + markdownOnly.length() + " chars)");
@@ -89,7 +89,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         Map<String, Object> metadata = new LinkedHashMap<>();
         metadata.put("source", "invoice.pdf");
         metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setMetadata(metadata));
+        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
         assertTrue(withMetadata.contains("source: invoice.pdf"), "Metadata 'source' key should appear in front matter");
         assertTrue(withMetadata.contains("department: finance"),
             "Metadata 'department' key should appear in front matter");
@@ -209,7 +209,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
 
         Map<String, Object> audioMetadata = new LinkedHashMap<>();
         audioMetadata.put("source", "callCenterRecording.mp3");
-        String text = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setMetadata(audioMetadata));
+        String text = LlmInputHelper.toLlmInput(result, audioMetadata);
         assertTrue(text.startsWith("---"), "Output should start with YAML front matter");
         assertTrue(text.contains("contentType: audioVisual"), "Output should declare contentType: audioVisual");
         assertTrue(text.contains("source: callCenterRecording.mp3"),

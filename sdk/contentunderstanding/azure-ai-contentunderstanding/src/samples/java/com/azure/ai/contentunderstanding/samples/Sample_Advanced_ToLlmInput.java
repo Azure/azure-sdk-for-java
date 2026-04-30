@@ -100,14 +100,14 @@ public class Sample_Advanced_ToLlmInput {
         // Fields-only mode — smaller token footprint when you only need structured data.
         // Useful for agentic workflows where the LLM only needs extracted values.
         String fieldsOnly
-            = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeMarkdown(false));
+            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
         System.out.println("\n--- Fields only (includeMarkdown=false) ---");
         System.out.println(fieldsOnly);
 
         // Markdown-only mode — when you only need the document text.
         // Useful for summarization or when fields are not relevant.
         String markdownOnly
-            = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setIncludeFields(false));
+            = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeFields(false));
         System.out.println("\n--- Markdown only (includeFields=false) ---");
         System.out.println(markdownOnly);
 
@@ -116,7 +116,7 @@ public class Sample_Advanced_ToLlmInput {
         Map<String, Object> metadata = new LinkedHashMap<>();
         metadata.put("source", "invoice.pdf");
         metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, new ToLlmInputOptions().setMetadata(metadata));
+        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
         System.out.println("\n--- With metadata ---");
         System.out.println(withMetadata);
         // END:ContentUnderstandingToLlmInputOptions
@@ -209,7 +209,7 @@ public class Sample_Advanced_ToLlmInput {
         Map<String, Object> audioMetadata = new LinkedHashMap<>();
         audioMetadata.put("source", "callCenterRecording.mp3");
         String audioText
-            = LlmInputHelper.toLlmInput(audioResult, new ToLlmInputOptions().setMetadata(audioMetadata));
+            = LlmInputHelper.toLlmInput(audioResult, audioMetadata);
         System.out.println("Output:");
         System.out.println(audioText);
         // END:ContentUnderstandingToLlmInputAudio

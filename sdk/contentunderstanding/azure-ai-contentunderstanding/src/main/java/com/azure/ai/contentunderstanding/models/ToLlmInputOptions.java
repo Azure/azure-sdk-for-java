@@ -3,20 +3,16 @@
 
 package com.azure.ai.contentunderstanding.models;
 
-import java.util.Map;
-
 /**
- * Options for {@link LlmInputHelper#toLlmInput(AnalysisResult, ToLlmInputOptions)}.
+ * Options for {@link LlmInputHelper#toLlmInput(AnalysisResult, java.util.Map, ToLlmInputOptions)}.
  */
 public final class ToLlmInputOptions {
 
     private boolean includeFields = true;
     private boolean includeMarkdown = true;
-    private Map<String, Object> metadata;
 
     /**
-     * Creates a new instance with default options: both fields and markdown included,
-     * no metadata.
+     * Creates a new instance with default options: both fields and markdown included.
      */
     public ToLlmInputOptions() {
     }
@@ -60,36 +56,6 @@ public final class ToLlmInputOptions {
      */
     public ToLlmInputOptions setIncludeMarkdown(boolean includeMarkdown) {
         this.includeMarkdown = includeMarkdown;
-        return this;
-    }
-
-    /**
-     * Optional user-supplied key/value pairs to include in the YAML front matter.
-     * Common keys include {@code "source"} (filename), {@code "department"},
-     * {@code "batchId"}, etc.
-     *
-     * <p>Metadata keys are placed after {@code contentType} and before auto-detected
-     * keys ({@code timeRange}, {@code category}, {@code pages}).
-     *
-     * <p>Metadata keys must not conflict with helper-generated front matter keys:
-     * {@code contentType}, {@code timeRange}, {@code category}, {@code pages},
-     * {@code fields}, or {@code rai_warnings}.
-     *
-     * @return the metadata map, or {@code null} if not set.
-     */
-    public Map<String, Object> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * Sets optional user-supplied metadata to include in the YAML front matter.
-     *
-     * @param metadata the metadata map. Keys must not conflict with reserved front
-     *     matter keys.
-     * @return this options instance.
-     */
-    public ToLlmInputOptions setMetadata(Map<String, Object> metadata) {
-        this.metadata = metadata;
         return this;
     }
 }
