@@ -1382,6 +1382,15 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, true);
+    }
+
+    protected static boolean hasOnlyStructuredMessageDownloadHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, false);
+    }
+
+    private static boolean hasStructuredMessageRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
+        boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
@@ -1403,6 +1412,9 @@ public class BlobTestBase extends TestProxyTestBase {
             String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
             if (!StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType) || contentCrc64 != null) {
                 return false;
+            }
+            if (!requireStructuredContentLength) {
+                return true;
             }
             // Require non-blank content length that parses as non-negative long (same format as policy uses).
             // Rejects empty string, whitespace, or non-numeric values so we never return true when

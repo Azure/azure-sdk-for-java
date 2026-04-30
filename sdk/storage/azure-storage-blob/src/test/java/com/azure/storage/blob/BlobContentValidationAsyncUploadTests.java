@@ -58,7 +58,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     private static final int UNDER_4MB = 2 * Constants.MB;
 
     private static final long LARGE_UPLOAD_MIN_BYTES = 500L * Constants.MB;
-    private static final long LARGE_UPLOAD_MAX_BYTES = 1L * Constants.GB;
+    private static final long LARGE_UPLOAD_MAX_BYTES = Constants.GB;
     private static final long LARGE_UPLOAD_BLOCK_SIZE_BYTES = 8L * Constants.MB;
     private static final int LARGE_UPLOAD_MAX_CONCURRENCY = 8;
 
@@ -166,7 +166,6 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     /**
      * Blob parallel upload rejects using both computeMd5 (SDK-computed MD5) and CRC64 (transfer validation checksum algorithm) at once.
      */
-    @SuppressWarnings("deprecation")
     @Test
     public void uploadWithComputeMd5AndCrc64Throws() {
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
