@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Sample test for Sample17_ToLlmInput.
+ * Sample test for Sample_Advanced_ToLlmInput.
  *
  * <p>Validates the four scenarios in the sample:
  * <ol>
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *   <li>Audio with content range — single segment with custom metadata</li>
  * </ol>
  */
-public class Sample17_ToLlmInputTest extends ContentUnderstandingClientTestBase {
+public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTestBase {
 
     // Section 1 — output option flags and custom metadata
     @Test

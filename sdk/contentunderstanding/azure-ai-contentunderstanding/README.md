@@ -392,6 +392,58 @@ body. This works with all content types (documents, images, audio, video) and ha
 multi-segment results and classification hierarchies automatically.
 
 ```java
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.LlmInputHelper;
+import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+// Build the client
+String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+// Analyze a document using prebuilt-documentSearch (CU's primary RAG analyzer)
+byte[] pdfBytes = Files.readAllBytes(Paths.get("sample_files/sample_document_features.pdf"));
+AnalysisResult result = client.beginAnalyzeBinary(
+    "prebuilt-documentSearch", BinaryData.fromBytes(pdfBytes), "application/pdf")
+    .getFinalResult();
+
+// One line to get LLM-ready text
+String text = LlmInputHelper.toLlmInput(result);
+System.out.println(text);
+```
+
+Expected output:
+
+```
+---
+contentType: document
+pages: 1
+fields:
+  Summary: The document provides an overview of Latin, includes a sample
+    table with names and corporate affiliations, presents a bar chart
+    figure illustrating monthly values, and describes the AI Document
+    Intelligence service...
+---
+<!-- page 1 -->
+# ==This is title==
+## 1. Text
+[Latin](https://en.wikipedia.org/wiki/Latin) refers to an ancient Italic language...
+## 2. Page Objects
+### 2.1 Table
+<table><caption>Table 1: This is a dummy table</caption>...</table>
+### 2.2. Figure
+![Values...](figures/1.1 "Bar chart with six bars: Jan=200, Feb=300...")
+...
 ```
 
 See the [advanced sample][java_cu_sample_to_llm_input] for output options (fields-only,
@@ -462,7 +514,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
-[java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample17_ToLlmInput.java
+[java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
