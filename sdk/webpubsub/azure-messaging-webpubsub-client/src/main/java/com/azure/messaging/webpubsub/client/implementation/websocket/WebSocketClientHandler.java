@@ -163,6 +163,10 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void publishBuffer() {
+        if (compositeByteBuf == null || compositeByteBuf.refCnt() == 0 || compositeByteBuf.readableBytes() == 0) {
+            return;
+        }
+
         final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
 
         if (nioBuffers.length == 0) {
@@ -177,6 +181,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             messageHandler.accept(deserialized);
         } finally {
             release(compositeByteBuf);
+            compositeByteBuf = null;
         }
     }
 
@@ -198,9 +203,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private static void release(CompositeByteBuf buffer) {
-        if (buffer.refCnt() > 0) {
+        if (buffer != null && buffer.refCnt() > 0) {
             buffer.release();
-            buffer.clear();
         }
     }
 }
