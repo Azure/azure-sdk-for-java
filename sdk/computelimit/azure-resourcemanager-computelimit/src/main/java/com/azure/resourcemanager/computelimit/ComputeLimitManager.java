@@ -26,12 +26,16 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computelimit.fluent.ComputeLimitClient;
 import com.azure.resourcemanager.computelimit.implementation.ComputeLimitClientBuilder;
+import com.azure.resourcemanager.computelimit.implementation.FeaturesImpl;
 import com.azure.resourcemanager.computelimit.implementation.GuestSubscriptionsImpl;
 import com.azure.resourcemanager.computelimit.implementation.OperationsImpl;
 import com.azure.resourcemanager.computelimit.implementation.SharedLimitsImpl;
+import com.azure.resourcemanager.computelimit.implementation.VmFamiliesImpl;
+import com.azure.resourcemanager.computelimit.models.Features;
 import com.azure.resourcemanager.computelimit.models.GuestSubscriptions;
 import com.azure.resourcemanager.computelimit.models.Operations;
 import com.azure.resourcemanager.computelimit.models.SharedLimits;
+import com.azure.resourcemanager.computelimit.models.VmFamilies;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -50,6 +54,10 @@ public final class ComputeLimitManager {
     private GuestSubscriptions guestSubscriptions;
 
     private SharedLimits sharedLimits;
+
+    private Features features;
+
+    private VmFamilies vmFamilies;
 
     private final ComputeLimitClient clientObject;
 
@@ -300,6 +308,30 @@ public final class ComputeLimitManager {
             this.sharedLimits = new SharedLimitsImpl(clientObject.getSharedLimits(), this);
         }
         return sharedLimits;
+    }
+
+    /**
+     * Gets the resource collection API of Features.
+     * 
+     * @return Resource collection API of Features.
+     */
+    public Features features() {
+        if (this.features == null) {
+            this.features = new FeaturesImpl(clientObject.getFeatures(), this);
+        }
+        return features;
+    }
+
+    /**
+     * Gets the resource collection API of VmFamilies.
+     * 
+     * @return Resource collection API of VmFamilies.
+     */
+    public VmFamilies vmFamilies() {
+        if (this.vmFamilies == null) {
+            this.vmFamilies = new VmFamiliesImpl(clientObject.getVmFamilies(), this);
+        }
+        return vmFamilies;
     }
 
     /**

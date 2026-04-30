@@ -15,24 +15,22 @@ public final class DataflowGraphDestinationNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNode model = BinaryData.fromString(
-            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"ptramxj\",\"dataDestination\":\"zwl\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]},\"name\":\"xuqlcvydypat\"}")
+            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"psbzkfzbeyvpn\",\"dataDestination\":\"icvi\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]},\"name\":\"jjxd\"}")
             .toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("xuqlcvydypat", model.name());
-        Assertions.assertEquals("ptramxj", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("zwl", model.destinationSettings().dataDestination());
+        Assertions.assertEquals("jjxd", model.name());
+        Assertions.assertEquals("psbzkfzbeyvpn", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("icvi", model.destinationSettings().dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("xuqlcvydypat")
-            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("ptramxj")
-                .withDataDestination("zwl")
-                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
-                    new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction(),
-                    new DataflowGraphDestinationHeaderAction())));
+        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("jjxd")
+            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("psbzkfzbeyvpn")
+                .withDataDestination("icvi")
+                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction())));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("xuqlcvydypat", model.name());
-        Assertions.assertEquals("ptramxj", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("zwl", model.destinationSettings().dataDestination());
+        Assertions.assertEquals("jjxd", model.name());
+        Assertions.assertEquals("psbzkfzbeyvpn", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("icvi", model.destinationSettings().dataDestination());
     }
 }

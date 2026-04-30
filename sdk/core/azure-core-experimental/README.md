@@ -18,7 +18,7 @@ Azure Core Experimental contains types that are being evaluated and might eventu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-experimental</artifactId>
-    <version>1.0.0-beta.66</version>
+    <version>1.0.0-beta.67</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- Links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 

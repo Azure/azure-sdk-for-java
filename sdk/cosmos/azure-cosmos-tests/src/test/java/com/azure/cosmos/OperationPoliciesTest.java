@@ -7,10 +7,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
@@ -79,8 +81,11 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
     private static final String KEYWORD_IDENTIFIERS = "keywordIdentifiers";
-    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, KEYWORD_IDENTIFIERS, READ_CONSISTENCY_STRATEGY};
-    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805", "Default"};
+    private static final String CUSTOM_ITEM_SERIALIZER = "customItemSerializer";
+    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, KEYWORD_IDENTIFIERS, READ_CONSISTENCY_STRATEGY, CUSTOM_ITEM_SERIALIZER};
+    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805", "Default", "initial"};
+    private static final CosmosItemSerializer INITIAL_CUSTOM_ITEM_SERIALIZER = CosmosItemSerializer.DEFAULT_SERIALIZER;
+    private static final CosmosItemSerializer CHANGED_CUSTOM_ITEM_SERIALIZER = new DefaultCosmosItemSerializer(Utils.getSimpleObjectMapper());
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -107,7 +112,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                 .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
-                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
+                .setCustomItemSerializer(resolveCustomItemSerializer());
         }
     }
 
@@ -133,7 +139,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setQueryName(prop.getProperty(QUERY_NAME))
                 .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)))
-                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
+                .setCustomItemSerializer(resolveCustomItemSerializer());
         }
     }
 
@@ -152,7 +159,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                     .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
                     .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
-                    .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)));
+                    .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)))
+                    .setCustomItemSerializer(resolveCustomItemSerializer());
         }
     }
 
@@ -160,7 +168,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
                 cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
-                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
+                    .setCustomItemSerializer(resolveCustomItemSerializer());
         }
     }
 
@@ -171,8 +180,25 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                     .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)))
-                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
+                    .setCustomItemSerializer(resolveCustomItemSerializer());
         }
+    }
+
+    private static CosmosItemSerializer resolveCustomItemSerializer() {
+        String value = prop.getProperty(CUSTOM_ITEM_SERIALIZER);
+        if ("changed".equals(value)) {
+            return CHANGED_CUSTOM_ITEM_SERIALIZER;
+        }
+        return INITIAL_CUSTOM_ITEM_SERIALIZER;
+    }
+
+    private static CosmosItemSerializer resolveExpectedCustomItemSerializer(String[] options) {
+        String value = options[19];
+        if ("changed".equals(value)) {
+            return CHANGED_CUSTOM_ITEM_SERIALIZER;
+        }
+        return INITIAL_CUSTOM_ITEM_SERIALIZER;
     }
 
     @DataProvider
@@ -242,8 +268,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112", "LatestCommitted" },
-            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221", "LatestCommitted" },
+            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112", "LatestCommitted", "changed" },
+            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221", "LatestCommitted", "changed" },
             initialOptions
         };
     }
@@ -699,6 +725,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+       assertThat(requestOptions.getCustomItemSerializer()).isSameAs(resolveExpectedCustomItemSerializer(options));
     }
 
     private void validateOptions(String[] options, CosmosBatchResponse response) {
@@ -708,6 +735,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+        assertThat(requestOptions.getCustomItemSerializer()).isSameAs(resolveExpectedCustomItemSerializer(options));
     }
 
     private void validateOptions(String[] options, CosmosBulkItemResponse response) {
@@ -716,6 +744,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
         assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+        assertThat(requestOptions.getCustomItemSerializer()).isSameAs(resolveExpectedCustomItemSerializer(options));
     }
 
     private void validateOptions(String[] changedOptions, FeedResponse<InternalObjectNode> response, boolean isChangeFeed, boolean isReadMany) {
@@ -757,6 +786,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(requestOptions.getQueryNameOrDefault("")).isEqualTo(changedOptions[16]);
         }
         assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(changedOptions[17].split(","))));
+        assertThat(requestOptions.getCustomItemSerializer()).isSameAs(resolveExpectedCustomItemSerializer(changedOptions));
     }
 
     private void changeProperties(String[] values) {

@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class AIServices implements JsonSerializable<AIServices> {
 
     /*
-     * The URI of the AI Services endpoint.
-     */
-    @Generated
-    private final String uri;
-
-    /*
      * The API key for accessing AI Services.
      */
     @Generated
@@ -32,21 +26,11 @@ public final class AIServices implements JsonSerializable<AIServices> {
     /**
      * Creates an instance of AIServices class.
      *
-     * @param uri the uri value to set.
+     * @param url the url value to set.
      */
     @Generated
-    public AIServices(String uri) {
-        this.uri = uri;
-    }
-
-    /**
-     * Get the uri property: The URI of the AI Services endpoint.
-     *
-     * @return the uri value.
-     */
-    @Generated
-    public String getUri() {
-        return this.uri;
+    public AIServices(String url) {
+        this.url = url;
     }
 
     /**
@@ -78,7 +62,7 @@ public final class AIServices implements JsonSerializable<AIServices> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("uri", this.url);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         return jsonWriter.writeEndObject();
     }
@@ -95,22 +79,38 @@ public final class AIServices implements JsonSerializable<AIServices> {
     @Generated
     public static AIServices fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String uri = null;
+            String url = null;
             String apiKey = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("uri".equals(fieldName)) {
-                    uri = reader.getString();
+                    url = reader.getString();
                 } else if ("apiKey".equals(fieldName)) {
                     apiKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            AIServices deserializedAIServices = new AIServices(uri);
+            AIServices deserializedAIServices = new AIServices(url);
             deserializedAIServices.apiKey = apiKey;
             return deserializedAIServices;
         });
+    }
+
+    /*
+     * The URI of the AI Services endpoint.
+     */
+    @Generated
+    private final String url;
+
+    /**
+     * Get the url property: The URI of the AI Services endpoint.
+     *
+     * @return the url value.
+     */
+    @Generated
+    public String getUrl() {
+        return this.url;
     }
 }

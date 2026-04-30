@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class SharedLimitsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2025-08-15/SharedLimits_List.json
+     * x-ms-original-file: 2026-04-30/SharedLimits_List.json
      */
     /**
      * Sample code: List all shared limits for a scope.
