@@ -1,0 +1,466 @@
+
+
+# Spring Cloud Azure Timeline
+
+## What Does This Page Used For?
+This wiki page is used to track the timeline for Spring Cloud Azure. So we can get the answer of these questions quickly:
+1. When did azure-sdk-for-java repo make external dependencies' versions align to spring-boot-dependencies:x.x.x and spring-cloud-dependencies:y.y.y managed versions.
+2. Which version of SpringBoot and SpringCloud does SpringCloudAzure:x.y.z depend on?
+3. Which versions of SpringBoot and SpringCloud does SpringCloudAzure:x.y.z compatible with? Did we run unit tests for these versions?
+
+## When Will This Page Be Updated?
+1. When making external dependencies' versions align to new version of spring-boot-dependencies or spring-cloud-dependencies, this page should be updated.
+2. (Deprecated)In "java - spring - ci" pipeline, unit tests will run after making external dependencies' versions align to specific version of spring-boot-dependencies or spring-cloud-dependencies. When the spring-boot-dependencies or spring-cloud-dependencies updated, this page should be updated.
+3. When release a new version of spring-cloud-azure-dependencies / azure-spring-boot-bom / azure-spring-cloud-dependencies, this page should be updated.
+4. In "java - spring - compatibility - tests" pipeline, it will tests versions from sdk/spring/spring-cloud-azure-supported-spring.json file which supportedStatus is `SUPPORTED`, so when the supported version changed, this page should be updated.
+
+## Timeline
+ - **2026-04-17**: Released spring-cloud-azure-dependencies:7.2.0, which depends on: SpringBoot:4.0.5 and SpringCloud:2025.1.1.
+ - **2026-03-25**: Released spring-cloud-azure-dependencies:6.2.0, which depends on: SpringBoot:3.5.5 and SpringCloud:2025.0.0.
+ - **2026-03-11**: Released spring-cloud-azure-dependencies:7.1.0, which depends on: SpringBoot:4.0.3 and SpringCloud:2025.1.0.
+ - **2026-03-05**: Released spring-cloud-azure-dependencies:5.25.0, which depends on: SpringBoot:3.5.4 and SpringCloud:2025.0.0.
+ - **2026-02-03**: Released spring-cloud-azure-dependencies:7.0.0, which depends on: SpringBoot:4.0.2 and SpringCloud:2025.1.0.
+ - **2026-01-29**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:4.0.2 and spring-cloud-dependencies:2025.1.0.
+ - **2026-01-15**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:4.0.1 and spring-cloud-dependencies:2025.1.0.
+ - **2025-12-23**: Released spring-cloud-azure-dependencies:7.0.0-beta.1, which depends on: SpringBoot:4.0.0 and SpringCloud:2025.1.0.
+ - **2025-12-18**: Released spring-cloud-azure-dependencies:6.1.0, which depends on: SpringBoot:3.5.5 and SpringCloud:2025.0.0.
+ - **2025-12-09**: Released spring-cloud-azure-dependencies:5.24.1, which depends on: SpringBoot:3.5.4 and SpringCloud:2025.0.0.
+ - **2025-12-08**: In "main" branch, "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.8 and spring-cloud-dependencies:2025.0.0.
+ - **2025-12-05**: Released spring-cloud-azure-dependencies:5.24.0, which depends on: SpringBoot:3.5.4 and SpringCloud:2025.0.0.
+ - **2025-11-05**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.7 and spring-cloud-dependencies:2025.0.0.
+ - **2025-09-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.6 and spring-cloud-dependencies:2025.0.0.
+ - **2025-09-22**: Released spring-cloud-azure-dependencies:6.0.0, which depends on: SpringBoot:3.5.5 and SpringCloud:2025.0.0.
+ - **2025-08-22**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.5 and spring-cloud-dependencies:2025.0.0.
+   - spring-boot-dependencies:3.4.9 and spring-cloud-dependencies:2024.0.2.
+   - spring-boot-dependencies:3.3.13 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2025-08-05**: Released spring-cloud-azure-dependencies:5.23.0, which depends on: SpringBoot:3.5.4 and SpringCloud:2025.0.0.
+ - **2025-07-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.4 and spring-cloud-dependencies:2025.0.0.
+   - spring-boot-dependencies:3.4.8 and spring-cloud-dependencies:2024.0.2.
+   - spring-boot-dependencies:3.3.13 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2025-06-03**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.5.0 and spring-cloud-dependencies:2025.0.0.
+   - spring-boot-dependencies:3.4.6 and spring-cloud-dependencies:2024.0.1.
+   - spring-boot-dependencies:3.3.12 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2025-04-22**: Released spring-cloud-azure-dependencies:4.20.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.9.
+ - **2025-04-11**: Released spring-cloud-azure-dependencies:5.22.0, which depends on: SpringBoot:3.4.4 and SpringCloud:2024.0.1.
+ - **2025-04-02**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.4 and spring-cloud-dependencies:2024.0.1.
+   - spring-boot-dependencies:3.3.10 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2025-03-21**: Released spring-cloud-azure-dependencies:5.21.0, which depends on: SpringBoot:3.4.2 and SpringCloud:2024.0.0.
+ - **2025-03-04**: Released spring-cloud-azure-dependencies:5.20.1, which depends on: SpringBoot:3.4.2 and SpringCloud:2024.0.0.
+ - **2025-02-21**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.3 and spring-cloud-dependencies:2024.0.0.
+   - spring-boot-dependencies:3.3.9 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2025-02-14**: Released spring-cloud-azure-dependencies:5.20.0, which depends on: SpringBoot:3.4.2 and SpringCloud:2024.0.0.
+ - **2024-01-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.2 and spring-cloud-dependencies:2024.0.0.
+   - spring-boot-dependencies:3.3.8 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-12-20**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.1 and spring-cloud-dependencies:2024.0.0.
+   - spring-boot-dependencies:3.3.7 and spring-cloud-dependencies:2023.0.5.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-12-20**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.1 and spring-cloud-dependencies:2024.0.0.
+   - spring-boot-dependencies:3.3.7 and spring-cloud-dependencies:2023.0.4.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-12-17**: Released spring-cloud-azure-dependencies:5.19.0, which depends on: SpringBoot:3.4.0 and SpringCloud:2024.0.0.
+ - **2024-12-05**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.0 and spring-cloud-dependencies:2024.0.0.
+   - spring-boot-dependencies:3.3.6 and spring-cloud-dependencies:2023.0.4.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-11-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.4.0 and spring-cloud-dependencies:2024.0.0-RC1.
+   - spring-boot-dependencies:3.3.6 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.2.12 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-11-05**: Released spring-cloud-azure-dependencies:5.18.0, which depends on: SpringBoot:3.3.5 and SpringCloud:2023.0.3.
+ - **2024-10-25**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.5 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.2.11 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-10-09**: Released spring-cloud-azure-dependencies:5.17.0, which depends on: SpringBoot:3.3.4 and SpringCloud:2023.0.3.
+ - **2024-09-30**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.4 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.2.10 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-09-09**: Released spring-cloud-azure-dependencies:5.16.0, which depends on: SpringBoot:3.3.3 and SpringCloud:2023.0.3.
+ - **2024-08-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.3 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.2.9 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-08-07**: Released spring-cloud-azure-dependencies:5.15.0, which depends on: SpringBoot:3.3.2 and SpringCloud:2023.0.3.
+ - **2024-07-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.2 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.2.8 and spring-cloud-dependencies:2023.0.3.
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5.
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(running in "spring - tests").
+ - **2024-07-17**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.1 and spring-cloud-dependencies:2023.0.3(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.7 and spring-cloud-dependencies:2023.0.3(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-07-05**: Released spring-cloud-azure-dependencies:5.14.0, which depends on: SpringBoot:3.3.1 and SpringCloud:2023.0.2.
+ - **2024-06-25**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.1 and spring-cloud-dependencies:2023.0.2(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.7 and spring-cloud-dependencies:2023.0.2(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-06-25**: Make external dependencies' versions align to spring-boot-dependencies:3.3.1 and spring-cloud-dependencies:2023.0.2(feature/spring-boot-3).
+ - **2024-06-07**: Released spring-cloud-azure-dependencies:5.13.0, which depends on: SpringBoot:3.3.0 and SpringCloud:2023.0.1.
+ - **2024-06-06**: Released spring-cloud-azure-dependencies:4.19.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.9.
+ - **2024-05-31**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.3.0 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.6 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.12 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-05-30**: Make external dependencies' versions align to spring-boot-dependencies:3.3.0 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+ - **2024-05-09**: Released spring-cloud-azure-dependencies:5.12.0, which depends on: SpringBoot:3.2.5 and SpringCloud:2023.0.1.
+ - **2024-05-07**: Released spring-cloud-azure-dependencies:4.18.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.9.
+ - **2024-04-25**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.5 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.11 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-04-22**: Make external dependencies' versions align to spring-boot-dependencies:3.2.5 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+ - **2024-04-10**: Released spring-cloud-azure-dependencies:5.12.0-beta.1, which depends on: SpringBoot:3.2.4 and SpringCloud:2023.0.0.
+ - **2024-04-01**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.4 and spring-cloud-dependencies:2023.0.1(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.10 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-03-29**: Released spring-cloud-azure-dependencies:5.11.0, which depends on: SpringBoot:3.2.4 and SpringCloud:2023.0.0.
+ - **2024-03-28**: Released spring-cloud-azure-dependencies:4.17.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.9.
+ - **2024-03-25**: Make external dependencies' versions align to spring-boot-dependencies:3.2.4 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+ - **2024-03-22**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.4 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.10 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-03-01**: Released spring-cloud-azure-dependencies:5.10.0, which depends on: SpringBoot:3.2.3 and SpringCloud:2023.0.0.
+ - **2024-03-01**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.3 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.9 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-03-01**: Make external dependencies' versions align to spring-boot-dependencies:3.2.3 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+ - **2024-02-28**: Released spring-cloud-azure-dependencies:4.16.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.8.
+ - **2024-02-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.2 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.8 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.5(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-02-08**: Released spring-cloud-azure-dependencies:5.9.1, which depends on: SpringBoot:3.2.0 and SpringCloud:2023.0.0.
+ - **2024-02-06**: Released spring-cloud-azure-dependencies:5.9.0, which depends on: SpringBoot:3.2.0 and SpringCloud:2023.0.0.
+ - **2024-02-02**: Released spring-cloud-azure-dependencies:4.15.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.8.
+ - **2024-01-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.2 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.8 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2024-01-09**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.2.1 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+   - spring-boot-dependencies:3.1.7 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+ - **2023-12-25**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.9. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.6 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.0 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+ - **2023-12-14**: Released spring-cloud-azure-dependencies:5.8.0, which depends on: SpringBoot:3.2.0 and SpringCloud:2023.0.0.
+ - **2023-12-14**: Released spring-cloud-azure-dependencies:4.14.0, which depends on: SpringBoot:2.7.18 and SpringCloud:2021.0.8.
+ - **2023-11-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.6 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.0 and spring-cloud-dependencies:2023.0.0(feature/spring-boot-3).
+ - **2023-11-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.18 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.6 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.13 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.2.0 and spring-cloud-dependencies:2023.0.0-RC1(feature/spring-boot-3).
+ - **2023-11-07**: Released spring-cloud-azure-dependencies:5.7.0, which depends on: SpringBoot:3.1.5 and SpringCloud:2022.0.4.
+ - **2023-11-07**: Released spring-cloud-azure-dependencies:4.13.0, which depends on: SpringBoot:2.7.17 and SpringCloud:2021.0.8.
+ - **2023-10-31**: Make external dependencies' versions align to spring-boot-dependencies:2.7.17 and spring-cloud-dependencies:2021.0.8.
+ - **2023-10-30**: Make external dependencies' versions align to spring-boot-dependencies:3.1.5 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-10-26**: Released spring-cloud-azure-dependencies:5.6.0, which depends on: SpringBoot:3.1.3 and SpringCloud:2022.0.4.
+ - **2023-10-23**: Released spring-cloud-azure-dependencies:4.12.0, which depends on: SpringBoot:2.7.16 and SpringCloud:2021.0.8.
+ - **2023-10-20**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.17 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.5 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.12 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-10-07**: Make external dependencies' versions align to spring-boot-dependencies:2.7.16 and spring-cloud-dependencies:2021.0.8.
+ - **2023-09-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.16 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.4 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.11 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-09-12**: Make external dependencies' versions align to spring-boot-dependencies:3.1.3 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-08-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.15 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.3 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+   - spring-boot-dependencies:3.0.10 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-08-28**: Released spring-cloud-azure-dependencies:5.5.0, which depends on: SpringBoot:3.1.2 and SpringCloud:2022.0.4.
+ - **2023-08-25**: Released spring-cloud-azure-dependencies:4.11.0, which depends on: SpringBoot:2.7.14 and SpringCloud:2021.0.8.
+ - **2023-08-24**: Make external dependencies' versions align to spring-boot-dependencies:2.7.14 and spring-cloud-dependencies:2021.0.8.
+ - **2023-08-10**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.14 and spring-cloud-dependencies:2021.0.8. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.2 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-08-09**: Make external dependencies' versions align to spring-boot-dependencies:3.1.2 and spring-cloud-dependencies:2022.0.4(feature/spring-boot-3).
+ - **2023-08-02**: Released spring-cloud-azure-dependencies:5.4.0, which depends on: SpringBoot:3.0.5 and SpringCloud:2022.0.2.
+ - **2023-08-01**: Released spring-cloud-azure-dependencies:4.10.0, which depends on: SpringBoot:2.7.13 and SpringCloud:2021.0.7.
+ - **2023-07-04**: Make external dependencies' versions align to spring-boot-dependencies:2.7.13 and spring-cloud-dependencies:2021.0.7.
+ - **2023-06-29**: Released spring-cloud-azure-dependencies:4.9.0, which depends on: SpringBoot:2.7.11 and SpringCloud:2021.0.7.
+ - **2023-06-28**: Released spring-cloud-azure-dependencies:4.9.0-beta.1, which depends on: SpringBoot:2.7.11 and SpringCloud:2021.0.7.
+ - **2023-06-28**: Released spring-cloud-azure-dependencies:5.3.0, which depends on: SpringBoot:3.0.5 and SpringCloud:2022.0.2.
+ - **2023-05-25**: Released spring-cloud-azure-dependencies:4.8.0, which depends on: SpringBoot:2.7.11 and SpringCloud:2021.0.7.
+ - **2023-05-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.12 and spring-cloud-dependencies:2021.0.7. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.1.0 and spring-cloud-dependencies:2022.0.3-SNAPSHOT(feature/spring-boot-3).
+ - **2023-05-24**: Make external dependencies' versions align to spring-boot-dependencies:2.7.11 and spring-cloud-dependencies:2021.0.7.
+ - **2023-05-22**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.12 and spring-cloud-dependencies:2021.0.7. 
+   - spring-boot-dependencies:2.6.15 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.15 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.7 and spring-cloud-dependencies:2022.0.2(feature/spring-boot-3).
+ - **2023-05-06**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.11 and spring-cloud-dependencies:2021.0.7. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.7.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.6 and spring-cloud-dependencies:2022.0.2(feature/spring-boot-3).
+ - **2023-04-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.11 and spring-cloud-dependencies:2021.0.6. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.6.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.6 and spring-cloud-dependencies:2022.0.2(feature/spring-boot-3).
+ - **2023-02-28**: Make external dependencies' versions align to spring-boot-dependencies:2.7.9 and spring-cloud-dependencies:2021.0.5.
+ - **2023-02-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.9 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.3 and spring-cloud-dependencies:2022.0.1(feature/spring-boot-3).
+ - **2023-02-07**: Released spring-cloud-azure-dependencies:4.6.0, which depends on: SpringBoot:2.7.8 and SpringCloud:2021.0.5. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.8 and spring-cloud-dependencies:2021.0.5.
+    - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2023-02-02**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.8 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.2 and spring-cloud-dependencies:2022.0.1(feature/spring-boot-3).
+ - **2023-01-30**: Make external dependencies' versions align to spring-boot-dependencies:2.7.8 and spring-cloud-dependencies:2021.0.5.
+ - **2023-01-20**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.8 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.1 and spring-cloud-dependencies:2022.0.0(feature/spring-boot-3).
+ - **2023-01-17(feature/spring-boot-3)**: Released spring-cloud-azure-dependencies:5.0.0, which depends on: SpringBoot:3.0.1 and SpringCloud:2022.0.0. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:3.0.1 and spring-cloud-dependencies:2022.0.0.
+ - **2022-12-30**: Make external dependencies' versions align to spring-boot-dependencies:2.7.7 and spring-cloud-dependencies:2021.0.5.
+ - **2022-12-28**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.7 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+   - spring-boot-dependencies:3.0.1 and spring-cloud-dependencies:2022.0.0(feature/spring-boot-3).
+ - **2022-12-19(feature/spring-boot-3)**: Make external dependencies' versions align to spring-boot-dependencies:3.0.0 and spring-cloud-dependencies:2022.0.0.
+ - **2022-12-09(feature/spring-boot-3)**: Make external dependencies' versions align to spring-boot-dependencies:3.0.0 and spring-cloud-dependencies:2022.0.0-RC3.
+ - **2022-12-07(feature/spring-boot-3)**: Released spring-cloud-azure-dependencies:6.0.0-beta.4, which depends on: SpringBoot:3.0.0-RC2 and SpringCloud:2022.0.0-RC2. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:3.0.0-RC2 and spring-cloud-dependencies:2022.0.0-RC2.
+ - **2022-12-06**: Released spring-cloud-azure-dependencies:4.5.0, which depends on: SpringBoot:2.7.6 and SpringCloud:2021.0.5. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.6 and spring-cloud-dependencies:2021.0.5.
+    - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-12-02**: Make external dependencies' versions align to spring-boot-dependencies:2.7.6 and spring-cloud-dependencies:2021.0.5.
+ - **2022-11-29**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.6 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.14 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-11-21(feature/spring-boot-3)**: Make external dependencies' versions align to spring-boot-dependencies:3.0.0-RC2 and spring-cloud-dependencies:2022.0.0-RC2.
+ - **2022-11-18(feature/spring-boot-3)**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:3.0.0-RC2 and spring-cloud-dependencies:2022.0.0-RC2. 
+ - **2022-11-09**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.5 and spring-cloud-dependencies:2021.0.5. 
+   - spring-boot-dependencies:2.6.13 and spring-cloud-dependencies:2021.0.5.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-11-04**: Released spring-cloud-azure-dependencies:6.0.0-beta.3, which depends on: SpringBoot:3.0.0-RC1 and SpringCloud:2022.0.0-RC1. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:3.0.0-RC1 and spring-cloud-dependencies:2022.0.0-RC1.
+ - **2022-10-31**: Released spring-cloud-azure-dependencies:4.4.1, which depends on: SpringBoot:2.7.3 and SpringCloud:2021.0.3. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.3 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.6.11 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-10-24**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.5 and spring-cloud-dependencies:2021.0.4. 
+   - spring-boot-dependencies:2.6.13 and spring-cloud-dependencies:2021.0.4.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-10-01**: Make external dependencies' versions align to spring-boot-dependencies:2.7.4 and spring-cloud-dependencies:2021.0.4.
+ - **2022-09-30**: Released spring-cloud-azure-dependencies:6.0.0-beta.2, which depends on: SpringBoot:3.0.0-M4 and SpringCloud:2022.0.0-M4.
+ - **2022-09-26**: Released spring-cloud-azure-dependencies:4.4.0, which depends on: SpringBoot:2.7.3 and SpringCloud:2021.0.3. Unit tests passed when making external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.4 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.6.12 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-09-23**: Released spring-cloud-azure-dependencies:4.5.0-beta.1, which depends on: SpringBoot:2.7.3 and SpringCloud:2021.0.3. Unit tests passed when make external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.4 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.6.12 and spring-cloud-dependencies:2021.0.4.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-09-26**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.4 and spring-cloud-dependencies:2021.0.4. 
+   - spring-boot-dependencies:2.6.12 and spring-cloud-dependencies:2021.0.4.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-09-09**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.3 and spring-cloud-dependencies:2021.0.4. 
+   - spring-boot-dependencies:2.6.11 and spring-cloud-dependencies:2021.0.4.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-08-26**: Make external dependencies' versions align to spring-boot-dependencies:2.7.3.
+ - **2022-08-22**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.3 and spring-cloud-dependencies:2021.0.3. 
+   - spring-boot-dependencies:2.6.11 and spring-cloud-dependencies:2021.0.3.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-07-27**: Make external dependencies' versions align to spring-boot-dependencies:2.7.2.
+ - **2022-07-25**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.2 and spring-cloud-dependencies:2021.0.3. 
+   - spring-boot-dependencies:2.6.10 and spring-cloud-dependencies:2021.0.3.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-07-05**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.1 and spring-cloud-dependencies:2021.0.3. 
+   - spring-boot-dependencies:2.6.9 and spring-cloud-dependencies:2021.0.3.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.6.
+ - **2022-06-29**: Released spring-cloud-azure-dependencies:4.3.0, which depends on: SpringBoot:2.7.1 and SpringCloud:2021.0.3. Unit tests passed when make external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.1 and spring-cloud-dependencies:2021.0.3.
+    - spring-boot-dependencies:2.6.9 and spring-cloud-dependencies:2021.0.3.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.5.
+ - **2022-06-26**: Make external dependencies' versions align to spring-boot-dependencies:2.7.1.
+ - **2022-06-17**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:2.7.0 and spring-cloud-dependencies:2021.0.3. 
+   - spring-boot-dependencies:2.6.8 and spring-cloud-dependencies:2021.0.3.
+   - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.5.
+ - **2022-05-26**: Released spring-cloud-azure-dependencies:4.2.0, which depends on: SpringBoot:2.6.7 and SpringCloud:2021.0.2. Unit tests passed when make external dependencies' versions align to:
+    - spring-boot-dependencies:2.7.0 and spring-cloud-dependencies:2021.0.3-SNAPSHOT.
+    - spring-boot-dependencies:2.6.8 and spring-cloud-dependencies:2021.0.2.
+    - spring-boot-dependencies:2.5.14 and spring-cloud-dependencies:2020.0.5.
+ - **2022-05-10**: Released spring-cloud-azure-native-configuration:4.0.0-beta.1.
+ - **2022-05-05**: Released spring-cloud-azure-dependencies:4.1.0, which depends on: SpringBoot:2.6.6 and SpringCloud:2021.0.2. Unit tests passed when make external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.7 and spring-cloud-dependencies:2021.0.2. 
+   - spring-boot-dependencies:2.5.13 and spring-cloud-dependencies:2020.0.5.
+ - **2022-05-05**: Make external dependencies' versions align to spring-boot-dependencies:2.6.7.
+ - **2022-04-28**: Make external dependencies' versions align to spring-cloud-dependencies:2021.0.2.
+ - **2022-04-26**: In "java - spring - ci" pipeline, run unit tests after making external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.7 and spring-cloud-dependencies:2021.0.1. 
+   - spring-boot-dependencies:2.5.13 and spring-cloud-dependencies:2020.0.5.
+ - **2022-04-21**: In "java - spring - ci" pipeline, run unit tests after making external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.6 and spring-cloud-dependencies:2021.0.1. 
+   - spring-boot-dependencies:2.5.12 and spring-cloud-dependencies:2020.0.5.
+ - **2022-04-21**: Make external dependencies' versions align to spring-boot-dependencies:2.6.6.
+ - **2022-03-28**: Released spring-cloud-azure-dependencies:4.0.0, which depends on: SpringBoot:2.6.3 and SpringCloud:2021.0.1. Unit tests passed when make external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.5 and spring-cloud-dependencies:2021.0.1. 
+   - spring-boot-dependencies:2.5.11 and spring-cloud-dependencies:2020.0.5.
+ - **2022-03-25**: In "java - spring - ci" pipeline, run unit tests after making external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.5 and spring-cloud-dependencies:2021.0.1. 
+   - spring-boot-dependencies:2.5.11 and spring-cloud-dependencies:2020.0.5.
+ - **2022-03-23**: In "java - spring - ci "pipeline, run unit tests after making external dependencies' versions align to:
+   - spring-boot-dependencies:2.6.4 and spring-cloud-dependencies:2021.0.1. 
+   - spring-boot-dependencies:2.5.10 and spring-cloud-dependencies:2020.0.5.
+ - **2022-03-10**: Released azure-spring-boot-bom:3.13.1, which depends on SpringBoot:2.6.2 and SpringCloud:2021.0.0.
+ - **2022-03-01**: Make external dependencies' versions align to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.1.
+ - **2022-03-01**: Released azure-spring-boot-bom:3.14.0 and azure-spring-cloud-dependencies:2.14.0, which depends on SpringBoot:2.6.2 and SpringCloud:2021.0.0.
+ - **2022-01-26**: Released azure-spring-boot-bom:3.13.0 and azure-spring-cloud-dependencies:2.13.0, which depends on SpringBoot:2.6.2 and SpringCloud:2021.0.0.
+ - **2022-01-18**: Released spring-cloud-azure-dependencies:4.0.0-beta.3, which depends on SpringBoot:2.6.1 and SpringCloud:2021.0.0.
+ - **2022-01-11**: Make external dependencies' versions align to spring-boot-dependencies:2.6.2.
+ - **2022-01-06**: Released azure-spring-boot-bom:3.12.1 and azure-spring-cloud-dependencies:2.12.0, which depends on SpringBoot:2.6.1 and SpringCloud:2021.0.0.
+ - **2021-12-29**: Released azure-spring-boot-bom:3.12.0, which depends on SpringBoot:2.6.1 and SpringCloud:2021.0.0.
+ - **2021-12-23**: Make external dependencies' versions align to spring-cloud-dependencies:2021.0.0.
+ - **2021-12-07**: Make external dependencies' versions align to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2020.0.4.
+ - **2021-11-26**: Released azure-spring-boot-bom:3.11.0 and azure-spring-cloud-dependencies:2.11.0, which depends on SpringBoot:2.5.4 and SpringCloud:2020.0.3.
+ - **2021-11-19**: Released azure-spring-boot-bom:3.10.2 and azure-spring-cloud-dependencies:2.10.2, which depends on SpringBoot:2.5.4 and SpringCloud:2020.0.3.
+ - **2021-11-18**: Released azure-spring-boot-bom:3.10.1 and azure-spring-cloud-dependencies:2.10.1, which depends on SpringBoot:2.5.4 and SpringCloud:2020.0.3.
+ - **2021-11-03**: Released azure-spring-boot-bom:3.10.0 and azure-spring-cloud-dependencies:2.10.0, which depends on SpringBoot:2.5.4 and SpringCloud:2020.0.3.
+ - **2021-09-26**: Released azure-spring-boot-bom:3.9.0 and azure-spring-cloud-dependencies:2.9.0, which depends on SpringBoot:2.5.4 and SpringCloud:2020.0.3.
+ - **2021-09-06**: Make external dependencies' versions align to spring-boot-dependencies:2.5.4.
+ - **2021-09-05**: Released azure-spring-boot-bom:3.8.0 and azure-spring-cloud-dependencies:2.8.0, which depends on SpringBoot:2.5.3 and SpringCloud:2020.0.3.
+ - **2021-07-26**: Make external dependencies' versions align to spring-boot-dependencies:2.5.3.
+ - **2021-07-20**: Released azure-spring-boot-bom:3.7.0 and azure-spring-cloud-dependencies:2.7.0, which depends on SpringBoot:2.5.2 and SpringCloud:2020.0.3.
+ - **2021-07-12**: Released azure-spring-boot-bom:3.6.1, which depends on SpringBoot:2.5.0 and SpringCloud:2020.0.2.
+ - **2021-07-07**: Make external dependencies' versions align to spring-boot-dependencies:2.5.2 and spring-cloud-dependencies:2020.0.3.
+ - **2021-06-23**: Released azure-spring-boot-bom:3.6.0 and azure-spring-cloud-dependencies:2.6.0, which depends on SpringBoot:2.5.0 and SpringCloud:2020.0.2.
+ - **2021-05-27**: Make external dependencies' versions align to spring-boot-dependencies:2.5.0.
+ - **2021-05-24**: Released azure-spring-boot-bom:3.5.0 and azure-spring-cloud-dependencies:2.5.0.
+ - **2021-04-25**: Released azure-spring-boot-bom:3.2.1
+ - **2021-04-23**: Make external dependencies' versions align to spring-boot-dependencies:2.4.5 and spring-cloud-dependencies:2020.0.2.
+ - **2021-04-23**: Released azure-spring-boot-bom:3.4.0 and azure-spring-cloud-dependencies:2.4.0.
+ - **2021-03-30**: Released azure-spring-boot-bom:3.3.0.
+ - **2021-03-10**: Released azure-spring-boot-bom:3.2.0.
+ - **2021-03-10**: Make external dependencies' versions align to spring-boot-dependencies:2.4.3 and spring-cloud-dependencies:2020.0.1.
+ - **2021-01-28**: Released azure-spring-boot-bom:3.1.0.
+ - **2021-01-04**: Released azure-spring-boot-bom:3.0.0.
