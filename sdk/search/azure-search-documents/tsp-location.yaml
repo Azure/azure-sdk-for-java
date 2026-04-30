@@ -1,4 +1,4 @@
 directory: specification/search/data-plane/Search
-commit: b68c5363705fc9f610de473689fd597e51d907fd
+commit: 9a4a6a4fba8bf5bd03d5d05c62457ab1966240d6
 repo: Azure/azure-rest-api-specs
 cleanup: true

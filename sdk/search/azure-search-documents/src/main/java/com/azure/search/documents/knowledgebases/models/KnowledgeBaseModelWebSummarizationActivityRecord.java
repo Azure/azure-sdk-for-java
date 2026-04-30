@@ -22,18 +22,6 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     @Generated
     private KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION;
 
-    /*
-     * The number of input tokens for the LLM web summarization activity.
-     */
-    @Generated
-    private Integer inputTokens;
-
-    /*
-     * The number of output tokens for the LLM web summarization activity.
-     */
-    @Generated
-    private Integer outputTokens;
-
     /**
      * Creates an instance of KnowledgeBaseModelWebSummarizationActivityRecord class.
      *
@@ -56,26 +44,6 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     }
 
     /**
-     * Get the inputTokens property: The number of input tokens for the LLM web summarization activity.
-     *
-     * @return the inputTokens value.
-     */
-    @Generated
-    public Integer getInputTokens() {
-        return this.inputTokens;
-    }
-
-    /**
-     * Get the outputTokens property: The number of output tokens for the LLM web summarization activity.
-     *
-     * @return the outputTokens value.
-     */
-    @Generated
-    public Integer getOutputTokens() {
-        return this.outputTokens;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -86,8 +54,8 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("inputTokens", this.inputTokens);
-        jsonWriter.writeNumberField("outputTokens", this.outputTokens);
+        jsonWriter.writeNumberField("inputTokens", this.inputTokensCount);
+        jsonWriter.writeNumberField("outputTokens", this.outputTokensCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -107,8 +75,8 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION;
-            Integer inputTokens = null;
-            Integer outputTokens = null;
+            Integer inputTokensCount = null;
+            Integer outputTokensCount = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -121,9 +89,9 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
                 } else if ("inputTokens".equals(fieldName)) {
-                    inputTokens = reader.getNullable(JsonReader::getInt);
+                    inputTokensCount = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
-                    outputTokens = reader.getNullable(JsonReader::getInt);
+                    outputTokensCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -133,9 +101,41 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setError(error);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.type = type;
-            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.inputTokens = inputTokens;
-            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.outputTokens = outputTokens;
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.inputTokensCount = inputTokensCount;
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.outputTokensCount = outputTokensCount;
             return deserializedKnowledgeBaseModelWebSummarizationActivityRecord;
         });
+    }
+
+    /*
+     * The number of input tokens for the LLM web summarization activity.
+     */
+    @Generated
+    private Integer inputTokensCount;
+
+    /*
+     * The number of output tokens for the LLM web summarization activity.
+     */
+    @Generated
+    private Integer outputTokensCount;
+
+    /**
+     * Get the inputTokensCount property: The number of input tokens for the LLM web summarization activity.
+     *
+     * @return the inputTokensCount value.
+     */
+    @Generated
+    public Integer getInputTokensCount() {
+        return this.inputTokensCount;
+    }
+
+    /**
+     * Get the outputTokensCount property: The number of output tokens for the LLM web summarization activity.
+     *
+     * @return the outputTokensCount value.
+     */
+    @Generated
+    public Integer getOutputTokensCount() {
+        return this.outputTokensCount;
     }
 }

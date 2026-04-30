@@ -215,7 +215,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeJsonField("ingestionSchedule", this.ingestionSchedule);
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
-        jsonWriter.writeJsonField("aiServices", this.aIServices);
+        jsonWriter.writeJsonField("aiServices", this.aiServices);
         return jsonWriter.writeEndObject();
     }
 
@@ -254,7 +254,7 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.aIServices = AIServices.fromJson(reader);
+                    deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -267,27 +267,27 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      * Optional AI Services configuration for content processing.
      */
     @Generated
-    private AIServices aIServices;
+    private AiServices aiServices;
 
     /**
-     * Get the aIServices property: Optional AI Services configuration for content processing.
+     * Get the aiServices property: Optional AI Services configuration for content processing.
      *
-     * @return the aIServices value.
+     * @return the aiServices value.
      */
     @Generated
-    public AIServices getAIServices() {
-        return this.aIServices;
+    public AiServices getAiServices() {
+        return this.aiServices;
     }
 
     /**
-     * Set the aIServices property: Optional AI Services configuration for content processing.
+     * Set the aiServices property: Optional AI Services configuration for content processing.
      *
-     * @param aIServices the aIServices value to set.
+     * @param aiServices the aiServices value to set.
      * @return the KnowledgeSourceIngestionParameters object itself.
      */
     @Generated
-    public KnowledgeSourceIngestionParameters setAIServices(AIServices aIServices) {
-        this.aIServices = aIServices;
+    public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
+        this.aiServices = aiServices;
         return this;
     }
 }

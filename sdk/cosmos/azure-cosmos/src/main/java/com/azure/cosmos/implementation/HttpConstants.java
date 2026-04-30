@@ -308,15 +308,24 @@ public class HttpConstants {
     }
 
     public static class SDKSupportedCapabilities {
-        private static final long NONE = 0; // 0
-        private static final long PARTITION_MERGE = 1; // 1 << 0
-
-        private static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 2; // 1 << 1
+        // Visible for testing
+        static final long NONE = 0L;
+        static final long PARTITION_MERGE = 1L << 0;
+        static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 1L << 1;
+        static final long THROUGHPUT_BUCKETING = 1L << 2;
+        // Signals the backend that the SDK can safely handle unrecognized RNTBD transport tokens.
+        // Required for N-Region Synchronous Commit, where the backend returns new response tokens
+        // (e.g., GlobalNRegionCommittedGLSN) that older SDK versions would not recognize.
+        static final long IGNORE_UNKNOWN_RNTBD_TOKENS = 1L << 3;
+        static final long CHANGE_FEED_TOKEN_WITH_GCN = 1L << 4;
 
         public static final String SUPPORTED_CAPABILITIES;
         public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
-            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
+            SUPPORTED_CAPABILITIES = String.valueOf(
+                PARTITION_MERGE
+                    | CHANGE_FEED_WITH_START_TIME_POST_MERGE
+                    | IGNORE_UNKNOWN_RNTBD_TOKENS);
             SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
         }
     }
