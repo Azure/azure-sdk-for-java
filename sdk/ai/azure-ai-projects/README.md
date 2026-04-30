@@ -208,4 +208,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_java_sdk]: https://github.com/openai/openai-java
 [openai_api_docs]: https://platform.openai.com/docs/overview
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
