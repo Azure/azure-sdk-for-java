@@ -163,10 +163,14 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void publishBuffer() {
-        if (compositeByteBuf == null || compositeByteBuf.refCnt() == 0) {
+        if (compositeByteBuf == null) {
             return;
         }
 
+        if (compositeByteBuf.refCnt() == 0) {
+            compositeByteBuf = null;
+            return;
+        }
         try {
             if (compositeByteBuf.readableBytes() == 0) {
                 return;
