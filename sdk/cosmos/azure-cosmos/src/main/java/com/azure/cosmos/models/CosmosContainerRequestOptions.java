@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosAdditionalHeaderName;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Encapsulates options that can be specified for a request issued to Cosmos container.
@@ -15,6 +20,7 @@ public final class CosmosContainerRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
+    private Map<String, String> customOptions;
 
     /**
      * Gets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
@@ -141,6 +147,59 @@ public final class CosmosContainerRequestOptions {
         return this;
     }
 
+    /**
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
+     *
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
+     * @return the CosmosContainerRequestOptions.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosContainerRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        Utils.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this request options instance.
+     *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.customOptions);
+    }
+
+    /**
+     * Sets a header to be included with this specific request.
+     *
+     * @param name  the name of the header
+     * @param value the value of the header
+     * @return the CosmosContainerRequestOptions.
+     */
+    public CosmosContainerRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
         options.setIfMatchETag(getIfMatchETag());
@@ -149,6 +208,11 @@ public final class CosmosContainerRequestOptions {
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
         options.setThroughputProperties(this.throughputProperties);
+        if (this.customOptions != null) {
+            for (Map.Entry<String, String> entry : this.customOptions.entrySet()) {
+                options.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
         return options;
     }
 }

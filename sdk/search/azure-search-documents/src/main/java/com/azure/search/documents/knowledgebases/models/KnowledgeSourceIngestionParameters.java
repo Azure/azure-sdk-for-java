@@ -12,11 +12,8 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Consolidates all general ingestion settings for knowledge sources.
@@ -53,13 +50,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      */
     @Generated
     private IndexingSchedule ingestionSchedule;
-
-    /*
-     * Optional list of permission types to ingest together with document content. If specified, it will set the indexer
-     * permission options for the data source.
-     */
-    @Generated
-    private List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions;
 
     /*
      * Optional content extraction mode. Default is 'minimal'.
@@ -189,45 +179,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     }
 
     /**
-     * Get the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @return the ingestionPermissionOptions value.
-     */
-    @Generated
-    public List<KnowledgeSourceIngestionPermissionOption> getIngestionPermissionOptions() {
-        return this.ingestionPermissionOptions;
-    }
-
-    /**
-     * Set the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @param ingestionPermissionOptions the ingestionPermissionOptions value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    public KnowledgeSourceIngestionParameters
-        setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption... ingestionPermissionOptions) {
-        this.ingestionPermissionOptions
-            = (ingestionPermissionOptions == null) ? null : Arrays.asList(ingestionPermissionOptions);
-        return this;
-    }
-
-    /**
-     * Set the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @param ingestionPermissionOptions the ingestionPermissionOptions value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters
-        setIngestionPermissionOptions(List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions) {
-        this.ingestionPermissionOptions = ingestionPermissionOptions;
-        return this;
-    }
-
-    /**
      * Get the contentExtractionMode property: Optional content extraction mode. Default is 'minimal'.
      *
      * @return the contentExtractionMode value.
@@ -262,11 +213,9 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeJsonField("chatCompletionModel", this.chatCompletionModel);
         jsonWriter.writeBooleanField("disableImageVerbalization", this.disableImageVerbalization);
         jsonWriter.writeJsonField("ingestionSchedule", this.ingestionSchedule);
-        jsonWriter.writeArrayField("ingestionPermissionOptions", this.ingestionPermissionOptions,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
-        jsonWriter.writeJsonField("aiServices", this.aIServices);
+        jsonWriter.writeJsonField("aiServices", this.aiServices);
         return jsonWriter.writeEndObject();
     }
 
@@ -301,16 +250,11 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                 } else if ("ingestionSchedule".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.ingestionSchedule
                         = IndexingSchedule.fromJson(reader);
-                } else if ("ingestionPermissionOptions".equals(fieldName)) {
-                    List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions = reader
-                        .readArray(reader1 -> KnowledgeSourceIngestionPermissionOption.fromString(reader1.getString()));
-                    deserializedKnowledgeSourceIngestionParameters.ingestionPermissionOptions
-                        = ingestionPermissionOptions;
                 } else if ("contentExtractionMode".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.aIServices = AIServices.fromJson(reader);
+                    deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -323,27 +267,27 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      * Optional AI Services configuration for content processing.
      */
     @Generated
-    private AIServices aIServices;
+    private AiServices aiServices;
 
     /**
-     * Get the aIServices property: Optional AI Services configuration for content processing.
+     * Get the aiServices property: Optional AI Services configuration for content processing.
      *
-     * @return the aIServices value.
+     * @return the aiServices value.
      */
     @Generated
-    public AIServices getAIServices() {
-        return this.aIServices;
+    public AiServices getAiServices() {
+        return this.aiServices;
     }
 
     /**
-     * Set the aIServices property: Optional AI Services configuration for content processing.
+     * Set the aiServices property: Optional AI Services configuration for content processing.
      *
-     * @param aIServices the aIServices value to set.
+     * @param aiServices the aiServices value to set.
      * @return the KnowledgeSourceIngestionParameters object itself.
      */
     @Generated
-    public KnowledgeSourceIngestionParameters setAIServices(AIServices aIServices) {
-        this.aIServices = aIServices;
+    public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
+        this.aiServices = aiServices;
         return this;
     }
 }

@@ -27,7 +27,7 @@ public final class KeyValuesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.keyValues().delete("glkfg", "hdneuelfph", "dyhtozfikdowwquu", com.azure.core.util.Context.NONE);
+        manager.keyValues().delete("crxgibb", "axconfozauo", "sukokwbqplhl", com.azure.core.util.Context.NONE);
 
     }
 }
