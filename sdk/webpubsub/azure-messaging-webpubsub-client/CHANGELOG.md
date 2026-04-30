@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a race condition where Web PubSub client send operations could miss fast ack responses.
+
 ### Other Changes
 
 ## 1.1.7 (2026-01-29)
