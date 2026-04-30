@@ -1275,14 +1275,17 @@ class ManagementChannelTests {
      */
     @Test
     void getMessageSessionsCapsYear() {
-        // Arrange - year far beyond the sentinel (simulating OffsetDateTime.MAX or a similar caller mistake).
-        final OffsetDateTime farFuture = OffsetDateTime.of(99999, 12, 31, 23, 59, 59, 999999999, ZoneOffset.UTC);
+        // Arrange - use OffsetDateTime.MAX so this test would actually fail (with
+        // ArithmeticException from Date.from) if the clamp were moved after the conversion or
+        // removed; a smaller far-future value like year 99999 would not exercise the overflow.
+        final OffsetDateTime farFuture = OffsetDateTime.MAX;
 
         final Map<String, Object> responseBody = new HashMap<>();
         responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "s1" });
         responseMessage.setBody(new AmqpValue(responseBody));
 
-        // Act - should NOT throw ArithmeticException
+        // Act - should NOT throw ArithmeticException because the input is clamped before
+        // Date.from() is called.
         StepVerifier.create(managementChannel.getMessageSessions(farFuture, 0, 100, null))
             .assertNext(result -> assertEquals(1, result.getSessionIds().size()))
             .expectComplete()
