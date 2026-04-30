@@ -7,7 +7,6 @@ import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
-import com.azure.ai.projects.models.PageOrder;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
