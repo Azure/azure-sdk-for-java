@@ -3,6 +3,8 @@
 ### 4.80.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
+* Added `additionalHeaders` support to allow setting additional headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128) 
 * Added `IGNORE_UNKNOWN_RNTBD_TOKENS` SDK capability flag and propagated SDK supported capabilities to barrier requests, enabling N-Region Synchronous Commit to function correctly with backends that return new RNTBD response tokens. - See [PR 48965](https://github.com/Azure/azure-sdk-for-java/pull/48965)
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
 * Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
