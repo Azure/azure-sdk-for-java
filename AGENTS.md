@@ -189,7 +189,7 @@ For detailed GitHub Copilot-specific instructions, including behavior guidelines
 - [Azure for Java Developers](https://docs.microsoft.com/java/azure/)
 - [Azure SDK Design Guidelines](https://azure.github.io/azure-sdk/)
 - [Java Guidelines](https://azure.github.io/azure-sdk/java_introduction.html)
-- [Building the SDK](https://github.com/Azure/azure-sdk-for-java/wiki/Building)
+- [Building the SDK](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 
 ### Repository Links
 
