@@ -61,6 +61,20 @@ public final class LlmInputHelper {
     /**
      * Convert a Content Understanding analysis result into LLM-friendly text.
      *
+     * <p>Produces a YAML front matter block (delimited by {@code ---}) followed by a
+     * markdown body. The YAML front matter may include:
+     * {@code contentType} (document, audioVisual),
+     * {@code pages} (page number or range),
+     * {@code timeRange} (media time span for multi-segment audio/video),
+     * {@code category} (classification label),
+     * {@code fields} (extracted structured fields as YAML),
+     * {@code rai_warnings} (content safety flags),
+     * and any caller-supplied metadata entries.
+     *
+     * <p>The markdown body contains the extracted text with page-break markers
+     * ({@code <!-- page N -->}) inserted at page boundaries so downstream consumers
+     * can locate content by page number.
+     *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
      * @return a formatted string with YAML front matter followed by markdown content.
      *     Returns an empty string when {@code result.getContents()} is empty.
@@ -313,6 +327,39 @@ public final class LlmInputHelper {
         }
     }
 
+    /**
+     * Flattens the contents list for rendering. In classification scenarios, the service
+     * returns a parent DocumentContent (with full markdown and segments) plus separate
+     * routed DocumentContent items (with their own markdown and fields) for segments
+     * that matched a specific analyzer.
+     *
+     * <p>Example input:
+     * <pre>
+     *   contents[0] = parent doc
+     *     path="input1", category=null
+     *     markdown="INVOICE\nVendor: Contoso\nTotal: $1500\n&lt;!-- PageBreak --&gt;\nRECEIPT\nStore: Fabrikam"
+     *     segments=[
+     *       { segmentId: "seg1", category: "invoice", startPageNumber: 1, span: {offset:0, length:38} },
+     *       { segmentId: "seg2", category: "receipt", startPageNumber: 2, span: {offset:55, length:37} }
+     *     ]
+     *   contents[1] = routed doc (produced by prebuilt-invoice analyzer)
+     *     path="input1/seg1", category="invoice"
+     *     markdown="INVOICE\nVendor: Contoso\nTotal: $1500"  (analyzer's own markdown)
+     *     fields={ vendor: "Contoso", total: 1500 }
+     * </pre>
+     *
+     * <p>This method:
+     * <ol>
+     *   <li>Identifies contents[1] as a routed version of seg1 (path "input1/seg1" matches).</li>
+     *   <li>Skips seg1 during parent expansion — the routed version (with its own
+     *       markdown and fields) will be used directly instead of slicing from the parent.</li>
+     *   <li>Creates a synthetic RenderableContent for seg2 by slicing the parent's markdown
+     *       using span {offset:55, length:37}.</li>
+     *   <li>Sorts all results by page number so blocks appear in document order.</li>
+     * </ol>
+     *
+     * <p>Result: [routed invoice (page 1, own markdown + fields), synthetic receipt (page 2, sliced markdown)]
+     */
     private static List<RenderableContent> getRenderableContents(List<AnalysisContent> contents) {
         // Collect paths of routed top-level content items
         Set<String> routedPaths = new HashSet<>();
