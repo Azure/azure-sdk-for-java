@@ -533,8 +533,8 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private Mono<WebPubSubResult> sendMessageAndWaitForAck(WebPubSubMessage message, Long ackId) {
-        return Mono.defer(
-            () -> Mono.zip(waitForAckMessage(ackId), sendMessage(message).thenReturn(true)).map(tuple -> tuple.getT1()));
+        return Mono.defer(() -> Mono.zip(waitForAckMessage(ackId), sendMessage(message).thenReturn(true))
+            .map(tuple -> tuple.getT1()));
     }
 
     private Mono<Void> checkStateBeforeSend() {
