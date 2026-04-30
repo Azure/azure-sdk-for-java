@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -124,6 +125,27 @@ public class LlmInputHelperTest {
         int contentTypeIdx = output.indexOf("contentType:");
         int sourceIdx = output.indexOf("source:");
         assertTrue(sourceIdx > contentTypeIdx);
+    }
+
+    @Test
+    public void toLlmInputWithStructuredMetadata() {
+        AnalysisResult result = parseResult(SINGLE_DOC_RESULT);
+        Map<String, Object> routing = new LinkedHashMap<>();
+        routing.put("team", "sdk");
+        routing.put("priority", Arrays.asList("p1", "customer"));
+
+        Map<String, Object> meta = new LinkedHashMap<>();
+        meta.put("source", "invoice.pdf");
+        meta.put("routing", routing);
+
+        String output = LlmInputHelper.toLlmInput(result, meta);
+
+        assertTrue(output.contains("source: invoice.pdf"));
+        assertTrue(output.contains("routing:\n  team: sdk"));
+        assertTrue(output.contains("  priority:\n  - p1"));
+        assertTrue(output.contains("  - customer"));
+        assertFalse(output.contains("{team=sdk"));
+        assertFalse(output.contains("[p1, customer]"));
     }
 
     @Test
@@ -373,6 +395,28 @@ public class LlmInputHelperTest {
         assertTrue(output.contains("  Quantity: 2"));
         assertTrue(output.contains("- Description: Support"));
         assertTrue(output.contains("  Quantity: 1"));
+    }
+
+    @Test
+    public void toLlmInputJsonFieldPreservesStructuredYaml() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\"," + "\"contents\":[{"
+            + "  \"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "  \"startPageNumber\":1,\"endPageNumber\":1," + "  \"markdown\":\"Invoice\","
+            + "  \"fields\":{\"Data\":{\"type\":\"json\",\"valueJson\":{"
+            + "    \"key\":\"val\",\"items\":[1,2],\"active\":true,\"nested\":{\"score\":3.5}" + "  }}}" + "}]}" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertTrue(output.contains("Data:"));
+        assertTrue(output.contains("key: val"));
+        assertTrue(output.contains("items:"));
+        assertTrue(output.contains("- 1"));
+        assertTrue(output.contains("- 2"));
+        assertTrue(output.contains("active: true"));
+        assertTrue(output.contains("nested:"));
+        assertTrue(output.contains("score: 3.5"));
+        assertFalse(output.contains("'{\"key\":\"val\""));
     }
 
     // -----------------------------------------------------------------------

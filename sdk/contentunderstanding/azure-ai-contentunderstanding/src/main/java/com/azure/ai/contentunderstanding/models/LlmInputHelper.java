@@ -4,6 +4,7 @@
 package com.azure.ai.contentunderstanding.models;
 
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -204,7 +205,6 @@ public final class LlmInputHelper {
         return resolved;
     }
 
-    @SuppressWarnings("unchecked")
     private static Object resolveFieldValue(ContentField field) {
         if (field == null) {
             return null;
@@ -236,14 +236,13 @@ public final class LlmInputHelper {
             return items.isEmpty() ? null : items;
         }
 
-        // JSON field — return the raw value from BinaryData
+        // JSON field — preserve the parsed JSON structure from BinaryData.
         if (field instanceof ContentJsonField) {
-            Object val = field.getValue();
-            if (val == null) {
+            BinaryData data = ((ContentJsonField) field).getValue();
+            if (data == null) {
                 return null;
             }
-            // BinaryData — convert to string representation
-            return val.toString();
+            return data.toObject(Object.class);
         }
 
         // Leaf field
@@ -271,7 +270,6 @@ public final class LlmInputHelper {
      */
     private static final class RenderableContent {
         final AnalysisContentKind kind;
-        final String mimeType;
         final String category;
         final String markdown;
         final Map<String, ContentField> fields;
@@ -284,7 +282,6 @@ public final class LlmInputHelper {
         // Wrap an existing AnalysisContent
         RenderableContent(AnalysisContent content) {
             this.kind = content.getKind();
-            this.mimeType = content.getMimeType();
             this.category = content.getCategory();
             this.markdown = content.getMarkdown();
             this.fields = content.getFields();
@@ -313,9 +310,8 @@ public final class LlmInputHelper {
         }
 
         // Synthetic segment
-        RenderableContent(String mimeType, String category, String markdown, int startPageNumber, int endPageNumber) {
+        RenderableContent(String category, String markdown, int startPageNumber, int endPageNumber) {
             this.kind = AnalysisContentKind.DOCUMENT;
-            this.mimeType = mimeType;
             this.category = category;
             this.markdown = markdown;
             this.fields = null;
@@ -396,7 +392,7 @@ public final class LlmInputHelper {
                             }
                         }
 
-                        ordered.add(new OrderedContent(new RenderableContent(dc.getMimeType(), seg.getCategory(), md,
+                        ordered.add(new OrderedContent(new RenderableContent(seg.getCategory(), md,
                             seg.getStartPageNumber(), seg.getEndPageNumber()), originalOrder++));
                     }
                     continue;
@@ -709,11 +705,9 @@ public final class LlmInputHelper {
         List<String> lines = new ArrayList<>();
         lines.add("---");
 
-        // Simple key-value entries
+        // Simple key-value entries and user metadata.
         for (Object[] entry : simpleEntries) {
-            String key = yamlScalar(entry[0]);
-            String val = yamlScalar(entry[1]);
-            lines.add(key + ": " + val);
+            emitEntry(lines, entry[0], entry[1], 0);
         }
 
         // Fields (structured)
@@ -732,69 +726,70 @@ public final class LlmInputHelper {
         return String.join("\n", lines);
     }
 
-    @SuppressWarnings("unchecked")
-    private static void emitMapping(List<String> lines, Map<String, Object> mapping, int indent) {
-        String prefix = repeat("  ", indent);
-        for (Map.Entry<String, Object> entry : mapping.entrySet()) {
-            Object value = entry.getValue();
-            if (value == null) {
-                continue;
-            }
-            String safeKey = yamlScalar(entry.getKey());
-
-            if (value instanceof Map) {
-                Map<String, Object> nested = (Map<String, Object>) value;
-                if (nested.isEmpty()) {
-                    continue;
-                }
-                lines.add(prefix + safeKey + ":");
-                emitMapping(lines, nested, indent + 1);
-            } else if (value instanceof List) {
-                List<?> list = (List<?>) value;
-                if (list.isEmpty()) {
-                    continue;
-                }
-                lines.add(prefix + safeKey + ":");
-                emitSequence(lines, list, indent);
-            } else {
-                lines.add(prefix + safeKey + ": " + yamlScalar(value));
-            }
+    private static void emitMapping(List<String> lines, Map<?, ?> mapping, int indent) {
+        for (Map.Entry<?, ?> entry : mapping.entrySet()) {
+            emitEntry(lines, entry.getKey(), entry.getValue(), indent);
         }
     }
 
-    @SuppressWarnings("unchecked")
+    private static void emitEntry(List<String> lines, Object key, Object value, int indent) {
+        if (value == null) {
+            return;
+        }
+        String prefix = repeat("  ", indent);
+        String safeKey = yamlScalar(key);
+
+        if (value instanceof Map) {
+            Map<?, ?> nested = (Map<?, ?>) value;
+            if (nested.isEmpty()) {
+                return;
+            }
+            lines.add(prefix + safeKey + ":");
+            emitMapping(lines, nested, indent + 1);
+        } else if (value instanceof List) {
+            List<?> list = (List<?>) value;
+            if (list.isEmpty()) {
+                return;
+            }
+            lines.add(prefix + safeKey + ":");
+            emitSequence(lines, list, indent);
+        } else {
+            lines.add(prefix + safeKey + ": " + yamlScalar(value));
+        }
+    }
+
     private static void emitSequence(List<String> lines, List<?> sequence, int indent) {
         String prefix = repeat("  ", indent);
         for (Object item : sequence) {
             if (item instanceof Map) {
-                Map<String, Object> map = (Map<String, Object>) item;
+                Map<?, ?> map = (Map<?, ?>) item;
                 boolean first = true;
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    Object v = entry.getValue();
-                    if (v == null) {
+                for (Map.Entry<?, ?> entry : map.entrySet()) {
+                    Object entryValue = entry.getValue();
+                    if (entryValue == null) {
                         continue;
                     }
                     String tag = first ? prefix + "- " : prefix + "  ";
                     String safeKey = yamlScalar(entry.getKey());
 
-                    if (v instanceof Map) {
-                        Map<String, Object> nested = (Map<String, Object>) v;
+                    if (entryValue instanceof Map) {
+                        Map<?, ?> nested = (Map<?, ?>) entryValue;
                         if (!nested.isEmpty()) {
                             lines.add(tag + safeKey + ":");
                             emitMapping(lines, nested, indent + 2);
                         } else {
-                            lines.add(tag + safeKey + ": " + yamlScalar(v));
+                            lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
                         }
-                    } else if (v instanceof List) {
-                        List<?> list = (List<?>) v;
+                    } else if (entryValue instanceof List) {
+                        List<?> list = (List<?>) entryValue;
                         if (!list.isEmpty()) {
                             lines.add(tag + safeKey + ":");
                             emitSequence(lines, list, indent + 2);
                         } else {
-                            lines.add(tag + safeKey + ": " + yamlScalar(v));
+                            lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
                         }
                     } else {
-                        lines.add(tag + safeKey + ": " + yamlScalar(v));
+                        lines.add(tag + safeKey + ": " + yamlScalar(entryValue));
                     }
                     first = false;
                 }
