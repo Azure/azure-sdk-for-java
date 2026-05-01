@@ -124,7 +124,7 @@ public class TelemetryHelper {
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
         Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel, true);
+        GarbageCollector.registerObservers(otel);
         OpenTelemetryAppender.install(otel);
         return otel;
     }
