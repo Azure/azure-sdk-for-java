@@ -2,27 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -31,6 +26,10 @@ import org.springframework.core.env.Environment;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
@@ -294,7 +293,7 @@ public class AppConfigurationReplicaClientBuilderTest {
             () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals(
-            "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:Not;A;Connection String",
+            "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'.",
             exception.getMessage());
     }
 
