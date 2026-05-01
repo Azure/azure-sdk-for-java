@@ -176,6 +176,15 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     }
 
     /**
+     * Creates an instance of CodeBasedEvaluatorDefinition class.
+     *
+     * @param codeText the codeText value to set.
+     */
+    public CodeBasedEvaluatorDefinition(String codeText){
+        this.codeText = codeText;
+    }
+
+    /**
      * Set the codeText property: Inline code text for the evaluator.
      *
      * @param codeText the codeText value to set.
