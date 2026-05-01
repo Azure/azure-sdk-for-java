@@ -3,6 +3,16 @@
 
 package com.azure.ai.voicelive;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.Base64;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.azure.ai.voicelive.implementation.VoiceLiveTracer;
+import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.ClientEvent;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventConversationItemDelete;
@@ -27,14 +37,15 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -48,14 +59,6 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.WebsocketClientSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.Base64;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents a WebSocket-based session for real-time voice communication with the Azure VoiceLive service.
@@ -95,6 +98,8 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     private final KeyCredential keyCredential;
     private final TokenCredential tokenCredential;
     private final SerializerAdapter serializer;
+    private final VoiceLiveTracer voiceLiveTracer;
+    private final AgentSessionConfig agentSessionConfig;
 
     private final AtomicBoolean isConnected = new AtomicBoolean(false);
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
@@ -103,6 +108,9 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     // Reactive sinks for bidirectional message flow
     private final Sinks.Many<BinaryData> receiveSink = Sinks.many().multicast().onBackpressureBuffer();
     private final Sinks.Many<WebSocketFrame> sendSink = Sinks.many().multicast().onBackpressureBuffer();
+
+    // Cached shared events flux — ensures tracing fires only once per event regardless of subscriber count
+    private volatile Flux<SessionUpdate> sharedEventsFlux;
 
     // WebSocket connection state management
     private final AtomicReference<WebsocketInbound> inboundRef = new AtomicReference<>();
@@ -115,30 +123,24 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     private final AtomicReference<Disposable> closeStatusSubscriptionRef = new AtomicReference<>();
     private final AtomicReference<Disposable> connectionLifecycleSubscriptionRef = new AtomicReference<>();
 
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with API key authentication.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param keyCredential The API key credential.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential) {
+    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential, VoiceLiveTracer voiceLiveTracer,
+        AgentSessionConfig agentSessionConfig) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this.voiceLiveTracer = voiceLiveTracer;
+        this.agentSessionConfig = agentSessionConfig;
     }
 
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with token authentication.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param tokenCredential The token credential.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential) {
+    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential, VoiceLiveTracer voiceLiveTracer,
+        AgentSessionConfig agentSessionConfig) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this.voiceLiveTracer = voiceLiveTracer;
+        this.agentSessionConfig = agentSessionConfig;
     }
 
     /**
@@ -158,6 +160,11 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
 
         if (connectionCloseSignalRef.get() != null) {
             return Mono.error(new IllegalStateException("Session lifecycle already active"));
+        }
+
+        // Start the connect span (session lifetime)
+        if (voiceLiveTracer != null) {
+            voiceLiveTracer.startConnectSpan(agentSessionConfig);
         }
 
         Sinks.One<Void> readySink = Sinks.one();
@@ -263,6 +270,11 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             readySink.tryEmitError(error);
             connectionCloseSignalRef.compareAndSet(closeSignal, null);
             disposeLifecycleSubscription();
+
+            // End the connect span on error
+            if (voiceLiveTracer != null) {
+                voiceLiveTracer.endConnectSpan(error);
+            }
         }, () -> {
             LOGGER.info("WebSocket handler completed");
             connectionCloseSignalRef.compareAndSet(closeSignal, null);
@@ -281,6 +293,13 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     public Mono<Void> closeAsync() {
         if (isClosed.compareAndSet(false, true)) {
             LOGGER.info("Closing VoiceLive session");
+
+            // Trace the close operation and end the connect span
+            if (voiceLiveTracer != null) {
+                voiceLiveTracer.traceClose();
+                voiceLiveTracer.endConnectSpan(null);
+            }
+
             sendSink.tryEmitComplete();
 
             Sinks.One<Void> closeSignal = connectionCloseSignalRef.getAndSet(null);
@@ -351,6 +370,12 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
         return Mono.fromCallable(() -> {
             try {
                 String json = serializer.serialize(event, SerializerEncoding.JSON);
+
+                // Trace the send operation
+                if (voiceLiveTracer != null) {
+                    voiceLiveTracer.traceSend(event, json);
+                }
+
                 return BinaryData.fromString(json);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize event", e));
@@ -397,16 +422,39 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      */
     public Flux<SessionUpdate> receiveEvents() {
         throwIfNotConnected();
-        return receive()
-            .onBackpressureBuffer(INBOUND_BUFFER_CAPACITY,
-                dropped -> LOGGER.error("Inbound buffer overflow; dropped {} bytes", dropped.toBytes().length),
-                BufferOverflowStrategy.ERROR)
-            .flatMap(this::parseToSessionUpdate)
-            .doOnError(error -> LOGGER.error("Failed to parse session update", error))
-            .onErrorResume(error -> {
-                LOGGER.warning("Skipping unrecognized server event: {}", error.getMessage());
-                return Flux.empty();
-            });
+        Flux<SessionUpdate> result = sharedEventsFlux;
+        if (result == null) {
+            synchronized (this) {
+                result = sharedEventsFlux;
+                if (result == null) {
+                    result
+                        = receive()
+                            .onBackpressureBuffer(INBOUND_BUFFER_CAPACITY,
+                                dropped -> LOGGER.error("Inbound buffer overflow; dropped {} bytes",
+                                    dropped.toBytes().length),
+                                BufferOverflowStrategy.ERROR)
+                            .flatMap(data -> {
+                                String rawPayload = data.toString();
+                                return parseToSessionUpdate(data).doOnNext(update -> {
+                                    if (voiceLiveTracer != null) {
+                                        voiceLiveTracer.traceRecv(update, rawPayload);
+                                    }
+                                }).onErrorResume(error -> {
+                                    if (voiceLiveTracer != null) {
+                                        voiceLiveTracer.traceRecvRaw(rawPayload);
+                                    }
+                                    LOGGER.warning("Skipping unrecognized server event: {}", error.getMessage());
+                                    return Mono.empty();
+                                });
+                            })
+                            .doOnError(error -> LOGGER.error("Failed to parse session update", error))
+                            .publish()
+                            .autoConnect();
+                    sharedEventsFlux = result;
+                }
+            }
+        }
+        return result;
     }
 
     /**

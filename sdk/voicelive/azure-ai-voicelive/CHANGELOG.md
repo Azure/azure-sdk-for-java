@@ -4,6 +4,16 @@
 
 ### Features Added
 
+- Added built-in OpenTelemetry tracing support for voice sessions following GenAI Semantic Conventions:
+  - Defaults to `GlobalOpenTelemetry.getOrNoop()` for automatic Java agent detection with zero-cost no-op fallback
+  - Emits spans for `connect`, `send`, `recv`, and `close` operations with Python-aligned VoiceLive telemetry semantics
+  - Session-level counters: turn count, interruption count, audio bytes sent/received, first token latency, MCP call/list-tools counts
+  - Tracks response and item hierarchy IDs (`response_id`, `conversation_id`, `item_id`, `call_id`, `previous_item_id`, `output_index`) on send/recv spans
+  - Captures agent/session config attributes on connect spans (`gen_ai.agent.*`, `gen_ai.system_instructions`, `gen_ai.request.*`)
+  - Adds OpenTelemetry metrics (`gen_ai.client.operation.duration`, `gen_ai.client.token.usage`) with provider/server/model dimensions
+  - Content recording controlled via `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` environment variable (with legacy `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` fallback)
+- Added `GlobalTracingSample.java` demonstrating OpenTelemetry integration
+
 ### Breaking Changes
 
 ### Bugs Fixed
