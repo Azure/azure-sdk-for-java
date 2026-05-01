@@ -386,6 +386,11 @@ mvn exec:java \
 
 ### Convert results to LLM-ready text
 
+> **Preview feature**: `LlmInputHelper.toLlmInput()` is currently in preview and may change in
+> future releases. We welcome feedback — please file suggestions or issues on
+> [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) with the
+> **"Cognitive - Content Understanding"** label.
+
 Use the `LlmInputHelper.toLlmInput()` helper to convert any analysis result into a text format
 that LLMs can consume directly — YAML front matter with extracted fields followed by the markdown
 body. This works with all content types (documents, images, audio, video) and handles
@@ -396,7 +401,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
-import com.azure.ai.contentunderstanding.models.LlmInputHelper;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 

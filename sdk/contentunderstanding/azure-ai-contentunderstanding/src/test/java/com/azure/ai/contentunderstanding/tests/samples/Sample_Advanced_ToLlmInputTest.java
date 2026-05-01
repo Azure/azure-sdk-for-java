@@ -10,8 +10,8 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationS
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
-import com.azure.ai.contentunderstanding.models.LlmInputHelper;
-import com.azure.ai.contentunderstanding.models.ToLlmInputOptions;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.ai.contentunderstanding.ToLlmInputOptions;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;

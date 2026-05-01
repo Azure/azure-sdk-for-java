@@ -4,8 +4,8 @@
 package com.azure.ai.contentunderstanding.tests;
 
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
-import com.azure.ai.contentunderstanding.models.LlmInputHelper;
-import com.azure.ai.contentunderstanding.models.ToLlmInputOptions;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.ai.contentunderstanding.ToLlmInputOptions;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;

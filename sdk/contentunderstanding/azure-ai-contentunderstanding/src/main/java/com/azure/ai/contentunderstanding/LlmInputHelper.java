@@ -1,8 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.contentunderstanding.models;
+package com.azure.ai.contentunderstanding;
 
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.AnalysisContentKind;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AudioVisualContent;
+import com.azure.ai.contentunderstanding.models.ContentArrayField;
+import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentJsonField;
+import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentContentSegment;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 
@@ -82,7 +93,7 @@ public final class LlmInputHelper {
      * @throws NullPointerException if {@code result} is null.
      */
     public static String toLlmInput(AnalysisResult result) {
-        return toLlmInputCore(result, null, null);
+        return toLlmInput(result, null, null);
     }
 
     /**
@@ -101,7 +112,7 @@ public final class LlmInputHelper {
      * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
      */
     public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata) {
-        return toLlmInputCore(result, metadata, null);
+        return toLlmInput(result, metadata, null);
     }
 
     /**
@@ -119,11 +130,6 @@ public final class LlmInputHelper {
      * @throws IllegalArgumentException if {@code metadata} contains a reserved front matter key.
      */
     public static String toLlmInput(AnalysisResult result, Map<String, Object> metadata, ToLlmInputOptions options) {
-        return toLlmInputCore(result, metadata, options);
-    }
-
-    private static String toLlmInputCore(AnalysisResult result, Map<String, Object> metadata,
-        ToLlmInputOptions options) {
         Objects.requireNonNull(result, "'result' must not be null.");
 
         boolean includeFields = options == null || options.isIncludeFields();

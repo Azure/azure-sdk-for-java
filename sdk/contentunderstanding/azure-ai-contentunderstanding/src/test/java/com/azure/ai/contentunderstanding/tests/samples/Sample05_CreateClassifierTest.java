@@ -12,7 +12,7 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentContentSegment;
-import com.azure.ai.contentunderstanding.models.LlmInputHelper;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;

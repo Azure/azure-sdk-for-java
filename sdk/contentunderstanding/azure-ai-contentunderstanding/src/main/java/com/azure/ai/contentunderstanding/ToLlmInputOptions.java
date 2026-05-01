@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.contentunderstanding.models;
+package com.azure.ai.contentunderstanding;
+
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
 
 /**
  * Options for {@link LlmInputHelper#toLlmInput(AnalysisResult, java.util.Map, ToLlmInputOptions)}.
