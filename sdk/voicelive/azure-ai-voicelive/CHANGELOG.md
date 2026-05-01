@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2026-05-01)
 
 ### Features Added
 
@@ -13,8 +13,6 @@
   - Adds OpenTelemetry metrics (`gen_ai.client.operation.duration`, `gen_ai.client.token.usage`) with provider/server/model dimensions
   - Content recording controlled via `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` environment variable (with legacy `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` fallback)
 - Added `GlobalTracingSample.java` demonstrating OpenTelemetry integration
-
-### Breaking Changes
 
 ### Bugs Fixed
 
