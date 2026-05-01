@@ -21,7 +21,7 @@ import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PatchAgentObjectPatchRequest;
+import com.azure.ai.agents.models.UpdateAgentDetailsPatchRequest;
 import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -2528,9 +2528,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> patchAgentObjectWithResponse(String agentName, BinaryData patchAgentObjectRequest,
+    public Response<BinaryData> updateAgentDetailsWithResponse(String agentName, BinaryData patchAgentObjectRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.patchAgentObjectWithResponse(agentName, patchAgentObjectRequest, requestOptions);
+        return this.serviceClient.updateAgentDetailsWithResponse(agentName, patchAgentObjectRequest, requestOptions);
     }
 
     /**
@@ -2550,21 +2550,21 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails patchAgentObject(String agentName, PatchAgentObjectPatchRequest patchAgentObjectRequest,
+    public AgentDetails updateAgentDetails(String agentName, UpdateAgentDetailsPatchRequest patchAgentObjectRequest,
         AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for patchAgentObjectWithResponse
+        // Generated convenience method for updateAgentDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
             .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
         BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
             .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return patchAgentObjectWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -2583,17 +2583,17 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails patchAgentObject(String agentName, PatchAgentObjectPatchRequest patchAgentObjectRequest) {
-        // Generated convenience method for patchAgentObjectWithResponse
+    public AgentDetails updateAgentDetails(String agentName, UpdateAgentDetailsPatchRequest patchAgentObjectRequest) {
+        // Generated convenience method for updateAgentDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
             .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
         BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
+        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
             .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return patchAgentObjectWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 }

@@ -9,7 +9,7 @@ import com.azure.ai.agents.models.AgentCardSkill;
 import com.azure.ai.agents.models.AgentEndpoint;
 import com.azure.ai.agents.models.AgentEndpointAuthorizationScheme;
 import com.azure.ai.agents.models.IsolationKeySource;
-import com.azure.ai.agents.models.PatchAgentObjectPatchRequest;
+import com.azure.ai.agents.models.UpdateAgentDetailsPatchRequest;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -134,20 +134,20 @@ public class JsonMergePatchHelper {
         return agentCardSkillAccessor;
     }
 
-    private static PatchAgentObjectPatchRequestAccessor patchAgentObjectPatchRequestAccessor;
+    private static UpdateAgentDetailsPatchRequestAccessor updateAgentDetailsPatchRequestAccessor;
 
-    public interface PatchAgentObjectPatchRequestAccessor {
-        PatchAgentObjectPatchRequest prepareModelForJsonMergePatch(
-            PatchAgentObjectPatchRequest patchAgentObjectPatchRequest, boolean jsonMergePatchEnabled);
+    public interface UpdateAgentDetailsPatchRequestAccessor {
+        UpdateAgentDetailsPatchRequest prepareModelForJsonMergePatch(
+            UpdateAgentDetailsPatchRequest updateAgentDetailsPatchRequest, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(PatchAgentObjectPatchRequest patchAgentObjectPatchRequest);
+        boolean isJsonMergePatch(UpdateAgentDetailsPatchRequest updateAgentDetailsPatchRequest);
     }
 
-    public static void setPatchAgentObjectPatchRequestAccessor(PatchAgentObjectPatchRequestAccessor accessor) {
-        patchAgentObjectPatchRequestAccessor = accessor;
+    public static void setUpdateAgentDetailsPatchRequestAccessor(UpdateAgentDetailsPatchRequestAccessor accessor) {
+        updateAgentDetailsPatchRequestAccessor = accessor;
     }
 
-    public static PatchAgentObjectPatchRequestAccessor getPatchAgentObjectPatchRequestAccessor() {
-        return patchAgentObjectPatchRequestAccessor;
+    public static UpdateAgentDetailsPatchRequestAccessor getUpdateAgentDetailsPatchRequestAccessor() {
+        return updateAgentDetailsPatchRequestAccessor;
     }
 }

@@ -351,7 +351,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> patchAgentObject(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> updateAgentDetails(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData patchAgentObjectRequest,
@@ -363,7 +363,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> patchAgentObjectSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateAgentDetailsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData patchAgentObjectRequest,
@@ -3187,11 +3187,11 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> patchAgentObjectWithResponseAsync(String agentName,
+    public Mono<Response<BinaryData>> updateAgentDetailsWithResponseAsync(String agentName,
         BinaryData patchAgentObjectRequest, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.patchAgentObject(this.client.getEndpoint(), agentName,
+        return FluxUtil.withContext(context -> service.updateAgentDetails(this.client.getEndpoint(), agentName,
             contentType, this.client.getServiceVersion().getVersion(), accept, patchAgentObjectRequest, requestOptions,
             context));
     }
@@ -3339,11 +3339,11 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> patchAgentObjectWithResponse(String agentName, BinaryData patchAgentObjectRequest,
+    public Response<BinaryData> updateAgentDetailsWithResponse(String agentName, BinaryData patchAgentObjectRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.patchAgentObjectSync(this.client.getEndpoint(), agentName, contentType,
+        return service.updateAgentDetailsSync(this.client.getEndpoint(), agentName, contentType,
             this.client.getServiceVersion().getVersion(), accept, patchAgentObjectRequest, requestOptions,
             Context.NONE);
     }
