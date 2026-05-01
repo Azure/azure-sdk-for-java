@@ -287,11 +287,16 @@ class TransientIOErrorsRetryingReadManyByPartitionKeyIteratorSpec extends UnitSp
 
     Flux
       .fromArray(responses)
-      .map(response => if (errorRate > 0 && rnd.nextDouble() < errorRate) {
-        transientErrorCounter.incrementAndGet()
-        throw new DummyTransientCosmosException
-      } else {
-        response
+      .index()
+      .map(tuple => {
+        val idx = tuple.getT1
+        val response = tuple.getT2
+        if (errorRate > 0 && idx > 0 && rnd.nextDouble() < errorRate) {
+          transientErrorCounter.incrementAndGet()
+          throw new DummyTransientCosmosException
+        } else {
+          response
+        }
       })
   }
 
