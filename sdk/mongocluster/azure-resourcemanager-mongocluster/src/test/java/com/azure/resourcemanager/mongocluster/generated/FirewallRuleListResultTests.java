@@ -14,8 +14,8 @@ public final class FirewallRuleListResultTests {
         FirewallRuleListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"a\",\"endIpAddress\":\"bqidtqaj\"},\"id\":\"ulpkudjkrl\",\"name\":\"hbzhfepg\",\"type\":\"gqexzlocxs\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"erhhbcsglumm\",\"endIpAddress\":\"jtjaodxobnbdxkq\"},\"id\":\"okaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}],\"nextLink\":\"maajrmvdjwzrlo\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("a", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("bqidtqaj", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("a", model.value().get(0).properties().startIPAddress());
+        Assertions.assertEquals("bqidtqaj", model.value().get(0).properties().endIPAddress());
         Assertions.assertEquals("maajrmvdjwzrlo", model.nextLink());
     }
 }

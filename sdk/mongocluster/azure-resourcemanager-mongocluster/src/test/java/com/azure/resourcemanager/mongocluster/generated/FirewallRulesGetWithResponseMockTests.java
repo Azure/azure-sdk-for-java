@@ -34,7 +34,7 @@ public final class FirewallRulesGetWithResponseMockTests {
             .getWithResponse("eh", "pvecxgodeb", "qkkrb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gr", response.properties().startIpAddress());
-        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().endIpAddress());
+        Assertions.assertEquals("gr", response.properties().startIPAddress());
+        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().endIPAddress());
     }
 }

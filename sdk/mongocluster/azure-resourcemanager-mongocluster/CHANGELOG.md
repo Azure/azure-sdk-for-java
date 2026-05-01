@@ -1,14 +1,38 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-05-01)
 
-### Features Added
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FirewallRuleProperties` was modified
 
-### Other Changes
+* `withEndIpAddress(java.lang.String)` was removed
+* `startIpAddress()` was removed
+* `withStartIpAddress(java.lang.String)` was removed
+* `endIpAddress()` was removed
+
+### Features Added
+
+* `models.NetworkBypassMode` was added
+
+#### `models.MongoClusterProperties` was modified
+
+* `withNetworkBypassMode(models.NetworkBypassMode)` was added
+* `networkBypassMode()` was added
+
+#### `models.FirewallRuleProperties` was modified
+
+* `withEndIPAddress(java.lang.String)` was added
+* `withStartIPAddress(java.lang.String)` was added
+* `startIPAddress()` was added
+* `endIPAddress()` was added
+
+#### `models.MongoClusterUpdateProperties` was modified
+
+* `withNetworkBypassMode(models.NetworkBypassMode)` was added
+* `networkBypassMode()` was added
 
 ## 1.1.0 (2025-10-15)
 

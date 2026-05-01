@@ -24,12 +24,12 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     /*
      * The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
      */
-    private String startIpAddress;
+    private String startIPAddress;
 
     /*
      * The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
      */
-    private String endIpAddress;
+    private String endIPAddress;
 
     /**
      * Creates an instance of FirewallRuleProperties class.
@@ -47,42 +47,42 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Get the startIpAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Get the startIPAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
      * 
-     * @return the startIpAddress value.
+     * @return the startIPAddress value.
      */
-    public String startIpAddress() {
-        return this.startIpAddress;
+    public String startIPAddress() {
+        return this.startIPAddress;
     }
 
     /**
-     * Set the startIpAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Set the startIPAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
      * 
-     * @param startIpAddress the startIpAddress value to set.
+     * @param startIPAddress the startIPAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
-    public FirewallRuleProperties withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+    public FirewallRuleProperties withStartIPAddress(String startIPAddress) {
+        this.startIPAddress = startIPAddress;
         return this;
     }
 
     /**
-     * Get the endIpAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Get the endIPAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
      * 
-     * @return the endIpAddress value.
+     * @return the endIPAddress value.
      */
-    public String endIpAddress() {
-        return this.endIpAddress;
+    public String endIPAddress() {
+        return this.endIPAddress;
     }
 
     /**
-     * Set the endIpAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Set the endIPAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
      * 
-     * @param endIpAddress the endIpAddress value to set.
+     * @param endIPAddress the endIPAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
-    public FirewallRuleProperties withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+    public FirewallRuleProperties withEndIPAddress(String endIPAddress) {
+        this.endIPAddress = endIPAddress;
         return this;
     }
 
@@ -92,8 +92,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("startIpAddress", this.startIpAddress);
-        jsonWriter.writeStringField("endIpAddress", this.endIpAddress);
+        jsonWriter.writeStringField("startIpAddress", this.startIPAddress);
+        jsonWriter.writeStringField("endIpAddress", this.endIPAddress);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,9 +114,9 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
                 reader.nextToken();
 
                 if ("startIpAddress".equals(fieldName)) {
-                    deserializedFirewallRuleProperties.startIpAddress = reader.getString();
+                    deserializedFirewallRuleProperties.startIPAddress = reader.getString();
                 } else if ("endIpAddress".equals(fieldName)) {
-                    deserializedFirewallRuleProperties.endIpAddress = reader.getString();
+                    deserializedFirewallRuleProperties.endIPAddress = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFirewallRuleProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

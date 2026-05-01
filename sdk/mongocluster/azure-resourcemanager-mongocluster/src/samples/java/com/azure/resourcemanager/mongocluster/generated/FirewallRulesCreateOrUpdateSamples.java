@@ -11,7 +11,7 @@ import com.azure.resourcemanager.mongocluster.models.FirewallRuleProperties;
  */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_FirewallRuleCreate.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_FirewallRuleCreate.json
      */
     /**
      * Sample code: Creates a firewall rule on a Mongo Cluster resource.
@@ -24,7 +24,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
             .define("rule1")
             .withExistingMongoCluster("TestGroup", "myMongoCluster")
             .withProperties(
-                new FirewallRuleProperties().withStartIpAddress("0.0.0.0").withEndIpAddress("255.255.255.255"))
+                new FirewallRuleProperties().withStartIPAddress("0.0.0.0").withEndIPAddress("255.255.255.255"))
             .create();
     }
 }

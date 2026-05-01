@@ -34,7 +34,7 @@ public final class FirewallRulesListByMongoClusterMockTests {
         PagedIterable<FirewallRule> response
             = manager.firewallRules().listByMongoCluster("agnb", "ynhijggme", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("arbu", response.iterator().next().properties().startIpAddress());
-        Assertions.assertEquals("rcvpnazzmhjrunmp", response.iterator().next().properties().endIpAddress());
+        Assertions.assertEquals("arbu", response.iterator().next().properties().startIPAddress());
+        Assertions.assertEquals("rcvpnazzmhjrunmp", response.iterator().next().properties().endIPAddress());
     }
 }

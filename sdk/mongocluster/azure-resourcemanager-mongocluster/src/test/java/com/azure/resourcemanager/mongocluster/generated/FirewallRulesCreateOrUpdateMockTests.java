@@ -34,10 +34,10 @@ public final class FirewallRulesCreateOrUpdateMockTests {
         FirewallRule response = manager.firewallRules()
             .define("czfc")
             .withExistingMongoCluster("tkcxywnytnrsy", "lqidyby")
-            .withProperties(new FirewallRuleProperties().withStartIpAddress("xdbabphlwr").withEndIpAddress("lfktsths"))
+            .withProperties(new FirewallRuleProperties().withStartIPAddress("xdbabphlwr").withEndIPAddress("lfktsths"))
             .create();
 
-        Assertions.assertEquals("jwbhqwalmuz", response.properties().startIpAddress());
-        Assertions.assertEquals("oxaepd", response.properties().endIpAddress());
+        Assertions.assertEquals("jwbhqwalmuz", response.properties().startIPAddress());
+        Assertions.assertEquals("oxaepd", response.properties().endIPAddress());
     }
 }
