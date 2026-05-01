@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageName model = BinaryData.fromString("{\"value\":\"yjq\",\"localizedValue\":\"kfnozoeoqbvj\"}")
+        UsageName model = BinaryData.fromString("{\"value\":\"eifzzhmk\",\"localizedValue\":\"svflyhbxcudch\"}")
             .toObject(UsageName.class);
-        Assertions.assertEquals("yjq", model.value());
-        Assertions.assertEquals("kfnozoeoqbvj", model.localizedValue());
+        Assertions.assertEquals("eifzzhmk", model.value());
+        Assertions.assertEquals("svflyhbxcudch", model.localizedValue());
     }
 }
