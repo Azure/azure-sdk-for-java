@@ -386,10 +386,11 @@ mvn exec:java \
 
 ### Convert results to LLM-ready text
 
+> [!NOTE]
 > **Preview feature**: `LlmInputHelper.toLlmInput()` is currently in preview and may change in
 > future releases. We welcome feedback — please file suggestions or issues on
 > [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) with the
-> **"Cognitive - Content Understanding"** label.
+> `Cognitive - Content Understanding` label.
 
 Use the `LlmInputHelper.toLlmInput()` helper to convert any analysis result into a text format
 that LLMs can consume directly — YAML front matter with extracted fields followed by the markdown
