@@ -113,7 +113,12 @@ class FeatureFlagClient {
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
                 updateTelemetry(featureFlag);
-                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
+                Feature feature = createFeature(featureFlag, endpoint);
+                if (feature != null) {
+                    properties.put(featureFlag.getKey(), feature);
+                } else {
+                    LOGGER.warn("Skipping invalid feature flag: {}", featureFlag.getKey());
+                }
             }
         }
         return features;
