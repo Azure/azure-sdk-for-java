@@ -104,12 +104,11 @@ public final class ReadmeSamples {
         // Start session and handle events
         client.startSession("gpt-realtime")
             .flatMap(session -> {
-                // Subscribe to receive server events
+                // Subscribe to events first, then send session configuration.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
+                    .doOnNext(event -> handleEvent(event))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .subscribe();
 
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
@@ -172,12 +171,11 @@ public final class ReadmeSamples {
             .flatMap(session -> {
                 System.out.println("Session started");
 
-                // Subscribe to receive events
+                // Subscribe to events first.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> System.out.println("Event: " + event.getType()),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
+                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .subscribe();
 
                 return Mono.just(session);
             })
@@ -373,7 +371,7 @@ public final class ReadmeSamples {
         client.startSession("gpt-realtime")
             .flatMap(session -> {
                 session.receiveEvents()
-                    .subscribe(event -> {
+                    .doOnNext(event -> {
                         if (event instanceof SessionUpdateConversationItemCreated) {
                             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
                             if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
@@ -394,14 +392,17 @@ public final class ReadmeSamples {
                                         .setItem(output)
                                         .setPreviousItemId(functionCall.getId());
 
-                                    session.sendEvent(createItem).subscribe();
-                                    session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                                    // Chain the two sends sequentially.
+                                    session.sendEvent(createItem)
+                                        .then(session.sendEvent(new ClientEventResponseCreate()))
+                                        .subscribe();
                                 } catch (Exception e) {
                                     System.err.println("Error executing function: " + e.getMessage());
                                 }
                             }
                         }
-                    });
+                    })
+                    .subscribe();
 
                 return Mono.just(session);
             })
@@ -443,23 +444,27 @@ public final class ReadmeSamples {
             .setInstructions("You have access to external tools via MCP. Use them when asked.");
 
         // Handle MCP approval requests in your event loop
-        session.receiveEvents().subscribe(event -> {
-            if (event instanceof SessionUpdateResponseOutputItemDone) {
-                SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
-                SessionResponseItem item = itemDone.getItem();
+        session.receiveEvents()
+            .doOnNext(event -> {
+                if (event instanceof SessionUpdateResponseOutputItemDone) {
+                    SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
+                    SessionResponseItem item = itemDone.getItem();
 
-                if (item instanceof ResponseMCPApprovalRequestItem) {
-                    // Approve the tool call
-                    ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
-                    MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
-                        approvalRequest.getId(), true);
-                    ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
-                        .setItem(approval);
-                    session.sendEvent(createItem).subscribe();
-                    session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                    if (item instanceof ResponseMCPApprovalRequestItem) {
+                        // Approve the tool call
+                        ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
+                        MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                            approvalRequest.getId(), true);
+                        ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                            .setItem(approval);
+                        // Chain the two sends sequentially.
+                        session.sendEvent(createItem)
+                            .then(session.sendEvent(new ClientEventResponseCreate()))
+                            .subscribe();
+                    }
                 }
-            }
-        });
+            })
+            .subscribe();
         // END: com.azure.ai.voicelive.mcp
     }
 
@@ -480,7 +485,9 @@ public final class ReadmeSamples {
 
         client.startSession(agentConfig)
             .flatMap(session -> {
-                session.receiveEvents().subscribe(event -> handleEvent(event));
+                session.receiveEvents()
+                    .doOnNext(event -> handleEvent(event))
+                    .subscribe();
                 return Mono.just(session);
             })
             .block();

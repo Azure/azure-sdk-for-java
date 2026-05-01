@@ -5,10 +5,6 @@
 <suppressions>
   <!-- OpenTelemetry tracing imports -->
   <suppress files="com.azure.ai.voicelive.implementation.VoiceLiveTracer.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.ai.voicelive.VoiceLiveAsyncClient.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.ai.voicelive.VoiceLiveClientBuilder.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.ai.voicelive.VoiceLiveClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.ai.voicelive.VoiceLiveSessionAsyncClient.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.implementation.VoiceLiveTracerTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.VoiceLiveClientBuilderTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.voicelive.ReadmeSamples.java" checks="IllegalImportCheck" />

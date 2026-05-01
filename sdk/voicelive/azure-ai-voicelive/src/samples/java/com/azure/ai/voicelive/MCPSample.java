@@ -157,16 +157,15 @@ public final class MCPSample {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to receive server events
+                // Subscribe to events first.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> handleServerEvent(session, event, activeMCPCallId, audioProcessor),
-                        error -> {
-                            System.err.println("❌ Error processing events: " + error.getMessage());
-                            running.set(false);
-                        },
-                        () -> System.out.println("✓ Event stream completed")
-                    );
+                    .doOnNext(event -> handleServerEvent(session, event, activeMCPCallId, audioProcessor))
+                    .doOnError(error -> {
+                        System.err.println("❌ Error processing events: " + error.getMessage());
+                        running.set(false);
+                    })
+                    .doOnComplete(() -> System.out.println("✓ Event stream completed"))
+                    .subscribe();
 
                 // Send session configuration with MCP tools
                 System.out.println("📤 Sending session configuration with MCP tools...");

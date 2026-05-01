@@ -451,10 +451,13 @@ public class AgentV2Sample {
                 }
 
                 if (session != null) {
-                    session.closeAsync().subscribe();
+                    session.closeAsync()
+                        .onErrorComplete()
+                        .doFinally(signal -> shutdownLatch.countDown())
+                        .subscribe();
+                } else {
+                    shutdownLatch.countDown();
                 }
-
-                shutdownLatch.countDown();
             }
         }
 

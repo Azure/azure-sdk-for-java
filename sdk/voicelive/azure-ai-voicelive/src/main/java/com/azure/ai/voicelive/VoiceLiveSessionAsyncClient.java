@@ -50,8 +50,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.opentelemetry.api.metrics.Meter;
-import io.opentelemetry.api.trace.Tracer;
 import reactor.core.Disposable;
 import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.Flux;
@@ -125,73 +123,23 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     private final AtomicReference<Disposable> closeStatusSubscriptionRef = new AtomicReference<>();
     private final AtomicReference<Disposable> connectionLifecycleSubscriptionRef = new AtomicReference<>();
 
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with API key authentication.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param keyCredential The API key credential.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential) {
-        this(endpoint, keyCredential, null, null, null);
-    }
-
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with API key authentication and tracing.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param keyCredential The API key credential.
-     * @param tracer The OpenTelemetry Tracer (may be a no-op tracer).
-     * @param model The model name for span naming.
-     * @param enableContentRecording Override for content recording, or null to use env var.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential, Tracer tracer, String model,
-        Boolean enableContentRecording) {
-        this(endpoint, keyCredential, tracer, null, model, enableContentRecording, null);
-    }
-
-    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential, Tracer tracer, Meter meter, String model,
-        Boolean enableContentRecording, AgentSessionConfig agentSessionConfig) {
+    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential, VoiceLiveTracer voiceLiveTracer,
+        AgentSessionConfig agentSessionConfig) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
-        this.voiceLiveTracer
-            = tracer != null ? new VoiceLiveTracer(tracer, meter, endpoint, model, enableContentRecording) : null;
+        this.voiceLiveTracer = voiceLiveTracer;
         this.agentSessionConfig = agentSessionConfig;
     }
 
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with token authentication.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param tokenCredential The token credential.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential) {
-        this(endpoint, tokenCredential, null, null, null);
-    }
-
-    /**
-     * Creates a new VoiceLiveSessionAsyncClient with token authentication and tracing.
-     *
-     * @param endpoint The WebSocket endpoint.
-     * @param tokenCredential The token credential.
-     * @param tracer The OpenTelemetry Tracer (may be a no-op tracer).
-     * @param model The model name for span naming.
-     * @param enableContentRecording Override for content recording, or null to use env var.
-     */
-    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential, Tracer tracer, String model,
-        Boolean enableContentRecording) {
-        this(endpoint, tokenCredential, tracer, null, model, enableContentRecording, null);
-    }
-
-    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential, Tracer tracer, Meter meter, String model,
-        Boolean enableContentRecording, AgentSessionConfig agentSessionConfig) {
+    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential, VoiceLiveTracer voiceLiveTracer,
+        AgentSessionConfig agentSessionConfig) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
-        this.voiceLiveTracer
-            = tracer != null ? new VoiceLiveTracer(tracer, meter, endpoint, model, enableContentRecording) : null;
+        this.voiceLiveTracer = voiceLiveTracer;
         this.agentSessionConfig = agentSessionConfig;
     }
 

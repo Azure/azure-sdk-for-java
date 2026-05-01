@@ -17,7 +17,6 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -68,7 +67,7 @@ public final class GlobalTracingSample {
             .buildAndRegisterGlobal();  // <-- registers into GlobalOpenTelemetry
         System.out.println("GlobalOpenTelemetry registered (console exporter)");
 
-        // 2. Build client WITHOUT .openTelemetry() — it picks up GlobalOpenTelemetry automatically.
+        // 2. Build client — it picks up GlobalOpenTelemetry automatically.
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(apiKey))
@@ -85,24 +84,21 @@ public final class GlobalTracingSample {
                     .setModalities(Arrays.asList(InteractionModality.TEXT))
                     .setInstructions("You are a helpful assistant. Be concise.");
 
+                // Subscribe to events first to ensure we don't miss any.
+                // Wait for response.done, then close the session.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> {
-                            System.out.println("Event: " + event.getType());
-                            if (event instanceof SessionUpdateResponseDone) {
-                                session.closeAsync().subscribe();
-                                done.countDown();
-                            }
-                        },
-                        error -> {
-                            System.err.println("Error: " + error.getMessage());
-                            done.countDown();
-                        }
-                    );
+                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
+                    .filter(event -> event instanceof SessionUpdateResponseDone)
+                    .take(1)
+                    .flatMap(event -> session.closeAsync())
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .onErrorComplete()
+                    .doFinally(signal -> done.countDown())
+                    .subscribe();
 
+                // Configure the session and trigger a response.
                 return session.sendEvent(new ClientEventSessionUpdate(options))
-                    .then(session.startResponse())
-                    .then(Mono.empty());
+                    .then(session.startResponse());
             })
             .subscribe();
 

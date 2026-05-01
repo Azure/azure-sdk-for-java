@@ -38,6 +38,8 @@ import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
@@ -57,6 +59,27 @@ import io.opentelemetry.context.Context;
  * </p>
  */
 public final class VoiceLiveTracer {
+
+    private static final String SDK_NAME = "azure-ai-voicelive";
+
+    /**
+     * Creates a {@link VoiceLiveTracer} backed by the global OpenTelemetry instance.
+     * Returns null if no real OpenTelemetry is configured (noop).
+     *
+     * @param endpoint The WebSocket endpoint URI.
+     * @param model The model name, used for tracing span names.
+     * @param enableContentRecording Whether to record content in traces.
+     * @return A new VoiceLiveTracer instance, or null if tracing is not configured.
+     */
+    public static VoiceLiveTracer create(URI endpoint, String model, Boolean enableContentRecording) {
+        OpenTelemetry otel = GlobalOpenTelemetry.getOrNoop();
+        if (otel == null || otel == OpenTelemetry.noop()) {
+            return null;
+        }
+        Tracer tracer = otel.getTracer(SDK_NAME);
+        io.opentelemetry.api.metrics.Meter meter = otel.getMeter(SDK_NAME);
+        return new VoiceLiveTracer(tracer, meter, endpoint, model, enableContentRecording);
+    }
 
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveTracer.class);
 
@@ -211,7 +234,7 @@ public final class VoiceLiveTracer {
      * @param model The model name.
      * @param captureContentOverride Optional override for content recording (null = use env var).
      */
-    public VoiceLiveTracer(Tracer tracer, io.opentelemetry.api.metrics.Meter meter, URI endpoint, String model,
+    VoiceLiveTracer(Tracer tracer, io.opentelemetry.api.metrics.Meter meter, URI endpoint, String model,
         Boolean captureContentOverride) {
         this.tracer = tracer;
         this.meter = meter;

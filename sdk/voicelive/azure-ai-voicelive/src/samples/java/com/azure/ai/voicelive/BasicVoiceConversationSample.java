@@ -91,13 +91,12 @@ public final class BasicVoiceConversationSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to receive events
+                // Subscribe to events first, then send session configuration.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event),
-                        error -> System.err.println("Error: " + error.getMessage()),
-                        () -> System.out.println("Event stream completed")
-                    );
+                    .doOnNext(event -> handleEvent(event))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .doOnComplete(() -> System.out.println("Event stream completed"))
+                    .subscribe();
 
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);

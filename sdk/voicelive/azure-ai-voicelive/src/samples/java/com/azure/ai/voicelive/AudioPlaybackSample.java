@@ -132,12 +132,11 @@ public final class AudioPlaybackSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to receive events
+                // Subscribe to events first, then send session configuration.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event, audioQueue),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
+                    .doOnNext(event -> handleEvent(event, audioQueue))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .subscribe();
 
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);

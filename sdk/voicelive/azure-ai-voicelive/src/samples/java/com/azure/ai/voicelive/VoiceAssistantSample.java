@@ -510,16 +510,13 @@ public final class VoiceAssistantSample {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to receive server events asynchronously
+                // Subscribe to events first.
                 session.receiveEvents()
                     .doOnSubscribe(subscription -> System.out.println("🔗 Subscribed to event stream"))
-                    .doOnComplete(() -> System.out.println("⚠️ Event stream completed (this might indicate a connection issue)"))
-                    .doOnError(error -> System.out.println("❌ Event stream error: " + error.getMessage()))
-                    .subscribe(
-                        event -> handleServerEvent(event, audioProcessor),
-                        error -> System.err.println("❌ Error receiving events: " + error.getMessage()),
-                        () -> System.out.println("✓ Event stream completed")
-                    );
+                    .doOnNext(event -> handleServerEvent(event, audioProcessor))
+                    .doOnComplete(() -> System.out.println("✓ Event stream completed"))
+                    .doOnError(error -> System.err.println("❌ Error receiving events: " + error.getMessage()))
+                    .subscribe();
 
                 System.out.println("📤 Sending session.update configuration...");
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);

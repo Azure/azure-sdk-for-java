@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.azure.ai.voicelive.implementation.VoiceLiveTracer;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
 import com.azure.core.annotation.ServiceClient;
@@ -18,8 +19,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
-import io.opentelemetry.api.metrics.Meter;
-import io.opentelemetry.api.trace.Tracer;
 
 import reactor.core.publisher.Mono;
 
@@ -36,87 +35,22 @@ public final class VoiceLiveAsyncClient {
     private final TokenCredential tokenCredential;
     private final String apiVersion;
     private final HttpHeaders additionalHeaders;
-    private final Tracer tracer;
-    private final Meter meter;
-    private final Boolean enableContentRecording;
 
-    /**
-     * Creates a VoiceLiveAsyncClient with API key authentication.
-     *
-     * @param endpoint The service endpoint.
-     * @param keyCredential The API key credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     */
     VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders) {
-        this(endpoint, keyCredential, apiVersion, additionalHeaders, null, null);
-    }
-
-    /**
-     * Creates a VoiceLiveAsyncClient with API key authentication and tracing.
-     *
-     * @param endpoint The service endpoint.
-     * @param keyCredential The API key credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     * @param tracer The OpenTelemetry Tracer for instrumentation (may be a no-op tracer).
-     * @param enableContentRecording Override for content recording, or null to use env var.
-     */
-    VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders,
-        Tracer tracer, Boolean enableContentRecording) {
-        this(endpoint, keyCredential, apiVersion, additionalHeaders, tracer, null, enableContentRecording);
-    }
-
-    VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders,
-        Tracer tracer, Meter meter, Boolean enableContentRecording) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
-        this.tracer = tracer;
-        this.meter = meter;
-        this.enableContentRecording = enableContentRecording;
     }
 
-    /**
-     * Creates a VoiceLiveAsyncClient with token authentication.
-     *
-     * @param endpoint The service endpoint.
-     * @param tokenCredential The token credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     */
     VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
         HttpHeaders additionalHeaders) {
-        this(endpoint, tokenCredential, apiVersion, additionalHeaders, null, null);
-    }
-
-    /**
-     * Creates a VoiceLiveAsyncClient with token authentication and tracing.
-     *
-     * @param endpoint The service endpoint.
-     * @param tokenCredential The token credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     * @param tracer The OpenTelemetry Tracer for instrumentation (may be a no-op tracer).
-     * @param enableContentRecording Override for content recording, or null to use env var.
-     */
-    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
-        HttpHeaders additionalHeaders, Tracer tracer, Boolean enableContentRecording) {
-        this(endpoint, tokenCredential, apiVersion, additionalHeaders, tracer, null, enableContentRecording);
-    }
-
-    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
-        HttpHeaders additionalHeaders, Tracer tracer, Meter meter, Boolean enableContentRecording) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
-        this.tracer = tracer;
-        this.meter = meter;
-        this.enableContentRecording = enableContentRecording;
     }
 
     /**
@@ -249,16 +183,16 @@ public final class VoiceLiveAsyncClient {
      *
      * @param wsEndpoint The WebSocket endpoint URI.
      * @param model The model name, used for tracing span names.
+     * @param agentSessionConfig The agent session configuration, or null.
      * @return A new VoiceLiveSessionAsyncClient instance.
      */
     private VoiceLiveSessionAsyncClient createSessionClient(URI wsEndpoint, String model,
         AgentSessionConfig agentSessionConfig) {
+        VoiceLiveTracer voiceLiveTracer = VoiceLiveTracer.create(wsEndpoint, model, null);
         if (keyCredential != null) {
-            return new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential, tracer, meter, model,
-                enableContentRecording, agentSessionConfig);
+            return new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential, voiceLiveTracer, agentSessionConfig);
         } else {
-            return new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential, tracer, meter, model,
-                enableContentRecording, agentSessionConfig);
+            return new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential, voiceLiveTracer, agentSessionConfig);
         }
     }
 

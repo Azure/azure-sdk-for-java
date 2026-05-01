@@ -205,19 +205,6 @@ class VoiceLiveClientBuilderTest {
     }
 
     @Test
-    void testBuilderDefaultsToGlobalOpenTelemetry() {
-        // When no explicit OpenTelemetry is set, builder should use GlobalOpenTelemetry.getOrNoop()
-        String endpoint = "https://test.cognitiveservices.azure.com";
-
-        assertDoesNotThrow(() -> {
-            VoiceLiveAsyncClient client
-                = clientBuilder.endpoint(endpoint).credential(mockKeyCredential).buildAsyncClient();
-
-            assertNotNull(client);
-        });
-    }
-
-    @Test
     void testBuilderWithDefaultTelemetry() {
         String endpoint = "https://test.cognitiveservices.azure.com";
 

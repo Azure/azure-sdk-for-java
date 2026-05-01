@@ -20,11 +20,6 @@ import com.azure.core.util.CoreUtils;
 
 import com.azure.core.util.logging.ClientLogger;
 
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.metrics.Meter;
-import io.opentelemetry.api.trace.Tracer;
-
 /**
  * Builder for creating instances of {@link VoiceLiveAsyncClient}.
  */
@@ -135,16 +130,10 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         VoiceLiveServiceVersion version = serviceVersion != null ? serviceVersion : VoiceLiveServiceVersion.getLatest();
         HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
-        OpenTelemetry otel = GlobalOpenTelemetry.getOrNoop();
-        Tracer tracer = otel.getTracer(SDK_NAME);
-        Meter meter = otel.getMeter(SDK_NAME);
-
         if (keyCredential != null) {
-            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders, tracer,
-                meter, null);
+            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders);
         } else {
-            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders, tracer,
-                meter, null);
+            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders);
         }
     }
 }

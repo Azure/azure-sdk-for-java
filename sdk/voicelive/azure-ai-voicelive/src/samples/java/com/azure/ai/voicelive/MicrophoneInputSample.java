@@ -116,12 +116,11 @@ public final class MicrophoneInputSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to receive events
+                // Subscribe to events first, then send session configuration.
                 session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event, isCapturing),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
+                    .doOnNext(event -> handleEvent(event, isCapturing))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .subscribe();
 
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
