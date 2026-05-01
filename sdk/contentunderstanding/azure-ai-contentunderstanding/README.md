@@ -11,6 +11,8 @@ Use the client library for Azure AI Content Understanding to:
 * **Create custom analyzers** - Build domain-specific analyzers for specialized content extraction needs across all four modalities (documents, video, audio, and images)
 * **Classify documents and video** - Automatically categorize and extract information from documents and video by type
 
+If you have encountered issues or want to suggest features, please [file an issue][file_issue].
+
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_docs] | [Product documentation][product_docs]
 
 ## Getting started
@@ -386,11 +388,8 @@ mvn exec:java \
 
 ### Convert results to LLM-ready text
 
-> [!NOTE]
-> **Preview feature**: `LlmInputHelper.toLlmInput()` is currently in preview and may change in
-> future releases. We welcome feedback — please file suggestions or issues on
-> [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) with the
-> `Cognitive - Content Understanding` label.
+> **Note:** `LlmInputHelper.toLlmInput()` is currently in preview and may change in future releases.
+> We welcome feedback — please [file an issue][file_issue].
 
 Use the `LlmInputHelper.toLlmInput()` helper to convert any analysis result into a text format
 that LLMs can consume directly — YAML front matter with extracted fields followed by the markdown
@@ -530,3 +529,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [opencode_email]: mailto:opencode@microsoft.com
+[file_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new?labels=Cognitive%20-%20Content%20Understanding&title=[ContentUnderstanding]%20&body=%23%23%20Library%20Version%0A%0A%23%23%20Repro%20Steps%0A%0A%23%23%20Expected%20Result%0A%0A%23%23%20Actual%20Result
