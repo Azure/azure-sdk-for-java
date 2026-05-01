@@ -2,22 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -26,10 +31,6 @@ import org.springframework.core.env.Environment;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
@@ -50,7 +51,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Mock
     private ConfigurationClientBuilderFactory clientFactoryMock;
-    
+
     @Mock
     private Environment envMock;
 
@@ -176,7 +177,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-        
+
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(clientFactoryMock.build()).thenReturn(builderMock);
         when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
@@ -200,7 +201,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
 
         String message = assertThrows(IllegalArgumentException.class,
-            () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
+                () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
 
         assertEquals("More than 1 connection method was set for connecting to App Configuration.", message);
     }
@@ -266,7 +267,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("URI is not absolute", exception.getMessage());
     }
@@ -278,7 +279,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("invalid connection string segment count", exception.getMessage());
     }
@@ -290,11 +291,11 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals(
-            "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'.",
-            exception.getMessage());
+                "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'.",
+                exception.getMessage());
     }
 
     @Test
