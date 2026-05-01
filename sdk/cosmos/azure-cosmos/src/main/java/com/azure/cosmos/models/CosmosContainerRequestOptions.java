@@ -192,7 +192,7 @@ public final class CosmosContainerRequestOptions {
      * @param value the value of the header
      * @return the CosmosContainerRequestOptions.
      */
-    public CosmosContainerRequestOptions setHeader(String name, String value) {
+    private CosmosContainerRequestOptions setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
