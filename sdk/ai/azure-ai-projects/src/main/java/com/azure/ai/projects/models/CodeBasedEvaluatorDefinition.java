@@ -180,7 +180,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      *
      * @param codeText the codeText value to set.
      */
-    public CodeBasedEvaluatorDefinition(String codeText){
+    public CodeBasedEvaluatorDefinition(String codeText) {
         this.codeText = codeText;
     }
 
