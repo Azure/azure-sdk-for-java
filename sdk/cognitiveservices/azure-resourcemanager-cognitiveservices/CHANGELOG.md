@@ -1,14 +1,1060 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2026-04-30)
 
-### Features Added
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-01-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CustomTopicConfig` was removed
 
-### Other Changes
+#### `models.DefenderForAISettingResult` was removed
+
+#### `models.AccountModelListResult` was removed
+
+#### `models.RaiContentFilterListResult` was removed
+
+#### `models.RaiTopicResult` was removed
+
+#### `models.CommitmentPlanAccountAssociationListResult` was removed
+
+#### `models.RaiBlockListItemsResult` was removed
+
+#### `models.DeploymentSkuListResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationList` was removed
+
+#### `models.DeploymentListResult` was removed
+
+#### `models.RaiPolicyListResult` was removed
+
+#### `models.AzureEntityResource` was removed
+
+#### `models.ProjectListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EncryptionScopeListResult` was removed
+
+#### `models.ModelCapacityListResult` was removed
+
+#### `models.ModelListResult` was removed
+
+#### `models.CommitmentPlanListResult` was removed
+
+#### `models.AccountListResult` was removed
+
+#### `models.CommitmentTierListResult` was removed
+
+#### `models.RaiTopicConfig` was removed
+
+#### `models.ResourceSkuListResult` was removed
+
+#### `models.QuotaTierListResult` was removed
+
+#### `models.ConnectionPropertiesV2BasicResourceArmPaginatedResult` was removed
+
+#### `models.RaiBlockListResult` was removed
+
+#### `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSkuRestrictions` was modified
+
+* `ResourceSkuRestrictions()` was changed to private access
+* `validate()` was removed
+* `withRestrictionInfo(models.ResourceSkuRestrictionInfo)` was removed
+* `withValues(java.util.List)` was removed
+* `withReasonCode(models.ResourceSkuRestrictionsReasonCode)` was removed
+* `withType(models.ResourceSkuRestrictionsType)` was removed
+
+#### `models.ApiProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
+
+* `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
+* `validate()` was removed
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `withProfile(models.NetworkSecurityPerimeterProfileInfo)` was removed
+* `withResourceAssociation(models.NetworkSecurityPerimeterConfigurationAssociationInfo)` was removed
+* `withProvisioningIssues(java.util.List)` was removed
+
+#### `models.DeploymentCapacitySettings` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.CheckSkuAvailabilityParameter` was modified
+
+* `validate()` was removed
+
+#### `models.RaiBlocklistItems` was modified
+
+* `batchDeleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
+* `batchDelete(java.lang.String,java.lang.String,java.lang.String,java.lang.Object)` was removed
+
+#### `models.NetworkSecurityPerimeterAccessRule` was modified
+
+* `NetworkSecurityPerimeterAccessRule()` was changed to private access
+* `withProperties(models.NetworkSecurityPerimeterAccessRuleProperties)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.CapabilityHostProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionPropertiesV2` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionAccessKey` was modified
+
+* `validate()` was removed
+
+#### `models.CustomKeysConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `validate()` was removed
+* `withProperties(models.PrivateLinkResourceProperties)` was removed
+
+#### `models.AccountConnections` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+
+#### `models.RaiBlocklistProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SkuAvailability` was modified
+
+* `SkuAvailability()` was changed to private access
+* `validate()` was removed
+* `withType(java.lang.String)` was removed
+* `withSkuAvailable(java.lang.Boolean)` was removed
+* `withKind(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withReason(java.lang.String)` was removed
+* `withSkuName(java.lang.String)` was removed
+
+#### `models.RequestMatchPattern` was modified
+
+* `RequestMatchPattern()` was changed to private access
+* `withMethod(java.lang.String)` was removed
+* `validate()` was removed
+* `withPath(java.lang.String)` was removed
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingAccount(java.lang.String,java.lang.String)` was removed
+
+#### `models.AccountKeyAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem` was modified
+
+* `NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.CommitmentQuota` was modified
+
+* `CommitmentQuota()` was changed to private access
+* `withUnit(java.lang.String)` was removed
+* `validate()` was removed
+* `withQuantity(java.lang.Long)` was removed
+
+#### `models.AccessKeyAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionApiKey` was modified
+
+* `validate()` was removed
+
+#### `models.ModelCapacityCalculatorWorkloadRequestParam` was modified
+
+* `validate()` was removed
+
+#### `models.ReplacementConfig` was modified
+
+* `ReplacementConfig()` was changed to private access
+* `validate()` was removed
+* `withTargetModelVersion(java.lang.String)` was removed
+* `withAutoUpgradeStartDate(java.time.OffsetDateTime)` was removed
+* `withUpgradeOnExpiryLeadTimeDays(java.lang.Integer)` was removed
+* `withTargetModelName(java.lang.String)` was removed
+
+#### `models.CalculateModelCapacityParameter` was modified
+
+* `validate()` was removed
+
+#### `models.UserOwnedStorage` was modified
+
+* `validate()` was removed
+
+#### `models.CheckDomainAvailabilityParameter` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterProfileInfo` was modified
+
+* `NetworkSecurityPerimeterProfileInfo()` was changed to private access
+* `withDiagnosticSettingsVersion(java.lang.Long)` was removed
+* `withAccessRules(java.util.List)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withAccessRulesVersion(java.lang.Long)` was removed
+
+#### `models.ModelSku` was modified
+
+* `ModelSku()` was changed to private access
+* `validate()` was removed
+* `withCapacity(models.CapacityConfig)` was removed
+* `withName(java.lang.String)` was removed
+* `withUsageName(java.lang.String)` was removed
+* `withDeprecationDate(java.time.OffsetDateTime)` was removed
+* `withCost(java.util.List)` was removed
+* `withRateLimits(java.util.List)` was removed
+
+#### `models.ProjectProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RaiBlocklistItemProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CommitmentPlanAssociation` was modified
+
+* `CommitmentPlanAssociation()` was changed to private access
+* `validate()` was removed
+* `withCommitmentPlanLocation(java.lang.String)` was removed
+* `withCommitmentPlanId(java.lang.String)` was removed
+
+#### `models.RaiPolicyProperties` was modified
+
+* `withCustomTopics(java.util.List)` was removed
+* `validate()` was removed
+* `customTopics()` was removed
+
+#### `models.SkuChangeInfo` was modified
+
+* `SkuChangeInfo()` was changed to private access
+* `withLastChangeDate(java.lang.String)` was removed
+* `validate()` was removed
+* `withCountOfDowngrades(java.lang.Float)` was removed
+* `withCountOfUpgradesAfterDowngrades(java.lang.Float)` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationAssociationInfo` was modified
+
+* `NetworkSecurityPerimeterConfigurationAssociationInfo()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withAccessMode(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DeploymentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaLimit` was modified
+
+* `QuotaLimit()` was changed to private access
+* `validate()` was removed
+* `withCount(java.lang.Float)` was removed
+* `withRenewalPeriod(java.lang.Float)` was removed
+* `withRules(java.util.List)` was removed
+
+#### `models.OAuth2AuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeyAuthConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RaiBlocklistItemBulkRequest` was modified
+
+* `validate()` was removed
+
+#### `models.MetricName` was modified
+
+* `MetricName()` was changed to private access
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.AccountSku` was modified
+
+* `AccountSku()` was changed to private access
+* `validate()` was removed
+* `withResourceType(java.lang.String)` was removed
+* `withSku(models.Sku)` was removed
+
+#### `models.MultiRegionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PatchResourceTags` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionUsernamePassword` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkInjection` was modified
+
+* `validate()` was removed
+
+#### `models.ModelDeprecationInfo` was modified
+
+* `ModelDeprecationInfo()` was changed to private access
+* `withFineTune(java.lang.String)` was removed
+* `validate()` was removed
+* `withInference(java.lang.String)` was removed
+* `withDeprecationStatus(models.DeprecationStatus)` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaTierUpgradeEligibilityInfo` was modified
+
+* `QuotaTierUpgradeEligibilityInfo()` was changed to private access
+* `withNextTierName(java.lang.String)` was removed
+* `withUpgradeApplicableDate(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withUpgradeUnavailabilityReason(java.lang.String)` was removed
+* `withUpgradeAvailabilityStatus(models.UpgradeAvailabilityStatus)` was removed
+
+#### `models.BillingMeterInfo` was modified
+
+* `BillingMeterInfo()` was changed to private access
+* `withMeterId(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ConnectionOAuth2` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `withClientId(java.util.UUID)` was removed
+
+#### `models.ConnectionServicePrincipal` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionSharedAccessSignature` was modified
+
+* `validate()` was removed
+
+#### `models.ProvisioningIssueProperties` was modified
+
+* `ProvisioningIssueProperties()` was changed to private access
+* `withIssueType(java.lang.String)` was removed
+* `withSuggestedResourceIds(java.util.List)` was removed
+* `withSuggestedAccessRules(java.util.List)` was removed
+* `withSeverity(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ResourceBase` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualNetworkRule` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePrincipalAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ThrottlingRule` was modified
+
+* `ThrottlingRule()` was changed to private access
+* `withKey(java.lang.String)` was removed
+* `withCount(java.lang.Float)` was removed
+* `validate()` was removed
+* `withMinCount(java.lang.Float)` was removed
+* `withMatchPatterns(java.util.List)` was removed
+* `withRenewalPeriod(java.lang.Float)` was removed
+* `withDynamicThrottlingEnabled(java.lang.Boolean)` was removed
+
+#### `models.AbusePenalty` was modified
+
+* `AbusePenalty()` was changed to private access
+* `withRateLimitPercentage(java.lang.Float)` was removed
+* `validate()` was removed
+* `withExpiration(java.time.OffsetDateTime)` was removed
+* `withAction(models.AbusePenaltyAction)` was removed
+
+#### `models.CommitmentCost` was modified
+
+* `CommitmentCost()` was changed to private access
+* `validate()` was removed
+* `withOverageMeterId(java.lang.String)` was removed
+* `withCommitmentMeterId(java.lang.String)` was removed
+
+#### `models.NetworkSecurityPerimeterAccessRuleProperties` was modified
+
+* `NetworkSecurityPerimeterAccessRuleProperties()` was changed to private access
+* `validate()` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
+* `withAddressPrefixes(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withDirection(models.NspAccessRuleDirection)` was removed
+
+#### `models.PatchResourceTagsAndSku` was modified
+
+* `validate()` was removed
+
+#### `models.CapacityConfig` was modified
+
+* `CapacityConfig()` was changed to private access
+* `withAllowedValues(java.util.List)` was removed
+* `withDefaultProperty(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withMaximum(java.lang.Integer)` was removed
+* `withStep(java.lang.Integer)` was removed
+* `withMinimum(java.lang.Integer)` was removed
+
+#### `models.RaiContentFilterProperties` was modified
+
+* `RaiContentFilterProperties()` was changed to private access
+* `withSource(models.RaiPolicyContentSource)` was removed
+* `withIsMultiLevelFilter(java.lang.Boolean)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ModelSkuCapacityProperties` was modified
+
+* `ModelSkuCapacityProperties()` was changed to private access
+* `withModel(models.DeploymentModel)` was removed
+* `withAvailableCapacity(java.lang.Float)` was removed
+* `validate()` was removed
+* `withSkuName(java.lang.String)` was removed
+* `withAvailableFinetuneCapacity(java.lang.Float)` was removed
+
+#### `models.ProjectConnections` was modified
+
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.SkuCapability` was modified
+
+* `SkuCapability()` was changed to private access
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.NetworkRuleSet` was modified
+
+* `validate()` was removed
+
+#### `models.Usage` was modified
+
+* `Usage()` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.Double currentValue()` -> `java.lang.Double currentValue()`
+* `models.UnitType unit()` -> `models.UnitType unit()`
+* `withCurrentValue(java.lang.Double)` was removed
+* `java.lang.String nextResetTime()` -> `java.lang.String nextResetTime()`
+* `models.QuotaUsageStatus status()` -> `models.QuotaUsageStatus status()`
+* `withUnit(models.UnitType)` was removed
+* `withName(models.MetricName)` was removed
+* `java.lang.String quotaPeriod()` -> `java.lang.String quotaPeriod()`
+* `withStatus(models.QuotaUsageStatus)` was removed
+* `models.MetricName name()` -> `models.MetricName name()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `validate()` was removed
+* `withLimit(java.lang.Double)` was removed
+* `withQuotaPeriod(java.lang.String)` was removed
+* `withNextResetTime(java.lang.String)` was removed
+* `java.lang.Double limit()` -> `java.lang.Double limit()`
+
+#### `models.Encryption` was modified
+
+* `validate()` was removed
+
+#### `models.PatAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NoneAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RaiBlocklistConfig` was modified
+
+* `validate()` was removed
+
+#### `models.RegionSetting` was modified
+
+* `validate()` was removed
+
+#### `models.ProvisioningIssue` was modified
+
+* `ProvisioningIssue()` was changed to private access
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withProperties(models.ProvisioningIssueProperties)` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+#### `models.CommitmentPeriod` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `NetworkSecurityPerimeter()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `withPerimeterGuid(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ConnectionUpdateContent` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.RaiTopicProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RaiPolicyContentFilter` was modified
+
+* `validate()` was removed
+
+#### `models.CustomKeys` was modified
+
+* `validate()` was removed
+
+#### `models.UserOwnedAmlWorkspace` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentModel` was modified
+
+* `validate()` was removed
+
+#### `models.RaiMonitorConfig` was modified
+
+* `validate()` was removed
+
+#### `models.AccountProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentityAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSkuRestrictionInfo` was modified
+
+* `ResourceSkuRestrictionInfo()` was changed to private access
+* `withLocations(java.util.List)` was removed
+* `withZones(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.CalculateModelCapacityResultEstimatedCapacity` was modified
+
+* `CalculateModelCapacityResultEstimatedCapacity()` was changed to private access
+* `validate()` was removed
+* `withValue(java.lang.Integer)` was removed
+* `withDeployableValue(java.lang.Integer)` was removed
+
+#### `models.ModelCapacityCalculatorWorkload` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectCapabilityHosts` was modified
+
+* `models.CapabilityHost get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.ProjectCapabilityHost get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.CapabilityHostInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.CapabilityHostInner)` was removed
+
+#### `models.KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionScopeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionAccountKey` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentScaleSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SasAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UsernamePasswordAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AadAuthTypeConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CallRateLimit` was modified
+
+* `CallRateLimit()` was changed to private access
+* `withRenewalPeriod(java.lang.Float)` was removed
+* `withRules(java.util.List)` was removed
+* `withCount(java.lang.Float)` was removed
+* `validate()` was removed
+
+#### `models.CommitmentPlanProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `PrivateLinkResourceProperties()` was changed to private access
+* `validate()` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+
+#### `models.IpRule` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaTierProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CustomBlocklistConfig` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionPersonalAccessToken` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.SafetyProviderConfig` was added
+
+* `models.ServiceTagOutboundRuleDestination` was added
+
+* `models.AgentApplication$Update` was added
+
+* `models.HostedAgentDeployment` was added
+
+* `models.AgentDeploymentType` was added
+
+* `models.ProjectCapabilityHostProperties` was added
+
+* `models.IdentityKind` was added
+
+* `models.AgenticApplicationProperties` was added
+
+* `models.ComputeOperationStatusProperties` was added
+
+* `models.PrivateEndpointOutboundRule` was added
+
+* `models.OutboundRuleBasicResource$Definition` was added
+
+* `models.AgentDeploymentProvisioningState` was added
+
+* `models.ProjectCapabilityHost` was added
+
+* `models.AgentReference` was added
+
+* `models.ProjectCapabilityHost$DefinitionStages` was added
+
+* `models.ApplicationTrafficRoutingPolicy` was added
+
+* `models.RaiExternalSafetyProviderSchema$DefinitionStages` was added
+
+* `models.ManagedNetworkSettings` was added
+
+* `models.AgentDeploymentProperties` was added
+
+* `models.TrafficRoutingProtocol` was added
+
+* `models.RaiToolLabels` was added
+
+* `models.RaiExternalSafetyProviderSchema$Definition` was added
+
+* `models.OutboundRuleBasicResource$UpdateStages` was added
+
+* `models.OutboundRules` was added
+
+* `models.ManagedNetworkSettingsProperties` was added
+
+* `models.RaiExternalSafetyProviderSchema$Update` was added
+
+* `models.RaiSafetyProviderConfig` was added
+
+* `models.ManagedNetworkSettingsPropertiesBasicResource` was added
+
+* `models.AgentReferenceResourceArmPaginatedResult` was added
+
+* `models.FoundryAutoUpgradeMode` was added
+
+* `models.ProjectCapabilityHost$Definition` was added
+
+* `models.VersionedAgentReference` was added
+
+* `models.OutboundRuleBasicResource$DefinitionStages` was added
+
+* `models.IsolationMode` was added
+
+* `models.ManagedNetworkSettingsPropertiesBasicResource$UpdateStages` was added
+
+* `models.RaiToolLabel$DefinitionStages` was added
+
+* `models.AgentDeployment$UpdateStages` was added
+
+* `models.ComputeOperationStatus` was added
+
+* `models.AgentApplications` was added
+
+* `models.OrganizationSharedBuiltInAuthorizationPolicy` was added
+
+* `models.ServiceTagOutboundRule` was added
+
+* `models.QuotaScopeType` was added
+
+* `models.ManagedNetworkProvisionOptions` was added
+
+* `models.RaiActionType` was added
+
+* `models.RaiExternalSafetyProviderSchemaProperties` was added
+
+* `models.AgentApplication$Definition` was added
+
+* `models.ManagedNetworkSettingsPropertiesBasicResource$DefinitionStages` was added
+
+* `models.ProjectCapabilityHost$Update` was added
+
+* `models.OutboundRulesOperations` was added
+
+* `models.RaiToolLabel` was added
+
+* `models.OutboundRuleBasicResource$Update` was added
+
+* `models.RuleStatus` was added
+
+* `models.ManagedNetworkStatus` was added
+
+* `models.IdentityManagementType` was added
+
+* `models.AgentDeployment$Definition` was added
+
+* `models.RaiExternalSafetyProviderSchema` was added
+
+* `models.RaiToolLabel$UpdateStages` was added
+
+* `models.RaiToolLabel$Definition` was added
+
+* `models.ComputeOperationStatusType` was added
+
+* `models.ServiceTier` was added
+
+* `models.OutboundRule` was added
+
+* `models.IdentityProvisioningState` was added
+
+* `models.RuleAction` was added
+
+* `models.ManagedNetworkProvisioningState` was added
+
+* `models.ApplicationAuthorizationPolicy` was added
+
+* `models.AgentApplication$UpdateStages` was added
+
+* `models.DeploymentState` was added
+
+* `models.AssignedIdentity` was added
+
+* `models.FoundryAutoUpgrade` was added
+
+* `models.ManagedAgentDeployment` was added
+
+* `models.FirewallSku` was added
+
+* `models.PrivateEndpointOutboundRuleDestination` was added
+
+* `models.ManagedNetworkSettingsPropertiesBasicResource$Update` was added
+
+* `models.OutboundRuleBasicResource` was added
+
+* `models.RaiToolLabelPropertiesAccountScope` was added
+
+* `models.ManagedNetworkSettingsOperations` was added
+
+* `models.ChannelsBuiltInAuthorizationPolicy` was added
+
+* `models.AgentApplication$DefinitionStages` was added
+
+* `models.RoleBasedBuiltInAuthorizationPolicy` was added
+
+* `models.RaiExternalSafetyProvidersOperations` was added
+
+* `models.AgentProtocolVersion` was added
+
+* `models.FqdnOutboundRule` was added
+
+* `models.RoutingMode` was added
+
+* `models.AgentProtocol` was added
+
+* `models.ManagedNetworkSettingsBasicResource` was added
+
+* `models.AgentDeployment$DefinitionStages` was added
+
+* `models.RaiToolLabelPropertiesProjectScopesItem` was added
+
+* `models.ManagedNetworkProvisionStatus` was added
+
+* `models.AgentDeploymentState` was added
+
+* `models.RaiExternalSafetyProviders` was added
+
+* `models.ManagedNetworkKind` was added
+
+* `models.SubscriptionRaiPolicies` was added
+
+* `models.ProjectCapabilityHost$UpdateStages` was added
+
+* `models.ManagedNetworkSettingsEx` was added
+
+* `models.RaiExternalSafetyProviderSchema$UpdateStages` was added
+
+* `models.AgenticApplicationProvisioningState` was added
+
+* `models.AgentDeployment$Update` was added
+
+* `models.TrafficRoutingRule` was added
+
+* `models.AgentDeployment` was added
+
+* `models.ComputeOperations` was added
+
+* `models.RuleType` was added
+
+* `models.AgentReferenceProperties` was added
+
+* `models.AgentApplication` was added
+
+* `models.RaiToolLabelProperties` was added
+
+* `models.DeploymentRouting` was added
+
+* `models.RuleCategory` was added
+
+* `models.BuiltInAuthorizationScheme` was added
+
+* `models.ManagedNetworkSettingsPropertiesBasicResource$Definition` was added
+
+* `models.AgentDeployments` was added
+
+* `models.ManagedNetworkProvisions` was added
+
+* `models.TestRaiExternalSafetyProviders` was added
+
+* `models.RaiToolLabel$Update` was added
+
+#### `models.RaiBlocklistItems` was modified
+
+* `batchDeleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.List,com.azure.core.util.Context)` was added
+* `batchDelete(java.lang.String,java.lang.String,java.lang.String,java.util.List)` was added
+
+#### `models.CapabilityHostProperties` was modified
+
+* `withEnablePublicHostingEnvironment(java.lang.Boolean)` was added
+* `enablePublicHostingEnvironment()` was added
+
+#### `models.AccountConnections` was modified
+
+* `create(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ConnectionAuthType` was modified
+
+* `AGENTIC_IDENTITY_TOKEN` was added
+* `PROJECT_MANAGED_IDENTITY` was added
+* `AGENTIC_USER` was added
+* `AGENT_USER_IMPERSONATION` was added
+* `USER_ENTRA_TOKEN` was added
+* `ACCOUNT_MANAGED_IDENTITY` was added
+* `DELEGATED_SAS` was added
+
+#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `managedNetworkSettingsOperations()` was added
+* `raiToolLabels()` was added
+* `managedNetworkProvisions()` was added
+* `raiExternalSafetyProviders()` was added
+* `testRaiExternalSafetyProviders()` was added
+* `agentDeployments()` was added
+* `outboundRulesOperations()` was added
+* `raiExternalSafetyProvidersOperations()` was added
+* `agentApplications()` was added
+* `outboundRules()` was added
+* `subscriptionRaiPolicies()` was added
+* `computeOperations()` was added
+
+#### `models.RaiPolicyContentSource` was modified
+
+* `POST_RUN` was added
+* `PRE_RUN` was added
+* `POST_TOOL_CALL` was added
+* `PRE_TOOL_CALL` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `withSafetyProviders(java.util.List)` was added
+* `safetyProviders()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `routing()` was added
+* `withServiceTier(models.ServiceTier)` was added
+* `deploymentState()` was added
+* `serviceTier()` was added
+* `withRouting(models.DeploymentRouting)` was added
+* `withDeploymentState(models.DeploymentState)` was added
+
+#### `models.ConnectionOAuth2` was modified
+
+* `withClientId(java.lang.String)` was added
+
+#### `models.ModelSkuCapacityProperties` was modified
+
+* `scopeType()` was added
+* `scopeId()` was added
+
+#### `models.ProjectConnections` was modified
+
+* `deleteById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Usage` was modified
+
+* `scopeType()` was added
+* `scopeId()` was added
+* `innerModel()` was added
+
+#### `models.AccountCapabilityHosts` was modified
+
+* `list(java.lang.String,java.lang.String)` was added
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.RaiPolicyContentFilter` was modified
+
+* `action()` was added
+* `withAction(models.RaiActionType)` was added
+
+#### `models.AccountProperties` was modified
+
+* `withFoundryAutoUpgrade(models.FoundryAutoUpgrade)` was added
+* `foundryAutoUpgrade()` was added
+
+#### `models.Deployment` was modified
+
+* `resumeWithResponse(com.azure.core.util.Context)` was added
+* `resume()` was added
+* `pauseWithResponse(com.azure.core.util.Context)` was added
+* `pause()` was added
+
+#### `models.ConnectionCategory` was modified
+
+* `DATABRICKS` was added
+* `POWER_PLATFORM_ENVIRONMENT` was added
+* `REMOTE_TOOL` was added
+* `SHAREPOINT` was added
+* `APP_INSIGHTS` was added
+* `MICROSOFT_FABRIC` was added
+* `GROUNDING_WITH_CUSTOM_SEARCH` was added
+* `API_MANAGEMENT` was added
+* `MODEL_GATEWAY` was added
+* `AZURE_CONTAINER_APP_ENVIRONMENT` was added
+* `REMOTE_A2A` was added
+* `APP_CONFIG` was added
+* `GROUNDING_WITH_BING_SEARCH` was added
+* `AZURE_KEY_VAULT` was added
+
+#### `models.ProjectCapabilityHosts` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `list(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.Deployments` was modified
+
+* `resume(java.lang.String,java.lang.String,java.lang.String)` was added
+* `resumeWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `pause(java.lang.String,java.lang.String,java.lang.String)` was added
+* `pauseWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.4.0 (2025-10-24)
 
