@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 1.16.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
+- Upgraded Reactor Netty from `1.2.13` to `1.2.16`.
+- Upgraded Netty dependencies from `4.1.130.Final` to `4.1.132.Final`.
+
 ## 1.16.3 (2026-01-15)
 
 ### Bugs Fixed

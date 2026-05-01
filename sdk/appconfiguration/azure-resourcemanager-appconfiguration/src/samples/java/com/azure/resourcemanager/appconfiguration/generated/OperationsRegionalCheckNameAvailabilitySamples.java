@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appconfiguration.models.ConfigurationResourceTy
  */
 public final class OperationsRegionalCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/RegionalCheckNameAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/RegionalCheckNameAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameAvailable.
@@ -29,7 +29,7 @@ public final class OperationsRegionalCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/RegionalCheckNameNotAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/RegionalCheckNameNotAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameNotAvailable.
