@@ -84,23 +84,24 @@ public final class GlobalTracingSample {
                     .setModalities(Arrays.asList(InteractionModality.TEXT))
                     .setInstructions("You are a helpful assistant. Be concise.");
 
-                // Subscribe to events first to ensure we don't miss any.
-                // Wait for response.done, then close the session.
-                session.receiveEvents()
-                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
-                    .filter(event -> event instanceof SessionUpdateResponseDone)
-                    .take(1)
+                // Configure the session, trigger a response, then wait for response.done.
+                // Uses a single reactive chain: send config → start response → wait for done → close.
+                return session.sendEvent(new ClientEventSessionUpdate(options))
+                    .then(session.startResponse())
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> System.out.println("Event: " + event.getType()))
+                        .filter(event -> event instanceof SessionUpdateResponseDone)
+                        .take(1))
                     .flatMap(event -> session.closeAsync())
                     .doOnError(error -> System.err.println("Error: " + error.getMessage()))
                     .onErrorComplete()
-                    .doFinally(signal -> done.countDown())
-                    .subscribe();
-
-                // Configure the session and trigger a response.
-                return session.sendEvent(new ClientEventSessionUpdate(options))
-                    .then(session.startResponse());
+                    .then();
             })
-            .subscribe();
+            .subscribe(
+                v -> {},
+                error -> done.countDown(),
+                () -> done.countDown()
+            );
 
         done.await(30, TimeUnit.SECONDS);
 

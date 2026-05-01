@@ -17,7 +17,6 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -116,21 +115,18 @@ public final class MicrophoneInputSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to events first, then send session configuration.
-                session.receiveEvents()
-                    .doOnNext(event -> handleEvent(event, isCapturing))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .subscribe();
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
                 return session.sendEvent(updateEvent)
                     .doOnSuccess(v -> {
-                        System.out.println("✓ Session configured");
+                        System.out.println("\u2713 Session configured");
                         // Start microphone capture
                         startMicrophone(session, isCapturing, microphoneRef);
                     })
-                    .then(Mono.never()); // Keep session alive
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event, isCapturing))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doFinally(signalType -> {
                 // Cleanup

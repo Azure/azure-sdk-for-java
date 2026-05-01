@@ -14,7 +14,6 @@ import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
@@ -91,18 +90,15 @@ public final class BasicVoiceConversationSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to events first, then send session configuration.
-                session.receiveEvents()
-                    .doOnNext(event -> handleEvent(event))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .doOnComplete(() -> System.out.println("Event stream completed"))
-                    .subscribe();
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
                 return session.sendEvent(updateEvent)
                     .doOnSuccess(v -> System.out.println("✓ Session configured"))
-                    .then(Mono.never()); // Keep session alive
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                        .doOnComplete(() -> System.out.println("Event stream completed")))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .block(); // Block for demo purposes
     }

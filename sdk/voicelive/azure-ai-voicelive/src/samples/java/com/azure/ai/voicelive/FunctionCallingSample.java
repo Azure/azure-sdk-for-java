@@ -34,7 +34,6 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -168,51 +167,47 @@ public final class FunctionCallingSample {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to events once — handle everything in one place.
-                session.receiveEvents()
-                    .doOnNext(event -> handleServerEvent(session, event, audioProcessor, pendingFunctionCalls))
-                    .doOnError(error -> {
-                        System.err.println("Error processing events: " + error.getMessage());
-                        running.set(false);
-                    })
-                    .doOnComplete(() -> System.out.println("✓ Event stream completed"))
-                    .subscribe();
-
-                // Send session configuration with function tools
+                // Send session configuration with function tools, then listen for events.
                 System.out.println("📤 Sending session configuration with function tools...");
                 ClientEventSessionUpdate sessionConfig = createSessionConfigWithFunctions();
-                session.sendEvent(sessionConfig)
-                    .doOnSuccess(v -> System.out.println("✓ Session configured with function tools"))
+                return session.sendEvent(sessionConfig)
+                    .doOnSuccess(v -> {
+                        System.out.println("✓ Session configured with function tools");
+
+                        // Start audio playback
+                        audioProcessor.startPlayback();
+
+                        String separator = new String(new char[70]).replace("\0", "=");
+                        System.out.println("\n" + separator);
+                        System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
+                        System.out.println("Try saying:");
+                        System.out.println("  • 'What's the current time?'");
+                        System.out.println("  • 'What's the weather in Seattle?'");
+                        System.out.println("  • 'What time is it in UTC?'");
+                        System.out.println("Press Ctrl+C to exit");
+                        System.out.println(separator + "\n");
+
+                        // Add shutdown hook
+                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                            System.out.println("\n👋 Shutting down voice assistant...");
+                            running.set(false);
+                            audioProcessor.cleanup();
+                            try {
+                                session.closeAsync().block(Duration.ofSeconds(5));
+                            } catch (Exception e) {
+                                // Suppress errors during forced JVM shutdown
+                            }
+                        }));
+                    })
                     .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .subscribe();
-
-                // Start audio playback
-                audioProcessor.startPlayback();
-
-                String separator = new String(new char[70]).replace("\0", "=");
-                System.out.println("\n" + separator);
-                System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
-                System.out.println("Try saying:");
-                System.out.println("  • 'What's the current time?'");
-                System.out.println("  • 'What's the weather in Seattle?'");
-                System.out.println("  • 'What time is it in UTC?'");
-                System.out.println("Press Ctrl+C to exit");
-                System.out.println(separator + "\n");
-
-                // Add shutdown hook
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n👋 Shutting down voice assistant...");
-                    running.set(false);
-                    audioProcessor.cleanup();
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown
-                    }
-                }));
-
-                // Keep the reactive chain alive
-                return Mono.never();
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleServerEvent(session, event, audioProcessor, pendingFunctionCalls))
+                        .doOnError(error -> {
+                            System.err.println("Error processing events: " + error.getMessage());
+                            running.set(false);
+                        })
+                        .doOnComplete(() -> System.out.println("✓ Event stream completed")))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
             .doFinally(signalType -> {

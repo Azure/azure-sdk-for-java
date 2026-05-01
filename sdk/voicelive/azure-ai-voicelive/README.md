@@ -202,13 +202,11 @@ client.startSession("gpt-realtime")
     .flatMap(session -> {
         System.out.println("Session started");
 
-        // Subscribe to events first.
-        session.receiveEvents()
+        // Listen for events.
+        return session.receiveEvents()
             .doOnNext(event -> System.out.println("Event: " + event.getType()))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-            .subscribe();
-
-        return Mono.just(session);
+            .then();
     })
     .block();
 ```
@@ -373,7 +371,7 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
 // 3. Handle function call events
 client.startSession("gpt-realtime")
     .flatMap(session -> {
-        session.receiveEvents()
+        return session.receiveEvents()
             .doOnNext(event -> {
                 if (event instanceof SessionUpdateConversationItemCreated) {
                     SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
@@ -405,9 +403,7 @@ client.startSession("gpt-realtime")
                     }
                 }
             })
-            .subscribe();
-
-        return Mono.just(session);
+            .then();
     })
     .block();
 ```
@@ -475,10 +471,9 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
 
 client.startSession(agentConfig)
     .flatMap(session -> {
-        session.receiveEvents()
+        return session.receiveEvents()
             .doOnNext(event -> handleEvent(event))
-            .subscribe();
-        return Mono.just(session);
+            .then();
     })
     .block();
 ```

@@ -104,15 +104,13 @@ public final class ReadmeSamples {
         // Start session and handle events
         client.startSession("gpt-realtime")
             .flatMap(session -> {
-                // Subscribe to events first, then send session configuration.
-                session.receiveEvents()
-                    .doOnNext(event -> handleEvent(event))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .subscribe();
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent).then(Mono.just(session));
+                return session.sendEvent(updateEvent)
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.readme
@@ -171,13 +169,11 @@ public final class ReadmeSamples {
             .flatMap(session -> {
                 System.out.println("Session started");
 
-                // Subscribe to events first.
-                session.receiveEvents()
+                // Listen for events.
+                return session.receiveEvents()
                     .doOnNext(event -> System.out.println("Event: " + event.getType()))
                     .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .subscribe();
-
-                return Mono.just(session);
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.simple.session
@@ -370,7 +366,7 @@ public final class ReadmeSamples {
         // 3. Handle function call events
         client.startSession("gpt-realtime")
             .flatMap(session -> {
-                session.receiveEvents()
+                return session.receiveEvents()
                     .doOnNext(event -> {
                         if (event instanceof SessionUpdateConversationItemCreated) {
                             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
@@ -402,9 +398,7 @@ public final class ReadmeSamples {
                             }
                         }
                     })
-                    .subscribe();
-
-                return Mono.just(session);
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.functioncalling
@@ -485,10 +479,9 @@ public final class ReadmeSamples {
 
         client.startSession(agentConfig)
             .flatMap(session -> {
-                session.receiveEvents()
+                return session.receiveEvents()
                     .doOnNext(event -> handleEvent(event))
-                    .subscribe();
-                return Mono.just(session);
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.agentsession
