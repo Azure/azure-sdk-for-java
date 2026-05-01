@@ -3,10 +3,13 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import reactor.core.publisher.Mono;
 
@@ -41,10 +44,15 @@ public class ContentValidationDownloadContent extends BlobScenarioBase<ContentVa
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        return asyncClient.downloadContentWithResponse(
-            new BlobDownloadContentOptions()
+        // TODO return downloadContent once it stops buffering.
+        return asyncClient.downloadStreamWithResponse(
+            new BlobDownloadStreamOptions()
                 .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
-            .flatMap(r -> originalContent.checkMatch(r.getValue(), span));
+            .flatMap(response -> {
+                long contentLength = Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+                return BinaryData.fromFlux(response.getValue(), contentLength, false);
+            })
+            .flatMap(bd -> originalContent.checkMatch(bd, span));
     }
 
     @Override
