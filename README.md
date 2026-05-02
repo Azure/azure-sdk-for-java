@@ -69,6 +69,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 The consolidated documentation hub for contributors (building, testing, versioning, release checklist, etc.) is at [`docs/`](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/README.md).
 
+> **For AI Agents**: If you're an AI agent (e.g., GitHub Copilot, MCP server, or LLM assistant) working with this repository, please refer to [AGENTS.md](https://github.com/Azure/azure-sdk-for-java/blob/main/AGENTS.md) for guidance on repository structure, workflows, and best practices for agent interactions.
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, view [Microsoft's CLA](https://cla.microsoft.com).
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.

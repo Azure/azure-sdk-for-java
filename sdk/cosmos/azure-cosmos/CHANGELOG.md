@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.80.0-beta.1 (Unreleased)
+### 4.80.0 (2026-05-01)
 
 #### Features Added
 * Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
@@ -12,8 +12,6 @@
 * Added `CosmosReadManyByPartitionKeysRequestOptions.setMaxBatchSize(Integer)` to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
 * Added `getCustomItemSerializer()` to `CosmosRequestContext` and `setCustomItemSerializer(CosmosItemSerializer)` to `CosmosRequestOptions` to allow overriding the custom item serializer via operation policies. - See [PR 48963](https://github.com/Azure/azure-sdk-for-java/pull/48963)
 
-#### Breaking Changes
-
 #### Bugs Fixed
 * Fixed `readMany` and `readAllItems` returning incorrect results on containers whose partition key path is nested (e.g. `/address/city`) due to malformed selector generation. - See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Fixed an issue where the throughput control `throughputQueryMono` was always subscribed even when `targetThroughput` is used (not `targetThroughputThreshold`), causing unnecessary `throughputSettings/read` permission requirement for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
@@ -23,8 +21,6 @@
 * Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
 * Fixed an issue where Netty could log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" on HTTP/2 connections when the server resets idle TCP connections by adding an exception handler on the HTTP/2 parent channel to handle these connection-level exceptions more appropriately. - See [PR 48890](https://github.com/Azure/azure-sdk-for-java/pull/48890)
 * Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
-
-#### Other Changes
 
 ### 4.79.1 (2026-04-06)
 

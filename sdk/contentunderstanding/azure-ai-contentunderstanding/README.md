@@ -11,6 +11,8 @@ Use the client library for Azure AI Content Understanding to:
 * **Create custom analyzers** - Build domain-specific analyzers for specialized content extraction needs across all four modalities (documents, video, audio, and images)
 * **Classify documents and video** - Automatically categorize and extract information from documents and video by type
 
+If you have encountered issues or want to suggest features, please [file an issue][file_issue].
+
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_docs] | [Product documentation][product_docs]
 
 ## Getting started
@@ -384,6 +386,74 @@ mvn exec:java \
   -Dexec.cleanupDaemonThreads=false
 ```
 
+### Convert results to LLM-ready text
+
+> **Note:** `LlmInputHelper.toLlmInput()` is currently in preview and may change in future releases.
+> We welcome feedback — please [file an issue][file_issue].
+
+Use the `LlmInputHelper.toLlmInput()` helper to convert any analysis result into a text format
+that LLMs can consume directly — YAML front matter with extracted fields followed by the markdown
+body. This works with all content types (documents, images, audio, video) and handles
+multi-segment results and classification hierarchies automatically.
+
+```java
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+// Build the client
+String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+// Analyze a document using prebuilt-documentSearch (CU's primary RAG analyzer)
+byte[] pdfBytes = Files.readAllBytes(Paths.get("sample_files/sample_document_features.pdf"));
+AnalysisResult result = client.beginAnalyzeBinary(
+    "prebuilt-documentSearch", BinaryData.fromBytes(pdfBytes), "application/pdf")
+    .getFinalResult();
+
+// One line to get LLM-ready text
+String text = LlmInputHelper.toLlmInput(result);
+System.out.println(text);
+```
+
+Expected output:
+
+```
+---
+contentType: document
+pages: 1
+fields:
+  Summary: The document provides an overview of Latin, includes a sample
+    table with names and corporate affiliations, presents a bar chart
+    figure illustrating monthly values, and describes the AI Document
+    Intelligence service...
+---
+<!-- page 1 -->
+# ==This is title==
+## 1. Text
+[Latin](https://en.wikipedia.org/wiki/Latin) refers to an ancient Italic language...
+## 2. Page Objects
+### 2.1 Table
+<table><caption>Table 1: This is a dummy table</caption>...</table>
+### 2.2. Figure
+![Values...](figures/1.1 "Bar chart with six bars: Jan=200, Feb=300...")
+...
+```
+
+See the [advanced sample][java_cu_sample_to_llm_input] for output options (fields-only,
+markdown-only, custom metadata), multi-page content ranges, and multi-segment video.
+
 ## Troubleshooting
 
 ### Common issues
@@ -449,6 +519,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
@@ -458,3 +529,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [opencode_email]: mailto:opencode@microsoft.com
+[file_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new?labels=Cognitive%20-%20Content%20Understanding&title=[ContentUnderstanding]%20&body=%23%23%20Library%20Version%0A%0A%23%23%20Repro%20Steps%0A%0A%23%23%20Expected%20Result%0A%0A%23%23%20Actual%20Result
