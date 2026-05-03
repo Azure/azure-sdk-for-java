@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class OperationsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"message\":\"lla\",\"reason\":\"elwuipi\"}";
+        String responseStr = "{\"nameAvailable\":true,\"message\":\"twkuziycs\",\"reason\":\"vu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class OperationsCheckNameAvailabilityWithResponseMockTests {
 
         NameAvailabilityStatus response = manager.operations()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityParameters().withName("qgxqquezikyw")
+                new CheckNameAvailabilityParameters().withName("mjlxrrilozapeewc")
                     .withType(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES),
                 com.azure.core.util.Context.NONE)
             .getValue();

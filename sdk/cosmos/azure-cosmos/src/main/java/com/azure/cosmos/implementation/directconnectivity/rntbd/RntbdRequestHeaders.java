@@ -25,6 +25,8 @@ import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -58,6 +60,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
     private static final String URL_TRIM = "/";
 
     // endregion
@@ -143,6 +146,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addPopulateQueryAdvice(headers);
         this.addHubRegionProcessingOnly(headers);
         this.addReadConsistencyStrategy(headers);
+        this.addWorkloadId(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -307,6 +311,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     private RntbdToken getPopulateQueryAdvice() { return this.get(RntbdRequestHeader.PopulateQueryAdvice); }
 
     private RntbdToken getHubRegionProcessingOnly() { return this.get(RntbdRequestHeader.HubRegionProcessingOnly); }
+
+    private RntbdToken getWorkloadId() { return this.get(RntbdRequestHeader.WorkloadId); }
 
     private RntbdToken getGlobalDatabaseAccountName() {
         return this.get(RntbdRequestHeader.GlobalDatabaseAccountName);
@@ -859,6 +865,19 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                             "Unknown ReadConsistencyStrategy value '" + value + "' — cannot encode in RNTBD frame");
                     }
                     break;
+            }
+        }
+    }
+
+    private void addWorkloadId(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.WORKLOAD_ID);
+
+        if (StringUtils.isNotEmpty(value)) {
+            try {
+                final int workloadId = Integer.parseInt(value);
+                this.getWorkloadId().setValue((byte) workloadId);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid value for workload id header: {}", value, e);
             }
         }
     }

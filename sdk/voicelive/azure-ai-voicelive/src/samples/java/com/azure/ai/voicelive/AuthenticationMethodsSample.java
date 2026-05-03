@@ -217,23 +217,19 @@ public final class AuthenticationMethodsSample {
             .setInputAudioSamplingRate(24000);
 
         // Start session to verify authentication
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✅ Authentication successful!");
                 System.out.println("✓ Session started successfully with " + authMethodName);
 
-                // Subscribe to receive events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
                 return session.sendEvent(updateEvent)
                     .doOnSuccess(v -> System.out.println("✓ Session configured successfully"))
-                    .then(Mono.delay(java.time.Duration.ofSeconds(2))) // Wait briefly
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
+                    .then(Mono.delay(java.time.Duration.ofSeconds(2)))
                     .then(Mono.fromRunnable(() -> System.out.println("✓ Authentication test completed successfully\n")));
             })
             .doOnError(error -> {
