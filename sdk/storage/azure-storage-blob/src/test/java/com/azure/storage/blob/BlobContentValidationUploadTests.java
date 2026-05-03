@@ -34,6 +34,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -66,6 +67,13 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final long LARGE_UPLOAD_MAX_BYTES = 1L * Constants.GB;
     private static final long LARGE_UPLOAD_BLOCK_SIZE_BYTES = 8L * Constants.MB;
     private static final int LARGE_UPLOAD_MAX_CONCURRENCY = 8;
+
+    /**
+     * {@link BlobTestBase#fuzzyParallelUploadLargeMultiPartCases()} starts at ~96 MiB; above this threshold the fuzzy
+     * parallel upload helpers use temp files and streaming download/compare to avoid holding the full payload twice in
+     * heap (upload buffer + {@code downloadContent().toBytes()}).
+     */
+    private static final int FUZZY_PARALLEL_UPLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
 
     private static final String MD5_AND_CRC64_EXCLUSIVE_MESSAGE
         = "Only one form of transactional content validation may be used.";
@@ -1138,68 +1146,92 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadPutBlobReplayableCases")
-    public void fuzzyParallelUploadPutBlobReplayableRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency) {
+    public void fuzzyParallelUploadPutBlobReplayableRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency)
+        throws IOException {
         assertParallelUploadFuzzyRoundTrip("putBlobReplay", payloadBytes, segmentBytes, maxConcurrency);
     }
 
-    @LiveOnly // Staging-only cases: Put Block URLs include random IDs; see class comment above.
+    @LiveOnly // Staging-only cases: Put Block URLs include random IDs
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadSmallPayloadStagingCases")
     public void fuzzyParallelUploadSmallPayloadRoundTripRequiresLiveStaging(int payloadBytes, long segmentBytes,
-        int maxConcurrency) {
+        int maxConcurrency) throws IOException {
         assertParallelUploadFuzzyRoundTrip("smallPayloadStaging", payloadBytes, segmentBytes, maxConcurrency);
     }
 
     @LiveOnly // payload > segment for every tuple; always staging/Put Block.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadSub4MiBCases")
-    public void fuzzyParallelUploadSubFourMiBlobRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency) {
+    public void fuzzyParallelUploadSubFourMiBBlobRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency)
+        throws IOException {
         assertParallelUploadFuzzyRoundTrip("subFourMiB", payloadBytes, segmentBytes, maxConcurrency);
     }
 
-    @LiveOnly // Staging-only cases; deterministic Put Blob rows are in fuzzyParallelUpload_putBlobReplayable_roundTrip.
+    @LiveOnly // Staging-only cases.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadFourMiBBoundaryStagingCases")
     public void fuzzyParallelUploadFourMiBBoundaryRoundTripRequiresLiveStaging(int payloadBytes, long segmentBytes,
-        int maxConcurrency) {
+        int maxConcurrency) throws IOException {
         assertParallelUploadFuzzyRoundTrip("fourMiBBoundaryStaging", payloadBytes, segmentBytes, maxConcurrency);
     }
 
     @LiveOnly // payload > segment throughout; chunked upload.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadMediumMultiPartCases")
-    public void fuzzyParallelUploadMediumMultiPartRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency) {
+    public void fuzzyParallelUploadMediumMultiPartRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency)
+        throws IOException {
         assertParallelUploadFuzzyRoundTrip("mediumMultiPart", payloadBytes, segmentBytes, maxConcurrency);
     }
 
     @LiveOnly // payload >> segment throughout; chunked upload / large payloads.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadLargeMultiPartCases")
-    public void fuzzyParallelUploadLargeMultiPartRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency) {
+    public void fuzzyParallelUploadLargeMultiPartRoundTrip(int payloadBytes, long segmentBytes, int maxConcurrency)
+        throws IOException {
         assertParallelUploadFuzzyRoundTrip("largeMultiPart", payloadBytes, segmentBytes, maxConcurrency);
     }
 
     private void assertParallelUploadFuzzyRoundTrip(String caseKind, int payloadBytes, long segmentBytes,
-        int maxConcurrency) {
+        int maxConcurrency) throws IOException {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-
-        byte[] randomData = getRandomByteArray(payloadBytes);
-        InputStream data = new ByteArrayInputStream(randomData);
 
         ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong(segmentBytes)
             .setMaxSingleUploadSizeLong(segmentBytes)
             .setMaxConcurrency(maxConcurrency);
 
-        BlobParallelUploadOptions options
-            = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
-                .setRequestConditions(new BlobRequestConditions())
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        String assertionMessage = "Fuzzy parallel upload [" + caseKind + "] payloadBytes=" + payloadBytes
+            + ", segmentBytes=" + segmentBytes + ", maxConcurrency=" + maxConcurrency;
 
-        client.uploadWithResponse(options, null, Context.NONE);
-
-        byte[] downloaded = client.downloadContent().toBytes();
-        assertArrayEquals(randomData, downloaded, "Fuzzy parallel upload [" + caseKind + "] payloadBytes="
-            + payloadBytes + ", segmentBytes=" + segmentBytes + ", maxConcurrency=" + maxConcurrency);
+        if (payloadBytes >= FUZZY_PARALLEL_UPLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
+            File sourceFile = getRandomFile(payloadBytes);
+            File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl", ".bin").toFile();
+            outFile.deleteOnExit();
+            try (InputStream data = new FileInputStream(sourceFile)) {
+                BlobParallelUploadOptions options
+                    = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
+                        .setRequestConditions(new BlobRequestConditions())
+                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                client.uploadWithResponse(options, null, Context.NONE);
+            }
+            client.downloadToFile(outFile.getPath(), true);
+            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
+            if (!sourceFile.delete()) {
+                sourceFile.deleteOnExit();
+            }
+            if (!outFile.delete()) {
+                outFile.deleteOnExit();
+            }
+        } else {
+            byte[] randomData = getRandomByteArray(payloadBytes);
+            InputStream data = new ByteArrayInputStream(randomData);
+            BlobParallelUploadOptions options
+                = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
+                    .setRequestConditions(new BlobRequestConditions())
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+            client.uploadWithResponse(options, null, Context.NONE);
+            byte[] downloaded = client.downloadContent().toBytes();
+            assertArrayEquals(randomData, downloaded, assertionMessage);
+        }
     }
 
     @LiveOnly // This test is too large for the test proxy.

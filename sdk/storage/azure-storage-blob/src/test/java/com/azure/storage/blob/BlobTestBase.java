@@ -1553,8 +1553,8 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-     * payloadBytes > segmentBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling 
-     * field), so the blob stays strictly under the 4 MiB transactional CRC64-header path while uploads remain
+     * payloadBytes > segmentBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling field),so the blob
+     * stays strictly under the 4 MiB transactional CRC64-header path while uploads remain
      * chunked—live-only because of Put Block identity churn.
      * <p>
      * Values mix MiB/KiB segment sizes with offsets (e.g. + 19, - 903) so part counts and last-block
@@ -1599,7 +1599,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     /**
      * All rows keep payloadBytes > segmentBytes with totals roughly 6–80 MiB—large enough for meaningful parallel
-     * block fan-out and structured-message segments, but cheaper than {@link #fuzzyParallelUpload_largeMultiPartCases}.
+     * block fan-out and structured-message segments, but cheaper than {@link #fuzzyParallelUploadLargeMultiPartCases}.
      * <p>
      * Block sizes step through common service limits (1–8 MiB, half-MiB tail values); concurrency 1–8 pairs with
      * imbalanced payloads (e.g. 701, 333) to flush merge/retry edge cases.
