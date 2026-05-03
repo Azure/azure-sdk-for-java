@@ -346,9 +346,18 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * After this method, the request headers contain at most ONE of the two consistency headers.
      * GW V1 serializes the surviving header as HTTP; GW V2 (ThinClientStoreModel) encodes it as RNTBD.
      *
+     * <p><b>Java SDK-specific behavior:</b> When a non-DEFAULT {@code ReadConsistencyStrategy} is effective,
+     * the {@code ConsistencyLevel} header is proactively stripped from the request. The .NET SDK does
+     * <em>not</em> strip this header. This divergence is intentional — it prevents dual-header rejection
+     * (HTTP 400) by the compute gateway / thin-client proxy, which does not expect both headers simultaneously.</p>
+     *
      * Thread safety: availability-strategy clones share the same header map (shallow copy).
      * The mutation here (remove CL when readConsistencyStrategy present) is idempotent — concurrent clones
      * performing the same removal is safe.
+     *
+     * <p><b>SYNC NOTE:</b> The priority chain here (requestContext RCS &gt; header RCS &gt; CL) must stay
+     * in sync with {@link #isEffectiveSessionConsistency}. Both methods independently walk the same
+     * priority order — if one changes, the other must be updated to match.</p>
      */
     private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
         resolveEffectiveConsistencyHeaders(
@@ -1058,6 +1067,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * Pure read — no side effects, no header mutation, no HashMap copy.
      * Resolution order: request-level readConsistencyStrategy > client-level readConsistencyStrategy
      * (header) > consistency-level header > account default.
+     *
+     * <p><b>SYNC NOTE:</b> The priority chain here (requestContext RCS &gt; header RCS &gt; CL &gt;
+     * account default) must stay in sync with {@link #resolveEffectiveConsistencyHeaders}. Both
+     * methods independently walk the same priority order — if one changes, the other must be
+     * updated to match.</p>
      */
     private boolean isEffectiveSessionConsistency(RxDocumentServiceRequest request) {
         // Request-level readConsistencyStrategy takes priority
