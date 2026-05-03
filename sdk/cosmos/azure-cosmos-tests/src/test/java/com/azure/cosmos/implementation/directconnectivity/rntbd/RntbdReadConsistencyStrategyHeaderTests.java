@@ -29,7 +29,7 @@ import java.util.Map;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
- * Unit tests for the ReadConsistencyStrategy RNTBD header (token ID 0x00F0, Byte type).
+ * Unit tests for the ReadConsistencyStrategy RNTBD header (token ID 0x00FE, Byte type).
  *
  * <h3>Why these tests exist</h3>
  * The thin client proxy (Gateway V2) deserializes ReadConsistencyStrategy from the RNTBD binary
@@ -37,7 +37,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * proxy's C++ enum causes the proxy to either reject the request or apply the wrong strategy
  * silently. These tests guard the contract:
  * <ul>
- *   <li>Token metadata (ID = 0x00F0, type = Byte, optional)</li>
+ *   <li>Token metadata (ID = 0x00FE, type = Byte, optional)</li>
  *   <li>Byte encoding per strategy (Eventual=0x01, Session=0x02, LatestCommitted=0x03, GlobalStrong=0x04)</li>
  *   <li>HTTP header string → RNTBD byte mapping via {@code RntbdRequestHeaders.addReadConsistencyStrategy()}</li>
  *   <li>Full resolve → encode pipeline: {@code resolveEffectiveConsistencyHeaders} + {@code wrapInHttpRequest}</li>
@@ -388,7 +388,8 @@ public class RntbdReadConsistencyStrategyHeaderTests {
             ConsistencyLevel.SESSION,
             new UserAgentContainer(),
             mockGem,
-            Mockito.mock(HttpClient.class));
+            Mockito.mock(HttpClient.class),
+            null);
     }
 
     private static RxDocumentServiceRequest createDocumentReadRequest() {

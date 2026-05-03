@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   <li><b>Gateway V2 (HTTP/2 + thin client):</b> {@code COSMOS.THINCLIENT_ENABLED=true} +
  *       {@link Http2ConnectionConfig} enabled. Requests flow through {@link ThinClientStoreModel}
  *       when thin client read locations are available. Assertions inspect the RNTBD binary frame
- *       in the HTTP body for the ReadConsistencyStrategy token (0x00F0, Byte type).</li>
+ *       in the HTTP body for the ReadConsistencyStrategy token (0x00FE, Byte type).</li>
  * </ul>
  *
  * <p>V2 tests are skipped when the test account does not have thin client read locations

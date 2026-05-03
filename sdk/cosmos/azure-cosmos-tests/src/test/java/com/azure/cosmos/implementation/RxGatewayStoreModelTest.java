@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -594,6 +595,170 @@ public class RxGatewayStoreModelTest {
         HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
         // No workload-id header should be present
         assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isNull();
+    }
+
+    // ───────────────────────────────────────────────────────────────────────────
+    // ReadConsistencyStrategy × isEffectiveSessionConsistency tests
+    // ───────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Data provider for testing session-token application through the
+     * {@code isEffectiveSessionConsistency} priority chain:
+     *   request-level RCS > client-level RCS (header) > request CL > account default.
+     *
+     * Every row uses OperationType.Read + ResourceType.Document (data-plane read)
+     * with no user-supplied session token, so the outcome depends solely on whether
+     * {@code isEffectiveSessionConsistency} returns true (SDK token applied) or false
+     * (no token).
+     *
+     * Parameters:
+     *   defaultConsistencyLevel       – account-level default
+     *   requestConsistencyLevel       – request-level ConsistencyLevel header (nullable)
+     *   requestContextRCS             – request-level ReadConsistencyStrategy on requestContext (nullable)
+     *   clientHeaderRCS               – client-level ReadConsistencyStrategy header string (nullable)
+     *   expectSessionTokenApplied     – true ⇒ SDK session token expected; false ⇒ no token
+     */
+    @DataProvider(name = "readConsistencyStrategySessionTokenProvider")
+    public Object[][] readConsistencyStrategySessionTokenProvider() {
+        return new Object[][]{
+            // ── Request-level RCS (highest priority) ──
+
+            // RCS=SESSION overrides everything → session token applied
+            {ConsistencyLevel.EVENTUAL, null, ReadConsistencyStrategy.SESSION, null, true},
+
+            // RCS=EVENTUAL overrides even account-default=SESSION → no token
+            {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.EVENTUAL, null, false},
+
+            // RCS=DEFAULT is transparent → falls through to account default=SESSION → applied
+            {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.DEFAULT, null, true},
+
+            // RCS=DEFAULT is transparent → falls through to account default=EVENTUAL → no token
+            {ConsistencyLevel.EVENTUAL, null, ReadConsistencyStrategy.DEFAULT, null, false},
+
+            // ── Client-level RCS header (second priority) ──
+
+            // Client header RCS=Session → session token applied
+            {ConsistencyLevel.EVENTUAL, null, null, ReadConsistencyStrategy.SESSION.toString(), true},
+
+            // Client header RCS=Eventual → no token
+            {ConsistencyLevel.SESSION, null, null, ReadConsistencyStrategy.EVENTUAL.toString(), false},
+
+            // Client header RCS=Default is transparent → falls through to account default=SESSION
+            {ConsistencyLevel.SESSION, null, null, ReadConsistencyStrategy.DEFAULT.toString(), true},
+
+            // ── No RCS, request-level ConsistencyLevel (third priority) ──
+
+            // CL=SESSION → session token applied
+            {ConsistencyLevel.EVENTUAL, ConsistencyLevel.SESSION, null, null, true},
+
+            // CL=EVENTUAL → no token
+            {ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, null, null, false},
+
+            // ── No RCS, no request CL → account default (lowest priority) ──
+
+            // Account default=SESSION → applied
+            {ConsistencyLevel.SESSION, null, null, null, true},
+
+            // Account default=EVENTUAL → no token
+            {ConsistencyLevel.EVENTUAL, null, null, null, false},
+
+            // ── Request-level RCS overrides client-level RCS ──
+
+            // Request RCS=SESSION beats client RCS=Eventual → applied
+            {ConsistencyLevel.EVENTUAL, null, ReadConsistencyStrategy.SESSION, ReadConsistencyStrategy.EVENTUAL.toString(), true},
+
+            // Request RCS=EVENTUAL beats client RCS=Session → no token
+            {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.EVENTUAL, ReadConsistencyStrategy.SESSION.toString(), false},
+        };
+    }
+
+    /**
+     * Validates that {@code isEffectiveSessionConsistency} (private, tested indirectly
+     * via {@code processMessage → applySessionToken}) correctly walks the 4-branch
+     * priority chain when ReadConsistencyStrategy is involved.
+     *
+     * Uses a data-plane read (Read/Document) with no user session token, so the only
+     * variable is the consistency resolution. If session consistency is effective the
+     * SDK-maintained global session token must be present; otherwise it must be absent.
+     */
+    @Test(groups = "unit", dataProvider = "readConsistencyStrategySessionTokenProvider")
+    public void applySessionTokenWithReadConsistencyStrategy(
+        ConsistencyLevel defaultConsistency,
+        ConsistencyLevel requestConsistency,
+        ReadConsistencyStrategy requestContextRCS,
+        String clientHeaderRCS,
+        boolean expectSessionTokenApplied) throws Exception {
+
+        String sdkGlobalSessionToken = "1#100#1=20#2=5#3=30";
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        URI locationEndpointToRoute = new URI("https://localhost");
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(locationEndpointToRoute);
+        Mockito.doReturn(regionalRoutingContext)
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
+            .when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader =
+            Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(defaultConsistency)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            defaultConsistency,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            ApiType.SQL,
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/fakeResourceFullName",
+            ResourceType.Document);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
+
+        // Set request-level ReadConsistencyStrategy on requestContext (highest priority)
+        if (requestContextRCS != null) {
+            dsr.requestContext.readConsistencyStrategy = requestContextRCS;
+        }
+
+        // Set client-level ReadConsistencyStrategy header (second priority)
+        if (clientHeaderRCS != null) {
+            dsr.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, clientHeaderRCS);
+        }
+
+        // Set request-level ConsistencyLevel header (third priority)
+        if (requestConsistency != null) {
+            dsr.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestConsistency.toString());
+        }
+
+        // Drive the request through processMessage → applySessionToken → isEffectiveSessionConsistency
+        Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        validateFailure(resp, FailureValidator.builder()
+            .instanceOf(CosmosException.class)
+            .causeInstanceOf(ReadTimeoutException.class)
+            .statusCode(HttpConstants.StatusCodes.REQUEST_TIMEOUT).build());
+
+        if (expectSessionTokenApplied) {
+            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                .as("Session token should be applied (isEffectiveSessionConsistency=true)")
+                .isEqualTo(sdkGlobalSessionToken);
+        } else {
+            assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))
+                .as("Session token should NOT be applied (isEffectiveSessionConsistency=false)")
+                .isNull();
+        }
     }
 
     enum SessionTokenType {

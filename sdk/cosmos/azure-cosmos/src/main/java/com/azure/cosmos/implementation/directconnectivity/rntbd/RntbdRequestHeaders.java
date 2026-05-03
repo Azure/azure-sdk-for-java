@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
@@ -18,8 +19,6 @@ import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -60,7 +59,6 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
-    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
     private static final String URL_TRIM = "/";
 
     // endregion
@@ -846,24 +844,35 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.READ_CONSISTENCY_STRATEGY);
 
         if (StringUtils.isNotEmpty(value)) {
-            switch (value) {
-                case "Eventual":
+
+            final ReadConsistencyStrategy strategy = ImplementationBridgeHelpers
+                .ReadConsistencyStrategyHelper
+                .getReadConsistencyStrategyAccessor()
+                .createFromServiceSerializedFormat(value);
+
+            if (strategy == null) {
+                throw new IllegalArgumentException(
+                    "Unknown ReadConsistencyStrategy value '" + value + "' — cannot encode in RNTBD frame");
+            }
+
+            switch (strategy) {
+                case EVENTUAL:
                     this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Eventual.id());
                     break;
-                case "Session":
+                case SESSION:
                     this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Session.id());
                     break;
-                case "LatestCommitted":
+                case LATEST_COMMITTED:
                     this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.LatestCommitted.id());
                     break;
-                case "GlobalStrong":
+                case GLOBAL_STRONG:
                     this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.GlobalStrong.id());
                     break;
+                case DEFAULT:
+                    // DEFAULT means use the account/client default — skip writing to the RNTBD frame
+                    break;
                 default:
-                    if (!"Default".equals(value)) {
-                        throw new IllegalArgumentException(
-                            "Unknown ReadConsistencyStrategy value '" + value + "' — cannot encode in RNTBD frame");
-                    }
+                    assert false;
                     break;
             }
         }
