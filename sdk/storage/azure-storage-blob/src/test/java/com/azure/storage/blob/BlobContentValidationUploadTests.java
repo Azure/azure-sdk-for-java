@@ -1200,9 +1200,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             = new BlockBlobSimpleUploadOptions(DATA.getDefaultBinaryData()).setContentValidationAlgorithm(algorithm)
                 .setContentMd5(DEFAULT_MD5);
 
-        Exception ex
+        BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> client.uploadWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MESSAGE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1214,9 +1215,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setContentValidationAlgorithm(algorithm)
             .setContentMd5(DEFAULT_MD5);
 
-        Exception ex = assertThrows(BlobStorageException.class,
+        BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> client.stageBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MESSAGE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1232,9 +1234,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 .setContentValidationAlgorithm(algorithm)
                 .setContentMd5(DEFAULT_MD5);
 
-        Exception ex = assertThrows(BlobStorageException.class,
+        BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> client.appendBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MESSAGE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
     }
 
     @ParameterizedTest
@@ -1250,8 +1253,9 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1),
                 new ByteArrayInputStream(randomData)).setContentValidationAlgorithm(algorithm).setContentMd5(md5);
 
-        Exception ex = assertThrows(BlobStorageException.class,
+        BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> client.uploadPagesWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MESSAGE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
     }
 }
