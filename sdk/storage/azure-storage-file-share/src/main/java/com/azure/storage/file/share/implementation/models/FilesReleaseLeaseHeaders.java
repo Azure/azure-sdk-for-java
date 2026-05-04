@@ -17,6 +17,12 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesReleaseLeaseHeaders {
     /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The ETag property.
      */
     @Generated
@@ -29,22 +35,16 @@ public final class FilesReleaseLeaseHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-client-request-id property.
-     */
-    @Generated
-    private String xMsClientRequestId;
-
-    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
+     * The x-ms-client-request-id property.
      */
     @Generated
-    private String xMsVersion;
+    private String xMsClientRequestId;
 
     /*
      * The Date property.
@@ -61,6 +61,7 @@ public final class FilesReleaseLeaseHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesReleaseLeaseHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -68,15 +69,36 @@ public final class FilesReleaseLeaseHeaders {
         } else {
             this.lastModified = null;
         }
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesReleaseLeaseHeaders object itself.
+     */
+    @Generated
+    public FilesReleaseLeaseHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
     }
 
     /**
@@ -131,28 +153,6 @@ public final class FilesReleaseLeaseHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @return the xMsClientRequestId value.
-     */
-    @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the FilesReleaseLeaseHeaders object itself.
-     */
-    @Generated
-    public FilesReleaseLeaseHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -175,24 +175,24 @@ public final class FilesReleaseLeaseHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsClientRequestId value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the FilesReleaseLeaseHeaders object itself.
      */
     @Generated
-    public FilesReleaseLeaseHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public FilesReleaseLeaseHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 

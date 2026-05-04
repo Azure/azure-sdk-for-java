@@ -17,40 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesRenameHeaders {
     /*
-     * The ETag property.
-     */
-    @Generated
-    private String eTag;
-
-    /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
      * The x-ms-version property.
      */
     @Generated
     private String xMsVersion;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
-
-    /*
-     * The x-ms-request-server-encrypted property.
-     */
-    @Generated
-    private Boolean xMsRequestServerEncrypted;
 
     /*
      * The x-ms-file-permission-key property.
@@ -59,10 +29,10 @@ public final class FilesRenameHeaders {
     private String xMsFilePermissionKey;
 
     /*
-     * The x-ms-file-attributes property.
+     * The x-ms-file-id property.
      */
     @Generated
-    private String xMsFileAttributes;
+    private String xMsFileId;
 
     /*
      * The x-ms-file-creation-time property.
@@ -71,10 +41,34 @@ public final class FilesRenameHeaders {
     private OffsetDateTime xMsFileCreationTime;
 
     /*
-     * The x-ms-file-last-write-time property.
+     * The Last-Modified property.
      */
     @Generated
-    private OffsetDateTime xMsFileLastWriteTime;
+    private DateTimeRfc1123 lastModified;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @Generated
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
+     * The ETag property.
+     */
+    @Generated
+    private String eTag;
+
+    /*
+     * The x-ms-file-attributes property.
+     */
+    @Generated
+    private String xMsFileAttributes;
 
     /*
      * The x-ms-file-change-time property.
@@ -83,37 +77,43 @@ public final class FilesRenameHeaders {
     private OffsetDateTime xMsFileChangeTime;
 
     /*
-     * The x-ms-file-id property.
-     */
-    @Generated
-    private String xMsFileId;
-
-    /*
      * The x-ms-file-parent-id property.
      */
     @Generated
     private String xMsFileParentId;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
 
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
-        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    /*
+     * The x-ms-file-last-write-time property.
+     */
+    @Generated
+    private OffsetDateTime xMsFileLastWriteTime;
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
         = HttpHeaderName.fromString("x-ms-file-permission-key");
 
-    private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
+    private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
 
     private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
 
-    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
-        = HttpHeaderName.fromString("x-ms-file-last-write-time");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
+    private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
     private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
 
-    private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
-
     private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
+
+    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
+        = HttpHeaderName.fromString("x-ms-file-last-write-time");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -122,20 +122,20 @@ public final class FilesRenameHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesRenameHeaders(HttpHeaders rawHeaders) {
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
+        this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
+        String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
+        if (xMsFileCreationTime != null) {
+            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        } else {
+            this.xMsFileCreationTime = null;
+        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
-        }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
         }
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
@@ -143,49 +143,115 @@ public final class FilesRenameHeaders {
         } else {
             this.xMsRequestServerEncrypted = null;
         }
-        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
-        String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
-        if (xMsFileCreationTime != null) {
-            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
-        } else {
-            this.xMsFileCreationTime = null;
-        }
-        String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
-        if (xMsFileLastWriteTime != null) {
-            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
-        } else {
-            this.xMsFileLastWriteTime = null;
-        }
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
         } else {
             this.xMsFileChangeTime = null;
         }
-        this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        if (xMsFileLastWriteTime != null) {
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        } else {
+            this.xMsFileLastWriteTime = null;
+        }
     }
 
     /**
-     * Get the eTag property: The ETag property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the eTag value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getETag() {
-        return this.eTag;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the eTag property: The ETag property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param eTag the eTag value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the FilesRenameHeaders object itself.
      */
     @Generated
-    public FilesRenameHeaders setETag(String eTag) {
-        this.eTag = eTag;
+    public FilesRenameHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsFilePermissionKey property: The x-ms-file-permission-key property.
+     * 
+     * @return the xMsFilePermissionKey value.
+     */
+    @Generated
+    public String getXMsFilePermissionKey() {
+        return this.xMsFilePermissionKey;
+    }
+
+    /**
+     * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
+     * 
+     * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    @Generated
+    public FilesRenameHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
+        this.xMsFilePermissionKey = xMsFilePermissionKey;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileId property: The x-ms-file-id property.
+     * 
+     * @return the xMsFileId value.
+     */
+    @Generated
+    public String getXMsFileId() {
+        return this.xMsFileId;
+    }
+
+    /**
+     * Set the xMsFileId property: The x-ms-file-id property.
+     * 
+     * @param xMsFileId the xMsFileId value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    @Generated
+    public FilesRenameHeaders setXMsFileId(String xMsFileId) {
+        this.xMsFileId = xMsFileId;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileCreationTime property: The x-ms-file-creation-time property.
+     * 
+     * @return the xMsFileCreationTime value.
+     */
+    @Generated
+    public OffsetDateTime getXMsFileCreationTime() {
+        return this.xMsFileCreationTime;
+    }
+
+    /**
+     * Set the xMsFileCreationTime property: The x-ms-file-creation-time property.
+     * 
+     * @param xMsFileCreationTime the xMsFileCreationTime value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    @Generated
+    public FilesRenameHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
+        this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
     }
 
@@ -219,46 +285,24 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsRequestServerEncrypted value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the FilesRenameHeaders object itself.
      */
     @Generated
-    public FilesRenameHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    @Generated
-    public FilesRenameHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public FilesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 
@@ -292,46 +336,24 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Get the eTag property: The ETag property.
      * 
-     * @return the xMsRequestServerEncrypted value.
+     * @return the eTag value.
      */
     @Generated
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Set the eTag property: The ETag property.
      * 
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @param eTag the eTag value to set.
      * @return the FilesRenameHeaders object itself.
      */
     @Generated
-    public FilesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
-     * @return the xMsFilePermissionKey value.
-     */
-    @Generated
-    public String getXMsFilePermissionKey() {
-        return this.xMsFilePermissionKey;
-    }
-
-    /**
-     * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
-     * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    @Generated
-    public FilesRenameHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
-        this.xMsFilePermissionKey = xMsFilePermissionKey;
+    public FilesRenameHeaders setETag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 
@@ -358,50 +380,6 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
-     * @return the xMsFileCreationTime value.
-     */
-    @Generated
-    public OffsetDateTime getXMsFileCreationTime() {
-        return this.xMsFileCreationTime;
-    }
-
-    /**
-     * Set the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
-     * @param xMsFileCreationTime the xMsFileCreationTime value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    @Generated
-    public FilesRenameHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
-        this.xMsFileCreationTime = xMsFileCreationTime;
-        return this;
-    }
-
-    /**
-     * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
-     * @return the xMsFileLastWriteTime value.
-     */
-    @Generated
-    public OffsetDateTime getXMsFileLastWriteTime() {
-        return this.xMsFileLastWriteTime;
-    }
-
-    /**
-     * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
-     * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    @Generated
-    public FilesRenameHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
-        return this;
-    }
-
-    /**
      * Get the xMsFileChangeTime property: The x-ms-file-change-time property.
      * 
      * @return the xMsFileChangeTime value.
@@ -424,28 +402,6 @@ public final class FilesRenameHeaders {
     }
 
     /**
-     * Get the xMsFileId property: The x-ms-file-id property.
-     * 
-     * @return the xMsFileId value.
-     */
-    @Generated
-    public String getXMsFileId() {
-        return this.xMsFileId;
-    }
-
-    /**
-     * Set the xMsFileId property: The x-ms-file-id property.
-     * 
-     * @param xMsFileId the xMsFileId value to set.
-     * @return the FilesRenameHeaders object itself.
-     */
-    @Generated
-    public FilesRenameHeaders setXMsFileId(String xMsFileId) {
-        this.xMsFileId = xMsFileId;
-        return this;
-    }
-
-    /**
      * Get the xMsFileParentId property: The x-ms-file-parent-id property.
      * 
      * @return the xMsFileParentId value.
@@ -464,6 +420,50 @@ public final class FilesRenameHeaders {
     @Generated
     public FilesRenameHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    @Generated
+    public FilesRenameHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
+     * 
+     * @return the xMsFileLastWriteTime value.
+     */
+    @Generated
+    public OffsetDateTime getXMsFileLastWriteTime() {
+        return this.xMsFileLastWriteTime;
+    }
+
+    /**
+     * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
+     * 
+     * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
+     * @return the FilesRenameHeaders object itself.
+     */
+    @Generated
+    public FilesRenameHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 }

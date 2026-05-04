@@ -17,28 +17,28 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SharesCreatePermissionHeaders {
     /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
      * The x-ms-version property.
      */
     @Generated
     private String xMsVersion;
 
     /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
-
-    /*
      * The x-ms-file-permission-key property.
      */
     @Generated
     private String xMsFilePermissionKey;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -52,37 +52,15 @@ public final class SharesCreatePermissionHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesCreatePermissionHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the SharesCreatePermissionHeaders object itself.
-     */
-    @Generated
-    public SharesCreatePermissionHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
     }
 
     /**
@@ -104,6 +82,50 @@ public final class SharesCreatePermissionHeaders {
     @Generated
     public SharesCreatePermissionHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsFilePermissionKey property: The x-ms-file-permission-key property.
+     * 
+     * @return the xMsFilePermissionKey value.
+     */
+    @Generated
+    public String getXMsFilePermissionKey() {
+        return this.xMsFilePermissionKey;
+    }
+
+    /**
+     * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
+     * 
+     * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
+     * @return the SharesCreatePermissionHeaders object itself.
+     */
+    @Generated
+    public SharesCreatePermissionHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
+        this.xMsFilePermissionKey = xMsFilePermissionKey;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the SharesCreatePermissionHeaders object itself.
+     */
+    @Generated
+    public SharesCreatePermissionHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
         return this;
     }
 
@@ -133,28 +155,6 @@ public final class SharesCreatePermissionHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
-     * @return the xMsFilePermissionKey value.
-     */
-    @Generated
-    public String getXMsFilePermissionKey() {
-        return this.xMsFilePermissionKey;
-    }
-
-    /**
-     * Set the xMsFilePermissionKey property: The x-ms-file-permission-key property.
-     * 
-     * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
-     * @return the SharesCreatePermissionHeaders object itself.
-     */
-    @Generated
-    public SharesCreatePermissionHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
-        this.xMsFilePermissionKey = xMsFilePermissionKey;
         return this;
     }
 }
