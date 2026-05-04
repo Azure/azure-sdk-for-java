@@ -1,21 +1,5 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-- Added `models.TlsaRecord`, `models.DsRecord`, `models.NaptrRecord` for new DNS record types.
-- Added `models.DelegationSignerInfo`, `models.SigningKey`, `models.Digest` for DNSSEC support.
-- Added `models.RecordSetsCreateOrUpdateHeaders`, `models.RecordSetsCreateOrUpdateResponse`.
-- Added `DnssecConfigs` client for DNSSEC configuration management.
-- Added `TLSA`, `DS`, `NAPTR` values to `models.RecordType`.
-
-### Breaking Changes
-
-- Removed `models.ZoneListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
-- Removed `models.RecordSetListResult` class. It is replaced by `PagedIterable`/`PagedFlux` in the client API.
-- Changed `models.DnsResourceReference` to be an immutable output-only model: constructor is now private, and `withDnsResources()` and `withTargetResource()` setters are removed.
-
 ## 2.53.7 (2026-03-30)
 
 ### Other Changes
@@ -33,13 +17,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.53.4 (2025-10-27)
 
@@ -47,7 +33,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 
