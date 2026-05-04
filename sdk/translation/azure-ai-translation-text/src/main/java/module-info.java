@@ -9,5 +9,4 @@ module com.azure.ai.translation.text {
     exports com.azure.ai.translation.text.models;
 
     opens com.azure.ai.translation.text.models to com.azure.core;
-    opens com.azure.ai.translation.text.implementation.models to com.azure.core;
 }

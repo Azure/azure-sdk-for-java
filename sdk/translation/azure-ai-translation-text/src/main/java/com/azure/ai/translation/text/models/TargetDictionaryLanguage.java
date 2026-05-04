@@ -12,11 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The value of the translation property is a dictionary of (key, value) pairs. Each key is a BCP 47 language tag.
- * A key identifies a language for which text can be translated to or translated from.
+ * Properties of the target dictionary language.
  */
 @Immutable
-public final class TranslationLanguage implements JsonSerializable<TranslationLanguage> {
+public final class TargetDictionaryLanguage implements JsonSerializable<TargetDictionaryLanguage> {
 
     /*
      * Display name of the language in the locale requested via Accept-Language header.
@@ -36,18 +35,27 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
     @Generated
     private final LanguageDirectionality directionality;
 
+    /*
+     * Language code identifying the target language.
+     */
+    @Generated
+    private final String code;
+
     /**
-     * Creates an instance of TranslationLanguage class.
+     * Creates an instance of TargetDictionaryLanguage class.
      *
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
      * @param directionality the directionality value to set.
+     * @param code the code value to set.
      */
     @Generated
-    private TranslationLanguage(String name, String nativeName, LanguageDirectionality directionality) {
+    private TargetDictionaryLanguage(String name, String nativeName, LanguageDirectionality directionality,
+        String code) {
         this.name = name;
         this.nativeName = nativeName;
         this.directionality = directionality;
+        this.code = code;
     }
 
     /**
@@ -82,6 +90,16 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
     }
 
     /**
+     * Get the code property: Language code identifying the target language.
+     *
+     * @return the code value.
+     */
+    @Generated
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -91,24 +109,26 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("nativeName", this.nativeName);
         jsonWriter.writeStringField("dir", this.directionality == null ? null : this.directionality.toString());
+        jsonWriter.writeStringField("code", this.code);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of TranslationLanguage from the JsonReader.
+     * Reads an instance of TargetDictionaryLanguage from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TranslationLanguage if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of TargetDictionaryLanguage if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TranslationLanguage.
+     * @throws IOException If an error occurs while reading the TargetDictionaryLanguage.
      */
     @Generated
-    public static TranslationLanguage fromJson(JsonReader jsonReader) throws IOException {
+    public static TargetDictionaryLanguage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String nativeName = null;
             LanguageDirectionality directionality = null;
+            String code = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,11 +138,13 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
                     nativeName = reader.getString();
                 } else if ("dir".equals(fieldName)) {
                     directionality = LanguageDirectionality.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    code = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TranslationLanguage(name, nativeName, directionality);
+            return new TargetDictionaryLanguage(name, nativeName, directionality, code);
         });
     }
 }
