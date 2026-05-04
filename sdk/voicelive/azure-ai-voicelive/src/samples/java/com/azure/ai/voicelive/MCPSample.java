@@ -32,7 +32,7 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.core.credential.KeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
 
 import javax.sound.sampled.AudioFormat;
@@ -64,7 +64,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
  * </ul>
  *
  * <p><strong>How to Run:</strong></p>
@@ -83,7 +83,6 @@ public final class MCPSample {
     // Service configuration
     private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
-    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
     // Audio format constants
     private static final int SAMPLE_RATE = 24000;
@@ -109,15 +108,8 @@ public final class MCPSample {
             System.exit(1);
         }
 
-        String apiKey = System.getenv(ENV_API_KEY);
-        if (apiKey == null || apiKey.trim().isEmpty()) {
-            System.err.println("❌ Error: No API key provided");
-            System.err.println("Please set the " + ENV_API_KEY + " environment variable.");
-            System.exit(1);
-        }
-
         try {
-            runMCPSample(endpoint, apiKey);
+            runMCPSample(endpoint);
         } catch (Exception e) {
             System.err.println("❌ Error: " + e.getMessage());
             e.printStackTrace();
@@ -128,21 +120,22 @@ public final class MCPSample {
     /**
      * Run the MCP sample.
      */
-    private static void runMCPSample(String endpoint, String apiKey) {
+    private static void runMCPSample(String endpoint) {
         System.out.println("🔌 Connecting to VoiceLive API with MCP support...");
         System.out.println("📡 Endpoint: " + endpoint);
         System.out.println("🤖 Model: " + DEFAULT_MODEL);
 
-        KeyCredential credential = new KeyCredential(apiKey);
         AtomicReference<String> activeMCPCallId = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
-        // Create VoiceLive client
+        // Create VoiceLive client using DefaultAzureCredential (recommended).
+        // To use an API key instead:
+        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
             .buildAsyncClient();
 
@@ -409,15 +402,16 @@ public final class MCPSample {
             new MCPApprovalResponseRequestItem(approvalId, approved);
 
         session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse))
-            .doOnSuccess(v -> {
-                if (approved) {
-                    System.out.println("✅ MCP call approved and response sent");
-                } else {
-                    System.out.println("❌ MCP call denied and response sent");
-                }
-            })
-            .doOnError(error -> System.err.println("❌ Error sending approval response: " + error.getMessage()))
-            .subscribe();
+            .subscribe(
+                v -> {
+                    if (approved) {
+                        System.out.println("✅ MCP call approved and response sent");
+                    } else {
+                        System.out.println("❌ MCP call denied and response sent");
+                    }
+                },
+                error -> System.err.println("❌ Error sending approval response: " + error.getMessage())
+            );
     }
 
     /**
@@ -462,9 +456,10 @@ public final class MCPSample {
         // In a real implementation, you might want to collect the output
         // For this sample, we'll just trigger a new response
         session.sendEvent(new ClientEventResponseCreate())
-            .doOnSuccess(v -> System.out.println("📤 New response created to process MCP output"))
-            .doOnError(error -> System.err.println("❌ Error creating response: " + error.getMessage()))
-            .subscribe();
+            .subscribe(
+                v -> System.out.println("📤 New response created to process MCP output"),
+                error -> System.err.println("❌ Error creating response: " + error.getMessage())
+            );
     }
 
     /**
@@ -485,11 +480,12 @@ public final class MCPSample {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
-        private TargetDataLine microphone;
+        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
-        private SourceDataLine speaker;
-        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>();
+        private volatile SourceDataLine speaker;
+        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
@@ -516,7 +512,11 @@ public final class MCPSample {
                         int bytesRead = microphone.read(buffer, 0, buffer.length);
                         if (bytesRead > 0) {
                             byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                            session.sendInputAudio(BinaryData.fromBytes(audioData)).subscribe();
+                            session.sendInputAudio(BinaryData.fromBytes(audioData))
+                                .subscribe(
+                                    v -> {},
+                                    error -> System.err.println("Error sending audio: " + error.getMessage())
+                                );
                         }
                     }
                 }, "AudioCapture").start();
@@ -544,12 +544,8 @@ public final class MCPSample {
                 new Thread(() -> {
                     while (isPlaying.get()) {
                         try {
-                            byte[] audioData = playbackQueue.poll();
-                            if (audioData != null) {
-                                speaker.write(audioData, 0, audioData.length);
-                            } else {
-                                Thread.sleep(10);
-                            }
+                            byte[] audioData = playbackQueue.take();
+                            speaker.write(audioData, 0, audioData.length);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                             break;
@@ -570,7 +566,10 @@ public final class MCPSample {
 
         void queueAudio(byte[] audioData) {
             if (isPlaying.get()) {
-                playbackQueue.offer(audioData);
+                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+                if (!playbackQueue.offer(audioData)) {
+                    System.err.println("Warning: playback queue full, dropping audio chunk of " + audioData.length + " bytes");
+                }
             }
         }
 

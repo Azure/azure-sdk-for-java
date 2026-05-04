@@ -9,7 +9,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *     <li>{@code AZURE_VOICELIVE_ENDPOINT} — The VoiceLive service endpoint URL</li>
- *     <li>{@code AZURE_VOICELIVE_API_KEY} — The API key for authentication</li>
+ *     <li>{@code AZURE_VOICELIVE_API_KEY} — (Optional) The API key, if not using DefaultAzureCredential</li>
  * </ul>
  *
  * <p><strong>How to Run:</strong></p>
@@ -48,10 +48,9 @@ public final class GlobalTracingSample {
 
     public static void main(String[] args) throws InterruptedException {
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT environment variable");
             return;
         }
 
@@ -68,9 +67,11 @@ public final class GlobalTracingSample {
         System.out.println("GlobalOpenTelemetry registered (console exporter)");
 
         // 2. Build client — it picks up GlobalOpenTelemetry automatically.
+        // Uses DefaultAzureCredential (recommended). To use an API key instead:
+        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Starting voice session (automatic tracing)...");

@@ -18,7 +18,7 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
  * </ul>
  *
  * <p><strong>Audio Requirements:</strong></p>
@@ -87,12 +87,11 @@ public final class AudioPlaybackSample {
      * @param args Unused command line arguments
      */
     public static void main(String[] args) {
-        // Get credentials from environment variables
+        // Get endpoint from environment variable
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT environment variable");
             return;
         }
 
@@ -102,10 +101,12 @@ public final class AudioPlaybackSample {
             return;
         }
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (recommended).
+        // To use an API key instead:
+        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Starting audio playback sample...");
@@ -123,7 +124,7 @@ public final class AudioPlaybackSample {
             .setInputAudioSamplingRate(SAMPLE_RATE);
 
         // Audio playback components
-        final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>();
+        final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>(1000);
         final AtomicBoolean isPlaying = new AtomicBoolean(false);
         final SourceDataLine[] speakerRef = new SourceDataLine[1];
 
@@ -132,17 +133,16 @@ public final class AudioPlaybackSample {
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Send session configuration, then listen for events.
+                // Send session configuration, send text message, trigger response,
+                // then listen for events. Events are buffered by the SDK's receiveSink,
+                // so none are lost between sending and subscribing.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
                 return session.sendEvent(updateEvent)
                     .doOnSuccess(v -> {
-                        System.out.println("\u2713 Session configured");
+                        System.out.println("✓ Session configured");
                         // Start audio playback system
                         startPlayback(audioQueue, isPlaying, speakerRef);
                     })
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event, audioQueue))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
                     .then(Mono.delay(Duration.ofMillis(500))) // Wait for session to be fully ready
                     .flatMap(v -> {
                         // Send a user message to trigger an audio response
@@ -162,7 +162,11 @@ public final class AudioPlaybackSample {
                         ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
                         return session.sendEvent(responseEvent);
                     })
-                    .then(Mono.delay(Duration.ofSeconds(10))) // Wait for audio response
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event, audioQueue))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                        .take(Duration.ofSeconds(10))) // Listen for 10 seconds then complete
+                    .then()
                     .doFinally(signal -> System.out.println("\n✓ Sample completed - audio playback demonstrated"));
             })
             .doFinally(signalType -> {
@@ -284,8 +288,11 @@ public final class AudioPlaybackSample {
                 SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
                 byte[] audioData = audioEvent.getDelta();
                 if (audioData != null && audioData.length > 0) {
-                    audioQueue.offer(audioData);
-                    System.out.println("🔊 Received audio chunk: " + audioData.length + " bytes");
+                    if (!audioQueue.offer(audioData)) {
+                        System.err.println("Warning: audio queue full, dropping chunk of " + audioData.length + " bytes");
+                    } else {
+                        System.out.println("🔊 Received audio chunk: " + audioData.length + " bytes");
+                    }
                 }
             }
         } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {

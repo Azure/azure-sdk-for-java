@@ -235,8 +235,9 @@ public class AgentV2Sample {
         private final AtomicBoolean running = new AtomicBoolean(false);
         private final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
-        private VoiceLiveSessionAsyncClient session;
-        private AudioProcessor audioProcessor;
+        // volatile: written by reactor thread (doOnSuccess), read by shutdown-hook thread
+        private volatile VoiceLiveSessionAsyncClient session;
+        private volatile AudioProcessor audioProcessor;
 
         AgentV2VoiceAssistant(String endpoint, AgentSessionConfig agentConfig, String voice) {
             this.endpoint = endpoint;
@@ -272,12 +273,14 @@ public class AgentV2Sample {
                     // Subscribe to events
                     subscribeToEvents();
                 })
-                .doOnError(e -> {
-                    System.err.println("Failed to connect: " + e.getMessage());
-                    running.set(false);
-                    shutdownLatch.countDown();
-                })
-                .subscribe();
+                .subscribe(
+                    v -> {},
+                    e -> {
+                        System.err.println("Failed to connect: " + e.getMessage());
+                        running.set(false);
+                        shutdownLatch.countDown();
+                    }
+                );
 
             // Wait for shutdown
             try {
@@ -330,23 +333,26 @@ public class AgentV2Sample {
             // Send session update
             ClientEventSessionUpdate sessionUpdate = new ClientEventSessionUpdate(sessionOptions);
             session.sendEvent(sessionUpdate)
-                .doOnSuccess(v -> System.out.println("Session configuration sent"))
-                .doOnError(e -> System.err.println("Failed to configure session: " + e.getMessage()))
-                .subscribe();
+                .subscribe(
+                    v -> System.out.println("Session configuration sent"),
+                    e -> System.err.println("Failed to configure session: " + e.getMessage())
+                );
         }
 
         private void subscribeToEvents() {
             session.receiveEvents()
                 .doOnNext(this::handleEvent)
-                .doOnError(e -> {
-                    System.err.println("Error receiving events: " + e.getMessage());
-                    shutdown();
-                })
                 .doOnComplete(() -> {
                     System.out.println("Event stream completed");
                     shutdown();
                 })
-                .subscribe();
+                .subscribe(
+                    v -> {},
+                    e -> {
+                        System.err.println("Error receiving events: " + e.getMessage());
+                        shutdown();
+                    }
+                );
         }
 
         private void handleEvent(SessionUpdate event) {
@@ -483,15 +489,16 @@ public class AgentV2Sample {
     static class AudioProcessor {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat format;
-        private final BlockingQueue<AudioPacket> playbackQueue = new LinkedBlockingQueue<>();
+        private final BlockingQueue<AudioPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicInteger nextSeqNum = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
         private final AtomicBoolean running = new AtomicBoolean(false);
 
-        private TargetDataLine inputLine;
-        private SourceDataLine outputLine;
-        private Thread captureThread;
-        private Thread playbackThread;
+        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        private volatile TargetDataLine inputLine;
+        private volatile SourceDataLine outputLine;
+        private volatile Thread captureThread;
+        private volatile Thread playbackThread;
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
             this.session = session;
@@ -532,8 +539,11 @@ public class AgentV2Sample {
                         ? buffer.clone()
                         : Arrays.copyOf(buffer, bytesRead);
 
-                    // Send audio to service (sendInputAudio takes byte[])
-                    session.sendInputAudio(audioData).subscribe();
+                    session.sendInputAudio(audioData)
+                        .subscribe(
+                            v -> {},
+                            error -> System.err.println("Error sending audio: " + error.getMessage())
+                        );
                 }
             }
         }
@@ -583,7 +593,10 @@ public class AgentV2Sample {
 
         void queueAudio(byte[] audioData) {
             int seqNum = nextSeqNum.getAndIncrement();
-            playbackQueue.offer(new AudioPacket(seqNum, audioData));
+            // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+            if (!playbackQueue.offer(new AudioPacket(seqNum, audioData))) {
+                System.err.println("Warning: playback queue full, dropping audio packet seq=" + seqNum);
+            }
         }
 
         void skipPendingAudio() {

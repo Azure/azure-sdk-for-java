@@ -24,7 +24,7 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -69,7 +69,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key (required if not using --use-token-credential)</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - The API key (required only with --use-api-key flag)</li>
  * </ul>
  *
  * <p><strong>Audio Requirements:</strong></p>
@@ -82,7 +82,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test
  *
  * # With Token Credential:
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-api-key"
  * }</pre>
  */
 public final class VoiceAssistantSample {
@@ -136,12 +136,14 @@ public final class VoiceAssistantSample {
         private final AudioFormat audioFormat;
 
         // Audio capture components
-        private TargetDataLine microphone;
+        // volatile: written by reactor thread (startCapture), read/closed by shutdown-hook thread
+        private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
         // Audio playback components
-        private SourceDataLine speaker;
-        private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>();
+        // volatile: written by reactor thread (startPlayback), read/closed by shutdown-hook thread
+        private volatile SourceDataLine speaker;
+        private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
         private final AtomicInteger nextSequenceNumber = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
@@ -303,7 +305,10 @@ public final class VoiceAssistantSample {
         void queueAudio(byte[] audioData) {
             if (audioData != null && audioData.length > 0) {
                 int seqNum = nextSequenceNumber.getAndIncrement();
-                playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData));
+                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+                if (!playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData))) {
+                    System.err.println("Warning: playback queue full, dropping audio packet seq=" + seqNum);
+                }
             }
         }
 
@@ -351,17 +356,17 @@ public final class VoiceAssistantSample {
      * <p>Supports two authentication methods:</p>
      * <ul>
      *   <li>API Key: Default authentication (requires AZURE_VOICELIVE_API_KEY env var)</li>
-     *   <li>Token Credential: Use --use-token-credential flag</li>
+     *   <li>API Key: Use --use-api-key flag</li>
      * </ul>
      *
-     * @param args Command line arguments. Use --use-token-credential to use token-based authentication.
+     * @param args Command line arguments. Use --use-api-key to use API key authentication instead of DefaultAzureCredential.
      */
     public static void main(String[] args) {
         // Parse command line arguments
-        boolean useTokenCredential = false;
+        boolean useApiKey = false;
         for (String arg : args) {
-            if ("--use-token-credential".equals(arg)) {
-                useTokenCredential = true;
+            if ("--use-api-key".equals(arg)) {
+                useApiKey = true;
             }
         }
 
@@ -374,8 +379,8 @@ public final class VoiceAssistantSample {
             return;
         }
 
-        if (!useTokenCredential && apiKey == null) {
-            System.err.println("❌ AZURE_VOICELIVE_API_KEY environment variable is required when not using --use-token-credential");
+        if (useApiKey && apiKey == null) {
+            System.err.println("❌ AZURE_VOICELIVE_API_KEY environment variable is required when using --use-api-key");
             printUsage();
             return;
         }
@@ -389,16 +394,16 @@ public final class VoiceAssistantSample {
         System.out.println("🎙️ Starting Voice Assistant...");
 
         try {
-            if (useTokenCredential) {
-                // Use token credential authentication (Azure CLI)
-                System.out.println("🔑 Using Token Credential authentication (Azure CLI)");
-                System.out.println("   Make sure you have run 'az login' before running this sample");
-                TokenCredential credential = new AzureCliCredentialBuilder().build();
-                runVoiceAssistant(endpoint, credential);
-            } else {
+            if (useApiKey) {
                 // Use API Key authentication
                 System.out.println("🔑 Using API Key authentication");
                 runVoiceAssistant(endpoint, new KeyCredential(apiKey));
+            } else {
+                // Use token credential authentication (DefaultAzureCredential, recommended)
+                System.out.println("🔑 Using DefaultAzureCredential authentication");
+                System.out.println("   Make sure you have run 'az login' before running this sample");
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                runVoiceAssistant(endpoint, credential);
             }
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
@@ -443,9 +448,9 @@ public final class VoiceAssistantSample {
     private static void printUsage() {
         System.err.println("\nRequired Environment Variables:");
         System.err.println("  " + ENV_ENDPOINT + "=<your-voicelive-endpoint>");
-        System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required if not using --use-token-credential)");
+        System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required only with --use-api-key flag)");
         System.err.println("\nOptional:");
-        System.err.println("  Use --use-token-credential flag to authenticate with Azure CLI (requires 'az login')");
+        System.err.println("  Use --use-api-key flag to authenticate with an API key instead of DefaultAzureCredential");
     }
 
     /**

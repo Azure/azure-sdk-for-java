@@ -29,7 +29,7 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
-import com.azure.core.credential.KeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,7 +70,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
  * </ul>
  *
  * <p><strong>How to Run:</strong></p>
@@ -90,7 +90,6 @@ public final class FunctionCallingSample {
     // Service configuration
     private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
-    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
     // Audio format constants
     private static final int SAMPLE_RATE = 24000;
@@ -111,15 +110,9 @@ public final class FunctionCallingSample {
     public static void main(String[] args) {
         // Load configuration
         String endpoint = System.getenv(ENV_ENDPOINT);
-        String apiKey = System.getenv(ENV_API_KEY);
 
         if (endpoint == null || endpoint.isEmpty()) {
             System.err.println("Error: AZURE_VOICELIVE_ENDPOINT environment variable is not set.");
-            System.exit(1);
-        }
-
-        if (apiKey == null || apiKey.isEmpty()) {
-            System.err.println("Error: AZURE_VOICELIVE_API_KEY environment variable is not set.");
             System.exit(1);
         }
 
@@ -129,11 +122,12 @@ public final class FunctionCallingSample {
         System.out.println(separator);
 
         try {
-            // Create client
-            KeyCredential credential = new KeyCredential(apiKey);
+            // Create client using DefaultAzureCredential (recommended).
+            // To use an API key instead:
+            //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
-                .credential(credential)
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
             runFunctionCallingSession(client);
@@ -379,8 +373,10 @@ public final class FunctionCallingSample {
 
             session.sendEvent(createItem)
                 .then(session.sendEvent(new ClientEventResponseCreate()))
-                .doOnSuccess(v -> System.out.println("🤖 Function result sent"))
-                .subscribe();
+                .subscribe(
+                    v -> System.out.println("🤖 Function result sent"),
+                    error -> System.err.println("❌ Failed to send function result: " + error.getMessage())
+                );
         }
     }
 
@@ -468,11 +464,12 @@ public final class FunctionCallingSample {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
-        private TargetDataLine microphone;
+        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
-        private SourceDataLine speaker;
-        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>();
+        private volatile SourceDataLine speaker;
+        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
@@ -499,7 +496,11 @@ public final class FunctionCallingSample {
                         int bytesRead = microphone.read(buffer, 0, buffer.length);
                         if (bytesRead > 0) {
                             byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                            session.sendInputAudio(BinaryData.fromBytes(audioData)).subscribe();
+                            session.sendInputAudio(BinaryData.fromBytes(audioData))
+                                .subscribe(
+                                    v -> {},
+                                    error -> System.err.println("Error sending audio: " + error.getMessage())
+                                );
                         }
                     }
                 }, "AudioCapture").start();
@@ -527,12 +528,8 @@ public final class FunctionCallingSample {
                 new Thread(() -> {
                     while (isPlaying.get()) {
                         try {
-                            byte[] audioData = playbackQueue.poll();
-                            if (audioData != null) {
-                                speaker.write(audioData, 0, audioData.length);
-                            } else {
-                                Thread.sleep(10);
-                            }
+                            byte[] audioData = playbackQueue.take();
+                            speaker.write(audioData, 0, audioData.length);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                             break;
@@ -553,7 +550,10 @@ public final class FunctionCallingSample {
 
         void queueAudio(byte[] audioData) {
             if (isPlaying.get()) {
-                playbackQueue.offer(audioData);
+                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+                if (!playbackQueue.offer(audioData)) {
+                    System.err.println("Warning: playback queue full, dropping audio chunk of " + audioData.length + " bytes");
+                }
             }
         }
 

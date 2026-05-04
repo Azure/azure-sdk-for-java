@@ -12,7 +12,7 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ import java.util.Arrays;
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
  * </ul>
  *
  * <p><strong>How to Run:</strong></p>
@@ -56,19 +56,20 @@ public final class BasicVoiceConversationSample {
      * @param args Unused command line arguments
      */
     public static void main(String[] args) {
-        // Get credentials from environment variables
+        // Get endpoint from environment variable
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT environment variable");
             return;
         }
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (recommended).
+        // To use an API key instead:
+        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Starting basic voice conversation...");
