@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -121,7 +120,7 @@ public class BenchmarkOrchestrator {
             totalCycles, tenants.size(), config.getConcurrency(), config.getNumberOfOperations());
         long startTime = System.currentTimeMillis();
 
-        Scheduler benchmarkScheduler = Schedulers.boundedElastic();
+        Scheduler benchmarkScheduler = BenchmarkSchedulers.BENCHMARK_DISPATCH;
 
         try {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
@@ -255,7 +254,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
-            // boundedElastic is a global shared scheduler — do not dispose it.
+            // BenchmarkSchedulers.BENCHMARK_DISPATCH is a static shared scheduler — do not dispose it.
         }
 
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
