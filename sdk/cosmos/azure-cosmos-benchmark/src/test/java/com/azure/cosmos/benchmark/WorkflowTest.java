@@ -89,27 +89,6 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void writeThroughputWithDataProvider(boolean useNameLink) throws Exception {
-        int numberOfOperations = 123;
-        File configFile = createWorkloadConfigFile(
-            TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
-            database.getId(),
-            collection.getId(),
-            "WriteThroughput",
-            "DIRECT",
-            "SESSION",
-            2,
-            numberOfOperations,
-            0);
-        try {
-            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
-        } finally {
-            configFile.delete();
-        }
-    }
-
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
         File configFile = createWorkloadConfigFile(
@@ -118,27 +97,6 @@ public class WorkflowTest {
             database.getId(),
             collection.getId(),
             "WriteThroughput",
-            "DIRECT",
-            "SESSION",
-            2,
-            numberOfOperations,
-            0);
-        try {
-            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
-        } finally {
-            configFile.delete();
-        }
-    }
-
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void readThroughputWithDataProvider(boolean useNameLink) throws Exception {
-        int numberOfOperations = 123;
-        File configFile = createWorkloadConfigFile(
-            TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
-            database.getId(),
-            collection.getId(),
-            "ReadThroughput",
             "DIRECT",
             "SESSION",
             2,
