@@ -1,5 +1,14 @@
 # Release History
 
+## 1.6.6 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.4` to version `1.4.6`.
+
+
 ## 1.6.5 (2026-01-29)
 
 ### Other Changes
