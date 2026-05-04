@@ -277,7 +277,7 @@ com.azure.spring:spring-cloud-azure-testcontainers;7.2.0;7.3.0-beta.1
 com.azure:azure-spring-data-cosmos;7.2.0;7.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.61.0;2.62.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.55.1;2.56.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.55.1;2.55.2
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.8;2.53.9
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.7;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.56.3;2.57.1
