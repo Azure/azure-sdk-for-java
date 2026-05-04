@@ -8,18 +8,12 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,21 +39,11 @@ public class TenantWorkloadConfig {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(TenantWorkloadConfig.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-        .registerModule(new JavaTimeModule());
 
     // ======== Meter name constants (used by AsyncBenchmark + CosmosTotalResultReporter) ========
 
 
     public static final String DEFAULT_PARTITION_KEY_PATH = "/pk";
-
-    // Fields that should be per-tenant, not in tenantDefaults
-    private static final java.util.Set<String> PER_TENANT_ONLY_FIELDS = new java.util.HashSet<>(
-        java.util.Arrays.asList(
-            "serviceEndpoint", "masterKey", "databaseId", "containerId",
-            "aadLoginEndpoint", "aadTenantId", "aadManagedIdentityClientId"
-        )
-    );
 
     // ======== Account connection ========
 
@@ -226,6 +210,51 @@ public class TenantWorkloadConfig {
     private transient MeterRegistry cosmosMicrometerRegistry;
 
     public TenantWorkloadConfig() {}
+
+    /**
+     * Apply defaults from a TenantDefaultConfig. Only fills in fields that are null on this tenant.
+     */
+    void applyDefaults(TenantDefaultConfig defaults) {
+        if (defaults == null) return;
+        if (operation == null) operation = defaults.getOperation();
+        if (numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = defaults.getNumberOfPreCreatedDocuments();
+        if (throughput == null) throughput = defaults.getThroughput();
+        if (documentDataFieldSize == null) documentDataFieldSize = defaults.getDocumentDataFieldSize();
+        if (documentDataFieldCount == null) documentDataFieldCount = defaults.getDocumentDataFieldCount();
+        if (contentResponseOnWriteEnabled == null) contentResponseOnWriteEnabled = defaults.getContentResponseOnWriteEnabled();
+        if (disablePassingPartitionKeyAsOptionOnWrite == null) disablePassingPartitionKeyAsOptionOnWrite = defaults.getDisablePassingPartitionKeyAsOptionOnWrite();
+        if (useNameLink == null) useNameLink = defaults.getUseNameLink();
+        if (tupleSize == null) tupleSize = defaults.getTupleSize();
+        if (pointOperationLatencyThresholdMs == null) pointOperationLatencyThresholdMs = defaults.getPointOperationLatencyThresholdMs();
+        if (nonPointOperationLatencyThresholdMs == null) nonPointOperationLatencyThresholdMs = defaults.getNonPointOperationLatencyThresholdMs();
+        if (isRegionScopedSessionContainerEnabled == null) isRegionScopedSessionContainerEnabled = defaults.getIsRegionScopedSessionContainerEnabled();
+        if (isDefaultLog4jLoggerEnabled == null) isDefaultLog4jLoggerEnabled = defaults.getIsDefaultLog4jLoggerEnabled();
+        if (diagnosticsThresholdDuration == null) diagnosticsThresholdDuration = defaults.getDiagnosticsThresholdDuration();
+        if (sparsityWaitTime == null) sparsityWaitTime = defaults.getSparsityWaitTime();
+        if (isProactiveConnectionManagementEnabled == null) isProactiveConnectionManagementEnabled = defaults.getIsProactiveConnectionManagementEnabled();
+        if (isUseUnWarmedUpContainer == null) isUseUnWarmedUpContainer = defaults.getIsUseUnWarmedUpContainer();
+        if (numberOfCollectionForCtl == null) numberOfCollectionForCtl = defaults.getNumberOfCollectionForCtl();
+        if (readWriteQueryReadManyPct == null) readWriteQueryReadManyPct = defaults.getReadWriteQueryReadManyPct();
+        if (encryptedStringFieldCount == null) encryptedStringFieldCount = defaults.getEncryptedStringFieldCount();
+        if (encryptedLongFieldCount == null) encryptedLongFieldCount = defaults.getEncryptedLongFieldCount();
+        if (encryptedDoubleFieldCount == null) encryptedDoubleFieldCount = defaults.getEncryptedDoubleFieldCount();
+        if (encryptionEnabled == null) encryptionEnabled = defaults.getEncryptionEnabled();
+        if (bulkloadBatchSize == null) bulkloadBatchSize = defaults.getBulkloadBatchSize();
+        if (testScenario == null) testScenario = defaults.getTestScenario();
+        if (environment == null) environment = defaults.getEnvironment();
+        if (useSync == null) useSync = defaults.getUseSync();
+        if (proactiveConnectionRegionsCount == null) proactiveConnectionRegionsCount = defaults.getProactiveConnectionRegionsCount();
+        if (aggressiveWarmupDuration == null) aggressiveWarmupDuration = defaults.getAggressiveWarmupDuration();
+        if (connectionMode == null) connectionMode = defaults.getConnectionMode();
+        if (consistencyLevel == null) consistencyLevel = defaults.getConsistencyLevel();
+        if (maxConnectionPoolSize == null) maxConnectionPoolSize = defaults.getMaxConnectionPoolSize();
+        if (connectionSharingAcrossClientsEnabled == null) connectionSharingAcrossClientsEnabled = defaults.getConnectionSharingAcrossClientsEnabled();
+        if (http2Enabled == null) http2Enabled = defaults.getHttp2Enabled();
+        if (http2MaxConcurrentStreams == null) http2MaxConcurrentStreams = defaults.getHttp2MaxConcurrentStreams();
+        if (preferredRegionsList == null) preferredRegionsList = defaults.getPreferredRegionsList();
+        if (manageDatabase == null) manageDatabase = defaults.getManageDatabase();
+        if (isManagedIdentityRequired == null) isManagedIdentityRequired = defaults.getIsManagedIdentityRequired();
+    }
 
 
 
@@ -412,83 +441,4 @@ public class TenantWorkloadConfig {
             '}';
     }
 
-    // ======== Static parsing ========
-
-    public static List<TenantWorkloadConfig> parseWorkloadConfig(File workloadConfigFile) throws IOException {
-        JsonNode root = OBJECT_MAPPER.readTree(workloadConfigFile);
-
-        // tenantDefaults and tenants are nested under "orchestrator"
-        JsonNode orchestratorNode = root.get("orchestrator");
-
-        // Parse tenantDefaults as ObjectNode for JSON-level merge
-        ObjectNode defaultsNode = null;
-        if (orchestratorNode != null) {
-            JsonNode rawDefaults = orchestratorNode.get("tenantDefaults");
-            if (rawDefaults != null && rawDefaults.isObject()) {
-                defaultsNode = (ObjectNode) rawDefaults.deepCopy();
-
-                // Strip account-specific fields — they must be per-tenant
-                for (String perTenantField : PER_TENANT_ONLY_FIELDS) {
-                    if (defaultsNode.has(perTenantField)) {
-                        defaultsNode.remove(perTenantField);
-                        logger.warn("Ignoring '{}' in tenantDefaults — this field must be set per-tenant. "
-                            + "Move it into each tenant entry.", perTenantField);
-                    }
-                }
-            }
-        }
-
-        if (defaultsNode != null && defaultsNode.size() > 0) {
-            logger.info("tenantDefaults applied to all tenants (per-tenant values take priority): {}",
-                defaultsNode.fieldNames());
-        }
-
-        List<TenantWorkloadConfig> tenants = new ArrayList<>();
-
-        JsonNode tenantsNode = orchestratorNode != null ? orchestratorNode.get("tenants") : null;
-        if (tenantsNode != null && tenantsNode.isArray()) {
-            for (JsonNode tenantNode : tenantsNode) {
-                // Merge: start with defaults, overlay per-tenant values on top
-                ObjectNode merged;
-                if (defaultsNode != null) {
-                    merged = defaultsNode.deepCopy();
-                    merged.setAll((ObjectNode) tenantNode);
-                } else {
-                    merged = (ObjectNode) tenantNode;
-                }
-
-                TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(merged, TenantWorkloadConfig.class);
-                validateTenantConfig(tenant);
-                tenants.add(tenant);
-            }
-        }
-
-        logger.info("Parsed {} tenants from {}", tenants.size(), workloadConfigFile.getName());
-        return tenants;
-    }
-
-    private static void validateTenantConfig(TenantWorkloadConfig tenant) {
-        List<String> missing = new ArrayList<>();
-        if (isNullOrEmpty(tenant.getServiceEndpoint())) {
-            missing.add("serviceEndpoint");
-        }
-        if (isNullOrEmpty(tenant.getDatabaseId())) {
-            missing.add("databaseId");
-        }
-        if (isNullOrEmpty(tenant.getContainerId())) {
-            missing.add("containerId");
-        }
-        if (!tenant.isManagedIdentityRequired()
-            && isNullOrEmpty(tenant.getMasterKey())) {
-            missing.add("masterKey (required when isManagedIdentityRequired is not true)");
-        }
-        if (!missing.isEmpty()) {
-            throw new IllegalArgumentException(
-                "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
-        }
-    }
-
-    private static boolean isNullOrEmpty(String value) {
-        return value == null || value.isEmpty();
-    }
 }

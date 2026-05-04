@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,8 +95,17 @@ public class BenchmarkConfig {
             config.lifecycle.settleTimeMs = 0;
         }
 
-        // Parse tenants from orchestrator section of the same file
-        config.tenantWorkloads = TenantWorkloadConfig.parseWorkloadConfig(configFile);
+        // Merge tenantDefaults into each tenant and validate
+        TenantDefaultConfig defaults = config.orchestrator.tenantDefaults;
+        List<TenantWorkloadConfig> resolvedTenants = new ArrayList<>();
+        for (TenantWorkloadConfig tenant : config.orchestrator.tenants) {
+            if (defaults != null) {
+                defaults.applyTo(tenant);
+            }
+            validateTenantConfig(tenant);
+            resolvedTenants.add(tenant);
+        }
+        config.tenantWorkloads = resolvedTenants;
 
         // Validate orchestrator settings
         if (config.orchestrator.concurrency < 1) {
@@ -104,6 +114,31 @@ public class BenchmarkConfig {
         }
 
         return config;
+    }
+
+    private static void validateTenantConfig(TenantWorkloadConfig tenant) {
+        List<String> missing = new ArrayList<>();
+        if (isNullOrEmpty(tenant.getServiceEndpoint())) {
+            missing.add("serviceEndpoint");
+        }
+        if (isNullOrEmpty(tenant.getDatabaseId())) {
+            missing.add("databaseId");
+        }
+        if (isNullOrEmpty(tenant.getContainerId())) {
+            missing.add("containerId");
+        }
+        if (!tenant.isManagedIdentityRequired()
+            && isNullOrEmpty(tenant.getMasterKey())) {
+            missing.add("masterKey (required when isManagedIdentityRequired is not true)");
+        }
+        if (!missing.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
+        }
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
     // ======== Convenience getters (delegate to nested configs) ========
@@ -230,6 +265,13 @@ public class BenchmarkConfig {
         // -- Metrics (nested under orchestrator) --
         @JsonProperty("metrics")
         MetricsConfig metrics = new MetricsConfig();
+
+        // -- Tenant configuration (deserialized by Jackson) --
+        @JsonProperty("tenantDefaults")
+        TenantDefaultConfig tenantDefaults;
+
+        @JsonProperty("tenants")
+        List<TenantWorkloadConfig> tenants = Collections.emptyList();
 
         @Override
         public String toString() {
