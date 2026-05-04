@@ -167,7 +167,12 @@ public enum DataLakeServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2026-10-06}.
      */
-    V2026_10_06("2026-10-06");
+    V2026_10_06("2026-10-06"),
+
+    /**
+     * Service version {@code 2026-12-06}.
+     */
+    V2026_12_06("2026-12-06");
 
     private final String version;
 
@@ -189,6 +194,6 @@ public enum DataLakeServiceVersion implements ServiceVersion {
      * @return the latest {@link DataLakeServiceVersion}
      */
     public static DataLakeServiceVersion getLatest() {
-        return V2026_10_06;
+        return V2026_12_06;
     }
 }
