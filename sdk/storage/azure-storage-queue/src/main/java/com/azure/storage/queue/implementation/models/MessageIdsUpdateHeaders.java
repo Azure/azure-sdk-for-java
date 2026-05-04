@@ -17,22 +17,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class MessageIdsUpdateHeaders {
     /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
      * The x-ms-version property.
      */
     @Generated
     private String xMsVersion;
 
     /*
-     * The Date property.
+     * The x-ms-time-next-visible property.
      */
     @Generated
-    private DateTimeRfc1123 date;
+    private DateTimeRfc1123 xMsTimeNextVisible;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
 
     /*
      * The x-ms-popreceipt property.
@@ -41,16 +41,16 @@ public final class MessageIdsUpdateHeaders {
     private String xMsPopreceipt;
 
     /*
-     * The x-ms-time-next-visible property.
+     * The Date property.
      */
     @Generated
-    private DateTimeRfc1123 xMsTimeNextVisible;
+    private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
-
     private static final HttpHeaderName X_MS_TIME_NEXT_VISIBLE = HttpHeaderName.fromString("x-ms-time-next-visible");
+
+    private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -59,43 +59,21 @@ public final class MessageIdsUpdateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public MessageIdsUpdateHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
-        this.xMsPopreceipt = rawHeaders.getValue(X_MS_POPRECEIPT);
         String xMsTimeNextVisible = rawHeaders.getValue(X_MS_TIME_NEXT_VISIBLE);
         if (xMsTimeNextVisible != null) {
             this.xMsTimeNextVisible = new DateTimeRfc1123(xMsTimeNextVisible);
         } else {
             this.xMsTimeNextVisible = null;
         }
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the MessageIdsUpdateHeaders object itself.
-     */
-    @Generated
-    public MessageIdsUpdateHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsPopreceipt = rawHeaders.getValue(X_MS_POPRECEIPT);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
     }
 
     /**
@@ -117,57 +95,6 @@ public final class MessageIdsUpdateHeaders {
     @Generated
     public MessageIdsUpdateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the MessageIdsUpdateHeaders object itself.
-     */
-    @Generated
-    public MessageIdsUpdateHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsPopreceipt property: The x-ms-popreceipt property.
-     * 
-     * @return the xMsPopreceipt value.
-     */
-    @Generated
-    public String getXMsPopreceipt() {
-        return this.xMsPopreceipt;
-    }
-
-    /**
-     * Set the xMsPopreceipt property: The x-ms-popreceipt property.
-     * 
-     * @param xMsPopreceipt the xMsPopreceipt value to set.
-     * @return the MessageIdsUpdateHeaders object itself.
-     */
-    @Generated
-    public MessageIdsUpdateHeaders setXMsPopreceipt(String xMsPopreceipt) {
-        this.xMsPopreceipt = xMsPopreceipt;
         return this;
     }
 
@@ -196,6 +123,79 @@ public final class MessageIdsUpdateHeaders {
             this.xMsTimeNextVisible = null;
         } else {
             this.xMsTimeNextVisible = new DateTimeRfc1123(xMsTimeNextVisible);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the MessageIdsUpdateHeaders object itself.
+     */
+    @Generated
+    public MessageIdsUpdateHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsPopreceipt property: The x-ms-popreceipt property.
+     * 
+     * @return the xMsPopreceipt value.
+     */
+    @Generated
+    public String getXMsPopreceipt() {
+        return this.xMsPopreceipt;
+    }
+
+    /**
+     * Set the xMsPopreceipt property: The x-ms-popreceipt property.
+     * 
+     * @param xMsPopreceipt the xMsPopreceipt value to set.
+     * @return the MessageIdsUpdateHeaders object itself.
+     */
+    @Generated
+    public MessageIdsUpdateHeaders setXMsPopreceipt(String xMsPopreceipt) {
+        this.xMsPopreceipt = xMsPopreceipt;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the MessageIdsUpdateHeaders object itself.
+     */
+    @Generated
+    public MessageIdsUpdateHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }
