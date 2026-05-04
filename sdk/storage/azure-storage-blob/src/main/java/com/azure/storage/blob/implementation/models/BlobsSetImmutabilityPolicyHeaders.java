@@ -18,16 +18,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BlobsSetImmutabilityPolicyHeaders {
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-immutability-policy-mode property.
      */
     @Generated
-    private String xMsClientRequestId;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
+    private BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode;
 
     /*
      * The x-ms-version property.
@@ -36,30 +30,36 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     private String xMsVersion;
 
     /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
-
-    /*
      * The x-ms-immutability-policy-until-date property.
      */
     @Generated
     private DateTimeRfc1123 xMsImmutabilityPolicyUntilDate;
 
     /*
-     * The x-ms-immutability-policy-mode property.
+     * The x-ms-request-id property.
      */
     @Generated
-    private BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode;
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE
+        = HttpHeaderName.fromString("x-ms-immutability-policy-mode");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_UNTIL_DATE
         = HttpHeaderName.fromString("x-ms-immutability-policy-until-date");
-
-    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE
-        = HttpHeaderName.fromString("x-ms-immutability-policy-mode");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -68,70 +68,49 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsSetImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
-        String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
-        if (xMsImmutabilityPolicyUntilDate != null) {
-            this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
-        } else {
-            this.xMsImmutabilityPolicyUntilDate = null;
-        }
         String xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
         if (xMsImmutabilityPolicyMode != null) {
             this.xMsImmutabilityPolicyMode = BlobImmutabilityPolicyMode.fromString(xMsImmutabilityPolicyMode);
         } else {
             this.xMsImmutabilityPolicyMode = null;
         }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
+        if (xMsImmutabilityPolicyUntilDate != null) {
+            this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
+        } else {
+            this.xMsImmutabilityPolicyUntilDate = null;
+        }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsImmutabilityPolicyMode value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
+        return this.xMsImmutabilityPolicyMode;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
      * @return the BlobsSetImmutabilityPolicyHeaders object itself.
      */
     @Generated
-    public BlobsSetImmutabilityPolicyHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the BlobsSetImmutabilityPolicyHeaders object itself.
-     */
-    @Generated
-    public BlobsSetImmutabilityPolicyHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public BlobsSetImmutabilityPolicyHeaders
+        setXMsImmutabilityPolicyMode(BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode) {
+        this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
         return this;
     }
 
@@ -154,35 +133,6 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     @Generated
     public BlobsSetImmutabilityPolicyHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the BlobsSetImmutabilityPolicyHeaders object itself.
-     */
-    @Generated
-    public BlobsSetImmutabilityPolicyHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
         return this;
     }
 
@@ -217,25 +167,75 @@ public final class BlobsSetImmutabilityPolicyHeaders {
     }
 
     /**
-     * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     * Get the xMsRequestId property: The x-ms-request-id property.
      * 
-     * @return the xMsImmutabilityPolicyMode value.
+     * @return the xMsRequestId value.
      */
     @Generated
-    public BlobImmutabilityPolicyMode getXMsImmutabilityPolicyMode() {
-        return this.xMsImmutabilityPolicyMode;
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
     }
 
     /**
-     * Set the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     * Set the xMsRequestId property: The x-ms-request-id property.
      * 
-     * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
+     * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsSetImmutabilityPolicyHeaders object itself.
      */
     @Generated
-    public BlobsSetImmutabilityPolicyHeaders
-        setXMsImmutabilityPolicyMode(BlobImmutabilityPolicyMode xMsImmutabilityPolicyMode) {
-        this.xMsImmutabilityPolicyMode = xMsImmutabilityPolicyMode;
+    public BlobsSetImmutabilityPolicyHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the BlobsSetImmutabilityPolicyHeaders object itself.
+     */
+    @Generated
+    public BlobsSetImmutabilityPolicyHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the BlobsSetImmutabilityPolicyHeaders object itself.
+     */
+    @Generated
+    public BlobsSetImmutabilityPolicyHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
         return this;
     }
 }
