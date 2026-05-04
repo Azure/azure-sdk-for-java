@@ -19,6 +19,9 @@ public class CsvReporterConfig {
     public CsvReporterConfig() {}
 
     public CsvReporterConfig(String reportingDirectory) {
+        if (reportingDirectory == null || reportingDirectory.isEmpty()) {
+            throw new IllegalArgumentException("reportingDirectory must not be null or empty");
+        }
         this.reportingDirectory = reportingDirectory;
     }
 

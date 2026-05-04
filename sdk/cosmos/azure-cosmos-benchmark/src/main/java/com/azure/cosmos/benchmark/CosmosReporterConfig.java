@@ -39,6 +39,18 @@ public class CosmosReporterConfig {
     public CosmosReporterConfig(String serviceEndpoint, String masterKey,
                                 String database, String container,
                                 String testVariationName, String branchName, String commitId) {
+        if (serviceEndpoint == null || serviceEndpoint.isEmpty()) {
+            throw new IllegalArgumentException("serviceEndpoint must not be null or empty");
+        }
+        if (masterKey == null || masterKey.isEmpty()) {
+            throw new IllegalArgumentException("masterKey must not be null or empty");
+        }
+        if (database == null || database.isEmpty()) {
+            throw new IllegalArgumentException("database must not be null or empty");
+        }
+        if (container == null || container.isEmpty()) {
+            throw new IllegalArgumentException("container must not be null or empty");
+        }
         this.serviceEndpoint = serviceEndpoint;
         this.masterKey = masterKey;
         this.database = database;
