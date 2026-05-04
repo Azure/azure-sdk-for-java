@@ -1,5 +1,14 @@
 # Release History
 
+## 11.8.2 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 11.8.1 (2026-01-29)
 
 ### Other Changes
