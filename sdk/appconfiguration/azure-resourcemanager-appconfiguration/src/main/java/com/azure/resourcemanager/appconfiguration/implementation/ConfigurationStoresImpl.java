@@ -36,12 +36,8 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         Context context) {
         Response<ConfigurationStoreInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, configStoreName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationStoreImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationStoreImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationStore getByResourceGroup(String resourceGroupName, String configStoreName) {
@@ -99,12 +95,8 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         RegenerateKeyParameters regenerateKeyParameters, Context context) {
         Response<ApiKeyInner> inner = this.serviceClient()
             .regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApiKeyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApiKeyImpl(inner.getValue(), this.manager()));
     }
 
     public ApiKey regenerateKey(String resourceGroupName, String configStoreName,
@@ -122,12 +114,8 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         Context context) {
         Response<DeletedConfigurationStoreInner> inner
             = this.serviceClient().getDeletedWithResponse(location, configStoreName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeletedConfigurationStoreImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeletedConfigurationStoreImpl(inner.getValue(), this.manager()));
     }
 
     public DeletedConfigurationStore getDeleted(String location, String configStoreName) {

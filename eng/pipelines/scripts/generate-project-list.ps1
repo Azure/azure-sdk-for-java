@@ -4,6 +4,29 @@ $additionalModulesList = @()
 
 . "${PSScriptRoot}/../../common/scripts/common.ps1"
 
+# If ProjectListOverride is set (e.g., from matrix variables), use it directly
+# to avoid building unnecessary modules in jobs that only test a subset.
+# Do not honor ProjectListOverride for FromSource runs — FromSource builds use
+# ClientFromSourcePom.xml which builds all libraries and the project list must
+# be computed from the artifacts, not overridden.
+if ($env:PROJECTLISTOVERRIDE -and $env:PROJECTLISTOVERRIDE -notlike '*ProjectListOverride*') {
+  if ($env:TESTFROMSOURCE -eq 'true') {
+    Write-Host "Ignoring ProjectListOverride for FromSource run (TestFromSource=true)"
+  } else {
+    $projects = $env:PROJECTLISTOVERRIDE
+    Write-Host "Using ProjectListOverride = $projects"
+    Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
+    Write-Host "##vso[task.setvariable variable=ArtifactsList;]$projects"
+    Write-Host "##vso[task.setvariable variable=AdditionalModulesList;]"
+
+    $sha256 = new-object -TypeName System.Security.Cryptography.SHA256Managed
+    $utf8 = new-object -TypeName System.Text.UTF8Encoding
+    $projectListSha256 = [Convert]::ToBase64String($sha256.ComputeHash($utf8.GetBytes($projects)))
+    Write-Host "##vso[task.setvariable variable=ProjectListSha256;]$projectListSha256"
+    return
+  }
+}
+
 if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
   $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
   foreach ($artifact in $artifacts) {

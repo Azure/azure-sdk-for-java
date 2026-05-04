@@ -33,12 +33,8 @@ public final class CachesImpl implements Caches {
         String cacheName, Context context) {
         Response<CacheInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CacheImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CacheImpl(inner.getValue(), this.manager()));
     }
 
     public Cache get(String resourceGroupName, String accountName, String poolName, String cacheName) {
@@ -59,16 +55,13 @@ public final class CachesImpl implements Caches {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, cacheName, context);
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName, context);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName, Context context) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 
@@ -76,12 +69,8 @@ public final class CachesImpl implements Caches {
         String poolName, String cacheName, Context context) {
         Response<PeeringPassphrasesInner> inner = this.serviceClient()
             .listPeeringPassphrasesWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
     }
 
     public PeeringPassphrases listPeeringPassphrases(String resourceGroupName, String accountName, String poolName,
@@ -103,6 +92,15 @@ public final class CachesImpl implements Caches {
     public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
         this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+    }
+
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
+        this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+    }
+
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+        Context context) {
+        this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
     }
 
     public Cache getById(String id) {

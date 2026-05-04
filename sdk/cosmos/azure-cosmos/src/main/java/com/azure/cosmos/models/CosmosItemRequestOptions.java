@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
@@ -27,8 +28,10 @@ import java.util.Set;
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
 public class CosmosItemRequestOptions {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
+    }
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;
@@ -80,7 +83,6 @@ public class CosmosItemRequestOptions {
             this.customOptions = new HashMap<>(options.customOptions);
         }
     }
-
 
     /**
      * Constructor
@@ -543,7 +545,7 @@ public class CosmosItemRequestOptions {
             return Duration.ofMillis(100);
         }
 
-        return thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds);
+        return diagThresholdsAccessor().getPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
@@ -566,11 +568,48 @@ public class CosmosItemRequestOptions {
     }
 
     /**
-     * Sets the custom item request option value by key
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
      *
-     * @param name  a string representing the custom option's name
-     * @param value a string representing the custom option's value
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
+     * @return the CosmosItemRequestOptions.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosItemRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        Utils.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this request options instance.
      *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.getHeaders());
+    }
+
+    /**
+     * Sets a header to be included with this specific request.
+     *
+     * @param name  the header name
+     * @param value the header value
      * @return the CosmosItemRequestOptions.
      */
     CosmosItemRequestOptions setHeader(String name, String value) {

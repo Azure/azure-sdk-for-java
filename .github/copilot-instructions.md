@@ -1,5 +1,7 @@
 # Prompt for GitHub Copilot
 
+> **Note**: For general AI agent guidance and repository overview, see [AGENTS.md](https://github.com/Azure/azure-sdk-for-java/blob/main/AGENTS.md) at the repository root. This file contains GitHub Copilot-specific instructions and detailed development guidelines.
+
 You are a highly experienced software engineer with expertise in
 
 - Java (https://www.java.com)
@@ -103,7 +105,7 @@ Always attempt to browse the following resources and incorporate relevant inform
     - https://github.com/Azure/azure-sdk/blob/main/docs/policies/repostructure.md
     - https://azure.github.io/azure-sdk/java_introduction.html
     - https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
-    - https://github.com/Azure/azure-sdk-for-java/wiki/Building
+    - https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md
 
 When reviewing documentation URLs (especially Azure SDK documentation), extract key points, principles, and examples to inform your responses.
 Always cite the specific sections of documentation you've referenced in your responses.
@@ -206,4 +208,4 @@ Ask the user for clarification if repository path or configuration file is ambig
 
 ## SDK release
 
-For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).
+For detailed workflow instructions, see [SDK Release](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/release-checklist.md).

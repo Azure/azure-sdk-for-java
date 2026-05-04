@@ -43,14 +43,18 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     private final String[] labelFilters;
 
+    private final List<String> tagsFilter;
+
     AppConfigurationApplicationSettingPropertySource(String name, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters,
+        List<String> tagsFilter) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(name + getLabelName(labelFilters), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.keyFilter = keyFilter;
         this.labelFilters = labelFilters;
+        this.tagsFilter = tagsFilter;
     }
 
     /**
@@ -61,6 +65,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
@@ -69,6 +74,10 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
+
+            if (tagsFilter != null && !tagsFilter.isEmpty()) {
+                settingSelector.setTagsFilter(tagsFilter);
+            }
 
             // * for wildcard match
             processConfigurationSettings(replicaClient.listSettings(settingSelector, context), settingSelector.getKeyFilter(),
@@ -128,7 +137,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
         // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
-        return;
     }
 
     private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)

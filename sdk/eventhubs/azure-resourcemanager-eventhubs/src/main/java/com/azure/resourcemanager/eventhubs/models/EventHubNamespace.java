@@ -129,6 +129,15 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
     boolean zoneRedundant();
 
     /**
+     * Checks whether local auth is disabled.
+     *
+     * @return whether local auth is disabled
+     */
+    default boolean localAuthDisabled() {
+        throw new UnsupportedOperationException("[localAuthDisabled] is not supported in " + getClass());
+    }
+
+    /**
      * The entirety of the event hub namespace definition.
      */
     interface Definition extends EventHubNamespace.DefinitionStages.Blank, EventHubNamespace.DefinitionStages.WithGroup,
@@ -273,7 +282,7 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
         }
 
         /**
-         * The stage of the event hub namespace definition allowing to enable Zone Redundant.
+         * The stage of the event hub namespace definition allowing to configure Zone Redundant.
          */
         interface WithZoneRedundant {
             /**
@@ -282,6 +291,20 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
              * @return next stage of the event hub namespace definition
              */
             WithCreate enableZoneRedundant();
+        }
+
+        /**
+         * The stage of the event hub namespace definition allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Event Hubs namespace.
+             *
+             * @return next stage of the event hub namespace definition
+             */
+            default WithCreate disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -294,7 +317,7 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
             EventHubNamespace.DefinitionStages.WithAuthorizationRule,
             EventHubNamespace.DefinitionStages.WithThroughputConfiguration,
             EventHubNamespace.DefinitionStages.WithMinimumTlsVersion,
-            EventHubNamespace.DefinitionStages.WithZoneRedundant {
+            EventHubNamespace.DefinitionStages.WithZoneRedundant, EventHubNamespace.DefinitionStages.WithLocalAuth {
         }
     }
 
@@ -305,7 +328,7 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
         extends Appliable<EventHubNamespace>, Resource.UpdateWithTags<Update>, EventHubNamespace.UpdateStages.WithSku,
         EventHubNamespace.UpdateStages.WithEventHub, EventHubNamespace.UpdateStages.WithAuthorizationRule,
         EventHubNamespace.UpdateStages.WithThroughputConfiguration,
-        EventHubNamespace.UpdateStages.WithMinimumTlsVersion {
+        EventHubNamespace.UpdateStages.WithMinimumTlsVersion, EventHubNamespace.UpdateStages.WithLocalAuth {
     }
 
     /**
@@ -432,6 +455,29 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
              * @return next stage of the event hub namespace update
              */
             Update withThroughputUnitsUpperLimit(int units);
+        }
+
+        /**
+         * The stage of the event hub namespace update allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Event Hubs namespace.
+             *
+             * @return next stage of the event hub namespace update
+             */
+            default Update disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
+
+            /**
+             * Enables SAS authentication for the Event Hubs namespace.
+             *
+             * @return next stage of the event hub namespace update
+             */
+            default Update enableLocalAuth() {
+                throw new UnsupportedOperationException("[enableLocalAuth] is not supported in " + getClass());
+            }
         }
 
         /**

@@ -21,7 +21,7 @@ public final class GuestSubscriptionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"ujitcjcz\",\"name\":\"zevndhkrwpdappds\",\"type\":\"dkvwrwjfe\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"sgfyccsnew\",\"name\":\"dwzjeiach\",\"type\":\"oosflnr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class GuestSubscriptionsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GuestSubscription response = manager.guestSubscriptions()
-            .define("gls")
-            .withExistingLocation("biksq")
+            .define("km")
+            .withExistingLocation("aop")
             .withProperties(new GuestSubscriptionProperties())
             .create();
 

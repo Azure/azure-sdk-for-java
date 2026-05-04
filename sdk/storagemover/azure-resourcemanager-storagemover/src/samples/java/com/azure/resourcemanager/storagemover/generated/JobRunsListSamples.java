@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class JobRunsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobRuns_List.json
+     * x-ms-original-file: 2025-12-01/JobRuns_List.json
      */
     /**
      * Sample code: JobRuns_List.

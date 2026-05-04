@@ -20,7 +20,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"baseResourceStatus\":[{\"resourceName\":\"zpnpbswv\",\"resourceType\":\"loccsrmozihm\",\"isZoneResilient\":false,\"details\":\"wtxxpkyjcx\"},{\"resourceName\":\"xgrytfmp\",\"resourceType\":\"cil\",\"isZoneResilient\":true,\"details\":\"ykggnoxuztrksx\"}],\"isClusterZoneResilient\":false}";
+            = "{\"baseResourceStatus\":[{\"resourceName\":\"pyznuciqd\",\"resourceType\":\"ex\",\"isZoneResilient\":false,\"details\":\"fuxtyasiibmiybnn\"},{\"resourceName\":\"tgnljhnmgixhcmav\",\"resourceType\":\"foudor\",\"isZoneResilient\":true,\"details\":\"yprotwyp\"},{\"resourceName\":\"d\",\"resourceType\":\"xhugcm\",\"isZoneResilient\":false,\"details\":\"lgorb\"},{\"resourceName\":\"tp\",\"resourceType\":\"tzfjltf\",\"isZoneResilient\":false,\"details\":\"yj\"}],\"isClusterZoneResilient\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ManagedAzResiliencyStatusesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedAzResiliencyStatus response = manager.managedAzResiliencyStatuses()
-            .getWithResponse("kxcoxpelnje", "agltsxoa", com.azure.core.util.Context.NONE)
+            .getWithResponse("inmfgvxirp", "hriypoqeyhlqhy", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

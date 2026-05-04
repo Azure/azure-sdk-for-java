@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark.linkedin.impl;
 
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.CosmosDBDataAccessorException;
-import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.BatchGetResult;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.QueryOptions;
@@ -34,7 +33,6 @@ class QueryExecutor<K, V> {
 
     private final DataLocator _dataLocator;
     private final ResponseHandler<K, V> _responseHandler;
-    private final Metrics _metrics;
     private final Clock _clock;
     private final OperationsLogger _logger;
 
@@ -44,18 +42,12 @@ class QueryExecutor<K, V> {
      */
     QueryExecutor(final DataLocator dataLocator,
         final ResponseHandler<K, V> responseHandler,
-        final MetricsFactory metricsFactory,
         final Clock clock,
         final OperationsLogger logger) {
-        Preconditions.checkNotNull(metricsFactory, "The MetricsFactory is null!");
         _dataLocator = Preconditions.checkNotNull(dataLocator, "DataLocator for this entity can not be null");
         _responseHandler = Preconditions.checkNotNull(responseHandler, "The CosmosDBResponseHandler can not be null");
         _clock = Preconditions.checkNotNull(clock, "clock cannot be null");
         _logger = Preconditions.checkNotNull(logger, "The Logger can not be null");
-
-        // Initialize the metrics prior to the first operation
-        final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics = metricsFactory.getMetrics(activeCollection, Constants.METHOD_SQL_QUERY);
     }
 
     /**
@@ -83,7 +75,6 @@ class QueryExecutor<K, V> {
         }
 
         final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics.logCounterMetric(Metrics.Type.CALL_COUNT);
         final String query = queryOptions.getDocumentDBQuery();
         long startTime = _clock.millis();
 
@@ -106,21 +97,12 @@ class QueryExecutor<K, V> {
                     activityId, null);
             }
 
-            // Map the response as K-V values
-            final BatchGetResult<K, V> result = _responseHandler.convertFeedResponse(responseList);
-            if (result.getResults().size() == 0) {
-                _metrics.logCounterMetric(Metrics.Type.NOT_FOUND);
-            }
-
-            return  result;
+            return _responseHandler.convertFeedResponse(responseList);
         } catch (Exception ex) {
-            _metrics.error(startTime);
             throw new CosmosDBDataAccessorException.Builder()
                 .setMessage(ERROR_MESSAGE)
                 .setCause(ex.getCause())
                 .build();
-        } finally {
-            _metrics.completed(startTime);
         }
     }
 }

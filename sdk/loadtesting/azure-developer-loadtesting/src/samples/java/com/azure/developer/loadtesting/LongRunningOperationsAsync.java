@@ -9,17 +9,16 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
-import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.File;
 import java.time.Duration;
 
 /**
- * Sample demonstrates how to upload and validate a test file, running a test run and running a test profile run.
+ * Sample demonstrates how to upload and validate a test file, running a test run.
  *
  * Authenticates with the load testing resource and shows how to upload and validate a test file, run a test run
- * and run a test profile run in a given resource.
+ * in a given resource.
  *
  * @throws ClientAuthenticationException - when the credentials have insufficient permissions for load test resource.
  * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
@@ -104,43 +103,5 @@ public final class LongRunningOperationsAsync {
         String status = testRunResponse.getStatus().toString();
         System.out.println(String.format("%s\\t%s\\t%s", testId, testRunId, status));
         // END: java-longRunningOperationsAsync-sample-beginTestRun
-    }
-
-    public void beginTestProfileRun() {
-        // BEGIN: java-longRunningOperationsAsync-sample-beginTestProfileRun
-        LoadTestRunAsyncClient client = new LoadTestRunClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildAsyncClient();
-
-        String inputTestProfileId = "12345678-1234-1234-1234-123456789abc";
-        String inputTestProfileRunId = "87654321-1234-1234-1234-123456789abc";
-
-        // Use TestProfileRun model for request
-        TestProfileRun testProfileRun = new TestProfileRun()
-            .setTestProfileId(inputTestProfileId)
-            .setDisplayName("Sample Test Profile Run")
-            .setDescription("Java SDK Sample Test Profile Run");
-
-        Duration pollInterval = Duration.ofSeconds(5);
-
-        // Updated poller type and request parameter to use TestProfileRun model
-        PollerFlux<TestProfileRun, TestProfileRun> poller = client.beginTestProfileRun(inputTestProfileRunId, testProfileRun);
-        poller = poller.setPollInterval(pollInterval);
-
-        poller.subscribe(pollResponse -> {
-            // Use TestProfileRun directly from pollResponse
-            TestProfileRun testProfileRunResponse = pollResponse.getValue();
-            System.out.println("Test Profile Run all info: " + testProfileRunResponse.toString());
-        });
-
-        AsyncPollResponse<TestProfileRun, TestProfileRun> finalPollResponse = poller.blockLast();
-        TestProfileRun testProfileRunResponse = finalPollResponse.getFinalResult().block();
-
-        String testProfileId = testProfileRunResponse.getTestProfileId();
-        String testProfileRunIdFromJson = testProfileRunResponse.getTestProfileRunId();
-        String status = testProfileRunResponse.getStatus().toString();
-        System.out.println(String.format("%s\\t%s\\t%s", testProfileId, testProfileRunIdFromJson, status));
-        // END: java-longRunningOperationsAsync-sample-beginTestProfileRun
     }
 }

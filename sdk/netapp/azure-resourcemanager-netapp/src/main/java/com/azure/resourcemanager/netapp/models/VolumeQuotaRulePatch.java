@@ -100,7 +100,7 @@ public final class VolumeQuotaRulePatch implements JsonSerializable<VolumeQuotaR
      * 
      * @return the quotaType value.
      */
-    public Type quotaType() {
+    public QuotaType quotaType() {
         return this.innerProperties() == null ? null : this.innerProperties().quotaType();
     }
 
@@ -110,7 +110,7 @@ public final class VolumeQuotaRulePatch implements JsonSerializable<VolumeQuotaR
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulePatch object itself.
      */
-    public VolumeQuotaRulePatch withQuotaType(Type quotaType) {
+    public VolumeQuotaRulePatch withQuotaType(QuotaType quotaType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeQuotaRulesProperties();
         }

@@ -28,12 +28,6 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     private DatasetType type = DatasetType.fromString("DatasetVersion");
 
     /*
-     * URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330))
-     */
-    @Generated
-    private String dataUri;
-
-    /*
      * Indicates if the dataset holds a reference to the storage, or the dataset manages storage itself. If true, the
      * underlying data will not be deleted when the dataset version is deleted
      */
@@ -106,8 +100,8 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
             }
 
             @Override
-            public void setDataUri(DatasetVersion model, String dataUri) {
-                model.dataUri = dataUri;
+            public void setDataUrl(DatasetVersion model, String dataUrl) {
+                model.dataUrl = dataUrl;
             }
 
             @Override
@@ -162,30 +156,6 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     @Generated
     public DatasetType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the dataUri property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
-     *
-     * @return the dataUri value.
-     */
-    @Generated
-    public String getDataUri() {
-        return this.dataUri;
-    }
-
-    /**
-     * Set the dataUri property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
-     * <p>Required when create the resource.</p>
-     *
-     * @param dataUri the dataUri value to set.
-     * @return the DatasetVersion object itself.
-     */
-    @Generated
-    public DatasetVersion setDataUri(String dataUri) {
-        this.dataUri = dataUri;
-        this.updatedProperties.add("dataUri");
-        return this;
     }
 
     /**
@@ -311,7 +281,7 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-            jsonWriter.writeStringField("dataUri", this.dataUri);
+            jsonWriter.writeStringField("dataUri", this.dataUrl);
             jsonWriter.writeStringField("connectionName", this.connectionName);
             jsonWriter.writeStringField("description", this.description);
             jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
@@ -323,11 +293,11 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type.toString());
-        if (updatedProperties.contains("dataUri")) {
-            if (this.dataUri == null) {
+        if (updatedProperties.contains("dataUrl")) {
+            if (this.dataUrl == null) {
                 jsonWriter.writeNullField("dataUri");
             } else {
-                jsonWriter.writeStringField("dataUri", this.dataUri);
+                jsonWriter.writeStringField("dataUri", this.dataUrl);
             }
         }
         if (updatedProperties.contains("connectionName")) {
@@ -412,7 +382,7 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
                 } else if ("type".equals(fieldName)) {
                     deserializedDatasetVersion.type = DatasetType.fromString(reader.getString());
                 } else if ("dataUri".equals(fieldName)) {
-                    deserializedDatasetVersion.dataUri = reader.getString();
+                    deserializedDatasetVersion.dataUrl = reader.getString();
                 } else if ("isReference".equals(fieldName)) {
                     deserializedDatasetVersion.isReference = reader.getNullable(JsonReader::getBoolean);
                 } else if ("connectionName".equals(fieldName)) {
@@ -430,5 +400,35 @@ public class DatasetVersion implements JsonSerializable<DatasetVersion> {
             }
             return deserializedDatasetVersion;
         });
+    }
+
+    /*
+     * URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330))
+     */
+    @Generated
+    private String dataUrl;
+
+    /**
+     * Get the dataUrl property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
+     *
+     * @return the dataUrl value.
+     */
+    @Generated
+    public String getDataUrl() {
+        return this.dataUrl;
+    }
+
+    /**
+     * Set the dataUrl property: URI of the data ([example](https://go.microsoft.com/fwlink/?linkid=2202330)).
+     * <p>Required when create the resource.</p>
+     *
+     * @param dataUrl the dataUrl value to set.
+     * @return the DatasetVersion object itself.
+     */
+    @Generated
+    public DatasetVersion setDataUrl(String dataUrl) {
+        this.dataUrl = dataUrl;
+        this.updatedProperties.add("dataUrl");
+        return this;
     }
 }

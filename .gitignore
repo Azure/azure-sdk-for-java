@@ -111,6 +111,10 @@ scalastyle-output.xml
 # Flatten-pom
 .flattened-pom.xml
 flatter.pom
+
+# Local Maven extensions (credential provider for Azure Artifacts)
+.mvn/extensions.xml
+
 /.vs/
 
 
@@ -122,3 +126,7 @@ stress-test-addons*
 
 # Temp typespec files
 TempTypeSpecFiles/
+
+# Azure Artifacts Credential Provider runtime
+.azure-artifacts/
+

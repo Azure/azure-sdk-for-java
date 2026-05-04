@@ -6,28 +6,32 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.AzureStorageSmbFileShareEndpointProperties;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageSmbFileShareEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageSmbFileShareEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"y\",\"fileShareName\":\"i\",\"description\":\"fidfvzw\",\"provisioningState\":\"Succeeded\"}")
+            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"mocpc\",\"fileShareName\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"endpointKind\":\"Source\",\"provisioningState\":\"Failed\"}")
             .toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("fidfvzw", model.description());
-        Assertions.assertEquals("y", model.storageAccountResourceId());
-        Assertions.assertEquals("i", model.fileShareName());
+        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
+        Assertions.assertEquals("mocpc", model.storageAccountResourceId());
+        Assertions.assertEquals("shurzafbljjgpbto", model.fileShareName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageSmbFileShareEndpointProperties model
-            = new AzureStorageSmbFileShareEndpointProperties().withDescription("fidfvzw")
-                .withStorageAccountResourceId("y")
-                .withFileShareName("i");
+            = new AzureStorageSmbFileShareEndpointProperties().withDescription("jmkljavbqidtqajz")
+                .withEndpointKind(EndpointKind.SOURCE)
+                .withStorageAccountResourceId("mocpc")
+                .withFileShareName("shurzafbljjgpbto");
         model = BinaryData.fromObject(model).toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("fidfvzw", model.description());
-        Assertions.assertEquals("y", model.storageAccountResourceId());
-        Assertions.assertEquals("i", model.fileShareName());
+        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
+        Assertions.assertEquals("mocpc", model.storageAccountResourceId());
+        Assertions.assertEquals("shurzafbljjgpbto", model.fileShareName());
     }
 }

@@ -18,7 +18,9 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
@@ -29,24 +31,47 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = fromJson(bufferStream, readableBytes, responseHeaders);
+            this.jsonValue = parseJson(bufferStream, readableBytes, () -> responseHeaders);
         } else {
             this.responsePayloadSize = 0;
             this.jsonValue = null;
         }
     }
 
-    private static JsonNode fromJson(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
+    /**
+     * Creates a JsonNodeStorePayload using pre-populated header arrays instead of a Map.
+     * The Map is constructed lazily only if needed for error reporting.
+     */
+    public JsonNodeStorePayload(
+        ByteBufInputStream bufferStream,
+        int readableBytes,
+        String[] headerNames,
+        String[] headerValues) {
+
+        if (readableBytes > 0) {
+            this.responsePayloadSize = readableBytes;
+            this.jsonValue = parseJson(bufferStream, readableBytes, () -> buildHeaderMap(headerNames, headerValues));
+        } else {
+            this.responsePayloadSize = 0;
+            this.jsonValue = null;
+        }
+    }
+
+    private static JsonNode parseJson(
+        ByteBufInputStream bufferStream,
+        int readableBytes,
+        Supplier<Map<String, String>> headersSupplier) {
+
         byte[] bytes = new byte[readableBytes];
         try {
             bufferStream.read(bytes);
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
+            Map<String, String> responseHeaders = headersSupplier.get();
             if (fallbackCharsetDecoder != null) {
                 logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
                 return fromJsonWithFallbackCharsetDecoder(bytes, responseHeaders);
             } else {
-
                 String baseErrorMessage = "Failed to parse JSON document. No fallback charset decoder configured.";
 
                 if (Configs.isNonParseableDocumentLoggingEnabled()) {
@@ -65,6 +90,14 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                     responseHeaders);
             }
         }
+    }
+
+    private static Map<String, String> buildHeaderMap(String[] headerNames, String[] headerValues) {
+        Map<String, String> map = new HashMap<>(HttpUtils.mapCapacityForSize(headerNames.length));
+        for (int i = 0; i < headerNames.length; i++) {
+            map.put(headerNames[i], headerValues[i]);
+        }
+        return map;
     }
 
     private static JsonNode fromJsonWithFallbackCharsetDecoder(byte[] bytes, Map<String, String> responseHeaders) {

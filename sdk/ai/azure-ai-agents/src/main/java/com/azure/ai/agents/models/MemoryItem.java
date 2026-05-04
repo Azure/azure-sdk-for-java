@@ -59,7 +59,7 @@ public class MemoryItem implements JsonSerializable<MemoryItem> {
      * @param content the content value to set.
      */
     @Generated
-    public MemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
+    protected MemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
         this.memoryId = memoryId;
         if (updatedAt == null) {
             this.updatedAt = 0L;

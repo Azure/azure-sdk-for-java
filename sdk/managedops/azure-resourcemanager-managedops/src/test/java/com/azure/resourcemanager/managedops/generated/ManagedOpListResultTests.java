@@ -6,7 +6,7 @@ package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedops.implementation.models.ManagedOpListResult;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class ManagedOpListResultTests {
@@ -26,9 +26,9 @@ public final class ManagedOpListResultTests {
             model.value().get(0).properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("nhungbw",
             model.value().get(0).properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.value().get(0).properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.value().get(0).properties().desiredConfiguration().defenderCspm());
         Assertions.assertEquals("yxolniwp", model.nextLink());
     }

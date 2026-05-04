@@ -60,7 +60,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.deleteIfExists()
             .then(super.cleanupAsync());
     }
 }

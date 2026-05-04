@@ -16,7 +16,7 @@ import java.util.Map;
  * Custom credential definition.
  */
 @Immutable
-public final class CustomCredential extends BaseCredentials {
+public final class CustomCredential extends BaseCredential {
 
     /*
      * The type of credential used by the connection

@@ -42,9 +42,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BuilderHelperTests {
+    private static final ClientLogger LOGGER = new ClientLogger(BuilderHelperTests.class);
 
     private static final StorageSharedKeyCredential CREDENTIALS
         = new StorageSharedKeyCredential("accountName", "accountKey");
@@ -401,6 +403,48 @@ public class BuilderHelperTests {
             () -> new ShareServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileAccountNameSupplier")
+    void secondaryIpv6Dualstack(String urlString, String expectedAccountName) {
+        BuilderHelper.ShareUrlParts shareUrlParts = BuilderHelper.parseEndpoint(urlString, LOGGER);
+
+        assertEquals("https", shareUrlParts.getScheme());
+        assertEquals(expectedAccountName, shareUrlParts.getAccountName());
+        assertNull(shareUrlParts.getShareName());
+        assertNull(shareUrlParts.getSasToken());
+
+        String newUri = shareUrlParts.getEndpoint() + "/";
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> fileAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://myaccount.file.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary.file.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-dualstack.file.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-ipv6.file.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-dualstack.file.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-ipv6.file.core.windows.net/", "myaccount"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileManagedDiskAccountNameSupplier")
+    void ipv6InternalAccounts(String urlString, String expectedAccountName) {
+        BuilderHelper.ShareUrlParts shareUrlParts = BuilderHelper.parseEndpoint(urlString, LOGGER);
+
+        assertEquals("https", shareUrlParts.getScheme());
+        assertEquals(expectedAccountName, shareUrlParts.getAccountName());
+        assertNull(shareUrlParts.getShareName());
+        assertNull(shareUrlParts.getSasToken());
+
+        String newUri = shareUrlParts.getEndpoint() + "/";
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> fileManagedDiskAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://md-d3rqxhqbxbwq.file.core.windows.net/", "md-d3rqxhqbxbwq"),
+            Arguments.of("https://md-ssd-bndub02px100c21.file.core.windows.net/", "md-ssd-bndub02px100c21"));
     }
 
     @Test

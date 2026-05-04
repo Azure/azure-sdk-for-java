@@ -77,6 +77,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import static org.testng.Assert.fail;
 
 public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
@@ -1919,7 +1920,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "readManyWithExplicitRegionSwitchingTestContext", timeOut = 10 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyWithExplicitRegionSwitching(
         BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,

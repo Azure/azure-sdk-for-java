@@ -93,8 +93,8 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, requestOptions);
+    public Response<BinaryData> getEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEvaluationTaxonomyWithResponse(name, requestOptions);
     }
 
     /**
@@ -160,8 +160,8 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listEvaluationTaxonomies(RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluationTaxonomies(requestOptions);
     }
 
     /**
@@ -177,8 +177,8 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(name, requestOptions);
+    public Response<Void> deleteEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluationTaxonomyWithResponse(name, requestOptions);
     }
 
     /**
@@ -282,8 +282,9 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(name, body, requestOptions);
+    public Response<BinaryData> createEvaluationTaxonomyWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createEvaluationTaxonomyWithResponse(name, body, requestOptions);
     }
 
     /**
@@ -387,8 +388,9 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String name, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(name, body, requestOptions);
+    public Response<BinaryData> updateEvaluationTaxonomyWithResponse(String name, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateEvaluationTaxonomyWithResponse(name, body, requestOptions);
     }
 
     /**
@@ -405,10 +407,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationTaxonomy get(String name) {
-        // Generated convenience method for getWithResponse
+    public EvaluationTaxonomy getEvaluationTaxonomy(String name) {
+        // Generated convenience method for getEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).getValue().toObject(EvaluationTaxonomy.class);
+        return getEvaluationTaxonomyWithResponse(name, requestOptions).getValue().toObject(EvaluationTaxonomy.class);
     }
 
     /**
@@ -426,8 +428,8 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationTaxonomy> list(String inputName, String inputType) {
-        // Generated convenience method for list
+    public PagedIterable<EvaluationTaxonomy> listEvaluationTaxonomies(String inputName, String inputType) {
+        // Generated convenience method for listEvaluationTaxonomies
         RequestOptions requestOptions = new RequestOptions();
         if (inputName != null) {
             requestOptions.addQueryParam("inputName", inputName, false);
@@ -435,7 +437,7 @@ public final class EvaluationTaxonomiesClient {
         if (inputType != null) {
             requestOptions.addQueryParam("inputType", inputType, false);
         }
-        return serviceClient.list(requestOptions)
+        return serviceClient.listEvaluationTaxonomies(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationTaxonomy.class));
     }
 
@@ -451,10 +453,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluationTaxonomy> list() {
-        // Generated convenience method for list
+    public PagedIterable<EvaluationTaxonomy> listEvaluationTaxonomies() {
+        // Generated convenience method for listEvaluationTaxonomies
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
+        return serviceClient.listEvaluationTaxonomies(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluationTaxonomy.class));
     }
 
@@ -471,10 +473,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String name) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteEvaluationTaxonomy(String name) {
+        // Generated convenience method for deleteEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(name, requestOptions).getValue();
+        deleteEvaluationTaxonomyWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -492,10 +494,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationTaxonomy create(String name, EvaluationTaxonomy body) {
-        // Generated convenience method for createWithResponse
+    public EvaluationTaxonomy createEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+        // Generated convenience method for createEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
+        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(EvaluationTaxonomy.class);
     }
 
@@ -514,10 +516,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationTaxonomy update(String name, EvaluationTaxonomy body) {
-        // Generated convenience method for updateWithResponse
+    public EvaluationTaxonomy updateEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+        // Generated convenience method for updateEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
+        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(EvaluationTaxonomy.class);
     }
 }

@@ -77,7 +77,9 @@ public class Target implements JsonSerializable<Target> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("azure_ai_agent".equals(discriminatorValue)) {
+                if ("azure_ai_model".equals(discriminatorValue)) {
+                    return AzureAIModelTarget.fromJson(readerToUse.reset());
+                } else if ("azure_ai_agent".equals(discriminatorValue)) {
                     return AzureAIAgentTarget.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

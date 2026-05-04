@@ -14,11 +14,6 @@ import com.azure.core.http.HttpHeaders;
 @Immutable
 public final class BackupVaultOperationResultsGetHeaders {
     /*
-     * The Retry-After property.
-     */
-    private final Integer retryAfter;
-
-    /*
      * The Azure-AsyncOperation property.
      */
     private final String azureAsyncOperation;
@@ -28,6 +23,11 @@ public final class BackupVaultOperationResultsGetHeaders {
      */
     private final String location;
 
+    /*
+     * The Retry-After property.
+     */
+    private final Integer retryAfter;
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BackupVaultOperationResultsGetHeaders class.
@@ -35,23 +35,14 @@ public final class BackupVaultOperationResultsGetHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BackupVaultOperationResultsGetHeaders(HttpHeaders rawHeaders) {
+        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
         } else {
             this.retryAfter = null;
         }
-        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
-        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
-    }
-
-    /**
-     * Get the retryAfter property: The Retry-After property.
-     * 
-     * @return the retryAfter value.
-     */
-    public Integer retryAfter() {
-        return this.retryAfter;
     }
 
     /**
@@ -70,5 +61,14 @@ public final class BackupVaultOperationResultsGetHeaders {
      */
     public String location() {
         return this.location;
+    }
+
+    /**
+     * Get the retryAfter property: The Retry-After property.
+     * 
+     * @return the retryAfter value.
+     */
+    public Integer retryAfter() {
+        return this.retryAfter;
     }
 }

@@ -23,7 +23,7 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
     @Test
     public void testFindWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"hpsylkksh\",\"endTime\":\"bffmbmxz\",\"objectType\":\"gywwpgjxs\"},{\"startTime\":\"ptfujgicgaaoept\",\"endTime\":\"aqutdewemxswvruu\",\"objectType\":\"zjgehkfkim\"},{\"startTime\":\"tixo\",\"endTime\":\"ffqyinlj\",\"objectType\":\"pqwhixmonst\"},{\"startTime\":\"hiyxgvelfclduc\",\"endTime\":\"birdsvuwcobiegs\",\"objectType\":\"ninwjizc\"}],\"objectType\":\"nghgshej\"},\"id\":\"bxqmu\",\"name\":\"xlxqzvn\",\"type\":\"sbycucrwnamikz\"}";
+            = "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"ebwlnbmhyreeudzq\",\"endTime\":\"vbpdqmjxlyyzglgo\",\"objectType\":\"tlmj\"},{\"startTime\":\"yuojqtobaxk\",\"endTime\":\"eytu\",\"objectType\":\"bfjkw\"},{\"startTime\":\"u\",\"endTime\":\"nkqbhsyrq\",\"objectType\":\"jqhden\"},{\"startTime\":\"aulk\",\"endTime\":\"akdkifmjnnawtqab\",\"objectType\":\"uckpggqoweyir\"}],\"objectType\":\"lisn\"},\"id\":\"fl\",\"name\":\"mpizru\",\"type\":\"pqxpx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class RestorableTimeRangesFindWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureBackupFindRestorableTimeRangesResponseResource response = manager.restorableTimeRanges()
-            .findWithResponse("jwetnpsihcla", "zvaylptrsqqw", "tcmwqkchc",
+            .findWithResponse("xqdlyrtltlapr", "tz", "atbhjmznn",
                 new AzureBackupFindRestorableTimeRangesRequest()
                     .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
-                    .withStartTime("xfe")
-                    .withEndTime("jkjexf"),
+                    .withStartTime("qeqala")
+                    .withEndTime("lagun"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hpsylkksh", response.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("bffmbmxz", response.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("gywwpgjxs", response.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("nghgshej", response.properties().objectType());
+        Assertions.assertEquals("ebwlnbmhyreeudzq", response.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("vbpdqmjxlyyzglgo", response.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("tlmj", response.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("lisn", response.properties().objectType());
     }
 }
