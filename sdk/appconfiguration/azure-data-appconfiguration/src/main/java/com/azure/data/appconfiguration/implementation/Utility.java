@@ -49,6 +49,7 @@ public class Utility {
     public static final String NAME = "name";
     public static final String PARAMETERS = "parameters";
     public static final String URI = "uri";
+    private static final String AFTER_TAG = "after=";
 
     /**
      * Represents any value in Etag.
@@ -218,7 +219,7 @@ public class Utility {
 
     // Parse the 'after' query parameter value from the Link header.
     // Link header format: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
-    public static String parseAfterParam(String linkHeader) {
+    private static String parseAfterParam(String linkHeader) {
         String nextLink = parseNextLink(linkHeader);
         if (nextLink == null) {
             return null;
@@ -227,7 +228,7 @@ public class Utility {
         if (afterIdx == -1) {
             return null;
         }
-        String afterValue = nextLink.substring(afterIdx + 6);
+        String afterValue = nextLink.substring(afterIdx + AFTER_TAG.length());
         int ampIdx = afterValue.indexOf('&');
         String rawValue = ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
         try {

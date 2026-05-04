@@ -1105,7 +1105,7 @@ public final class ConfigurationClient {
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A {@link PagedIterable} of ConfigurationSettings with empty items. Use {@code iterableByPage()} to access
      * page-level ETags.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     * @throws HttpResponseException If a client or service error occurs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> checkConfigurationSettings(SettingSelector selector) {
@@ -1137,7 +1137,7 @@ public final class ConfigurationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings with empty items. Use {@code iterableByPage()} to access
      * page-level ETags.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     * @throws HttpResponseException If a client or service error occurs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> checkConfigurationSettings(SettingSelector selector, Context context) {

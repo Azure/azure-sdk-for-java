@@ -31,15 +31,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.data.appconfiguration.models.SettingLabelFields;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -56,6 +55,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
+
+import reactor.core.publisher.Mono;
 
 /**
  * <p>This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
@@ -1072,7 +1073,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings with empty items. Use {@code byPage()} to access page-level ETags.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     * @throws HttpResponseException If a client or service error occurs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> checkConfigurationSettings(SettingSelector selector) {
@@ -1117,7 +1118,7 @@ public final class ConfigurationAsyncClient {
      * be the name of the snapshot.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all the current settings in the service.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     * @throws HttpResponseException If a client or service error occurs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
