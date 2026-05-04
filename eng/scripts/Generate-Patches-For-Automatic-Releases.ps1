@@ -53,6 +53,12 @@ try {
     $ymlContent = Get-Content $PackagesYmlPath -Raw
     $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
+
+    if ($null -eq $packagesData -or $packagesData.Count -eq 0) {
+        Write-Host "No artifacts need patching. Verify this is expected by checking the libraries in patch_release_client.txt and their dependency versions."
+        exit 0
+    }
+
     $libraryList = $null
 
     # Build the list of artifacts being patched and normalize version_client.txt
