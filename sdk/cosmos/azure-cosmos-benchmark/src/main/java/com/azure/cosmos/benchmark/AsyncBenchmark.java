@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,10 +45,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    // Shared Reactor scheduler for benchmark workload dispatch.
-    // Uses Schedulers.parallel() (global shared singleton). Must NOT be disposed by the benchmark.
-    final Scheduler benchmarkScheduler;
-
     private boolean databaseCreated;
     private boolean collectionCreated;
 
@@ -61,10 +56,9 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
 
-    AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
+    AsyncBenchmark(TenantWorkloadConfig cfg) {
 
         workloadConfig = cfg;
-        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()
@@ -343,7 +337,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             workload = delayed.then(workload);
         }
         return workload
-            .subscribeOn(benchmarkScheduler)
             .doOnSuccess(v -> AsyncBenchmark.this.onSuccess())
             .doOnError(e -> {
                 logger.error("Encountered failure {} on thread {}",

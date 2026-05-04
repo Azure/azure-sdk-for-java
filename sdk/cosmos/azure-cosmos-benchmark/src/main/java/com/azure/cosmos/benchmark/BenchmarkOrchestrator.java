@@ -205,14 +205,7 @@ public class BenchmarkOrchestrator {
                     double baselineCpu = CpuMonitor.captureProcessCpuLoad();
 
                     // 2. Create clients (constructors perform data ingestion)
-                    List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
-
-                    // Inject sync dispatch scheduler into sync benchmarks
-                    for (Benchmark b : benchmarks) {
-                        if (b instanceof SyncBenchmark) {
-                            ((SyncBenchmark<?>) b).setSyncDispatchScheduler(syncScheduler);
-                        }
-                    }
+                    List<Benchmark> benchmarks = createBenchmarks(config);
 
                     logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                         cycle, benchmarks.size(), Instant.now());
@@ -221,7 +214,7 @@ public class BenchmarkOrchestrator {
                     CpuMonitor.awaitCoolDown(baselineCpu);
 
                     // 4. Run workload — orchestrator dispatches operations across tenants
-                    runWorkload(benchmarks, cycle, config);
+                    runWorkload(benchmarks, cycle, config, benchmarkScheduler, syncScheduler);
                     logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
                     // 5. Flush reporters before shutdown destroys the registry
@@ -297,10 +290,10 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<Benchmark> createBenchmarks(BenchmarkConfig config, Scheduler scheduler) throws Exception {
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config) throws Exception {
         List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant, scheduler));
+            benchmarks.add(createBenchmarkForOperation(tenant));
         }
         return benchmarks;
     }
@@ -311,7 +304,8 @@ public class BenchmarkOrchestrator {
      * orchestrator randomly picks a tenant for each operation slot.
      * Non-dispatchable benchmarks (e.g. LICtlWorkload) run via their own run() in a separate thread.
      */
-    private void runWorkload(List<Benchmark> benchmarks, int cycle, BenchmarkConfig config) throws Exception {
+    private void runWorkload(List<Benchmark> benchmarks, int cycle, BenchmarkConfig config,
+                             Scheduler benchmarkScheduler, Scheduler syncScheduler) throws Exception {
         // Separate dispatchable from non-dispatchable benchmarks
         List<Benchmark> dispatchable = new ArrayList<>();
         List<Benchmark> nonDispatchable = new ArrayList<>();
@@ -395,7 +389,11 @@ public class BenchmarkOrchestrator {
                     int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
                     Benchmark selected = dispatchable.get(tenantIndex);
                     long tenantLocalIndex = tenantCounters[tenantIndex].getAndIncrement();
+                    Scheduler scheduler = (selected instanceof SyncBenchmark)
+                        ? syncScheduler
+                        : benchmarkScheduler;
                     return selected.performSingleOperation(tenantLocalIndex)
+                        .subscribeOn(scheduler)
                         .doOnTerminate(completedCount::incrementAndGet);
                 }, concurrency)
                 .blockLast();
@@ -453,7 +451,7 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, Scheduler scheduler) throws Exception {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg) throws Exception {
         // Sync benchmarks
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
@@ -469,7 +467,7 @@ public class BenchmarkOrchestrator {
 
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
-            return new AsyncCtlWorkload(cfg, scheduler);
+            return new AsyncCtlWorkload(cfg);
         }
         if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
             return new LICtlWorkload(cfg);
@@ -479,18 +477,18 @@ public class BenchmarkOrchestrator {
         if (cfg.isEncryptionEnabled()) {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
-                    return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionWriteBenchmark(cfg);
                 case ReadThroughput:
-                    return new AsyncEncryptionReadBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionReadBenchmark(cfg);
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    return new AsyncEncryptionQueryBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionQueryBenchmark(cfg);
                 case QuerySingleMany:
-                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, scheduler);
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
                 default:
                     throw new IllegalArgumentException(
                         "Encryption is not supported for operation: " + cfg.getOperationType());
@@ -500,9 +498,9 @@ public class BenchmarkOrchestrator {
         // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
-                return new AsyncReadBenchmark(cfg, scheduler);
+                return new AsyncReadBenchmark(cfg);
             case WriteThroughput:
-                return new AsyncWriteBenchmark(cfg, scheduler);
+                return new AsyncWriteBenchmark(cfg);
             case QueryCross:
             case QuerySingle:
             case QueryParallel:
@@ -512,15 +510,15 @@ public class BenchmarkOrchestrator {
             case QueryAggregateTopOrderby:
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
-                return new AsyncQueryBenchmark(cfg, scheduler);
+                return new AsyncQueryBenchmark(cfg);
             case ReadManyThroughput:
-                return new AsyncReadManyBenchmark(cfg, scheduler);
+                return new AsyncReadManyBenchmark(cfg);
             case Mixed:
-                return new AsyncMixedBenchmark(cfg, scheduler);
+                return new AsyncMixedBenchmark(cfg);
             case QuerySingleMany:
-                return new AsyncQuerySinglePartitionMultiple(cfg, scheduler);
+                return new AsyncQuerySinglePartitionMultiple(cfg);
             case ReadMyWrites:
-                return new ReadMyWriteWorkflow(cfg, scheduler);
+                return new ReadMyWriteWorkflow(cfg);
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + cfg.getOperationType());
         }

@@ -47,7 +47,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,10 +59,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
-
-    // Dedicated scheduler for encryption benchmark workload dispatch.
-    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    final Scheduler benchmarkScheduler;
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -88,10 +83,9 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
-    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
 
         workloadConfig = workloadCfg;
-        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -203,7 +197,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     public Mono<?> performSingleOperation(long operationIndex) {
         Mono<T> workload = performWorkload(operationIndex);
         return workload
-            .subscribeOn(benchmarkScheduler)
             .doOnSuccess(v -> AsyncEncryptionBenchmark.this.onSuccess())
             .doOnError(e -> {
                 logger.error("Encountered failure {} on thread {}",
