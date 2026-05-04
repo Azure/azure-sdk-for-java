@@ -17,16 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsSetAccessControlRecursiveHeaders {
     /*
-     * The Date property.
+     * The x-ms-version property.
      */
     @Generated
-    private DateTimeRfc1123 date;
-
-    /*
-     * The x-ms-client-request-id property.
-     */
-    @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
 
     /*
      * The x-ms-continuation property.
@@ -41,14 +35,20 @@ public final class PathsSetAccessControlRecursiveHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
+     * The Date property.
      */
     @Generated
-    private String xMsVersion;
+    private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -57,6 +57,9 @@ public final class PathsSetAccessControlRecursiveHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsSetAccessControlRecursiveHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -64,9 +67,72 @@ public final class PathsSetAccessControlRecursiveHeaders {
             this.date = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the PathsSetAccessControlRecursiveHeaders object itself.
+     */
+    @Generated
+    public PathsSetAccessControlRecursiveHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @return the xMsContinuation value.
+     */
+    @Generated
+    public String getXMsContinuation() {
+        return this.xMsContinuation;
+    }
+
+    /**
+     * Set the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @param xMsContinuation the xMsContinuation value to set.
+     * @return the PathsSetAccessControlRecursiveHeaders object itself.
+     */
+    @Generated
+    public PathsSetAccessControlRecursiveHeaders setXMsContinuation(String xMsContinuation) {
+        this.xMsContinuation = xMsContinuation;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the PathsSetAccessControlRecursiveHeaders object itself.
+     */
+    @Generated
+    public PathsSetAccessControlRecursiveHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
     }
 
     /**
@@ -117,72 +183,6 @@ public final class PathsSetAccessControlRecursiveHeaders {
     @Generated
     public PathsSetAccessControlRecursiveHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @return the xMsContinuation value.
-     */
-    @Generated
-    public String getXMsContinuation() {
-        return this.xMsContinuation;
-    }
-
-    /**
-     * Set the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @param xMsContinuation the xMsContinuation value to set.
-     * @return the PathsSetAccessControlRecursiveHeaders object itself.
-     */
-    @Generated
-    public PathsSetAccessControlRecursiveHeaders setXMsContinuation(String xMsContinuation) {
-        this.xMsContinuation = xMsContinuation;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the PathsSetAccessControlRecursiveHeaders object itself.
-     */
-    @Generated
-    public PathsSetAccessControlRecursiveHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the PathsSetAccessControlRecursiveHeaders object itself.
-     */
-    @Generated
-    public PathsSetAccessControlRecursiveHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
         return this;
     }
 }
