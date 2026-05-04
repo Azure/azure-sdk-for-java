@@ -544,7 +544,7 @@ the service.
 
 Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+locate the root issue. View the [logging][logging] documentation for guidance about enabling logging.
 
 ### Default HTTP Client
 
