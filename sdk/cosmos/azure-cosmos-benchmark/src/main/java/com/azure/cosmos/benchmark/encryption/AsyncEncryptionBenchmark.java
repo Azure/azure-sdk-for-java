@@ -161,7 +161,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses,
                 (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then(),
-                workloadConfig.getIngestionConcurrency());
+                workloadConfig.getIngestionRetryConcurrency());
 
             docsToRead = generatedDocs;
         } else {

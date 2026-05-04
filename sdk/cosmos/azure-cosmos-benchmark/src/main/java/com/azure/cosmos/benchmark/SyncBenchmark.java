@@ -57,7 +57,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
     final List<PojoizedJson> docsToRead;
 
     SyncBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
-        ingestionExecutorService = Executors.newFixedThreadPool(workloadCfg.getIngestionConcurrency());
+        ingestionExecutorService = Executors.newFixedThreadPool(workloadCfg.getIngestionRetryConcurrency());
         workloadConfig = workloadCfg;
 
         boolean isManagedIdentityRequired = workloadCfg.isManagedIdentityRequired();

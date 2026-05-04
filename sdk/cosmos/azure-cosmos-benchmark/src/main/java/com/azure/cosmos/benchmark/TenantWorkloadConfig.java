@@ -89,12 +89,7 @@ public class TenantWorkloadConfig {
     @JsonProperty("operation")
     private String operation;
 
-    /**
-     * Concurrency for data ingestion, bulk retry, and non-dispatchable benchmark thread pools.
-     * This is NOT the orchestrator dispatch concurrency (which lives in BenchmarkConfig.OrchestratorConfig).
-     */
-    @JsonProperty("ingestionConcurrency")
-    private Integer ingestionConcurrency;
+    private static final int INGESTION_RETRY_CONCURRENCY = 10;
 
     @JsonProperty("numberOfPreCreatedDocuments")
     private Integer numberOfPreCreatedDocuments;
@@ -249,7 +244,7 @@ public class TenantWorkloadConfig {
         return op != null ? op : Operation.WriteThroughput;
     }
 
-    public int getIngestionConcurrency() { return ingestionConcurrency != null ? ingestionConcurrency : 10; }
+    public int getIngestionRetryConcurrency() { return INGESTION_RETRY_CONCURRENCY; }
     public int getNumberOfPreCreatedDocuments() { return numberOfPreCreatedDocuments != null ? numberOfPreCreatedDocuments : 1000; }
     public int getThroughput() { return throughput != null ? throughput : 100000; }
     public int getDocumentDataFieldSize() { return documentDataFieldSize != null ? documentDataFieldSize : 20; }
@@ -387,7 +382,6 @@ public class TenantWorkloadConfig {
     public void setDatabaseId(String databaseId) { this.databaseId = databaseId; }
     public void setContainerId(String containerId) { this.containerId = containerId; }
     public void setOperation(String operation) { this.operation = operation; }
-    public void setIngestionConcurrency(int ingestionConcurrency) { this.ingestionConcurrency = ingestionConcurrency; }
     public void setConnectionMode(String connectionMode) { this.connectionMode = connectionMode; }
     public void setConsistencyLevel(String consistencyLevel) { this.consistencyLevel = consistencyLevel; }
     public void setMaxConnectionPoolSize(int maxConnectionPoolSize) { this.maxConnectionPoolSize = maxConnectionPoolSize; }
@@ -405,7 +399,6 @@ public class TenantWorkloadConfig {
             ", databaseId='" + databaseId + '\'' +
             ", containerId='" + containerId + '\'' +
             ", operation=" + operation +
-            ", ingestionConcurrency=" + ingestionConcurrency +
             ", connectionMode=" + connectionMode +
             ", connectionSharingAcrossClientsEnabled=" + isConnectionSharingAcrossClientsEnabled() +
             '}';
@@ -445,8 +438,6 @@ public class TenantWorkloadConfig {
                     if (overwrite || isManagedIdentityRequired == null) isManagedIdentityRequired = Boolean.parseBoolean(value); break;
                 case "operation":
                     if (overwrite || operation == null) operation = value; break;
-                case "ingestionConcurrency":
-                    if (overwrite || ingestionConcurrency == null) ingestionConcurrency = Integer.parseInt(value); break;
                 case "numberOfPreCreatedDocuments":
                     if (overwrite || numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = Integer.parseInt(value); break;
                 case "throughput":

@@ -31,7 +31,7 @@ import java.util.List;
  * {
  *   "lifecycle": { "cycles": 1, "settleTimeMs": 0, "suppressCleanup": false, "gcBetweenCycles": true },
  *   "orchestrator": {
- *     "concurrency": 1000,
+ *     "concurrency": 10,
  *     "numberOfOperations": 100000,
  *     "maxRunningTimeDuration": "PT1H",
  *     "isPartitionLevelCircuitBreakerEnabled": true,
@@ -202,7 +202,7 @@ public class BenchmarkConfig {
     public static class OrchestratorConfig {
         // -- Dispatch settings --
         @JsonProperty("concurrency")
-        int concurrency = 1000;
+        int concurrency = 10;
 
         @JsonProperty("numberOfOperations")
         int numberOfOperations = 100000;
