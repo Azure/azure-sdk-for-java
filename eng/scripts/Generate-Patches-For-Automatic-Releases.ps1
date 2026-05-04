@@ -88,6 +88,11 @@ try {
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 
+    if ([string]::IsNullOrEmpty($libraryList)) {
+        Write-Host "No artifacts need patching. Skipping dependency update."
+        return
+    }
+
     $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
 
     Write-Host "git checkout $branchName"
