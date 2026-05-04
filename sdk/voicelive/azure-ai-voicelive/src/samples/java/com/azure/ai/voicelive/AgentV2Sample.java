@@ -28,6 +28,9 @@ import com.azure.ai.voicelive.models.ServerEventWarning;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -56,6 +59,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>This sample demonstrates the new pattern where the agent is configured at connection time
  * using AgentSessionConfig, rather than as a tool in the session. This allows the agent to be
  * the primary responder for the voice session.</p>
+ *
+ * <p>Use this sample when you already have an Azure AI Foundry agent and want VoiceLive to talk to
+ * that agent directly instead of registering local tools or writing response orchestration logic in
+ * the sample itself.</p>
+ *
+ * <p>When you run it, the sample creates an {@code AgentSessionConfig}, opens a realtime session,
+ * sends the session configuration, waits for the service to report the session as ready, and then
+ * starts full-duplex microphone / speaker streaming while also writing a simple conversation log to
+ * the local {@code logs} directory.</p>
  *
  * <p>Features demonstrated:</p>
  * <ul>
@@ -260,25 +272,39 @@ public class AgentV2Sample {
 
             // Connect using AgentSessionConfig
             client.startSession(agentConfig)
-                .doOnSuccess(s -> {
+                .flatMap(s -> {
                     this.session = s;
                     System.out.println("Connected to VoiceLive service");
 
                     // Initialize audio processor
                     this.audioProcessor = new AudioProcessor(s);
 
-                    // Configure session
-                    configureSession();
+                    Sinks.One<Void> eventSubscribed = Sinks.one();
+                    Flux<SessionUpdate> eventStream = s.receiveEvents()
+                        .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                        .doOnNext(this::handleEvent)
+                        .doOnComplete(() -> {
+                            System.out.println("Event stream completed");
+                            shutdown();
+                        })
+                        .doOnError(error -> {
+                            System.err.println("Error receiving events: " + error.getMessage());
+                            shutdown();
+                        });
 
-                    // Subscribe to events
-                    subscribeToEvents();
+                    Mono<Void> configurePipeline = eventSubscribed.asMono()
+                        .then(configureSession());
+
+                    return Flux.merge(
+                        eventStream,
+                        configurePipeline.thenMany(Flux.<SessionUpdate>empty()))
+                        .then();
                 })
                 .subscribe(
                     v -> {},
                     e -> {
-                        System.err.println("Failed to connect: " + e.getMessage());
-                        running.set(false);
-                        shutdownLatch.countDown();
+                        System.err.println("Agent V2 session failed: " + e.getMessage());
+                        shutdown();
                     }
                 );
 
@@ -290,7 +316,7 @@ public class AgentV2Sample {
             }
         }
 
-        private void configureSession() {
+        private Mono<Void> configureSession() {
             System.out.println("Setting up voice conversation session...");
             System.out.println("Enabling Azure Deep Noise Suppression");
             System.out.println("Enabling Echo Cancellation");
@@ -332,27 +358,10 @@ public class AgentV2Sample {
 
             // Send session update
             ClientEventSessionUpdate sessionUpdate = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(sessionUpdate)
-                .subscribe(
-                    v -> System.out.println("Session configuration sent"),
-                    e -> System.err.println("Failed to configure session: " + e.getMessage())
-                );
-        }
-
-        private void subscribeToEvents() {
-            session.receiveEvents()
-                .doOnNext(this::handleEvent)
-                .doOnComplete(() -> {
-                    System.out.println("Event stream completed");
-                    shutdown();
-                })
-                .subscribe(
-                    v -> {},
-                    e -> {
-                        System.err.println("Error receiving events: " + e.getMessage());
-                        shutdown();
-                    }
-                );
+            return session.sendEvent(sessionUpdate)
+                .doOnSuccess(v -> System.out.println("Session configuration sent"))
+                .doOnError(e -> System.err.println("Failed to configure session: " + e.getMessage()))
+                .then();
         }
 
         private void handleEvent(SessionUpdate event) {

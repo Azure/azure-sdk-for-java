@@ -25,6 +25,8 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -47,6 +49,14 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>NOTE:</strong> This is a comprehensive sample showing all features together.
  * For easier understanding, see these focused samples:</p>
+ *
+ * <p>Use this sample when you want the closest thing to an end-to-end assistant experience in this
+ * package. It combines session configuration, microphone capture, speaker playback, interruption
+ * handling, and authentication in one place.</p>
+ *
+ * <p>When you run it, the sample opens a realtime session, configures the assistant, starts local
+ * playback, waits for the session to be ready, and then begins streaming microphone audio while
+ * playing the model's responses through your speakers.</p>
  * <ul>
  *   <li>{@link BasicVoiceConversationSample} - Minimal setup and session management</li>
  *   <li>{@link MicrophoneInputSample} - Audio capture from microphone</li>
@@ -78,10 +88,10 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
- * # With API Key (default):
+ * # With DefaultAzureCredential (default):
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test
  *
- * # With Token Credential:
+ * # With API Key (requires AZURE_VOICELIVE_API_KEY):
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-api-key"
  * }</pre>
  */
@@ -355,11 +365,14 @@ public final class VoiceAssistantSample {
      *
      * <p>Supports two authentication methods:</p>
      * <ul>
-     *   <li>API Key: Default authentication (requires AZURE_VOICELIVE_API_KEY env var)</li>
-     *   <li>API Key: Use --use-api-key flag</li>
+     *   <li>DefaultAzureCredential (default): uses the credential chain from azure-identity (managed identity,
+     *       environment variables, Azure CLI, etc.). No flag required.</li>
+     *   <li>API Key: pass {@code --use-api-key} on the command line; requires the {@code AZURE_VOICELIVE_API_KEY}
+     *       environment variable to be set.</li>
      * </ul>
      *
-     * @param args Command line arguments. Use --use-api-key to use API key authentication instead of DefaultAzureCredential.
+     * @param args Command line arguments. Pass {@code --use-api-key} to use API key authentication instead
+     *             of the default DefaultAzureCredential.
      */
     public static void main(String[] args) {
         // Parse command line arguments
@@ -517,38 +530,45 @@ public final class VoiceAssistantSample {
                 // Send session configuration, then listen for events.
                 System.out.println("📤 Sending session.update configuration...");
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> {
-                        System.out.println("✓ Session configuration sent");
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+                Flux<SessionUpdate> eventStream = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(event -> handleServerEvent(event, audioProcessor))
+                    .doOnComplete(() -> System.out.println("✓ Event stream completed"))
+                    .doOnError(error -> System.err.println("❌ Error receiving events: " + error.getMessage()));
 
-                        // Start audio systems
-                        audioProcessor.startPlayback();
+                return Flux.merge(
+                    eventStream,
+                    eventSubscribed.asMono()
+                        .then(session.sendEvent(updateEvent))
+                        .doOnSuccess(v -> {
+                            System.out.println("✓ Session configuration sent");
 
-                        System.out.println("🎤 VOICE ASSISTANT READY");
-                        System.out.println("Start speaking to begin conversation");
-                        System.out.println("Press Ctrl+C to exit");
+                            // Start audio systems
+                            audioProcessor.startPlayback();
 
-                        // Install shutdown hook for graceful cleanup
-                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                            try {
-                                System.out.println("\n🛑 Shutting down gracefully...");
-                            } catch (Exception ignored) {
-                                // jansi may have torn down the ANSI output stream already
-                            }
-                            audioProcessor.shutdown();
-                            try {
-                                session.closeAsync().block(Duration.ofSeconds(5));
-                            } catch (Exception e) {
-                                // Suppress errors during forced JVM shutdown -
-                                // the WebSocket connection may already be partially torn down
-                            }
-                        }));
-                    })
-                    .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleServerEvent(event, audioProcessor))
-                        .doOnComplete(() -> System.out.println("✓ Event stream completed"))
-                        .doOnError(error -> System.err.println("❌ Error receiving events: " + error.getMessage())))
+                            System.out.println("🎤 VOICE ASSISTANT READY");
+                            System.out.println("Start speaking to begin conversation");
+                            System.out.println("Press Ctrl+C to exit");
+
+                            // Install shutdown hook for graceful cleanup
+                            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                                try {
+                                    System.out.println("\n🛑 Shutting down gracefully...");
+                                } catch (Exception ignored) {
+                                    // jansi may have torn down the ANSI output stream already
+                                }
+                                audioProcessor.shutdown();
+                                try {
+                                    session.closeAsync().block(Duration.ofSeconds(5));
+                                } catch (Exception e) {
+                                    // Suppress errors during forced JVM shutdown -
+                                    // the WebSocket connection may already be partially torn down
+                                }
+                            }));
+                        })
+                        .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
+                        .thenMany(Flux.<SessionUpdate>empty()))
                     .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))

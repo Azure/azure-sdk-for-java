@@ -15,12 +15,22 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.util.Arrays;
 
 /**
  * Sample demonstrating different authentication methods for VoiceLive service.
+ *
+ * <p>Use this sample first when you are not sure whether connection failures are caused by auth or
+ * by session logic. It gives you a small, low-noise way to verify that your chosen credential can
+ * open a VoiceLive session successfully.</p>
+ *
+ * <p>When you run it, the sample builds a client with either API key auth or token-based auth,
+ * opens a short-lived session, applies a minimal configuration, prints a few server events, and
+ * then exits after a brief validation window.</p>
  *
  * <p>This sample shows two authentication approaches:</p>
  * <ul>
@@ -224,12 +234,19 @@ public final class AuthenticationMethodsSample {
 
                 // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> System.out.println("✓ Session configured successfully"))
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
-                    .then(Mono.delay(java.time.Duration.ofSeconds(2)))
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+                Flux<SessionUpdate> eventStream = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(event -> handleEvent(event))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .take(java.time.Duration.ofSeconds(2));
+
+                return Flux.merge(
+                    eventStream,
+                    eventSubscribed.asMono()
+                        .then(session.sendEvent(updateEvent))
+                        .doOnSuccess(v -> System.out.println("✓ Session configured successfully"))
+                        .thenMany(Flux.<SessionUpdate>empty()))
                     .then(Mono.fromRunnable(() -> System.out.println("✓ Authentication test completed successfully\n")));
             })
             .doOnError(error -> {

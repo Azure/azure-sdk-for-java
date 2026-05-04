@@ -14,6 +14,8 @@ import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.Arrays;
 
@@ -21,6 +23,13 @@ import java.util.Arrays;
  * Basic voice conversation sample demonstrating minimal setup for VoiceLive service.
  *
  * <p><strong>Start here if you're new to VoiceLive!</strong> This is the simplest sample showing core concepts.</p>
+ *
+ * <p>Use this sample to verify that your endpoint, credential, and basic realtime session setup are
+ * working before you add microphone input, speaker output, tool calls, or tracing.</p>
+ *
+ * <p>When you run it, the sample opens a realtime session, sends a minimal {@code session.update}
+ * request, and prints the server events that come back so you can see the connection lifecycle end
+ * to end.</p>
  *
  * <p>This sample shows the simplest way to:</p>
  * <ul>
@@ -93,12 +102,19 @@ public final class BasicVoiceConversationSample {
 
                 // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> System.out.println("✓ Session configured"))
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                        .doOnComplete(() -> System.out.println("Event stream completed")))
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+                Flux<SessionUpdate> eventStream = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(thisEvent -> handleEvent(thisEvent))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .doOnComplete(() -> System.out.println("Event stream completed"));
+
+                return Flux.merge(
+                    eventStream,
+                    eventSubscribed.asMono()
+                        .then(session.sendEvent(updateEvent))
+                        .doOnSuccess(v -> System.out.println("✓ Session configured"))
+                        .thenMany(Flux.<SessionUpdate>empty()))
                     .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .block(); // Block for demo purposes

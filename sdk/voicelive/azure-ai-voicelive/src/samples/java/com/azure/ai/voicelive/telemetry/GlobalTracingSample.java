@@ -17,6 +17,8 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,6 +27,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating automatic tracing via {@code GlobalOpenTelemetry}.
+ *
+ * <p>Use this sample when you want to confirm that the VoiceLive client emits OpenTelemetry spans
+ * automatically without adding manual tracing calls around each SDK operation.</p>
+ *
+ * <p>When you run it, the sample registers a simple console span exporter, opens a short text-only
+ * VoiceLive session, waits for one model response to complete, closes the session, and then flushes
+ * the spans so you can inspect the emitted telemetry immediately.</p>
  *
  * <p>This sample registers a global OpenTelemetry instance with
  * {@code OpenTelemetrySdk.builder().buildAndRegisterGlobal()}. The VoiceLive client picks it
@@ -87,12 +96,21 @@ public final class GlobalTracingSample {
 
                 // Configure the session, trigger a response, then wait for response.done.
                 // Uses a single reactive chain: send config → start response → wait for done → close.
-                return session.sendEvent(new ClientEventSessionUpdate(options))
-                    .then(session.startResponse())
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> System.out.println("Event: " + event.getType()))
-                        .filter(event -> event instanceof SessionUpdateResponseDone)
-                        .take(1))
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+                Flux<SessionUpdateResponseDone> responseDoneEvents = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
+                    .filter(event -> event instanceof SessionUpdateResponseDone)
+                    .map(event -> (SessionUpdateResponseDone) event)
+                    .take(1);
+
+                return Flux.merge(
+                        responseDoneEvents,
+                        eventSubscribed.asMono()
+                            .then(session.sendEvent(new ClientEventSessionUpdate(options)))
+                            .then(session.startResponse())
+                            .thenMany(Flux.<SessionUpdateResponseDone>empty()))
+                    .next()
                     .flatMap(event -> session.closeAsync())
                     .doOnError(error -> System.err.println("Error: " + error.getMessage()))
                     .onErrorComplete()

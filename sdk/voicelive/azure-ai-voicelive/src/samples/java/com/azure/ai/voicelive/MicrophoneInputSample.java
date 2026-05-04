@@ -17,6 +17,8 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -25,9 +27,17 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrating how to capture audio from microphone and send it to VoiceLive service.
+ *
+ * <p>Use this sample when you want to validate microphone capture and upstream audio streaming
+ * without the extra moving parts of local speaker playback or function/tool integration.</p>
+ *
+ * <p>When you run it, the sample opens a realtime session, starts reading PCM audio from your
+ * default microphone, streams that audio to the service, and prints speech / response events so
+ * you can confirm the service is receiving your input.</p>
  *
  * <p>This sample shows how to:</p>
  * <ul>
@@ -109,7 +119,8 @@ public final class MicrophoneInputSample {
             .setInputAudioSamplingRate(SAMPLE_RATE);
 
         final AtomicBoolean isCapturing = new AtomicBoolean(false);
-        final TargetDataLine[] microphoneRef = new TargetDataLine[1];
+        final AtomicReference<TargetDataLine> microphoneRef = new AtomicReference<>();
+        final AtomicReference<Thread> captureThreadRef = new AtomicReference<>();
 
         // Start session
         client.startSession("gpt-realtime")
@@ -118,20 +129,27 @@ public final class MicrophoneInputSample {
 
                 // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> {
-                        System.out.println("\u2713 Session configured");
-                        // Start microphone capture
-                        startMicrophone(session, isCapturing, microphoneRef);
-                    })
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event, isCapturing))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+                Flux<SessionUpdate> eventStream = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(event -> handleEvent(event, isCapturing))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()));
+
+                return Flux.merge(
+                    eventStream,
+                    eventSubscribed.asMono()
+                        .then(session.sendEvent(updateEvent))
+                        .doOnSuccess(v -> {
+                            System.out.println("\u2713 Session configured");
+                            // Start microphone capture
+                            startMicrophone(session, isCapturing, microphoneRef, captureThreadRef);
+                        })
+                        .thenMany(Flux.<SessionUpdate>empty()))
                     .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doFinally(signalType -> {
                 // Cleanup
-                stopMicrophone(isCapturing, microphoneRef[0]);
+                stopMicrophone(isCapturing, microphoneRef, captureThreadRef);
             })
             .block(); // Block for demo purposes
     }
@@ -157,8 +175,10 @@ public final class MicrophoneInputSample {
      * @param session The VoiceLive session
      * @param isCapturing Flag to control capture loop
      * @param microphoneRef Reference to store the microphone line
+     * @param captureThreadRef Reference to store the capture thread
      */
-    private static void startMicrophone(VoiceLiveSessionAsyncClient session, AtomicBoolean isCapturing, TargetDataLine[] microphoneRef) {
+    private static void startMicrophone(VoiceLiveSessionAsyncClient session, AtomicBoolean isCapturing,
+        AtomicReference<TargetDataLine> microphoneRef, AtomicReference<Thread> captureThreadRef) {
         try {
             AudioFormat format = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
@@ -175,7 +195,7 @@ public final class MicrophoneInputSample {
             microphone.open(format, CHUNK_SIZE * 4);
             microphone.start();
 
-            microphoneRef[0] = microphone;
+            microphoneRef.set(microphone);
             isCapturing.set(true);
 
             System.out.println("🎤 Microphone started - speak now");
@@ -186,19 +206,27 @@ public final class MicrophoneInputSample {
                 byte[] buffer = new byte[CHUNK_SIZE * 2]; // 16-bit samples
 
                 while (isCapturing.get()) {
-                    int bytesRead = microphone.read(buffer, 0, buffer.length);
-                    if (bytesRead > 0) {
-                        // Send audio to VoiceLive service
-                        byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
-                        session.sendInputAudio(BinaryData.fromBytes(audioChunk))
-                            .subscribe(
-                                v -> {},
-                                error -> System.err.println("Error sending audio: " + error.getMessage())
-                            );
+                    try {
+                        int bytesRead = microphone.read(buffer, 0, buffer.length);
+                        if (bytesRead > 0) {
+                            // Send audio to VoiceLive service
+                            byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
+                            session.sendInputAudio(BinaryData.fromBytes(audioChunk))
+                                .subscribe(
+                                    v -> {},
+                                    error -> System.err.println("Error sending audio: " + error.getMessage())
+                                );
+                        }
+                    } catch (Exception e) {
+                        if (isCapturing.get()) {
+                            System.err.println("Error capturing audio: " + e.getMessage());
+                        }
+                        break;
                     }
                 }
             }, "MicrophoneCapture");
             captureThread.setDaemon(true);
+            captureThreadRef.set(captureThread);
             captureThread.start();
 
         } catch (LineUnavailableException e) {
@@ -210,10 +238,24 @@ public final class MicrophoneInputSample {
      * Stop microphone capture.
      *
      * @param isCapturing Flag to control capture loop
-     * @param microphone The microphone line to close
+     * @param microphoneRef Reference to the microphone line to close
+     * @param captureThreadRef Reference to the capture thread
      */
-    private static void stopMicrophone(AtomicBoolean isCapturing, TargetDataLine microphone) {
+    private static void stopMicrophone(AtomicBoolean isCapturing, AtomicReference<TargetDataLine> microphoneRef,
+        AtomicReference<Thread> captureThreadRef) {
         isCapturing.set(false);
+
+        Thread captureThread = captureThreadRef.getAndSet(null);
+        if (captureThread != null) {
+            captureThread.interrupt();
+            try {
+                captureThread.join(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        TargetDataLine microphone = microphoneRef.getAndSet(null);
         if (microphone != null) {
             microphone.stop();
             microphone.close();

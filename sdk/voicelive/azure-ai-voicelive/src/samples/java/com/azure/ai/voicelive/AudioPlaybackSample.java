@@ -20,7 +20,9 @@ import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -34,9 +36,16 @@ import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrating how to receive and play audio responses from VoiceLive service.
+ *
+ * <p>Use this sample when you want to understand downstream audio playback only. It is a good next
+ * step after the basic sample because it avoids microphone capture and focuses on speaker output.</p>
+ *
+ * <p>When you run it, the sample sends a fixed text prompt, asks the model to generate an audio
+ * response, and plays the returned PCM audio through your default speaker or headphones.</p>
  *
  * <p>This sample shows how to:</p>
  * <ul>
@@ -126,52 +135,55 @@ public final class AudioPlaybackSample {
         // Audio playback components
         final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>(1000);
         final AtomicBoolean isPlaying = new AtomicBoolean(false);
-        final SourceDataLine[] speakerRef = new SourceDataLine[1];
+        final AtomicReference<SourceDataLine> speakerRef = new AtomicReference<>();
+        final AtomicReference<Thread> playbackThreadRef = new AtomicReference<>();
 
         // Start session
         client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Send session configuration, send text message, trigger response,
-                // then listen for events. Events are buffered by the SDK's receiveSink,
-                // so none are lost between sending and subscribing.
+                // Build the receive stream first, then gate the send pipeline on its subscription.
+                // This avoids missing early events from the SDK's hot shared event stream.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
+                InputTextContentPart textContent = new InputTextContentPart(
+                    "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
+                UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
+                ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
+                    .setItem(messageItem);
+                ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
+                Sinks.One<Void> eventSubscribed = Sinks.one();
+
+                Flux<SessionUpdate> eventStream = session.receiveEvents()
+                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
+                    .doOnNext(event -> handleEvent(event, audioQueue))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()));
+
+                Mono<Void> sendPipeline = eventSubscribed.asMono()
+                    .then(session.sendEvent(updateEvent))
                     .doOnSuccess(v -> {
                         System.out.println("✓ Session configured");
-                        // Start audio playback system
-                        startPlayback(audioQueue, isPlaying, speakerRef);
+                        startPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
                     })
                     .then(Mono.delay(Duration.ofMillis(500))) // Wait for session to be fully ready
-                    .flatMap(v -> {
-                        // Send a user message to trigger an audio response
-                        System.out.println("📤 Sending text message to trigger audio response...");
-                        InputTextContentPart textContent = new InputTextContentPart(
-                            "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
-                        UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
-                        ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
-                            .setItem(messageItem);
-
-                        return session.sendEvent(createEvent);
-                    })
+                    .then(Mono.fromRunnable(() ->
+                        System.out.println("📤 Sending text message to trigger audio response...")))
+                    .then(session.sendEvent(createEvent))
                     .then(Mono.delay(Duration.ofMillis(100)))
-                    .flatMap(v -> {
-                        // Trigger response generation
-                        System.out.println("🎯 Triggering response generation...");
-                        ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
-                        return session.sendEvent(responseEvent);
-                    })
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event, audioQueue))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                        .take(Duration.ofSeconds(10))) // Listen for 10 seconds then complete
+                    .then(Mono.fromRunnable(() ->
+                        System.out.println("🎯 Triggering response generation...")))
+                    .then(session.sendEvent(responseEvent))
+                    .then();
+
+                return Flux.merge(
+                    eventStream.take(Duration.ofSeconds(10)), // Listen for 10 seconds then complete
+                    sendPipeline.thenMany(Flux.<SessionUpdate>empty()))
                     .then()
                     .doFinally(signal -> System.out.println("\n✓ Sample completed - audio playback demonstrated"));
             })
             .doFinally(signalType -> {
                 // Cleanup
-                stopPlayback(audioQueue, isPlaying, speakerRef[0]);
+                stopPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
             })
             .block(); // Block for demo purposes
     }
@@ -197,8 +209,10 @@ public final class AudioPlaybackSample {
      * @param audioQueue Queue containing audio data to play
      * @param isPlaying Flag to control playback loop
      * @param speakerRef Reference to store the speaker line
+     * @param playbackThreadRef Reference to store the playback thread
      */
-    private static void startPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying, SourceDataLine[] speakerRef) {
+    private static void startPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
+        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
         try {
             AudioFormat format = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
@@ -215,7 +229,7 @@ public final class AudioPlaybackSample {
             speaker.open(format, CHUNK_SIZE * 4);
             speaker.start();
 
-            speakerRef[0] = speaker;
+            speakerRef.set(speaker);
             isPlaying.set(true);
 
             System.out.println("🔊 Audio playback started");
@@ -245,6 +259,7 @@ public final class AudioPlaybackSample {
                 }
             }, "AudioPlayback");
             playbackThread.setDaemon(true);
+            playbackThreadRef.set(playbackThread);
             playbackThread.start();
 
         } catch (LineUnavailableException e) {
@@ -257,11 +272,25 @@ public final class AudioPlaybackSample {
      *
      * @param audioQueue Queue containing audio data
      * @param isPlaying Flag to control playback loop
-     * @param speaker The speaker line to close
+     * @param speakerRef Reference to the speaker line to close
+     * @param playbackThreadRef Reference to the playback thread
      */
-    private static void stopPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying, SourceDataLine speaker) {
+    private static void stopPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
+        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
         isPlaying.set(false);
         audioQueue.offer(new byte[0]); // Shutdown signal
+
+        Thread playbackThread = playbackThreadRef.getAndSet(null);
+        if (playbackThread != null) {
+            playbackThread.interrupt();
+            try {
+                playbackThread.join(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        SourceDataLine speaker = speakerRef.getAndSet(null);
         if (speaker != null) {
             speaker.stop();
             speaker.close();
