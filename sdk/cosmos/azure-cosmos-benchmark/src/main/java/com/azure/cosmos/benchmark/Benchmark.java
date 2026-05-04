@@ -25,8 +25,5 @@ public interface Benchmark {
      *
      * @return a Mono that completes when the operation finishes
      */
-    default Mono<?> performSingleOperation() {
-        return Mono.error(new UnsupportedOperationException(
-            getClass().getSimpleName() + " does not support per-operation dispatch"));
-    }
+    Mono<?> performSingleOperation();
 }

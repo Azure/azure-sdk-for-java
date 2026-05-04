@@ -17,7 +17,10 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -25,14 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 import reactor.core.publisher.Mono;
 
@@ -41,7 +40,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    private final ExecutorService ingestionExecutorService;
     private final AtomicLong operationCounter = new AtomicLong(0);
 
     private boolean databaseCreated;
@@ -57,7 +55,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
     final List<PojoizedJson> docsToRead;
 
     SyncBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
-        ingestionExecutorService = Executors.newFixedThreadPool(workloadCfg.getIngestionRetryConcurrency());
         workloadConfig = workloadCfg;
 
         boolean isManagedIdentityRequired = workloadCfg.isManagedIdentityRequired();
@@ -157,64 +154,41 @@ abstract class SyncBenchmark<T> implements Benchmark {
             partitionKey = cosmosContainer.read().getProperties().getPartitionKeyDefinition()
                     .getPaths().iterator().next().split("/")[1];
 
-            ArrayList<CompletableFuture<PojoizedJson>> createDocumentFutureList = new ArrayList<>();
-
             if (workloadCfg.getOperationType() != Operation.WriteThroughput
                     && workloadCfg.getOperationType() != Operation.ReadMyWrites) {
+                logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
                 String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
+                List<PojoizedJson> generatedDocs = new ArrayList<>();
+                List<CosmosItemOperation> bulkOperations = new ArrayList<>();
+
                 for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
                     String uuid = UUID.randomUUID().toString();
                     PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                            dataFieldValue,
-                            partitionKey,
-                            workloadCfg.getDocumentDataFieldCount());
-                    CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
-
-                        int maxRetries = 5;
-                        Exception lastException = null;
-                        for (int attempt = 0; attempt <= maxRetries; attempt++) {
-                            try {
-                                CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
-                                return toPojoizedJson(itemResponse);
-                            } catch (CosmosException ce) {
-                                lastException = ce;
-                                if (ce.getStatusCode() == 409) {
-                                    // conflict — document already exists, read it back
-                                    try {
-                                        return cosmosContainer.readItem(
-                                            uuid, new PartitionKey(uuid), PojoizedJson.class).getItem();
-                                    } catch (Exception readEx) {
-                                        throw propagate(readEx);
-                                    }
-                                }
-                                int statusCode = ce.getStatusCode();
-                                boolean isTransient = statusCode == 408 || statusCode == 410
-                                    || statusCode == 429 || statusCode == 449
-                                    || statusCode == 500 || statusCode == 503;
-                                if (isTransient && attempt < maxRetries) {
-                                    try {
-                                        Thread.sleep(1000L * (attempt + 1));
-                                    } catch (InterruptedException ie) {
-                                        Thread.currentThread().interrupt();
-                                        throw propagate(ce);
-                                    }
-                                    continue;
-                                }
-                                throw propagate(ce);
-                            } catch (Exception e) {
-                                lastException = e;
-                                throw propagate(e);
-                            }
-                        }
-                        throw new RuntimeException("Exhausted retries for createItem", lastException);
-
-                    }, ingestionExecutorService);
-
-                    createDocumentFutureList.add(futureResult);
+                        dataFieldValue,
+                        partitionKey,
+                        workloadCfg.getDocumentDataFieldCount());
+                    generatedDocs.add(newDoc);
+                    bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
                 }
-            }
 
-            docsToRead = createDocumentFutureList.stream().map(future -> getOrThrow(future)).collect(Collectors.toList());
+                CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+                List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+                cosmosContainer.executeBulkOperations(bulkOperations, bulkExecutionOptions)
+                    .forEach(response -> {
+                        if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                            failedResponses.add(response);
+                        }
+                    });
+
+                BenchmarkHelper.retryFailedBulkOperations(failedResponses,
+                    (item, pk) -> Mono.fromRunnable(() -> cosmosContainer.createItem(item, pk, null)),
+                    workloadCfg.getIngestionRetryConcurrency());
+
+                docsToRead = generatedDocs;
+            } else {
+                docsToRead = new ArrayList<>();
+            }
+            logger.info("Finished pre-populating {} documents", workloadCfg.getNumberOfPreCreatedDocuments());
             init();
     }
 
@@ -233,7 +207,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
         }
 
         benchmarkWorkloadClient.close();
-        ingestionExecutorService.shutdown();
     }
 
     protected void onSuccess() {
@@ -255,25 +228,5 @@ abstract class SyncBenchmark<T> implements Benchmark {
                 SyncBenchmark.this.onError(e);
             })
             .onErrorResume(e -> Mono.empty());
-    }
-
-    RuntimeException propagate(Exception e) {
-        if (e instanceof RuntimeException) {
-            return (RuntimeException) e;
-        } else {
-            return new RuntimeException(e);
-        }
-    }
-
-    <V> V getOrThrow(Future<V> f) {
-        try {
-            return f.get();
-        } catch (Exception e) {
-            throw propagate(e);
-        }
-    }
-
-    PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
-        return resp.getItem();
     }
 }

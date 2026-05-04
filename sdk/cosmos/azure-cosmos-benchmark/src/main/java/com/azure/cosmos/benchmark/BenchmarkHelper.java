@@ -35,13 +35,6 @@ public class BenchmarkHelper {
         return instance;
     }
 
-    public static boolean shouldContinue(long startTimeMillis, long iterationCount, Duration maxDuration, int maxOperations) {
-        if (maxDuration == null) {
-            return iterationCount < maxOperations;
-        }
-        return startTimeMillis + maxDuration.toMillis() > System.currentTimeMillis();
-    }
-
     /**
      * Retries failed bulk operation responses by falling back to individual createItem calls.
      * Ignores 409 (Conflict) errors since the document already exists.
