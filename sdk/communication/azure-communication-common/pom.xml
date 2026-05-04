@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.5</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+  <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
 
   <name>Microsoft Azure common library for communication service client</name>
   <description>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
