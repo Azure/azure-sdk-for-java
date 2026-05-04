@@ -55,6 +55,14 @@ public class TenantWorkloadConfig {
 
     public static final String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
+    // Fields that should be per-tenant, not in tenantDefaults
+    private static final java.util.Set<String> PER_TENANT_ONLY_FIELDS = new java.util.HashSet<>(
+        java.util.Arrays.asList(
+            "serviceEndpoint", "masterKey", "databaseId", "containerId",
+            "aadLoginEndpoint", "aadTenantId", "aadManagedIdentityClientId"
+        )
+    );
+
     // ======== Account connection ========
 
     @JsonProperty("id")
@@ -548,6 +556,14 @@ public class TenantWorkloadConfig {
                     Map.Entry<String, JsonNode> entry = fields.next();
                     tenantDefaults.put(entry.getKey(), entry.getValue().asText());
                 }
+            }
+        }
+
+        // Account-specific fields should be per-tenant, not in tenantDefaults
+        for (String perTenantField : PER_TENANT_ONLY_FIELDS) {
+            if (tenantDefaults.containsKey(perTenantField)) {
+                logger.warn("'{}' found in tenantDefaults — this field should be set per-tenant, not as a default. "
+                    + "Move it into each tenant entry.", perTenantField);
             }
         }
 
