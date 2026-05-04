@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.18.3 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 12.20.0-beta.1 (2026-03-25)
 
 ### Features Added
