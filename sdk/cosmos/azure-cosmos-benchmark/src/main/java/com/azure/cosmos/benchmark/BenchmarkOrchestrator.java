@@ -21,7 +21,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -31,8 +30,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -124,18 +121,7 @@ public class BenchmarkOrchestrator {
             totalCycles, tenants.size(), config.getConcurrency(), config.getNumberOfOperations());
         long startTime = System.currentTimeMillis();
 
-        Scheduler benchmarkScheduler = Schedulers.parallel();
-
-        // Dedicated scheduler for sync benchmark operations (SyncBenchmark subclasses).
-        // Sized to the orchestrator concurrency to avoid becoming a bottleneck.
-        ExecutorService syncExecutorService = Executors.newFixedThreadPool(
-            Math.min(config.getConcurrency(), Runtime.getRuntime().availableProcessors() * 4),
-            r -> {
-                Thread t = new Thread(r, "sync-dispatch-" + Thread.currentThread().getId());
-                t.setDaemon(true);
-                return t;
-            });
-        Scheduler syncScheduler = Schedulers.fromExecutorService(syncExecutorService, "sync-dispatch");
+        Scheduler benchmarkScheduler = Schedulers.boundedElastic();
 
         try {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
@@ -211,7 +197,7 @@ public class BenchmarkOrchestrator {
                     CpuMonitor.awaitCoolDown(baselineCpu);
 
                     // 4. Run workload — orchestrator dispatches operations across tenants
-                    runWorkload(benchmarks, cycle, config, benchmarkScheduler, syncScheduler);
+                    runWorkload(benchmarks, cycle, config, benchmarkScheduler);
                     logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
                     // 5. Flush reporters before shutdown destroys the registry
@@ -269,17 +255,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
-            logger.info("[LIFECYCLE] Shutting down sync dispatch scheduler...");
-            syncScheduler.dispose();
-            syncExecutorService.shutdown();
-            try {
-                if (!syncExecutorService.awaitTermination(60, TimeUnit.SECONDS)) {
-                    syncExecutorService.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                syncExecutorService.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
+            // boundedElastic is a global shared scheduler — do not dispose it.
         }
 
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
@@ -300,7 +276,7 @@ public class BenchmarkOrchestrator {
      * The orchestrator randomly picks a tenant for each operation slot in a single Flux dispatch loop.
      */
     private void runWorkload(List<Benchmark> benchmarks, int cycle, BenchmarkConfig config,
-                             Scheduler benchmarkScheduler, Scheduler syncScheduler) throws Exception {
+                             Scheduler benchmarkScheduler) throws Exception {
         int concurrency = config.getConcurrency();
         long numberOfOps = config.getNumberOfOperations();
         Duration maxDuration = config.getMaxRunningTimeDuration();
@@ -340,11 +316,8 @@ public class BenchmarkOrchestrator {
             .flatMap(globalIndex -> {
                 int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
                 Benchmark selected = benchmarks.get(tenantIndex);
-                Scheduler scheduler = (selected instanceof SyncBenchmark)
-                    ? syncScheduler
-                    : benchmarkScheduler;
                 return selected.performSingleOperation()
-                    .subscribeOn(scheduler)
+                    .subscribeOn(benchmarkScheduler)
                     .doOnTerminate(completedCount::incrementAndGet);
             }, concurrency)
             .blockLast();
