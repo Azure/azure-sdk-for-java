@@ -1,5 +1,14 @@
 # Release History
 
+## 1.0.8 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.5.10` to version `1.5.11`.
+
+
 ## 1.0.7 (2026-01-29)
 
 ### Other Changes
