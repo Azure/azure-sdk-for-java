@@ -5,57 +5,44 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The AcrAccessToken model.
- */
+/** The AcrAccessToken model. */
 @Fluent
 public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
     /*
      * The access token for performing authenticated requests
      */
-    @Generated
     private String accessToken;
 
-    /**
-     * Creates an instance of AcrAccessToken class.
-     */
-    @Generated
+    /** Creates an instance of AcrAccessToken class. */
     public AcrAccessToken() {
     }
 
     /**
      * Get the accessToken property: The access token for performing authenticated requests.
-     * 
+     *
      * @return the accessToken value.
      */
-    @Generated
     public String getAccessToken() {
         return this.accessToken;
     }
 
     /**
      * Set the accessToken property: The access token for performing authenticated requests.
-     * 
+     *
      * @param accessToken the accessToken value to set.
      * @return the AcrAccessToken object itself.
      */
-    @Generated
     public AcrAccessToken setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,13 +52,12 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
 
     /**
      * Reads an instance of AcrAccessToken from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrAccessToken if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrAccessToken.
      */
-    @Generated
     public static AcrAccessToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcrAccessToken deserializedAcrAccessToken = new AcrAccessToken();
