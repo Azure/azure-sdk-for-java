@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchIndexerClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2026_04_01;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 
     @Test
     public void buildSyncClientTest() {
@@ -119,6 +119,11 @@ public class SearchIndexerClientBuilderTests {
     }
 
     @Test
+    public void emptyEndpointThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder().endpoint(""));
+    }
+
+    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
             () -> new SearchIndexerClientBuilder().credential(new AzureKeyCredential("")));
@@ -128,11 +133,13 @@ public class SearchIndexerClientBuilderTests {
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
-            .httpClient(new FreshDateTestClient())
-            .buildAsyncClient();
+        SearchIndexerAsyncClient searchIndexerAsyncClient
+            = new SearchIndexerClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .endpoint(searchEndpoint)
+                .credential(searchApiKeyCredential)
+                .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
+                .httpClient(new FreshDateTestClient())
+                .buildAsyncClient();
 
         StepVerifier
             .create(searchIndexerAsyncClient.getHttpPipeline().send(request(searchIndexerAsyncClient.getEndpoint())))

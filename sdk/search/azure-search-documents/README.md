@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.8.0</version>
+    <version>11.8.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -316,9 +316,11 @@ Let's explore them with a search for a "luxury" hotel.
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
 ```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
-    Map<String, Object> doc = searchResult.getAdditionalProperties();
-    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("HotelId"), doc.get("HotelName"));
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
+    SearchDocument doc = searchResult.getDocument(SearchDocument.class);
+    String id = (String) doc.get("hotelId");
+    String name = (String) doc.get("hotelName");
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
 }
 ```
 
@@ -328,7 +330,9 @@ Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
 public static class Hotel {
+    @SimpleField(isKey = true, isFilterable = true, isSortable = true)
     private String id;
+    @SearchableField(isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {
@@ -354,9 +358,11 @@ public static class Hotel {
 Use it in place of `SearchDocument` when querying.
 
 ```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
-    Map<String, Object> doc = searchResult.getAdditionalProperties();
-    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("Id"), doc.get("Name"));
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
+    Hotel doc = searchResult.getDocument(Hotel.class);
+    String id = doc.getId();
+    String name = doc.getName();
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
 }
 ```
 
@@ -369,11 +375,11 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
 
 ```java readme-sample-searchWithSearchOptions
-SearchOptions options = new SearchOptions().setSearchText("luxury")
+SearchOptions options = new SearchOptions()
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
-SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search(options);
+SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
 // ...
 ```
 
@@ -388,7 +394,7 @@ There are multiple ways of preparing search fields for a search index. For basic
 to configure the field of model class.
 
 ```java readme-sample-createIndexUseFieldBuilder
-List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class);
+List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
 SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
 ```
 
@@ -396,48 +402,50 @@ For advanced scenarios, we can build search fields using `SearchField` directly.
 
 ```java readme-sample-createIndex
 List<SearchField> searchFieldList = new ArrayList<>();
-searchFieldList.add(new SearchField("HotelId", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
     .setKey(true)
     .setFilterable(true)
     .setSortable(true));
-searchFieldList.add(new SearchField("HotelName", SearchFieldDataType.STRING)
+
+searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
     .setSearchable(true)
     .setFilterable(true)
     .setSortable(true));
-searchFieldList.add(new SearchField("Description", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
     .setSearchable(true)
     .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-searchFieldList.add(new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
     .setSearchable(true)
     .setFilterable(true)
     .setFacetable(true));
-searchFieldList.add(new SearchField("Address", SearchFieldDataType.COMPLEX)
-    .setFields(new SearchField("StreetAddress", SearchFieldDataType.STRING).setSearchable(true),
-        new SearchField("City", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
+    .setFields(new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
+        new SearchField("city", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("StateProvince", SearchFieldDataType.STRING)
+        new SearchField("stateProvince", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("Country", SearchFieldDataType.STRING)
+        new SearchField("country", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("PostalCode", SearchFieldDataType.STRING)
+        new SearchField("postalCode", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
-            .setSortable(true)));
+            .setSortable(true)
+    ));
 
 // Prepare suggester.
-SearchSuggester suggester = new SearchSuggester("sg", "hotelName");
+SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
 // Prepare SearchIndex with index name and search fields.
-SearchIndex index = new SearchIndex("hotels", searchFieldList).setSuggesters(suggester);
+SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
 // Create an index
 SEARCH_INDEX_CLIENT.createIndex(index);
 ```
@@ -449,8 +457,8 @@ your index if you already know the key. You could get the key from a query, for 
 information about it or navigate your customer to that document.
 
 ```java readme-sample-retrieveDocuments
-Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
-System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
 ### Adding documents to your index
@@ -460,16 +468,9 @@ There are [a few special rules for merging](https://learn.microsoft.com/rest/api
 to be aware of.
 
 ```java readme-sample-batchDocumentsOperations
-Map<String, Object> hotel = new LinkedHashMap<>();
-hotel.put("Id", "783");
-hotel.put("Name", "Upload Inn");
-
-Map<String, Object> hotel2 = new LinkedHashMap<>();
-hotel2.put("Id", "12");
-hotel2.put("Name", "Renovated Ranch");
-IndexDocumentsBatch batch = new IndexDocumentsBatch(
-    new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(hotel),
-    new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(hotel2));
+IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
+batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
+batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
 SEARCH_CLIENT.indexDocuments(batch);
 ```
 
@@ -483,10 +484,10 @@ The examples so far have been using synchronous APIs, but we provide full suppor
 to use [SearchAsyncClient](#create-a-searchclient).
 
 ```java readme-sample-searchWithAsyncClient
-SEARCH_ASYNC_CLIENT.search(new SearchOptions().setSearchText("luxury"))
+SEARCH_ASYNC_CLIENT.search("luxury")
     .subscribe(result -> {
-        Map<String, Object> hotel = result.getAdditionalProperties();
-        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+        Hotel hotel = result.getDocument(Hotel.class);
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     });
 ```
 
@@ -527,7 +528,7 @@ Any Search API operation that fails will throw an [`HttpResponseException`][Http
 
 ```java readme-sample-handleErrorsWithSyncClient
 try {
-    Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchOptions().setSearchText("hotel"));
+    Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service
@@ -593,5 +594,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-
-

@@ -11,8 +11,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -29,7 +27,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -57,7 +54,7 @@ public class ContextRequestIdTests {
         Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
             createRequestIdHeaders(expectedRequestId));
 
-        verifySync(client::getDocumentCountWithResponse, context, expectedRequestId);
+        verifySync(() -> client.getDocumentCountWithResponse(context), expectedRequestId);
     }
 
     @Test
@@ -74,8 +71,7 @@ public class ContextRequestIdTests {
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        verifyAsync(client.getDocumentCount().contextWrite(subscriberContext), expectedRequestId);
-        verifyAsync(client.getDocumentCountWithResponse(null).contextWrite(subscriberContext), expectedRequestId);
+        verifyAsync(client.getDocumentCountWithResponse().contextWrite(subscriberContext), expectedRequestId);
     }
 
     @Test
@@ -91,7 +87,7 @@ public class ContextRequestIdTests {
         Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
             createRequestIdHeaders(expectedRequestId));
 
-        verifySync(options -> client.getIndexWithResponse("index", options), context, expectedRequestId);
+        verifySync(() -> client.getIndexWithResponse("index", context), expectedRequestId);
     }
 
     @Test
@@ -107,9 +103,7 @@ public class ContextRequestIdTests {
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        verifyAsync(client.getIndexStatistics("index").contextWrite(subscriberContext), expectedRequestId);
-        verifyAsync(client.getIndexStatisticsWithResponse("index", null).contextWrite(subscriberContext),
-            expectedRequestId);
+        verifyAsync(client.getIndexStatisticsWithResponse("index").contextWrite(subscriberContext), expectedRequestId);
     }
 
     @Test
@@ -125,7 +119,7 @@ public class ContextRequestIdTests {
         Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
             createRequestIdHeaders(expectedRequestId));
 
-        verifySync(options -> client.getIndexerWithResponse("indexer", options), context, expectedRequestId);
+        verifySync(() -> client.getIndexerWithResponse("indexer", context), expectedRequestId);
     }
 
     @Test
@@ -141,18 +135,15 @@ public class ContextRequestIdTests {
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        verifyAsync(client.getIndexer("indexer").contextWrite(subscriberContext), expectedRequestId);
-        verifyAsync(client.getIndexerWithResponse("indexer", null).contextWrite(subscriberContext), expectedRequestId);
+        verifyAsync(client.getIndexerWithResponse("indexer").contextWrite(subscriberContext), expectedRequestId);
     }
 
     private static HttpHeaders createRequestIdHeaders(String requestId) {
         return new HttpHeaders().set(REQUEST_ID_HEADER, requestId);
     }
 
-    private static void verifySync(Function<RequestOptions, Response<?>> requestRunner, Context context,
-        String expectedRequestId) {
-        RuntimeException ex
-            = assertThrows(RuntimeException.class, () -> requestRunner.apply(new RequestOptions().setContext(context)));
+    private static void verifySync(Runnable requestRunner, String expectedRequestId) {
+        RuntimeException ex = assertThrows(RuntimeException.class, requestRunner::run);
         assertEquals(expectedRequestId, ex.getMessage());
     }
 

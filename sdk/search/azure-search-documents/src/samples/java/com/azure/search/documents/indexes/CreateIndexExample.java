@@ -10,6 +10,8 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 
+import java.util.Arrays;
+
 public class CreateIndexExample {
     /**
      * From the Azure portal, get your Azure AI Search service name and API key and populate ADMIN_KEY and
@@ -27,49 +29,50 @@ public class CreateIndexExample {
 
         // Configure the index using SearchFields
         String indexName = "hotels";
-        SearchIndex newIndex = new SearchIndex(indexName,
-            new SearchField("HotelId", SearchFieldDataType.STRING)
+        SearchIndex newIndex = new SearchIndex(indexName, Arrays.asList(
+            new SearchField("hotelId", SearchFieldDataType.STRING)
                 .setKey(true)
                 .setFilterable(true)
                 .setSortable(true),
-            new SearchField("HotelName", SearchFieldDataType.STRING)
+            new SearchField("hotelName", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setFilterable(true)
                 .setSortable(true),
-            new SearchField("Description", SearchFieldDataType.STRING)
+            new SearchField("description", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
-            new SearchField("DescriptionFr", SearchFieldDataType.STRING)
+            new SearchField("descriptionFr", SearchFieldDataType.STRING)
                 .setSearchable(true)
                 .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
-            new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+            new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                 .setSearchable(true)
                 .setFilterable(true)
                 .setFacetable(true),
-            new SearchField("Address", SearchFieldDataType.COMPLEX)
+            new SearchField("address", SearchFieldDataType.COMPLEX)
                 .setFields(
-                    new SearchField("StreetAddress", SearchFieldDataType.STRING)
+                    new SearchField("streetAddress", SearchFieldDataType.STRING)
                         .setSearchable(true),
-                    new SearchField("City", SearchFieldDataType.STRING)
+                    new SearchField("city", SearchFieldDataType.STRING)
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("StateProvince", SearchFieldDataType.STRING)
+                    new SearchField("stateProvince", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("Country", SearchFieldDataType.STRING)
+                    new SearchField("country", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setSynonymMapNames("synonymMapName")
                         .setFilterable(true)
                         .setSortable(true)
                         .setFacetable(true),
-                    new SearchField("PostalCode", SearchFieldDataType.STRING)
+                    new SearchField("postalCode", SearchFieldDataType.STRING)
                         .setSearchable(true)
                         .setFilterable(true)
                         .setSortable(true)
-                        .setFacetable(true)));
+                        .setFacetable(true))
+        ));
 
         // Create index.
         client.createIndex(newIndex);

@@ -5,8 +5,8 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.models.DataSourceCredentials;
-import com.azure.search.documents.indexes.models.EntityRecognitionSkillV3;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -124,7 +124,7 @@ public class LifecycleSetupExample {
         );
 
 
-        SearchIndexerSkill skill = new EntityRecognitionSkillV3(inputs, outputs)
+        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
             .setName("#1")
             .setDescription("Entity Recognition Skill")
             .setContext("/document/Description");
@@ -139,38 +139,38 @@ public class LifecycleSetupExample {
     private static SearchIndex createIndex(SearchIndexClient client) {
 
         List<SearchField> fields = Arrays.asList(new SearchField("HotelId", SearchFieldDataType.STRING)
-                .setKey(true)
-                .setFacetable(true)
-                .setFilterable(true)
-                .setRetrievable(true)
-                .setSearchable(false)
-                .setSortable(false),
+                .setKey(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE)
+                .setSearchable(Boolean.FALSE)
+                .setSortable(Boolean.FALSE),
             new SearchField("HotelName", SearchFieldDataType.STRING)
-                .setFacetable(false)
-                .setFilterable(false)
-                .setRetrievable(true)
-                .setKey(false)
-                .setSearchable(true)
-                .setSortable(false)
+                .setFacetable(Boolean.FALSE)
+                .setFilterable(Boolean.FALSE)
+                .setHidden(Boolean.FALSE)
+                .setKey(Boolean.FALSE)
+                .setSearchable(Boolean.TRUE)
+                .setSortable(Boolean.FALSE)
                 .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
             new SearchField("Description", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(false)
-                .setRetrievable(true)
-                .setSortable(false)
-                .setFacetable(false)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.FALSE)
+                .setHidden(Boolean.FALSE)
+                .setSortable(Boolean.FALSE)
+                .setFacetable(Boolean.FALSE)
                 .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT),
             new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                .setFacetable(true)
-                .setFilterable(true)
-                .setRetrievable(true)
-                .setSearchable(true)
+                .setFacetable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE)
+                .setSearchable(Boolean.TRUE)
                 .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT));
         // Index definition
         SearchIndex index = new SearchIndex(INDEX_NAME, fields);
 
         // Set Suggester
-        index.setSuggesters(new SearchSuggester(SUGGESTER_NAME, "Tags"));
+        index.setSuggesters(new SearchSuggester(SUGGESTER_NAME, Collections.singletonList("Tags")));
 
         return client.createOrUpdateIndex(index);
     }
@@ -182,8 +182,7 @@ public class LifecycleSetupExample {
             new HighWaterMarkChangeDetectionPolicy("_ts");
 
         SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection(DATASOURCE_NAME,
-            SearchIndexerDataSourceType.COSMOS_DB,
-            new DataSourceCredentials().setConnectionString(COSMOS_CONNECTION_STRING), dataContainer)
+            SearchIndexerDataSourceType.COSMOS_DB, COSMOS_CONNECTION_STRING, dataContainer)
             .setDataChangeDetectionPolicy(highWaterMarkChangeDetectionPolicy);
 
         return client.createOrUpdateDataSourceConnection(dataSource);

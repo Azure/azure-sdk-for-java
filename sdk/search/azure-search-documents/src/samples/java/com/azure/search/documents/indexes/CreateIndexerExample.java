@@ -60,15 +60,17 @@ public class CreateIndexerExample {
             .setFieldMappings(fieldMappings)
             .setSchedule(indexingSchedule);
 
-        System.out.printf("Creating Indexer: %s%n", indexer.getName());
-        Response<SearchIndexer> response = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null)
-            .block();
+        System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
+        Response<SearchIndexer> response = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(
+            indexer, false
+        ).block();
 
         if (response != null) {
-            System.out.printf("Response code: %s%n", response.getStatusCode());
+            System.out.println(String.format("Response code: %s", response.getStatusCode()));
 
             SearchIndexer createdIndexer = response.getValue();
-            System.out.printf("Created indexer name: %s, ETag: %s%n", createdIndexer.getName(), createdIndexer.getETag());
+            System.out.println(String
+                .format("Created indexer name: %s, ETag: %s", createdIndexer.getName(), createdIndexer.getETag()));
         }
     }
 }
