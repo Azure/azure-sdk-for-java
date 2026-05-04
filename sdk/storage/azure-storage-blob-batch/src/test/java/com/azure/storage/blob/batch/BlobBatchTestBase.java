@@ -45,7 +45,6 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
-    protected BlobServiceClient premiumStorageBlobServiceClient;
 
     @Override
     public void beforeTest() {
@@ -65,7 +64,6 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
-        premiumStorageBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumFileAccount());
     }
 
     /**
