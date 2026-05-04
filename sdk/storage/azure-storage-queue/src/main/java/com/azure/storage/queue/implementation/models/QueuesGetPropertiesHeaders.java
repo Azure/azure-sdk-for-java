@@ -19,10 +19,10 @@ import java.util.Map;
 @Fluent
 public final class QueuesGetPropertiesHeaders {
     /*
-     * The x-ms-meta- property.
+     * The x-ms-version property.
      */
     @Generated
-    private Map<String, String> xMsMeta;
+    private String xMsVersion;
 
     /*
      * The x-ms-approximate-messages-count property.
@@ -31,16 +31,16 @@ public final class QueuesGetPropertiesHeaders {
     private Long xMsApproximateMessagesCount;
 
     /*
+     * The x-ms-meta- property.
+     */
+    @Generated
+    private Map<String, String> xMsMeta;
+
+    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
-
-    /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
 
     /*
      * The Date property.
@@ -48,10 +48,10 @@ public final class QueuesGetPropertiesHeaders {
     @Generated
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
     private static final HttpHeaderName X_MS_APPROXIMATE_MESSAGES_COUNT
         = HttpHeaderName.fromString("x-ms-approximate-messages-count");
-
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -60,6 +60,7 @@ public final class QueuesGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public QueuesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsApproximateMessagesCount = rawHeaders.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
         if (xMsApproximateMessagesCount != null) {
             this.xMsApproximateMessagesCount = Long.parseLong(xMsApproximateMessagesCount);
@@ -67,7 +68,6 @@ public final class QueuesGetPropertiesHeaders {
             this.xMsApproximateMessagesCount = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -86,24 +86,24 @@ public final class QueuesGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsMeta property: The x-ms-meta- property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsMeta value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public Map<String, String> getXMsMeta() {
-        return this.xMsMeta;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsMeta property: The x-ms-meta- property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsMeta the xMsMeta value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
     @Generated
-    public QueuesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
-        this.xMsMeta = xMsMeta;
+    public QueuesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -130,6 +130,28 @@ public final class QueuesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsMeta property: The x-ms-meta- property.
+     * 
+     * @return the xMsMeta value.
+     */
+    @Generated
+    public Map<String, String> getXMsMeta() {
+        return this.xMsMeta;
+    }
+
+    /**
+     * Set the xMsMeta property: The x-ms-meta- property.
+     * 
+     * @param xMsMeta the xMsMeta value to set.
+     * @return the QueuesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public QueuesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
+        this.xMsMeta = xMsMeta;
+        return this;
+    }
+
+    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -148,28 +170,6 @@ public final class QueuesGetPropertiesHeaders {
     @Generated
     public QueuesGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the QueuesGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public QueuesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
         return this;
     }
 
