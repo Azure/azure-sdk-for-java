@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -91,6 +92,44 @@ class AadResourceServerConfigurationTests {
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
+            });
+    }
+
+    @Test
+    void testSingleTenantUsesTrustedIssuerRepository() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+
+                AadJwtIssuerValidator issuerValidator = (AadJwtIssuerValidator) defaultValidator.stream()
+                    .filter(AadJwtIssuerValidator.class::isInstance)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("AadJwtIssuerValidator not found"));
+
+                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNotNull();
+            });
+    }
+
+    @Test
+    void testMultiTenantUsesPrefixIssuerValidation() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=common",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+
+                AadJwtIssuerValidator issuerValidator = (AadJwtIssuerValidator) defaultValidator.stream()
+                    .filter(AadJwtIssuerValidator.class::isInstance)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("AadJwtIssuerValidator not found"));
+
+                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNull();
             });
     }
 

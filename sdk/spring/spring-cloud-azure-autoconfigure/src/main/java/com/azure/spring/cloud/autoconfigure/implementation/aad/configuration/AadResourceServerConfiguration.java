@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadResourceServerProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -64,6 +65,7 @@ class AadResourceServerConfiguration {
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
+        String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
@@ -73,9 +75,19 @@ class AadResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
-        validators.add(new AadJwtIssuerValidator());
+        if (isMultiTenantsApplication(tenantId)) {
+            validators.add(new AadJwtIssuerValidator());
+        } else {
+            validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
+        }
         validators.add(new JwtTimestampValidator());
         return validators;
+    }
+
+    private boolean isMultiTenantsApplication(String tenantId) {
+        return "common".equalsIgnoreCase(tenantId)
+            || "organizations".equalsIgnoreCase(tenantId)
+            || "consumers".equalsIgnoreCase(tenantId);
     }
 
     @EnableWebSecurity
