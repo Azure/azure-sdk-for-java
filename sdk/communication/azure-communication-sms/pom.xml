@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.38</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+  <version>1.1.39</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
 
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.4.5</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
