@@ -1,5 +1,14 @@
 # Release History
 
+## 5.5.13 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 5.5.12 (2026-01-29)
 
 ### Other Changes
