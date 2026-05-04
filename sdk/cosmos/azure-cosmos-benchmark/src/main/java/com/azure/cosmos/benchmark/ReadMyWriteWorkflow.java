@@ -15,7 +15,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
@@ -44,8 +43,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
     private ConcurrentHashMap<Integer, PojoizedJson> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, Scheduler scheduler) {
-        super(cfg, scheduler);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override

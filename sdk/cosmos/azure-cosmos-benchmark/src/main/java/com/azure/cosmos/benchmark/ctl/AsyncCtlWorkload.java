@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,10 +45,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 public class AsyncCtlWorkload implements Benchmark {
-
-    // Dedicated scheduler for CTL benchmark workload dispatch.
-    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    private final Scheduler benchmarkScheduler;
 
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
@@ -71,8 +66,7 @@ public class AsyncCtlWorkload implements Benchmark {
     private int queryPct;
     private int readManyPct;
 
-    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
-        this.benchmarkScheduler = scheduler;
+    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg) {
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -181,7 +175,6 @@ public class AsyncCtlWorkload implements Benchmark {
     @Override
     public Mono<?> performSingleOperation(long operationIndex) {
         return selectAndPerformWorkload(operationIndex)
-            .subscribeOn(benchmarkScheduler)
             .doOnError(e -> logger.error("CTL failure on thread {}: {}",
                 Thread.currentThread().getName(), e.getMessage(), e))
             .onErrorResume(e -> Mono.empty());
