@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,49 +22,41 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
     /*
      * anomaly detection configuration unique id
      */
-    @Generated
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * anomaly detection configuration name
      */
-    @Generated
     private String name;
 
     /*
      * anomaly detection configuration description
      */
-    @Generated
     private String description;
 
     /*
      * metric unique id
      */
-    @Generated
     private UUID metricId;
 
     /*
      * The wholeMetricConfiguration property.
      */
-    @Generated
     private WholeMetricConfiguration wholeMetricConfiguration;
 
     /*
      * detection configuration for series group
      */
-    @Generated
     private List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations;
 
     /*
      * detection configuration for specific series
      */
-    @Generated
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
     /**
      * Creates an instance of AnomalyDetectionConfiguration class.
      */
-    @Generated
     public AnomalyDetectionConfiguration() {
     }
 
@@ -74,7 +65,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the anomalyDetectionConfigurationId value.
      */
-    @Generated
     public UUID getAnomalyDetectionConfigurationId() {
         return this.anomalyDetectionConfigurationId;
     }
@@ -84,7 +74,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -95,7 +84,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param name the name value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration setName(String name) {
         this.name = name;
         return this;
@@ -106,7 +94,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -117,7 +104,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param description the description value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration setDescription(String description) {
         this.description = description;
         return this;
@@ -128,7 +114,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the metricId value.
      */
-    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -139,7 +124,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param metricId the metricId value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration setMetricId(UUID metricId) {
         this.metricId = metricId;
         return this;
@@ -150,7 +134,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the wholeMetricConfiguration value.
      */
-    @Generated
     public WholeMetricConfiguration getWholeMetricConfiguration() {
         return this.wholeMetricConfiguration;
     }
@@ -161,7 +144,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param wholeMetricConfiguration the wholeMetricConfiguration value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration
         setWholeMetricConfiguration(WholeMetricConfiguration wholeMetricConfiguration) {
         this.wholeMetricConfiguration = wholeMetricConfiguration;
@@ -173,7 +155,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the dimensionGroupOverrideConfigurations value.
      */
-    @Generated
     public List<DimensionGroupConfiguration> getDimensionGroupOverrideConfigurations() {
         return this.dimensionGroupOverrideConfigurations;
     }
@@ -184,7 +165,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param dimensionGroupOverrideConfigurations the dimensionGroupOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration setDimensionGroupOverrideConfigurations(
         List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
         this.dimensionGroupOverrideConfigurations = dimensionGroupOverrideConfigurations;
@@ -196,7 +176,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * 
      * @return the seriesOverrideConfigurations value.
      */
-    @Generated
     public List<SeriesConfiguration> getSeriesOverrideConfigurations() {
         return this.seriesOverrideConfigurations;
     }
@@ -207,17 +186,12 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @param seriesOverrideConfigurations the seriesOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfiguration object itself.
      */
-    @Generated
     public AnomalyDetectionConfiguration
         setSeriesOverrideConfigurations(List<SeriesConfiguration> seriesOverrideConfigurations) {
         this.seriesOverrideConfigurations = seriesOverrideConfigurations;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -241,7 +215,6 @@ public final class AnomalyDetectionConfiguration implements JsonSerializable<Ano
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyDetectionConfiguration.
      */
-    @Generated
     public static AnomalyDetectionConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyDetectionConfiguration deserializedAnomalyDetectionConfiguration
