@@ -8,7 +8,6 @@ import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
-import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
@@ -461,9 +460,6 @@ public class BenchmarkOrchestrator {
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
             return new AsyncCtlWorkload(cfg);
-        }
-        if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
-            return new LICtlWorkload(cfg);
         }
 
         // Encryption benchmarks
