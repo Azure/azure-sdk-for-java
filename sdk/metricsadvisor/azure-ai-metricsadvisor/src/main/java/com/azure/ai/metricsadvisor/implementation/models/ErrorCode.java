@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
     /*
      * The message property.
      */
-    @Generated
     private String message;
 
     /*
      * The code property.
      */
-    @Generated
     private String code;
 
     /**
      * Creates an instance of ErrorCode class.
      */
-    @Generated
     public ErrorCode() {
     }
 
@@ -41,7 +37,6 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
      * 
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -52,7 +47,6 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
      * @param message the message value to set.
      * @return the ErrorCode object itself.
      */
-    @Generated
     public ErrorCode setMessage(String message) {
         this.message = message;
         return this;
@@ -63,7 +57,6 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -74,16 +67,11 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
      * @param code the code value to set.
      * @return the ErrorCode object itself.
      */
-    @Generated
     public ErrorCode setCode(String code) {
         this.code = code;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +88,6 @@ public final class ErrorCode implements JsonSerializable<ErrorCode> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the ErrorCode.
      */
-    @Generated
     public static ErrorCode fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorCode deserializedErrorCode = new ErrorCode();

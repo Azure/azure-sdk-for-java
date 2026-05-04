@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -27,7 +25,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * only return for alerting anomaly result
      */
-    @Generated
     private UUID dataFeedId;
 
     /*
@@ -35,7 +32,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * only return for alerting anomaly result
      */
-    @Generated
     private UUID metricId;
 
     /*
@@ -43,13 +39,11 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * only return for alerting anomaly result
      */
-    @Generated
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * anomaly time
      */
-    @Generated
     private OffsetDateTime timestamp;
 
     /*
@@ -57,7 +51,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * only return for alerting result
      */
-    @Generated
     private OffsetDateTime createdTime;
 
     /*
@@ -65,25 +58,21 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * only return for alerting result
      */
-    @Generated
     private OffsetDateTime modifiedTime;
 
     /*
      * dimension specified for series
      */
-    @Generated
     private Map<String, String> dimension;
 
     /*
      * The property property.
      */
-    @Generated
     private AnomalyProperty property;
 
     /**
      * Creates an instance of AnomalyResult class.
      */
-    @Generated
     public AnomalyResult() {
     }
 
@@ -94,7 +83,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the dataFeedId value.
      */
-    @Generated
     public UUID getDataFeedId() {
         return this.dataFeedId;
     }
@@ -106,7 +94,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the metricId value.
      */
-    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -118,7 +105,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the anomalyDetectionConfigurationId value.
      */
-    @Generated
     public UUID getAnomalyDetectionConfigurationId() {
         return this.anomalyDetectionConfigurationId;
     }
@@ -128,7 +114,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the timestamp value.
      */
-    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -139,7 +124,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * @param timestamp the timestamp value to set.
      * @return the AnomalyResult object itself.
      */
-    @Generated
     public AnomalyResult setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -152,7 +136,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the createdTime value.
      */
-    @Generated
     public OffsetDateTime getCreatedTime() {
         return this.createdTime;
     }
@@ -164,7 +147,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the modifiedTime value.
      */
-    @Generated
     public OffsetDateTime getModifiedTime() {
         return this.modifiedTime;
     }
@@ -174,7 +156,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the dimension value.
      */
-    @Generated
     public Map<String, String> getDimension() {
         return this.dimension;
     }
@@ -185,7 +166,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * @param dimension the dimension value to set.
      * @return the AnomalyResult object itself.
      */
-    @Generated
     public AnomalyResult setDimension(Map<String, String> dimension) {
         this.dimension = dimension;
         return this;
@@ -196,7 +176,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * 
      * @return the property value.
      */
-    @Generated
     public AnomalyProperty getProperty() {
         return this.property;
     }
@@ -207,16 +186,11 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * @param property the property value to set.
      * @return the AnomalyResult object itself.
      */
-    @Generated
     public AnomalyResult setProperty(AnomalyProperty property) {
         this.property = property;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -236,7 +210,6 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyResult.
      */
-    @Generated
     public static AnomalyResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyResult deserializedAnomalyResult = new AnomalyResult();
@@ -245,8 +218,8 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedAnomalyResult.timestamp = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyResult.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("dimension".equals(fieldName)) {
                     Map<String, String> dimension = reader.readMap(reader1 -> reader1.getString());
                     deserializedAnomalyResult.dimension = dimension;
@@ -262,11 +235,11 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
                     deserializedAnomalyResult.anomalyDetectionConfigurationId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAnomalyResult.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyResult.createdTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("modifiedTime".equals(fieldName)) {
-                    deserializedAnomalyResult.modifiedTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyResult.modifiedTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
