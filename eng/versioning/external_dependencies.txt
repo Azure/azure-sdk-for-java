@@ -59,7 +59,6 @@ io.netty:netty-transport-native-unix-common;4.1.132.Final
 io.netty:netty-transport-native-kqueue;4.1.132.Final
 io.projectreactor.netty:reactor-netty-http;1.2.16
 io.projectreactor:reactor-core;3.7.17
-info.picocli:picocli;4.7.6
 io.vertx:vertx-codegen;4.5.26
 io.vertx:vertx-core;4.5.26
 javax.websocket:javax.websocket-api;1.1

@@ -1,9 +1,20 @@
 {
+  "version": 1,
   "hooks": {
-    "PostToolUse": [
+    "preToolUse": [
       {
         "type": "command",
-        "command": "pwsh eng/common/scripts/azsdk_tool_telemetry.ps1", 
+        "powershell": "powershell -ExecutionPolicy Bypass -File \"C:/Users/abhmohanty/.copilot/hooks/block-force-push.ps1\"",
+        "bash": "pwsh -ExecutionPolicy Bypass -File ~/.copilot/hooks/block-force-push.ps1",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "powershell": "powershell -ExecutionPolicy Bypass -Command \"$raw = [Console]::In.ReadToEnd(); $j = $raw | ConvertFrom-Json; if ($j.toolName -eq 'powershell' -and $j.toolArgs -match 'git push') { Add-Content -Path 'C:/Users/abhmohanty/.copilot/hooks/push-audit.log' -Value \\\"$(Get-Date -Format o) | $($j.toolArgs)\\\" }\"",
+        "cwd": ".",
         "timeoutSec": 5
       }
     ]

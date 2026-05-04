@@ -8,65 +8,62 @@ import com.azure.cosmos.avadtest.metrics.SoakMetrics;
 import com.azure.cosmos.avadtest.reader.AvadReader;
 import com.azure.cosmos.avadtest.reader.LatestVersionReader;
 import com.azure.cosmos.avadtest.reconciliation.Reconciler;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
-import java.util.concurrent.Callable;
-
-@Command(name = "cosmos-avad-test",
-    mixinStandardHelpOptions = true,
-    version = "1.0",
-    description = "AVAD E2E test: ingestor, LV reader, AVAD reader, reconciler")
-public final class Main implements Callable<Integer> {
+public final class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    @Option(names = "--mode", required = true,
-        description = "Mode: ingestor, lv-reader, avad-reader, reconcile")
+    @Parameter(names = "--mode", required = true,
+        description = "Mode: ingestor, lv-reader, avad-reader, reconcile, health-monitor")
     private String mode;
 
-    @Option(names = "--produced", description = "Produced log file (for reconcile mode)")
+    @Parameter(names = "--produced", description = "Produced log file (for reconcile mode)")
     private String producedFile;
 
-    @Option(names = "--consumed", description = "Consumed log file (for reconcile mode)")
+    @Parameter(names = "--consumed", description = "Consumed log file (for reconcile mode)")
     private String consumedFile;
 
-    @Option(names = "--lv", description = "LV consumed log file (for parity check)")
+    @Parameter(names = "--lv", description = "LV consumed log file (for parity check)")
     private String lvFile;
 
-    @Option(names = "--avad", description = "AVAD consumed log file (for parity check)")
+    @Parameter(names = "--avad", description = "AVAD consumed log file (for parity check)")
     private String avadFile;
 
-    @Option(names = "--health-port", defaultValue = "8080",
-        description = "Health server port (default: 8080)")
-    private int healthPort;
+    @Parameter(names = "--health-port", description = "Health server port (default: 8080)")
+    private int healthPort = 8080;
 
-    @Option(names = "--run-id", defaultValue = "soak-default",
-        description = "Soak run identifier (for health monitor)")
-    private String runId;
+    @Parameter(names = "--run-id", description = "Soak run identifier (for health monitor)")
+    private String runId = "soak-default";
 
-    @Option(names = "--gap-sla-minutes", defaultValue = "10",
-        description = "Minutes before an unconsumed event is flagged as a gap")
-    private int gapSlaMinutes;
+    @Parameter(names = "--gap-sla-minutes", description = "Minutes before an unconsumed event is flagged as a gap")
+    private int gapSlaMinutes = 10;
 
-    @Override
-    public Integer call() throws Exception {
+    @Parameter(names = {"-h", "--help"}, description = "Help", help = true)
+    private boolean help;
+
+    private int run() throws Exception {
         log.info("Starting cosmos-avad-test in mode: {}", mode);
 
-        return switch (mode) {
-            case "ingestor" -> runIngestor();
-            case "lv-reader" -> runLvReader();
-            case "avad-reader" -> runAvadReader();
-            case "reconcile" -> runReconcile();
-            case "health-monitor" -> runHealthMonitor();
-            default -> {
-                log.error("Unknown mode: {}. Use: ingestor, lv-reader, avad-reader, reconcile", mode);
-                yield 1;
-            }
-        };
+        switch (mode) {
+            case "ingestor":
+                return runIngestor();
+            case "lv-reader":
+                return runLvReader();
+            case "avad-reader":
+                return runAvadReader();
+            case "reconcile":
+                return runReconcile();
+            case "health-monitor":
+                return runHealthMonitor();
+            default:
+                log.error("Unknown mode: {}. Use: ingestor, lv-reader, avad-reader, reconcile, health-monitor", mode);
+                return 1;
+        }
     }
 
     private int runIngestor() throws Exception {
@@ -136,7 +133,28 @@ public final class Main implements Callable<Integer> {
     }
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new Main()).execute(args);
-        System.exit(exitCode);
+        Main main = new Main();
+        JCommander jc = JCommander.newBuilder().addObject(main).build();
+        jc.setProgramName("cosmos-avad-test");
+
+        try {
+            jc.parse(args);
+        } catch (ParameterException e) {
+            log.error("Invalid arguments: {}", e.getMessage());
+            jc.usage();
+            System.exit(1);
+        }
+
+        if (main.help) {
+            jc.usage();
+            return;
+        }
+
+        try {
+            System.exit(main.run());
+        } catch (Exception e) {
+            log.error("Fatal error", e);
+            System.exit(1);
+        }
     }
 }
