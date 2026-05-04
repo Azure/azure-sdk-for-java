@@ -10,7 +10,6 @@ import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.WebApiHttpHeaders;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.util.Arrays;
@@ -68,13 +67,15 @@ public class CreateSkillsetExample {
         SearchIndexerSkillset skillset = new SearchIndexerSkillset(OCR_SKILLSET_NAME, skills)
             .setDescription("Extracts text (plain and structured) from image.");
 
-        System.out.printf("Creating OCR skillset '%s'%n", skillset.getName());
+        System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
 
         SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created OCR skillset");
-        System.out.printf("Name: %s%n", createdSkillset.getName());
-        System.out.printf("ETag: %s%n%n", createdSkillset.getETag());
+        System.out.println(String.format("Name: %s", createdSkillset.getName()));
+        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
+
+        System.out.println("\n");
     }
 
     private static void createCustomSkillset(SearchIndexerClient searchIndexerClient) {
@@ -82,27 +83,32 @@ public class CreateSkillsetExample {
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry("text").setSource("/document/mytext"));
+            new InputFieldMappingEntry("text")
+                .setSource("/document/mytext")
+        );
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry("textItems").setTargetName("myTextItems"));
+            new OutputFieldMappingEntry("textItems")
+                .setTargetName("myTextItems")
+        );
 
         SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs, "https://example.com")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
-            .setHttpHeaders(new WebApiHttpHeaders().setAdditionalProperties(headers))
+            .setHttpHeaders(headers)
             .setName("webapi-skill")
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOM_SKILLSET_NAME, webApiSkill)
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOM_SKILLSET_NAME,
+            Collections.singletonList(webApiSkill))
             .setDescription("Skillset for testing custom skillsets");
 
-        System.out.printf("Creating custom skillset '%s'%n", skillset.getName());
+        System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
 
         SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created custom skillset");
-        System.out.printf("Name: %s%n", createdSkillset.getName());
-        System.out.printf("ETag: %s%n", createdSkillset.getETag());
+        System.out.println(String.format("Name: %s", createdSkillset.getName()));
+        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
     }
 
     private static void cleanupSkillset(SearchIndexerClient searchIndexerClient) {

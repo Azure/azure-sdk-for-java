@@ -4,6 +4,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.CorsOptions;
@@ -11,7 +13,6 @@ import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
 import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -21,15 +22,19 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +61,10 @@ public class IndexAndServiceStatisticsExample {
         SearchServiceStatistics searchServiceStatistics = client.getServiceStatistics();
 
         System.out.println(":" + searchServiceStatistics);
-        try {
-            System.out.println(searchServiceStatistics.toJsonString());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            searchServiceStatistics.toJson(jsonWriter).flush();
+            System.out.println(new String(outputStream.toByteArray(), StandardCharsets.UTF_8));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -103,7 +110,7 @@ public class IndexAndServiceStatisticsExample {
     private static void getIndexStatistics(SearchIndexClient client) {
         SearchIndex testIndex = createTestIndex();
         SearchIndex index = client.createOrUpdateIndex(testIndex);
-        GetIndexStatisticsResult result = client.getIndexStatistics(index.getName());
+        SearchIndexStatistics result = client.getIndexStatistics(index.getName());
         long documentCount = result.getDocumentCount();
         long storageSize = result.getStorageSize();
 
@@ -126,156 +133,160 @@ public class IndexAndServiceStatisticsExample {
         weights.put("Category", 2.0);
         List<SearchField> fieldList = Arrays.asList(
             new SearchField("HotelId", SearchFieldDataType.STRING)
-                .setKey(true)
-                .setSearchable(false)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setKey(Boolean.TRUE)
+                .setSearchable(Boolean.FALSE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("HotelName", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(false)
-                .setRetrievable(true),
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.FALSE)
+                .setHidden(Boolean.FALSE),
             new SearchField("Description", SearchFieldDataType.STRING)
-                .setKey(false)
-                .setSearchable(true)
-                .setFilterable(false)
-                .setSortable(false)
-                .setFacetable(false)
+                .setKey(Boolean.FALSE)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.FALSE)
+                .setSortable(Boolean.FALSE)
+                .setFacetable(Boolean.FALSE)
                 .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
-                .setRetrievable(true),
+                .setHidden(Boolean.FALSE),
             new SearchField("DescriptionFr", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(false)
-                .setSortable(false)
-                .setFacetable(false)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.FALSE)
+                .setSortable(Boolean.FALSE)
+                .setFacetable(Boolean.FALSE)
                 .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
-                .setRetrievable(true),
+                .setHidden(Boolean.FALSE),
             new SearchField("Description_Custom", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(false)
-                .setSortable(false)
-                .setFacetable(false)
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.FALSE)
+                .setSortable(Boolean.FALSE)
+                .setFacetable(Boolean.FALSE)
                 .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
                 .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
-                .setRetrievable(true),
+                .setHidden(Boolean.FALSE),
             new SearchField("Category", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                .setSearchable(true)
-                .setFilterable(true)
-                .setSortable(false)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setSearchable(Boolean.TRUE)
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.FALSE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("Rating", SearchFieldDataType.INT32)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(true),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.FALSE),
             new SearchField("Address", SearchFieldDataType.COMPLEX)
-                .setFields(
+                .setFields(Arrays.asList(
                     new SearchField("StreetAddress", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("City", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setSortable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("StateProvince", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setSortable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("Country", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setSortable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("PostalCode", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setSortable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true)),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
+                    )
+                ),
             new SearchField("Location", SearchFieldDataType.GEOGRAPHY_POINT)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(false)
-                .setRetrievable(true),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.FALSE)
+                .setHidden(Boolean.FALSE),
             new SearchField("Rooms", SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
-                .setFields(
+                .setFields(Arrays.asList(
                     new SearchField("Description", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setRetrievable(true)
+                        .setSearchable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
                         .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE),
                     new SearchField("DescriptionFr", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setRetrievable(true)
+                        .setSearchable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
                         .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE),
                     new SearchField("Type", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("BaseRate", SearchFieldDataType.DOUBLE)
-                        .setKey(false)
-                        .setSearchable(false)
-                        .setFilterable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setKey(Boolean.FALSE)
+                        .setSearchable(Boolean.FALSE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("BedOptions", SearchFieldDataType.STRING)
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("SleepsCount", SearchFieldDataType.INT32)
-                        .setFilterable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN)
-                        .setFilterable(true)
-                        .setFacetable(true)
-                        .setRetrievable(true),
+                        .setFilterable(Boolean.TRUE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE),
                     new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                        .setSearchable(true)
-                        .setFilterable(true)
-                        .setSortable(false)
-                        .setFacetable(true)
-                        .setRetrievable(true)),
+                        .setSearchable(Boolean.TRUE)
+                        .setFilterable(Boolean.TRUE)
+                        .setSortable(Boolean.FALSE)
+                        .setFacetable(Boolean.TRUE)
+                        .setHidden(Boolean.FALSE)
+                    )
+                ),
             new SearchField("TotalGuests", SearchFieldDataType.INT64)
-                .setFilterable(true)
-                .setSortable(true)
-                .setFacetable(true)
-                .setRetrievable(false),
+                .setFilterable(Boolean.TRUE)
+                .setSortable(Boolean.TRUE)
+                .setFacetable(Boolean.TRUE)
+                .setHidden(Boolean.TRUE),
             new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE)
         );
         return new SearchIndex("hotels", fieldList)
-            .setScoringProfiles(
+            .setScoringProfiles(Arrays.asList(
                 new ScoringProfile("MyProfile")
                     .setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
                     .setFunctions(new MagnitudeScoringFunction("Rating", 2.0,
@@ -287,27 +298,31 @@ public class IndexAndServiceStatisticsExample {
                             .setInterpolation(ScoringFunctionInterpolation.LINEAR),
                         new FreshnessScoringFunction("LastRenovationDate", 1.1,
                             new FreshnessScoringParameters(Duration.ofDays(365)))
-                            .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC))
+                            .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC)
+                    )
                     .setTextWeights(new TextWeights(weights)),
                 new ScoringProfile("ProfileTwo")
                     .setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
                     .setFunctions(new TagScoringFunction("Tags", 1.5, new TagScoringParameters("MyTags"))
-                        .setInterpolation(ScoringFunctionInterpolation.LINEAR)),
+                        .setInterpolation(ScoringFunctionInterpolation.LINEAR)
+                    ),
                 new ScoringProfile("ProfileThree")
                     .setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
                     .setFunctions(new MagnitudeScoringFunction("Rating", 3.0,
                         new MagnitudeScoringParameters(0, 10)
                             .setShouldBoostBeyondRangeByConstant(false))
-                        .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
+                        .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)
+                    ),
                 new ScoringProfile("ProfileFour")
                     .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
                     .setFunctions(new MagnitudeScoringFunction("Rating", 3.5,
                         new MagnitudeScoringParameters(1, 5)
                             .setShouldBoostBeyondRangeByConstant(false))
-                        .setInterpolation(ScoringFunctionInterpolation.CONSTANT)))
+                        .setInterpolation(ScoringFunctionInterpolation.CONSTANT))))
             .setDefaultScoringProfile("MyProfile")
-            .setCorsOptions(new CorsOptions("http://tempuri.org", "http://localhost:80").setMaxAgeInSeconds(60L))
-            .setSuggesters(new SearchSuggester("FancySuggester", "HotelName"));
+            .setCorsOptions(new CorsOptions(Arrays.asList("http://tempuri.org", "http://localhost:80"))
+                .setMaxAgeInSeconds(60L))
+            .setSuggesters(new SearchSuggester("FancySuggester", Collections.singletonList("HotelName")));
     }
 
     /**

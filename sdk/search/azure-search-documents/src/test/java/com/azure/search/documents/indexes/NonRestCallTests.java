@@ -27,17 +27,19 @@ public class NonRestCallTests {
     }
 
     static Stream<Publisher<?>> apiCallReturnsErrorSupplier() {
-        SearchIndexerAsyncClient client
-            = new SearchIndexerClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .endpoint("https://fake.com")
-                .credential(new AzureKeyCredential("fake"))
-                .buildAsyncClient();
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint("https://fake.com")
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .credential(new AzureKeyCredential("fake"))
+            .buildAsyncClient();
 
         return Stream.of(client.createOrUpdateDataSourceConnection(null),
-            client.createOrUpdateDataSourceConnectionWithResponse(null, null),
+            client.createOrUpdateDataSourceConnectionWithResponse(null, true),
+            client.deleteDataSourceConnectionWithResponse(null, true),
 
-            client.createOrUpdateIndexer(null), client.createOrUpdateIndexerWithResponse(null, null),
+            client.createOrUpdateIndexer(null), client.createOrUpdateIndexerWithResponse(null, true),
+            client.deleteIndexerWithResponse(null, true),
 
-            client.createOrUpdateSkillset(null), client.createOrUpdateSkillsetWithResponse(null, null));
+            client.createSkillset(null), client.createSkillsetWithResponse(null), client.createOrUpdateSkillset(null),
+            client.createOrUpdateSkillsetWithResponse(null, true), client.deleteSkillsetWithResponse(null, true));
     }
 }

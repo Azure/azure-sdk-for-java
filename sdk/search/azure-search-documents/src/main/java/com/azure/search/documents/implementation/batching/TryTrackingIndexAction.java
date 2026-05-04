@@ -8,18 +8,18 @@ import com.azure.search.documents.models.IndexAction;
 /**
  * Model class that tracks the number of times an IndexAction has tried to be indexed.
  */
-final class TryTrackingIndexAction {
-    private final IndexAction action;
+final class TryTrackingIndexAction<T> {
+    private final IndexAction<T> action;
     private final String key;
 
     private int tryCount = 0;
 
-    TryTrackingIndexAction(IndexAction action, String key) {
+    TryTrackingIndexAction(IndexAction<T> action, String key) {
         this.action = action;
         this.key = key;
     }
 
-    public IndexAction getAction() {
+    public IndexAction<T> getAction() {
         return action;
     }
 
