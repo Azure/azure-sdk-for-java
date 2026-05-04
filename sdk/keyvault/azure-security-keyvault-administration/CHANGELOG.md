@@ -1,5 +1,14 @@
 # Release History
 
+## 4.7.7 (2026-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 4.7.6 (2026-03-23)
 
 ### Bugs Fixed
