@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
@@ -21,10 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Fully-resolved configuration for a single tenant workload.
@@ -414,131 +412,6 @@ public class TenantWorkloadConfig {
             '}';
     }
 
-    // ======== Apply defaults from a map ========
-
-    private void applyMap(Map<String, String> map, boolean overwrite) {
-        if (map == null) return;
-        for (Map.Entry<String, String> e : map.entrySet()) {
-            applyField(e.getKey(), e.getValue(), overwrite);
-        }
-    }
-
-    private void applyField(String key, String value, boolean overwrite) {
-        if (value == null) return;
-        try {
-            switch (key) {
-                case "serviceEndpoint":
-                    if (overwrite || serviceEndpoint == null) serviceEndpoint = value; break;
-                case "masterKey":
-                    if (overwrite || masterKey == null) masterKey = value; break;
-                case "databaseId":
-                    if (overwrite || databaseId == null) databaseId = value; break;
-                case "collectionId":
-                case "containerId":
-                    if (overwrite || containerId == null) containerId = value; break;
-                case "applicationName":
-                    if (overwrite || applicationName == null) applicationName = value; break;
-                case "aadLoginEndpoint":
-                    if (overwrite || aadLoginEndpoint == null) aadLoginEndpoint = value; break;
-                case "aadTenantId":
-                    if (overwrite || aadTenantId == null) aadTenantId = value; break;
-                case "aadManagedIdentityClientId":
-                    if (overwrite || aadManagedIdentityClientId == null) aadManagedIdentityClientId = value; break;
-                case "isManagedIdentityRequired":
-                    if (overwrite || isManagedIdentityRequired == null) isManagedIdentityRequired = Boolean.parseBoolean(value); break;
-                case "operation":
-                    if (overwrite || operation == null) operation = value; break;
-                case "numberOfPreCreatedDocuments":
-                    if (overwrite || numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = Integer.parseInt(value); break;
-                case "throughput":
-                    if (overwrite || throughput == null) throughput = Integer.parseInt(value); break;
-                case "documentDataFieldSize":
-                    if (overwrite || documentDataFieldSize == null) documentDataFieldSize = Integer.parseInt(value); break;
-                case "documentDataFieldCount":
-                    if (overwrite || documentDataFieldCount == null) documentDataFieldCount = Integer.parseInt(value); break;
-                case "contentResponseOnWriteEnabled":
-                    if (overwrite || contentResponseOnWriteEnabled == null) contentResponseOnWriteEnabled = Boolean.parseBoolean(value); break;
-                case "disablePassingPartitionKeyAsOptionOnWrite":
-                    if (overwrite || disablePassingPartitionKeyAsOptionOnWrite == null) disablePassingPartitionKeyAsOptionOnWrite = Boolean.parseBoolean(value); break;
-                case "useNameLink":
-                    if (overwrite || useNameLink == null) useNameLink = Boolean.parseBoolean(value); break;
-                case "tupleSize":
-                    if (overwrite || tupleSize == null) tupleSize = Integer.parseInt(value); break;
-                case "pointOperationLatencyThresholdMs":
-                    if (overwrite || pointOperationLatencyThresholdMs == null) pointOperationLatencyThresholdMs = Integer.parseInt(value); break;
-                case "nonPointOperationLatencyThresholdMs":
-                    if (overwrite || nonPointOperationLatencyThresholdMs == null) nonPointOperationLatencyThresholdMs = Integer.parseInt(value); break;
-                case "isRegionScopedSessionContainerEnabled":
-                    if (overwrite || isRegionScopedSessionContainerEnabled == null) isRegionScopedSessionContainerEnabled = Boolean.parseBoolean(value); break;
-                case "isDefaultLog4jLoggerEnabled":
-                    if (overwrite || isDefaultLog4jLoggerEnabled == null) isDefaultLog4jLoggerEnabled = Boolean.parseBoolean(value); break;
-                case "diagnosticsThresholdDuration":
-                    if (overwrite || diagnosticsThresholdDuration == null) diagnosticsThresholdDuration = value; break;
-                case "sparsityWaitTime":
-                    if (overwrite || sparsityWaitTime == null) sparsityWaitTime = value; break;
-                case "isProactiveConnectionManagementEnabled":
-                    if (overwrite || isProactiveConnectionManagementEnabled == null) isProactiveConnectionManagementEnabled = Boolean.parseBoolean(value); break;
-                case "isUseUnWarmedUpContainer":
-                    if (overwrite || isUseUnWarmedUpContainer == null) isUseUnWarmedUpContainer = Boolean.parseBoolean(value); break;
-                case "proactiveConnectionRegionsCount":
-                    if (overwrite || proactiveConnectionRegionsCount == null) proactiveConnectionRegionsCount = Integer.parseInt(value); break;
-                case "aggressiveWarmupDuration":
-                    if (overwrite || aggressiveWarmupDuration == null) aggressiveWarmupDuration = value; break;
-                case "connectionMode":
-                    if (overwrite || connectionMode == null) connectionMode = value; break;
-                case "consistencyLevel":
-                    if (overwrite || consistencyLevel == null) consistencyLevel = value; break;
-                case "maxConnectionPoolSize":
-                    if (overwrite || maxConnectionPoolSize == null) maxConnectionPoolSize = Integer.parseInt(value); break;
-                case "connectionSharingAcrossClientsEnabled":
-                    if (overwrite || connectionSharingAcrossClientsEnabled == null) connectionSharingAcrossClientsEnabled = Boolean.parseBoolean(value); break;
-                case "preferredRegionsList":
-                    if (overwrite || preferredRegionsList == null) preferredRegionsList = value; break;
-                case "manageDatabase":
-                    if (overwrite || manageDatabase == null) manageDatabase = Boolean.parseBoolean(value); break;
-                case "numberOfCollectionForCtl":
-                    if (overwrite || numberOfCollectionForCtl == null) numberOfCollectionForCtl = Integer.parseInt(value); break;
-                case "readWriteQueryReadManyPct":
-                    if (overwrite || readWriteQueryReadManyPct == null) readWriteQueryReadManyPct = value; break;
-                case "encryptedStringFieldCount":
-                    if (overwrite || encryptedStringFieldCount == null) encryptedStringFieldCount = Integer.parseInt(value); break;
-                case "encryptedLongFieldCount":
-                    if (overwrite || encryptedLongFieldCount == null) encryptedLongFieldCount = Integer.parseInt(value); break;
-                case "encryptedDoubleFieldCount":
-                    if (overwrite || encryptedDoubleFieldCount == null) encryptedDoubleFieldCount = Integer.parseInt(value); break;
-                case "encryptionEnabled":
-                    if (overwrite || encryptionEnabled == null) encryptionEnabled = Boolean.parseBoolean(value); break;
-                case "bulkloadBatchSize":
-                    if (overwrite || bulkloadBatchSize == null) bulkloadBatchSize = Integer.parseInt(value); break;
-                case "testScenario":
-                    if (overwrite || testScenario == null) testScenario = value; break;
-                case "environment":
-                    if (overwrite || environment == null) environment = value; break;
-                case "useSync":
-                    if (overwrite || useSync == null) useSync = Boolean.parseBoolean(value); break;
-                case "http2Enabled":
-                    if (overwrite || http2Enabled == null) http2Enabled = Boolean.parseBoolean(value); break;
-                case "http2MaxConcurrentStreams":
-                    if (overwrite || http2MaxConcurrentStreams == null) http2MaxConcurrentStreams = Integer.parseInt(value); break;
-                // Orchestrator-level dispatch settings — not per-tenant. Ignored here.
-                case "concurrency":
-                case "numberOfOperations":
-                case "maxRunningTimeDuration":
-                // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
-                // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
-                case "minConnectionPoolSizePerEndpoint":
-                case "isPartitionLevelCircuitBreakerEnabled":
-                case "isPerPartitionAutomaticFailoverRequired":
-                    break;
-                default:
-                    logger.debug("Unknown config key '{}' (value: {})", key, value);
-                    break;
-            }
-        } catch (Exception ex) {
-            logger.warn("Failed to apply '{}' = '{}': {}", key, value, ex.getMessage());
-        }
-    }
-
     // ======== Static parsing ========
 
     public static List<TenantWorkloadConfig> parseWorkloadConfig(File workloadConfigFile) throws IOException {
@@ -547,29 +420,27 @@ public class TenantWorkloadConfig {
         // tenantDefaults and tenants are nested under "orchestrator"
         JsonNode orchestratorNode = root.get("orchestrator");
 
-        Map<String, String> tenantDefaults = new HashMap<>();
+        // Parse tenantDefaults as ObjectNode for JSON-level merge
+        ObjectNode defaultsNode = null;
         if (orchestratorNode != null) {
-            JsonNode defaultsNode = orchestratorNode.get("tenantDefaults");
-            if (defaultsNode != null && defaultsNode.isObject()) {
-                Iterator<Map.Entry<String, JsonNode>> fields = defaultsNode.fields();
-                while (fields.hasNext()) {
-                    Map.Entry<String, JsonNode> entry = fields.next();
-                    tenantDefaults.put(entry.getKey(), entry.getValue().asText());
+            JsonNode rawDefaults = orchestratorNode.get("tenantDefaults");
+            if (rawDefaults != null && rawDefaults.isObject()) {
+                defaultsNode = (ObjectNode) rawDefaults.deepCopy();
+
+                // Strip account-specific fields — they must be per-tenant
+                for (String perTenantField : PER_TENANT_ONLY_FIELDS) {
+                    if (defaultsNode.has(perTenantField)) {
+                        defaultsNode.remove(perTenantField);
+                        logger.warn("Ignoring '{}' in tenantDefaults — this field must be set per-tenant. "
+                            + "Move it into each tenant entry.", perTenantField);
+                    }
                 }
             }
         }
 
-        // Account-specific fields must be per-tenant — strip them from defaults
-        for (String perTenantField : PER_TENANT_ONLY_FIELDS) {
-            if (tenantDefaults.remove(perTenantField) != null) {
-                logger.warn("Ignoring '{}' in tenantDefaults — this field must be set per-tenant. "
-                    + "Move it into each tenant entry.", perTenantField);
-            }
-        }
-
-        if (!tenantDefaults.isEmpty()) {
+        if (defaultsNode != null && defaultsNode.size() > 0) {
             logger.info("tenantDefaults applied to all tenants (per-tenant values take priority): {}",
-                tenantDefaults.keySet());
+                defaultsNode.fieldNames());
         }
 
         List<TenantWorkloadConfig> tenants = new ArrayList<>();
@@ -577,8 +448,16 @@ public class TenantWorkloadConfig {
         JsonNode tenantsNode = orchestratorNode != null ? orchestratorNode.get("tenants") : null;
         if (tenantsNode != null && tenantsNode.isArray()) {
             for (JsonNode tenantNode : tenantsNode) {
-                TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
-                tenant.applyMap(tenantDefaults, false);
+                // Merge: start with defaults, overlay per-tenant values on top
+                ObjectNode merged;
+                if (defaultsNode != null) {
+                    merged = defaultsNode.deepCopy();
+                    merged.setAll((ObjectNode) tenantNode);
+                } else {
+                    merged = (ObjectNode) tenantNode;
+                }
+
+                TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(merged, TenantWorkloadConfig.class);
                 validateTenantConfig(tenant);
                 tenants.add(tenant);
             }
