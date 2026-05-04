@@ -14,5 +14,4 @@ module com.azure.resourcemanager.servicebus {
     opens com.azure.resourcemanager.servicebus.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.servicebus.models to com.azure.core;
     opens com.azure.resourcemanager.servicebus.implementation to com.azure.core;
-    opens com.azure.resourcemanager.servicebus.implementation.models to com.azure.core;
 }
