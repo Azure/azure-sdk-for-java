@@ -525,7 +525,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         return grantType;
     }
 
-    private boolean isMultiTenantsApplication(String tenantId) {
+    public static boolean isMultiTenantsApplication(String tenantId) {
         return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
     }
 }

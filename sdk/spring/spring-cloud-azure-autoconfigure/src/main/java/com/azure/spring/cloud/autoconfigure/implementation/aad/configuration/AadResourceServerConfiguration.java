@@ -75,19 +75,13 @@ class AadResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
-        if (isMultiTenantsApplication(tenantId)) {
+        if (AadAuthenticationProperties.isMultiTenantsApplication(tenantId)) {
             validators.add(new AadJwtIssuerValidator());
         } else {
             validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         }
         validators.add(new JwtTimestampValidator());
         return validators;
-    }
-
-    private boolean isMultiTenantsApplication(String tenantId) {
-        return "common".equalsIgnoreCase(tenantId)
-            || "organizations".equalsIgnoreCase(tenantId)
-            || "consumers".equalsIgnoreCase(tenantId);
     }
 
     @EnableWebSecurity
