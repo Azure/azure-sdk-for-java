@@ -25,10 +25,6 @@
     },
 
     "tenantDefaults": {
-      "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
-      "masterKey": "<your-master-key -- use environment variables or managed identity in production>",
-      "databaseId": "benchdb",
-      "containerId": "benchcoll",
       "consistencyLevel": "Session",
       "connectionMode": "Direct",
       "numberOfPreCreatedDocuments": 1000,
@@ -37,6 +33,10 @@
 
     "tenants": [
       {
+        "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
+        "masterKey": "<your-master-key>",
+        "databaseId": "benchdb",
+        "containerId": "benchcoll",
         "operation": "ReadThroughput"
       }
     ]
