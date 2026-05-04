@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,8 @@ import java.util.List;
 public class BenchmarkConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(BenchmarkConfig.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+        .registerModule(new JavaTimeModule());
 
     // ======== Grouped configuration sections ========
 

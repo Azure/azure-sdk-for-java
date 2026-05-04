@@ -199,6 +199,10 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     public Mono<?> performSingleOperation() {
         long operationIndex = operationCounter.getAndIncrement();
         Mono<T> workload = performWorkload(operationIndex);
+        Mono<T> delayed = sparsityMono(operationIndex);
+        if (delayed != null) {
+            workload = delayed.then(workload);
+        }
         return workload
             .doOnSuccess(v -> AsyncEncryptionBenchmark.this.onSuccess())
             .doOnError(e -> {
