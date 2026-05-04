@@ -59,7 +59,6 @@ function NormalizeVersionFileForPatching([string[]]$PatchedArtifactNames, [strin
   }
 
   if ($depsToNormalize.Count -eq 0) {
-    Write-Host "No non-patched {;current} dependencies found to normalize."
     return
   }
 
@@ -494,12 +493,12 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
       Write-Host "git fetch $RemoteName $oldReleaseTag"
       $cmdOutput = git fetch $RemoteName $oldReleaseTag
-      
+
       if ($LASTEXITCODE -ne 0) {
         LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
         exit $LASTEXITCODE
       }
-      
+
       $releaseTag = $oldReleaseTag
     }
 
