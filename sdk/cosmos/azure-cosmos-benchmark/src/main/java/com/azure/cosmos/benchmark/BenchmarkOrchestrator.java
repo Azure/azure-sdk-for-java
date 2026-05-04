@@ -33,10 +33,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -299,111 +297,62 @@ public class BenchmarkOrchestrator {
 
     /**
      * Run workload by dispatching operations from the orchestrator.
-     * Dispatchable benchmarks participate in a single Flux dispatch loop where the
-     * orchestrator randomly picks a tenant for each operation slot.
-     * Non-dispatchable benchmarks (e.g. LICtlWorkload) run via their own run() in a separate thread.
+     * The orchestrator randomly picks a tenant for each operation slot in a single Flux dispatch loop.
      */
     private void runWorkload(List<Benchmark> benchmarks, int cycle, BenchmarkConfig config,
                              Scheduler benchmarkScheduler, Scheduler syncScheduler) throws Exception {
-        // Separate dispatchable from non-dispatchable benchmarks
-        List<Benchmark> dispatchable = new ArrayList<>();
-        List<Benchmark> nonDispatchable = new ArrayList<>();
-        for (Benchmark b : benchmarks) {
-            if (b.isDispatchable()) {
-                dispatchable.add(b);
-            } else {
-                nonDispatchable.add(b);
-            }
-        }
+        int concurrency = config.getConcurrency();
+        long numberOfOps = config.getNumberOfOperations();
+        Duration maxDuration = config.getMaxRunningTimeDuration();
+        long workloadStartTime = System.currentTimeMillis();
 
-        // Start non-dispatchable benchmarks in their own threads
-        ExecutorService legacyExecutor = null;
-        List<Future<?>> legacyFutures = new ArrayList<>();
-        if (!nonDispatchable.isEmpty()) {
-            logger.info("Running {} non-dispatchable benchmark(s) in legacy mode", nonDispatchable.size());
-            legacyExecutor = Executors.newFixedThreadPool(nonDispatchable.size());
-            final int currentCycle = cycle;
-            for (Benchmark benchmark : nonDispatchable) {
-                // Pass orchestrator dispatch params so non-dispatchable benchmarks
-                // know the concurrency/ops/duration limits
-                benchmark.setDispatchParams(
-                    config.getConcurrency(),
-                    config.getNumberOfOperations(),
-                    config.getMaxRunningTimeDuration());
-                legacyFutures.add(legacyExecutor.submit(() -> {
-                    try {
-                        benchmark.run();
-                    } catch (Exception e) {
-                        logger.error("Non-dispatchable benchmark failed in cycle " + currentCycle, e);
+        Flux<Long> source;
+        if (maxDuration != null) {
+            final long deadline = workloadStartTime + maxDuration.toMillis();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    if (System.currentTimeMillis() < deadline) {
+                        sink.next(state.getAndIncrement());
+                    } else {
+                        sink.complete();
                     }
-                }));
-            }
+                    return state;
+                });
+        } else {
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    long current = state.getAndIncrement();
+                    if (current < numberOfOps) {
+                        sink.next(current);
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
         }
 
-        // Dispatch operations across dispatchable benchmarks
-        if (!dispatchable.isEmpty()) {
-            int concurrency = config.getConcurrency();
-            long numberOfOps = config.getNumberOfOperations();
-            Duration maxDuration = config.getMaxRunningTimeDuration();
-            long workloadStartTime = System.currentTimeMillis();
+        AtomicLong completedCount = new AtomicLong(0);
+        int tenantCount = benchmarks.size();
 
-            Flux<Long> source;
-            if (maxDuration != null) {
-                final long deadline = workloadStartTime + maxDuration.toMillis();
-                source = Flux.generate(
-                    AtomicLong::new,
-                    (state, sink) -> {
-                        if (System.currentTimeMillis() < deadline) {
-                            sink.next(state.getAndIncrement());
-                        } else {
-                            sink.complete();
-                        }
-                        return state;
-                    });
-            } else {
-                source = Flux.generate(
-                    AtomicLong::new,
-                    (state, sink) -> {
-                        long current = state.getAndIncrement();
-                        if (current < numberOfOps) {
-                            sink.next(current);
-                        } else {
-                            sink.complete();
-                        }
-                        return state;
-                    });
-            }
+        source
+            .flatMap(globalIndex -> {
+                int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
+                Benchmark selected = benchmarks.get(tenantIndex);
+                Scheduler scheduler = (selected instanceof SyncBenchmark)
+                    ? syncScheduler
+                    : benchmarkScheduler;
+                return selected.performSingleOperation()
+                    .subscribeOn(scheduler)
+                    .doOnTerminate(completedCount::incrementAndGet);
+            }, concurrency)
+            .blockLast();
 
-            AtomicLong completedCount = new AtomicLong(0);
-            int tenantCount = dispatchable.size();
-
-            source
-                .flatMap(globalIndex -> {
-                    int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
-                    Benchmark selected = dispatchable.get(tenantIndex);
-                    Scheduler scheduler = (selected instanceof SyncBenchmark)
-                        ? syncScheduler
-                        : benchmarkScheduler;
-                    return selected.performSingleOperation()
-                        .subscribeOn(scheduler)
-                        .doOnTerminate(completedCount::incrementAndGet);
-                }, concurrency)
-                .blockLast();
-
-            long endTime = System.currentTimeMillis();
-            logger.info("[DISPATCH] {} operations dispatched across {} tenants in {}s (cycle={})",
-                completedCount.get(), tenantCount,
-                (int) ((endTime - workloadStartTime) / 1000), cycle);
-        }
-
-        // Wait for non-dispatchable benchmarks to finish
-        for (Future<?> f : legacyFutures) {
-            f.get();
-        }
-        if (legacyExecutor != null) {
-            legacyExecutor.shutdown();
-            legacyExecutor.awaitTermination(60, TimeUnit.SECONDS);
-        }
+        long endTime = System.currentTimeMillis();
+        logger.info("[DISPATCH] {} operations dispatched across {} tenants in {}s (cycle={})",
+            completedCount.get(), tenantCount,
+            (int) ((endTime - workloadStartTime) / 1000), cycle);
     }
 
     private void shutdownBenchmarks(List<Benchmark> benchmarks, int cycle) {
