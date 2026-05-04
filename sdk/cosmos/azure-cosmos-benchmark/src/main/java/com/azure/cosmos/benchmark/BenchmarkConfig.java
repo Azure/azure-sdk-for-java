@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,27 +119,23 @@ public class BenchmarkConfig {
 
     private static void validateTenantConfig(TenantWorkloadConfig tenant) {
         List<String> missing = new ArrayList<>();
-        if (isNullOrEmpty(tenant.getServiceEndpoint())) {
+        if (StringUtils.isEmpty(tenant.getServiceEndpoint())) {
             missing.add("serviceEndpoint");
         }
-        if (isNullOrEmpty(tenant.getDatabaseId())) {
+        if (StringUtils.isEmpty(tenant.getDatabaseId())) {
             missing.add("databaseId");
         }
-        if (isNullOrEmpty(tenant.getContainerId())) {
+        if (StringUtils.isEmpty(tenant.getContainerId())) {
             missing.add("containerId");
         }
         if (!tenant.isManagedIdentityRequired()
-            && isNullOrEmpty(tenant.getMasterKey())) {
+            && StringUtils.isEmpty(tenant.getMasterKey())) {
             missing.add("masterKey (required when isManagedIdentityRequired is not true)");
         }
         if (!missing.isEmpty()) {
             throw new IllegalArgumentException(
                 "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
         }
-    }
-
-    private static boolean isNullOrEmpty(String value) {
-        return value == null || value.isEmpty();
     }
 
     // ======== Convenience getters (delegate to nested configs) ========
