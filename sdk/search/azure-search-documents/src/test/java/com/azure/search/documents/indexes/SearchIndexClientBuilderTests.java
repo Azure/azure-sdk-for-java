@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchIndexClientBuilderTests {
     private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
-    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2026_04_01;
+    private final SearchServiceVersion apiVersion = SearchServiceVersion.V2020_06_30;
 
     @Test
     public void buildSyncClientTest() {
@@ -108,14 +108,17 @@ public class SearchIndexClientBuilderTests {
 
         assertEquals(searchEndpoint, client.getEndpoint());
 
-        SearchIndexAsyncClient asyncClient
-            = new SearchIndexClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .endpoint(searchEndpoint)
-                .credential(searchApiKeyCredential)
-                .serviceVersion(apiVersion)
-                .buildAsyncClient();
+        SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder().endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .serviceVersion(apiVersion)
+            .buildAsyncClient();
 
         assertEquals(searchEndpoint, asyncClient.getEndpoint());
+    }
+
+    @Test
+    public void emptyEndpointThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder().endpoint(""));
     }
 
     @Test
@@ -177,7 +180,7 @@ public class SearchIndexClientBuilderTests {
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();

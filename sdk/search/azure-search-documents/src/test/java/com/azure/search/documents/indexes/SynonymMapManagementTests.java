@@ -3,15 +3,15 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.ifMatch;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -37,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class SynonymMapManagementTests extends SearchTestBase {
     private final List<String> synonymMapsToDelete = new ArrayList<>();
 
@@ -118,25 +116,24 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void createSynonymMapReturnsCorrectDefinitionWithResponseSync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
-        SynonymMap actualSynonymMap = client.createSynonymMapWithResponse(expectedSynonymMap, null).getValue();
+        SynonymMap actualSynonymMap = client.createSynonymMapWithResponse(expectedSynonymMap, Context.NONE).getValue();
         synonymMapsToDelete.add(actualSynonymMap.getName());
 
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
 
-        actualSynonymMap = client.getSynonymMapWithResponse(expectedSynonymMap.getName(), null).getValue();
+        actualSynonymMap = client.getSynonymMapWithResponse(expectedSynonymMap.getName(), Context.NONE).getValue();
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
     @Test
     public void createSynonymMapReturnsCorrectDefinitionWithResponseAsync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
-        StepVerifier.create(asyncClient.createSynonymMapWithResponse(expectedSynonymMap, null)).assertNext(response -> {
-            SynonymMap synonymMap = response.getValue();
-            synonymMapsToDelete.add(synonymMap.getName());
-            assertSynonymMapsEqual(expectedSynonymMap, synonymMap);
+        StepVerifier.create(asyncClient.createSynonymMapWithResponse(expectedSynonymMap)).assertNext(response -> {
+            synonymMapsToDelete.add(response.getValue().getName());
+            assertSynonymMapsEqual(expectedSynonymMap, response.getValue());
         }).verifyComplete();
 
-        StepVerifier.create(asyncClient.getSynonymMapWithResponse(expectedSynonymMap.getName(), null))
+        StepVerifier.create(asyncClient.getSynonymMapWithResponse(expectedSynonymMap.getName()))
             .assertNext(response -> assertSynonymMapsEqual(expectedSynonymMap, response.getValue()))
             .verifyComplete();
     }
@@ -144,16 +141,17 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void createSynonymMapFailsWithUsefulMessageOnUserErrorSync() {
         // Create SynonymMap with invalid synonym
-        SynonymMap expectedSynonymMap = createTestSynonymMap("a => b => c");
+        SynonymMap expectedSynonymMap = createTestSynonymMap().setSynonyms("a => b => c");
 
-        assertHttpResponseException(() -> client.createSynonymMap(expectedSynonymMap),
-            HttpURLConnection.HTTP_BAD_REQUEST);
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> client.createSynonymMap(expectedSynonymMap));
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
     @Test
     public void createSynonymMapFailsWithUsefulMessageOnUserErrorAsync() {
         // Create SynonymMap with invalid synonym
-        SynonymMap expectedSynonymMap = createTestSynonymMap("a => b => c");
+        SynonymMap expectedSynonymMap = createTestSynonymMap().setSynonyms("a => b => c");
 
         StepVerifier.create(asyncClient.createSynonymMap(expectedSynonymMap)).verifyErrorSatisfies(throwable -> {
             HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
@@ -185,7 +183,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
 
-        assertHttpResponseException(() -> client.getSynonymMapWithResponse(synonymMapName, null),
+        assertHttpResponseException(() -> client.getSynonymMapWithResponse(synonymMapName, Context.NONE),
             HttpURLConnection.HTTP_NOT_FOUND, exceptionMessage);
     }
 
@@ -194,7 +192,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         final String synonymMapName = "thisSynonymMapDoesNotExist";
         final String exceptionMessage = String.format("No synonym map with the name '%s' was found", synonymMapName);
 
-        StepVerifier.create(asyncClient.getSynonymMapWithResponse(synonymMapName, null))
+        StepVerifier.create(asyncClient.getSynonymMapWithResponse(synonymMapName))
             .verifyErrorSatisfies(
                 throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_NOT_FOUND, exceptionMessage));
     }
@@ -210,7 +208,8 @@ public class SynonymMapManagementTests extends SearchTestBase {
         SynonymMap updatedActual = client.createOrUpdateSynonymMap(updatedExpected);
         assertSynonymMapsEqual(updatedExpected, updatedActual);
 
-        assertEquals(1, client.listSynonymMaps().stream().count());
+        PagedIterable<SynonymMap> synonymMaps = client.listSynonymMaps();
+        assertEquals(1, synonymMaps.stream().count());
     }
 
     @Test
@@ -228,7 +227,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
             .assertNext(synonyms -> assertSynonymMapsEqual(synonyms.getT1(), synonyms.getT2()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.listSynonymMaps().count()).expectNext(1L).verifyComplete();
+        StepVerifier.create(asyncClient.listSynonymMaps()).expectNextCount(1).verifyComplete();
     }
 
     @Test
@@ -239,10 +238,12 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
         SynonymMap updatedExpected = new SynonymMap(initial.getName(), "newword1,newword2");
 
-        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, null).getValue();
+        SynonymMap updatedActual
+            = client.createOrUpdateSynonymMapWithResponse(updatedExpected, false, Context.NONE).getValue();
         assertSynonymMapsEqual(updatedExpected, updatedActual);
 
-        assertEquals(1, client.listSynonymMaps().stream().count());
+        PagedIterable<SynonymMap> synonymMaps = client.listSynonymMaps();
+        assertEquals(1, synonymMaps.stream().count());
     }
 
     @Test
@@ -252,7 +253,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
                 synonymMapsToDelete.add(original.getName());
                 SynonymMap updatedExpected = new SynonymMap(original.getName(), "newword1,newword2");
 
-                return asyncClient.createOrUpdateSynonymMapWithResponse(updatedExpected, null)
+                return asyncClient.createOrUpdateSynonymMapWithResponse(updatedExpected, false)
                     .map(response -> Tuples.of(updatedExpected, response.getValue()));
             });
 
@@ -260,7 +261,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
             .assertNext(synonyms -> assertSynonymMapsEqual(synonyms.getT1(), synonyms.getT2()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.listSynonymMaps().count()).expectNext(1L).verifyComplete();
+        StepVerifier.create(asyncClient.listSynonymMaps()).expectNextCount(1).verifyComplete();
     }
 
     @Test
@@ -285,7 +286,8 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExistWithResponseSync() {
         SynonymMap expected = createTestSynonymMap();
-        Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(expected, null);
+        Response<SynonymMap> createOrUpdateResponse
+            = client.createOrUpdateSynonymMapWithResponse(expected, false, Context.NONE);
         synonymMapsToDelete.add(expected.getName());
 
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
@@ -296,7 +298,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapCreatesWhenSynonymMapDoesNotExistWithResponseAsync() {
         SynonymMap expected = createTestSynonymMap();
 
-        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(expected, null)).assertNext(response -> {
+        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(expected, false)).assertNext(response -> {
             synonymMapsToDelete.add(response.getValue().getName());
 
             assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
@@ -308,7 +310,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResourceSync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        SynonymMap created = client.createOrUpdateSynonymMapWithResponse(synonymMap, null).getValue();
+        SynonymMap created = client.createOrUpdateSynonymMapWithResponse(synonymMap, true, Context.NONE).getValue();
         synonymMapsToDelete.add(created.getName());
 
         assertNotNull(created.getETag());
@@ -318,7 +320,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapIfNotExistsSucceedsOnNoResourceAsync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, null)).assertNext(response -> {
+        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, true)).assertNext(response -> {
             synonymMapsToDelete.add(response.getValue().getName());
             assertNotNull(response.getValue().getETag());
         }).verifyComplete();
@@ -328,12 +330,12 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapIfExistsSucceedsOnExistingResourceSync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, null).getValue();
+        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE).getValue();
         synonymMapsToDelete.add(original.getName());
 
-        original.getSynonyms().clear();
-        original.getSynonyms().add("mutated1, mutated2");
-        SynonymMap updated = client.createOrUpdateSynonymMapWithResponse(original, null).getValue();
+        SynonymMap updated = client
+            .createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1, mutated2"), false, Context.NONE)
+            .getValue();
 
         validateETagUpdate(original.getETag(), updated.getETag());
     }
@@ -343,13 +345,12 @@ public class SynonymMapManagementTests extends SearchTestBase {
         SynonymMap synonymMap = createTestSynonymMap();
 
         Mono<Tuple2<String, String>> createAndUpdateMono
-            = asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, null).flatMap(response -> {
+            = asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, false).flatMap(response -> {
                 SynonymMap original = response.getValue();
                 synonymMapsToDelete.add(original.getName());
 
-                original.getSynonyms().clear();
-                original.getSynonyms().add("mutated1, mutated2");
-                return asyncClient.createOrUpdateSynonymMapWithResponse(original, null)
+                return asyncClient
+                    .createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1, mutated2"), false)
                     .map(update -> Tuples.of(original.getETag(), update.getValue().getETag()));
             });
 
@@ -362,13 +363,12 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapIfNotChangedSucceedsWhenResourceUnchangedSync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, null).getValue();
+        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE).getValue();
         synonymMapsToDelete.add(original.getName());
 
-        original.getSynonyms().clear();
-        original.getSynonyms().add("mutated1, mutated2");
-        SynonymMap updated
-            = client.createOrUpdateSynonymMapWithResponse(original, ifMatch(original.getETag())).getValue();
+        SynonymMap updated = client
+            .createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1, mutated2"), true, Context.NONE)
+            .getValue();
 
         validateETagUpdate(original.getETag(), updated.getETag());
     }
@@ -378,13 +378,12 @@ public class SynonymMapManagementTests extends SearchTestBase {
         SynonymMap synonymMap = createTestSynonymMap();
 
         Mono<Tuple2<String, String>> createAndUpdateMono
-            = asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, null).flatMap(response -> {
+            = asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, false).flatMap(response -> {
                 SynonymMap original = response.getValue();
                 synonymMapsToDelete.add(original.getName());
 
-                original.getSynonyms().clear();
-                original.getSynonyms().add("mutated1, mutated2");
-                return asyncClient.createOrUpdateSynonymMapWithResponse(original, ifMatch(original.getETag()))
+                return asyncClient
+                    .createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1, mutated2"), true)
                     .map(update -> Tuples.of(original.getETag(), update.getValue().getETag()));
             });
 
@@ -397,20 +396,19 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChangedSyncAndAsync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, null).getValue();
+        SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE).getValue();
         synonymMapsToDelete.add(original.getName());
 
-        original.getSynonyms().clear();
-        original.getSynonyms().add("mutated1, mutated2");
-        SynonymMap updated
-            = client.createOrUpdateSynonymMapWithResponse(original, ifMatch(original.getETag())).getValue();
+        SynonymMap updated = client
+            .createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1, mutated2"), true, Context.NONE)
+            .getValue();
 
         // Update and check the eTags were changed
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> client.createOrUpdateSynonymMapWithResponse(original, ifMatch(original.getETag())));
+            () -> client.createOrUpdateSynonymMapWithResponse(original, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
-        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(original, ifMatch(original.getETag())))
+        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(original, true))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
@@ -422,16 +420,16 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void deleteSynonymMapIsIdempotentSync() {
         SynonymMap synonymMap = createTestSynonymMap();
-        Response<?> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null);
+        Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
-        Response<?> createResponse = client.createSynonymMapWithResponse(synonymMap, null);
+        Response<SynonymMap> createResponse = client.createSynonymMapWithResponse(synonymMap, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_CREATED, createResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null);
+        deleteResponse = client.deleteSynonymMapWithResponse(synonymMap, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
     }
 
@@ -439,19 +437,19 @@ public class SynonymMapManagementTests extends SearchTestBase {
     public void deleteSynonymMapIsIdempotentAsync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), null))
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap, false))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.createSynonymMapWithResponse(synonymMap, null))
+        StepVerifier.create(asyncClient.createSynonymMapWithResponse(synonymMap))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), null))
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap, false))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), null))
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(synonymMap, false))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
     }
@@ -475,7 +473,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
         compareMaps(expectedSynonyms, actualSynonyms, (expected, actual) -> assertObjectEquals(expected, actual, true));
 
-        StepVerifier.create(asyncClient.listSynonymMaps().collectMap(SynonymMap::getName, sm -> sm))
+        StepVerifier.create(asyncClient.listSynonymMaps().collectMap(SynonymMap::getName))
             .assertNext(actualSynonyms2 -> compareMaps(expectedSynonyms, actualSynonyms2,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
@@ -507,40 +505,40 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
     @Test
     public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResourceSyncAndAsync() {
-        SynonymMap stale = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), null).getValue();
+        SynonymMap stale
+            = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), true, Context.NONE).getValue();
 
         // Update the resource, the eTag will be changed
-        SynonymMap current = client.createOrUpdateSynonymMapWithResponse(stale, ifMatch(stale.getETag())).getValue();
+        SynonymMap current = client.createOrUpdateSynonymMapWithResponse(stale, true, Context.NONE).getValue();
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> client.deleteSynonymMapWithResponse(stale.getName(), ifMatch(stale.getETag())));
+            () -> client.deleteSynonymMapWithResponse(stale, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(stale.getName(), ifMatch(stale.getETag())))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
-            });
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(stale, true)).verifyErrorSatisfies(throwable -> {
+            HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
+        });
 
-        client.deleteSynonymMapWithResponse(current.getName(), ifMatch(current.getETag()));
+        client.deleteSynonymMapWithResponse(current, true, Context.NONE);
     }
 
     @Test
     public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExistsSyncAndAsync() {
-        SynonymMap updated = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), null).getValue();
+        SynonymMap updated
+            = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), false, Context.NONE).getValue();
 
-        client.deleteSynonymMapWithResponse(updated.getName(), ifMatch(updated.getETag()));
+        client.deleteSynonymMapWithResponse(updated, true, Context.NONE);
 
         // Try to delete again and expect to fail
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> client.deleteSynonymMapWithResponse(updated.getName(), ifMatch(updated.getETag())));
+            () -> client.deleteSynonymMapWithResponse(updated, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(updated.getName(), ifMatch(updated.getETag())))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
-            });
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(updated, true)).verifyErrorSatisfies(throwable -> {
+            HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
+        });
     }
 
     static void assertSynonymMapsEqual(SynonymMap expected, SynonymMap actual) {
@@ -550,9 +548,5 @@ public class SynonymMapManagementTests extends SearchTestBase {
 
     SynonymMap createTestSynonymMap() {
         return new SynonymMap(testResourceNamer.randomName("test-synonym", 32), "word1,word2");
-    }
-
-    SynonymMap createTestSynonymMap(String... synonyms) {
-        return new SynonymMap(testResourceNamer.randomName("test-synonym", 32), synonyms);
     }
 }
