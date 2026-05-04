@@ -36,7 +36,6 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
-import com.azure.storage.file.share.options.ShareGetUserDelegationKeyOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -894,47 +893,19 @@ public final class ShareServiceAsyncClient {
         }
     }
 
-    /**
-     * Gets a user delegation key for use with this account's share. Note: This method call is only valid when
-     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
-     *
-     * @param options The {@link ShareGetUserDelegationKeyOptions options} to configure the request.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
-     * delegation key.
-     * @throws IllegalArgumentException If {@code options.getStartsOn()} isn't null and is after
-     * {@code options.getExpiresOn()}.
-     * @throws NullPointerException If {@code options.getExpiresOn()} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UserDelegationKey>>
-        getUserDelegationKeyWithResponse(ShareGetUserDelegationKeyOptions options) {
-        try {
-            StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> getUserDelegationKeyWithResponse(options.getStartsOn(),
-                options.getExpiresOn(), options.getDelegatedUserTenantId(), context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        return getUserDelegationKeyWithResponse(start, expiry, null, context);
-    }
-
-    Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
-        String delegatedUserTenantId, Context context) {
-        context = context == null ? Context.NONE : context;
+        StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureFileStorageClient.getServices()
             .getUserDelegationKeyWithResponseAsync(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId),
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
