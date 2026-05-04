@@ -45,6 +45,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
+    private final AtomicLong operationCounter = new AtomicLong(0);
+
     private boolean databaseCreated;
     private boolean collectionCreated;
 
@@ -330,7 +332,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     protected abstract Mono<T> performWorkload(long i);
 
     @Override
-    public Mono<?> performSingleOperation(long operationIndex) {
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
         Mono<T> workload = performWorkload(operationIndex);
         Mono<T> delayed = sparsityMono(operationIndex);
         if (delayed != null) {

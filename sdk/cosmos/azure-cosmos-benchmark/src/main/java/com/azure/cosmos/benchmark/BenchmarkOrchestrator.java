@@ -348,12 +348,6 @@ public class BenchmarkOrchestrator {
             Duration maxDuration = config.getMaxRunningTimeDuration();
             long workloadStartTime = System.currentTimeMillis();
 
-            // Per-tenant operation counters for tenant-local indexing
-            AtomicLong[] tenantCounters = new AtomicLong[dispatchable.size()];
-            for (int i = 0; i < tenantCounters.length; i++) {
-                tenantCounters[i] = new AtomicLong(0);
-            }
-
             Flux<Long> source;
             if (maxDuration != null) {
                 final long deadline = workloadStartTime + maxDuration.toMillis();
@@ -388,11 +382,10 @@ public class BenchmarkOrchestrator {
                 .flatMap(globalIndex -> {
                     int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
                     Benchmark selected = dispatchable.get(tenantIndex);
-                    long tenantLocalIndex = tenantCounters[tenantIndex].getAndIncrement();
                     Scheduler scheduler = (selected instanceof SyncBenchmark)
                         ? syncScheduler
                         : benchmarkScheduler;
-                    return selected.performSingleOperation(tenantLocalIndex)
+                    return selected.performSingleOperation()
                         .subscribeOn(scheduler)
                         .doOnTerminate(completedCount::incrementAndGet);
                 }, concurrency)

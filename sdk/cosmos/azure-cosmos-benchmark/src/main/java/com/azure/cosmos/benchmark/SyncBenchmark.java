@@ -31,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import reactor.core.publisher.Mono;
@@ -41,6 +42,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
     private final ExecutorService ingestionExecutorService;
+    private final AtomicLong operationCounter = new AtomicLong(0);
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -243,7 +245,8 @@ abstract class SyncBenchmark<T> implements Benchmark {
     protected abstract T performWorkload(long i) throws Exception;
 
     @Override
-    public Mono<?> performSingleOperation(long operationIndex) {
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
         return Mono.fromCallable(() -> performWorkload(operationIndex))
             .doOnSuccess(v -> SyncBenchmark.this.onSuccess())
             .doOnError(e -> {

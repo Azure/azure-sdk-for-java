@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class AsyncCtlWorkload implements Benchmark {
 
+    private final AtomicLong operationCounter = new AtomicLong(0);
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
@@ -173,7 +174,8 @@ public class AsyncCtlWorkload implements Benchmark {
     }
 
     @Override
-    public Mono<?> performSingleOperation(long operationIndex) {
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
         return selectAndPerformWorkload(operationIndex)
             .doOnError(e -> logger.error("CTL failure on thread {}: {}",
                 Thread.currentThread().getName(), e.getMessage(), e))

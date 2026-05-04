@@ -12,8 +12,9 @@ import java.time.Duration;
  * Implementations are created by {@link BenchmarkOrchestrator} and participate
  * in its lifecycle loop (create → run → shutdown → settle × N cycles).
  *
- * <p>Dispatchable benchmarks (the default) implement {@link #performSingleOperation(long)}.
- * The orchestrator calls this for each operation slot, passing a tenant-local index.</p>
+ * <p>Dispatchable benchmarks (the default) implement {@link #performSingleOperation()}.
+ * The orchestrator calls this for each operation slot; each benchmark tracks its own
+ * operation index internally.</p>
  *
  * <p>Non-dispatchable benchmarks override {@link #isDispatchable()} to return {@code false}.
  * The orchestrator calls {@link #run()} for those, which manages its own dispatch loop.
@@ -26,7 +27,7 @@ public interface Benchmark {
      * Run the benchmark in self-dispatch mode.
      * Only used for non-dispatchable benchmarks (those where {@link #isDispatchable()} returns false).
      * Dispatchable benchmarks do not use this method — the orchestrator drives them via
-     * {@link #performSingleOperation(long)}.
+     * {@link #performSingleOperation()}.
      *
      * @throws UnsupportedOperationException if the benchmark is dispatchable
      */
@@ -39,12 +40,12 @@ public interface Benchmark {
 
     /**
      * Execute a single operation for this benchmark. The orchestrator calls this
-     * when randomly selecting this tenant for an operation slot.
+     * when randomly selecting this tenant for an operation slot. Each benchmark
+     * maintains its own operation counter internally.
      *
-     * @param operationIndex tenant-local operation index (0-based, monotonically increasing per tenant)
      * @return a Mono that completes when the operation finishes
      */
-    default Mono<?> performSingleOperation(long operationIndex) {
+    default Mono<?> performSingleOperation() {
         return Mono.error(new UnsupportedOperationException(
             getClass().getSimpleName() + " does not support per-operation dispatch"));
     }
