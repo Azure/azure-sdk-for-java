@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
     /**
      * Indicates that entities in the Personal Health Information domain should be redacted.
      */
-    @Generated
     public static final PiiDomain PHI = fromString("phi");
 
     /**
      * Indicates that no domain is specified.
      */
-    @Generated
     public static final PiiDomain NONE = fromString("none");
 
     /**
@@ -29,7 +26,6 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PiiDomain() {
     }
@@ -40,7 +36,6 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
      * @param name a name to look for.
      * @return the corresponding PiiDomain.
      */
-    @Generated
     public static PiiDomain fromString(String name) {
         return fromString(name, PiiDomain.class);
     }
@@ -50,7 +45,6 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
      * 
      * @return known PiiDomain values.
      */
-    @Generated
     public static Collection<PiiDomain> values() {
         return values(PiiDomain.class);
     }
