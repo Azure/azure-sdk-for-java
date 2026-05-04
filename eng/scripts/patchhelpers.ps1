@@ -48,7 +48,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
 # Get version info for all the maven artifacts under the groupId = 'com.azure'
 function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     $artifactInfos = @{}
-    $azComArtifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $GroupId
+    $azComArtifactIds = GetAllAzComClientArtifactIds -GroupId $GroupId
 
     foreach ($artifactId in $azComArtifactIds) {
         $artifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $GroupId

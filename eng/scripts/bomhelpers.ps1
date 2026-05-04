@@ -118,12 +118,20 @@ function UpdateDependencyOfClientSDK() {
   $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
-# Get all azure com client artifacts from Maven.
-function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
-  $groupPath = $GroupId -replace '\.', '/'
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath" -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
-  $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
-  return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
+# Get all azure com client artifact IDs from version_client.txt.
+function GetAllAzComClientArtifactIds($GroupId = "com.azure") {
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $artifactIds = @()
+  foreach ($line in Get-Content $versionFilePath) {
+    if ($line -and !$line.StartsWith("#") -and $line.StartsWith("${GroupId}:")) {
+      $artifactId = $line.Split(";")[0].Split(":")[1]
+      if ($artifactId -like "azure-*" -and $artifactId -notlike "azure-spring*") {
+        $artifactIds += $artifactId
+      }
+    }
+  }
+  return $artifactIds
 }
 
 # Get version info for an artifact.
