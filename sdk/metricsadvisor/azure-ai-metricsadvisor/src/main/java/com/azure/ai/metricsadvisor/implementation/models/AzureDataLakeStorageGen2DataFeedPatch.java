@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +19,14 @@ import java.util.List;
 @Fluent
 public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailPatch {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private AzureDataLakeStorageGen2ParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of AzureDataLakeStorageGen2DataFeedPatch class.
      */
-    @Generated
     public AzureDataLakeStorageGen2DataFeedPatch() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -55,7 +34,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public AzureDataLakeStorageGen2ParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -66,7 +44,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureDataLakeStorageGen2DataFeedPatch object itself.
      */
-    @Generated
     public AzureDataLakeStorageGen2DataFeedPatch
         setDataSourceParameter(AzureDataLakeStorageGen2ParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
@@ -76,7 +53,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -86,7 +62,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -96,7 +71,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -106,7 +80,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -116,7 +89,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -126,7 +98,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -136,7 +107,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -146,7 +116,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -156,7 +125,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -166,7 +134,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -176,7 +143,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -186,7 +152,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -196,7 +161,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -206,7 +170,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -216,7 +179,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -226,7 +188,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -236,7 +197,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -246,7 +206,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -256,7 +215,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -266,7 +224,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -276,20 +233,19 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureDataLakeStorageGen2DataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2 == null
+                ? null
+                : DataSourceType.AZURE_DATA_LAKE_STORAGE_GEN2.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -315,8 +271,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -327,9 +281,9 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureDataLakeStorageGen2DataFeedPatch if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureDataLakeStorageGen2DataFeedPatch.
      */
-    @Generated
     public static AzureDataLakeStorageGen2DataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeStorageGen2DataFeedPatch deserializedAzureDataLakeStorageGen2DataFeedPatch
@@ -338,15 +292,22 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"AzureDataLakeStorageGen2".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'AzureDataLakeStorageGen2'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeedPatch.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureDataLakeStorageGen2DataFeedPatch.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch
                         .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
@@ -395,9 +356,6 @@ public final class AzureDataLakeStorageGen2DataFeedPatch extends DataFeedDetailP
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch.setCredentialId(reader.getString());
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedAzureDataLakeStorageGen2DataFeedPatch.dataSourceType
-                        = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureDataLakeStorageGen2DataFeedPatch.dataSourceParameter
                         = AzureDataLakeStorageGen2ParameterPatch.fromJson(reader);
