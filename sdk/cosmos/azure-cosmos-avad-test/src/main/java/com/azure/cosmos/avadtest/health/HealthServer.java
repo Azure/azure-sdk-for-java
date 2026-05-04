@@ -1,0 +1,89 @@
+package com.azure.cosmos.avadtest.health;
+
+import com.azure.cosmos.avadtest.metrics.SoakMetrics;
+import com.sun.net.httpserver.HttpServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * Lightweight HTTP health server for Kubernetes probes.
+ *
+ * Endpoints:
+ *   GET /health  — liveness probe (always 200 if JVM is up)
+ *   GET /ready   — readiness probe (200 when workload is ready)
+ *   GET /metrics — Micrometer-style plain text metrics
+ *
+ * Reusable contract: any workload image that implements these
+ * three endpoints can plug into the soak infra Helm chart.
+ */
+public final class HealthServer {
+
+    private static final Logger log = LoggerFactory.getLogger(HealthServer.class);
+    private static final int DEFAULT_PORT = 8080;
+
+    private final HttpServer server;
+    private final AtomicBoolean ready = new AtomicBoolean(false);
+    private final SoakMetrics metrics;
+
+    public HealthServer(SoakMetrics metrics) throws IOException {
+        this(metrics, DEFAULT_PORT);
+    }
+
+    public HealthServer(SoakMetrics metrics, int port) throws IOException {
+        this.metrics = metrics;
+        this.server = HttpServer.create(new InetSocketAddress(port), 0);
+        this.server.setExecutor(Executors.newFixedThreadPool(2));
+
+        server.createContext("/health", exchange -> {
+            byte[] body = "{\"status\":\"UP\"}".getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(200, body.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(body);
+            }
+        });
+
+        server.createContext("/ready", exchange -> {
+            boolean isReady = ready.get();
+            String json = "{\"ready\":" + isReady + "}";
+            byte[] body = json.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.sendResponseHeaders(isReady ? 200 : 503, body.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(body);
+            }
+        });
+
+        server.createContext("/metrics", exchange -> {
+            String metricsText = metrics.toPrometheusText();
+            byte[] body = metricsText.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "text/plain");
+            exchange.sendResponseHeaders(200, body.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(body);
+            }
+        });
+    }
+
+    public void start() {
+        server.start();
+        log.info("Health server started on port {}", server.getAddress().getPort());
+    }
+
+    public void setReady(boolean isReady) {
+        ready.set(isReady);
+        log.info("Readiness set to: {}", isReady);
+    }
+
+    public void stop() {
+        server.stop(2);
+        log.info("Health server stopped");
+    }
+}

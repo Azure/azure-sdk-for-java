@@ -1,0 +1,52 @@
+# Chaos schedule configuration
+# The soak orchestrator reads this file to determine when to
+# fire each chaos scenario.
+#
+# interval_hours: time between invocations of this scenario
+# recovery_minutes: time to wait after chaos before checking health
+# enabled: set to false to skip this scenario
+
+schedule:
+  - scenario: pod-kill
+    interval_hours: 2
+    recovery_minutes: 5
+    enabled: true
+    params:
+      component: avad-cfp
+
+  - scenario: restart-storm
+    interval_hours: 8
+    recovery_minutes: 15
+    enabled: true
+    params:
+      component: avad-cfp
+
+  - scenario: lease-throttle
+    interval_hours: 4
+    recovery_minutes: 10
+    enabled: true
+    params:
+      target_ru: 400
+      throttle_duration: 300
+
+  - scenario: network-fault
+    interval_hours: 6
+    recovery_minutes: 5
+    enabled: true
+    params:
+      block_duration: 30
+      component: avad-cfp
+
+  - scenario: partition-split
+    interval_hours: 12
+    recovery_minutes: 30
+    enabled: true
+    params:
+      scale_factor: 2
+
+  - scenario: node-drain
+    interval_hours: 24
+    recovery_minutes: 15
+    enabled: true
+    params:
+      component: avad-cfp

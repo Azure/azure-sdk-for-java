@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cosmos-soak
+description: Reusable Helm chart for Cosmos DB soak testing on AKS
+version: 0.1.0
+appVersion: "1.0"
+type: application

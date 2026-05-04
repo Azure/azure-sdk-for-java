@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "cosmos-soak.labels" . | nindent 4 }}
+data:
+  endpoint: {{ .Values.cosmos.endpoint | quote }}
+  database: {{ .Values.cosmos.database | quote }}
+  feedContainer: {{ .Values.cosmos.feedContainer | quote }}
+  leaseContainer: {{ .Values.cosmos.leaseContainer | quote }}
+  preferredRegion: {{ .Values.cosmos.preferredRegion | quote }}
+  opsPerSec: {{ .Values.cosmos.opsPerSec | quote }}
+  docSizeBytes: {{ .Values.cosmos.docSizeBytes | quote }}
+  logicalPartitionCount: {{ .Values.cosmos.logicalPartitionCount | quote }}
+  durationSeconds: {{ .Values.cosmos.durationSeconds | quote }}
+  workerCount: {{ .Values.cosmos.workerCount | quote }}
