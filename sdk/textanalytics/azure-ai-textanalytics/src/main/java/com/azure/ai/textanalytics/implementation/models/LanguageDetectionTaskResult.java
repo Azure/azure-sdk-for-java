@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,19 +18,16 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
     /*
      * Enumeration of supported Text Analysis task results.
      */
-    @Generated
     private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.LANGUAGE_DETECTION_RESULTS;
 
     /*
      * The results property.
      */
-    @Generated
     private LanguageDetectionResult results;
 
     /**
      * Creates an instance of LanguageDetectionTaskResult class.
      */
-    @Generated
     public LanguageDetectionTaskResult() {
     }
 
@@ -40,7 +36,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextTaskResultsKind getKind() {
         return this.kind;
@@ -51,7 +46,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the results value.
      */
-    @Generated
     public LanguageDetectionResult getResults() {
         return this.results;
     }
@@ -62,7 +56,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
      * @param results the results value to set.
      * @return the LanguageDetectionTaskResult object itself.
      */
-    @Generated
     public LanguageDetectionTaskResult setResults(LanguageDetectionResult results) {
         this.results = results;
         return this;
@@ -71,7 +64,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,7 +81,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LanguageDetectionTaskResult.
      */
-    @Generated
     public static LanguageDetectionTaskResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LanguageDetectionTaskResult deserializedLanguageDetectionTaskResult = new LanguageDetectionTaskResult();

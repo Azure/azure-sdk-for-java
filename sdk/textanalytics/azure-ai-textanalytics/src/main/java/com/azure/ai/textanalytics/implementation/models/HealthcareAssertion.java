@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
     /*
      * Describes any conditionality on the entity.
      */
-    @Generated
     private Conditionality conditionality;
 
     /*
      * Describes the entities certainty and polarity.
      */
-    @Generated
     private Certainty certainty;
 
     /*
      * Describes if the entity is the subject of the text or if it describes someone else.
      */
-    @Generated
     private Association association;
 
     /**
      * Creates an instance of HealthcareAssertion class.
      */
-    @Generated
     public HealthcareAssertion() {
     }
 
@@ -47,7 +42,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * 
      * @return the conditionality value.
      */
-    @Generated
     public Conditionality getConditionality() {
         return this.conditionality;
     }
@@ -58,7 +52,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * @param conditionality the conditionality value to set.
      * @return the HealthcareAssertion object itself.
      */
-    @Generated
     public HealthcareAssertion setConditionality(Conditionality conditionality) {
         this.conditionality = conditionality;
         return this;
@@ -69,7 +62,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * 
      * @return the certainty value.
      */
-    @Generated
     public Certainty getCertainty() {
         return this.certainty;
     }
@@ -80,7 +72,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * @param certainty the certainty value to set.
      * @return the HealthcareAssertion object itself.
      */
-    @Generated
     public HealthcareAssertion setCertainty(Certainty certainty) {
         this.certainty = certainty;
         return this;
@@ -91,7 +82,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * 
      * @return the association value.
      */
-    @Generated
     public Association getAssociation() {
         return this.association;
     }
@@ -102,7 +92,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * @param association the association value to set.
      * @return the HealthcareAssertion object itself.
      */
-    @Generated
     public HealthcareAssertion setAssociation(Association association) {
         this.association = association;
         return this;
@@ -111,7 +100,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +118,6 @@ public final class HealthcareAssertion implements JsonSerializable<HealthcareAss
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HealthcareAssertion.
      */
-    @Generated
     public static HealthcareAssertion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareAssertion deserializedHealthcareAssertion = new HealthcareAssertion();
