@@ -559,10 +559,10 @@ public class TenantWorkloadConfig {
             }
         }
 
-        // Account-specific fields should be per-tenant, not in tenantDefaults
+        // Account-specific fields must be per-tenant — strip them from defaults
         for (String perTenantField : PER_TENANT_ONLY_FIELDS) {
-            if (tenantDefaults.containsKey(perTenantField)) {
-                logger.warn("'{}' found in tenantDefaults — this field should be set per-tenant, not as a default. "
+            if (tenantDefaults.remove(perTenantField) != null) {
+                logger.warn("Ignoring '{}' in tenantDefaults — this field must be set per-tenant. "
                     + "Move it into each tenant entry.", perTenantField);
             }
         }
