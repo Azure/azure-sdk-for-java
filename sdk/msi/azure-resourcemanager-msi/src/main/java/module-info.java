@@ -13,6 +13,5 @@ module com.azure.resourcemanager.msi {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.msi.fluent.models to com.azure.core;
-    opens com.azure.resourcemanager.msi.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.msi.models to com.azure.core;
 }
