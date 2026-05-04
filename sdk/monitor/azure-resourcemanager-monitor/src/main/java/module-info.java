@@ -13,5 +13,4 @@ module com.azure.resourcemanager.monitor {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.monitor.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.monitor.models to com.azure.core;
-    opens com.azure.resourcemanager.monitor.implementation.models to com.azure.core;
 }
