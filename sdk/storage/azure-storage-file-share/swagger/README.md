@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/15d7f54a5389d5906ffb4e56bb2f38fe5525c0d3/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json
+use: '@autorest/java@4.1.62'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-02-06/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -448,14 +448,4 @@ directive:
   transform: >
     $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
     $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
-    $.properties.SignedDelegatedUserTid["x-ms-client-name"] = "signedDelegatedUserTenantId";
-```
-
-### Rename KeyInfo DelegatedUserTid
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.KeyInfo
-  transform: >
-    $.properties.DelegatedUserTid["x-ms-client-name"] = "delegatedUserTenantId";
 ```
