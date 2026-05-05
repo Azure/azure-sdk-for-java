@@ -51,16 +51,4 @@ az cosmosdb sql container create \
     --ttl 86400 \
     --output none 2>/dev/null || echo "  already exists"
 
-# Soak health container (/runId PK, TTL 30 days)
-echo "Creating soak-health container"
-az cosmosdb sql container create \
-    --account-name "$COSMOS_ACCOUNT" \
-    --resource-group "$COSMOS_RG" \
-    --database-name "$COSMOS_DB" \
-    --name "soak-health" \
-    --partition-key-path "/runId" \
-    --throughput 400 \
-    --ttl 2592000 \
-    --output none 2>/dev/null || echo "  already exists"
-
 echo "=== All containers ready ==="

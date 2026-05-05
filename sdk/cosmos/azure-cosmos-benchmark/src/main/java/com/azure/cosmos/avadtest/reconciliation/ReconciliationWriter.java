@@ -83,7 +83,7 @@ public final class ReconciliationWriter implements AutoCloseable {
         for (int attempt = 0; attempt <= MAX_RETRIES; attempt++) {
             try {
                 container.upsertItem(doc, new PartitionKey(eventId), options)
-                    .block(Duration.ofSeconds(10));
+                    .block();
                 writeCount.increment();
                 return;
             } catch (Exception e) {

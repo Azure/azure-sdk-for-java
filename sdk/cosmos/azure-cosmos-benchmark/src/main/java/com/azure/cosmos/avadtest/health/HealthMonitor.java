@@ -7,8 +7,6 @@ import com.azure.cosmos.avadtest.config.TestConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -37,11 +35,9 @@ public final class HealthMonitor {
 
     private static final Logger log = LoggerFactory.getLogger(HealthMonitor.class);
     private static final String RECONCILIATION_CONTAINER = "reconciliation";
-    private static final String HEALTH_CONTAINER = "soak-health";
 
     private final CosmosAsyncClient client;
     private final CosmosAsyncContainer reconContainer;
-    private final CosmosAsyncContainer healthContainer;
     private final String runId;
     private final int gapSlaMinutes;
 
@@ -59,10 +55,6 @@ public final class HealthMonitor {
         this.reconContainer = client
             .getDatabase(config.database())
             .getContainer(RECONCILIATION_CONTAINER);
-
-        this.healthContainer = client
-            .getDatabase(config.database())
-            .getContainer(HEALTH_CONTAINER);
     }
 
     /**
@@ -115,10 +107,6 @@ public final class HealthMonitor {
                 missingPrev);
             healthy = false;
         }
-
-        // Write health snapshot
-        writeHealthSnapshot(now, producedCount, avadConsumed,
-            lvConsumed, gapCount, parityGaps, missingPrev, healthy);
 
         String status = healthy ? "✅ HEALTHY" : "❌ UNHEALTHY";
         log.info("  Status: {}", status);
@@ -220,31 +208,6 @@ public final class HealthMonitor {
         } catch (Exception e) {
             log.warn("Failed previousImage check: {}", e.getMessage());
             return -1;
-        }
-    }
-
-    private void writeHealthSnapshot(Instant timestamp,
-            long produced, long avadConsumed, long lvConsumed,
-            long gapCount, long parityGaps, long missingPrev,
-            boolean healthy) {
-        ObjectNode doc = JsonNodeFactory.instance.objectNode();
-        doc.put("id", "health-" + timestamp.toString());
-        doc.put("runId", runId);
-        doc.put("timestamp", timestamp.toString());
-        doc.put("producedCount", produced);
-        doc.put("avadConsumedCount", avadConsumed);
-        doc.put("lvConsumedCount", lvConsumed);
-        doc.put("gapCount", gapCount);
-        doc.put("parityGaps", parityGaps);
-        doc.put("missingPreviousImage", missingPrev);
-        doc.put("status", healthy ? "HEALTHY" : "UNHEALTHY");
-
-        try {
-            healthContainer.upsertItem(doc, new PartitionKey(runId), null)
-                .block(Duration.ofSeconds(10));
-            log.info("  Health snapshot written");
-        } catch (Exception e) {
-            log.warn("Failed to write health snapshot: {}", e.getMessage());
         }
     }
 
