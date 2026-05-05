@@ -70,7 +70,8 @@ public final class LatestVersionReader implements AutoCloseable {
             final int workerIdx = i;
             ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
             options.setLeasePrefix(LEASE_PREFIX);
-            options.setFeedPollDelay(Duration.ofSeconds(1));
+            options.setFeedPollDelay(Duration.ofMillis(100));
+            options.setMaxItemCount(1000);
 
             ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
                 .hostName("lv-host-" + ManagementFactory.getRuntimeMXBean().getName() + "-w" + i)
@@ -116,6 +117,8 @@ public final class LatestVersionReader implements AutoCloseable {
 
             reconWriter.record(eventId, seqNo, opType, pk, lsn, false, -1);
         }
+
+        reconWriter.flush();
     }
 
     private static String getTextOrEmpty(JsonNode node, String field) {

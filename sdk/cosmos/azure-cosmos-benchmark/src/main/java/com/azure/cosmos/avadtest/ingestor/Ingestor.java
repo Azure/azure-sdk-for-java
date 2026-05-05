@@ -161,6 +161,8 @@ public final class Ingestor implements AutoCloseable {
         container.executeBulkOperations(Flux.fromIterable(operations), bulkOptions)
             .toStream()
             .forEach(response -> handleBulkResponse(response, opToMeta));
+
+        reconWriter.flush();
     }
 
     private void addCreate(List<CosmosItemOperation> ops, Map<CosmosItemOperation, OpMeta> opToMeta) {

@@ -82,7 +82,8 @@ public final class AvadReader implements AutoCloseable {
             final int workerIdx = i;
             ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
             options.setLeasePrefix(LEASE_PREFIX);
-            options.setFeedPollDelay(Duration.ofSeconds(1));
+            options.setFeedPollDelay(Duration.ofMillis(100));
+            options.setMaxItemCount(1000);
 
             ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
                 .hostName("avad-host-" + ManagementFactory.getRuntimeMXBean().getName() + "-w" + workerIdx)
@@ -166,6 +167,8 @@ public final class AvadReader implements AutoCloseable {
 
             reconWriter.record(eventId, seqNo, opType, pk, lsn, hasPrevious, crts);
         }
+
+        reconWriter.flush();
     }
 
     private void logCorrectnessReport() {
