@@ -331,7 +331,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
@@ -341,7 +341,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
@@ -516,7 +516,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -592,7 +591,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -643,7 +641,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -694,7 +691,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -768,7 +764,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -844,7 +839,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -873,17 +867,6 @@ public final class SecretClientImpl {
      * 
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>outContentType</td><td>String</td><td>No</td><td>The media type (MIME type) of the certificate. If a
-     * supported format is specified, the certificate content is converted to the requested format. Currently, only PFX
-     * to PEM conversion is supported. If an unsupported format is specified, the request is rejected. If not specified,
-     * the certificate is returned in its original format without conversion. Allowed values: "application/x-pkcs12",
-     * "application/x-pem-file".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -906,7 +889,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -937,17 +919,6 @@ public final class SecretClientImpl {
      * 
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>outContentType</td><td>String</td><td>No</td><td>The media type (MIME type) of the certificate. If a
-     * supported format is specified, the certificate content is converted to the requested format. Currently, only PFX
-     * to PEM conversion is supported. If an unsupported format is specified, the request is rejected. If not specified,
-     * the certificate is returned in its original format without conversion. Allowed values: "application/x-pkcs12",
-     * "application/x-pem-file".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -970,7 +941,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -1682,7 +1652,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -1736,7 +1705,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      *     recoveryId: String (Optional)
      *     scheduledPurgeDate: Long (Optional)
      *     deletedDate: Long (Optional)
@@ -1779,8 +1747,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String secretName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.purgeDeletedSecret(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, requestOptions, context));
+            this.getServiceVersion().getVersion(), secretName, accept, requestOptions, context));
     }
 
     /**
@@ -1800,8 +1769,9 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String secretName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return service.purgeDeletedSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1831,7 +1801,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -1880,7 +1849,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -1998,7 +1966,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
@@ -2058,7 +2025,6 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
-     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
