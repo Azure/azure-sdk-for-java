@@ -32,8 +32,6 @@ public final class TestConfig {
     private final int opsPerSec;
     private final int docSizeBytes;
     private final int logicalPartitionCount;
-    private final String producedLogFile;
-    private final String consumedLogFile;
     private final int durationSeconds;
     private final int workerCount;
 
@@ -48,8 +46,6 @@ public final class TestConfig {
         this.opsPerSec = builder.opsPerSec;
         this.docSizeBytes = builder.docSizeBytes;
         this.logicalPartitionCount = builder.logicalPartitionCount;
-        this.producedLogFile = builder.producedLogFile;
-        this.consumedLogFile = builder.consumedLogFile;
         this.durationSeconds = builder.durationSeconds;
         this.workerCount = builder.workerCount;
     }
@@ -61,7 +57,6 @@ public final class TestConfig {
         JsonNode root = MAPPER.readTree(new File(filePath));
         JsonNode cosmos = root.path("cosmos");
         JsonNode ingestor = root.path("ingestor");
-        JsonNode logging = root.path("logging");
 
         return new Builder()
             .endpoint(resolve("COSMOS_ENDPOINT", textOrNull(cosmos, "endpoint"), null))
@@ -74,8 +69,6 @@ public final class TestConfig {
             .opsPerSec(resolveInt("OPS_PER_SEC", intOrNull(ingestor, "opsPerSec"), 5000))
             .docSizeBytes(resolveInt("DOC_SIZE_BYTES", intOrNull(ingestor, "docSizeBytes"), 1024))
             .logicalPartitionCount(resolveInt("LOGICAL_PARTITION_COUNT", intOrNull(ingestor, "logicalPartitionCount"), 100000))
-            .producedLogFile(resolve("PRODUCED_LOG", textOrNull(logging, "producedLogFile"), "produced.log"))
-            .consumedLogFile(resolve("CONSUMED_LOG", textOrNull(logging, "consumedLogFile"), "consumed.log"))
             .durationSeconds(resolveInt("DURATION_SECONDS", intOrNull(ingestor, "durationSeconds"), 3600))
             .workerCount(resolveInt("WORKER_COUNT", intOrNull(ingestor, "workerCount"), 2))
             .build();
@@ -96,8 +89,6 @@ public final class TestConfig {
             .opsPerSec(Integer.parseInt(envOrDefault("OPS_PER_SEC", "5000")))
             .docSizeBytes(Integer.parseInt(envOrDefault("DOC_SIZE_BYTES", "1024")))
             .logicalPartitionCount(Integer.parseInt(envOrDefault("LOGICAL_PARTITION_COUNT", "100000")))
-            .producedLogFile(envOrDefault("PRODUCED_LOG", "produced.log"))
-            .consumedLogFile(envOrDefault("CONSUMED_LOG", "consumed.log"))
             .durationSeconds(Integer.parseInt(envOrDefault("DURATION_SECONDS", "3600")))
             .workerCount(Integer.parseInt(envOrDefault("WORKER_COUNT", "2")))
             .build();
@@ -161,14 +152,12 @@ public final class TestConfig {
     public int opsPerSec() { return opsPerSec; }
     public int docSizeBytes() { return docSizeBytes; }
     public int logicalPartitionCount() { return logicalPartitionCount; }
-    public String producedLogFile() { return producedLogFile; }
-    public String consumedLogFile() { return consumedLogFile; }
     public int durationSeconds() { return durationSeconds; }
     public int workerCount() { return workerCount; }
 
     public static final class Builder {
         private String endpoint, regionalEndpoint, key, database, feedContainer, leaseContainer;
-        private String preferredRegion, producedLogFile, consumedLogFile;
+        private String preferredRegion;
         private int opsPerSec, docSizeBytes, logicalPartitionCount, durationSeconds, workerCount;
 
         public Builder endpoint(String v) { this.endpoint = v; return this; }
@@ -181,8 +170,6 @@ public final class TestConfig {
         public Builder opsPerSec(int v) { this.opsPerSec = v; return this; }
         public Builder docSizeBytes(int v) { this.docSizeBytes = v; return this; }
         public Builder logicalPartitionCount(int v) { this.logicalPartitionCount = v; return this; }
-        public Builder producedLogFile(String v) { this.producedLogFile = v; return this; }
-        public Builder consumedLogFile(String v) { this.consumedLogFile = v; return this; }
         public Builder durationSeconds(int v) { this.durationSeconds = v; return this; }
         public Builder workerCount(int v) { this.workerCount = v; return this; }
         public TestConfig build() { return new TestConfig(this); }

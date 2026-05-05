@@ -4,7 +4,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.avadtest.config.TestConfig;
-import com.azure.cosmos.avadtest.reconciliation.EventLog;
 import com.azure.cosmos.avadtest.reconciliation.ReconciliationWriter;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
@@ -42,7 +41,6 @@ public final class AvadReader implements AutoCloseable {
     private final CosmosAsyncClient client;
     private final CosmosAsyncContainer feedContainer;
     private final CosmosAsyncContainer leaseContainer;
-    private final EventLog eventLog;
     private final ReconciliationWriter reconWriter;
     private final List<ChangeFeedProcessor> processors = new ArrayList<>();
 
@@ -54,8 +52,6 @@ public final class AvadReader implements AutoCloseable {
 
     public AvadReader(TestConfig config) throws Exception {
         this.config = config;
-        this.eventLog = new EventLog(config.consumedLogFile());
-
         this.client = new CosmosClientBuilder()
             .endpoint(config.readerEndpoint())
             .key(config.key())
@@ -168,11 +164,8 @@ public final class AvadReader implements AutoCloseable {
                 }
             }
 
-            eventLog.logConsumedAvad(eventId, seqNo, opType, pk, timestamp, lsn, crts);
             reconWriter.record(eventId, seqNo, opType, pk, lsn, hasPrevious, crts);
         }
-
-        eventLog.flush();
     }
 
     private void logCorrectnessReport() {
@@ -199,7 +192,6 @@ public final class AvadReader implements AutoCloseable {
         for (ChangeFeedProcessor p : processors) {
             try { p.stop().block(Duration.ofSeconds(30)); } catch (Exception e) { /* ignore */ }
         }
-        try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
         client.close();
         log.info("AvadReader closed ({} workers)", processors.size());

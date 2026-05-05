@@ -21,17 +21,14 @@ public final class Main {
         description = "Mode: ingestor, lv-reader, avad-reader, reconcile, health-monitor")
     private String mode;
 
-    @Parameter(names = "--produced", description = "Produced log file (for reconcile mode)")
-    private String producedFile;
+    @Parameter(names = "--source", description = "Source to reconcile from (e.g., ingestor)")
+    private String reconcileSource;
 
-    @Parameter(names = "--consumed", description = "Consumed log file (for reconcile mode)")
-    private String consumedFile;
+    @Parameter(names = "--against", description = "Source to reconcile against (e.g., cfp-avad)")
+    private String reconcileAgainst;
 
-    @Parameter(names = "--lv", description = "LV consumed log file (for parity check)")
-    private String lvFile;
-
-    @Parameter(names = "--avad", description = "AVAD consumed log file (for parity check)")
-    private String avadFile;
+    @Parameter(names = "--full", description = "Run full reconciliation suite")
+    private boolean reconcileFull;
 
     @Parameter(names = "--health-port", description = "Health server port (default: 8080)")
     private int healthPort = 8080;
@@ -129,13 +126,16 @@ public final class Main {
     }
 
     private int runReconcile() throws Exception {
-        if (producedFile != null && consumedFile != null) {
-            return Reconciler.reconcile(producedFile, consumedFile);
-        } else if (lvFile != null && avadFile != null) {
-            return Reconciler.parity(lvFile, avadFile);
-        } else {
-            log.error("Reconcile mode requires either --produced + --consumed or --lv + --avad");
-            return 1;
+        TestConfig config = loadConfig();
+        try (Reconciler reconciler = new Reconciler(config)) {
+            if (reconcileFull) {
+                return reconciler.runFullSuite();
+            } else if (reconcileSource != null && reconcileAgainst != null) {
+                return reconciler.reconcilePair(reconcileSource, reconcileAgainst);
+            } else {
+                log.error("Reconcile mode requires --full or --source + --against");
+                return 1;
+            }
         }
     }
 

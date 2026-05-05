@@ -13,9 +13,5 @@
     "logicalPartitionCount": 1000,
     "durationSeconds": 1800,
     "workerCount": 2
-  },
-  "logging": {
-    "producedLogFile": "produced.log",
-    "consumedLogFile": "consumed.log"
   }
 }

@@ -1,212 +1,342 @@
 package com.azure.cosmos.avadtest.reconciliation;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.avadtest.config.TestConfig;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
- * Reconciler that compares produced vs consumed event logs.
- * Uses eventId (unique per operation) for per-event reconciliation.
- *
- * Line format: eventId,seqNo,opType,partitionKey,timestamp,lsn[,crts]
- *
- * Checks:
- * 1. Gap detection — every produced eventId must appear in consumed
- * 2. LV ↔ AVAD parity — every LV event must appear in AVAD (AVAD ⊇ LV)
- * 3. Ordering — LSN must be monotonically increasing per partitionKey
- * 4. CRTS ordering — CRTS must be monotonically increasing per partitionKey (AVAD only)
- *
- * Exit code: 0 = all checks pass, 1 = failures detected
+ * Reconciler that queries the shared "reconciliation" Cosmos container
+ * to detect gaps, ordering violations, and missing previousImage across
+ * all source types (ingestor, cfp-lv, cfp-avad, spark-lv, spark-avad).
  */
-public final class Reconciler {
+public final class Reconciler implements AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(Reconciler.class);
+    private static final Duration QUERY_TIMEOUT = Duration.ofSeconds(60);
 
-    public static int reconcile(String producedFile, String consumedFile) throws IOException {
-        log.info("=== Gap Detection: {} vs {} ===", producedFile, consumedFile);
+    private final CosmosAsyncClient client;
+    private final CosmosAsyncContainer container;
 
-        Set<String> produced = loadEventIds(producedFile);
-        Set<String> consumed = loadEventIds(consumedFile);
+    public Reconciler(TestConfig config) {
+        this.client = new CosmosClientBuilder()
+            .endpoint(config.endpoint())
+            .key(config.key())
+            .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
+            .preferredRegions(config.preferredRegions())
+            .buildAsyncClient();
 
-        Set<String> missing = new HashSet<>(produced);
-        missing.removeAll(consumed);
+        this.container = client
+            .getDatabase(config.database())
+            .getContainer("reconciliation");
 
-        // Count duplicates (at-least-once delivery)
-        long totalConsumedLines = Files.lines(Paths.get(consumedFile)).filter(l -> !l.trim().isEmpty()).count();
-        long duplicates = totalConsumedLines - consumed.size();
+        log.info("Reconciler initialized: endpoint={}, db={}", config.endpoint(), config.database());
+    }
 
-        log.info("Produced: {} unique events", produced.size());
-        log.info("Consumed: {} unique events ({} total lines, {} duplicates)",
-            consumed.size(), totalConsumedLines, duplicates);
-        log.info("Missing (gaps): {}", missing.size());
+    /** Run all reconciliation checks across all source pairs. */
+    public int runFullSuite() {
+        log.info("=== Full Reconciliation Suite ===");
+        int failures = 0;
+
+        logSummary();
+
+        // Gap detection: ingestor → each consumer
+        failures += checkGaps("ingestor", "cfp-lv", "Ingestor → CFP LV");
+        failures += checkGaps("ingestor", "cfp-avad", "Ingestor → CFP AVAD");
+        failures += checkGaps("ingestor", "spark-lv", "Ingestor → Spark LV");
+        failures += checkGaps("ingestor", "spark-avad", "Ingestor → Spark AVAD");
+
+        // Parity: LV ⊆ AVAD
+        failures += checkGaps("cfp-lv", "cfp-avad", "CFP Parity (AVAD ⊇ LV)");
+        failures += checkGaps("spark-lv", "spark-avad", "Spark Parity (AVAD ⊇ LV)");
+
+        // Cross-engine
+        failures += checkGaps("cfp-lv", "spark-lv", "Cross-engine LV");
+        failures += checkGaps("cfp-avad", "spark-avad", "Cross-engine AVAD");
+
+        // LSN ordering
+        for (String s : new String[]{"cfp-lv", "cfp-avad", "spark-lv", "spark-avad"}) {
+            failures += checkLsnOrdering(s);
+        }
+
+        // CRTS ordering (AVAD only)
+        failures += checkCrtsOrdering("cfp-avad");
+        failures += checkCrtsOrdering("spark-avad");
+
+        // previousImage (AVAD only)
+        failures += checkPreviousImage("cfp-avad");
+        failures += checkPreviousImage("spark-avad");
+
+        logDuplicates();
+
+        log.info("=== Suite Complete: {} failures ===", failures);
+        return failures > 0 ? 1 : 0;
+    }
+
+    /** Reconcile a single source pair. Auto-selects checks by source types. */
+    public int reconcilePair(String source, String against) {
+        log.info("=== Reconcile: {} → {} ===", source, against);
+        int failures = 0;
+
+        failures += checkGaps(source, against, source + " → " + against);
+
+        // LSN ordering on the consumer side
+        if (!against.equals("ingestor")) {
+            failures += checkLsnOrdering(against);
+        }
+
+        // AVAD-specific checks
+        if (against.endsWith("-avad")) {
+            failures += checkCrtsOrdering(against);
+            failures += checkPreviousImage(against);
+        }
+
+        return failures > 0 ? 1 : 0;
+    }
+
+    /** Q1: Summary dashboard — count, unique, min/max seq/lsn per source */
+    private void logSummary() {
+        log.info("=== Summary Dashboard ===");
+        String query = "SELECT c.source, COUNT(1) AS total, "
+            + "COUNT(DISTINCT c.correlationId) AS uniqueIds, "
+            + "MIN(c.seqNo) AS minSeq, MAX(c.seqNo) AS maxSeq, "
+            + "MIN(c.lsn) AS minLsn, MAX(c.lsn) AS maxLsn "
+            + "FROM c GROUP BY c.source";
+
+        container.queryItems(query, new CosmosQueryRequestOptions(), JsonNode.class)
+            .byPage(100)
+            .timeout(QUERY_TIMEOUT)
+            .toIterable()
+            .forEach(page -> {
+                for (JsonNode row : page.getResults()) {
+                    log.info("  source={}, total={}, unique={}, seq=[{},{}], lsn=[{},{}]",
+                        row.path("source").asText(),
+                        row.path("total").asLong(),
+                        row.path("uniqueIds").asLong(),
+                        row.path("minSeq").asLong(),
+                        row.path("maxSeq").asLong(),
+                        row.path("minLsn").asLong(),
+                        row.path("maxLsn").asLong());
+                }
+            });
+    }
+
+    /** Q2/Q3/Q4: Gap detection — every correlationId in sourceA must exist in sourceB */
+    private int checkGaps(String sourceA, String sourceB, String label) {
+        log.info("=== Gap Check: {} ===", label);
+
+        Set<String> idsA = loadCorrelationIds(sourceA);
+        Set<String> idsB = loadCorrelationIds(sourceB);
+
+        if (idsA.isEmpty()) {
+            log.info("  SKIP: {} has no data yet", sourceA);
+            return 0;
+        }
+        if (idsB.isEmpty()) {
+            log.info("  SKIP: {} has no data yet", sourceB);
+            return 0;
+        }
+
+        Set<String> missing = new HashSet<>(idsA);
+        missing.removeAll(idsB);
+
+        log.info("  {} ids={}, {} ids={}, missing={}", sourceA, idsA.size(), sourceB, idsB.size(), missing.size());
 
         if (!missing.isEmpty()) {
-            log.error("❌ MISSED CHANGES DETECTED:");
+            log.error("❌ {} GAPS DETECTED:", label);
             missing.stream().limit(50).forEach(id -> log.error("  missing: {}", id));
             if (missing.size() > 50) {
                 log.error("  ... and {} more", missing.size() - 50);
             }
+        } else {
+            log.info("✅ {} — no gaps", label);
         }
 
-        int orderViolations = checkOrderingByLsn(consumedFile);
-        int crtsViolations = checkOrderingByCrts(consumedFile);
-
-        boolean passed = missing.isEmpty() && orderViolations == 0 && crtsViolations == 0;
-        log.info(passed ? "✅ All checks passed" : "❌ Checks FAILED");
-        return passed ? 0 : 1;
+        return missing.size();
     }
 
-    public static int parity(String lvFile, String avadFile) throws IOException {
-        log.info("=== LV ↔ AVAD Parity: {} vs {} ===", lvFile, avadFile);
+    /** Q5: LSN ordering — per partition, sorted by seqNo, LSN must be non-decreasing */
+    private int checkLsnOrdering(String source) {
+        log.info("=== LSN Ordering: {} ===", source);
+        Map<String, List<long[]>> events = loadEventsForOrdering(source, "lsn");
 
-        Set<String> lvIds = loadEventIds(lvFile);
-        Set<String> avadIds = loadEventIds(avadFile);
-
-        Set<String> missingInAvad = new HashSet<>(lvIds);
-        missingInAvad.removeAll(avadIds);
-
-        Set<String> avadOnly = new HashSet<>(avadIds);
-        avadOnly.removeAll(lvIds);
-
-        log.info("LV events: {}", lvIds.size());
-        log.info("AVAD events: {}", avadIds.size());
-        log.info("Missing in AVAD (should be 0): {}", missingInAvad.size());
-        log.info("AVAD-only events (deletes, extra versions): {}", avadOnly.size());
-
-        if (!missingInAvad.isEmpty()) {
-            log.error("❌ AVAD MISSING LV EVENTS:");
-            missingInAvad.stream().limit(50).forEach(id -> log.error("  missing: {}", id));
-        }
-
-        boolean passed = missingInAvad.isEmpty();
-        log.info(passed ? "✅ Parity check passed (AVAD ⊇ LV)" : "❌ Parity check FAILED");
-        return passed ? 0 : 1;
-    }
-
-    /** Loads unique eventIds (first field per line). */
-    private static Set<String> loadEventIds(String file) throws IOException {
-        try (Stream<String> lines = Files.lines(Paths.get(file))) {
-            return lines
-                .filter(l -> !l.trim().isEmpty())
-                .map(l -> l.split(",")[0])
-                .collect(Collectors.toSet());
-        }
-    }
-
-    /**
-     * Check that LSN is monotonically increasing per partitionKey.
-     * Line format: eventId,seqNo,opType,partitionKey,timestamp,lsn
-     * Sorts by seqNo (delivery order), then verifies LSN is non-decreasing.
-     */
-    private static int checkOrderingByLsn(String consumedFile) throws IOException {
-        log.info("=== LSN Ordering Check: {} ===", consumedFile);
-
-        Map<String, List<long[]>> recordsByPk = new HashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(consumedFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-                String[] parts = line.split(",");
-                if (parts.length < 6) continue;
-
-                String pk = parts[3];
-                long seqNo = Long.parseLong(parts[1]);
-                long lsn = parts[5].trim().isEmpty() ? -1 : Long.parseLong(parts[5]);
-                if (lsn < 0) continue;
-
-                recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
-                    .add(new long[]{seqNo, lsn});
-            }
-        }
-
-        int violations = 0;
-        for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
-            String pk = entry.getKey();
-            List<long[]> records = entry.getValue();
-            // Sort by seqNo (delivery order), then check LSN is non-decreasing
-            records.sort(Comparator.comparingLong(r -> r[0]));
-
-            long prevLsn = -1;
-            for (long[] record : records) {
-                if (prevLsn > 0 && record[1] < prevLsn) {
-                    violations++;
-                    if (violations <= 10) {
-                        log.warn("LSN ordering violation: PK={}, seqNo={}, prevLsn={}, currLsn={}",
-                            pk, record[0], prevLsn, record[1]);
-                    }
-                }
-                prevLsn = record[1];
-            }
-        }
-
-        log.info("LSN ordering violations: {} (across {} partition keys)",
-            violations, recordsByPk.size());
-        return violations;
-    }
-
-    /**
-     * Check that CRTS is monotonically increasing per partitionKey.
-     * Line format: eventId,seqNo,opType,partitionKey,timestamp,lsn,crts
-     * Only applies to AVAD logs (7 columns). Lines without CRTS are skipped.
-     * Sorts by seqNo (delivery order), then verifies CRTS is non-decreasing.
-     */
-    private static int checkOrderingByCrts(String consumedFile) throws IOException {
-        log.info("=== CRTS Ordering Check: {} ===", consumedFile);
-
-        Map<String, List<long[]>> recordsByPk = new HashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(consumedFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-                String[] parts = line.split(",");
-                if (parts.length < 7) continue;
-
-                String pk = parts[3];
-                long seqNo = Long.parseLong(parts[1]);
-                long crts = parts[6].trim().isEmpty() ? -1 : Long.parseLong(parts[6]);
-                if (crts < 0) continue;
-
-                recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
-                    .add(new long[]{seqNo, crts});
-            }
-        }
-
-        if (recordsByPk.isEmpty()) {
-            log.info("No CRTS data found (not an AVAD log?), skipping check");
+        if (events.isEmpty()) {
+            log.info("  SKIP: {} has no LSN data", source);
             return 0;
         }
 
         int violations = 0;
-        for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
+        for (Map.Entry<String, List<long[]>> entry : events.entrySet()) {
             String pk = entry.getKey();
             List<long[]> records = entry.getValue();
-            // Sort by seqNo (delivery order), then check CRTS is non-decreasing
             records.sort(Comparator.comparingLong(r -> r[0]));
 
-            long prevCrts = -1;
+            long prev = -1;
             for (long[] record : records) {
-                if (prevCrts > 0 && record[1] < prevCrts) {
+                if (prev > 0 && record[1] < prev) {
                     violations++;
                     if (violations <= 10) {
-                        log.warn("CRTS ordering violation: PK={}, seqNo={}, prevCrts={}, currCrts={}",
-                            pk, record[0], prevCrts, record[1]);
+                        log.warn("  LSN violation: pk={}, seqNo={}, prevLsn={}, currLsn={}",
+                            pk, record[0], prev, record[1]);
                     }
                 }
-                prevCrts = record[1];
+                prev = record[1];
             }
         }
 
-        log.info("CRTS ordering violations: {} (across {} partition keys)",
-            violations, recordsByPk.size());
+        log.info("  LSN violations: {} (across {} partitions)", violations, events.size());
         return violations;
+    }
+
+    /** Q6: CRTS ordering — per partition, sorted by seqNo, CRTS must be non-decreasing */
+    private int checkCrtsOrdering(String source) {
+        log.info("=== CRTS Ordering: {} ===", source);
+        Map<String, List<long[]>> events = loadEventsForOrdering(source, "crts");
+
+        if (events.isEmpty()) {
+            log.info("  SKIP: {} has no CRTS data", source);
+            return 0;
+        }
+
+        int violations = 0;
+        for (Map.Entry<String, List<long[]>> entry : events.entrySet()) {
+            String pk = entry.getKey();
+            List<long[]> records = entry.getValue();
+            records.sort(Comparator.comparingLong(r -> r[0]));
+
+            long prev = -1;
+            for (long[] record : records) {
+                if (prev > 0 && record[1] < prev) {
+                    violations++;
+                    if (violations <= 10) {
+                        log.warn("  CRTS violation: pk={}, seqNo={}, prevCrts={}, currCrts={}",
+                            pk, record[0], prev, record[1]);
+                    }
+                }
+                prev = record[1];
+            }
+        }
+
+        log.info("  CRTS violations: {} (across {} partitions)", violations, events.size());
+        return violations;
+    }
+
+    /** Q7: previousImage — replace/delete with hasPreviousImage=false must be 0 */
+    private int checkPreviousImage(String source) {
+        log.info("=== Previous Image Check: {} ===", source);
+
+        SqlQuerySpec querySpec = new SqlQuerySpec(
+            "SELECT VALUE COUNT(1) FROM c WHERE c.source = @source "
+                + "AND c.opType IN ('replace', 'delete') AND c.hasPreviousImage = false",
+            Collections.singletonList(new SqlParameter("@source", source)));
+
+        long count = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Long.class)
+            .byPage(1)
+            .timeout(QUERY_TIMEOUT)
+            .toIterable()
+            .iterator().next()
+            .getResults()
+            .stream()
+            .findFirst()
+            .orElse(0L);
+
+        if (count > 0) {
+            log.error("❌ {} missing previousImage on {} replace/delete events", source, count);
+        } else {
+            log.info("✅ {} — all replace/delete have previousImage", source);
+        }
+
+        return (int) count;
+    }
+
+    /** Q8: Duplicate detection — total vs unique correlationIds per source */
+    private void logDuplicates() {
+        log.info("=== Duplicate Detection ===");
+        String query = "SELECT c.source, COUNT(1) AS total, "
+            + "COUNT(DISTINCT c.correlationId) AS uniqueIds "
+            + "FROM c GROUP BY c.source";
+
+        container.queryItems(query, new CosmosQueryRequestOptions(), JsonNode.class)
+            .byPage(100)
+            .timeout(QUERY_TIMEOUT)
+            .toIterable()
+            .forEach(page -> {
+                for (JsonNode row : page.getResults()) {
+                    long total = row.path("total").asLong();
+                    long unique = row.path("uniqueIds").asLong();
+                    long duplicates = total - unique;
+                    log.info("  source={}, total={}, unique={}, duplicates={}",
+                        row.path("source").asText(), total, unique, duplicates);
+                }
+            });
+    }
+
+    /** Helper: load all distinct correlationIds for a source */
+    private Set<String> loadCorrelationIds(String source) {
+        SqlQuerySpec querySpec = new SqlQuerySpec(
+            "SELECT DISTINCT c.correlationId FROM c WHERE c.source = @source",
+            Collections.singletonList(new SqlParameter("@source", source)));
+
+        Set<String> ids = new HashSet<>();
+
+        container.queryItems(querySpec, new CosmosQueryRequestOptions(), JsonNode.class)
+            .byPage(1000)
+            .timeout(QUERY_TIMEOUT)
+            .toIterable()
+            .forEach(page -> {
+                for (JsonNode row : page.getResults()) {
+                    String cid = row.path("correlationId").asText("");
+                    if (!cid.isEmpty()) {
+                        ids.add(cid);
+                    }
+                }
+            });
+
+        return ids;
+    }
+
+    /** Helper: load events for ordering checks */
+    private Map<String, List<long[]>> loadEventsForOrdering(String source, String field) {
+        String query = "SELECT c.seqNo, c." + field + ", c.partitionKey FROM c "
+            + "WHERE c.source = @source AND c." + field + " >= 0";
+
+        SqlQuerySpec querySpec = new SqlQuerySpec(query,
+            Collections.singletonList(new SqlParameter("@source", source)));
+
+        Map<String, List<long[]>> result = new HashMap<>();
+
+        container.queryItems(querySpec, new CosmosQueryRequestOptions(), JsonNode.class)
+            .byPage(1000)
+            .timeout(QUERY_TIMEOUT)
+            .toIterable()
+            .forEach(page -> {
+                for (JsonNode row : page.getResults()) {
+                    String pk = row.path("partitionKey").asText("");
+                    long seqNo = row.path("seqNo").asLong();
+                    long fieldValue = row.path(field).asLong();
+
+                    result.computeIfAbsent(pk, k -> new ArrayList<>())
+                        .add(new long[]{seqNo, fieldValue});
+                }
+            });
+
+        return result;
+    }
+
+    @Override
+    public void close() {
+        client.close();
+        log.info("Reconciler closed");
     }
 }

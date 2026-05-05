@@ -4,7 +4,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.avadtest.config.TestConfig;
-import com.azure.cosmos.avadtest.reconciliation.EventLog;
 import com.azure.cosmos.avadtest.reconciliation.ReconciliationWriter;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
@@ -36,14 +35,11 @@ public final class LatestVersionReader implements AutoCloseable {
     private final CosmosAsyncClient client;
     private final CosmosAsyncContainer feedContainer;
     private final CosmosAsyncContainer leaseContainer;
-    private final EventLog eventLog;
     private final ReconciliationWriter reconWriter;
     private final List<ChangeFeedProcessor> processors = new ArrayList<>();
 
     public LatestVersionReader(TestConfig config) throws Exception {
         this.config = config;
-        this.eventLog = new EventLog(config.consumedLogFile());
-
         this.client = new CosmosClientBuilder()
             .endpoint(config.readerEndpoint())
             .key(config.key())
@@ -118,11 +114,8 @@ public final class LatestVersionReader implements AutoCloseable {
             String timestamp = getTextOrEmpty(current, "timestamp");
             long lsn = metadata != null ? metadata.getLogSequenceNumber() : -1;
 
-            eventLog.logConsumed(eventId, seqNo, opType, pk, timestamp, lsn);
             reconWriter.record(eventId, seqNo, opType, pk, lsn, false, -1);
         }
-
-        eventLog.flush();
     }
 
     private static String getTextOrEmpty(JsonNode node, String field) {
@@ -135,7 +128,6 @@ public final class LatestVersionReader implements AutoCloseable {
         for (ChangeFeedProcessor p : processors) {
             try { p.stop().block(Duration.ofSeconds(30)); } catch (Exception e) { /* ignore */ }
         }
-        try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
         client.close();
         log.info("LatestVersionReader closed ({} workers)", processors.size());

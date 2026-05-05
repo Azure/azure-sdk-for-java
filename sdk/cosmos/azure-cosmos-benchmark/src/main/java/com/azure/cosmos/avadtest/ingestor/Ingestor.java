@@ -4,7 +4,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.avadtest.config.TestConfig;
-import com.azure.cosmos.avadtest.reconciliation.EventLog;
 import com.azure.cosmos.avadtest.reconciliation.ReconciliationWriter;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -44,7 +43,6 @@ public final class Ingestor implements AutoCloseable {
     private final TestConfig config;
     private final CosmosAsyncClient client;
     private final CosmosAsyncContainer container;
-    private final EventLog eventLog;
     private final ReconciliationWriter reconWriter;
     private final AtomicLong seqCounter = new AtomicLong(0);
     private final AtomicBoolean running = new AtomicBoolean(true);
@@ -65,7 +63,6 @@ public final class Ingestor implements AutoCloseable {
 
     public Ingestor(TestConfig config) throws Exception {
         this.config = config;
-        this.eventLog = new EventLog(config.producedLogFile());
         this.recentDocIds = new String[10_000];
         this.opsPerTick = Math.max(1, config.opsPerSec() * TICK_INTERVAL_MS / 1000);
         this.bulkOptions = new CosmosBulkExecutionOptions();
@@ -228,7 +225,6 @@ public final class Ingestor implements AutoCloseable {
 
         if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
             successCount.increment();
-            eventLog.logProduced(meta.eventId, meta.seq, meta.opType, meta.pk, meta.ts);
             reconWriter.record(meta.eventId, meta.seq, meta.opType, meta.pk, -1, false, -1);
             if (!"delete".equals(meta.opType)) {
                 trackRecentId(meta.docId + "|" + meta.pk);
@@ -282,7 +278,6 @@ public final class Ingestor implements AutoCloseable {
         log.info("Closing Ingestor...");
         running.set(false);
         if (progressSubscription != null) { progressSubscription.dispose(); }
-        try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
         client.close();
         log.info("Ingestor closed. Total ops: {}, success: {}, failures: {}",
