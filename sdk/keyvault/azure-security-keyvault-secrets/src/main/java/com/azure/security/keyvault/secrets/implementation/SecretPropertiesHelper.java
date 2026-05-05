@@ -27,8 +27,6 @@ public class SecretPropertiesHelper {
         void setManaged(SecretProperties properties, Boolean managed);
 
         void setRecoverableDays(SecretProperties properties, Integer recoverableDays);
-
-        void setPreviousVersion(SecretProperties properties, String previousVersion);
     }
 
     public static void setId(SecretProperties properties, String id) {
@@ -110,15 +108,6 @@ public class SecretPropertiesHelper {
 
         assert accessor != null;
         accessor.setRecoverableDays(properties, recoverableDays);
-    }
-
-    public static void setPreviousVersion(SecretProperties properties, String previousVersion) {
-        if (accessor == null) {
-            new SecretProperties();
-        }
-
-        assert accessor != null;
-        accessor.setPreviousVersion(properties, previousVersion);
     }
 
     public static void setAccessor(SecretPropertiesAccessor newAccessor) {
