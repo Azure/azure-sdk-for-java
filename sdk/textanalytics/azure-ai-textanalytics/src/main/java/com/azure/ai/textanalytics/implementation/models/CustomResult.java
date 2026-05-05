@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +20,26 @@ public class CustomResult implements JsonSerializable<CustomResult> {
     /*
      * Errors by document id.
      */
-    @Generated
     private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
-    @Generated
     private RequestStatistics statistics;
 
     /*
      * This field indicates the project name for the model.
      */
-    @Generated
     private String projectName;
 
     /*
      * This field indicates the deployment name for the model.
      */
-    @Generated
     private String deploymentName;
 
     /**
      * Creates an instance of CustomResult class.
      */
-    @Generated
     public CustomResult() {
     }
 
@@ -54,7 +48,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * 
      * @return the errors value.
      */
-    @Generated
     public List<DocumentError> getErrors() {
         return this.errors;
     }
@@ -65,7 +58,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * @param errors the errors value to set.
      * @return the CustomResult object itself.
      */
-    @Generated
     public CustomResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
@@ -77,7 +69,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * 
      * @return the statistics value.
      */
-    @Generated
     public RequestStatistics getStatistics() {
         return this.statistics;
     }
@@ -89,7 +80,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * @param statistics the statistics value to set.
      * @return the CustomResult object itself.
      */
-    @Generated
     public CustomResult setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -100,7 +90,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * 
      * @return the projectName value.
      */
-    @Generated
     public String getProjectName() {
         return this.projectName;
     }
@@ -111,7 +100,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * @param projectName the projectName value to set.
      * @return the CustomResult object itself.
      */
-    @Generated
     public CustomResult setProjectName(String projectName) {
         this.projectName = projectName;
         return this;
@@ -122,7 +110,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * 
      * @return the deploymentName value.
      */
-    @Generated
     public String getDeploymentName() {
         return this.deploymentName;
     }
@@ -133,7 +120,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * @param deploymentName the deploymentName value to set.
      * @return the CustomResult object itself.
      */
-    @Generated
     public CustomResult setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
@@ -142,7 +128,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,7 +147,6 @@ public class CustomResult implements JsonSerializable<CustomResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomResult.
      */
-    @Generated
     public static CustomResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomResult deserializedCustomResult = new CustomResult();

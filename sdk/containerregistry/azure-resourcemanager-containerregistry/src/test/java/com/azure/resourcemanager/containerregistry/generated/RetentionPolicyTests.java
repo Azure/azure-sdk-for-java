@@ -13,17 +13,17 @@ public final class RetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicy model = BinaryData
-            .fromString("{\"days\":103063252,\"lastUpdatedTime\":\"2021-02-05T13:43:57Z\",\"status\":\"enabled\"}")
+            .fromString("{\"days\":1398747720,\"lastUpdatedTime\":\"2021-04-29T02:40:58Z\",\"status\":\"enabled\"}")
             .toObject(RetentionPolicy.class);
-        Assertions.assertEquals(103063252, model.days());
+        Assertions.assertEquals(1398747720, model.days());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetentionPolicy model = new RetentionPolicy().withDays(103063252).withStatus(PolicyStatus.ENABLED);
+        RetentionPolicy model = new RetentionPolicy().withDays(1398747720).withStatus(PolicyStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(RetentionPolicy.class);
-        Assertions.assertEquals(103063252, model.days());
+        Assertions.assertEquals(1398747720, model.days());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
     }
 }

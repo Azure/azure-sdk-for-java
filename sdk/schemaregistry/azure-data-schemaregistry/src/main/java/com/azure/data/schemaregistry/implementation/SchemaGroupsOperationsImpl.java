@@ -57,7 +57,7 @@ public final class SchemaGroupsOperationsImpl {
      * service to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "AzureSchemaRegistrySchemaGroupsOperations")
+    @ServiceInterface(name = "AzureSchemaRegistryS")
     public interface SchemaGroupsService {
         @Get("/$schemaGroups")
         @ExpectedResponses({ 200 })
@@ -204,7 +204,7 @@ public final class SchemaGroupsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(Context.NONE), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -224,16 +224,16 @@ public final class SchemaGroupsOperationsImpl {
     }
 
     /**
-     * Get list of schema groups.
-     * 
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return object received from the registry containing the list of schema groups and link to next batch page along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listNextSinglePageAsync(String nextLink) {
@@ -244,17 +244,17 @@ public final class SchemaGroupsOperationsImpl {
     }
 
     /**
-     * Get list of schema groups.
-     * 
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return object received from the registry containing the list of schema groups and link to next batch page along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -265,15 +265,16 @@ public final class SchemaGroupsOperationsImpl {
     }
 
     /**
-     * Get list of schema groups.
-     * 
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of schema groups user is authorized to access along with {@link PagedResponse}.
+     * @return object received from the registry containing the list of schema groups and link to next batch page along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listNextSinglePage(String nextLink) {
@@ -284,16 +285,17 @@ public final class SchemaGroupsOperationsImpl {
     }
 
     /**
-     * Get list of schema groups.
-     * 
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of schema groups user is authorized to access along with {@link PagedResponse}.
+     * @return object received from the registry containing the list of schema groups and link to next batch page along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> listNextSinglePage(String nextLink, Context context) {

@@ -1,32 +1,16 @@
 # Release History
 
-## 12.34.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.32.3 (2026-05-05)
 
 ### Other Changes
 
-## 12.34.0-beta.1 (2026-03-25)
+#### Dependency Updates
 
-### Features Added
-- Added support for service version 2026-06-06.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
-## 12.33.0-beta.1 (2026-02-19)
-
-### Features Added
-- Added support for service version 2026-04-06.
 
 ## 12.32.2 (2026-02-05)
-
-### Other Changes
-
-#### Credential Validation
-- added `validateCredentialsNotAmbiguous()` to `CredentialValidator` class check for valid credential combinations and
-  throw errors for invalid credential combinations. This is for internal use only.
 
 ### Other Changes
 
@@ -42,6 +26,7 @@ throw errors for invalid credential combinations. This is for internal use only.
 
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
 
 ## 12.32.0 (2026-01-15)
 
