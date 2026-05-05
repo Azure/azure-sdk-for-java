@@ -807,12 +807,6 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public CosmosDBAccountImpl enableLocalAuth() {
-        this.innerModel().withDisableLocalAuth(false);
-        return this;
-    }
-
-    @Override
     public CosmosDBAccountImpl enableAutomaticFailover() {
         this.innerModel().withEnableAutomaticFailover(true);
         return this;
