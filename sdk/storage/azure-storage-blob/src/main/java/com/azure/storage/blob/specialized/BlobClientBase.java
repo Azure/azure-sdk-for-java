@@ -1624,9 +1624,7 @@ public class BlobClientBase {
                 finalRequestConditions.getLeaseId(), deleteBlobSnapshotOptions,
                 finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
                 finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
-                finalRequestConditions.getTagsConditions(), null, null,
-                finalRequestConditions.getAccessTierIfModifiedSince(),
-                finalRequestConditions.getAccessTierIfUnmodifiedSince(), finalContext);
+                finalRequestConditions.getTagsConditions(), null, null, finalContext);
 
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
