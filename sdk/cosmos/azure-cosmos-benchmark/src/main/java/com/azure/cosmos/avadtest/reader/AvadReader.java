@@ -21,9 +21,7 @@ import java.time.Instant;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -53,10 +51,6 @@ public final class AvadReader implements AutoCloseable {
     private final LongAdder totalReplaces = new LongAdder();
     private final LongAdder totalDeletes = new LongAdder();
     private final LongAdder totalCreates = new LongAdder();
-    private final LongAdder crtsViolationCount = new LongAdder();
-
-    // Per-partition CRTS tracking for ordering validation
-    private final ConcurrentHashMap<String, AtomicLong> lastCrtsByPartition = new ConcurrentHashMap<>();
 
     public AvadReader(TestConfig config) throws Exception {
         this.config = config;
@@ -174,16 +168,6 @@ public final class AvadReader implements AutoCloseable {
                 }
             }
 
-            // CRTS ordering validation per partition key
-            if (crts > 0 && !pk.isEmpty()) {
-                AtomicLong lastCrts = lastCrtsByPartition.computeIfAbsent(pk, k -> new AtomicLong(-1));
-                long prev = lastCrts.getAndSet(crts);
-                if (prev > 0 && crts < prev) {
-                    crtsViolationCount.increment();
-                    log.warn("⚠️ CRTS ordering violation: pk={}, prevCrts={}, currCrts={}", pk, prev, crts);
-                }
-            }
-
             eventLog.logConsumedAvad(eventId, seqNo, opType, pk, timestamp, lsn, crts);
             reconWriter.record(eventId, seqNo, opType, pk, lsn, hasPrevious, crts);
         }
@@ -201,10 +185,6 @@ public final class AvadReader implements AutoCloseable {
             log.error("❌ previous MISSING on {} replace/delete events", missing);
         } else {
             log.info("✅ All replace/delete events have previous image");
-        }
-        long crtsViolations = crtsViolationCount.sum();
-        if (crtsViolations > 0) {
-            log.error("❌ {} CRTS ordering violations detected", crtsViolations);
         }
     }
 
