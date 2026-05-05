@@ -4,9 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,37 +20,31 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
     /*
      * The timestamp of the stats
      */
-    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * The active series count
      */
-    @Generated
     private Integer activeSeriesCount;
 
     /*
      * All series count under non deleted data feed
      */
-    @Generated
     private Integer allSeriesCount;
 
     /*
      * The metrics count under non deleted data feed
      */
-    @Generated
     private Integer metricsCount;
 
     /*
      * The count of non deleted data feed
      */
-    @Generated
     private Integer dataFeedCount;
 
     /**
      * Creates an instance of UsageStats class.
      */
-    @Generated
     public UsageStats() {
     }
 
@@ -61,7 +53,6 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * 
      * @return the timestamp value.
      */
-    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -71,7 +62,6 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * 
      * @return the activeSeriesCount value.
      */
-    @Generated
     public Integer getActiveSeriesCount() {
         return this.activeSeriesCount;
     }
@@ -81,7 +71,6 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * 
      * @return the allSeriesCount value.
      */
-    @Generated
     public Integer getAllSeriesCount() {
         return this.allSeriesCount;
     }
@@ -91,7 +80,6 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * 
      * @return the metricsCount value.
      */
-    @Generated
     public Integer getMetricsCount() {
         return this.metricsCount;
     }
@@ -101,15 +89,10 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * 
      * @return the dataFeedCount value.
      */
-    @Generated
     public Integer getDataFeedCount() {
         return this.dataFeedCount;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,7 +107,6 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the UsageStats.
      */
-    @Generated
     public static UsageStats fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UsageStats deserializedUsageStats = new UsageStats();
@@ -133,8 +115,8 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedUsageStats.timestamp = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedUsageStats.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("activeSeriesCount".equals(fieldName)) {
                     deserializedUsageStats.activeSeriesCount = reader.getNullable(JsonReader::getInt);
                 } else if ("allSeriesCount".equals(fieldName)) {
