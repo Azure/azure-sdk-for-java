@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
@@ -39,6 +40,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -234,26 +236,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
-    /**
-     * Block blob simple upload rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
-     */
-    @Test
-    public void blockBlobSimpleUploadWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobClient client = blobClient.getBlockBlobClient();
-
-        byte[] randomData = getRandomByteArray(UNDER_4MB);
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
-        BinaryData data = BinaryData.fromBytes(randomData);
-
-        BlockBlobSimpleUploadOptions options = new BlockBlobSimpleUploadOptions(data).setContentMd5(md5)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> client.uploadWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MD5_AND_CRC64_EXCLUSIVE_MESSAGE));
-    }
-
     // ===========================================================================================
     // BlockBlobClient.stageBlockWithResponse (Put Block) tests
     // ===========================================================================================
@@ -306,26 +288,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasNoContentValidationHeaders(recorded));
-    }
-
-    /**
-     * Stage block rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
-     */
-    @Test
-    public void stageBlockWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobClient client = blobClient.getBlockBlobClient();
-
-        byte[] randomData = getRandomByteArray(UNDER_4MB);
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
-        BinaryData data = BinaryData.fromBytes(randomData);
-
-        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data).setContentMd5(md5)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> client.stageBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MD5_AND_CRC64_EXCLUSIVE_MESSAGE));
     }
 
     // ===========================================================================================
@@ -383,27 +345,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
-    }
-
-    /**
-     * Append block rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
-     */
-    @Test
-    public void appendBlockWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        AppendBlobClient client = blobClient.getAppendBlobClient();
-        client.create();
-
-        byte[] randomData = getRandomByteArray(UNDER_4MB);
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
-        InputStream data = new ByteArrayInputStream(randomData);
-
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentMd5(md5)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> client.appendBlockWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MD5_AND_CRC64_EXCLUSIVE_MESSAGE));
     }
 
     // ===========================================================================================
@@ -468,29 +409,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
-    }
-
-    /**
-     * Upload pages rejects using both MD5 (contentMd5) and CRC64 (transfer validation checksum algorithm) at once.
-     */
-    @Test
-    public void uploadPagesWithMd5AndCrc64Throws() throws NoSuchAlgorithmException {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        PageBlobClient client = blobClient.getPageBlobClient();
-        client.create(UNDER_4MB_PAGE_ALIGNED);
-
-        byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
-        InputStream data = new ByteArrayInputStream(randomData);
-
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
-                .setContentMd5(md5)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> client.uploadPagesWithResponse(options, null, Context.NONE));
-        assertTrue(ex.getMessage().contains(MD5_AND_CRC64_EXCLUSIVE_MESSAGE));
     }
 
     // ===========================================================================================
@@ -1256,5 +1174,88 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 sourceFile.deleteOnExit();
             }
         }
+    }
+
+    // ===========================================================================================
+    // Customer Provided MD5 Byte[] with Content Validation Algorithm
+    // ===========================================================================================
+
+    private static final byte[] DEFAULT_MD5 = createDefaultMd5();
+    private static final String MESSAGE = "Both x-ms-content-crc64 header and Content-MD5 header are present.";
+
+    private static byte[] createDefaultMd5() {
+        try {
+            return Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()));
+        } catch (NoSuchAlgorithmException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("MD5 algorithm unavailable.", ex));
+        }
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void blockBlobUploadWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
+        BlockBlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>()).getBlockBlobClient();
+
+        BlockBlobSimpleUploadOptions options
+            = new BlockBlobSimpleUploadOptions(DATA.getDefaultBinaryData()).setContentValidationAlgorithm(algorithm)
+                .setContentMd5(DEFAULT_MD5);
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> client.uploadWithResponse(options, null, Context.NONE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void stageBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
+        BlockBlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>()).getBlockBlobClient();
+
+        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), DATA.getDefaultBinaryData())
+            .setContentValidationAlgorithm(algorithm)
+            .setContentMd5(DEFAULT_MD5);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> client.stageBlockWithResponse(options, null, Context.NONE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void appendBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
+        AppendBlobClient client
+            = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>()).getAppendBlobClient();
+        client.create();
+
+        byte[] randomData = DATA.getDefaultBytes();
+        AppendBlobAppendBlockOptions options
+            = new AppendBlobAppendBlockOptions(new ByteArrayInputStream(randomData), randomData.length)
+                .setContentValidationAlgorithm(algorithm)
+                .setContentMd5(DEFAULT_MD5);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> client.appendBlockWithResponse(options, null, Context.NONE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void uploadPagesWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm)
+        throws NoSuchAlgorithmException {
+        PageBlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>()).getPageBlobClient();
+        client.create(UNDER_4MB_PAGE_ALIGNED);
+
+        byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
+        PageBlobUploadPagesOptions options
+            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1),
+                new ByteArrayInputStream(randomData)).setContentValidationAlgorithm(algorithm).setContentMd5(md5);
+
+        BlobStorageException e = assertThrows(BlobStorageException.class,
+            () -> client.uploadPagesWithResponse(options, null, Context.NONE));
+        assertEquals(400, e.getStatusCode());
+        assertTrue(e.getMessage().contains(MESSAGE));
     }
 }
