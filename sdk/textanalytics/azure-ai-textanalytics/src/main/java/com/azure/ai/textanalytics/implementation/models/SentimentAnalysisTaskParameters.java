@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,20 +18,16 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     /*
      * The opinionMining property.
      */
-    @Generated
     private Boolean opinionMining;
 
     /*
-     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
-     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of SentimentAnalysisTaskParameters class.
      */
-    @Generated
     public SentimentAnalysisTaskParameters() {
     }
 
@@ -41,7 +36,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      * 
      * @return the opinionMining value.
      */
-    @Generated
     public Boolean isOpinionMining() {
         return this.opinionMining;
     }
@@ -52,7 +46,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      * @param opinionMining the opinionMining value to set.
      * @return the SentimentAnalysisTaskParameters object itself.
      */
-    @Generated
     public SentimentAnalysisTaskParameters setOpinionMining(Boolean opinionMining) {
         this.opinionMining = opinionMining;
         return this;
@@ -65,7 +58,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      * 
      * @return the stringIndexType value.
      */
-    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -78,7 +70,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      * @param stringIndexType the stringIndexType value to set.
      * @return the SentimentAnalysisTaskParameters object itself.
      */
-    @Generated
     public SentimentAnalysisTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -87,7 +78,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SentimentAnalysisTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -97,7 +87,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public SentimentAnalysisTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -107,7 +96,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,7 +115,6 @@ public final class SentimentAnalysisTaskParameters extends PreBuiltTaskParameter
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SentimentAnalysisTaskParameters.
      */
-    @Generated
     public static SentimentAnalysisTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentAnalysisTaskParameters deserializedSentimentAnalysisTaskParameters
