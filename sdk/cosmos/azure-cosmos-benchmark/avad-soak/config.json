@@ -1,6 +1,6 @@
 {
   "cosmos": {
-    "endpoint": "<your-endpoint-here>",
+    "endpoint": "https://abhm-cfp-region-test.documents.azure.com:443/",
     "regionalEndpoint": "",
     "database": "graph_db",
     "feedContainer": "avad-test",
@@ -8,10 +8,10 @@
     "preferredRegion": "West Central US"
   },
   "ingestor": {
-    "opsPerSec": 5000,
-    "docSizeBytes": 1024,
-    "logicalPartitionCount": 100000,
-    "durationSeconds": 3600,
+    "opsPerSec": 500,
+    "docSizeBytes": 512,
+    "logicalPartitionCount": 1000,
+    "durationSeconds": 1800,
     "workerCount": 2
   },
   "logging": {
