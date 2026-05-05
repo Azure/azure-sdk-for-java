@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -680,11 +679,11 @@ final class SessionsMessagePump {
         }
 
         private void track(ServiceBusSessionReactorReceiver receiver) {
-            receivers.put(receiver.getSessionId().toLowerCase(Locale.ROOT), receiver);
+            receivers.put(receiver.getSessionId(), receiver);
         }
 
         private void untrack(ServiceBusSessionReactorReceiver receiver) {
-            receivers.remove(receiver.getSessionId().toLowerCase(Locale.ROOT), receiver);
+            receivers.remove(receiver.getSessionId(), receiver);
         }
 
         private void clear() {
@@ -768,7 +767,7 @@ final class SessionsMessagePump {
                 return Mono.error(new UnsupportedOperationException(m));
             }
             final String sessionId = message.getSessionId();
-            final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId.toLowerCase(Locale.ROOT));
+            final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId);
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                 deadLetterDescription, propertiesToModify, transactionContext);
 
