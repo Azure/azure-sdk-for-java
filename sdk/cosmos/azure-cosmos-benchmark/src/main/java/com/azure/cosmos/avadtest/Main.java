@@ -4,7 +4,6 @@ import com.azure.cosmos.avadtest.config.TestConfig;
 import com.azure.cosmos.avadtest.health.HealthMonitor;
 import com.azure.cosmos.avadtest.health.HealthServer;
 import com.azure.cosmos.avadtest.ingestor.Ingestor;
-import com.azure.cosmos.avadtest.metrics.SoakMetrics;
 import com.azure.cosmos.avadtest.reader.AvadReader;
 import com.azure.cosmos.avadtest.reader.LatestVersionReader;
 import com.azure.cosmos.avadtest.reconciliation.Reconciler;
@@ -67,8 +66,7 @@ public final class Main {
     }
 
     private int runIngestor() throws Exception {
-        SoakMetrics metrics = new SoakMetrics();
-        HealthServer healthServer = new HealthServer(metrics, healthPort);
+        HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
         TestConfig config = TestConfig.fromEnv();
@@ -82,8 +80,7 @@ public final class Main {
     }
 
     private int runLvReader() throws Exception {
-        SoakMetrics metrics = new SoakMetrics();
-        HealthServer healthServer = new HealthServer(metrics, healthPort);
+        HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
         TestConfig config = TestConfig.fromEnv();
@@ -97,8 +94,7 @@ public final class Main {
     }
 
     private int runAvadReader() throws Exception {
-        SoakMetrics metrics = new SoakMetrics();
-        HealthServer healthServer = new HealthServer(metrics, healthPort);
+        HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
         TestConfig config = TestConfig.fromEnv();
