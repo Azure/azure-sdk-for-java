@@ -40,7 +40,7 @@ class AppServiceCertificateOrderImpl extends
     @Override
     protected Mono<AppServiceCertificateOrderInner> getInnerAsync() {
         return this.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
@@ -53,7 +53,7 @@ class AppServiceCertificateOrderImpl extends
     @Override
     public Mono<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
         return this.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .listCertificatesAsync(resourceGroupName(), name())
             .switchIfEmpty(Mono.empty())
@@ -154,7 +154,7 @@ class AppServiceCertificateOrderImpl extends
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName);
         return this.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
             .map(appServiceCertificateInner -> new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInner,
@@ -188,7 +188,7 @@ class AppServiceCertificateOrderImpl extends
     @Override
     public Mono<AppServiceCertificateOrder> createResourceAsync() {
         return this.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this))

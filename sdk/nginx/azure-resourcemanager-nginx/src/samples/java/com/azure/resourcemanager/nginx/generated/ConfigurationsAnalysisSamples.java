@@ -9,7 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class ConfigurationsAnalysisSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Configurations_Analysis.json
+     * x-ms-original-file: 2025-11-01/Configurations_Analysis.json
      */
     /**
      * Sample code: Configurations_Analysis.

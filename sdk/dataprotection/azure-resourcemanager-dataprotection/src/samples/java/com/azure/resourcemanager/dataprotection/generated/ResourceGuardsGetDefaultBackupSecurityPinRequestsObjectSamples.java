@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+     * x-ms-original-file: 2026-03-01/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.

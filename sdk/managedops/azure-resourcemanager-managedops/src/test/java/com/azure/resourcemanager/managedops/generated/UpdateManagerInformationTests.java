@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingInformationEnablementStatus;
+import com.azure.resourcemanager.managedops.models.EnablementState;
 import com.azure.resourcemanager.managedops.models.UpdateManagerInformation;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,6 +14,6 @@ public final class UpdateManagerInformationTests {
     public void testDeserialize() throws Exception {
         UpdateManagerInformation model
             = BinaryData.fromString("{\"enablementStatus\":\"Enabled\"}").toObject(UpdateManagerInformation.class);
-        Assertions.assertEquals(ChangeTrackingInformationEnablementStatus.ENABLED, model.enablementStatus());
+        Assertions.assertEquals(EnablementState.ENABLED, model.enablementStatus());
     }
 }

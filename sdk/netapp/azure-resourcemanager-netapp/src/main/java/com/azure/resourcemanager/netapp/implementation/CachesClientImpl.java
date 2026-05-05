@@ -158,7 +158,7 @@ public final class CachesClientImpl implements CachesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CacheList>> listByCapacityPools(@HostParam("endpoint") String endpoint,
+        Mono<Response<CacheList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, Context context);
@@ -167,7 +167,7 @@ public final class CachesClientImpl implements CachesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<CacheList> listByCapacityPoolsSync(@HostParam("endpoint") String endpoint,
+        Response<CacheList> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, Context context);
@@ -213,18 +213,37 @@ public final class CachesClientImpl implements CachesClient {
             @BodyParam("application/json") PoolChangeRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}/resetSmbPassword")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CacheList>> listByCapacityPoolsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resetSmbPassword(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}/resetSmbPassword")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> resetSmbPasswordSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("cacheName") String cacheName,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<CacheList> listByCapacityPoolsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<CacheList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CacheList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -1180,8 +1199,8 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listByCapacityPoolsSinglePageAsync(String resourceGroupName,
-        String accountName, String poolName) {
+    private Mono<PagedResponse<CacheInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1202,7 +1221,7 @@ public final class CachesClientImpl implements CachesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByCapacityPools(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, context))
             .<PagedResponse<CacheInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1221,10 +1240,9 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CacheInner> listByCapacityPoolsAsync(String resourceGroupName, String accountName,
-        String poolName) {
-        return new PagedFlux<>(() -> listByCapacityPoolsSinglePageAsync(resourceGroupName, accountName, poolName),
-            nextLink -> listByCapacityPoolsNextSinglePageAsync(nextLink));
+    private PagedFlux<CacheInner> listAsync(String resourceGroupName, String accountName, String poolName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, poolName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1239,8 +1257,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<CacheInner> listByCapacityPoolsSinglePage(String resourceGroupName, String accountName,
-        String poolName) {
+    private PagedResponse<CacheInner> listSinglePage(String resourceGroupName, String accountName, String poolName) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -1264,9 +1281,8 @@ public final class CachesClientImpl implements CachesClient {
                 .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<CacheList> res
-            = service.listByCapacityPoolsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, Context.NONE);
+        Response<CacheList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1284,74 +1300,71 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<CacheInner> listByCapacityPoolsSinglePage(String resourceGroupName, String accountName,
-        String poolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<CacheList> res
-            = service.listByCapacityPoolsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * List all Caches within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cache resources as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CacheInner> listByCapacityPools(String resourceGroupName, String accountName,
-        String poolName) {
-        return new PagedIterable<>(() -> listByCapacityPoolsSinglePage(resourceGroupName, accountName, poolName),
-            nextLink -> listByCapacityPoolsNextSinglePage(nextLink));
-    }
-
-    /**
-     * List all Caches within the Capacity Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cache resources as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CacheInner> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
+    private PagedResponse<CacheInner> listSinglePage(String resourceGroupName, String accountName, String poolName,
         Context context) {
-        return new PagedIterable<>(
-            () -> listByCapacityPoolsSinglePage(resourceGroupName, accountName, poolName, context),
-            nextLink -> listByCapacityPoolsNextSinglePage(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CacheList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all Caches within the Capacity Pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Cache resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName) {
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName),
+            nextLink -> listNextSinglePage(nextLink));
+    }
+
+    /**
+     * List all Caches within the Capacity Pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Cache resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CacheInner> list(String resourceGroupName, String accountName, String poolName,
+        Context context) {
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, poolName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1769,6 +1782,257 @@ public final class CachesClientImpl implements CachesClient {
     }
 
     /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> resetSmbPasswordWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.resetSmbPassword(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resetSmbPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetSmbPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resetSmbPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String cacheName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetSmbPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, context);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginResetSmbPasswordAsync(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resetSmbPasswordWithResponseAsync(resourceGroupName, accountName, poolName, cacheName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        Response<BinaryData> response
+            = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+        String poolName, String cacheName, Context context) {
+        Response<BinaryData> response
+            = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> resetSmbPasswordAsync(String resourceGroupName, String accountName, String poolName,
+        String cacheName) {
+        return beginResetSmbPasswordAsync(resourceGroupName, accountName, poolName, cacheName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
+        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+        Context context) {
+        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1778,7 +2042,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CacheInner>> listByCapacityPoolsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<CacheInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1787,9 +2051,7 @@ public final class CachesClientImpl implements CachesClient {
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByCapacityPoolsNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CacheInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1805,7 +2067,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<CacheInner> listByCapacityPoolsNextSinglePage(String nextLink) {
+    private PagedResponse<CacheInner> listNextSinglePage(String nextLink) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1816,8 +2078,7 @@ public final class CachesClientImpl implements CachesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<CacheList> res
-            = service.listByCapacityPoolsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<CacheList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1833,7 +2094,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return list of Cache resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<CacheInner> listByCapacityPoolsNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<CacheInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1844,8 +2105,7 @@ public final class CachesClientImpl implements CachesClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<CacheList> res
-            = service.listByCapacityPoolsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<CacheList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

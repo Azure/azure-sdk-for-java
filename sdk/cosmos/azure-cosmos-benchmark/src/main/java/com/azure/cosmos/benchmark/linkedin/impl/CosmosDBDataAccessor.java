@@ -6,7 +6,6 @@ package com.azure.cosmos.benchmark.linkedin.impl;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.CosmosDBDataAccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
-import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.BatchGetResult;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
@@ -40,14 +39,14 @@ public class CosmosDBDataAccessor<K, V> implements Accessor<K, V> {
     private final Clock _clock;
 
     public CosmosDBDataAccessor(final DataLocator dataLocator, final KeyExtractor<K> keyExtractor,
-        final ResponseHandler<K, V> responseHandler, final MetricsFactory metricsFactory, final Clock clock,
+        final ResponseHandler<K, V> responseHandler, final Clock clock,
         final OperationsLogger logger) {
         _dataLocator = Preconditions.checkNotNull(dataLocator, "DataLocator for this entity can not be null");
         _keyExtractor = Preconditions.checkNotNull(keyExtractor, "The CosmosDBKeyExtractorV3 can not be null");
         _responseHandler = Preconditions.checkNotNull(responseHandler, "The CosmosDBResponseHandler can not be null");
         _clock = Preconditions.checkNotNull(clock, "clock cannot be null");
-        _getExecutor = new GetExecutor<>(_dataLocator, _keyExtractor, _responseHandler, metricsFactory, _clock, logger);
-        _queryExecutor = new QueryExecutor<>(_dataLocator, _responseHandler, metricsFactory, _clock, logger);
+        _getExecutor = new GetExecutor<>(_dataLocator, _keyExtractor, _responseHandler, _clock, logger);
+        _queryExecutor = new QueryExecutor<>(_dataLocator, _responseHandler, _clock, logger);
     }
 
     @Override

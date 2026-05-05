@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.TestObject;
@@ -283,7 +284,7 @@ public class SessionRetryOptionsTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void writeOperation_withReadSessionUnavailable_test(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,

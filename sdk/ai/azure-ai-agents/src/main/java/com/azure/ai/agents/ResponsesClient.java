@@ -5,15 +5,20 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.services.blocking.ResponseService;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,7 +27,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ResponsesClient {
-    private final ResponseService openAIResponsesClient;
+    private final ResponseService responseService;
 
     /**
      * Initializes an instance of ResponsesClient class using the official OpenAI client library.
@@ -30,7 +35,7 @@ public final class ResponsesClient {
      * @param openAIClient the OpenAI client.
      */
     ResponsesClient(OpenAIClient openAIClient) {
-        this.openAIResponsesClient = openAIClient.responses();
+        this.responseService = openAIClient.responses();
     }
 
     /**
@@ -39,42 +44,57 @@ public final class ResponsesClient {
      * @return the OpenAI response service client.
      */
     public ResponseService getResponseService() {
-        return openAIResponsesClient;
+        return responseService;
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
-     * @return The created Response.
-     */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId) {
-        return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
-    }
-
-    /**
-     * Creates a response with an agent conversation.
-     *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
      * @return The created Response.
      */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        params.conversation(conversationId);
-        additionalBodyProperties.put("agent", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.openAIResponsesClient.create(params.build());
+        return this.responseService.create(params.build());
+    }
+
+    /**
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return An IterableStream of ResponseStreamEvent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+    }
+
+    /**
+     * Extracts Azure-specific fields from a Response's additional properties.
+     *
+     * @param response the OpenAI response.
+     * @return the Azure-specific create response result, or null if not present.
+     */
+    public static AzureCreateResponseDetails getAzureFields(Response response) {
+        Objects.requireNonNull(response, "response cannot be null");
+        return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
+            AzureCreateResponseDetails::fromJson);
     }
 
 }

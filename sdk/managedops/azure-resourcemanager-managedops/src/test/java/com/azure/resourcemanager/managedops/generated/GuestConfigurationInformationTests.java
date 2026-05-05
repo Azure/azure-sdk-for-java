@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingInformationEnablementStatus;
+import com.azure.resourcemanager.managedops.models.EnablementState;
 import com.azure.resourcemanager.managedops.models.GuestConfigurationInformation;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,6 +14,6 @@ public final class GuestConfigurationInformationTests {
     public void testDeserialize() throws Exception {
         GuestConfigurationInformation model = BinaryData.fromString("{\"enablementStatus\":\"InProgress\"}")
             .toObject(GuestConfigurationInformation.class);
-        Assertions.assertEquals(ChangeTrackingInformationEnablementStatus.IN_PROGRESS, model.enablementStatus());
+        Assertions.assertEquals(EnablementState.IN_PROGRESS, model.enablementStatus());
     }
 }

@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 12.34.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
 ## 12.33.0-beta.1 (2026-02-19)
 
 ### Features Added

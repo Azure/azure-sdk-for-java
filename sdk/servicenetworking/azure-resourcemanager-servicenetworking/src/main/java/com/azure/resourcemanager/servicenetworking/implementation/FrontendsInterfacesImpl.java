@@ -31,12 +31,8 @@ public final class FrontendsInterfacesImpl implements FrontendsInterfaces {
         String frontendName, Context context) {
         Response<FrontendInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, trafficControllerName, frontendName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FrontendImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FrontendImpl(inner.getValue(), this.manager()));
     }
 
     public Frontend get(String resourceGroupName, String trafficControllerName, String frontendName) {

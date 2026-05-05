@@ -29,7 +29,7 @@ public final class MemorySearchItem implements JsonSerializable<MemorySearchItem
      * @param memoryItem the memoryItem value to set.
      */
     @Generated
-    public MemorySearchItem(MemoryItem memoryItem) {
+    private MemorySearchItem(MemoryItem memoryItem) {
         this.memoryItem = memoryItem;
     }
 

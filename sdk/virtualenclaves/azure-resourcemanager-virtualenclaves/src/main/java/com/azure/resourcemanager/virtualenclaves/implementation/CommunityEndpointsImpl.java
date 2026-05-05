@@ -35,12 +35,8 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
         String communityEndpointName, Context context) {
         Response<CommunityEndpointResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, communityName, communityEndpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CommunityEndpointResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CommunityEndpointResourceImpl(inner.getValue(), this.manager()));
     }
 
     public CommunityEndpointResource get(String resourceGroupName, String communityName, String communityEndpointName) {

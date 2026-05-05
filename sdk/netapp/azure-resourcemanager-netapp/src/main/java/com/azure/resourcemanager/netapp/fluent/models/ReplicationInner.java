@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -147,14 +146,7 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (remoteVolumeResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property remoteVolumeResourceId in model ReplicationInner"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ReplicationInner.class);
 
     /**
      * {@inheritDoc}
@@ -162,10 +154,10 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("replicationSchedule",
             this.replicationSchedule == null ? null : this.replicationSchedule.toString());
+        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
         jsonWriter.writeStringField("remoteVolumeRegion", this.remoteVolumeRegion);
         return jsonWriter.writeEndObject();
     }
@@ -176,7 +168,6 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
      * @param jsonReader The JsonReader being read.
      * @return An instance of ReplicationInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ReplicationInner.
      */
     public static ReplicationInner fromJson(JsonReader jsonReader) throws IOException {
@@ -186,15 +177,15 @@ public final class ReplicationInner implements JsonSerializable<ReplicationInner
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("remoteVolumeResourceId".equals(fieldName)) {
-                    deserializedReplicationInner.remoteVolumeResourceId = reader.getString();
-                } else if ("replicationId".equals(fieldName)) {
+                if ("replicationId".equals(fieldName)) {
                     deserializedReplicationInner.replicationId = reader.getString();
                 } else if ("endpointType".equals(fieldName)) {
                     deserializedReplicationInner.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("replicationSchedule".equals(fieldName)) {
                     deserializedReplicationInner.replicationSchedule
                         = ReplicationSchedule.fromString(reader.getString());
+                } else if ("remoteVolumeResourceId".equals(fieldName)) {
+                    deserializedReplicationInner.remoteVolumeResourceId = reader.getString();
                 } else if ("remoteVolumeRegion".equals(fieldName)) {
                     deserializedReplicationInner.remoteVolumeRegion = reader.getString();
                 } else if ("mirrorState".equals(fieldName)) {

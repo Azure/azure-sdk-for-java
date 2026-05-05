@@ -10,7 +10,10 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
@@ -18,11 +21,15 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,6 +104,7 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -141,6 +149,7 @@ public class RxGatewayStoreModelTest {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -200,7 +209,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
@@ -272,7 +282,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
@@ -304,6 +315,285 @@ public class RxGatewayStoreModelTest {
         StepVerifier.create(observable)
             .expectErrorSatisfies(validator::validate)
             .verify(Duration.ofMillis(timeout));
+    }
+
+    /**
+     * Verifies that when a request is cancelled while the retained ByteBuf is queued in
+     * publishOn's async boundary, the doFinally safety net properly releases the buffer.
+     *
+     * Uses a Sinks.One to control body emission timing and a concrete HttpResponse subclass
+     * to avoid Mockito final-method interception issues with withRequest().
+     *
+     * The body's doFinally simulates ByteBufFlux.aggregate()'s auto-release behavior
+     * (one release for the aggregate's reference), while the production code's retain()
+     * adds a second reference that must be released by our safety net on cancellation.
+     */
+    @Test(groups = "unit")
+    public void cancelledRequestReleasesRetainedByteBuf() throws Exception {
+        int leakCount = 0;
+        int iterations = 20;
+
+        for (int i = 0; i < iterations; i++) {
+            if (runCancelAfterRetainIteration()) {
+                leakCount++;
+            }
+        }
+
+        assertThat(leakCount)
+            .as("ByteBuf should not leak on cancellation (leaked in %d of %d iterations)", leakCount, iterations)
+            .isEqualTo(0);
+    }
+
+    private boolean runCancelAfterRetainIteration() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost"));
+        Mockito.doReturn(regionalRoutingContext)
+               .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        // Use pooled buffer to detect leaks in production-like conditions
+        ByteBuf trackedBuf = PooledByteBufAllocator.DEFAULT.buffer(64);
+        trackedBuf.writeBytes("{\"id\":\"test\"}".getBytes());
+
+        Sinks.One<ByteBuf> bodySink = Sinks.one();
+        AtomicBoolean aggregateReleased = new AtomicBoolean(false);
+
+        // Simulate ByteBufFlux.aggregate() behavior: emit via Sink, auto-release in doFinally
+        Mono<ByteBuf> bodyMono = bodySink.asMono()
+            .doFinally(signal -> {
+                if (!aggregateReleased.getAndSet(true) && trackedBuf.refCnt() > 0) {
+                    trackedBuf.release();
+                }
+            });
+
+        // Use a concrete HttpResponse to avoid Mockito intercepting final withRequest() method
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override public int statusCode() { return 200; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return bodyMono; }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+            @Override public void close() {}
+        };
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doAnswer(invocation -> {
+            HttpRequest req = invocation.getArgument(0);
+            httpResponse.withRequest(req);
+            return Mono.just(httpResponse);
+        }).when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader
+            = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION)
+               .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
+
+        // Subscribe to processMessage
+        reactor.core.Disposable disposable = storeModel.processMessage(dsr)
+            .subscribe(r -> {}, e -> {}, () -> {});
+
+        // Wait for the subscription chain to establish (flatMap subscribes to body())
+        Thread.sleep(50);
+
+        // Emit the body buffer. This triggers retain() synchronously in the map operator
+        // (refCnt goes from 1 to 2). The retained buffer then enters publishOn's async queue.
+        bodySink.tryEmitValue(trackedBuf);
+
+        // Cancel immediately - the element is likely in publishOn's queue, creating the race
+        // condition where doOnDiscard may not fire
+        disposable.dispose();
+
+        // Allow time for doFinally safety net and aggregate cleanup to execute
+        Thread.sleep(500);
+
+        int finalRefCnt = trackedBuf.refCnt();
+        if (finalRefCnt > 0) {
+            // Clean up to avoid poisoning the allocator
+            while (trackedBuf.refCnt() > 0) {
+                trackedBuf.release();
+            }
+            return true; // leaked
+        }
+        return false;
+    }
+
+    /**
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are injected into
+     * outgoing HTTP requests by performRequest(). This covers metadata requests
+     * (collection cache, partition key range) that don't go through getRequestHeaders().
+     */
+    @Test(groups = "unit")
+    public void additionalHeadersInjectedInPerformRequest() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        // Simulate a metadata request (e.g., collection cache lookup) — no additionalHeaders on the request itself
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col",
+            ResourceType.DocumentCollection);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isEqualTo("25");
+    }
+
+    /**
+     * Verifies that request-level headers take precedence over client-level additionalHeaders.
+     * If a request already has workload-id set (e.g., via getRequestHeaders()), performRequest()
+     * should NOT overwrite it.
+     */
+    @Test(groups = "unit")
+    public void requestLevelHeadersTakePrecedenceOverAdditionalHeaders() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "10");
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        // Simulate request-level header already set (e.g., by getRequestHeaders())
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.WORKLOAD_ID, "42");
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        // Request-level header "42" should win over client-level "10"
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isEqualTo("42");
+    }
+
+    /**
+     * Verifies that when additionalHeaders is null, performRequest() still works normally
+     * without injecting any extra headers.
+     */
+    @Test(groups = "unit")
+    public void nullAdditionalHeadersDoesNotAffectPerformRequest() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            null);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col",
+            ResourceType.DocumentCollection);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        // No workload-id header should be present
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isNull();
     }
 
     enum SessionTokenType {

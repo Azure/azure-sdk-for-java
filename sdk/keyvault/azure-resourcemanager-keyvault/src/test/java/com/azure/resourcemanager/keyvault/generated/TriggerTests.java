@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Trigger model = BinaryData.fromString("{\"timeAfterCreate\":\"lstvlzywe\",\"timeBeforeExpiry\":\"zrncsdt\"}")
-            .toObject(Trigger.class);
-        Assertions.assertEquals("lstvlzywe", model.timeAfterCreate());
-        Assertions.assertEquals("zrncsdt", model.timeBeforeExpiry());
+        Trigger model
+            = BinaryData.fromString("{\"timeAfterCreate\":\"ejdcngqqmoakuf\",\"timeBeforeExpiry\":\"jzrwrdgrtw\"}")
+                .toObject(Trigger.class);
+        Assertions.assertEquals("ejdcngqqmoakuf", model.timeAfterCreate());
+        Assertions.assertEquals("jzrwrdgrtw", model.timeBeforeExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Trigger model = new Trigger().withTimeAfterCreate("lstvlzywe").withTimeBeforeExpiry("zrncsdt");
+        Trigger model = new Trigger().withTimeAfterCreate("ejdcngqqmoakuf").withTimeBeforeExpiry("jzrwrdgrtw");
         model = BinaryData.fromObject(model).toObject(Trigger.class);
-        Assertions.assertEquals("lstvlzywe", model.timeAfterCreate());
-        Assertions.assertEquals("zrncsdt", model.timeBeforeExpiry());
+        Assertions.assertEquals("ejdcngqqmoakuf", model.timeAfterCreate());
+        Assertions.assertEquals("jzrwrdgrtw", model.timeBeforeExpiry());
     }
 }

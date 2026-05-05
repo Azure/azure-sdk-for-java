@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
 import org.apache.spark.sql.types.{BooleanType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.Waiters.{interval, timeout}
+import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
@@ -218,7 +221,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, bulkTransactional = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
@@ -274,10 +277,19 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
-    val allItems = readAllItems()
 
-    allItems should have size items.size
-    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    // Poll until all items are indexed and visible via query
+    // readAllItems() uses a query which depends on indexing completion
+    var allItems = readAllItems()
+    eventually(timeout(10.seconds), interval(500.milliseconds)) {
+      allItems = readAllItems()
+      allItems should have size items.size
+    }
+
+    // Poll until metrics are fully recorded after flush
+    eventually(timeout(10.seconds), interval(100.milliseconds)) {
+      metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    }
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
@@ -302,6 +314,13 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
+
+    // Wait for metrics to be fully aggregated after flush
+    // This prevents race conditions where metrics snapshot is taken before all writes are recorded
+    // Use eventually block to poll until the expected count is reached
+    eventually(timeout(10.seconds), interval(100.milliseconds)) {
+      metricsPublisher.getRecordsWrittenSnapshot() should be >= (2 * items.size).toLong
+    }
 
     metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true

@@ -35,7 +35,7 @@ public final class NeonRolesCreateOrUpdateMockTests {
 
         NeonRole response = manager.neonRoles()
             .define("upqtzckj")
-            .withExistingBranche("ekh", "dbyhqtzcvim", "wckozvlf", "mtrtsv")
+            .withExistingBranch("ekh", "dbyhqtzcvim", "wckozvlf", "mtrtsv")
             .withProperties(new NeonRoleProperties().withEntityName("cqzahgtvbgdob")
                 .withAttributes(Arrays.asList(new Attributes().withName("qbmxqf").withValue("vznjqswshesgcsqo"),
                     new Attributes().withName("ecxlng").withValue("ufpiz")))

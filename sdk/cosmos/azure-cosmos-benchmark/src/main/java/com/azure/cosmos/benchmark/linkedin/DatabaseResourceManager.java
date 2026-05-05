@@ -6,7 +6,7 @@ package com.azure.cosmos.benchmark.linkedin;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
@@ -24,11 +24,11 @@ public class DatabaseResourceManager implements ResourceManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseResourceManager.class);
     private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
-    private final Configuration _configuration;
+    private final TenantWorkloadConfig _configuration;
     private final CosmosAsyncClient _client;
     private final CollectionResourceManager _collectionResourceManager;
 
-    public DatabaseResourceManager(final Configuration configuration,
+    public DatabaseResourceManager(final TenantWorkloadConfig configuration,
         final EntityConfiguration entityConfiguration,
         final CosmosAsyncClient client) {
         Preconditions.checkNotNull(configuration,

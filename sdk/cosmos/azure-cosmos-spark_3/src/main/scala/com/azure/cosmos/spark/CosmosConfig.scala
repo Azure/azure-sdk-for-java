@@ -7,8 +7,8 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
+import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings, Utils}
+import com.azure.cosmos.models.{CosmosAdditionalHeaderName, CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util
 import java.util.{Locale, ServiceLoader}
+import scala.collection.JavaConverters._ // scalastyle:ignore underscore.import
 import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
 import scala.collection.mutable
@@ -52,6 +53,7 @@ private[spark] object CosmosConfigNames {
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
   val AzureEnvironmentAAD = "spark.cosmos.account.azureEnvironment.aad"
   val AzureEnvironmentManagement = "spark.cosmos.account.azureEnvironment.management"
+  val AzureEnvironmentManagementScope = "spark.cosmos.account.azureEnvironment.management.scope"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
@@ -91,6 +93,9 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
   val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
+  val ReadManyByPkNullHandling = "spark.cosmos.read.readManyByPk.nullHandling"
+  val ReadManyByPkMaxConcurrentBatchPrefetch = "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch"
+  val ReadManyByPkMaxBatchSize = "spark.cosmos.read.readManyByPk.maxBatchSize"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
@@ -150,6 +155,10 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
   val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
   val ThroughputControlThroughputBucket = "spark.cosmos.throughputControl.throughputBucket"
+  // Additional HTTP headers to attach to all Cosmos DB requests (e.g., workload-id for resource governance).
+  // Value is a JSON string like: {"x-ms-cosmos-workload-id": "15"}
+  // Flows through to CosmosClientBuilder.additionalHeaders().
+  val AdditionalHeaders = "spark.cosmos.additionalHeaders"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
@@ -192,6 +201,7 @@ private[spark] object CosmosConfigNames {
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,
+    AzureEnvironmentManagementScope,
     Database,
     Container,
     PreferredRegionsList,
@@ -224,6 +234,9 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningFeedRangeFilter,
     ReadRuntimeFilteringEnabled,
     ReadManyFilteringEnabled,
+    ReadManyByPkNullHandling,
+    ReadManyByPkMaxConcurrentBatchPrefetch,
+    ReadManyByPkMaxBatchSize,
     ViewsRepositoryPath,
     DiagnosticsMode,
     DiagnosticsSamplingIntervalInSeconds,
@@ -295,7 +308,8 @@ private[spark] object CosmosConfigNames {
     WriteOnRetryCommitInterceptor,
     WriteFlushCloseIntervalInSeconds,
     WriteMaxNoProgressIntervalInSeconds,
-    WriteMaxRetryNoProgressIntervalInSeconds
+    WriteMaxRetryNoProgressIntervalInSeconds,
+    AdditionalHeaders
   )
 
   def validateConfigName(name: String): Unit = {
@@ -538,7 +552,10 @@ private case class CosmosAccountConfig(endpoint: String,
                                        resourceGroupName: Option[String],
                                        azureEnvironmentEndpoints: java.util.Map[String, String],
                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        // Optional additional HTTP headers (e.g., workload-id) parsed from
+                                        // spark.cosmos.additionalHeaders JSON config, passed to CosmosClientBuilder.additionalHeaders()
+                                        additionalHeaders: Option[Map[String, String]]
                                       )
 
 private object CosmosAccountConfig extends BasicLoggingTrait {
@@ -688,6 +705,12 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     parseFromStringFunction = managementUri => managementUri,
     helpMessage = "The ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
 
+  private val AzureEnvironmentManagementScope = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentManagementScope,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = scope => scope,
+    helpMessage = "The audience/scope for the ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
+
   private val AzureEnvironmentAadUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentAAD,
     defaultValue = None,
     mandatory = false,
@@ -718,6 +741,40 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     mandatory = false,
     parseFromStringFunction = clientInterceptorFQDN => clientInterceptorFQDN,
     helpMessage = "CosmosAsyncClient interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientInterceptor' trait.")
+
+  // Config entry for custom HTTP headers (e.g., workload-id). Parses a JSON string like
+  // {"x-ms-cosmos-workload-id": "15"} into a Scala Map[String, String] using Jackson.
+  // These headers are converted to Map[CosmosAdditionalHeaderName, String] and passed to
+  // CosmosClientBuilder.additionalHeaders() in CosmosClientCache.
+  //
+  // Validation: After JSON parsing, every header name is validated against the known headers map
+  // to fail fast at config-parse time rather than at runtime during client creation.
+  // This prevents Spark jobs from starting, allocating cluster resources, and only failing
+  // later when CosmosClientCache tries to convert String keys to CosmosAdditionalHeaderName instances.
+  private val AdditionalHeadersConfig = CosmosConfigEntry[Map[String, String]](
+    key = CosmosConfigNames.AdditionalHeaders,
+    mandatory = false,
+    parseFromStringFunction = headersJson => {
+      try {
+        val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
+        val parsed = Utils.getSimpleObjectMapperWithAllowDuplicates.readValue(headersJson, typeRef).asScala.toMap
+
+        // Fail fast: validate every header name is a known CosmosAdditionalHeaderName at parse time.
+        // Without this, unknown headers like {"x-bad-header": "value"} would parse successfully
+        // and only blow up at runtime in CosmosClientCache when building the client.
+        for (key <- parsed.keys) {
+          CosmosClientCache.resolveHeaderName(key) // throws IllegalArgumentException for unknown headers
+        }
+
+        parsed
+      } catch {
+        case e: IllegalArgumentException => throw e
+        case e: Exception => throw new IllegalArgumentException(
+          s"Invalid JSON for '${CosmosConfigNames.AdditionalHeaders}': '$headersJson'. " +
+            "Expected format: {\"x-ms-cosmos-workload-id\": \"15\"}", e)
+      }
+    },
+    helpMessage = "Optional additional headers as JSON map. Example: {\"x-ms-cosmos-workload-id\": \"15\"}")
 
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
@@ -753,6 +810,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
     val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
+    // Parse optional additional HTTP headers from JSON config (e.g., {"x-ms-cosmos-workload-id": "15"})
+    val additionalHeaders = CosmosConfigEntry.parse(cfg, AdditionalHeadersConfig)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -767,13 +826,21 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
         && "Custom".equalsIgnoreCase(kvp._2))) {
 
       val endpoints: util.Map[String, String] = new util.HashMap[String, String]()
-      val mgmtEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
-      if (mgmtEndpoint.isDefined) {
-        endpoints.put("resourceManagerEndpointUrl", mgmtEndpoint.get)
+      val resMgrEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
+      if (resMgrEndpoint.isDefined) {
+        endpoints.put("resourceManagerEndpointUrl", resMgrEndpoint.get)
       } else {
         throw new IllegalArgumentException(
           s"The configuration '${CosmosConfigNames.AzureEnvironmentManagement}' is required when "
             + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      val mgmtScope = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementScope)
+      if (mgmtScope.isDefined) {
+        endpoints.put("managementEndpointUrl", mgmtScope.get)
+      } else {
+        logError(s"The configuration '${CosmosConfigNames.AzureEnvironmentManagementScope}' is missing. "
+            + "This config is required  for Spark catalog integration when choosing AzureEnvironment 'Custom'.")
       }
 
       val aadEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentAadUri)
@@ -864,7 +931,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       resourceGroupNameOpt,
       azureEnvironmentOpt.get,
       if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
-      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
+      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None },
+      additionalHeaders)
   }
 }
 
@@ -1026,7 +1094,10 @@ private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStra
                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                     runtimeFilteringEnabled: Boolean,
                                     readManyFilteringConfig: CosmosReadManyFilteringConfig,
-                                    responseContinuationTokenLimitInKb: Option[Int] = None)
+                                    responseContinuationTokenLimitInKb: Option[Int] = None,
+                                    readManyByPkTreatNullAsNone: Boolean = false,
+                                    readManyByPkMaxConcurrentBatchPrefetch: Option[Int] = None,
+                                    readManyByPkMaxBatchSize: Option[Int] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -1120,6 +1191,44 @@ private object CosmosReadConfig {
     helpMessage = " Indicates whether dynamic partition pruning filters will be pushed down when applicable."
   )
 
+  private val ReadManyByPkNullHandling = CosmosConfigEntry[String](
+    key = CosmosConfigNames.ReadManyByPkNullHandling,
+    mandatory = false,
+    defaultValue = Some("Null"),
+    parseFromStringFunction = value => value,
+    helpMessage = "Determines how null values in partition key columns are treated for " +
+      "readManyByPartitionKeys. 'Null' (default) maps null to a JSON null via addNullValue(), which " +
+      "is appropriate when the document field exists with an explicit null value. 'None' maps null " +
+      "to PartitionKey.NONE via addNoneValue(), which is only supported for single-path partition keys " +
+      "and should only be used when the partition key path does not exist at all in the document. " +
+      "Hierarchical partition keys reject this mode. These two semantics hash to DIFFERENT physical " +
+      "partitions - picking the wrong mode for your data will silently return zero rows."
+  )
+
+  private val ReadManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxConcurrentBatchPrefetch,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => Math.min(64, Math.max(1, value.toInt)),
+    helpMessage = "The maximum number of per-physical-partition batches whose first page is prefetched " +
+      "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. When " +
+      "not set, the SDK default (`min(cpuCnt, 8)`) is used. Max is `64`, because Spark already " +
+      "parallelises across tasks - increase this when individual tasks span many physical partitions " +
+      "and additional intra-task prefetch is desired."
+  )
+
+  private val ReadManyByPkMaxBatchSize = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxBatchSize,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => Math.max(1, value.toInt),
+    helpMessage = "The maximum number of partition key values per batch query sent to a single " +
+      "physical partition. When not set, the SDK default (currently `100`, overridable via the " +
+      "`COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` system property / environment variable) is used. " +
+      "Increasing this value reduces the number of batches (and round-trips) but produces larger " +
+      "IN-clause queries that consume more RUs per request."
+  )
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
@@ -1142,6 +1251,10 @@ private object CosmosReadConfig {
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
+    val readManyByPkNullHandling = CosmosConfigEntry.parse(cfg, ReadManyByPkNullHandling)
+    val readManyByPkTreatNullAsNone = readManyByPkNullHandling.getOrElse("Null").equalsIgnoreCase("None")
+    val readManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxConcurrentBatchPrefetch)
+    val readManyByPkMaxBatchSize = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxBatchSize)
 
     val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
       readConsistencyStrategyOverride.get
@@ -1173,7 +1286,10 @@ private object CosmosReadConfig {
       throughputControlConfigOpt,
       runtimeFilteringEnabled.get,
       readManyFilteringConfig,
-      responseContinuationTokenLimitInKb)
+      responseContinuationTokenLimitInKb,
+      readManyByPkTreatNullAsNone,
+      readManyByPkMaxConcurrentBatchPrefetch,
+      readManyByPkMaxBatchSize)
   }
 }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BucketsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Buckets_Get.json
+     * x-ms-original-file: 2026-01-01/Buckets_Get.json
      */
     /**
      * Sample code: Buckets_Get.

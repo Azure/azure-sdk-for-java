@@ -45,12 +45,8 @@ public final class ArtifactsImpl implements Artifacts {
         String artifactName, Context context) {
         Response<ArtifactInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, name, imageName, artifactName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ArtifactImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ArtifactImpl(inner.getValue(), this.manager()));
     }
 
     public Artifact get(String resourceGroupName, String name, String imageName, String artifactName) {
@@ -66,12 +62,8 @@ public final class ArtifactsImpl implements Artifacts {
         String imageName, String artifactName, Context context) {
         Response<ArtifactDownloadResultInner> inner = this.serviceClient()
             .listDownloadUriWithResponse(resourceGroupName, name, imageName, artifactName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ArtifactDownloadResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ArtifactDownloadResultImpl(inner.getValue(), this.manager()));
     }
 
     public ArtifactDownloadResult listDownloadUri(String resourceGroupName, String name, String imageName,

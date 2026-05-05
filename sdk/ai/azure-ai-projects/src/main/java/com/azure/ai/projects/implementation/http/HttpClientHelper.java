@@ -30,6 +30,7 @@ import com.openai.errors.UnauthorizedException;
 import com.openai.errors.UnexpectedStatusCodeException;
 import com.openai.errors.UnprocessableEntityException;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
@@ -110,6 +111,10 @@ public final class HttpClientHelper {
                 .flatMap(azureRequest -> this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions)))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
+                // publishOn moves the CompletableFuture completion (and all OpenAI SDK continuations that
+                // run synchronously on it) off the Netty/OkHttp I/O thread and onto a thread pool that
+                // is safe to block.
+                .publishOn(Schedulers.boundedElastic())
                 .toFuture();
         }
 
@@ -240,7 +245,7 @@ public final class HttpClientHelper {
          * @return Azure request {@link Context}
          */
         private static Context buildRequestContext(RequestOptions requestOptions) {
-            Context context = new Context("azure-eagerly-read-response", true);
+            Context context = Context.NONE;
             Timeout timeout = requestOptions.getTimeout();
             // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {

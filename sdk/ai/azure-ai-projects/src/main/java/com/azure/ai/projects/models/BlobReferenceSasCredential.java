@@ -18,16 +18,10 @@ import java.io.IOException;
 public final class BlobReferenceSasCredential implements JsonSerializable<BlobReferenceSasCredential> {
 
     /*
-     * SAS uri
-     */
-    @Generated
-    private String sasUri;
-
-    /*
      * Type of credential
      */
     @Generated
-    private final String type = "SAS";
+    private CredentialType type;
 
     /**
      * Creates an instance of BlobReferenceSasCredential class.
@@ -37,22 +31,12 @@ public final class BlobReferenceSasCredential implements JsonSerializable<BlobRe
     }
 
     /**
-     * Get the sasUri property: SAS uri.
-     *
-     * @return the sasUri value.
-     */
-    @Generated
-    public String getSasUri() {
-        return this.sasUri;
-    }
-
-    /**
      * Get the type property: Type of credential.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public CredentialType getType() {
         return this.type;
     }
 
@@ -83,12 +67,30 @@ public final class BlobReferenceSasCredential implements JsonSerializable<BlobRe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("sasUri".equals(fieldName)) {
-                    deserializedBlobReferenceSasCredential.sasUri = reader.getString();
+                    deserializedBlobReferenceSasCredential.sasUrl = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobReferenceSasCredential.type = CredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBlobReferenceSasCredential;
         });
+    }
+
+    /*
+     * SAS uri
+     */
+    @Generated
+    private String sasUrl;
+
+    /**
+     * Get the sasUrl property: SAS uri.
+     *
+     * @return the sasUrl value.
+     */
+    @Generated
+    public String getSasUrl() {
+        return this.sasUrl;
     }
 }

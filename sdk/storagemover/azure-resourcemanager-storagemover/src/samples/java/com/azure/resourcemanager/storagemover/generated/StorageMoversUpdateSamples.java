@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagemover.models.StorageMover;
  */
 public final class StorageMoversUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Update.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Update.json
      */
     /**
      * Sample code: StorageMovers_Update.

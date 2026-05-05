@@ -11,7 +11,7 @@ public final class ResourceAzStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceAzStatus model = BinaryData.fromString(
-            "{\"resourceName\":\"acizsjqlhkrr\",\"resourceType\":\"deibqip\",\"isZoneResilient\":true,\"details\":\"vxndz\"}")
+            "{\"resourceName\":\"vtvudutncormr\",\"resourceType\":\"qtvcofudflvkgj\",\"isZoneResilient\":false,\"details\":\"knnqvsaznq\"}")
             .toObject(ResourceAzStatus.class);
     }
 }

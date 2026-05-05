@@ -14,16 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NodeImageSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeImageSelection model
-            = BinaryData.fromString("{\"type\":\"Custom\",\"customNodeImageVersions\":[{\"version\":\"birx\"}]}")
-                .toObject(NodeImageSelection.class);
+        NodeImageSelection model = BinaryData.fromString(
+            "{\"type\":\"Custom\",\"customNodeImageVersions\":[{\"version\":\"fv\"},{\"version\":\"fy\"},{\"version\":\"bpfvm\"}]}")
+            .toObject(NodeImageSelection.class);
         Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NodeImageSelection model = new NodeImageSelection().withType(NodeImageSelectionType.CUSTOM)
-            .withCustomNodeImageVersions(Arrays.asList(new NodeImageVersion()));
+            .withCustomNodeImageVersions(
+                Arrays.asList(new NodeImageVersion(), new NodeImageVersion(), new NodeImageVersion()));
         model = BinaryData.fromObject(model).toObject(NodeImageSelection.class);
         Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
     }

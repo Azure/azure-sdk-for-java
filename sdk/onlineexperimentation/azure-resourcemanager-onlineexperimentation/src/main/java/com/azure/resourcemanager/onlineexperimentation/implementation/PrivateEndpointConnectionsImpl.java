@@ -31,12 +31,8 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public PrivateEndpointConnection get(String resourceGroupName, String workspaceName,
@@ -54,12 +50,8 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource, Context context) {
         Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, resource, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public PrivateEndpointConnection update(String resourceGroupName, String workspaceName,

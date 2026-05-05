@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagemover.models.Project;
  */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Projects_Update.json
+     * x-ms-original-file: 2025-12-01/Projects_Update.json
      */
     /**
      * Sample code: Projects_Update.

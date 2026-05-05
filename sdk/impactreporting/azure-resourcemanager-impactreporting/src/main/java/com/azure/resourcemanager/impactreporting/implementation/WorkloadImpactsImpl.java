@@ -29,12 +29,8 @@ public final class WorkloadImpactsImpl implements WorkloadImpacts {
 
     public Response<WorkloadImpact> getWithResponse(String workloadImpactName, Context context) {
         Response<WorkloadImpactInner> inner = this.serviceClient().getWithResponse(workloadImpactName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadImpactImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadImpactImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadImpact get(String workloadImpactName) {

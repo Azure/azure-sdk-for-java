@@ -71,8 +71,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -84,8 +88,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -107,8 +111,8 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listVersionsAsync(name, requestOptions);
+    public PagedFlux<BinaryData> listEvaluatorVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listEvaluatorVersionsAsync(name, requestOptions);
     }
 
     /**
@@ -138,8 +142,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -151,8 +159,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -173,8 +181,8 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLatestVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestVersionsAsync(requestOptions);
+    public PagedFlux<BinaryData> listLatestEvaluatorVersions(RequestOptions requestOptions) {
+        return this.serviceClient.listLatestEvaluatorVersionsAsync(requestOptions);
     }
 
     /**
@@ -195,8 +203,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -208,8 +220,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -233,9 +245,9 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getVersionWithResponse(String name, String version,
+    public Mono<Response<BinaryData>> getEvaluatorVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.getVersionWithResponseAsync(name, version, requestOptions);
+        return this.serviceClient.getEvaluatorVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -253,8 +265,9 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteVersionWithResponseAsync(name, version, requestOptions);
+    public Mono<Response<Void>> deleteEvaluatorVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteEvaluatorVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -274,8 +287,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -287,8 +304,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -315,8 +332,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -328,8 +349,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -342,7 +363,7 @@ public final class EvaluatorsAsyncClient {
      * </pre>
      *
      * @param name The name of the resource.
-     * @param evaluatorVersion Evaluator resource.
+     * @param evaluatorVersion The evaluatorVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -352,9 +373,9 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createVersionWithResponse(String name, BinaryData evaluatorVersion,
+    public Mono<Response<BinaryData>> createEvaluatorVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        return this.serviceClient.createVersionWithResponseAsync(name, evaluatorVersion, requestOptions);
+        return this.serviceClient.createEvaluatorVersionWithResponseAsync(name, evaluatorVersion, requestOptions);
     }
 
     /**
@@ -374,8 +395,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -387,8 +412,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -415,8 +440,12 @@ public final class EvaluatorsAsyncClient {
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
-     *         init_parameters: BinaryData (Optional)
-     *         data_schema: BinaryData (Optional)
+     *         init_parameters (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         data_schema (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *         metrics (Optional): {
      *             String (Required): {
      *                 type: String(ordinal/continuous/boolean) (Optional)
@@ -428,8 +457,8 @@ public final class EvaluatorsAsyncClient {
      *         }
      *     }
      *     created_by: String (Required)
-     *     created_at: long (Required)
-     *     modified_at: long (Required)
+     *     created_at: OffsetDateTime (Required)
+     *     modified_at: OffsetDateTime (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     version: String (Required)
@@ -453,9 +482,10 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateVersionWithResponse(String name, String version,
+    public Mono<Response<BinaryData>> updateEvaluatorVersionWithResponse(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        return this.serviceClient.updateVersionWithResponseAsync(name, version, evaluatorVersion, requestOptions);
+        return this.serviceClient.updateEvaluatorVersionWithResponseAsync(name, version, evaluatorVersion,
+            requestOptions);
     }
 
     /**
@@ -475,8 +505,8 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorVersion> listVersions(String name, ListVersionsRequestType type, Integer limit) {
-        // Generated convenience method for listVersions
+    public PagedFlux<EvaluatorVersion> listEvaluatorVersions(String name, ListVersionsRequestType type, Integer limit) {
+        // Generated convenience method for listEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -484,7 +514,7 @@ public final class EvaluatorsAsyncClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -513,10 +543,10 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorVersion> listVersions(String name) {
-        // Generated convenience method for listVersions
+    public PagedFlux<EvaluatorVersion> listEvaluatorVersions(String name) {
+        // Generated convenience method for listEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listVersions(name, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listEvaluatorVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -547,8 +577,8 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorVersion> listLatestVersions(ListVersionsRequestType type, Integer limit) {
-        // Generated convenience method for listLatestVersions
+    public PagedFlux<EvaluatorVersion> listLatestEvaluatorVersions(ListVersionsRequestType type, Integer limit) {
+        // Generated convenience method for listLatestEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -556,7 +586,7 @@ public final class EvaluatorsAsyncClient {
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestVersions(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listLatestEvaluatorVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -583,10 +613,10 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorVersion> listLatestVersions() {
-        // Generated convenience method for listLatestVersions
+    public PagedFlux<EvaluatorVersion> listLatestEvaluatorVersions() {
+        // Generated convenience method for listLatestEvaluatorVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listLatestVersions(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listLatestEvaluatorVersions(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -617,10 +647,10 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorVersion> getVersion(String name, String version) {
-        // Generated convenience method for getVersionWithResponse
+    public Mono<EvaluatorVersion> getEvaluatorVersion(String name, String version) {
+        // Generated convenience method for getEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getEvaluatorVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorVersion.class));
     }
 
@@ -640,17 +670,17 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteVersion(String name, String version) {
-        // Generated convenience method for deleteVersionWithResponse
+    public Mono<Void> deleteEvaluatorVersion(String name, String version) {
+        // Generated convenience method for deleteEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteEvaluatorVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a new EvaluatorVersion with auto incremented version id.
      *
      * @param name The name of the resource.
-     * @param evaluatorVersion Evaluator resource.
+     * @param evaluatorVersion The evaluatorVersion parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -661,10 +691,10 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorVersion> createVersion(String name, EvaluatorVersion evaluatorVersion) {
-        // Generated convenience method for createVersionWithResponse
+    public Mono<EvaluatorVersion> createEvaluatorVersion(String name, EvaluatorVersion evaluatorVersion) {
+        // Generated convenience method for createEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVersionWithResponse(name, BinaryData.fromObject(evaluatorVersion), requestOptions)
+        return createEvaluatorVersionWithResponse(name, BinaryData.fromObject(evaluatorVersion), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorVersion.class));
     }
@@ -685,11 +715,12 @@ public final class EvaluatorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorVersion> updateVersion(String name, String version, EvaluatorVersion evaluatorVersion) {
-        // Generated convenience method for updateVersionWithResponse
+    public Mono<EvaluatorVersion> updateEvaluatorVersion(String name, String version,
+        EvaluatorVersion evaluatorVersion) {
+        // Generated convenience method for updateEvaluatorVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateVersionWithResponse(name, version, BinaryData.fromObject(evaluatorVersion), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorVersion.class));
+        return updateEvaluatorVersionWithResponse(name, version, BinaryData.fromObject(evaluatorVersion),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorVersion.class));
     }
 }

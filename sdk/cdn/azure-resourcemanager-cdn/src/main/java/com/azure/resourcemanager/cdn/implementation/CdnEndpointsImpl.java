@@ -82,7 +82,9 @@ class CdnEndpointsImpl extends
     public CdnEndpointImpl defineNewEndpoint(String name) {
         CdnEndpointImpl endpoint
             = this.prepareInlineDefine(new CdnEndpointImpl(name, this.getParent(), new EndpointInner()));
-        endpoint.innerModel().withLocation(endpoint.parent().region().toString());
+        if (endpoint.parent().region() != null) {
+            endpoint.innerModel().withLocation(endpoint.parent().region().toString());
+        }
         endpoint.innerModel().withOrigins(new ArrayList<>());
         return endpoint;
     }

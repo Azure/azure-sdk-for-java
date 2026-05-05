@@ -2,7 +2,7 @@
 
 Azure Resource Manager PostgreSql client library for Java.
 
-This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2025-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-01-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-postgresqlflexibleserver</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,17 +78,17 @@ server = postgreSqlManager.servers()
     .withAdministratorLogin(adminName)
     .withAdministratorLoginPassword(adminPwd)
     .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
-        .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(MicrosoftEntraAuth.DISABLED)
+    .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(MicrosoftEntraAuth.DISABLED)
         .withPasswordAuth(PasswordBasedAuth.ENABLED))
-        .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
-        .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
-        .withVersion(PostgresMajorVersion.ONE_FOUR)
+    .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
+    .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
+    .withVersion(PostgresMajorVersion.ONE_FOUR)
     .withAvailabilityZone("2")
     .withStorage(new Storage().withStorageSizeGB(128))
-        .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+    .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
         .withBackupRetentionDays(7))
-        .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.SAME_ZONE))
-        .withReplicationRole(ReplicationRole.PRIMARY)
+    .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.SAME_ZONE))
+    .withReplicationRole(ReplicationRole.PRIMARY)
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/postgresqlflexibleserver/azure-resourcemanager-postgresqlflexibleserver/SAMPLE.md)

@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 12.33.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.18.2`.
+
+
+## 12.35.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS. 
+- Added support for service version 2026-06-06.
+
 ## 12.34.0-beta.1 (2026-02-19)
 
 ### Features Added
