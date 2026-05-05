@@ -3,22 +3,6 @@
 ## 1.0.0 (Unreleased)
 
 This is the first General Availability (GA) release of the Azure VoiceLive client library for Java.
-As of this release the public API is considered stable and will follow [Semantic Versioning](https://semver.org/);
-future non-breaking enhancements will ship in `1.x` minor releases, and any breaking changes will require a `2.0.0` major bump.
-
-### Highlights since `1.0.0-beta.1`
-
-For users upgrading from an earlier beta, the cumulative changes between `1.0.0-beta.1` and `1.0.0` are:
-
-- **New session entry points** — direct Azure AI Foundry agent sessions via `VoiceLiveAsyncClient.startSession(AgentSessionConfig)` (added in beta.5).
-- **Video avatar support** — `AvatarConfiguration` (with `Scene`, audit-audio forwarding), `AzureVoiceType.AVATAR_VOICE_SYNC` / `AzureAvatarVoiceSyncVoice`, the `response.video.delta` stream, `session.avatar.switch_to_{speaking,idle}` lifecycle events, and `output_audio_buffer.{clear,cleared}` events for the avatar audio buffer.
-- **Tool calling expansion** — built-in MCP tool calls (items, approval flow, list-tools / call lifecycle events) plus new web-search and file-search tool calls (`ResponseWebSearchCallItem`, `ResponseFileSearchCallItem` with `FileSearchResult`, and full `*_search_call.{searching,in_progress,completed}` lifecycle events).
-- **Transcription** — `TranscriptionPhrase` / `TranscriptionWord` with timing/confidence, `getLogprobs()` / `getPhrases()` on the transcription-completed event, the `response.audio_transcript.annotation.added` event, and new transcription models `gpt-4o-transcribe-diarize` and `mai-transcribe-1`.
-- **Reasoning + interim responses** — `ReasoningEffort` configuration, `OutputTokenDetails.getReasoningTokens()`, and interim response configuration (`StaticInterimResponseConfig` / `LlmInterimResponseConfig`, plus per-request `ResponseCreateParams.setInterimResponse(BinaryData)`) to cover latency and tool-call gaps.
-- **Session payload control** — `SessionIncludeOption` opt-in payloads (logprobs, phrases, file-search results) and free-form `metadata` (`Map<String,String>`, up to 16 entries) on both `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse`.
-- **Personal voice catalog refresh** — added `DRAGON_HDOMNI_LATEST_NEURAL` and `MAI_VOICE_1`; removed `PHOENIX_V2NEURAL` (use `PHOENIX_LATEST_NEURAL` or one of the `DRAGON_*` / `MAI_VOICE_1` models).
-- **Observability** — built-in OpenTelemetry tracing for `connect`/`send`/`recv`/`close` following GenAI semantic conventions, with session counters, content-recording opt-in, and `gen_ai.client.*` metrics (added in beta.6).
-- **Reliability and ergonomics** — switched the WebSocket transport to the JDK DNS resolver to fix `UnknownHostException` on IPv6-limited networks, hardened all runnable samples (receive-first barrier, daemon worker threads, bounded queues, proper error propagation), and significantly improved Javadoc across voice and turn-detection model types.
 
 ### Features Added
 
