@@ -1,9 +1,5 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Other Changes
-
 ## 2.54.2 (2026-03-30)
 
 ### Other Changes
@@ -20,6 +16,7 @@
 #### Dependency Updates
 
 - Upgraded core dependencies.
+
 
 ## 2.54.0 (2025-11-18)
 
