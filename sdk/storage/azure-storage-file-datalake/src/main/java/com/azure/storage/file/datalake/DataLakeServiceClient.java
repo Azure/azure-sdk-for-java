@@ -26,7 +26,6 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
@@ -463,8 +462,7 @@ public class DataLakeServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start),
-            null, Context.NONE).getValue();
+        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
     }
 
     /**
@@ -489,26 +487,9 @@ public class DataLakeServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        return getUserDelegationKeyWithResponse(new DataLakeGetUserDelegationKeyOptions(expiry).setStartsOn(start),
-            timeout, context);
-    }
-
-    /**
-     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
-     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
-     *
-     * @param options The {@link DataLakeGetUserDelegationKeyOptions options} to configure the request.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(DataLakeGetUserDelegationKeyOptions options,
-        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<com.azure.storage.blob.models.UserDelegationKey> response
-                = blobServiceClient.getUserDelegationKeyWithResponse(
-                    Transforms.toBlobGetUserDelegationKeyOptions(options), timeout, context);
+                = blobServiceClient.getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
         }, LOGGER);
     }
