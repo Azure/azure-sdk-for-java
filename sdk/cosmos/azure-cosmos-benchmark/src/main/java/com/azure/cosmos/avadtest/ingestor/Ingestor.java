@@ -58,12 +58,15 @@ public final class Ingestor implements AutoCloseable {
 
     private final int opsPerTick;
     private final String precomputedPayload;
+
+    // Reactor subscriptions — disposed on close to prevent leaks
+    private volatile reactor.core.Disposable mainSubscription;
+    private volatile reactor.core.Disposable progressSubscription;
     private final CosmosBulkExecutionOptions bulkOptions;
 
     public Ingestor(TestConfig config) throws Exception {
         this.config = config;
         this.eventLog = new EventLog(config.producedLogFile());
-        this.reconWriter = new ReconciliationWriter(config, "ingestor");
         this.recentDocIds = new String[10_000];
         this.opsPerTick = Math.max(1, config.opsPerSec() * TICK_INTERVAL_MS / 1000);
         this.bulkOptions = new CosmosBulkExecutionOptions();
@@ -84,6 +87,8 @@ public final class Ingestor implements AutoCloseable {
             .getDatabase(config.database())
             .getContainer(config.feedContainer());
 
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "ingestor");
+
         log.info("Ingestor initialized (bulk mode): endpoint={}, db={}, container={}, ops/sec={}, opsPerTick={}",
             config.endpoint(), config.database(), config.feedContainer(),
             config.opsPerSec(), opsPerTick);
@@ -97,7 +102,7 @@ public final class Ingestor implements AutoCloseable {
         CountDownLatch latch = new CountDownLatch(1);
 
         // Each tick: build a batch of operations and submit via bulk API
-        Flux.interval(Duration.ofMillis(TICK_INTERVAL_MS))
+        this.mainSubscription = Flux.interval(Duration.ofMillis(TICK_INTERVAL_MS))
             .takeWhile(tick -> running.get())
             .concatMap(tick -> executeBulkBatch())
             .doOnError(e -> log.error("Bulk ingestion error", e))
@@ -111,7 +116,7 @@ public final class Ingestor implements AutoCloseable {
             }, durationSec, java.util.concurrent.TimeUnit.SECONDS);
         }
 
-        Flux.interval(Duration.ofSeconds(30))
+        this.progressSubscription = Flux.interval(Duration.ofSeconds(30))
             .takeWhile(tick -> running.get())
             .subscribe(tick -> {
                 long s = successCount.sum();
@@ -286,6 +291,8 @@ public final class Ingestor implements AutoCloseable {
     public void close() {
         log.info("Closing Ingestor...");
         running.set(false);
+        if (progressSubscription != null) { progressSubscription.dispose(); }
+        if (mainSubscription != null) { mainSubscription.dispose(); }
         try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
         client.close();

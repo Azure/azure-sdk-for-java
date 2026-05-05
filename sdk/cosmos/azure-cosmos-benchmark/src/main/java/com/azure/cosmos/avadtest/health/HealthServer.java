@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -24,6 +26,7 @@ public final class HealthServer {
     private static final int DEFAULT_PORT = 8080;
 
     private final HttpServer server;
+    private final ExecutorService executor;
     private final AtomicBoolean ready = new AtomicBoolean(false);
 
     public HealthServer() throws IOException {
@@ -31,8 +34,9 @@ public final class HealthServer {
     }
 
     public HealthServer(int port) throws IOException {
+        this.executor = Executors.newFixedThreadPool(2);
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
-        this.server.setExecutor(Executors.newFixedThreadPool(2));
+        this.server.setExecutor(executor);
 
         server.createContext("/health", exchange -> {
             byte[] body = "{\"status\":\"UP\"}".getBytes(StandardCharsets.UTF_8);
@@ -67,6 +71,14 @@ public final class HealthServer {
 
     public void stop() {
         server.stop(2);
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
         log.info("Health server stopped");
     }
 }

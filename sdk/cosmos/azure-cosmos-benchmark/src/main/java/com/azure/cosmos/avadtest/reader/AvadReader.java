@@ -60,7 +60,6 @@ public final class AvadReader implements AutoCloseable {
     public AvadReader(TestConfig config) throws Exception {
         this.config = config;
         this.eventLog = new EventLog(config.consumedLogFile());
-        this.reconWriter = new ReconciliationWriter(config, "cfp-avad");
 
         this.client = new CosmosClientBuilder()
             .endpoint(config.readerEndpoint())
@@ -76,6 +75,8 @@ public final class AvadReader implements AutoCloseable {
         this.leaseContainer = client
             .getDatabase(config.database())
             .getContainer(config.leaseContainer());
+
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-avad");
 
         log.info("AvadReader initialized: prefix={}, endpoint={}, region={}, workers={}",
             LEASE_PREFIX, config.readerEndpoint(), config.preferredRegion(), config.workerCount());

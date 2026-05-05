@@ -42,7 +42,6 @@ public final class LatestVersionReader implements AutoCloseable {
     public LatestVersionReader(TestConfig config) throws Exception {
         this.config = config;
         this.eventLog = new EventLog(config.consumedLogFile());
-        this.reconWriter = new ReconciliationWriter(config, "cfp-lv");
 
         this.client = new CosmosClientBuilder()
             .endpoint(config.readerEndpoint())
@@ -59,6 +58,8 @@ public final class LatestVersionReader implements AutoCloseable {
         this.leaseContainer = client
             .getDatabase(config.database())
             .getContainer(config.leaseContainer());
+
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-lv");
 
         log.info("LatestVersionReader initialized: prefix={}, endpoint={}, region={}, workers={}",
             LEASE_PREFIX, config.readerEndpoint(), config.preferredRegion(), config.workerCount());

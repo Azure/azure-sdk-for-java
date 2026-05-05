@@ -2,10 +2,8 @@ package com.azure.cosmos.avadtest.reconciliation;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.avadtest.config.TestConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -48,7 +46,7 @@ public final class ReconciliationWriter implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(ReconciliationWriter.class);
     private static final String RECONCILIATION_CONTAINER = "reconciliation";
     private static final int MAX_RETRIES = 3;
-    private static final int MAX_REQUEUES = 2; // max times a doc can be requeued after all retries fail
+    private static final int MAX_REQUEUES = 2;
     private static final String REQUEUE_COUNT_FIELD = "_requeueCount";
 
     private static final CosmosEndToEndOperationLatencyPolicyConfig E2E_POLICY =
@@ -56,7 +54,6 @@ public final class ReconciliationWriter implements AutoCloseable {
 
     private final String source;
     private final CosmosAsyncContainer container;
-    private final CosmosAsyncClient client;
     private final LongAdder writeCount = new LongAdder();
     private final LongAdder errorCount = new LongAdder();
     private final LongAdder retryCount = new LongAdder();
@@ -65,18 +62,16 @@ public final class ReconciliationWriter implements AutoCloseable {
     private final Sinks.Many<ObjectNode> sink;
     private final reactor.core.Disposable subscription;
 
-    public ReconciliationWriter(TestConfig config, String source) {
+    /**
+     * @param client shared CosmosAsyncClient — caller owns lifecycle
+     * @param database database name
+     * @param source source identifier for reconciliation docs
+     */
+    public ReconciliationWriter(CosmosAsyncClient client, String database, String source) {
         this.source = source;
 
-        this.client = new CosmosClientBuilder()
-            .endpoint(config.endpoint())
-            .key(config.key())
-            .gatewayMode()
-            .preferredRegions(config.preferredRegions())
-            .buildAsyncClient();
-
         this.container = client
-            .getDatabase(config.database())
+            .getDatabase(database)
             .getContainer(RECONCILIATION_CONTAINER);
 
         this.sink = Sinks.many().multicast().onBackpressureBuffer(100_000);
@@ -171,12 +166,11 @@ public final class ReconciliationWriter implements AutoCloseable {
     @Override
     public void close() {
         sink.tryEmitComplete();
-        // Wait for the subscriber to drain buffered writes before disposing
         try {
             Thread.sleep(10_000);
         } catch (InterruptedException ignored) {}
         subscription.dispose();
-        client.close();
+        // Client is NOT closed here — caller owns the lifecycle
         log.info("ReconciliationWriter closed: source={}, writes={}, retries={}, errors={}, drops={}",
             source, writeCount.sum(), retryCount.sum(), errorCount.sum(), dropCount.sum());
     }
