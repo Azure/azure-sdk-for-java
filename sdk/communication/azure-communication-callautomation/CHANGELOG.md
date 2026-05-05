@@ -1,15 +1,5 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.6.1 (2026-03-02)
 
 ### Other Changes
@@ -17,6 +7,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-communication-common` from `1.4.4` to version `1.4.5`.
+
 
 ## 1.6.0 (2026-01-27)
 
