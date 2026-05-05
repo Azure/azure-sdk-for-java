@@ -21,7 +21,7 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.0.34</version>
+  <version>1.0.35</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
