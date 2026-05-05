@@ -49,23 +49,19 @@ public class PathProperties {
     private String group;
     private String permissions;
     private List<PathAccessControlEntry> accessControlList;
-    private Boolean accessTierInferred;
-    private AccessTier smartAccessTier;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group,
-            permissions, accessControlList, accessTierInferred, smartAccessTier) -> {
-            properties.encryptionScope = encryptionScope;
-            properties.encryptionContext = encryptionContext;
-            properties.owner = owner;
-            properties.group = group;
-            properties.permissions = permissions;
-            properties.accessControlList = PathAccessControlEntry.parseList(accessControlList);
-            properties.accessTierInferred = accessTierInferred;
-            properties.smartAccessTier = smartAccessTier;
+        AccessorUtility.setPathPropertiesAccessor(
+            (properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
+                properties.encryptionScope = encryptionScope;
+                properties.encryptionContext = encryptionContext;
+                properties.owner = owner;
+                properties.group = group;
+                properties.permissions = permissions;
+                properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
 
-            return properties;
-        });
+                return properties;
+            });
     }
 
     /**
@@ -396,16 +392,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets whether the access tier of the path was inferred by the service.
-     *
-     * @return whether the access tier of the path was inferred by the service, or {@code null} when the service does
-     * not return an inferred value, such as for Smart tier blobs.
-     */
-    public Boolean isAccessTierInferred() {
-        return accessTierInferred;
-    }
-
-    /**
      * Gets the archive status of the path.
      *
      * @return the archive status of the path.
@@ -430,15 +416,6 @@ public class PathProperties {
      */
     public OffsetDateTime getAccessTierChangeTime() {
         return accessTierChangeTime;
-    }
-
-    /**
-     * Get the underlying tier of a smart tier blob. Only returned if the blob is in Smart tier.
-     *
-     * @return the tier of the path.
-     */
-    public AccessTier getSmartAccessTier() {
-        return smartAccessTier;
     }
 
     /**

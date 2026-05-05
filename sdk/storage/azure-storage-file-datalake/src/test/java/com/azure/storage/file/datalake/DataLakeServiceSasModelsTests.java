@@ -25,8 +25,7 @@ public class DataLakeServiceSasModelsTests {
     @ParameterizedTest
     @MethodSource("sasPermissionsToStringSupplier")
     public void pathSasPermissionsToString(boolean read, boolean write, boolean delete, boolean create, boolean add,
-        boolean list, boolean move, boolean execute, boolean owner, boolean permission, boolean tag,
-        String expectedString) {
+        boolean list, boolean move, boolean execute, boolean owner, boolean permission, String expectedString) {
         PathSasPermission perms = new PathSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
@@ -36,33 +35,31 @@ public class DataLakeServiceSasModelsTests {
             .setMovePermission(move)
             .setExecutePermission(execute)
             .setManageOwnershipPermission(owner)
-            .setManageAccessControlPermission(permission)
-            .setTagsPermission(tag);
+            .setManageAccessControlPermission(permission);
 
         assertEquals(expectedString, perms.toString());
     }
 
     private static Stream<Arguments> sasPermissionsToStringSupplier() {
         return Stream.of(
-            // read | write | delete | create | add | list | move | execute | owner | permission | tag | expectedString
-            Arguments.of(true, false, false, false, false, false, false, false, false, false, false, "r"),
-            Arguments.of(false, true, false, false, false, false, false, false, false, false, false, "w"),
-            Arguments.of(false, false, true, false, false, false, false, false, false, false, false, "d"),
-            Arguments.of(false, false, false, true, false, false, false, false, false, false, false, "c"),
-            Arguments.of(false, false, false, false, true, false, false, false, false, false, false, "a"),
-            Arguments.of(false, false, false, false, false, true, false, false, false, false, false, "l"),
-            Arguments.of(false, false, false, false, false, false, true, false, false, false, false, "m"),
-            Arguments.of(false, false, false, false, false, false, false, true, false, false, false, "e"),
-            Arguments.of(false, false, false, false, false, false, false, false, true, false, false, "o"),
-            Arguments.of(false, false, false, false, false, false, false, false, false, true, false, "p"),
-            Arguments.of(false, false, false, false, false, false, false, false, false, false, true, "t"),
-            Arguments.of(true, true, true, true, true, true, true, true, true, true, true, "racwdlmeopt"));
+            // read | write | delete | create | add | list | move | execute | owner | permission || expectedString
+            Arguments.of(true, false, false, false, false, false, false, false, false, false, "r"),
+            Arguments.of(false, true, false, false, false, false, false, false, false, false, "w"),
+            Arguments.of(false, false, true, false, false, false, false, false, false, false, "d"),
+            Arguments.of(false, false, false, true, false, false, false, false, false, false, "c"),
+            Arguments.of(false, false, false, false, true, false, false, false, false, false, "a"),
+            Arguments.of(false, false, false, false, false, true, false, false, false, false, "l"),
+            Arguments.of(false, false, false, false, false, false, true, false, false, false, "m"),
+            Arguments.of(false, false, false, false, false, false, false, true, false, false, "e"),
+            Arguments.of(false, false, false, false, false, false, false, false, true, false, "o"),
+            Arguments.of(false, false, false, false, false, false, false, false, false, true, "p"),
+            Arguments.of(true, true, true, true, true, true, true, true, true, true, "racwdlmeop"));
     }
 
     @ParameterizedTest
     @MethodSource("sasPermissionsParseSupplier")
     public void pathSasPermissionsParse(String permString, boolean read, boolean write, boolean delete, boolean create,
-        boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission, boolean tag) {
+        boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission) {
         PathSasPermission perms = PathSasPermission.parse(permString);
 
         assertEquals(read, perms.hasReadPermission());
@@ -75,25 +72,23 @@ public class DataLakeServiceSasModelsTests {
         assertEquals(execute, perms.hasExecutePermission());
         assertEquals(owner, perms.hasManageOwnershipPermission());
         assertEquals(permission, perms.hasManageAccessControlPermission());
-        assertEquals(tag, perms.hasTagsPermission());
     }
 
     private static Stream<Arguments> sasPermissionsParseSupplier() {
         return Stream.of(
-            // permString || read  | write | delete | create | add   | list  | move  | execute | owner | permission | tag
-            Arguments.of("r", true, false, false, false, false, false, false, false, false, false, false),
-            Arguments.of("w", false, true, false, false, false, false, false, false, false, false, false),
-            Arguments.of("d", false, false, true, false, false, false, false, false, false, false, false),
-            Arguments.of("c", false, false, false, true, false, false, false, false, false, false, false),
-            Arguments.of("a", false, false, false, false, true, false, false, false, false, false, false),
-            Arguments.of("l", false, false, false, false, false, true, false, false, false, false, false),
-            Arguments.of("m", false, false, false, false, false, false, true, false, false, false, false),
-            Arguments.of("e", false, false, false, false, false, false, false, true, false, false, false),
-            Arguments.of("o", false, false, false, false, false, false, false, false, true, false, false),
-            Arguments.of("p", false, false, false, false, false, false, false, false, false, true, false),
-            Arguments.of("t", false, false, false, false, false, false, false, false, false, false, true),
-            Arguments.of("racwdlmeopt", true, true, true, true, true, true, true, true, true, true, true),
-            Arguments.of("malwdcrepot", true, true, true, true, true, true, true, true, true, true, true));
+            // permString || read  | write | delete | create | add   | list  | move  | execute | owner | permission
+            Arguments.of("r", true, false, false, false, false, false, false, false, false, false),
+            Arguments.of("w", false, true, false, false, false, false, false, false, false, false),
+            Arguments.of("d", false, false, true, false, false, false, false, false, false, false),
+            Arguments.of("c", false, false, false, true, false, false, false, false, false, false),
+            Arguments.of("a", false, false, false, false, true, false, false, false, false, false),
+            Arguments.of("l", false, false, false, false, false, true, false, false, false, false),
+            Arguments.of("m", false, false, false, false, false, false, true, false, false, false),
+            Arguments.of("e", false, false, false, false, false, false, false, true, false, false),
+            Arguments.of("o", false, false, false, false, false, false, false, false, true, false),
+            Arguments.of("p", false, false, false, false, false, false, false, false, false, true),
+            Arguments.of("racwdlmeop", true, true, true, true, true, true, true, true, true, true),
+            Arguments.of("malwdcrepo", true, true, true, true, true, true, true, true, true, true));
     }
 
     @Test
@@ -110,7 +105,7 @@ public class DataLakeServiceSasModelsTests {
     @ParameterizedTest
     @MethodSource("sasPermissionsToStringSupplier")
     public void fileSystemSasPermissionsToString(boolean read, boolean write, boolean delete, boolean create,
-        boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission, boolean tag,
+        boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission,
         String expectedString) {
         FileSystemSasPermission perms = new FileSystemSasPermission().setReadPermission(read)
             .setWritePermission(write)
@@ -121,8 +116,7 @@ public class DataLakeServiceSasModelsTests {
             .setMovePermission(move)
             .setExecutePermission(execute)
             .setManageOwnershipPermission(owner)
-            .setManageAccessControlPermission(permission)
-            .setTagsPermission(tag);
+            .setManageAccessControlPermission(permission);
 
         assertEquals(expectedString, perms.toString());
     }
@@ -130,8 +124,7 @@ public class DataLakeServiceSasModelsTests {
     @ParameterizedTest
     @MethodSource("sasPermissionsParseSupplier")
     public void fileSystemSasPermissionsParse(String permString, boolean read, boolean write, boolean delete,
-        boolean create, boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission,
-        boolean tag) {
+        boolean create, boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission) {
         FileSystemSasPermission perms = FileSystemSasPermission.parse(permString);
 
         assertEquals(read, perms.hasReadPermission());
@@ -144,7 +137,6 @@ public class DataLakeServiceSasModelsTests {
         assertEquals(execute, perms.hasExecutePermission());
         assertEquals(owner, perms.hasManageOwnershipPermission());
         assertEquals(permission, perms.hasManageAccessControlPermission());
-        assertEquals(tag, perms.hasTagsPermission());
     }
 
     @Test
