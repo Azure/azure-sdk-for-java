@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
     /*
      * top N, value range : [1, +∞)
      */
-    @Generated
     private int top;
 
     /*
      * point count used to look back, value range : [1, +∞)
      */
-    @Generated
     private int period;
 
     /*
@@ -34,13 +31,11 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * 
      * should be less than or equal to period
      */
-    @Generated
     private int minTopCount;
 
     /**
      * Creates an instance of TopNGroupScope class.
      */
-    @Generated
     public TopNGroupScope() {
     }
 
@@ -49,7 +44,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * 
      * @return the top value.
      */
-    @Generated
     public int getTop() {
         return this.top;
     }
@@ -60,7 +54,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * @param top the top value to set.
      * @return the TopNGroupScope object itself.
      */
-    @Generated
     public TopNGroupScope setTop(int top) {
         this.top = top;
         return this;
@@ -71,7 +64,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * 
      * @return the period value.
      */
-    @Generated
     public int getPeriod() {
         return this.period;
     }
@@ -82,7 +74,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * @param period the period value to set.
      * @return the TopNGroupScope object itself.
      */
-    @Generated
     public TopNGroupScope setPeriod(int period) {
         this.period = period;
         return this;
@@ -95,7 +86,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * 
      * @return the minTopCount value.
      */
-    @Generated
     public int getMinTopCount() {
         return this.minTopCount;
     }
@@ -108,16 +98,11 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * @param minTopCount the minTopCount value to set.
      * @return the TopNGroupScope object itself.
      */
-    @Generated
     public TopNGroupScope setMinTopCount(int minTopCount) {
         this.minTopCount = minTopCount;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -136,7 +121,6 @@ public final class TopNGroupScope implements JsonSerializable<TopNGroupScope> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TopNGroupScope.
      */
-    @Generated
     public static TopNGroupScope fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TopNGroupScope deserializedTopNGroupScope = new TopNGroupScope();

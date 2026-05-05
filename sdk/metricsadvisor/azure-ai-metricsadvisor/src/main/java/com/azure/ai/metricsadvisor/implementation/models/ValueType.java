@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
     /**
      * Static value Value for ValueType.
      */
-    @Generated
     public static final ValueType VALUE = fromString("Value");
 
     /**
      * Static value Mean for ValueType.
      */
-    @Generated
     public static final ValueType MEAN = fromString("Mean");
 
     /**
@@ -29,7 +26,6 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ValueType() {
     }
@@ -40,7 +36,6 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
      * @param name a name to look for.
      * @return the corresponding ValueType.
      */
-    @Generated
     public static ValueType fromString(String name) {
         return fromString(name, ValueType.class);
     }
@@ -50,7 +45,6 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
      * 
      * @return known ValueType values.
      */
-    @Generated
     public static Collection<ValueType> values() {
         return values(ValueType.class);
     }
