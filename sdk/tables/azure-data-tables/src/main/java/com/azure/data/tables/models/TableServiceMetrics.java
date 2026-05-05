@@ -4,7 +4,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,31 +21,26 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
     /*
      * The version of Analytics to configure.
      */
-    @Generated
     private String version;
 
     /*
      * Indicates whether metrics are enabled for the Table service.
      */
-    @Generated
     private boolean enabled;
 
     /*
      * Indicates whether metrics should generate summary statistics for called API operations.
      */
-    @Generated
     private Boolean includeApis;
 
     /*
      * The retention policy.
      */
-    @Generated
     private TableServiceRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of TableServiceMetrics class.
      */
-    @Generated
     public TableServiceMetrics() {
     }
 
@@ -54,7 +49,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      *
      * @return the version value.
      */
-    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -65,7 +59,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * @param version the version value to set.
      * @return the TableServiceMetrics object itself.
      */
-    @Generated
     public TableServiceMetrics setVersion(String version) {
         this.version = version;
         return this;
@@ -76,7 +69,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      *
      * @return the enabled value.
      */
-    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -87,7 +79,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * @param enabled the enabled value to set.
      * @return the TableServiceMetrics object itself.
      */
-    @Generated
     public TableServiceMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -99,7 +90,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      *
      * @return the includeApis value.
      */
-    @Generated
     public Boolean isIncludeApis() {
         return this.includeApis;
     }
@@ -111,7 +101,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * @param includeApis the includeApis value to set.
      * @return the TableServiceMetrics object itself.
      */
-    @Generated
     public TableServiceMetrics setIncludeApis(Boolean includeApis) {
         this.includeApis = includeApis;
         return this;
@@ -122,7 +111,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      *
      * @return the retentionPolicy value.
      */
-    @Generated
     public TableServiceRetentionPolicy getTableServiceRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -133,23 +121,19 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the TableServiceMetrics object itself.
      */
-    @Generated
     public TableServiceMetrics setRetentionPolicy(TableServiceRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "TableServiceMetrics" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceMetrics" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
@@ -166,7 +150,6 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceMetrics.
      */
-    @Generated
     public static TableServiceMetrics fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -181,10 +164,9 @@ public final class TableServiceMetrics implements XmlSerializable<TableServiceMe
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceMetrics.
      */
-    @Generated
     public static TableServiceMetrics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "TableServiceMetrics" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceMetrics" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceMetrics deserializedTableServiceMetrics = new TableServiceMetrics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
