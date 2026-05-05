@@ -101,12 +101,11 @@ public final class Reconciler {
     /**
      * Check that LSN is monotonically increasing per partitionKey.
      * Line format: eventId,seqNo,opType,partitionKey,timestamp,lsn
-     * Sorts by (partitionKey, lsn) then checks for inversions.
+     * Sorts by seqNo (delivery order), then verifies LSN is non-decreasing.
      */
     private static int checkOrderingByLsn(String consumedFile) throws IOException {
         log.info("=== LSN Ordering Check: {} ===", consumedFile);
 
-        // Load all records grouped by partition key
         Map<String, List<long[]>> recordsByPk = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(consumedFile))) {
@@ -119,10 +118,10 @@ public final class Reconciler {
                 String pk = parts[3];
                 long seqNo = Long.parseLong(parts[1]);
                 long lsn = parts[5].trim().isEmpty() ? -1 : Long.parseLong(parts[5]);
-                if (lsn < 0) continue; // skip records without LSN
+                if (lsn < 0) continue;
 
                 recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
-                    .add(new long[]{lsn, seqNo});
+                    .add(new long[]{seqNo, lsn});
             }
         }
 
@@ -130,19 +129,19 @@ public final class Reconciler {
         for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
             String pk = entry.getKey();
             List<long[]> records = entry.getValue();
-            // Sort by LSN, then check seqNo is non-decreasing within same LSN batch
+            // Sort by seqNo (delivery order), then check LSN is non-decreasing
             records.sort(Comparator.comparingLong(r -> r[0]));
 
             long prevLsn = -1;
             for (long[] record : records) {
-                if (record[0] < prevLsn) {
+                if (prevLsn > 0 && record[1] < prevLsn) {
                     violations++;
                     if (violations <= 10) {
-                        log.warn("LSN ordering violation: PK={}, prevLsn={}, currLsn={}",
-                            pk, prevLsn, record[0]);
+                        log.warn("LSN ordering violation: PK={}, seqNo={}, prevLsn={}, currLsn={}",
+                            pk, record[0], prevLsn, record[1]);
                     }
                 }
-                prevLsn = record[0];
+                prevLsn = record[1];
             }
         }
 
@@ -155,6 +154,7 @@ public final class Reconciler {
      * Check that CRTS is monotonically increasing per partitionKey.
      * Line format: eventId,seqNo,opType,partitionKey,timestamp,lsn,crts
      * Only applies to AVAD logs (7 columns). Lines without CRTS are skipped.
+     * Sorts by seqNo (delivery order), then verifies CRTS is non-decreasing.
      */
     private static int checkOrderingByCrts(String consumedFile) throws IOException {
         log.info("=== CRTS Ordering Check: {} ===", consumedFile);
@@ -166,15 +166,15 @@ public final class Reconciler {
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split(",");
-                if (parts.length < 7) continue; // CRTS is column 6, only in AVAD logs
+                if (parts.length < 7) continue;
 
                 String pk = parts[3];
-                long lsn = parts[5].trim().isEmpty() ? -1 : Long.parseLong(parts[5]);
+                long seqNo = Long.parseLong(parts[1]);
                 long crts = parts[6].trim().isEmpty() ? -1 : Long.parseLong(parts[6]);
                 if (crts < 0) continue;
 
                 recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
-                    .add(new long[]{crts, lsn});
+                    .add(new long[]{seqNo, crts});
             }
         }
 
@@ -187,19 +187,19 @@ public final class Reconciler {
         for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
             String pk = entry.getKey();
             List<long[]> records = entry.getValue();
-            // Sort by LSN (delivery order), then check CRTS is non-decreasing
-            records.sort(Comparator.comparingLong(r -> r[1]));
+            // Sort by seqNo (delivery order), then check CRTS is non-decreasing
+            records.sort(Comparator.comparingLong(r -> r[0]));
 
             long prevCrts = -1;
             for (long[] record : records) {
-                if (prevCrts > 0 && record[0] < prevCrts) {
+                if (prevCrts > 0 && record[1] < prevCrts) {
                     violations++;
                     if (violations <= 10) {
-                        log.warn("CRTS ordering violation: PK={}, prevCrts={}, currCrts={}, lsn={}",
-                            pk, prevCrts, record[0], record[1]);
+                        log.warn("CRTS ordering violation: PK={}, seqNo={}, prevCrts={}, currCrts={}",
+                            pk, record[0], prevCrts, record[1]);
                     }
                 }
-                prevCrts = record[0];
+                prevCrts = record[1];
             }
         }
 

@@ -9,11 +9,7 @@ infra Helm chart.
 | Scenario | Script | What It Tests |
 |----------|--------|---------------|
 | Pod Kill | `pod-kill.sh` | Lease rebalancing after random pod loss |
-| Restart Storm | `restart-storm.sh` | Mass lease handoff on rolling restart |
-| Lease Throttle | `lease-throttle.sh` | CFP behavior under lease container RU starvation |
-| Network Fault | `network-fault.sh` | Retry behavior, session consistency |
 | Partition Split | `partition-split.sh` | Continuation token validity across splits |
-| Node Drain | `node-drain.sh` | Graceful shutdown, lease release timing |
 
 ## Usage
 
@@ -21,14 +17,11 @@ infra Helm chart.
 
 ```bash
 export NAMESPACE=cosmos-soak
-export COSMOS_ACCOUNT=abhm-cfp-region-test
-export COSMOS_RG=abhm-rg
+export COSMOS_ACCOUNT=<your-account>
+export COSMOS_RG=<your-rg>
 
 # Kill a random AVAD CFP pod
 bash chaos/scenarios/pod-kill.sh
-
-# Throttle lease container to 400 RU for 5 min
-TARGET_RU=400 THROTTLE_DURATION=300 bash chaos/scenarios/lease-throttle.sh
 
 # Trigger partition split (2x throughput)
 SCALE_FACTOR=2 bash chaos/scenarios/partition-split.sh

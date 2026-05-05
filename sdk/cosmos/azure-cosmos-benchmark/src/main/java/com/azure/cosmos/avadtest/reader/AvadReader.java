@@ -20,7 +20,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -51,6 +53,9 @@ public final class AvadReader implements AutoCloseable {
     private final LongAdder totalDeletes = new LongAdder();
     private final LongAdder totalCreates = new LongAdder();
     private final LongAdder crtsViolationCount = new LongAdder();
+
+    // Per-partition CRTS tracking for ordering validation
+    private final ConcurrentHashMap<String, AtomicLong> lastCrtsByPartition = new ConcurrentHashMap<>();
 
     public AvadReader(TestConfig config) throws Exception {
         this.config = config;
@@ -105,6 +110,14 @@ public final class AvadReader implements AutoCloseable {
 
         log.info("All {} AVAD workers started", workers);
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            log.info("Shutdown signal, stopping {} AVAD CFP workers...", processors.size());
+            for (ChangeFeedProcessor p : processors) {
+                try { p.stop().block(Duration.ofSeconds(30)); } catch (Exception e) { /* ignore */ }
+            }
+            latch.countDown();
+        }));
+
         latch.await();
     }
 
@@ -156,6 +169,16 @@ public final class AvadReader implements AutoCloseable {
                 if (!hasPrevious) {
                     missingPreviousImageCount.increment();
                     log.warn("⚠️ MISSING previous on DELETE: eventId={}, pk={}", eventId, pk);
+                }
+            }
+
+            // CRTS ordering validation per partition key
+            if (crts > 0 && !pk.isEmpty()) {
+                AtomicLong lastCrts = lastCrtsByPartition.computeIfAbsent(pk, k -> new AtomicLong(-1));
+                long prev = lastCrts.getAndSet(crts);
+                if (prev > 0 && crts < prev) {
+                    crtsViolationCount.increment();
+                    log.warn("⚠️ CRTS ordering violation: pk={}, prevCrts={}, currCrts={}", pk, prev, crts);
                 }
             }
 

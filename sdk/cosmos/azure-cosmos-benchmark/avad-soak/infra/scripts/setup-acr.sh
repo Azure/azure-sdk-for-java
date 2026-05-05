@@ -11,7 +11,7 @@ ACR_NAME="${ACR_NAME:-abhmavadsoakacr}"
 IMAGE_NAME="${IMAGE_NAME:-cosmos-avad-test}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$SCRIPT_DIR/../.."
+PROJECT_DIR="$SCRIPT_DIR/../../.."
 
 az account set --subscription "$SUBSCRIPTION"
 
@@ -38,7 +38,7 @@ echo "=== Building + pushing image ==="
 az acr build \
     --registry "$ACR_NAME" \
     --image "${IMAGE_NAME}:${IMAGE_TAG}" \
-    --file "$PROJECT_DIR/Dockerfile" \
+    --file "$PROJECT_DIR/avad-soak/Dockerfile" \
     "$PROJECT_DIR"
 
 echo "Image pushed: ${ACR_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"

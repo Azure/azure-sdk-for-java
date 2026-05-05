@@ -1,4 +1,5 @@
 # Multi-stage build for cosmos-avad-test soak runner
+# Build context: azure-cosmos-benchmark/ (module root)
 # JDK 21 for production, Maven for build stage
 
 # --- Build stage ---
@@ -13,12 +14,12 @@ RUN mvn package -DskipTests -B
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Install curl for health probes and az CLI for chaos scripts
+# Install curl for health probes
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /build/target/cosmos-avad-test-1.0-SNAPSHOT.jar /app/app.jar
+COPY --from=build /build/target/azure-cosmos-benchmark-*-jar-with-dependencies.jar /app/app.jar
 
 # Health endpoint port
 EXPOSE 8080

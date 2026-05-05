@@ -54,6 +54,7 @@ public final class Ingestor implements AutoCloseable {
 
     // Ops per tick = opsPerSec * tickIntervalMs / 1000
     private final int opsPerTick;
+    private final String precomputedPayload;
 
     public Ingestor(TestConfig config) throws Exception {
         this.config = config;
@@ -61,6 +62,12 @@ public final class Ingestor implements AutoCloseable {
         this.reconWriter = new ReconciliationWriter(config, "ingestor");
         this.recentDocIds = new String[10_000]; // ring buffer
         this.opsPerTick = Math.max(1, config.opsPerSec() * TICK_INTERVAL_MS / 1000);
+
+        // Pre-compute payload once instead of per-operation
+        int size = Math.min(Math.max(config.docSizeBytes(), 0), 10_000);
+        StringBuilder sb = new StringBuilder(size);
+        for (int i = 0; i < size; i++) { sb.append('x'); }
+        this.precomputedPayload = sb.toString();
 
         this.client = new CosmosClientBuilder()
             .endpoint(config.endpoint())
@@ -85,15 +92,14 @@ public final class Ingestor implements AutoCloseable {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        // Simple approach: generate ops as fast as possible, bounded by concurrency
+        // Rate-limited ingestion: emit opsPerTick operations every TICK_INTERVAL_MS
         int concurrency = Math.min(config.opsPerSec(), 500);
-        Flux.generate(sink -> {
-                if (running.get()) { sink.next(seqCounter.get()); }
-                else { sink.complete(); }
-            })
-            .flatMap(tick -> executeOperation()
-                .subscribeOn(Schedulers.boundedElastic()), concurrency)
-            .sample(Duration.ofMillis(TICK_INTERVAL_MS)) // pace output
+        Flux.interval(Duration.ofMillis(TICK_INTERVAL_MS))
+            .takeWhile(tick -> running.get())
+            .flatMap(tick -> Flux.range(0, opsPerTick)
+                .flatMap(i -> executeOperation()
+                    .subscribeOn(Schedulers.boundedElastic()), concurrency),
+                concurrency)
             .doOnError(e -> log.error("Ingestion error", e))
             .doOnComplete(latch::countDown)
             .subscribe();
@@ -114,10 +120,10 @@ public final class Ingestor implements AutoCloseable {
                 long f = failureCount.sum();
                 long total = s + f;
                 double failRate = total > 0 ? (double) f / total : 0;
-                log.info("Progress: success={}, failures={}, failRate={:.1f}%, seq={}",
-                    s, f, failRate * 100, seqCounter.get());
+                log.info("Progress: success={}, failures={}, failRate={}%, seq={}",
+                    s, f, String.format("%.1f", failRate * 100), seqCounter.get());
                 if (total > 100 && failRate > FAILURE_ABORT_THRESHOLD) {
-                    log.error("Failure rate {:.1f}% exceeds threshold, aborting!", failRate * 100);
+                    log.error("Failure rate {}% exceeds threshold, aborting!", String.format("%.1f", failRate * 100));
                     running.set(false);
                 }
             });
@@ -241,20 +247,33 @@ public final class Ingestor implements AutoCloseable {
         String[] parts = recent.split("\\|");
         String docId = parts[0];
         String pk = parts[1];
-        String eventId = UUID.randomUUID().toString();
         long seq = seqCounter.incrementAndGet();
         String ts = Instant.now().toString();
 
-        return container.deleteItem(docId, new PartitionKey(pk), new CosmosItemRequestOptions())
+        // Read-before-delete: stamp a delete-specific eventId into the document
+        // so AVAD reader's previous image contains the correct correlation key.
+        String eventId = UUID.randomUUID().toString();
+        return container.readItem(docId, new PartitionKey(pk), ObjectNode.class)
+            .flatMap(readResp -> {
+                ObjectNode doc = readResp.getItem();
+                doc.put("eventId", eventId);
+                doc.put("seqNo", seq);
+                doc.put("operationType", "delete");
+                doc.put("timestamp", ts);
+                return container.replaceItem(doc, docId, new PartitionKey(pk), new CosmosItemRequestOptions());
+            })
+            .flatMap(replaceResp ->
+                container.deleteItem(docId, new PartitionKey(pk), new CosmosItemRequestOptions()))
             .doOnSuccess(resp -> {
                 successCount.increment();
                 eventLog.logProduced(eventId, seq, "delete", pk, ts);
                 reconWriter.record(eventId, seq, "delete", pk, -1, false, -1);
+                clearRecentId(docId + "|" + pk);
             })
             .doOnError(e -> {
                 failureCount.increment();
-                // 404 is expected if already deleted — don't warn loudly
-                if (!e.getMessage().contains("404")) {
+                // 404 is expected if already deleted
+                if (e.getMessage() == null || !e.getMessage().contains("404")) {
                     log.warn("Delete failed: docId={}, error={}", docId, e.getMessage());
                 }
             })
@@ -276,19 +295,20 @@ public final class Ingestor implements AutoCloseable {
     }
 
     private String generatePayload() {
-        int size = config.docSizeBytes();
-        if (size <= 0) return "";
-        int len = Math.min(size, 10_000);
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            sb.append('x');
-        }
-        return sb.toString();
+        return precomputedPayload;
     }
 
     private void trackRecentId(String idAndPk) {
         int idx = (int) (recentIndex.incrementAndGet() % recentDocIds.length);
         recentDocIds[idx] = idAndPk;
+    }
+
+    private void clearRecentId(String idAndPk) {
+        for (int i = 0; i < recentDocIds.length; i++) {
+            if (idAndPk.equals(recentDocIds[i])) {
+                recentDocIds[i] = null;
+            }
+        }
     }
 
     private String getRecentId() {

@@ -8,6 +8,7 @@ import com.azure.cosmos.avadtest.reconciliation.EventLog;
 import com.azure.cosmos.avadtest.reconciliation.ReconciliationWriter;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedMetaData;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -108,12 +109,13 @@ public final class LatestVersionReader implements AutoCloseable {
             JsonNode current = item.getCurrent();
             if (current == null || current.isNull()) continue; // LV mode shouldn't get null current
 
+            ChangeFeedMetaData metadata = item.getChangeFeedMetaData();
             String eventId = getTextOrEmpty(current, "eventId");
             long seqNo = current.has("seqNo") ? current.get("seqNo").asLong() : -1;
             String opType = getTextOrEmpty(current, "operationType");
             String pk = getTextOrEmpty(current, "tenantId");
             String timestamp = getTextOrEmpty(current, "timestamp");
-            long lsn = current.has("_lsn") ? current.get("_lsn").asLong() : -1;
+            long lsn = metadata != null ? metadata.getLogSequenceNumber() : -1;
 
             eventLog.logConsumed(eventId, seqNo, opType, pk, timestamp, lsn);
             reconWriter.record(eventId, seqNo, opType, pk, lsn, false, -1);

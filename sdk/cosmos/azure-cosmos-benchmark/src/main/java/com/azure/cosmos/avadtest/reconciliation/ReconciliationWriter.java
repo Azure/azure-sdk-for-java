@@ -157,10 +157,11 @@ public final class ReconciliationWriter implements AutoCloseable {
     }
 
     private boolean isRetryable(Throwable e) {
-        String msg = e.getMessage();
-        if (msg == null) return true;
-        // Don't retry permanent failures
-        return !msg.contains("404") && !msg.contains("Unauthorized") && !msg.contains("403");
+        if (e instanceof com.azure.cosmos.CosmosException) {
+            int status = ((com.azure.cosmos.CosmosException) e).getStatusCode();
+            return status != 404 && status != 401 && status != 403;
+        }
+        return true;
     }
 
     public long getWriteCount() { return writeCount.sum(); }
@@ -170,11 +171,11 @@ public final class ReconciliationWriter implements AutoCloseable {
     @Override
     public void close() {
         sink.tryEmitComplete();
-        // Wait for the subscriber to drain all buffered writes
+        // Wait for the subscriber to drain buffered writes before disposing
         try {
-            subscription.dispose();
-            Thread.sleep(10_000); // allow in-flight writes to complete
+            Thread.sleep(10_000);
         } catch (InterruptedException ignored) {}
+        subscription.dispose();
         client.close();
         log.info("ReconciliationWriter closed: source={}, writes={}, retries={}, errors={}, drops={}",
             source, writeCount.sum(), retryCount.sum(), errorCount.sum(), dropCount.sum());

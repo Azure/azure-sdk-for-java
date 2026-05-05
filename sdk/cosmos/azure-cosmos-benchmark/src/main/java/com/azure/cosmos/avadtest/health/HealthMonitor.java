@@ -77,14 +77,17 @@ public final class HealthMonitor {
         // 1. Count produced events
         long producedCount = countBySource("ingestor");
         log.info("  Produced (ingestor): {}", producedCount);
+        if (producedCount < 0) { log.error("  ❌ Query failed for ingestor count"); healthy = false; }
 
         // 2. Count AVAD consumed events
         long avadConsumed = countBySource("cfp-avad");
         log.info("  AVAD consumed: {}", avadConsumed);
+        if (avadConsumed < 0) { log.error("  ❌ Query failed for AVAD count"); healthy = false; }
 
         // 3. Count LV consumed events
         long lvConsumed = countBySource("cfp-lv");
         log.info("  LV consumed: {}", lvConsumed);
+        if (lvConsumed < 0) { log.error("  ❌ Query failed for LV count"); healthy = false; }
 
         // 4. Gap detection — produced but not in AVAD
         //    (older than SLA window)

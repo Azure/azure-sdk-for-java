@@ -3,6 +3,27 @@
 Reusable Helm chart and setup scripts for running Cosmos DB
 change feed processor soak tests on AKS.
 
+## Prerequisites
+
+Before deploying, create the required Kubernetes secrets:
+
+```bash
+# Cosmos DB key secret (referenced by Helm chart)
+kubectl create secret generic <release-name>-secrets \
+  --namespace cosmos-soak \
+  --from-literal=cosmos-key="<your-cosmos-key>"
+
+# ACR pull secret (if not using AKS-managed ACR attachment)
+kubectl create secret docker-registry acr-secret \
+  --namespace cosmos-soak \
+  --docker-server=<acr-name>.azurecr.io \
+  --docker-username=<sp-id> \
+  --docker-password=<sp-password>
+```
+
+If using AKS with `--attach-acr`, the `acr-secret` is not needed
+and can be removed from the chart templates.
+
 ## Quick Start
 
 ```bash
@@ -15,7 +36,9 @@ change feed processor soak tests on AKS.
 # 3. Build + push image to ACR
 ./scripts/setup-acr.sh
 
-# 4. Deploy (from repo root)
+# 4. Create secrets (see Prerequisites above)
+
+# 5. Deploy (from repo root)
 cd ../..
 ./run-soak.sh
 ```
@@ -42,11 +65,12 @@ cd ../..
 
 ## Azure Resources
 
-Default configuration targets:
-- Subscription: `b31b6408-0fb5-4688-9a3c-33ffb3983297`
-- Resource Group: `abhm-rg`
-- AKS: `abhm-avad-soak-aks` (3x D4s_v5 nodes)
-- ACR: `abhmavadsoakacr`
-- Cosmos: `abhm-cfp-region-test`
+Override default resource names via environment variables
+in each script:
 
-Override via environment variables in each script.
+```bash
+export SUBSCRIPTION="<your-subscription-id>"
+export RG="<your-resource-group>"
+export AKS_CLUSTER="<your-aks-name>"
+export ACR_NAME="<your-acr-name>"
+```
