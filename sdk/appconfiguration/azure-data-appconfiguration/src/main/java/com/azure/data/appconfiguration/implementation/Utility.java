@@ -224,19 +224,21 @@ public class Utility {
         if (nextLink == null) {
             return null;
         }
-        int afterIdx = nextLink.indexOf("after=");
-        if (afterIdx == -1) {
+        int queryStart = nextLink.indexOf('?');
+        if (queryStart == -1) {
             return null;
         }
-        String afterValue = nextLink.substring(afterIdx + AFTER_TAG.length());
-        int ampIdx = afterValue.indexOf('&');
-        String rawValue = ampIdx != -1 ? afterValue.substring(0, ampIdx) : afterValue;
-        try {
-            return URLDecoder.decode(rawValue, StandardCharsets.UTF_8.name());
-        } catch (java.io.UnsupportedEncodingException e) {
-            // UTF-8 is always supported
-            throw new RuntimeException(e);
+        for (String param : nextLink.substring(queryStart + 1).split("&")) {
+            if (param.startsWith(AFTER_TAG)) {
+                try {
+                    return URLDecoder.decode(param.substring(AFTER_TAG.length()), StandardCharsets.UTF_8.name());
+                } catch (java.io.UnsupportedEncodingException e) {
+                    // UTF-8 is always supported
+                    throw new RuntimeException(e);
+                }
+            }
         }
+        return null;
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
