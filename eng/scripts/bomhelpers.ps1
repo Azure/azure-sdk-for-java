@@ -59,7 +59,6 @@ function NormalizeVersionFileForPatching([string[]]$PatchedArtifactNames, [strin
   }
 
   if ($depsToNormalize.Count -eq 0) {
-    Write-Host "No non-patched {;current} dependencies found to normalize."
     return
   }
 
@@ -119,19 +118,33 @@ function UpdateDependencyOfClientSDK() {
   $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
-# Get all azure com client artifacts from Maven.
-function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
-  $groupPath = $GroupId -replace '\.', '/'
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath" -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
-  $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
-  return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
+# Get all azure com client artifact IDs from version_client.txt.
+function GetAllAzComClientArtifactIds($GroupId = "com.azure") {
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $artifactIds = @()
+  foreach ($line in Get-Content $versionFilePath) {
+    if ($line -and !$line.StartsWith("#") -and $line.StartsWith("${GroupId}:")) {
+      $artifactId = $line.Split(";")[0].Split(":")[1]
+      if ($artifactId -like "azure-*" -and $artifactId -notlike "azure-spring*") {
+        $artifactIds += $artifactId
+      }
+    }
+  }
+  return $artifactIds
 }
 
 # Get version info for an artifact.
 function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
   $groupPath = $GroupId -replace '\.', '/'
-  $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
-  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+  # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+  # Maven Central endpoint is blocked on the build agent network.
+  $mavenMetadataUrl = "$PackageRepositoryUri/$groupPath/$($ArtifactId)/maven-metadata.xml"
+  $headers = @{}
+  if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+    $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+  }
+  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers $headers
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
   $sortedVersions = [AzureEngSemanticVersion]::SortVersions($semVersions)
@@ -488,12 +501,12 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
       Write-Host "git fetch $RemoteName $oldReleaseTag"
       $cmdOutput = git fetch $RemoteName $oldReleaseTag
-      
+
       if ($LASTEXITCODE -ne 0) {
         LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
         exit $LASTEXITCODE
       }
-      
+
       $releaseTag = $oldReleaseTag
     }
 
