@@ -316,17 +316,14 @@ public class BenchmarkOrchestrator {
             .flatMap(globalIndex -> {
                 int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
                 Benchmark selected = benchmarks.get(tenantIndex);
-                Mono<?> operation;
-                try {
-                    operation = selected.performSingleOperation();
-                } catch (Exception e) {
-                    logger.error("Synchronous exception in performSingleOperation for {}",
-                        selected.getClass().getSimpleName(), e);
-                    operation = Mono.empty();
-                }
-                return operation
+                return Mono.defer(selected::performSingleOperation)
                     .subscribeOn(benchmarkScheduler)
-                    .doOnTerminate(completedCount::incrementAndGet);
+                    .doOnTerminate(completedCount::incrementAndGet)
+                    .onErrorResume(e -> {
+                        logger.error("Operation failed for {}: {}",
+                            selected.getClass().getSimpleName(), e.getMessage(), e);
+                        return Mono.empty();
+                    });
             }, concurrency)
             .blockLast();
 
