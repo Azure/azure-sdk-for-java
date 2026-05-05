@@ -1,0 +1,21 @@
+{
+  "cosmos": {
+    "endpoint": "<your-endpoint-here>",
+    "regionalEndpoint": "",
+    "database": "graph_db",
+    "feedContainer": "avad-test",
+    "leaseContainer": "avad-test-leases",
+    "preferredRegion": "West Central US"
+  },
+  "ingestor": {
+    "opsPerSec": 5000,
+    "docSizeBytes": 1024,
+    "logicalPartitionCount": 100000,
+    "durationSeconds": 3600,
+    "workerCount": 2
+  },
+  "logging": {
+    "producedLogFile": "produced.log",
+    "consumedLogFile": "consumed.log"
+  }
+}

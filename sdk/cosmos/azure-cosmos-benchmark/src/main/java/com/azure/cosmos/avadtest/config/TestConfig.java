@@ -1,13 +1,26 @@
 package com.azure.cosmos.avadtest.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Configuration loaded from environment variables or system properties.
- * Env vars take precedence over system properties.
+ * Configuration loaded from a JSON file with environment variable overrides.
+ * <p>
+ * Load order (highest precedence first):
+ * <ol>
+ *   <li>Environment variables (e.g. COSMOS_KEY — always wins for secrets)</li>
+ *   <li>JSON config file (--config path)</li>
+ *   <li>Built-in defaults</li>
+ * </ol>
  */
 public final class TestConfig {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String endpoint;
     private final String regionalEndpoint;
@@ -41,11 +54,41 @@ public final class TestConfig {
         this.workerCount = builder.workerCount;
     }
 
+    /**
+     * Load config from a JSON file. Environment variables override JSON values.
+     */
+    public static TestConfig fromJson(String filePath) throws IOException {
+        JsonNode root = MAPPER.readTree(new File(filePath));
+        JsonNode cosmos = root.path("cosmos");
+        JsonNode ingestor = root.path("ingestor");
+        JsonNode logging = root.path("logging");
+
+        return new Builder()
+            .endpoint(resolve("COSMOS_ENDPOINT", textOrNull(cosmos, "endpoint"), null))
+            .regionalEndpoint(resolve("COSMOS_REGIONAL_ENDPOINT", textOrNull(cosmos, "regionalEndpoint"), ""))
+            .key(resolve("COSMOS_KEY", textOrNull(cosmos, "key"), null))
+            .database(resolve("COSMOS_DATABASE", textOrNull(cosmos, "database"), "graph_db"))
+            .feedContainer(resolve("COSMOS_FEED_CONTAINER", textOrNull(cosmos, "feedContainer"), "avad-test"))
+            .leaseContainer(resolve("COSMOS_LEASE_CONTAINER", textOrNull(cosmos, "leaseContainer"), "avad-test-leases"))
+            .preferredRegion(resolve("COSMOS_PREFERRED_REGION", textOrNull(cosmos, "preferredRegion"), "West Central US"))
+            .opsPerSec(resolveInt("OPS_PER_SEC", intOrNull(ingestor, "opsPerSec"), 5000))
+            .docSizeBytes(resolveInt("DOC_SIZE_BYTES", intOrNull(ingestor, "docSizeBytes"), 1024))
+            .logicalPartitionCount(resolveInt("LOGICAL_PARTITION_COUNT", intOrNull(ingestor, "logicalPartitionCount"), 100000))
+            .producedLogFile(resolve("PRODUCED_LOG", textOrNull(logging, "producedLogFile"), "produced.log"))
+            .consumedLogFile(resolve("CONSUMED_LOG", textOrNull(logging, "consumedLogFile"), "consumed.log"))
+            .durationSeconds(resolveInt("DURATION_SECONDS", intOrNull(ingestor, "durationSeconds"), 3600))
+            .workerCount(resolveInt("WORKER_COUNT", intOrNull(ingestor, "workerCount"), 2))
+            .build();
+    }
+
+    /**
+     * Load config from environment variables only (no JSON file).
+     */
     public static TestConfig fromEnv() {
         return new Builder()
-            .endpoint(env("COSMOS_ENDPOINT"))
+            .endpoint(envRequired("COSMOS_ENDPOINT"))
             .regionalEndpoint(envOrDefault("COSMOS_REGIONAL_ENDPOINT", ""))
-            .key(env("COSMOS_KEY"))
+            .key(envRequired("COSMOS_KEY"))
             .database(envOrDefault("COSMOS_DATABASE", "graph_db"))
             .feedContainer(envOrDefault("COSMOS_FEED_CONTAINER", "avad-test"))
             .leaseContainer(envOrDefault("COSMOS_LEASE_CONTAINER", "avad-test-leases"))
@@ -60,28 +103,52 @@ public final class TestConfig {
             .build();
     }
 
-    private static String env(String name) {
+    /** Resolve: env var > JSON value > default. */
+    private static String resolve(String envName, String jsonValue, String defaultValue) {
+        String env = envOrNull(envName);
+        if (env != null) return env;
+        if (jsonValue != null && !jsonValue.trim().isEmpty()) return jsonValue;
+        if (defaultValue != null) return defaultValue;
+        throw new IllegalStateException("Required config missing: " + envName);
+    }
+
+    private static int resolveInt(String envName, Integer jsonValue, int defaultValue) {
+        String env = envOrNull(envName);
+        if (env != null) return Integer.parseInt(env);
+        if (jsonValue != null) return jsonValue;
+        return defaultValue;
+    }
+
+    private static String textOrNull(JsonNode parent, String field) {
+        JsonNode node = parent.path(field);
+        return node.isMissingNode() || node.isNull() ? null : node.asText();
+    }
+
+    private static Integer intOrNull(JsonNode parent, String field) {
+        JsonNode node = parent.path(field);
+        return node.isMissingNode() || node.isNull() ? null : node.asInt();
+    }
+
+    private static String envOrNull(String name) {
         String val = System.getenv(name);
-        if (val == null || val.trim().isEmpty()) {
-            val = System.getProperty(name);
-        }
-        if (val == null || val.trim().isEmpty()) {
-            throw new IllegalStateException("Required config missing: " + name);
-        }
+        if (val != null && !val.trim().isEmpty()) return val;
+        val = System.getProperty(name);
+        return (val != null && !val.trim().isEmpty()) ? val : null;
+    }
+
+    private static String envRequired(String name) {
+        String val = envOrNull(name);
+        if (val == null) throw new IllegalStateException("Required config missing: " + name);
         return val;
     }
 
     private static String envOrDefault(String name, String defaultVal) {
-        String val = System.getenv(name);
-        if (val == null || val.trim().isEmpty()) {
-            val = System.getProperty(name);
-        }
-        return (val != null && !val.trim().isEmpty()) ? val : defaultVal;
+        String val = envOrNull(name);
+        return val != null ? val : defaultVal;
     }
 
     public String endpoint() { return endpoint; }
     public String regionalEndpoint() { return regionalEndpoint; }
-    /** Returns regional endpoint if set, otherwise global endpoint. For use by readers. */
     public String readerEndpoint() {
         return (regionalEndpoint != null && !regionalEndpoint.trim().isEmpty()) ? regionalEndpoint : endpoint;
     }
@@ -96,9 +163,7 @@ public final class TestConfig {
     public int logicalPartitionCount() { return logicalPartitionCount; }
     public String producedLogFile() { return producedLogFile; }
     public String consumedLogFile() { return consumedLogFile; }
-    /** Duration in seconds. 0 = run forever until killed. */
     public int durationSeconds() { return durationSeconds; }
-    /** Number of CFP worker instances per reader mode. */
     public int workerCount() { return workerCount; }
 
     public static final class Builder {

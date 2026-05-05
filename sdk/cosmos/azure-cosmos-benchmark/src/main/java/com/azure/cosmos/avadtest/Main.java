@@ -42,8 +42,19 @@ public final class Main {
     @Parameter(names = "--gap-sla-minutes", description = "Minutes before an unconsumed event is flagged as a gap")
     private int gapSlaMinutes = 10;
 
+    @Parameter(names = "--config", description = "Path to JSON config file (env vars override JSON values)")
+    private String configFile;
+
     @Parameter(names = {"-h", "--help"}, description = "Help", help = true)
     private boolean help;
+
+    private TestConfig loadConfig() throws Exception {
+        if (configFile != null) {
+            log.info("Loading config from: {}", configFile);
+            return TestConfig.fromJson(configFile);
+        }
+        return TestConfig.fromEnv();
+    }
 
     private int run() throws Exception {
         log.info("Starting cosmos-avad-test in mode: {}", mode);
@@ -69,7 +80,7 @@ public final class Main {
         HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
-        TestConfig config = TestConfig.fromEnv();
+        TestConfig config = loadConfig();
         try (Ingestor ingestor = new Ingestor(config)) {
             healthServer.setReady(true);
             ingestor.run();
@@ -83,7 +94,7 @@ public final class Main {
         HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
-        TestConfig config = TestConfig.fromEnv();
+        TestConfig config = loadConfig();
         try (LatestVersionReader reader = new LatestVersionReader(config)) {
             healthServer.setReady(true);
             reader.run();
@@ -97,7 +108,7 @@ public final class Main {
         HealthServer healthServer = new HealthServer(healthPort);
         healthServer.start();
 
-        TestConfig config = TestConfig.fromEnv();
+        TestConfig config = loadConfig();
         try (AvadReader reader = new AvadReader(config)) {
             healthServer.setReady(true);
             reader.run();
@@ -107,8 +118,8 @@ public final class Main {
         }
     }
 
-    private int runHealthMonitor() {
-        TestConfig config = TestConfig.fromEnv();
+    private int runHealthMonitor() throws Exception {
+        TestConfig config = loadConfig();
         HealthMonitor monitor = new HealthMonitor(config, runId, gapSlaMinutes);
         try {
             return monitor.runChecks();
