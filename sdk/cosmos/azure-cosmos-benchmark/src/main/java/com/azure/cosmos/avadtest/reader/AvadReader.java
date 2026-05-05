@@ -66,6 +66,7 @@ public final class AvadReader implements AutoCloseable {
             .endpoint(config.readerEndpoint())
             .key(config.key())
             .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
             .preferredRegions(config.preferredRegions())
             .buildAsyncClient();
 

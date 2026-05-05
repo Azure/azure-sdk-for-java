@@ -81,6 +81,7 @@ public final class Ingestor implements AutoCloseable {
             .endpoint(config.endpoint())
             .key(config.key())
             .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
             .preferredRegions(config.preferredRegions())
             .buildAsyncClient();
 
