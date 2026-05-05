@@ -336,7 +336,7 @@ public final class ReadmeSamples {
             .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
         // Azure Personal Voice - requires speaker profile ID and model
-        // Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+        // Models: DRAGON_LATEST_NEURAL, DRAGON_HDOMNI_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, MAI_VOICE_1
         VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
             .setVoice(BinaryData.fromObject(
                 new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
