@@ -479,9 +479,21 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
   if (!$currentPomFileVersion -or !$artifactDirPath -or !$changelogPath) {
     $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName -GroupId $GroupId)
-    $artifactDirPath = $pkgProperties.DirectoryPath
-    $currentPomFileVersion = $pkgProperties.Version
-    $changelogPath = $pkgProperties.ChangeLogPath
+    # Only fill in fields that weren't supplied by the caller. In particular, do NOT overwrite
+    # an explicitly-passed $currentPomFileVersion: when called from
+    # Generate-Patches-For-Automatic-Releases.ps1, that value was captured from pom.xml BEFORE
+    # any sibling iteration's UpdateDependencyOfClientSDK / update_versions.py rewrote this
+    # package's pom on disk. Re-reading pom.xml here would clobber that with the (already
+    # mutated) GA version and cause the source-reset gate below to be skipped.
+    if (!$artifactDirPath) {
+      $artifactDirPath = $pkgProperties.DirectoryPath
+    }
+    if (!$currentPomFileVersion) {
+      $currentPomFileVersion = $pkgProperties.Version
+    }
+    if (!$changelogPath) {
+      $changelogPath = $pkgProperties.ChangeLogPath
+    }
   }
 
   if (!$artifactDirPath) {
