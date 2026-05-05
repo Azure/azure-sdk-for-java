@@ -166,11 +166,6 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
     }
 
     @Override
-    public AccessTier getSmartAccessTier() {
-        return AccessTier.fromString(headers.getXMsSmartAccessTier());
-    }
-
-    @Override
     public ArchiveStatus getArchiveStatus() {
         return ArchiveStatus.fromString(headers.getXMsArchiveStatus());
     }

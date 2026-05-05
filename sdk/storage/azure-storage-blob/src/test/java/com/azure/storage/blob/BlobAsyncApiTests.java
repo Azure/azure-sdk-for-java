@@ -2264,48 +2264,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void deleteAccessTierRequestConditions(boolean isAccessTierModifiedSince) {
-        OffsetDateTime changeTime = testResourceNamer.now();
-        BlobRequestConditions brc = new BlobRequestConditions();
-        if (isAccessTierModifiedSince) {
-            // requires modification since yesterday (which there should be modification in this time window)
-            brc.setAccessTierIfModifiedSince(changeTime.plusDays(-1));
-        } else {
-            // requires no modification after 5 minutes from now (which there should be no modification then)
-            brc.setAccessTierIfUnmodifiedSince(changeTime.plusMinutes(5));
-        }
-
-        Mono<Response<Void>> response = bc.setAccessTier(AccessTier.COOL).then(bc.deleteWithResponse(null, brc));
-
-        StepVerifier.create(response).assertNext(r -> assertEquals(202, r.getStatusCode())).verifyComplete();
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void deleteAccessTierRequestConditionsFail(boolean isAccessTierModifiedSince) {
-        OffsetDateTime changeTime = testResourceNamer.now();
-        BlobRequestConditions brc = new BlobRequestConditions();
-        if (isAccessTierModifiedSince) {
-            // requires modification after 5 minutes from now (which there should be no modification then)
-            brc.setAccessTierIfModifiedSince(changeTime.plusMinutes(5));
-        } else {
-            // requires no modification since yesterday (which there should be modification in this time window)
-            brc.setAccessTierIfUnmodifiedSince(changeTime.plusDays(-1));
-        }
-
-        Mono<Response<Void>> response = bc.setAccessTier(AccessTier.COOL).then(bc.deleteWithResponse(null, brc));
-
-        StepVerifier.create(response).verifyErrorSatisfies(e -> {
-            BlobStorageException ex = assertInstanceOf(BlobStorageException.class, e);
-            assertEquals(412, ex.getStatusCode());
-            assertEquals("AccessTierChangeTimeConditionNotMet", ex.getErrorCode().toString());
-        });
-    }
-
     @Test
     public void blobDeleteError() {
         bc = ccAsync.getBlobAsyncClient(generateBlobName());
@@ -2575,21 +2533,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getProperties().getAccessTier()))
             .verifyComplete();
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
-    @Test
-    public void uploadStreamAccessTierSmart() {
-        bc = ccAsync.getBlobAsyncClient(generateBlobName());
-        BlobParallelUploadOptions options
-            = new BlobParallelUploadOptions(DATA.getDefaultFlux()).setTier(AccessTier.SMART);
-        Mono<Response<BlobProperties>> response
-            = bc.uploadWithResponse(options).then(bc.getPropertiesWithResponse(null));
-
-        StepVerifier.create(response).assertNext(r -> {
-            assertEquals(AccessTier.SMART, r.getValue().getAccessTier());
-            assertNotNull(r.getValue().getSmartAccessTier());
-        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")

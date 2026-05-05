@@ -30,12 +30,6 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
     @Generated
     private String expiry;
 
-    /*
-     * The delegated user tenant id in Azure AD
-     */
-    @Generated
-    private String delegatedUserTenantId;
-
     /**
      * Creates an instance of KeyInfo class.
      */
@@ -87,28 +81,6 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
         return this;
     }
 
-    /**
-     * Get the delegatedUserTenantId property: The delegated user tenant id in Azure AD.
-     * 
-     * @return the delegatedUserTenantId value.
-     */
-    @Generated
-    public String getDelegatedUserTenantId() {
-        return this.delegatedUserTenantId;
-    }
-
-    /**
-     * Set the delegatedUserTenantId property: The delegated user tenant id in Azure AD.
-     * 
-     * @param delegatedUserTenantId the delegatedUserTenantId value to set.
-     * @return the KeyInfo object itself.
-     */
-    @Generated
-    public KeyInfo setDelegatedUserTenantId(String delegatedUserTenantId) {
-        this.delegatedUserTenantId = delegatedUserTenantId;
-        return this;
-    }
-
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -122,7 +94,6 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Start", this.start);
         xmlWriter.writeStringElement("Expiry", this.expiry);
-        xmlWriter.writeStringElement("DelegatedUserTid", this.delegatedUserTenantId);
         return xmlWriter.writeEndElement();
     }
 
@@ -162,8 +133,6 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
                     deserializedKeyInfo.start = reader.getStringElement();
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
                     deserializedKeyInfo.expiry = reader.getStringElement();
-                } else if ("DelegatedUserTid".equals(elementName.getLocalPart())) {
-                    deserializedKeyInfo.delegatedUserTenantId = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
