@@ -31,7 +31,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -108,8 +107,16 @@ public final class BuilderHelper {
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
-                String accountName
-                    = StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.QUEUE_URI_SUBDOMAIN);
+
+                String accountName = null;
+                if (!CoreUtils.isNullOrEmpty(host)) {
+                    int accountNameIndex = host.indexOf('.');
+                    if (accountNameIndex == -1) {
+                        accountName = host;
+                    } else {
+                        accountName = host.substring(0, accountNameIndex);
+                    }
+                }
 
                 parts.setAccountName(accountName);
 
