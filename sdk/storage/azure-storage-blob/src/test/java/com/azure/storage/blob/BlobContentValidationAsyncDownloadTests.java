@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
@@ -22,6 +23,7 @@ import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,6 +49,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
+    /**
+     * {@link BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases()} starts at ~96 MiB; above this threshold fuzzy
+     * parallel download helpers use temp files + {@link BlobTestBase#compareFiles(File, File, long, long)} so the full
+     * payload never lives twice in heap.
+     */
+    private static final int FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
+
     private final List<File> createdFiles = new ArrayList<>();
 
     @AfterEach
@@ -437,6 +447,115 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             .assertNext(result -> TestUtils.assertArraysEqual(randomData, result))
             .verifyComplete();
         assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+    }
+
+    // ---------- Fuzzy parallel download (deterministic grids) ----------
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadReplayableCases")
+    public void fuzzyParallelDownloadReplayableRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("replayable", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // payload > blockSize for every tuple; chunked range GETs across many requests.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadMediumMultiPartCases")
+    public void fuzzyParallelDownloadMediumMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("mediumMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // payload >> blockSize; ~96-320 MiB downloads.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases")
+    public void fuzzyParallelDownloadLargeMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("largeMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // ~1 GiB single case; far too large for the test proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadOneGiBCases")
+    public void fuzzyParallelDownloadOneGiBRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("oneGiB", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    private void assertParallelDownloadFuzzyRoundTripAsync(String caseKind, int payloadBytes, long blockSizeBytes,
+        int maxConcurrency) throws IOException {
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+
+        ParallelTransferOptions parallelOptions
+            = new ParallelTransferOptions().setBlockSizeLong(blockSizeBytes).setMaxConcurrency(maxConcurrency);
+
+        String assertionMessage = "Fuzzy parallel download [" + caseKind + "] payloadBytes=" + payloadBytes
+            + ", blockSize=" + blockSizeBytes + ", maxConcurrency=" + maxConcurrency;
+
+        if (payloadBytes >= FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
+            File sourceFile = getRandomFile(payloadBytes);
+            sourceFile.deleteOnExit();
+            createdFiles.add(sourceFile);
+            File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-async", ".bin").toFile();
+            outFile.deleteOnExit();
+            createdFiles.add(outFile);
+            Files.deleteIfExists(outFile.toPath());
+
+            BlobUploadFromFileOptions uploadOptions
+                = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath()).setParallelTransferOptions(
+                    new com.azure.storage.blob.models.ParallelTransferOptions().setBlockSizeLong(blockSizeBytes)
+                        .setMaxConcurrency(maxConcurrency));
+            assertNotNull(client.uploadFromFileWithResponse(uploadOptions).block().getValue().getETag(),
+                assertionMessage);
+
+            BlobDownloadToFileOptions downloadOptions
+                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+            StepVerifier.create(client.downloadToFileWithResponse(downloadOptions))
+                .assertNext(r -> assertNotNull(r.getValue(), assertionMessage))
+                .verifyComplete();
+
+            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
+        } else {
+            byte[] randomData = getRandomByteArray(payloadBytes);
+            client.upload(BinaryData.fromBytes(randomData), true).block();
+
+            if (payloadBytes > blockSizeBytes) {
+                File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-async-mp", ".bin").toFile();
+                outFile.deleteOnExit();
+                createdFiles.add(outFile);
+                Files.deleteIfExists(outFile.toPath());
+
+                BlobDownloadToFileOptions downloadOptions = new BlobDownloadToFileOptions(outFile.toPath().toString())
+                    .setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+                StepVerifier.create(client.downloadToFileWithResponse(downloadOptions))
+                    .assertNext(r -> assertNotNull(r.getValue(), assertionMessage))
+                    .verifyComplete();
+
+                byte[] downloaded = Files.readAllBytes(outFile.toPath());
+                assertArrayEquals(randomData, downloaded, assertionMessage);
+            } else {
+                BlobDownloadContentOptions downloadOptions
+                    = new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+                StepVerifier.create(client.downloadContentWithResponse(downloadOptions))
+                    .assertNext(r -> assertArrayEquals(randomData, r.getValue().toBytes(), assertionMessage))
+                    .verifyComplete();
+
+                BlobDownloadStreamOptions streamOptions
+                    = new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                StepVerifier
+                    .create(client.downloadStreamWithResponse(streamOptions)
+                        .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+                    .assertNext(bytes -> assertArrayEquals(randomData, bytes, assertionMessage))
+                    .verifyComplete();
+            }
+        }
+        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded), assertionMessage);
     }
 
 }

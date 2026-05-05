@@ -1518,4 +1518,85 @@ public class BlobTestBase extends TestProxyTestBase {
         }
         return sum;
     }
+
+    /**
+     * Every tuple keeps payloadBytes <= blockSizeBytes, so the parallel download path issues a single GET (no
+     * follow-on range requests for additional blocks), which replays under the test proxy.
+     * <p>
+     * Sizes are deliberately non-power-of-two (e.g. 7 * KB + 3) and use mixed block ceilings (64 KiB through
+     * multi-MiB) to catch alignment and decoder edge cases at structural boundaries (message header, segment
+     * footer, message footer); the 4 MiB boundary row exercises the exact service-side default segment length.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadReplayableCases() {
+        return Stream.of(Arguments.of(1, 64L * Constants.KB, 1),
+            Arguments.of(7 * Constants.KB + 3, 64L * Constants.KB, 1),
+            Arguments.of(7 * Constants.KB + 3, 128L * Constants.KB, 4),
+            Arguments.of(41 * Constants.KB + 17, 256L * Constants.KB, 1),
+            Arguments.of(41 * Constants.KB + 17, 256L * Constants.KB, 8),
+            Arguments.of(199 * Constants.KB + 5, 512L * Constants.KB, 2),
+            Arguments.of(512 * Constants.KB - 31, 1L * Constants.MB, 8),
+            Arguments.of(896 * Constants.KB + 101, 1L * Constants.MB, 6),
+            Arguments.of(2 * Constants.MB - 1, 4L * Constants.MB, 4),
+            Arguments.of(2 * Constants.MB + 33, 4L * Constants.MB, 1),
+            Arguments.of(4 * Constants.MB - 1, 4L * Constants.MB, 2),
+            Arguments.of(4 * Constants.MB, 4L * Constants.MB, 1),
+            Arguments.of(4 * Constants.MB, 7L * Constants.MB + 919, 3));
+    }
+
+    /**
+     * payloadBytes > blockSizeBytes, so downloads always go through multiple ranged GETs (parallel download
+     * fan-out) with totals roughly 6-80 MiB. Large enough to exercise the structured-message decoder over
+     * multiple HTTP responses, but cheaper than {@link #fuzzyParallelDownloadLargeMultiPartCases}.
+     * <p>
+     * Block sizes step through common service limits (1-8 MiB, half-MiB tail values); concurrency 1-8 pairs
+     * with imbalanced payloads (e.g. 701, 333) to flush merge/retry edge cases.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadMediumMultiPartCases() {
+        return Stream.of(Arguments.of(6 * Constants.MB + 701, Constants.MB, 1),
+            Arguments.of(6 * Constants.MB + 701, 3L * Constants.MB + 271, 4),
+            Arguments.of(9 * Constants.MB + 333, 2L * Constants.MB, 1),
+            Arguments.of(9 * Constants.MB + 333, 3L * Constants.MB + 199, 8),
+            Arguments.of(12 * Constants.MB + 901, 4L * Constants.MB + 901, 2),
+            Arguments.of(14 * Constants.MB, 500L * Constants.KB + 13, 6),
+            Arguments.of(18 * Constants.MB - 4021, 5L * Constants.MB - 701, 3),
+            Arguments.of(24 * Constants.MB, 8L * Constants.MB, 8),
+            Arguments.of(28 * Constants.MB + 56789, 7L * Constants.MB + 13, 2),
+            Arguments.of(31 * Constants.MB, 1024L * Constants.KB + 17, 4),
+            Arguments.of(40 * Constants.MB + 12345, 7L * Constants.MB + 13, 3),
+            Arguments.of(48 * Constants.MB - 777, 5L * Constants.MB + 809L * Constants.KB, 6),
+            Arguments.of(56 * Constants.MB + 19, 9L * Constants.MB + 4096, 8),
+            Arguments.of(72 * Constants.MB, 4L * Constants.MB + 65536, 8),
+            Arguments.of(80 * Constants.MB + 321, 13L * Constants.MB - 3073, 1));
+    }
+
+    /**
+     * Stresses high block counts and long-running parallel downloads (~96-320 MiB payloads) with service-realistic
+     * block sizes (8-61 MiB class) and heavy concurrency.
+     * <p>
+     * The final rows use named near-256/288/320 MiB totals with irregular byte tails to keep total bytes and block
+     * remainders off common multiples while still bounding runtime for Live-only CI.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadLargeMultiPartCases() {
+        final int payload257MiBPlus = (int) (257L * Constants.MB + 18881);
+        final int payload288MiBPlus = (int) (288L * Constants.MB + 7777);
+        final int payload320MiBPlus = (int) (320L * Constants.MB + 1999);
+        return Stream.of(Arguments.of(96 * Constants.MB + 17, 8L * Constants.MB + 511, 2),
+            Arguments.of(112 * Constants.MB, 15L * Constants.MB + 4096, 8),
+            Arguments.of(128 * Constants.MB + 45673, 17L * Constants.MB - 11264 + 173, 4),
+            Arguments.of(160 * Constants.MB + 12345, 12L * Constants.MB + 8192, 8),
+            Arguments.of(192 * Constants.MB + 9876, 31L * Constants.MB - 513, 8),
+            Arguments.of(224 * Constants.MB, 23L * Constants.MB + 524288, 8),
+            Arguments.of(payload257MiBPlus, 61L * Constants.MB + 23L * Constants.KB, 6),
+            Arguments.of(payload288MiBPlus, 36L * Constants.MB + 513, 8),
+            Arguments.of(payload320MiBPlus, 16L * Constants.MB + 511, 8));
+    }
+
+    /**
+     * Single ~1 GiB download with high concurrency and an awkward (non-aligned) tail to exercise the structured
+     * message decoder under a sustained, fan-out-heavy parallel download. Live-only and file-backed so payload
+     * never materializes twice in heap.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadOneGiBCases() {
+        return Stream.of(Arguments.of((int) (1L * Constants.GB + 1377), 16L * Constants.MB + 511, 8));
+    }
 }
