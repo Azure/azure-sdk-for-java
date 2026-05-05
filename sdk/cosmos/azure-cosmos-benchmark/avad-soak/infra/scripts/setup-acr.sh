@@ -2,6 +2,14 @@
 # =============================================================================
 # ACR Setup + Image Build/Push
 # =============================================================================
+# Builds the benchmark module locally (fat jar), then pushes a minimal
+# runtime image to ACR. No multi-stage Docker build needed — avoids
+# dependency resolution issues with internal SDK modules.
+#
+# Usage:
+#   ./setup-acr.sh
+#   IMAGE_TAG=v2 ./setup-acr.sh
+# =============================================================================
 
 set -euo pipefail
 
@@ -32,9 +40,22 @@ az aks update \
     --attach-acr "$ACR_NAME" \
     --output none 2>/dev/null || echo "AKS-ACR attachment skipped"
 
-echo "=== Building + pushing image ==="
+echo "=== Building module locally ==="
 
-# Build and push using ACR Tasks (no local Docker needed)
+cd "$PROJECT_DIR"
+mvn package -DskipTests -DskipCheckstyle -Dspotbugs.skip=true -Drevapi.skip=true -B -q
+
+# Verify the fat jar exists
+FAT_JAR=$(ls target/azure-cosmos-benchmark-*-jar-with-dependencies.jar 2>/dev/null | head -1)
+if [ -z "$FAT_JAR" ]; then
+    echo "ERROR: Fat jar not found. Check maven-shade/assembly plugin config."
+    exit 1
+fi
+echo "Fat jar: $FAT_JAR"
+
+echo "=== Pushing image to ACR ==="
+
+# Build and push using ACR Tasks — context is the module root (has target/ + Dockerfile path)
 az acr build \
     --registry "$ACR_NAME" \
     --image "${IMAGE_NAME}:${IMAGE_TAG}" \
