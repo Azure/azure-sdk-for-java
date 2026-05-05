@@ -27,7 +27,7 @@ public final class EventLog implements AutoCloseable {
     private final ReentrantLock lock = new ReentrantLock();
 
     public EventLog(String filePath) throws IOException {
-        Path path = Path.of(filePath);
+        Path path = java.nio.file.Paths.get(filePath);
         this.writer = Files.newBufferedWriter(path,
             StandardOpenOption.CREATE, StandardOpenOption.APPEND, StandardOpenOption.WRITE);
         log.info("EventLog opened: {}", path.toAbsolutePath());

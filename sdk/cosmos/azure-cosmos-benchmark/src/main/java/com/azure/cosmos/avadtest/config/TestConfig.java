@@ -1,5 +1,6 @@
 package com.azure.cosmos.avadtest.config;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,10 +62,10 @@ public final class TestConfig {
 
     private static String env(String name) {
         String val = System.getenv(name);
-        if (val == null || val.isBlank()) {
+        if (val == null || val.trim().isEmpty()) {
             val = System.getProperty(name);
         }
-        if (val == null || val.isBlank()) {
+        if (val == null || val.trim().isEmpty()) {
             throw new IllegalStateException("Required config missing: " + name);
         }
         return val;
@@ -72,24 +73,24 @@ public final class TestConfig {
 
     private static String envOrDefault(String name, String defaultVal) {
         String val = System.getenv(name);
-        if (val == null || val.isBlank()) {
+        if (val == null || val.trim().isEmpty()) {
             val = System.getProperty(name);
         }
-        return (val != null && !val.isBlank()) ? val : defaultVal;
+        return (val != null && !val.trim().isEmpty()) ? val : defaultVal;
     }
 
     public String endpoint() { return endpoint; }
     public String regionalEndpoint() { return regionalEndpoint; }
     /** Returns regional endpoint if set, otherwise global endpoint. For use by readers. */
     public String readerEndpoint() {
-        return (regionalEndpoint != null && !regionalEndpoint.isBlank()) ? regionalEndpoint : endpoint;
+        return (regionalEndpoint != null && !regionalEndpoint.trim().isEmpty()) ? regionalEndpoint : endpoint;
     }
     public String key() { return key; }
     public String database() { return database; }
     public String feedContainer() { return feedContainer; }
     public String leaseContainer() { return leaseContainer; }
     public String preferredRegion() { return preferredRegion; }
-    public List<String> preferredRegions() { return List.of(preferredRegion); }
+    public List<String> preferredRegions() { return Collections.singletonList(preferredRegion); }
     public int opsPerSec() { return opsPerSec; }
     public int docSizeBytes() { return docSizeBytes; }
     public int logicalPartitionCount() { return logicalPartitionCount; }

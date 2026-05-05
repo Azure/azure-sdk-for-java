@@ -37,7 +37,7 @@ public final class Reconciler {
         missing.removeAll(consumed);
 
         // Count duplicates (at-least-once delivery)
-        long totalConsumedLines = Files.lines(Path.of(consumedFile)).filter(l -> !l.isBlank()).count();
+        long totalConsumedLines = Files.lines(java.nio.file.Paths.get(consumedFile)).filter(l -> !l.trim().isEmpty()).count();
         long duplicates = totalConsumedLines - consumed.size();
 
         log.info("Produced: {} unique events", produced.size());
@@ -90,9 +90,9 @@ public final class Reconciler {
 
     /** Loads unique eventIds (first field per line). */
     private static Set<String> loadEventIds(String file) throws IOException {
-        try (var lines = Files.lines(Path.of(file))) {
+        try (java.util.stream.Stream<String> lines = Files.lines(java.nio.file.Paths.get(file))) {
             return lines
-                .filter(l -> !l.isBlank())
+                .filter(l -> !l.trim().isEmpty())
                 .map(l -> l.split(",")[0])
                 .collect(Collectors.toSet());
         }
@@ -109,16 +109,16 @@ public final class Reconciler {
         // Load all records grouped by partition key
         Map<String, List<long[]>> recordsByPk = new HashMap<>();
 
-        try (var reader = new BufferedReader(new FileReader(consumedFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(consumedFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) continue;
+                if (line.trim().isEmpty()) continue;
                 String[] parts = line.split(",");
                 if (parts.length < 6) continue;
 
                 String pk = parts[3];
                 long seqNo = Long.parseLong(parts[1]);
-                long lsn = parts[5].isBlank() ? -1 : Long.parseLong(parts[5]);
+                long lsn = parts[5].trim().isEmpty() ? -1 : Long.parseLong(parts[5]);
                 if (lsn < 0) continue; // skip records without LSN
 
                 recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
@@ -127,7 +127,7 @@ public final class Reconciler {
         }
 
         int violations = 0;
-        for (var entry : recordsByPk.entrySet()) {
+        for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
             String pk = entry.getKey();
             List<long[]> records = entry.getValue();
             // Sort by LSN, then check seqNo is non-decreasing within same LSN batch
@@ -161,16 +161,16 @@ public final class Reconciler {
 
         Map<String, List<long[]>> recordsByPk = new HashMap<>();
 
-        try (var reader = new BufferedReader(new FileReader(consumedFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(consumedFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.isBlank()) continue;
+                if (line.trim().isEmpty()) continue;
                 String[] parts = line.split(",");
                 if (parts.length < 7) continue; // CRTS is column 6, only in AVAD logs
 
                 String pk = parts[3];
-                long lsn = parts[5].isBlank() ? -1 : Long.parseLong(parts[5]);
-                long crts = parts[6].isBlank() ? -1 : Long.parseLong(parts[6]);
+                long lsn = parts[5].trim().isEmpty() ? -1 : Long.parseLong(parts[5]);
+                long crts = parts[6].trim().isEmpty() ? -1 : Long.parseLong(parts[6]);
                 if (crts < 0) continue;
 
                 recordsByPk.computeIfAbsent(pk, k -> new ArrayList<>())
@@ -184,7 +184,7 @@ public final class Reconciler {
         }
 
         int violations = 0;
-        for (var entry : recordsByPk.entrySet()) {
+        for (Map.Entry<String, List<long[]>> entry : recordsByPk.entrySet()) {
             String pk = entry.getKey();
             List<long[]> records = entry.getValue();
             // Sort by LSN (delivery order), then check CRTS is non-decreasing

@@ -278,7 +278,12 @@ public final class Ingestor implements AutoCloseable {
     private String generatePayload() {
         int size = config.docSizeBytes();
         if (size <= 0) return "";
-        return "x".repeat(Math.min(size, 10_000));
+        int len = Math.min(size, 10_000);
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append('x');
+        }
+        return sb.toString();
     }
 
     private void trackRecentId(String idAndPk) {

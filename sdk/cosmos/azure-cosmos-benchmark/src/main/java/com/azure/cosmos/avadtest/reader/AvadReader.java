@@ -88,7 +88,7 @@ public final class AvadReader implements AutoCloseable {
             options.setStartTime(Instant.now().minus(Duration.ofDays(5)));
 
             ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
-                .hostName("avad-host-" + ProcessHandle.current().pid() + "-w" + workerIdx)
+                .hostName("avad-host-" + java.lang.management.ManagementFactory.getRuntimeMXBean().getName() + "-w" + workerIdx)
                 .feedContainer(feedContainer)
                 .leaseContainer(leaseContainer)
                 .options(options)
@@ -143,21 +143,19 @@ public final class AvadReader implements AutoCloseable {
             boolean hasPrevious = previous != null && !previous.isNull();
 
             // Track operation types and validate previousImage
-            switch (opType) {
-                case "create" -> totalCreates.increment();
-                case "replace" -> {
-                    totalReplaces.increment();
-                    if (!hasPrevious) {
-                        missingPreviousImageCount.increment();
-                        log.warn("⚠️ MISSING previous on REPLACE: eventId={}, pk={}", eventId, pk);
-                    }
+            if ("create".equals(opType)) {
+                totalCreates.increment();
+            } else if ("replace".equals(opType)) {
+                totalReplaces.increment();
+                if (!hasPrevious) {
+                    missingPreviousImageCount.increment();
+                    log.warn("⚠️ MISSING previous on REPLACE: eventId={}, pk={}", eventId, pk);
                 }
-                case "delete" -> {
-                    totalDeletes.increment();
-                    if (!hasPrevious) {
-                        missingPreviousImageCount.increment();
-                        log.warn("⚠️ MISSING previous on DELETE: eventId={}, pk={}", eventId, pk);
-                    }
+            } else if ("delete".equals(opType)) {
+                totalDeletes.increment();
+                if (!hasPrevious) {
+                    missingPreviousImageCount.increment();
+                    log.warn("⚠️ MISSING previous on DELETE: eventId={}, pk={}", eventId, pk);
                 }
             }
 
