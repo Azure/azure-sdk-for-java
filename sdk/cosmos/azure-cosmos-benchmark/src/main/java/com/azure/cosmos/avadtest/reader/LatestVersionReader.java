@@ -75,7 +75,6 @@ public final class LatestVersionReader implements AutoCloseable {
             ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions();
             options.setLeasePrefix(LEASE_PREFIX);
             options.setFeedPollDelay(Duration.ofSeconds(1));
-            options.setStartTime(Instant.now().minus(Duration.ofDays(5)));
 
             ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
                 .hostName("lv-host-" + ManagementFactory.getRuntimeMXBean().getName() + "-w" + i)
