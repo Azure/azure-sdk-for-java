@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -27,7 +28,7 @@ public final class EventLog implements AutoCloseable {
     private final ReentrantLock lock = new ReentrantLock();
 
     public EventLog(String filePath) throws IOException {
-        Path path = java.nio.file.Paths.get(filePath);
+        Path path = Paths.get(filePath);
         this.writer = Files.newBufferedWriter(path,
             StandardOpenOption.CREATE, StandardOpenOption.APPEND, StandardOpenOption.WRITE);
         log.info("EventLog opened: {}", path.toAbsolutePath());

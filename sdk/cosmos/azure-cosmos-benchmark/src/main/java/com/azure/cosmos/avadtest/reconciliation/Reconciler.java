@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Reconciler that compares produced vs consumed event logs.
@@ -37,7 +39,7 @@ public final class Reconciler {
         missing.removeAll(consumed);
 
         // Count duplicates (at-least-once delivery)
-        long totalConsumedLines = Files.lines(java.nio.file.Paths.get(consumedFile)).filter(l -> !l.trim().isEmpty()).count();
+        long totalConsumedLines = Files.lines(Paths.get(consumedFile)).filter(l -> !l.trim().isEmpty()).count();
         long duplicates = totalConsumedLines - consumed.size();
 
         log.info("Produced: {} unique events", produced.size());
@@ -90,7 +92,7 @@ public final class Reconciler {
 
     /** Loads unique eventIds (first field per line). */
     private static Set<String> loadEventIds(String file) throws IOException {
-        try (java.util.stream.Stream<String> lines = Files.lines(java.nio.file.Paths.get(file))) {
+        try (Stream<String> lines = Files.lines(Paths.get(file))) {
             return lines
                 .filter(l -> !l.trim().isEmpty())
                 .map(l -> l.split(",")[0])

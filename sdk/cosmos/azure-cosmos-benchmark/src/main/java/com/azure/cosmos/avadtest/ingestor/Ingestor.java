@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
@@ -113,7 +114,7 @@ public final class Ingestor implements AutoCloseable {
             Schedulers.single().schedule(() -> {
                 log.info("Duration {}s reached, stopping ingestor...", durationSec);
                 running.set(false);
-            }, durationSec, java.util.concurrent.TimeUnit.SECONDS);
+            }, durationSec, TimeUnit.SECONDS);
         }
 
         this.progressSubscription = Flux.interval(Duration.ofSeconds(30))

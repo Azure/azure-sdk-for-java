@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -94,7 +95,7 @@ public final class AvadReader implements AutoCloseable {
             options.setStartTime(Instant.now().minus(Duration.ofDays(5)));
 
             ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
-                .hostName("avad-host-" + java.lang.management.ManagementFactory.getRuntimeMXBean().getName() + "-w" + workerIdx)
+                .hostName("avad-host-" + ManagementFactory.getRuntimeMXBean().getName() + "-w" + workerIdx)
                 .feedContainer(feedContainer)
                 .leaseContainer(leaseContainer)
                 .options(options)
