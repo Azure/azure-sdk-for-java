@@ -3,17 +3,15 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * You can select whether the translated text is plain text or HTML text. Any HTML needs to be a well-formed,
- * complete element. Possible values are: plain (default) or html.
+ * You can ask translation service to include alignment projection from source text to translated text.
  */
-public class TranslateTextType {
+public class TranslateAlignments {
     /**
      * Main method to invoke this demo.
      *
@@ -31,14 +29,15 @@ public class TranslateTextType {
                 .buildClient();
 
         TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("en")
-            .setSourceLanguage("cs")
-            .setTextType(TextType.HTML);
+            .setSourceLanguage("en")
+            .addTargetLanguage("cs")
+            .setIncludeAlignment(true);
 
-        TranslatedTextItem translation = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+        TranslatedTextItem translation = client.translate("The answer lies in machine translation.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
             System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Alignments: " + textTranslation.getAlignment().getProjections());
         }
     }
 }
