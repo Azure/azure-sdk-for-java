@@ -80,6 +80,11 @@ public class AppConfigurationConstants {
     public static final String APP_CONFIG_AICC_MIME_PROFILE = "azconfig.io/mime-profiles/ai-chat-completion";
 
     /**
+     * Constant for tracing snapshot reference usage.
+     */
+    public static final String SNAPSHOT_REFERENCE_TAG = "SnapshotRef";
+
+    /**
      * Constant for tracing load balancing usage.
      */
     public static final String LOAD_BALANCING_FEATURE = "LB";

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
+import org.springframework.util.StringUtils;
+
+import com.azure.core.util.Configuration;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AI_CHAT_COMPLETION_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AI_CONFIGURATION_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.APP_CONFIG_AICC_MIME_PROFILE;
@@ -9,11 +12,8 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LOAD_BALANCING_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
-import org.springframework.util.StringUtils;
-
-import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.appconfiguration.config.implementation.HostType;
+import com.azure.spring.cloud.appconfiguration.config.implementation.JsonConfigurationParser;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestType;
 
@@ -35,7 +35,11 @@ public class TracingInfo {
 
     private boolean usesAiccConfiguration = false;
 
+    private boolean usesSnapshotReference = false;
+
     private boolean isFailoverRequest = false;
+    
+    private static final String SNAPSHOT_REFERENCE_TAG = "SnapshotRef";
 
     public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isKeyVaultConfigured = isKeyVaultConfigured;
@@ -50,6 +54,14 @@ public class TracingInfo {
      */
     public void setUsesLoadBalancing(boolean usesLoadBalancing) {
         this.usesLoadBalancing = usesLoadBalancing;
+    }
+
+    /**
+     * Sets whether snapshot references are used.
+     * @param usesSnapshotReference whether snapshot references are used
+     */
+    public void setUsesSnapshotReference(boolean usesSnapshotReference) {
+        this.usesSnapshotReference = usesSnapshotReference;
     }
 
     /**
@@ -76,12 +88,43 @@ public class TracingInfo {
         if (contentType == null || usesAiccConfiguration) {
             return;
         }
-        if (contentType.contains(APP_CONFIG_AI_MIME_PROFILE)) {
+
+        if (!JsonConfigurationParser.isJsonContentType(contentType)) {
+            return;
+        }
+
+        String profileValue = extractProfileParameter(contentType);
+        if (profileValue == null) {
+            return;
+        }
+
+        if (profileValue.contains(APP_CONFIG_AI_MIME_PROFILE)) {
             usesAiConfiguration = true;
-            if (contentType.contains(APP_CONFIG_AICC_MIME_PROFILE)) {
+            if (profileValue.contains(APP_CONFIG_AICC_MIME_PROFILE)) {
                 usesAiccConfiguration = true;
             }
         }
+    }
+
+    /**
+     * Extracts the value of the "profile" parameter from a content type string.
+     * @param contentType the full content type string (e.g. "application/json; profile=\"https://...\"")
+     * @return the profile parameter value, or null if not present
+     */
+    private static String extractProfileParameter(String contentType) {
+        String[] parts = contentType.split(";");
+        for (int i = 1; i < parts.length; i++) {
+            String param = parts[i].strip();
+            if (param.toLowerCase().startsWith("profile=")) {
+                String value = param.substring("profile=".length()).strip();
+                // Remove surrounding quotes if present
+                if (value.length() >= 2 && value.startsWith("\"") && value.endsWith("\"")) {
+                    value = value.substring(1, value.length() - 1);
+                }
+                return value;
+            }
+        }
+        return null;
     }
 
     String getValue(boolean watchRequests, boolean pushRefresh, FeatureFlagTracing featureFlagTracing) {
@@ -169,6 +212,12 @@ public class TracingInfo {
                 sb.append(DELIMITER);
             }
             sb.append(AI_CHAT_COMPLETION_FEATURE);
+        }
+        if (usesSnapshotReference) {
+            if (sb.length() > 0) {
+                sb.append(DELIMITER);
+            }
+            sb.append(SNAPSHOT_REFERENCE_TAG);
         }
         return sb.toString();
     }

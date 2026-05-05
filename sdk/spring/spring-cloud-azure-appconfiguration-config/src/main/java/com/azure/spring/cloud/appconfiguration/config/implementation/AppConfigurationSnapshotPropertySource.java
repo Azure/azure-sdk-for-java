@@ -47,6 +47,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
+        replicaClient.getTracingInfo().resetAiConfigurationTracing();
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);

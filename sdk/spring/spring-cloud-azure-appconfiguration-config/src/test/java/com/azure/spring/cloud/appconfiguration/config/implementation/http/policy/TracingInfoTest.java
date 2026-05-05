@@ -64,6 +64,15 @@ public class TracingInfoTest {
     }
 
     @Test
+    public void snapshotReferenceTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.setUsesSnapshotReference(true);
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=SnapshotRef"));
+    }
+
+    @Test
     public void loadBalancingTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
@@ -111,12 +120,41 @@ public class TracingInfoTest {
     }
 
     @Test
+    public void aiConfigurationTracingNonJsonContentTypeTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("text/plain; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingNoProfileParameterTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("application/json; charset=utf-8");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingFeatureFlagContentTypeTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing(
+            "application/vnd.microsoft.appconfig.ff+json;charset=utf-8");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
     public void multipleFeaturesTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
         tracingInfo.setUsesLoadBalancing(true);
+        tracingInfo.setUsesSnapshotReference(true);
         String value = tracingInfo.getValue(false, false, null);
-        assertTrue(value.contains("Features=LB"));
+        assertTrue(value.contains("Features=LB+SnapshotRef"));
     }
 
     @Test
@@ -154,6 +192,7 @@ public class TracingInfoTest {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(true, 2, configuration);
         tracingInfo.setUsesLoadBalancing(true);
+        tracingInfo.setUsesSnapshotReference(true);
         tracingInfo.setFailoverRequest(true);
 
         FeatureFlagTracing ffTracing = new FeatureFlagTracing();
@@ -169,6 +208,7 @@ public class TracingInfoTest {
         assertTrue(value.contains("Filter=TRGT"));
         assertTrue(value.contains("MaxVariants=3"));
         assertTrue(value.contains("FFFeatures=Telemetry"));
+        assertTrue(value.contains("Features=LB+SnapshotRef"));
         assertTrue(value.contains("UsesKeyVault"));
         assertTrue(value.contains("PushRefresh"));
         assertTrue(value.contains("Failover"));
