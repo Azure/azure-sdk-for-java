@@ -40,11 +40,13 @@ import reactor.core.publisher.Mono;
 
 abstract class SyncBenchmark<T> implements Benchmark {
 
-    private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
-        = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+    private static ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor clientAccessor
-        = ImplementationBridgeHelpers.CosmosClientHelper.getCosmosClientAccessor();
+    private static ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientHelper.getCosmosClientAccessor();
+    }
 
     private final AtomicLong operationCounter = new AtomicLong(0);
 
@@ -81,7 +83,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
                 .consistencyLevel(workloadCfg.getConsistencyLevel())
                 .contentResponseOnWriteEnabled(workloadCfg.isContentResponseOnWriteEnabled());
 
-        clientBuilderAccessor
+        clientBuilderAccessor()
             .setRegionScopedSessionCapturingEnabled(benchmarkSpecificClientBuilder, workloadCfg.isRegionScopedSessionContainerEnabled());
 
         if (workloadCfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
@@ -167,7 +169,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
                 List<PojoizedJson> generatedDocs = new ArrayList<>();
 
                 // Use internal async container for bulk ingestion
-                CosmosAsyncContainer asyncContainer = clientAccessor
+                CosmosAsyncContainer asyncContainer = clientAccessor()
                     .getCosmosAsyncClient(benchmarkWorkloadClient)
                     .getDatabase(workloadCfg.getDatabaseId())
                     .getContainer(workloadCfg.getContainerId());
