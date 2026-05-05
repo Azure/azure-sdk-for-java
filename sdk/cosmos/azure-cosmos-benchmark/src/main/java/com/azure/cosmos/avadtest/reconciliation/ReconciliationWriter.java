@@ -60,6 +60,8 @@ public final class ReconciliationWriter implements AutoCloseable {
     /**
      * Record a produced or consumed event for reconciliation.
      * Blocks until the write succeeds or all retries are exhausted.
+     * Throws on permanent failure so the caller (CFP handleChanges) can
+     * fail the batch and prevent the lease continuation from advancing.
      */
     public void record(String eventId, long seqNo, String opType,
                        String partitionKey, long lsn, boolean hasPreviousImage, long crts) {
@@ -87,9 +89,8 @@ public final class ReconciliationWriter implements AutoCloseable {
             } catch (Exception e) {
                 if (!isRetryable(e) || attempt == MAX_RETRIES) {
                     errorCount.increment();
-                    log.error("Reconciliation write failed (attempt {}): id={}, error={}",
-                        attempt + 1, doc.get("id").asText(), e.getMessage());
-                    return;
+                    throw new RuntimeException(
+                        "Reconciliation write failed after " + (attempt + 1) + " attempts: id=" + doc.get("id").asText(), e);
                 }
                 retryCount.increment();
                 long backoff = RETRY_BASE_MS * (1L << attempt);
