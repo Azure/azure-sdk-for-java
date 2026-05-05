@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,43 +19,36 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
     /*
      * Assessment sentiment in the sentence.
      */
-    @Generated
     private TokenSentimentValue sentiment;
 
     /*
      * Assessment sentiment confidence scores in the sentence.
      */
-    @Generated
     private TargetConfidenceScoreLabel confidenceScores;
 
     /*
      * The assessment offset from the start of the sentence.
      */
-    @Generated
     private int offset;
 
     /*
      * The length of the assessment.
      */
-    @Generated
     private int length;
 
     /*
      * The assessment text detected.
      */
-    @Generated
     private String text;
 
     /*
      * The indicator representing if the assessment is negated.
      */
-    @Generated
     private boolean isNegated;
 
     /**
      * Creates an instance of SentenceAssessment class.
      */
-    @Generated
     public SentenceAssessment() {
     }
 
@@ -65,7 +57,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the sentiment value.
      */
-    @Generated
     public TokenSentimentValue getSentiment() {
         return this.sentiment;
     }
@@ -76,7 +67,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param sentiment the sentiment value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setSentiment(TokenSentimentValue sentiment) {
         this.sentiment = sentiment;
         return this;
@@ -87,7 +77,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the confidenceScores value.
      */
-    @Generated
     public TargetConfidenceScoreLabel getConfidenceScores() {
         return this.confidenceScores;
     }
@@ -98,7 +87,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setConfidenceScores(TargetConfidenceScoreLabel confidenceScores) {
         this.confidenceScores = confidenceScores;
         return this;
@@ -109,7 +97,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the offset value.
      */
-    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -120,7 +107,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param offset the offset value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -131,7 +117,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the length value.
      */
-    @Generated
     public int getLength() {
         return this.length;
     }
@@ -142,7 +127,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param length the length value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setLength(int length) {
         this.length = length;
         return this;
@@ -153,7 +137,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -164,7 +147,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param text the text value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setText(String text) {
         this.text = text;
         return this;
@@ -175,7 +157,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * 
      * @return the isNegated value.
      */
-    @Generated
     public boolean isNegated() {
         return this.isNegated;
     }
@@ -186,7 +167,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @param isNegated the isNegated value to set.
      * @return the SentenceAssessment object itself.
      */
-    @Generated
     public SentenceAssessment setIsNegated(boolean isNegated) {
         this.isNegated = isNegated;
         return this;
@@ -195,7 +175,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,7 +196,6 @@ public final class SentenceAssessment implements JsonSerializable<SentenceAssess
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentenceAssessment.
      */
-    @Generated
     public static SentenceAssessment fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentenceAssessment deserializedSentenceAssessment = new SentenceAssessment();

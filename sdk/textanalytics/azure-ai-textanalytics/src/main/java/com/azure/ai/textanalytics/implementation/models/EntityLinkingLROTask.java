@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,19 +18,16 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.ENTITY_LINKING;
 
     /*
      * Supported parameters for an Entity Linking task.
      */
-    @Generated
     private EntityLinkingTaskParameters parameters;
 
     /**
      * Creates an instance of EntityLinkingLROTask class.
      */
-    @Generated
     public EntityLinkingLROTask() {
     }
 
@@ -40,7 +36,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -51,7 +46,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
-    @Generated
     public EntityLinkingTaskParameters getParameters() {
         return this.parameters;
     }
@@ -62,7 +56,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the EntityLinkingLROTask object itself.
      */
-    @Generated
     public EntityLinkingLROTask setParameters(EntityLinkingTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -71,7 +64,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -81,7 +73,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -99,7 +90,6 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EntityLinkingLROTask.
      */
-    @Generated
     public static EntityLinkingLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingLROTask deserializedEntityLinkingLROTask = new EntityLinkingLROTask();
