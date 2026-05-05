@@ -13,5 +13,4 @@ module com.azure.resourcemanager.cosmos {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.cosmos.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.cosmos.models to com.azure.core;
-    opens com.azure.resourcemanager.cosmos.implementation.models to com.azure.core;
 }
