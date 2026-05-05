@@ -6328,8 +6328,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6337,7 +6335,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(String nextLink, String acceptDatetime) {
@@ -6350,8 +6348,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6360,7 +6356,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysNextSinglePageAsync(String nextLink, String acceptDatetime,
@@ -6372,8 +6368,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6381,7 +6375,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysNextNoCustomHeadersSinglePageAsync(String nextLink, String acceptDatetime) {
@@ -6394,8 +6388,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6404,7 +6396,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Key>> getKeysNextNoCustomHeadersSinglePageAsync(String nextLink, String acceptDatetime,
@@ -6418,8 +6410,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6427,7 +6417,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String acceptDatetime) {
@@ -6439,8 +6429,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6449,7 +6437,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String acceptDatetime, Context context) {
@@ -6461,8 +6449,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6470,7 +6456,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime) {
@@ -6482,8 +6468,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of keys.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6492,7 +6476,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of keys along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime,
@@ -6505,8 +6489,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6517,7 +6499,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, String acceptDatetime,
@@ -6531,8 +6513,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6544,7 +6524,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, String acceptDatetime,
@@ -6558,8 +6538,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6570,7 +6548,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getKeyValuesNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -6584,8 +6562,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6597,7 +6573,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getKeyValuesNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -6611,8 +6587,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6623,7 +6597,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime, String ifMatch,
@@ -6636,8 +6610,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6649,7 +6621,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime, String ifMatch,
@@ -6662,8 +6634,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6674,7 +6644,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime,
@@ -6687,8 +6657,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-values.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6700,7 +6668,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-values along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime,
@@ -6713,15 +6681,14 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink) {
@@ -6734,8 +6701,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6743,7 +6708,8 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink,
@@ -6755,15 +6721,14 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextNoCustomHeadersSinglePageAsync(String nextLink) {
@@ -6776,8 +6741,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6785,7 +6748,8 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a snapshot list request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -6798,15 +6762,13 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse}.
+     * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink) {
@@ -6818,8 +6780,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6827,7 +6787,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse}.
+     * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(String nextLink, Context context) {
@@ -6839,15 +6799,13 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse}.
+     * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextNoCustomHeadersSinglePage(String nextLink) {
@@ -6859,8 +6817,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value snapshots.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6868,7 +6824,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value snapshots along with {@link PagedResponse}.
+     * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsNextNoCustomHeadersSinglePage(String nextLink,
@@ -6881,8 +6837,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6890,7 +6844,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime) {
@@ -6903,8 +6857,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6913,7 +6865,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SettingLabel>> getLabelsNextSinglePageAsync(String nextLink, String acceptDatetime,
@@ -6925,8 +6877,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6934,7 +6884,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SettingLabel>> getLabelsNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -6948,8 +6898,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6958,7 +6906,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SettingLabel>> getLabelsNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -6972,8 +6920,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -6981,7 +6927,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime) {
@@ -6993,8 +6939,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7003,7 +6947,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SettingLabel> getLabelsNextSinglePage(String nextLink, String acceptDatetime,
@@ -7016,8 +6960,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7025,7 +6967,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SettingLabel> getLabelsNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime) {
@@ -7037,8 +6979,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of labels.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7047,7 +6987,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of labels along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SettingLabel> getLabelsNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime,
@@ -7060,8 +7000,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7069,7 +7007,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(String nextLink, String acceptDatetime) {
@@ -7082,8 +7020,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7092,7 +7028,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(String nextLink, String acceptDatetime,
@@ -7105,8 +7041,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7114,7 +7048,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -7128,8 +7062,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7138,7 +7070,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsNextNoCustomHeadersSinglePageAsync(String nextLink,
@@ -7152,8 +7084,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7161,7 +7091,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String acceptDatetime) {
@@ -7173,8 +7103,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7183,7 +7111,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String acceptDatetime, Context context) {
@@ -7195,8 +7123,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7204,7 +7130,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime) {
@@ -7216,8 +7142,6 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Gets a list of key-value revisions.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -7226,7 +7150,7 @@ public final class AzureAppConfigurationImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of key-value revisions along with {@link PagedResponse}.
+     * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextNoCustomHeadersSinglePage(String nextLink, String acceptDatetime,
