@@ -12,6 +12,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LOAD_BALANCING_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SNAPSHOT_REFERENCE_TAG;
 import com.azure.spring.cloud.appconfiguration.config.implementation.HostType;
 import com.azure.spring.cloud.appconfiguration.config.implementation.JsonConfigurationParser;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
@@ -38,8 +39,6 @@ public class TracingInfo {
     private boolean usesSnapshotReference = false;
 
     private boolean isFailoverRequest = false;
-    
-    private static final String SNAPSHOT_REFERENCE_TAG = "SnapshotRef";
 
     public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
         this.isKeyVaultConfigured = isKeyVaultConfigured;
