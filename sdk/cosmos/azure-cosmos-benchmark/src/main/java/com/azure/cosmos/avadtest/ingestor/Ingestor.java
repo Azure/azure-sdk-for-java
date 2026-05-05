@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -25,9 +24,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
@@ -63,7 +60,6 @@ public final class Ingestor implements AutoCloseable {
     private final String precomputedPayload;
 
     // Reactor subscriptions — disposed on close to prevent leaks
-    private volatile reactor.core.Disposable mainSubscription;
     private volatile reactor.core.Disposable progressSubscription;
     private final CosmosBulkExecutionOptions bulkOptions;
 
@@ -103,22 +99,7 @@ public final class Ingestor implements AutoCloseable {
         log.info("Starting bulk ingestion at {} ops/sec, duration={}",
             config.opsPerSec(), durationSec > 0 ? durationSec + "s" : "unlimited");
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        // Each tick: build a batch of operations and submit via bulk API
-        this.mainSubscription = Flux.interval(Duration.ofMillis(TICK_INTERVAL_MS))
-            .takeWhile(tick -> running.get())
-            .concatMap(tick -> executeBulkBatch())
-            .doOnError(e -> log.error("Bulk ingestion error", e))
-            .doOnComplete(latch::countDown)
-            .subscribe();
-
-        if (durationSec > 0) {
-            Schedulers.single().schedule(() -> {
-                log.info("Duration {}s reached, stopping ingestor...", durationSec);
-                running.set(false);
-            }, durationSec, TimeUnit.SECONDS);
-        }
+        long deadline = durationSec > 0 ? System.currentTimeMillis() + (durationSec * 1000L) : Long.MAX_VALUE;
 
         this.progressSubscription = Flux.interval(Duration.ofSeconds(30))
             .takeWhile(tick -> running.get())
@@ -140,10 +121,30 @@ public final class Ingestor implements AutoCloseable {
             running.set(false);
         }));
 
-        latch.await();
+        // Main ingestion loop: submit a bulk batch, then sleep for the remaining tick interval
+        while (running.get() && System.currentTimeMillis() < deadline) {
+            long tickStart = System.currentTimeMillis();
+
+            try {
+                executeBulkBatch();
+            } catch (Exception e) {
+                log.error("Bulk batch error", e);
+            }
+
+            long elapsed = System.currentTimeMillis() - tickStart;
+            long sleepMs = TICK_INTERVAL_MS - elapsed;
+            if (sleepMs > 0) {
+                Thread.sleep(sleepMs);
+            }
+        }
+
+        if (System.currentTimeMillis() >= deadline) {
+            log.info("Duration {}s reached, stopping ingestor...", durationSec);
+        }
+        running.set(false);
     }
 
-    private Flux<Void> executeBulkBatch() {
+    private void executeBulkBatch() {
         List<CosmosItemOperation> operations = new ArrayList<>(opsPerTick);
         Map<CosmosItemOperation, OpMeta> opToMeta = new IdentityHashMap<>(opsPerTick);
 
@@ -158,14 +159,11 @@ public final class Ingestor implements AutoCloseable {
             }
         }
 
-        if (operations.isEmpty()) {
-            return Flux.empty();
-        }
+        if (operations.isEmpty()) return;
 
-        return container.executeBulkOperations(Flux.fromIterable(operations), bulkOptions)
-            .doOnNext(response -> handleBulkResponse(response, opToMeta))
-            .then()
-            .flux();
+        container.executeBulkOperations(Flux.fromIterable(operations), bulkOptions)
+            .toStream()
+            .forEach(response -> handleBulkResponse(response, opToMeta));
     }
 
     private void addCreate(List<CosmosItemOperation> ops, Map<CosmosItemOperation, OpMeta> opToMeta) {
@@ -284,7 +282,6 @@ public final class Ingestor implements AutoCloseable {
         log.info("Closing Ingestor...");
         running.set(false);
         if (progressSubscription != null) { progressSubscription.dispose(); }
-        if (mainSubscription != null) { mainSubscription.dispose(); }
         try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
         client.close();
