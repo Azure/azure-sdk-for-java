@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.34.0-beta.1</version>
+  <version>12.32.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -264,4 +264,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples
 [error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
