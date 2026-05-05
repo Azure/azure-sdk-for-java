@@ -30,7 +30,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
-import com.azure.data.tables.models.TableAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -185,7 +184,6 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private boolean enableTenantDiscovery;
-    private TableAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -288,7 +286,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
             : BuilderHelper.buildPipeline(namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential,
                 azureSasCredential, tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions,
                 clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger,
-                enableTenantDiscovery, audience);
+                enableTenantDiscovery);
 
         return pipeline;
     }
@@ -654,18 +652,6 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
      */
     public TableServiceClientBuilder enableTenantDiscovery() {
         this.enableTenantDiscovery = true;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link TableAudience audience} for the Azure Tables service.
-     *
-     * @param audience The {@link TableAudience audience} for the Azure Tables service.
-     * @return The updated {@link TableServiceClientBuilder}.
-     */
-    public TableServiceClientBuilder audience(TableAudience audience) {
-        this.audience = audience;
 
         return this;
     }
