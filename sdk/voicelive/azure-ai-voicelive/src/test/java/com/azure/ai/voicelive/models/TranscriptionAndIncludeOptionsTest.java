@@ -82,6 +82,114 @@ class TranscriptionAndIncludeOptionsTest {
         assertNull(deserialized.getWords());
     }
 
+    // -------- SessionUpdateConversationItemInputAudioTranscriptionCompleted (logprobs + phrases) --------
+
+    @Test
+    void testTranscriptionCompletedWithLogprobsAndPhrases() {
+        String json = "{\"type\":\"conversation.item.input_audio_transcription.completed\","
+            + "\"event_id\":\"e1\",\"item_id\":\"i1\",\"content_index\":0,\"transcript\":\"hello world\","
+            + "\"logprobs\":[" + "{\"token\":\"hello\",\"logprob\":-0.12,\"bytes\":[104,101,108,108,111]},"
+            + "{\"token\":\" world\",\"logprob\":-0.34,\"bytes\":[32,119,111,114,108,100]}" + "]," + "\"phrases\":["
+            + "{\"offset_milliseconds\":0,\"duration_milliseconds\":1000,\"text\":\"hello world\","
+            + "\"locale\":\"en-US\",\"confidence\":0.97,"
+            + "\"words\":[{\"text\":\"hello\",\"offset_milliseconds\":0,\"duration_milliseconds\":400},"
+            + "{\"text\":\"world\",\"offset_milliseconds\":500,\"duration_milliseconds\":500}]}" + "]}";
+
+        SessionUpdateConversationItemInputAudioTranscriptionCompleted event
+            = BinaryData.fromString(json).toObject(SessionUpdateConversationItemInputAudioTranscriptionCompleted.class);
+
+        assertEquals(ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED, event.getType());
+        assertEquals("e1", event.getEventId());
+        assertEquals("i1", event.getItemId());
+        assertEquals(0, event.getContentIndex());
+        assertEquals("hello world", event.getTranscript());
+
+        List<LogProbProperties> logprobs = event.getLogprobs();
+        assertNotNull(logprobs);
+        assertEquals(2, logprobs.size());
+        assertEquals("hello", logprobs.get(0).getToken());
+        assertEquals(-0.12, logprobs.get(0).getLogprob());
+        assertNotNull(logprobs.get(0).getBytes());
+        assertEquals(5, logprobs.get(0).getBytes().size());
+        assertEquals(Integer.valueOf(104), logprobs.get(0).getBytes().get(0));
+        assertEquals(" world", logprobs.get(1).getToken());
+        assertEquals(-0.34, logprobs.get(1).getLogprob());
+
+        List<TranscriptionPhrase> phrases = event.getPhrases();
+        assertNotNull(phrases);
+        assertEquals(1, phrases.size());
+        TranscriptionPhrase phrase = phrases.get(0);
+        assertEquals(0, phrase.getOffsetMilliseconds());
+        assertEquals(1000, phrase.getDurationMilliseconds());
+        assertEquals("hello world", phrase.getText());
+        assertEquals("en-US", phrase.getLocale());
+        assertEquals(0.97, phrase.getConfidence());
+        assertNotNull(phrase.getWords());
+        assertEquals(2, phrase.getWords().size());
+        assertEquals("hello", phrase.getWords().get(0).getText());
+        assertEquals("world", phrase.getWords().get(1).getText());
+    }
+
+    @Test
+    void testTranscriptionCompletedWithoutLogprobsOrPhrases() {
+        // Backward compatibility: payloads without the new fields must still deserialize and expose null arrays.
+        String json = "{\"type\":\"conversation.item.input_audio_transcription.completed\","
+            + "\"event_id\":\"e2\",\"item_id\":\"i2\",\"content_index\":3,\"transcript\":\"hi\"}";
+
+        SessionUpdateConversationItemInputAudioTranscriptionCompleted event
+            = BinaryData.fromString(json).toObject(SessionUpdateConversationItemInputAudioTranscriptionCompleted.class);
+
+        assertEquals("hi", event.getTranscript());
+        assertEquals(3, event.getContentIndex());
+        assertNull(event.getLogprobs());
+        assertNull(event.getPhrases());
+    }
+
+    @Test
+    void testTranscriptionCompletedJsonRoundTripPreservesArrays() {
+        String json = "{\"type\":\"conversation.item.input_audio_transcription.completed\","
+            + "\"event_id\":\"e3\",\"item_id\":\"i3\",\"content_index\":0,\"transcript\":\"hi\","
+            + "\"logprobs\":[{\"token\":\"hi\",\"logprob\":-0.5,\"bytes\":[104,105]}],"
+            + "\"phrases\":[{\"offset_milliseconds\":10,\"duration_milliseconds\":20,\"text\":\"hi\"}]}";
+
+        SessionUpdateConversationItemInputAudioTranscriptionCompleted original
+            = BinaryData.fromString(json).toObject(SessionUpdateConversationItemInputAudioTranscriptionCompleted.class);
+
+        SessionUpdateConversationItemInputAudioTranscriptionCompleted roundTripped = BinaryData.fromObject(original)
+            .toObject(SessionUpdateConversationItemInputAudioTranscriptionCompleted.class);
+
+        assertNotNull(roundTripped.getLogprobs());
+        assertEquals(1, roundTripped.getLogprobs().size());
+        assertEquals("hi", roundTripped.getLogprobs().get(0).getToken());
+        assertEquals(-0.5, roundTripped.getLogprobs().get(0).getLogprob());
+        assertEquals(Arrays.asList(104, 105), roundTripped.getLogprobs().get(0).getBytes());
+
+        assertNotNull(roundTripped.getPhrases());
+        assertEquals(1, roundTripped.getPhrases().size());
+        assertEquals(10, roundTripped.getPhrases().get(0).getOffsetMilliseconds());
+        assertEquals(20, roundTripped.getPhrases().get(0).getDurationMilliseconds());
+        assertEquals("hi", roundTripped.getPhrases().get(0).getText());
+    }
+
+    @Test
+    void testTranscriptionCompletedPolymorphicViaSessionUpdate() {
+        String json = "{\"type\":\"conversation.item.input_audio_transcription.completed\","
+            + "\"event_id\":\"e4\",\"item_id\":\"i4\",\"content_index\":0,\"transcript\":\"yo\","
+            + "\"logprobs\":[{\"token\":\"yo\",\"logprob\":-0.1,\"bytes\":[121,111]}],"
+            + "\"phrases\":[{\"offset_milliseconds\":0,\"duration_milliseconds\":50,\"text\":\"yo\"}]}";
+
+        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+
+        assertTrue(update instanceof SessionUpdateConversationItemInputAudioTranscriptionCompleted,
+            "Expected SessionUpdateConversationItemInputAudioTranscriptionCompleted, got " + update.getClass());
+        SessionUpdateConversationItemInputAudioTranscriptionCompleted typed
+            = (SessionUpdateConversationItemInputAudioTranscriptionCompleted) update;
+        assertNotNull(typed.getLogprobs());
+        assertEquals(1, typed.getLogprobs().size());
+        assertNotNull(typed.getPhrases());
+        assertEquals(1, typed.getPhrases().size());
+    }
+
     // -------- AudioInputTranscriptionOptionsModel new values --------
 
     @Test

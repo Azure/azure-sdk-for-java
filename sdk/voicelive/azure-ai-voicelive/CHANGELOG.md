@@ -32,20 +32,8 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
 
 - Removed `PersonalVoiceModels.PHOENIX_V2NEURAL` (no longer supported by the service). Use `PHOENIX_LATEST_NEURAL` or one of the new `DRAGON_*` / `MAI_VOICE_1` models instead.
 
-### Bugs Fixed
-
-- **Sample threading and reactive lifecycle hardening** (addresses production hazards in async samples):
-  - Added a receive-first barrier (`Sinks.One` gated on `receiveEvents().doOnSubscribe(...)`) in all runnable samples so `sendEvent(sessionConfig)` only runs after the hot multicast event stream is subscribed; this prevents missed events on session start.
-  - Composed receive + send pipelines into a single `Flux.merge(...).then()` lifecycle (notably `AgentV2Sample`) instead of detached `subscribe()` calls.
-  - Audio capture/playback worker threads are now daemon threads, block on `take()` / `read()` instead of busy-polling, and are explicitly interrupted during cleanup so JVM shutdown completes promptly.
-  - Used `volatile` and `AtomicReference` for cross-thread audio line / thread handles to fix Java Memory Model visibility races.
-  - Replaced unbounded queues with bounded `LinkedBlockingQueue(1000)`; `offer()` overflow now logs a warning instead of silently dropping audio.
-  - Replaced `doOnError().subscribe()` and bare `subscribe()` patterns with `subscribe(onNext, onError)` so errors are no longer swallowed.
-  - Fixed an unreachable completion message in `AuthenticationMethodsSample` and a `runMCPSample` signature mismatch in `MCPSample`.
-
 ### Other Changes
 
-- Updated all 9 runnable samples with user-friendly Javadoc ("when to use this sample" / "what happens when you run it") sections.
 - Updated default service API version to track the latest TypeSpec spec.
 
 ## 1.0.0-beta.6 (2026-05-01)
