@@ -25,7 +25,7 @@ public class SubmitADocumentTranslationRequestToTheDocumentTranslationService {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.translation.submit-a-document-translation-request-to-the-document-translation-service
+        // BEGIN:com.azure.ai.translation.document.generated.translation.submitadocumenttranslationrequesttothedocumenttranslationservice
         SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
             .beginTranslation(new TranslationBatch(Arrays.asList(new DocumentTranslationInput(
                 new TranslationSource("https://myblob.blob.core.windows.net/sourceContainer")
@@ -43,6 +43,6 @@ public class SubmitADocumentTranslationRequestToTheDocumentTranslationService {
                         .setCategory("general")
                         .setStorageSource(TranslationStorageSource.AZURE_BLOB)))
                             .setStorageType(StorageInputType.FOLDER))));
-        // END:com.azure.ai.translation.document.generated.translation.submit-a-document-translation-request-to-the-document-translation-service
+        // END:com.azure.ai.translation.document.generated.translation.submitadocumenttranslationrequesttothedocumenttranslationservice
     }
 }
