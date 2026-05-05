@@ -21,7 +21,9 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
@@ -143,16 +145,16 @@ public final class Ingestor implements AutoCloseable {
 
     private Flux<Void> executeBulkBatch() {
         List<CosmosItemOperation> operations = new ArrayList<>(opsPerTick);
-        List<OpMeta> metas = new ArrayList<>(opsPerTick);
+        Map<CosmosItemOperation, OpMeta> opToMeta = new IdentityHashMap<>(opsPerTick);
 
         for (int i = 0; i < opsPerTick; i++) {
             int roll = ThreadLocalRandom.current().nextInt(100);
             if (roll < 40) {
-                addCreate(operations, metas);
+                addCreate(operations, opToMeta);
             } else if (roll < 80) {
-                addUpsert(operations, metas);
+                addUpsert(operations, opToMeta);
             } else {
-                addDelete(operations, metas);
+                addDelete(operations, opToMeta);
             }
         }
 
@@ -161,12 +163,12 @@ public final class Ingestor implements AutoCloseable {
         }
 
         return container.executeBulkOperations(Flux.fromIterable(operations), bulkOptions)
-            .doOnNext(response -> handleBulkResponse(response, metas))
+            .doOnNext(response -> handleBulkResponse(response, opToMeta))
             .then()
             .flux();
     }
 
-    private void addCreate(List<CosmosItemOperation> ops, List<OpMeta> metas) {
+    private void addCreate(List<CosmosItemOperation> ops, Map<CosmosItemOperation, OpMeta> opToMeta) {
         String docId = UUID.randomUUID().toString();
         String eventId = UUID.randomUUID().toString();
         String pk = "tenant-" + ThreadLocalRandom.current().nextInt(config.logicalPartitionCount());
@@ -174,11 +176,12 @@ public final class Ingestor implements AutoCloseable {
         String ts = Instant.now().toString();
 
         ObjectNode doc = buildDoc(docId, pk, seq, eventId, "create", ts);
-        ops.add(CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(pk)));
-        metas.add(new OpMeta(eventId, seq, "create", pk, ts, docId));
+        CosmosItemOperation op = CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(pk));
+        ops.add(op);
+        opToMeta.put(op, new OpMeta(eventId, seq, "create", pk, ts, docId));
     }
 
-    private void addUpsert(List<CosmosItemOperation> ops, List<OpMeta> metas) {
+    private void addUpsert(List<CosmosItemOperation> ops, Map<CosmosItemOperation, OpMeta> opToMeta) {
         String recent = getRecentId();
         String docId;
         String pk;
@@ -196,14 +199,15 @@ public final class Ingestor implements AutoCloseable {
         String ts = Instant.now().toString();
         ObjectNode doc = buildDoc(docId, pk, seq, eventId, "upsert", ts);
 
-        ops.add(CosmosBulkOperations.getUpsertItemOperation(doc, new PartitionKey(pk)));
-        metas.add(new OpMeta(eventId, seq, "upsert", pk, ts, docId));
+        CosmosItemOperation op = CosmosBulkOperations.getUpsertItemOperation(doc, new PartitionKey(pk));
+        ops.add(op);
+        opToMeta.put(op, new OpMeta(eventId, seq, "upsert", pk, ts, docId));
     }
 
-    private void addDelete(List<CosmosItemOperation> ops, List<OpMeta> metas) {
+    private void addDelete(List<CosmosItemOperation> ops, Map<CosmosItemOperation, OpMeta> opToMeta) {
         String recent = getRecentId();
         if (recent == null) {
-            addCreate(ops, metas);
+            addCreate(ops, opToMeta);
             return;
         }
 
@@ -213,30 +217,16 @@ public final class Ingestor implements AutoCloseable {
         long seq = seqCounter.incrementAndGet();
         String ts = Instant.now().toString();
 
-        ops.add(CosmosBulkOperations.getDeleteItemOperation(docId, new PartitionKey(pk)));
-        metas.add(new OpMeta(docId, seq, "delete", pk, ts, docId));
+        CosmosItemOperation op = CosmosBulkOperations.getDeleteItemOperation(docId, new PartitionKey(pk));
+        ops.add(op);
+        opToMeta.put(op, new OpMeta(docId, seq, "delete", pk, ts, docId));
         clearRecentId(recent);
     }
 
-    private void handleBulkResponse(CosmosBulkOperationResponse<Object> response, List<OpMeta> metas) {
-        CosmosItemOperation op = response.getOperation();
-
-        // Find matching metadata by correlating operation index
-        int idx = -1;
-        // Use operation identity to find the matching meta
-        // The operations list and metas list are parallel arrays
-        // but executeBulkOperations may reorder responses.
-        // Use the operation's id to find the correct meta.
-        String opId = op.getId();
-        for (int i = 0; i < metas.size(); i++) {
-            if (metas.get(i).docId.equals(opId)) {
-                idx = i;
-                break;
-            }
-        }
-
-        if (idx < 0) return;
-        OpMeta meta = metas.get(idx);
+    private void handleBulkResponse(CosmosBulkOperationResponse<Object> response,
+                                    Map<CosmosItemOperation, OpMeta> opToMeta) {
+        OpMeta meta = opToMeta.get(response.getOperation());
+        if (meta == null) return;
 
         if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
             successCount.increment();
