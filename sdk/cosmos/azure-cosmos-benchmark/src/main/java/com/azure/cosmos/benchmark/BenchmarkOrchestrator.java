@@ -21,6 +21,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
@@ -315,7 +316,15 @@ public class BenchmarkOrchestrator {
             .flatMap(globalIndex -> {
                 int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
                 Benchmark selected = benchmarks.get(tenantIndex);
-                return selected.performSingleOperation()
+                Mono<?> operation;
+                try {
+                    operation = selected.performSingleOperation();
+                } catch (Exception e) {
+                    logger.error("Synchronous exception in performSingleOperation for {}",
+                        selected.getClass().getSimpleName(), e);
+                    operation = Mono.empty();
+                }
+                return operation
                     .subscribeOn(benchmarkScheduler)
                     .doOnTerminate(completedCount::incrementAndGet);
             }, concurrency)

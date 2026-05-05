@@ -5,6 +5,8 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
@@ -27,12 +29,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 abstract class SyncBenchmark<T> implements Benchmark {
@@ -159,30 +163,41 @@ abstract class SyncBenchmark<T> implements Benchmark {
                 logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
                 String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
                 List<PojoizedJson> generatedDocs = new ArrayList<>();
-                List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
-                for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
-                    String uuid = UUID.randomUUID().toString();
-                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                        dataFieldValue,
-                        partitionKey,
-                        workloadCfg.getDocumentDataFieldCount());
-                    generatedDocs.add(newDoc);
-                    bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
+                // Use async client for bulk ingestion to avoid blocking reactor threads
+                CosmosAsyncClient ingestionClient = benchmarkSpecificClientBuilder.buildAsyncClient();
+                try {
+                    CosmosAsyncContainer asyncContainer = ingestionClient
+                        .getDatabase(workloadCfg.getDatabaseId())
+                        .getContainer(workloadCfg.getContainerId());
+
+                    Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, workloadCfg.getNumberOfPreCreatedDocuments())
+                        .map(i -> {
+                            String uuid = UUID.randomUUID().toString();
+                            PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                                dataFieldValue,
+                                partitionKey,
+                                workloadCfg.getDocumentDataFieldCount());
+                            generatedDocs.add(newDoc);
+                            return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
+                        });
+
+                    CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+                    List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+                    asyncContainer
+                        .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                        .doOnNext(response -> {
+                            if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                                failedResponses.add(response);
+                            }
+                        })
+                        .blockLast(Duration.ofMinutes(10));
+
+                    BenchmarkHelper.retryFailedBulkOperations(failedResponses, asyncContainer,
+                        workloadCfg.getIngestionRetryConcurrency());
+                } finally {
+                    ingestionClient.close();
                 }
-
-                CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-                List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
-                cosmosContainer.executeBulkOperations(bulkOperations, bulkExecutionOptions)
-                    .forEach(response -> {
-                        if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
-                            failedResponses.add(response);
-                        }
-                    });
-
-                BenchmarkHelper.retryFailedBulkOperations(failedResponses,
-                    (item, pk) -> Mono.fromRunnable(() -> cosmosContainer.createItem(item, pk, null)),
-                    workloadCfg.getIngestionRetryConcurrency());
 
                 docsToRead = generatedDocs;
             } else {

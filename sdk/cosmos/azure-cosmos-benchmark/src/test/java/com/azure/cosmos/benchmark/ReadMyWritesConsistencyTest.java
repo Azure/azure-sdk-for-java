@@ -39,7 +39,7 @@ public class ReadMyWritesConsistencyTest {
     private final static Logger logger = LoggerFactory.getLogger(ReadMyWritesConsistencyTest.class);
 
     private final AtomicBoolean collectionScaleUpFailed = new AtomicBoolean(false);
-    private final Duration defaultMaxRunningTime = Duration.ofMinutes(45);
+    private final Duration defaultMaxRunningTime = Duration.ofSeconds(30);
     private final int delayForInitiationCollectionScaleUpInSeconds = 60;
 
     private final String desiredConsistency =
