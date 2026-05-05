@@ -249,6 +249,8 @@ public final class HealthMonitor {
     }
 
     public void close() {
+        log.info("Closing HealthMonitor...");
         client.close();
+        log.info("HealthMonitor closed");
     }
 }

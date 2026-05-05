@@ -212,6 +212,7 @@ public final class AvadReader implements AutoCloseable {
 
     @Override
     public void close() {
+        log.info("Closing AvadReader...");
         logCorrectnessReport();
         for (ChangeFeedProcessor p : processors) {
             try { p.stop().block(Duration.ofSeconds(30)); } catch (Exception e) { /* ignore */ }

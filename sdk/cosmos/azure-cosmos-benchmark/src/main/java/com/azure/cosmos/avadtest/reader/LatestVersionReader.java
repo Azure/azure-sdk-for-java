@@ -130,6 +130,7 @@ public final class LatestVersionReader implements AutoCloseable {
 
     @Override
     public void close() {
+        log.info("Closing LatestVersionReader...");
         for (ChangeFeedProcessor p : processors) {
             try { p.stop().block(Duration.ofSeconds(30)); } catch (Exception e) { /* ignore */ }
         }

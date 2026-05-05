@@ -284,6 +284,7 @@ public final class Ingestor implements AutoCloseable {
 
     @Override
     public void close() {
+        log.info("Closing Ingestor...");
         running.set(false);
         try { eventLog.close(); } catch (Exception e) { /* ignore */ }
         reconWriter.close();
