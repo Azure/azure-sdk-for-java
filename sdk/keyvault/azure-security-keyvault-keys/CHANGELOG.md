@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 4.10.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 4.10.6 (2026-03-23)
 
 ### Bugs Fixed
