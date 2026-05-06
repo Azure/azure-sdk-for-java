@@ -29,10 +29,11 @@ public class TestBase extends TestProxyTestBase {
                 if (serviceClient == null) {
                     Configuration configuration = Configuration.getGlobalConfiguration();
 
-                    serviceClient = new WebPubSubServiceClientBuilder().endpoint(configuration.get("WEB_PUB_SUB_ENDPOINT"))
-                        .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
-                        .hub("hub1")
-                        .buildClient();
+                    serviceClient
+                        = new WebPubSubServiceClientBuilder().endpoint(configuration.get("WEB_PUB_SUB_ENDPOINT"))
+                            .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
+                            .hub("hub1")
+                            .buildClient();
                 }
             }
         }
