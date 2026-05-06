@@ -92,8 +92,8 @@ class AadResourceServerConfiguration {
             || "consumers".equalsIgnoreCase(tenantId)) {
             throw new IllegalArgumentException(
                 "For resource server, 'spring.cloud.azure.active-directory.profile.tenant-id' cannot be null, empty, or set to 'common', 'organizations', or 'consumers'. "
-                + "This configuration would accept tokens from any Azure AD tenant, creating a security vulnerability. "
-                + "Please configure a specific tenant ID to restrict token validation to your organization's tenant only.");
+                + "These values are not supported for resource server token validation because a specific tenant ID is required to validate the token 'tid' claim and issuer against a single Azure AD tenant. "
+                + "Please configure an explicit tenant ID for your organization's tenant.");
         }
     }
 
