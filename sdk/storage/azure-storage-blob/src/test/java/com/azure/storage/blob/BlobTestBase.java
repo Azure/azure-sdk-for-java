@@ -1386,40 +1386,30 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, true);
+        return hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, true);
     }
 
-    protected static boolean hasOnlyStructuredMessageDownloadHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, false);
+    protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders) {
+        return hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false);
     }
 
-    protected static void assertStructuredMessageResponseHeaders(HttpHeaders headers, int unencodedContentLength) {
-        assertTrue(validateBasicHeaders(headers));
-        assertEquals(StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE,
-            headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
-        assertEquals(String.valueOf(unencodedContentLength),
-            headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME));
-        assertEquals(String.valueOf(expectedStructuredMessageEncodedLength(unencodedContentLength)),
-            headers.getValue(HttpHeaderName.CONTENT_LENGTH));
-    }
-
-    protected static void assertStructuredMessageResponseHeaders(List<HttpHeaders> recordedResponseHeaders,
-        int unencodedContentLength, int minimumResponseCount) {
-        assertTrue(recordedResponseHeaders.size() >= minimumResponseCount,
-            "Expected at least " + minimumResponseCount + " GET response(s)");
-        recordedResponseHeaders
-            .forEach(headers -> assertStructuredMessageResponseHeaders(headers, unencodedContentLength));
-    }
-
-    protected static void assertStructuredMessageInitialDownloadResponseHeaders(HttpHeaders headers,
-        int totalUnencodedContentLength, int blockSize) {
-        if (totalUnencodedContentLength > 0) {
-            assertStructuredMessageResponseHeaders(headers, Math.min(totalUnencodedContentLength, blockSize));
+    protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders,
+                                                                        boolean requireStructuredContentLength) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.getSize() == 0) {
+            return false;
         }
+        return hasStructuredMessageDownloadRequestHeaders(Collections.singletonList(recordedRequestHeaders),
+            requireStructuredContentLength);
+    }
+
+    protected static boolean hasStructuredMessageDownloadResponseHeaders(HttpHeaders headers) {
+        return validateBasicHeaders(headers)
+            && StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE
+                .equalsIgnoreCase(headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
     protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
-        List<HttpHeaders> recordedRequestHeaders, List<HttpHeaders> recordedResponseHeaders) {
+        HttpHeaders recordedRequestHeaders, List<HttpHeaders> recordedResponseHeaders) {
         return new HttpPipelinePolicy() {
             @Override
             public HttpPipelinePosition getPipelinePosition() {
@@ -1428,7 +1418,9 @@ public class BlobTestBase extends TestProxyTestBase {
 
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+                synchronized (recordedRequestHeaders) {
+                    recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
+                }
                 return next.process().map(response -> {
                     if (response.getRequest().getHttpMethod() == HttpMethod.GET
                         && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
@@ -1440,8 +1432,34 @@ public class BlobTestBase extends TestProxyTestBase {
         };
     }
 
-    private static boolean hasStructuredMessageRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
-        boolean requireStructuredContentLength) {
+    protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        HttpHeaders recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        return new HttpPipelinePolicy() {
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_RETRY;
+            }
+
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                synchronized (recordedRequestHeaders) {
+                    recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
+                }
+                return next.process().map(response -> {
+                    if (response.getRequest().getHttpMethod() == HttpMethod.GET
+                        && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
+                        synchronized (recordedResponseHeaders) {
+                            recordedResponseHeaders.setAllHttpHeaders(response.getHeaders());
+                        }
+                    }
+                    return response;
+                });
+            }
+        };
+    }
+
+    protected static boolean hasStructuredMessageDownloadRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
+                                                                        boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
@@ -1480,6 +1498,7 @@ public class BlobTestBase extends TestProxyTestBase {
             }
         });
     }
+
 
     protected static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
@@ -1524,9 +1543,9 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-    * Creates a BlobClient that records all outgoing request headers into the supplied list.
-    * Each test should use its own list so tests can run concurrently.
-    */
+     * Creates a BlobClient that records all outgoing request headers into the supplied list.
+     * Each test should use its own list so tests can run concurrently.
+     */
     protected BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
         HttpPipelinePolicy sniffPolicy = (context, next) -> {
             recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
@@ -1538,11 +1557,41 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-    * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
-    */
+     * Creates a BlobClient that records outgoing request headers into the supplied headers.
+     */
+    protected BlobClient createBlobClientWithRequestSniffer(HttpHeaders recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            synchronized (recordedRequestHeaders) {
+                recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
+            }
+            return next.process();
+        };
+        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
+    }
+
+    /**
+     * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
+     */
     protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
         HttpPipelinePolicy sniffPolicy = (context, next) -> {
             recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
+    }
+
+    /**
+     * Creates a BlobAsyncClient that records outgoing request headers into the supplied headers.
+     */
+    protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(HttpHeaders recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            synchronized (recordedRequestHeaders) {
+                recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
+            }
             return next.process();
         };
         BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),

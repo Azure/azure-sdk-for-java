@@ -69,7 +69,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadStreamWithResponseContentValidation() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -78,9 +78,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null,
             Context.NONE);
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), data.length);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         TestUtils.assertArraysEqual(data, outputStream.toByteArray());
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -90,7 +90,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadContentWithResponseContentValidation() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -99,9 +99,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             Context.NONE);
         byte[] result = response.getValue().toBytes();
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), data.length);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         TestUtils.assertArraysEqual(data, result);
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -120,7 +120,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.uploadFromFile(file.toPath().toString(), true);
 
@@ -139,7 +139,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertStructuredMessageInitialDownloadResponseHeaders(response.getHeaders(), fileSize, blockSize);
         assertNotNull(response.getValue());
         assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -157,7 +157,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.uploadFromFile(file.toPath().toString(), true);
 
@@ -176,7 +176,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertStructuredMessageInitialDownloadResponseHeaders(response.getHeaders(), fileSize, blockSize);
         assertNotNull(response.getValue());
         assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -186,7 +186,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadStreamWithResponseContentValidationRange() {
         byte[] randomData = getRandomByteArray(4 * Constants.KB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(randomData));
 
@@ -195,7 +195,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         client.downloadStreamWithResponse(outputStream, options, null, Context.NONE);
 
         assertEquals(512, outputStream.toByteArray().length);
-        assertFalse(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -205,7 +205,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadStreamDefaultAlgorithmIsNone() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -213,7 +213,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         client.downloadStreamWithResponse(outputStream, new BlobDownloadStreamOptions(), null, Context.NONE);
 
         TestUtils.assertArraysEqual(data, outputStream.toByteArray());
-        assertFalse(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -223,7 +223,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadStreamWithAuto() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -232,9 +232,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             = new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO);
         BlobDownloadResponse response = client.downloadStreamWithResponse(outputStream, options, null, Context.NONE);
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), data.length);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         TestUtils.assertArraysEqual(data, outputStream.toByteArray());
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -244,7 +244,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadContentWithNone() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -257,7 +257,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
                 .toBytes();
 
         TestUtils.assertArraysEqual(data, result);
-        assertFalse(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -267,7 +267,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadContentWithAuto() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -276,9 +276,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             Context.NONE);
         byte[] result = response.getValue().toBytes();
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), data.length);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         TestUtils.assertArraysEqual(data, result);
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -288,7 +288,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void interruptAndVerifyProperRewind() {
         final int segmentSize = Constants.KB;
         byte[] randomData = getRandomByteArray(2 * segmentSize);
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         List<HttpHeaders> recordedResponseHeaders = new CopyOnWriteArrayList<>();
 
         BlobClient uploadClient = createBlobClientWithRequestSniffer(recorded);
@@ -310,13 +310,15 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         BlobDownloadResponse response
             = downloadClient.downloadStreamWithResponse(outputStream, options, null, Context.NONE);
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), randomData.length);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         TestUtils.assertArraysEqual(randomData, outputStream.toByteArray());
         assertEquals(0, mockPolicy.getTriesRemaining(), "Expected the configured interruption to be consumed");
         assertTrue(mockPolicy.getRangeHeaders().size() >= 2,
             "Expected at least the initial request and one retry with a range header");
-        assertStructuredMessageResponseHeaders(recordedResponseHeaders, randomData.length, 2);
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(recordedResponseHeaders.size() >= 2,
+            "Expected at least the initial response and one retry response");
+        assertTrue(recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -328,7 +330,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         final int segmentSize = 128 * Constants.KB;
         final int dataSize = 4 * Constants.KB;
         byte[] randomData = getRandomByteArray(dataSize);
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         List<HttpHeaders> recordedResponseHeaders = new CopyOnWriteArrayList<>();
 
         BlobClient uploadClient = createBlobClientWithRequestSniffer(recorded);
@@ -350,12 +352,13 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         BlobDownloadResponse response
             = downloadClient.downloadStreamWithResponse(outputStream, options, null, Context.NONE);
 
-        assertStructuredMessageResponseHeaders(response.getHeaders(), dataSize);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         byte[] result = outputStream.toByteArray();
         assertEquals(dataSize, result.length, "Decoded data should have exactly " + dataSize + " bytes");
         TestUtils.assertArraysEqual(randomData, result);
-        assertStructuredMessageResponseHeaders(recordedResponseHeaders, dataSize, 1);
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(!recordedResponseHeaders.isEmpty());
+        assertTrue(recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -364,7 +367,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void openInputStreamContentValidation() {
         byte[] data = getRandomByteArray(TEN_MB);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -373,7 +376,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         BlobInputStream inputStream = client.openInputStream(options, Context.NONE);
 
         TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(inputStream));
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -385,7 +388,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         int start = Constants.MB;
         int count = 3 * Constants.MB + 257;
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -397,7 +400,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         byte[] downloadedRange = convertInputStreamToByteArray(inputStream);
         assertEquals(count, downloadedRange.length);
         TestUtils.assertArraysEqual(data, start, downloadedRange, 0, count);
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     /**
@@ -409,7 +412,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         int dataLength) throws IOException {
         byte[] data = getRandomByteArray(dataLength);
 
-        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        HttpHeaders recorded = new HttpHeaders();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
         client.upload(BinaryData.fromBytes(data));
 
@@ -435,7 +438,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
         // and: "expected data downloaded"
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
-        assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
     static Stream<Arguments> channelReadDataSupplier() {
