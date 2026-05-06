@@ -1,14 +1,15 @@
 # Release History
 
-## 12.33.0-beta.2 (Unreleased)
+## 12.33.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2026-04-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 12.34.0-beta.1 (2026-03-25)
 
@@ -39,7 +40,6 @@ throw errors for invalid credential combinations. This is for internal use only.
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 

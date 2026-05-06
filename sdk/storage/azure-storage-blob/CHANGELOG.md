@@ -1,21 +1,30 @@
 # Release History
 
-## 12.34.0-beta.2 (Unreleased)
+## 12.34.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.19.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-storage-common` from `12.32.1` to version `12.33.0`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 12.33.3 (2026-03-30)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.18.2`.
 
 
@@ -60,7 +69,6 @@
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-internal-avro` from `12.18.0` to version `12.18.1`.
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
@@ -77,7 +85,7 @@
 
 #### Dependency Updates
 - Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
-- Upgraded `azure-storage`-internal-avro` from `12.17.0` to version `12.18.0`.
+- Upgraded `azure-storage-internal-avro` from `12.17.0` to version `12.18.0`.
 
 ## 12.33.0-beta.1 (2025-12-03)
 

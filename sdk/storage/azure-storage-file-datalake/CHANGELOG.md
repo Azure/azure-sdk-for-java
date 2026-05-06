@@ -1,23 +1,26 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
+## 12.27.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.2` to `12.34.0`.
+- updated `azure-storage-common` from `12.32.2` to `12.33.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 12.26.3 (2026-03-30)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
-
 
 ## 12.28.0-beta.1 (2026-03-25)
 
