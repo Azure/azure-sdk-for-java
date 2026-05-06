@@ -190,6 +190,20 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
+    void testValidateTenantIdRejectsWhitespacePaddedReservedValue() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id= common ",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
     void testValidateTenantIdAcceptsValidGuid() {
         resourceServerRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
