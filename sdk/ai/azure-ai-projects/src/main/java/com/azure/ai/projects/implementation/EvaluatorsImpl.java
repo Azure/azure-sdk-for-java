@@ -285,7 +285,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -302,6 +302,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -364,7 +373,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -381,6 +390,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -439,7 +457,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -456,6 +474,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -515,7 +542,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -532,6 +559,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -590,7 +626,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -607,6 +643,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -667,7 +712,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -684,6 +729,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -741,7 +795,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -758,6 +812,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -816,7 +879,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -833,6 +896,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -881,7 +953,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -898,6 +970,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -950,7 +1031,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -967,6 +1048,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1058,7 +1148,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1075,6 +1165,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1104,7 +1203,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1121,6 +1220,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1172,7 +1280,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1189,6 +1297,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1218,7 +1335,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1235,6 +1352,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1286,7 +1412,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1303,6 +1429,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1332,7 +1467,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1349,6 +1484,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1401,7 +1545,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1418,6 +1562,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1447,7 +1600,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1464,6 +1617,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1516,7 +1678,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1533,6 +1695,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1585,7 +1756,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1602,6 +1773,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1652,7 +1832,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1669,6 +1849,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -1721,7 +1910,7 @@ public final class EvaluatorsImpl {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubrics) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -1738,6 +1927,15 @@ public final class EvaluatorsImpl {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)

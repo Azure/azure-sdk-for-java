@@ -76,6 +76,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -196,6 +197,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -318,6 +320,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -526,6 +529,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -652,6 +656,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -801,6 +806,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -914,6 +920,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1023,6 +1030,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -1240,6 +1248,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -1431,6 +1440,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1766,69 +1776,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Optional)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param createSessionRequest The createSessionRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSessionWithResponse(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
-        return this.serviceClient.createSessionWithResponse(agentName, isolationKey, createSessionRequest,
-            requestOptions);
-    }
-
-    /**
      * Retrieves a session by ID.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1871,37 +1818,6 @@ public final class AgentsClient {
     public Response<BinaryData> getSessionWithResponse(String agentName, String sessionId,
         RequestOptions requestOptions) {
         return this.serviceClient.getSessionWithResponse(agentName, sessionId, requestOptions);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, String isolationKey,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteSessionWithResponse(agentName, sessionId, isolationKey, requestOptions);
     }
 
     /**
@@ -2084,67 +2000,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
-     * endpoint. Auto-generated if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentSessionResource createSession(String agentName, String isolationKey, VersionIndicator versionIndicator,
-        String agentSessionId) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj
-            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        return createSessionWithResponse(agentName, isolationKey, createSessionRequest, requestOptions).getValue()
-            .toObject(AgentSessionResource.class);
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentSessionResource createSession(String agentName, String isolationKey,
-        VersionIndicator versionIndicator) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        return createSessionWithResponse(agentName, isolationKey, createSessionRequest, requestOptions).getValue()
-            .toObject(AgentSessionResource.class);
-    }
-
-    /**
      * Retrieves a session by ID.
      *
      * @param agentName The name of the agent.
@@ -2192,58 +2047,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSessionWithResponse(agentName, sessionId, requestOptions).getValue()
             .toObject(AgentSessionResource.class);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSession(String agentName, String sessionId, String isolationKey,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        deleteSessionWithResponse(agentName, sessionId, isolationKey, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSession(String agentName, String sessionId, String isolationKey) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteSessionWithResponse(agentName, sessionId, isolationKey, requestOptions).getValue();
     }
 
     /**
@@ -2464,6 +2267,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2534,6 +2338,134 @@ public final class AgentsClient {
     }
 
     /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest createAgentVersionRequestObj
+            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Creates a new session for an agent endpoint.
+     * The endpoint resolves the backing agent version from `version_indicator` and
+     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agent_session_id: String (Optional)
+     *     version_indicator (Required): {
+     *         type: String(version_ref) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agent_session_id: String (Required)
+     *     version_indicator (Required): {
+     *         type: String(version_ref) (Required)
+     *     }
+     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     created_at: long (Required)
+     *     last_accessed_at: long (Required)
+     *     expires_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to create a session for.
+     * @param createSessionRequest The createSessionRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createSessionWithResponse(String agentName, BinaryData createSessionRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createSessionWithResponse(agentName, createSessionRequest, requestOptions);
+    }
+
+    /**
+     * Deletes a session synchronously.
+     * Returns 204 No Content when the session is deleted or does not exist.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param agentName The name of the agent.
+     * @param sessionId The session identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteSessionWithResponse(agentName, sessionId, requestOptions);
+    }
+
+    /**
      * Updates an agent endpoint.
      *
      * @param agentName The name of the agent to retrieve.
@@ -2598,42 +2530,105 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version.
+     * Creates a new session for an agent endpoint.
+     * The endpoint resolves the backing agent version from `version_indicator` and
+     * enforces session ownership using the provided isolation key for session-mutating operations.
      *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
+     * @param agentName The name of the agent to create a session for.
+     * @param versionIndicator Determines which agent version backs the session.
+     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
+     * endpoint. Auto-generated if omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+    public AgentSessionResource createSession(String agentName, VersionIndicator versionIndicator,
+        String agentSessionId) {
+        // Generated convenience method for createSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj
-            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        CreateSessionRequest createSessionRequestObj
+            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
+        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
+        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).getValue()
+            .toObject(AgentSessionResource.class);
+    }
+
+    /**
+     * Creates a new session for an agent endpoint.
+     * The endpoint resolves the backing agent version from `version_indicator` and
+     * enforces session ownership using the provided isolation key for session-mutating operations.
+     *
+     * @param agentName The name of the agent to create a session for.
+     * @param versionIndicator Determines which agent version backs the session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentSessionResource createSession(String agentName, VersionIndicator versionIndicator) {
+        // Generated convenience method for createSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
+        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
+        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).getValue()
+            .toObject(AgentSessionResource.class);
+    }
+
+    /**
+     * Deletes a session synchronously.
+     * Returns 204 No Content when the session is deleted or does not exist.
+     *
+     * @param agentName The name of the agent.
+     * @param sessionId The session identifier.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSession(String agentName, String sessionId, AgentDefinitionOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        deleteSessionWithResponse(agentName, sessionId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a session synchronously.
+     * Returns 204 No Content when the session is deleted or does not exist.
+     *
+     * @param agentName The name of the agent.
+     * @param sessionId The session identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSession(String agentName, String sessionId) {
+        // Generated convenience method for deleteSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteSessionWithResponse(agentName, sessionId, requestOptions).getValue();
     }
 }

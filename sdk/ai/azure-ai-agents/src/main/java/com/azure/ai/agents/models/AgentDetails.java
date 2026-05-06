@@ -96,7 +96,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             String id = null;
             String name = null;
             AgentDetailsVersions versions = null;
-            AgentEndpoint agentEndpoint = null;
+            AgentEndpointConfig agentEndpoint = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprint = null;
             AgentBlueprintReference blueprintReference = null;
@@ -111,7 +111,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
                 } else if ("agent_endpoint".equals(fieldName)) {
-                    agentEndpoint = AgentEndpoint.fromJson(reader);
+                    agentEndpoint = AgentEndpointConfig.fromJson(reader);
                 } else if ("instance_identity".equals(fieldName)) {
                     instanceIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint".equals(fieldName)) {
@@ -168,7 +168,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The endpoint configuration for the agent
      */
     @Generated
-    private AgentEndpoint agentEndpoint;
+    private AgentEndpointConfig agentEndpoint;
 
     /*
      * The instance identity of the agent
@@ -200,7 +200,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the agentEndpoint value.
      */
     @Generated
-    public AgentEndpoint getAgentEndpoint() {
+    public AgentEndpointConfig getAgentEndpoint() {
         return this.agentEndpoint;
     }
 

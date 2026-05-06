@@ -146,7 +146,7 @@ public final class SkillsClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -156,8 +156,8 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.getSkillWithResponse(skillName, requestOptions);
+    public Response<BinaryData> getSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSkillWithResponse(name, requestOptions);
     }
 
     /**
@@ -170,7 +170,7 @@ public final class SkillsClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -180,8 +180,8 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.downloadSkillWithResponse(skillName, requestOptions);
+    public Response<BinaryData> downloadSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.downloadSkillWithResponse(name, requestOptions);
     }
 
     /**
@@ -267,7 +267,7 @@ public final class SkillsClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param updateSkillRequest The updateSkillRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -278,9 +278,9 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateSkillWithResponse(String skillName, BinaryData updateSkillRequest,
+    public Response<BinaryData> updateSkillWithResponse(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateSkillWithResponse(skillName, updateSkillRequest, requestOptions);
+        return this.serviceClient.updateSkillWithResponse(name, updateSkillRequest, requestOptions);
     }
 
     /**
@@ -296,7 +296,7 @@ public final class SkillsClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -306,8 +306,8 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillWithResponse(skillName, requestOptions);
+    public Response<BinaryData> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteSkillWithResponse(name, requestOptions);
     }
 
     /**
@@ -388,7 +388,7 @@ public final class SkillsClient {
     /**
      * Retrieves a skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -399,16 +399,16 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillDetails getSkill(String skillName) {
+    public SkillDetails getSkill(String name) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillWithResponse(skillName, requestOptions).getValue().toObject(SkillDetails.class);
+        return getSkillWithResponse(name, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
      * Downloads a skill package.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -419,10 +419,10 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadSkill(String skillName) {
+    public BinaryData downloadSkill(String name) {
         // Generated convenience method for downloadSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadSkillWithResponse(skillName, requestOptions).getValue();
+        return downloadSkillWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -489,7 +489,7 @@ public final class SkillsClient {
     /**
      * Updates an existing skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param description A human-readable description of the skill.
      * @param instructions Instructions that define the behavior of the skill.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
@@ -508,21 +508,21 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillDetails updateSkill(String skillName, String description, String instructions,
+    public SkillDetails updateSkill(String name, String description, String instructions,
         Map<String, String> metadata) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj
             = new UpdateSkillRequest().setDescription(description).setInstructions(instructions).setMetadata(metadata);
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).getValue()
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).getValue()
             .toObject(SkillDetails.class);
     }
 
     /**
      * Updates an existing skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -533,12 +533,12 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillDetails updateSkill(String skillName) {
+    public SkillDetails updateSkill(String name) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest();
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).getValue()
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).getValue()
             .toObject(SkillDetails.class);
     }
 

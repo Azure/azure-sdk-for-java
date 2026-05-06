@@ -73,7 +73,7 @@ public final class AgentSessionFilesAsyncClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -86,9 +86,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadSessionFileWithResponse(String agentName, String sessionId, String path,
-        BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, sessionId, path, content,
+    public Mono<Response<BinaryData>> uploadSessionFileWithResponse(String agentName, String agentSessionId,
+        String path, BinaryData content, RequestOptions requestOptions) {
+        return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, agentSessionId, path, content,
             requestOptions);
     }
 
@@ -112,7 +112,7 @@ public final class AgentSessionFilesAsyncClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -123,9 +123,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSessionFileWithResponse(String agentName, String sessionId, String path,
-        RequestOptions requestOptions) {
-        return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, sessionId, path, requestOptions);
+    public Mono<Response<BinaryData>> downloadSessionFileWithResponse(String agentName, String agentSessionId,
+        String path, RequestOptions requestOptions) {
+        return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class AgentSessionFilesAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -161,9 +161,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Mono<Response<Void>> deleteSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteSessionFileWithResponseAsync(agentName, sessionId, path, requestOptions);
+        return this.serviceClient.deleteSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class AgentSessionFilesAsyncClient {
      * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
@@ -186,14 +186,14 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String sessionId, String path,
+    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content, AgentDefinitionOptInKeys foundryFeatures) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return uploadSessionFileWithResponse(agentName, sessionId, path, content, requestOptions)
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
     }
@@ -203,7 +203,7 @@ public final class AgentSessionFilesAsyncClient {
      * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,11 +216,11 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String sessionId, String path,
+    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return uploadSessionFileWithResponse(agentName, sessionId, path, content, requestOptions)
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
     }
@@ -229,7 +229,7 @@ public final class AgentSessionFilesAsyncClient {
      * Download a file from the session sandbox as a binary stream.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
@@ -243,21 +243,22 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadSessionFile(String agentName, String sessionId, String path,
+    public Mono<BinaryData> downloadSessionFile(String agentName, String agentSessionId, String path,
         AgentDefinitionOptInKeys foundryFeatures) {
         // Generated convenience method for downloadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return downloadSessionFileWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Download a file from the session sandbox as a binary stream.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -269,10 +270,11 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadSessionFile(String agentName, String sessionId, String path) {
+    public Mono<BinaryData> downloadSessionFile(String agentName, String agentSessionId, String path) {
         // Generated convenience method for downloadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadSessionFileWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -280,7 +282,7 @@ public final class AgentSessionFilesAsyncClient {
      * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
@@ -295,7 +297,7 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSessionFile(String agentName, String sessionId, String path,
+    public Mono<Void> deleteSessionFile(String agentName, String agentSessionId, String path,
         AgentDefinitionOptInKeys foundryFeatures, Boolean recursive) {
         // Generated convenience method for deleteSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -305,7 +307,7 @@ public final class AgentSessionFilesAsyncClient {
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        return deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -313,7 +315,7 @@ public final class AgentSessionFilesAsyncClient {
      * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -325,10 +327,10 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSessionFile(String agentName, String sessionId, String path) {
+    public Mono<Void> deleteSessionFile(String agentName, String agentSessionId, String path) {
         // Generated convenience method for deleteSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -354,7 +356,7 @@ public final class AgentSessionFilesAsyncClient {
      *             name: String (Required)
      *             size: long (Required)
      *             is_directory: boolean (Required)
-     *             modified_time: OffsetDateTime (Required)
+     *             modified_time: long (Required)
      *         }
      *     ]
      * }
@@ -362,7 +364,7 @@ public final class AgentSessionFilesAsyncClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The directory path to list, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -374,9 +376,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionFilesWithResponse(String agentName, String sessionId, String path,
+    public Mono<Response<BinaryData>> getSessionFilesWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSessionFilesWithResponseAsync(agentName, sessionId, path, requestOptions);
+        return this.serviceClient.getSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -384,7 +386,7 @@ public final class AgentSessionFilesAsyncClient {
      * Returns only the immediate children of the specified directory (non-recursive).
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The directory path to list, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
@@ -398,14 +400,14 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String sessionId, String path,
+    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path,
         AgentDefinitionOptInKeys foundryFeatures) {
         // Generated convenience method for getSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getSessionFilesWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
     }
 
@@ -414,7 +416,7 @@ public final class AgentSessionFilesAsyncClient {
      * Returns only the immediate children of the specified directory (non-recursive).
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The directory path to list, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -426,10 +428,10 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String sessionId, String path) {
+    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path) {
         // Generated convenience method for getSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSessionFilesWithResponse(agentName, sessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
     }
 }

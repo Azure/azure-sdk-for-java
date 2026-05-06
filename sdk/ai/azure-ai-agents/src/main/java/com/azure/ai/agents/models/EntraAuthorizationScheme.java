@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * The EntraAuthorizationScheme model.
  */
-@Fluent
+@Immutable
 public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationScheme {
 
     /*
@@ -24,12 +24,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
      */
     @Generated
     private AgentEndpointAuthorizationSchemeType type = AgentEndpointAuthorizationSchemeType.ENTRA;
-
-    /*
-     * The isolation_key_source property.
-     */
-    @Generated
-    private IsolationKeySource isolationKeySource;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -56,30 +50,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
     }
 
     /**
-     * Get the isolationKeySource property: The isolation_key_source property.
-     *
-     * @return the isolationKeySource value.
-     */
-    @Generated
-    public IsolationKeySource getIsolationKeySource() {
-        return this.isolationKeySource;
-    }
-
-    /**
-     * Set the isolationKeySource property: The isolation_key_source property.
-     * <p>Required when create the resource.</p>
-     *
-     * @param isolationKeySource the isolationKeySource value to set.
-     * @return the EntraAuthorizationScheme object itself.
-     */
-    @Generated
-    public EntraAuthorizationScheme setIsolationKeySource(IsolationKeySource isolationKeySource) {
-        this.isolationKeySource = isolationKeySource;
-        this.updatedProperties.add("isolationKeySource");
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -90,7 +60,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-            jsonWriter.writeJsonField("isolation_key_source", this.isolationKeySource);
             return jsonWriter.writeEndObject();
         }
     }
@@ -99,17 +68,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type.toString());
-        if (updatedProperties.contains("isolationKeySource")) {
-            if (this.isolationKeySource == null) {
-                jsonWriter.writeNullField("isolation_key_source");
-            } else {
-                JsonMergePatchHelper.getIsolationKeySourceAccessor()
-                    .prepareModelForJsonMergePatch(this.isolationKeySource, true);
-                jsonWriter.writeJsonField("isolation_key_source", this.isolationKeySource);
-                JsonMergePatchHelper.getIsolationKeySourceAccessor()
-                    .prepareModelForJsonMergePatch(this.isolationKeySource, false);
-            }
-        }
         return jsonWriter.writeEndObject();
     }
 
@@ -131,8 +89,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
                 if ("type".equals(fieldName)) {
                     deserializedEntraAuthorizationScheme.type
                         = AgentEndpointAuthorizationSchemeType.fromString(reader.getString());
-                } else if ("isolation_key_source".equals(fieldName)) {
-                    deserializedEntraAuthorizationScheme.isolationKeySource = IsolationKeySource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
