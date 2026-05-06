@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public final class GeoCatalogsCreateSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Create.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Create.json
      */
     /**
      * Sample code: GeoCatalogs_Create.
@@ -70,7 +70,7 @@ public final class GeoCatalogsCreateSamples {
  */
 public final class GeoCatalogsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Delete.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Delete.json
      */
     /**
      * Sample code: GeoCatalogs_Delete.
@@ -91,7 +91,7 @@ public final class GeoCatalogsDeleteSamples {
  */
 public final class GeoCatalogsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Get.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Get.json
      */
     /**
      * Sample code: GeoCatalogs_Get.
@@ -113,7 +113,7 @@ public final class GeoCatalogsGetByResourceGroupSamples {
  */
 public final class GeoCatalogsListSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_ListBySubscription.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_ListBySubscription.json
      */
     /**
      * Sample code: GeoCatalogs_ListBySubscription.
@@ -135,7 +135,7 @@ public final class GeoCatalogsListSamples {
  */
 public final class GeoCatalogsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_ListByResourceGroup.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_ListByResourceGroup.json
      */
     /**
      * Sample code: GeoCatalogs_ListByResourceGroup.
@@ -164,7 +164,7 @@ import java.util.Map;
  */
 public final class GeoCatalogsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Update.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Update.json
      */
     /**
      * Sample code: GeoCatalogs_Update.

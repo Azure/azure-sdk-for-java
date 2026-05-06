@@ -6,6 +6,8 @@ package com.azure.ai.agents.models;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
+import com.openai.models.Reasoning;
+import com.openai.models.ReasoningEffort;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
@@ -18,9 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-/**
- * Tests for PromptAgentDefinition serialization, particularly focusing on toolChoice handling.
- */
 public class PromptAgentDefinitionSerializationTests {
 
     private static final String TEST_MODEL = "gpt-4o";
@@ -486,6 +485,70 @@ public class PromptAgentDefinitionSerializationTests {
 
         assertNotNull(definition);
         assertEquals(TEST_MODEL, definition.getModel());
+    }
+
+    // AI Tooling: openai-java de-dup — Reasoning field tests
+
+    /**
+     * Tests serialization with reasoning set via the openai-java Reasoning type.
+     */
+    @Test
+    public void testSerializationWithReasoning() throws IOException {
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
+            .setReasoning(Reasoning.builder().effort(ReasoningEffort.HIGH).build());
+
+        String json = serializeToJson(definition);
+
+        assertTrue(json.contains("\"reasoning\""));
+        assertTrue(json.contains("\"effort\":\"high\""));
+    }
+
+    /**
+     * Tests deserialization with reasoning from JSON.
+     */
+    @Test
+    public void testDeserializationWithReasoning() throws IOException {
+        String json = "{\"model\":\"gpt-4o\",\"reasoning\":{\"effort\":\"medium\",\"summary\":\"concise\"}}";
+
+        PromptAgentDefinition definition = deserializeFromJson(json);
+
+        assertNotNull(definition.getReasoning());
+        assertEquals(ReasoningEffort.MEDIUM, definition.getReasoning().effort().get());
+        assertEquals(Reasoning.Summary.CONCISE, definition.getReasoning().summary().get());
+    }
+
+    /**
+     * Tests round-trip with reasoning, toolChoice, and other fields combined.
+     */
+    @Test
+    public void testRoundTripWithReasoningAndToolChoice() throws IOException {
+        PromptAgentDefinition original = new PromptAgentDefinition(TEST_MODEL).setInstructions("You are helpful")
+            .setTemperature(0.5)
+            .setReasoning(
+                Reasoning.builder().effort(ReasoningEffort.LOW).generateSummary(Reasoning.GenerateSummary.AUTO).build())
+            .setToolChoice(ResponseCreateParams.ToolChoice.ofOptions(ToolChoiceOptions.AUTO));
+
+        String json = serializeToJson(original);
+        PromptAgentDefinition deserialized = deserializeFromJson(json);
+
+        assertEquals(original.getModel(), deserialized.getModel());
+        assertEquals(original.getInstructions(), deserialized.getInstructions());
+        assertEquals(original.getTemperature(), deserialized.getTemperature());
+        assertNotNull(deserialized.getReasoning());
+        assertEquals(ReasoningEffort.LOW, deserialized.getReasoning().effort().get());
+        assertEquals(Reasoning.GenerateSummary.AUTO, deserialized.getReasoning().generateSummary().get());
+    }
+
+    /**
+     * Tests that reasoning is absent when not set.
+     */
+    @Test
+    public void testSerializationWithoutReasoning() throws IOException {
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL);
+
+        String json = serializeToJson(definition);
+
+        assertFalse(json.contains("\"reasoning\""));
     }
 
     // Helper method to serialize PromptAgentDefinition to JSON string

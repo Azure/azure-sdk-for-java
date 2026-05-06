@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
@@ -12,6 +13,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
@@ -49,7 +51,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         ConsistencyLevel defaultConsistencyLevel,
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
-        HttpClient httpClient) {
+        HttpClient httpClient,
+        Map<String, String> additionalHeaders) {
         super(
             clientContext,
             sessionContainer,
@@ -58,7 +61,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            ApiType.SQL);
+            ApiType.SQL,
+            additionalHeaders);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()
@@ -184,6 +188,36 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             && request.requestContext.resolvedPartitionKeyRange == null
             && request.getPartitionKeyRangeIdentity() != null;
     }
+
+    @Override
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        // Ensure partitionKeyDefinition is resolved from the collection cache before
+        // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
+        // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
+        if (request.getPartitionKeyInternal() != null && request.getPartitionKeyDefinition() == null) {
+            RxClientCollectionCache cache = this.getCollectionCache();
+            if (cache != null) {
+                return cache
+                    .resolveCollectionAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        request)
+                    .flatMap(collectionHolder -> {
+                        if (collectionHolder.v != null) {
+                            request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
+                        } else {
+                            throw new NullPointerException(
+                                "Collection cache returned null for request to "
+                                    + request.getResourceAddress()
+                                    + ". Cannot resolve partitionKeyDefinition for client-side EPK computation.");
+                        }
+                        return super.performRequestInternal(request, requestUri);
+                    });
+            }
+        }
+
+        return super.performRequestInternal(request, requestUri);
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {

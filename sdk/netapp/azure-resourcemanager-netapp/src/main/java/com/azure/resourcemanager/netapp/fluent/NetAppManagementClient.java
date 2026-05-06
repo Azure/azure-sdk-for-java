@@ -124,6 +124,20 @@ public interface NetAppManagementClient {
     BackupVaultsClient getBackupVaults();
 
     /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    BucketsClient getBuckets();
+
+    /**
+     * Gets the CachesClient object to access its operations.
+     * 
+     * @return the CachesClient object.
+     */
+    CachesClient getCaches();
+
+    /**
      * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
      * 
      * @return the NetAppResourceQuotaLimitsClient object.

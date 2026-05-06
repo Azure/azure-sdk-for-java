@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class NetAppResourceQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: 2025-12-01/NetAppResourceQuotaLimits_List.json
+     * x-ms-original-file: 2026-01-01/NetAppResourceQuotaLimits_List.json
      */
     /**
      * Sample code: QuotaLimits.

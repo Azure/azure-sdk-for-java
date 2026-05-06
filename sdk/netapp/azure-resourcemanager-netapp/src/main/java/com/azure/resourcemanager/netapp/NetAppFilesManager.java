@@ -32,6 +32,8 @@ import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.BucketsImpl;
+import com.azure.resourcemanager.netapp.implementation.CachesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
@@ -54,6 +56,8 @@ import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.BackupsUnderAccounts;
 import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
+import com.azure.resourcemanager.netapp.models.Buckets;
+import com.azure.resourcemanager.netapp.models.Caches;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimitsAccounts;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
@@ -102,6 +106,10 @@ public final class NetAppFilesManager {
     private RansomwareReports ransomwareReports;
 
     private BackupVaults backupVaults;
+
+    private Buckets buckets;
+
+    private Caches caches;
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
@@ -469,6 +477,30 @@ public final class NetAppFilesManager {
             this.backupVaults = new BackupVaultsImpl(clientObject.getBackupVaults(), this);
         }
         return backupVaults;
+    }
+
+    /**
+     * Gets the resource collection API of Buckets. It manages Bucket.
+     * 
+     * @return Resource collection API of Buckets.
+     */
+    public Buckets buckets() {
+        if (this.buckets == null) {
+            this.buckets = new BucketsImpl(clientObject.getBuckets(), this);
+        }
+        return buckets;
+    }
+
+    /**
+     * Gets the resource collection API of Caches. It manages Cache.
+     * 
+     * @return Resource collection API of Caches.
+     */
+    public Caches caches() {
+        if (this.caches == null) {
+            this.caches = new CachesImpl(clientObject.getCaches(), this);
+        }
+        return caches;
     }
 
     /**

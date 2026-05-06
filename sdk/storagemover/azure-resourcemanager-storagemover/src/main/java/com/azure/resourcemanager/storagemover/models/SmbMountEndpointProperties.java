@@ -126,9 +126,19 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
      * {@inheritDoc}
      */
     @Override
+    public SmbMountEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeStringField("shareName", this.shareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -154,6 +164,9 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
                 if ("description".equals(fieldName)) {
                     deserializedSmbMountEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSmbMountEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

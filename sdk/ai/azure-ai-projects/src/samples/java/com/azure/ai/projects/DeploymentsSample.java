@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class DeploymentsSample {
 
     private static DeploymentsClient deploymentsClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildDeploymentsClient();
 
@@ -34,7 +34,7 @@ public class DeploymentsSample {
     public static void getDeployment() {
         // BEGIN:com.azure.ai.projects.DeploymentsSample.getDeployment
 
-        String deploymentName = Configuration.getGlobalConfiguration().get("DEPLOYMENT_NAME", "");
+        String deploymentName = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME", "");
         Deployment deployment = deploymentsClient.getDeployment(deploymentName);
 
         System.out.printf("Deployment name: %s%n", deployment.getName());

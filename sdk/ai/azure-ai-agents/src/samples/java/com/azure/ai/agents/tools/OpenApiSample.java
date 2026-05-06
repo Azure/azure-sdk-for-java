@@ -5,10 +5,10 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
@@ -22,6 +22,7 @@ import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.Map;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  * </ul>
  *
  * <p>Also place an OpenAPI spec JSON file at {@code src/samples/resources/assets/httpbin_openapi.json}.</p>
@@ -41,7 +42,7 @@ import java.util.Map;
 public class OpenApiSample {
     public static void main(String[] args) throws Exception {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -49,7 +50,7 @@ public class OpenApiSample {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
 
         // Load the OpenAPI spec from a JSON file
@@ -70,8 +71,8 @@ public class OpenApiSample {
         System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
 
         // Create a conversation and add a user message
-        Conversation conversation = conversationsClient.getConversationService().create();
-        conversationsClient.getConversationService().items().create(
+        Conversation conversation = conversationService.create();
+        conversationService.items().create(
             ItemCreateParams.builder()
                 .conversationId(conversation.id())
                 .addItem(EasyInputMessage.builder()
@@ -87,8 +88,9 @@ public class OpenApiSample {
             ResponseCreateParams.Builder options = ResponseCreateParams.builder()
                 .maxOutputTokens(300L);
 
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference, conversation.id(), options);
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                options.conversation(conversation.id()));
 
             String text = response.output().stream()
                 .filter(item -> item.isMessage())

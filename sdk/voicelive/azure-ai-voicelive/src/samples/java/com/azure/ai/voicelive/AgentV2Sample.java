@@ -5,6 +5,8 @@ package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.AudioNoiseReduction;
 import com.azure.ai.voicelive.models.AudioNoiseReductionType;
 import com.azure.ai.voicelive.models.AzureStandardVoice;
@@ -175,7 +177,11 @@ public class AgentV2Sample {
 
         // Setup shutdown hook for graceful termination
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("\nVoice assistant shut down. Goodbye!");
+            try {
+                System.out.println("\nVoice assistant shut down. Goodbye!");
+            } catch (Exception ignored) {
+                // jansi/Maven may throw during shutdown
+            }
             assistant.shutdown();
         }));
 
@@ -314,7 +320,10 @@ public class AgentV2Sample {
                 .setTurnDetection(turnDetection)
                 // Audio quality enhancements
                 .setInputAudioEchoCancellation(new AudioEchoCancellation())
-                .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION));
+                .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
+                .setInputAudioTranscription(
+                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.AZURE_SPEECH)
+                );
                 // Uncomment to enable interim responses
                 // .setInterimResponse(BinaryData.fromObject(interimResponseConfig));
 
@@ -442,10 +451,13 @@ public class AgentV2Sample {
                 }
 
                 if (session != null) {
-                    session.closeAsync().subscribe();
+                    session.closeAsync()
+                        .onErrorComplete()
+                        .doFinally(signal -> shutdownLatch.countDown())
+                        .subscribe();
+                } else {
+                    shutdownLatch.countDown();
                 }
-
-                shutdownLatch.countDown();
             }
         }
 

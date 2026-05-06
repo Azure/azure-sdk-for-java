@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class NetAppResourceRegionInfosGetSamples {
     /*
-     * x-ms-original-file: 2025-12-01/RegionInfos_Get.json
+     * x-ms-original-file: 2026-01-01/RegionInfos_Get.json
      */
     /**
      * Sample code: RegionInfos_Get.

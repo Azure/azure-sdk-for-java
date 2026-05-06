@@ -34,7 +34,6 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -42,6 +41,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -74,14 +74,14 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>Try asking:</strong></p>
  * <ul>
- *   <li>"Can you summary github repo azure sdk for java?"</li>
- *   <li>"Can you summary azure docs about voice live?"</li>
+ *   <li>"Can you summarize the Azure SDK for Java GitHub repo?"</li>
+ *   <li>"Can you summarize Azure docs about VoiceLive?"</li>
  * </ul>
  */
 public final class MCPSample {
 
     // Service configuration
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
     private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
@@ -137,6 +137,7 @@ public final class MCPSample {
         AtomicReference<String> activeMCPCallId = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Create VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
@@ -149,26 +150,16 @@ public final class MCPSample {
         client.startSession(DEFAULT_MODEL)
             .flatMap(session -> {
                 System.out.println("✓ Session started successfully");
+                sessionRef.set(session);
 
                 // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to receive server events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> handleServerEvent(session, event, activeMCPCallId, audioProcessor),
-                        error -> {
-                            System.err.println("❌ Error processing events: " + error.getMessage());
-                            running.set(false);
-                        },
-                        () -> System.out.println("✓ Event stream completed")
-                    );
-
-                // Send session configuration with MCP tools
+                // Send session configuration with MCP tools, then listen for events.
                 System.out.println("📤 Sending session configuration with MCP tools...");
                 ClientEventSessionUpdate sessionConfig = createSessionConfigWithMCPTools();
-                session.sendEvent(sessionConfig)
+                return session.sendEvent(sessionConfig)
                     .doOnSuccess(v -> {
                         System.out.println("✓ Session configured with MCP tools");
                         System.out.println();
@@ -187,24 +178,47 @@ public final class MCPSample {
 
                         // Start audio playback
                         audioProcessor.startPlayback();
+
+                        // Add shutdown hook
+                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                            System.out.println("\n👋 Shutting down MCP voice assistant...");
+                            running.set(false);
+                            AudioProcessor processor = audioProcessorRef.get();
+                            if (processor != null) {
+                                processor.cleanup();
+                            }
+                            try {
+                                session.closeAsync().block(Duration.ofSeconds(5));
+                            } catch (Exception e) {
+                                // Suppress errors during forced JVM shutdown
+                            }
+                        }));
                     })
                     .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .subscribe();
-
-                // Add shutdown hook
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n👋 Shutting down MCP voice assistant...");
-                    running.set(false);
-                    AudioProcessor processor = audioProcessorRef.get();
-                    if (processor != null) {
-                        processor.cleanup();
-                    }
-                }));
-
-                // Keep the reactive chain alive
-                return Mono.never();
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleServerEvent(session, event, activeMCPCallId, audioProcessor))
+                        .doOnError(error -> {
+                            System.err.println("❌ Error processing events: " + error.getMessage());
+                            running.set(false);
+                        })
+                        .doOnComplete(() -> System.out.println("✓ Event stream completed")))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
+            .doFinally(signalType -> {
+                AudioProcessor processor = audioProcessorRef.get();
+                if (processor != null) {
+                    processor.cleanup();
+                }
+                VoiceLiveSessionAsyncClient s = sessionRef.get();
+                if (s != null) {
+                    try {
+                        s.close();
+                    } catch (Exception e) {
+                        // Suppress errors during cleanup
+                    }
+                }
+            })
             .block();
     }
 

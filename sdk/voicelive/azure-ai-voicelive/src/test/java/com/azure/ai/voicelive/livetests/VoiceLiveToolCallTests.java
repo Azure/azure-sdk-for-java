@@ -23,6 +23,7 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -95,6 +96,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         CountDownLatch responseDoneLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             // Build tool: assess_pronunciation (no parameters, matching Python)
             VoiceLiveFunctionDefinition assessTool = new VoiceLiveFunctionDefinition("assess_pronunciation");
@@ -114,7 +116,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA) {
                     functionCallResults.add((SessionUpdateResponseFunctionCallArgumentsDelta) event);
@@ -154,6 +156,9 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
             Assertions.assertFalse(functionCallResults.isEmpty(), "Should have at least one function call result");
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -184,6 +189,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         CountDownLatch responseDoneLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             // Build tools: get_weather, get_time (matching Python)
             VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather");
@@ -207,7 +213,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
                     functionDone.set((SessionUpdateResponseFunctionCallArgumentsDone) event);
@@ -244,6 +250,9 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             Assertions.assertTrue(matchesBeijing,
                 "Arguments should contain Beijing location, got: " + functionDone.get().getArguments());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -282,6 +291,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         CountDownLatch postToolResponseDoneLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             // Build tool: get_weather
             VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather");
@@ -304,7 +314,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
                     functionDone.set((SessionUpdateResponseFunctionCallArgumentsDone) event);
@@ -381,6 +391,9 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             Assertions.assertTrue(hasSunny, "Transcript should mention sunny, got: " + fullTranscript);
             Assertions.assertTrue(has25, "Transcript should mention 25, got: " + fullTranscript);
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -413,6 +426,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
         // Single session for both phases (matching Python: session.update on same connection)
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
@@ -431,7 +445,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             AtomicInteger phase3TranscriptCount = new AtomicInteger(0);
             CountDownLatch phase3Latch = new CountDownLatch(1);
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 int currentPhase = phase.get();
 
@@ -544,6 +558,9 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             Assertions.assertTrue(phase3TranscriptCount.get() >= 1,
                 "Phase 3: Should have at least 1 transcript, got: " + phase3TranscriptCount.get());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }

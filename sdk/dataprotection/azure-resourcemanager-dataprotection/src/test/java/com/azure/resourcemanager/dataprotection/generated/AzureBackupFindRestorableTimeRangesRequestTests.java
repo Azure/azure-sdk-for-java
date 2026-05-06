@@ -13,22 +13,23 @@ public final class AzureBackupFindRestorableTimeRangesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = BinaryData
-            .fromString("{\"sourceDataStoreType\":\"OperationalStore\",\"startTime\":\"taeburuvdm\",\"endTime\":\"s\"}")
+            .fromString(
+                "{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"icslfaoq\",\"endTime\":\"iyylhalnswhccsp\"}")
             .toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("taeburuvdm", model.startTime());
-        Assertions.assertEquals("s", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("icslfaoq", model.startTime());
+        Assertions.assertEquals("iyylhalnswhccsp", model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = new AzureBackupFindRestorableTimeRangesRequest()
-            .withSourceDataStoreType(RestoreSourceDataStoreType.OPERATIONAL_STORE)
-            .withStartTime("taeburuvdm")
-            .withEndTime("s");
+            .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
+            .withStartTime("icslfaoq")
+            .withEndTime("iyylhalnswhccsp");
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesRequest.class);
-        Assertions.assertEquals(RestoreSourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("taeburuvdm", model.startTime());
-        Assertions.assertEquals("s", model.endTime());
+        Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("icslfaoq", model.startTime());
+        Assertions.assertEquals("iyylhalnswhccsp", model.endTime());
     }
 }

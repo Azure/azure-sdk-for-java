@@ -81,6 +81,20 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @QueryParam("$filter") String filter, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobResourceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<JobResourceList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -103,7 +117,7 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, vaultName, filter, skipToken, accept, context))
             .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), null, null))
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -122,7 +136,8 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResourceInner> listAsync(String vaultName, String resourceGroupName, String filter,
         String skipToken) {
-        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken));
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -139,7 +154,8 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
     private PagedFlux<JobResourceInner> listAsync(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken));
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -161,7 +177,7 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
         Response<JobResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, vaultName, filter, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -184,7 +200,7 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
         Response<JobResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, vaultName, filter, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -201,7 +217,8 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
     public PagedIterable<JobResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken));
+        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -220,6 +237,60 @@ public final class BackupJobsClientImpl implements BackupJobsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResourceInner> list(String vaultName, String resourceGroupName, String filter,
         String skipToken, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken, context));
+        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken, context),
+            nextLink -> listNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Job resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<JobResourceInner>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<JobResourceList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<JobResourceInner> listNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<JobResourceList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

@@ -48,7 +48,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
 # Get version info for all the maven artifacts under the groupId = 'com.azure'
 function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     $artifactInfos = @{}
-    $azComArtifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $GroupId
+    $azComArtifactIds = GetAllAzComClientArtifactIds -GroupId $GroupId
 
     foreach ($artifactId in $azComArtifactIds) {
         $artifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $GroupId
@@ -72,8 +72,14 @@ function UpdateDependencies($ArtifactInfos) {
         $deps = @{}
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
-        $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
-        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+        # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+        # Maven Central endpoint is blocked on the build agent network.
+        $pomFileUri = "$PackageRepositoryUri/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
+        $headers = @{}
+        if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+          $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+        }
+        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers $headers
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
         $ArtifactInfos[$artifactId].Dependencies = $deps
@@ -101,70 +107,103 @@ function UpdateCIInformation($ArtifactInfos) {
     }
 }
 
-# Create the forward looking graph for once the artifacts have been patched.
-function CreateForwardLookingVersions($ArtifactInfos) {
-    $allDependenciesWithVersion = @{}
+<#
+.SYNOPSIS
+Adds a missing Azure dependency's latest GA/patch version to the patch comparison map.
+
+.DESCRIPTION
+Returns $true when $LatestVersions[$DependencyId] is available after this function runs:
+either it was already present, or it was resolved from Maven and added to $LatestVersions.
+
+Returns $false when the dependency should not participate in patch-version comparison:
+it is already known to be unresolved, is not an Azure artifact, has no usable GA/patch
+version on Maven, or returns 404 from Maven metadata lookup. Other Maven/feed errors are
+re-thrown because they can make patch analysis unreliable.
+#>
+function TryAddLatestDependencyVersionFromMaven($DependencyId, [hashtable]$LatestVersions, [hashtable]$UnresolvedDependencies) {
+    # Dependency versions already in the patch graph take precedence. This includes
+    # artifacts from patch_release_client.txt and artifacts already selected for a
+    # patch in the current fixed-point pass.
+    if ($LatestVersions.ContainsKey($DependencyId)) {
+        return $true
+    }
+
+    # Cache missing dependencies so repeated references from multiple artifacts do
+    # not repeatedly call the Maven feed during each fixed-point pass.
+    if ($UnresolvedDependencies.ContainsKey($DependencyId)) {
+        return $false
+    }
+
+    # Keep the original behavior for third-party packages: only Azure artifacts can
+    # cause automated patch releases.
+    if ($DependencyId -notlike "azure-*") {
+        $UnresolvedDependencies[$DependencyId] = $true
+        return $false
+    }
+
+    try {
+        # Some common Azure dependencies (for example azure-core and azure-identity)
+        # are not listed in patch_release_client.txt. Resolve their latest GA/patch
+        # version from the Maven feed so dependents can still be detected.
+        $dependencyInfo = GetVersionInfoForMavenArtifact -ArtifactId $DependencyId -GroupId "com.azure"
+        if ($dependencyInfo -and -not [String]::IsNullOrWhiteSpace($dependencyInfo.LatestGAOrPatchVersion)) {
+            $LatestVersions[$DependencyId] = $dependencyInfo.LatestGAOrPatchVersion
+            return $true
+        }
+
+        $UnresolvedDependencies[$DependencyId] = $true
+        return $false
+    } catch {
+        $statusCode = $null
+        if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+            $statusCode = [int]$_.Exception.Response.StatusCode
+        }
+
+        # A 404 means the dependency is not published as a com.azure Maven artifact,
+        # so it should be treated like an ignored external dependency.
+        if ($statusCode -eq 404) {
+            Write-Verbose "Could not find Maven metadata for dependency '$DependencyId' in group 'com.azure'."
+            $UnresolvedDependencies[$DependencyId] = $true
+            return $false
+        }
+
+        throw
+    }
+}
+
+# Find all the artifacts that will need to be patched based on dependency analysis.
+# Iterates until no more patches are found (fixed-point), so the result is correct
+# regardless of artifact ordering in patch_release_client.txt.
+# Dependencies in the patch list are checked directly; missing Azure dependencies
+# are resolved from Maven. External dependencies (reactor-core, jackson, etc.) are ignored.
+function FindArtifactsThatNeedPatching($ArtifactInfos) {
+    $latestVersions = @{}
+    $unresolvedDependencies = @{}
     foreach ($arId in $ArtifactInfos.Keys) {
-        foreach ($depId in $ArtifactInfos[$arId].Dependencies.Keys) {
-            $depVersion = $ArtifactInfos[$arId].Dependencies[$depId]
-            $currentVersion = $allDependenciesWithVersion[$depId]
-            if ($null -eq $currentVersion) {
-                $latestVersion = $depVersion
-            }
-            else {
-                $orderedVersions = @($depVersion, $currentVersion) | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
-                $sortedVersions = [AzureEngSemanticVersion]::SortVersions($orderedVersions)
-                if($null -eq $sortedVersions) {
-                    # We currently have a bug where semantic version may have 4 values just like jackson-databind.
-                    $latestVersion = $depVersion
-                } else {
-                    $latestVersion = $sortedVersions[0].RawVersion
+        $latestVersions[$arId] = $ArtifactInfos[$arId].LatestGAOrPatchVersion
+    }
+
+    do {
+        $changed = $false
+        foreach ($arId in $ArtifactInfos.Keys) {
+            $arInfo = $ArtifactInfos[$arId]
+            if ($arInfo.FutureReleasePatchVersion) { continue }
+            foreach ($depId in $arInfo.Dependencies.Keys) {
+                if (-not $latestVersions.ContainsKey($depId) -and
+                    -not (TryAddLatestDependencyVersionFromMaven -DependencyId $depId -LatestVersions $latestVersions -UnresolvedDependencies $unresolvedDependencies)) {
+                    continue
+                }
+
+                if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
+                    $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
+                    $arInfo.FutureReleasePatchVersion = $patchVersion
+                    $latestVersions[$arId] = $patchVersion
+                    $changed = $true
+                    break
                 }
             }
-
-            $allDependenciesWithVersion[$depId] = $latestVersion
         }
-    }
-
-    return $allDependenciesWithVersion
-}
-
-# Find all the artifacts that will need to be patched based on the dependency analysis.
-# Artifacts will be processed in the same order as defined in patch_release_client.txt (libraries that depend on other
-# libraries will appear later in the file).
-# This guarantees that if dependency libraries are going to be patched, dependent ones will be included as well.
-function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVersion) {
-    foreach($arId in $ArtifactInfos.Keys) {
-        $arInfo = $ArtifactInfos[$arId]
-
-        foreach($depId in $arInfo.Dependencies.Keys) {
-            $depVersion = $arInfo.Dependencies[$depId]
-
-            if($depVersion -ne $AllDependenciesWithVersion[$depId]) {
-                $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
-                $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-                $arInfo.FutureReleasePatchVersion = $newPatchVersion
-                $AllDependenciesWithVersion[$arId] = $newPatchVersion
-            }
-        }
-    }
-}
-
-# Helper class that analyzes all the artifacts that need to be patched if a given artifact is patched.
-function ArtifactsToPatchUtil([String] $DependencyId, [hashtable]$ArtifactInfos, $AllDependenciesWithVersion) {
-    $arInfo = $ArtifactInfos[$DependencyId]
-    $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
-    $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-    $arInfo.FutureReleasePatchVersion = $newPatchVersion
-    $AllDependenciesWithVersion[$depId] = $newPatchVersion
-
-    foreach($arId in $ArtifactInfos.Keys) {
-        $arInfo = $ArtifactInfos[$arId]
-        $depVersion = $arInfo.Dependencies[$DependencyId]
-        if($depVersion -and $depVersion -ne $newPatchVersion) {
-            ArtifactsToPatchUtil -DependencyId $DependencyId -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
-        }
-    }
+    } while ($changed)
 }
 
 # Update dependencies in the version client file.
@@ -273,7 +312,7 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
 }
 
 # Generate BOM file for the given artifacts.
-function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
+function GenerateBOMFile($ArtifactInfos, $BomFileBranchName, [bool]$UseCurrentBranch = $false) {
     $gaArtifacts = @()
 
     foreach ($artifact in $ArtifactInfos.Values) {
@@ -310,8 +349,9 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        Write-Host "git checkout -b $BomFileBranchName $remoteName/main"
-        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main
+        $base = if ($UseCurrentBranch) { "HEAD" } else { "$remoteName/main" }
+        Write-Host "git checkout -b $BomFileBranchName $base"
+        $cmdOutput = git checkout -b $BomFileBranchName $base
         $bomFileContent.Save($BomFilePath)
         Write-Host "git add $BomFilePath"
         git add $BomFilePath

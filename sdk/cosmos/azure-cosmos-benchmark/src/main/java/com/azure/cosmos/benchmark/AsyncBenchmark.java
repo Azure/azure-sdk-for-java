@@ -14,12 +14,17 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -28,11 +33,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.util.retry.Retry;
-
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -42,14 +45,12 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    // Shared Reactor scheduler for benchmark workload dispatch.
-    // Uses Schedulers.parallel() (global shared singleton). Must NOT be disposed by the benchmark.
-    final Scheduler benchmarkScheduler;
+    private final AtomicLong operationCounter = new AtomicLong(0);
 
     private boolean databaseCreated;
     private boolean collectionCreated;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(AsyncBenchmark.class);
     final CosmosAsyncClient benchmarkWorkloadClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
@@ -57,11 +58,9 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
 
-    AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
+    AsyncBenchmark(TenantWorkloadConfig cfg) {
 
-        logger = LoggerFactory.getLogger(this.getClass());
         workloadConfig = cfg;
-        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()
@@ -123,6 +122,15 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
+            if (cfg.isHttp2Enabled()) {
+                Http2ConnectionConfig http2Config = gatewayConnectionConfig.getHttp2ConnectionConfig();
+                http2Config.setEnabled(true);
+                if (cfg.getHttp2MaxConcurrentStreams() != null) {
+                    http2Config.setMaxConcurrentStreams(cfg.getHttp2MaxConcurrentStreams());
+                }
+                logger.info("HTTP/2 enabled with maxConcurrentStreams: {}",
+                    http2Config.getMaxConcurrentStreams());
+            }
             benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
@@ -184,68 +192,40 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
-        ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
-
-        if (cfg.getOperationType() != Operation.WriteLatency
-            && cfg.getOperationType() != Operation.WriteThroughput
+        if (cfg.getOperationType() != Operation.WriteThroughput
             && cfg.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
-            for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
-                String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                    dataFieldValue,
-                    partitionKey,
-                    cfg.getDocumentDataFieldCount());
-                Flux<PojoizedJson> obs = cosmosAsyncContainer
-                    .createItem(newDoc)
-                    .retryWhen(Retry.max(5).filter((error) -> {
-                        if (!(error instanceof CosmosException)) {
-                            return false;
-                        }
-                        final CosmosException cosmosException = (CosmosException) error;
-                        if (cosmosException.getStatusCode() == 410 ||
-                            cosmosException.getStatusCode() == 408 ||
-                            cosmosException.getStatusCode() == 429 ||
-                            cosmosException.getStatusCode() == 500 ||
-                            cosmosException.getStatusCode() == 503) {
-                            return true;
-                        }
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
 
-                        return false;
-                    }))
-                    .onErrorResume(
-                        (error) -> {
-                            if (!(error instanceof CosmosException)) {
-                                return false;
-                            }
-                            final CosmosException cosmosException = (CosmosException) error;
-                            if (cosmosException.getStatusCode() == 409) {
-                                return true;
-                            }
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cfg.getNumberOfPreCreatedDocuments())
+                .map(i -> {
+                    String uuid = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                        dataFieldValue,
+                        partitionKey,
+                        cfg.getDocumentDataFieldCount());
+                    generatedDocs.add(newDoc);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
+                });
 
-                            return false;
-                        },
-                        (conflictException) -> cosmosAsyncContainer.readItem(
-                            uuid, new PartitionKey(partitionKey), PojoizedJson.class)
-                    )
-                    .map(resp -> {
-                        PojoizedJson x =
-                            resp.getItem();
-                        return x;
-                    })
-                    .flux();
-                createDocumentObservables.add(obs);
-            }
-        }
+            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+            cosmosAsyncContainer
+                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .doOnNext(response -> {
+                    if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                        failedResponses.add(response);
+                    }
+                })
+                .blockLast(Duration.ofMinutes(10));
 
-        if (createDocumentObservables.isEmpty()) {
-            docsToRead = new ArrayList<>();
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer,
+                cfg.getIngestionRetryConcurrency());
+
+            docsToRead = generatedDocs;
         } else {
-            int prePopConcurrency = Math.max(1, Math.min(cfg.getConcurrency(), 100));
-            docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency)
-                .collectList()
-                .block();
+            docsToRead = new ArrayList<>();
         }
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 
@@ -351,71 +331,22 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
     protected abstract Mono<T> performWorkload(long i);
 
-    @SuppressWarnings("unchecked")
-    public void run() throws Exception {
-
-        long startTime = System.currentTimeMillis();
-        int concurrency = workloadConfig.getConcurrency();
-
-        Flux<Long> source;
-        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
-        if (maxDuration != null) {
-            // Time-based termination
-            final long deadline = startTime + maxDuration.toMillis();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    if (System.currentTimeMillis() < deadline) {
-                        sink.next(state.getAndIncrement());
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
-        } else {
-            // Count-based termination using Flux.generate to avoid long-to-int truncation
-            long numberOfOps = workloadConfig.getNumberOfOperations();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    long current = state.getAndIncrement();
-                    if (current < numberOfOps) {
-                        sink.next(current);
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
+    @Override
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
+        Mono<T> workload = performWorkload(operationIndex);
+        Mono<T> delayed = sparsityMono(operationIndex);
+        if (delayed != null) {
+            workload = delayed.then(workload);
         }
-
-        AtomicLong completedCount = new AtomicLong(0);
-
-        source
-            .flatMap(i -> {
-                Mono<T> workload = performWorkload(i);
-                Mono<T> delayed = sparsityMono(i);
-                if (delayed != null) {
-                    workload = delayed.then(workload);
-                }
-                return workload
-                    .subscribeOn(benchmarkScheduler)
-                    .doOnSuccess(v -> {
-                        completedCount.incrementAndGet();
-                        AsyncBenchmark.this.onSuccess();
-                    })
-                    .doOnError(e -> {
-                        completedCount.incrementAndGet();
-                        logger.error("Encountered failure {} on thread {}",
-                            e.getMessage(), Thread.currentThread().getName(), e);
-                        AsyncBenchmark.this.onError(e);
-                    })
-                    .onErrorResume(e -> Mono.empty());
-            }, concurrency)
-            .blockLast();
-
-        long endTime = System.currentTimeMillis();
-        logger.info("[{}] operations performed in [{}] seconds.",
-            completedCount.get(), (int) ((endTime - startTime) / 1000));
+        return workload
+            .doOnSuccess(v -> AsyncBenchmark.this.onSuccess())
+            .doOnError(e -> {
+                logger.error("Encountered failure {} on thread {}",
+                    e.getMessage(), Thread.currentThread().getName(), e);
+                AsyncBenchmark.this.onError(e);
+            })
+            .onErrorResume(e -> Mono.empty());
     }
 
     protected Mono sparsityMono(long i) {

@@ -12,9 +12,9 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"snapshotId\":\"scdntnevf\",\"created\":\"2021-05-10T05:26:40Z\",\"provisioningState\":\"ygtdsslswt\"},\"location\":\"weriofzpyqsem\",\"id\":\"bnetshh\",\"name\":\"zhedplvwiw\",\"type\":\"bmwmbesldnkw\"}],\"nextLink\":\"pp\"}")
+            "{\"value\":[{\"properties\":{\"snapshotId\":\"bobzdopcjwvnhd\",\"created\":\"2021-11-29T05:13:59Z\",\"provisioningState\":\"gx\"},\"location\":\"xrslpm\",\"id\":\"wuoegrpk\",\"name\":\"jw\",\"type\":\"iyq\"},{\"properties\":{\"snapshotId\":\"i\",\"created\":\"2021-04-15T16:21:59Z\",\"provisioningState\":\"gk\"},\"location\":\"zl\",\"id\":\"bmpaxmodfvu\",\"name\":\"fy\",\"type\":\"sbpfvmwyhr\"}],\"nextLink\":\"uyfta\"}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("weriofzpyqsem", model.value().get(0).location());
-        Assertions.assertEquals("pp", model.nextLink());
+        Assertions.assertEquals("xrslpm", model.value().get(0).location());
+        Assertions.assertEquals("uyfta", model.nextLink());
     }
 }

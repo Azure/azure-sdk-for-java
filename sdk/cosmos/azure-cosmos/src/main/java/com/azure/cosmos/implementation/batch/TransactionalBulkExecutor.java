@@ -66,12 +66,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  **/
 public final class TransactionalBulkExecutor implements Disposable {
+    private static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+    }
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
-
-    private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
@@ -285,9 +289,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         Integer nullableMaxConcurrentCosmosPartitions = transactionalBulkExecutionOptionsImpl.getMaxConcurrentCosmosPartitions();
         Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
             Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
-            ImplementationBridgeHelpers
-                .CosmosAsyncContainerHelper
-                .getCosmosAsyncContainerAccessor()
+            containerAccessor()
                 .getFeedRanges(this.container, false).map(ranges -> Math.max(256, ranges.size() * 2));
 
         return
@@ -835,7 +837,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         CosmosBatchRequestOptions batchRequestOptions = new CosmosBatchRequestOptions();
         batchRequestOptions.setExcludedRegions(transactionalBulkExecutionOptionsImpl.getExcludedRegions());
         batchRequestOptions.setKeywordIdentifiers(transactionalBulkExecutionOptionsImpl.getKeywordIdentifiers());
-        cosmosBatchRequestOptionsAccessor
+        cosmosBatchRequestOptionsAccessor()
             .setThroughputControlGroupName(
                 batchRequestOptions,
                 transactionalBulkExecutionOptionsImpl.getThroughputControlGroupName());
@@ -843,7 +845,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             transactionalBulkExecutionOptionsImpl.getCosmosEndToEndLatencyPolicyConfig();
         if (e2eLatencyPolicySnapshot != null) {
-            cosmosBatchRequestOptionsAccessor
+            cosmosBatchRequestOptionsAccessor()
                 .setEndToEndOperationLatencyPolicyConfig(
                     batchRequestOptions,
                     e2eLatencyPolicySnapshot);
@@ -852,16 +854,16 @@ public final class TransactionalBulkExecutor implements Disposable {
         Map<String, String> customOptions = transactionalBulkExecutionOptionsImpl.getHeaders();
         if (customOptions != null && !customOptions.isEmpty()) {
             for(Map.Entry<String, String> entry : customOptions.entrySet()) {
-                cosmosBatchRequestOptionsAccessor
+                cosmosBatchRequestOptionsAccessor()
                     .setHeader(batchRequestOptions, entry.getKey(), entry.getValue());
             }
         }
-        cosmosBatchRequestOptionsAccessor
+        cosmosBatchRequestOptionsAccessor()
             .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
         batchRequestOptions.setCustomItemSerializer(this.effectiveItemSerializer);
 
-        cosmosBatchRequestOptionsAccessor.setDisableRetryForThrottledBatchRequest(batchRequestOptions, true);
+        cosmosBatchRequestOptionsAccessor().setDisableRetryForThrottledBatchRequest(batchRequestOptions, true);
 
         return batchRequestOptions;
     }
