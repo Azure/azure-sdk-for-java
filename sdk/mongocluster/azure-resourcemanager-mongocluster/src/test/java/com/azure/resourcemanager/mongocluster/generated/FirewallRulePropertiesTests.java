@@ -15,16 +15,16 @@ public final class FirewallRulePropertiesTests {
             .fromString(
                 "{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"shurzafbljjgpbto\",\"endIpAddress\":\"c\"}")
             .toObject(FirewallRuleProperties.class);
-        Assertions.assertEquals("shurzafbljjgpbto", model.startIPAddress());
-        Assertions.assertEquals("c", model.endIPAddress());
+        Assertions.assertEquals("shurzafbljjgpbto", model.startIpAddress());
+        Assertions.assertEquals("c", model.endIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirewallRuleProperties model
-            = new FirewallRuleProperties().withStartIPAddress("shurzafbljjgpbto").withEndIPAddress("c");
+            = new FirewallRuleProperties().withStartIpAddress("shurzafbljjgpbto").withEndIpAddress("c");
         model = BinaryData.fromObject(model).toObject(FirewallRuleProperties.class);
-        Assertions.assertEquals("shurzafbljjgpbto", model.startIPAddress());
-        Assertions.assertEquals("c", model.endIPAddress());
+        Assertions.assertEquals("shurzafbljjgpbto", model.startIpAddress());
+        Assertions.assertEquals("c", model.endIpAddress());
     }
 }

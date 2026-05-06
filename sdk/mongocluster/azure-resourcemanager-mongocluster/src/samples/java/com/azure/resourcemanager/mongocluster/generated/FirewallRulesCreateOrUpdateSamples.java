@@ -24,7 +24,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
             .define("rule1")
             .withExistingMongoCluster("TestGroup", "myMongoCluster")
             .withProperties(
-                new FirewallRuleProperties().withStartIPAddress("0.0.0.0").withEndIPAddress("255.255.255.255"))
+                new FirewallRuleProperties().withStartIpAddress("0.0.0.0").withEndIpAddress("255.255.255.255"))
             .create();
     }
 }
