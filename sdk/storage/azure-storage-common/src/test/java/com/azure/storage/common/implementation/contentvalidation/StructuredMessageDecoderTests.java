@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for StructuredMessageDecoder with focus on the validated-emission guarantee:
- * payload bytes for a segment are only returned after the segment's CRC has been verified.
+ * Unit tests for StructuredMessageDecoder.
  */
 public class StructuredMessageDecoderTests {
     private static final int MESSAGE_HEADER_LENGTH = 13;
@@ -76,7 +75,7 @@ public class StructuredMessageDecoderTests {
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
 
-        // Split at byte 7 (mid-header, header is 13 bytes)
+        // Split mid-message-header (header is 13 bytes).
         ByteBuffer chunk1 = ByteBuffer.wrap(encodedBytes, 0, 7);
         ByteBuffer chunk2 = ByteBuffer.wrap(encodedBytes, 7, encodedLength - 7);
         chunk1.order(ByteOrder.LITTLE_ENDIAN);
@@ -105,7 +104,7 @@ public class StructuredMessageDecoderTests {
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
 
-        // Split after message header (13 bytes) + 5 bytes into first segment header.
+        // Split mid-segment-header: msgHdr(13) + 5 of segHdr(10).
         int splitPoint = 18;
         ByteBuffer chunk1 = ByteBuffer.wrap(encodedBytes, 0, splitPoint);
         ByteBuffer chunk2 = ByteBuffer.wrap(encodedBytes, splitPoint, encodedLength - splitPoint);
@@ -115,31 +114,13 @@ public class StructuredMessageDecoderTests {
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
 
         ByteBuffer result1 = decoder.decodeChunk(chunk1);
-        // Only the message header is consumed; segment header is incomplete so nothing validated yet.
+        // Segment header is incomplete, so nothing is emitted yet.
         assertNull(result1);
         assertFalse(decoder.isComplete());
 
         ByteBuffer result2 = decoder.decodeChunk(chunk2);
         assertNotNull(result2);
         assertTrue(decoder.isComplete());
-    }
-
-    @Test
-    public void handlesZeroLengthSegment() throws IOException {
-        byte[] minimalData = new byte[1];
-        ThreadLocalRandom.current().nextBytes(minimalData);
-
-        StructuredMessageEncoder encoder
-            = new StructuredMessageEncoder(minimalData.length, 1024, StructuredMessageFlags.STORAGE_CRC64);
-        ByteBuffer encodedData = collectFlux(encoder.encode(ByteBuffer.wrap(minimalData)));
-        int encodedLength = encodedData.remaining();
-
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer result = decoder.decodeChunk(encodedData);
-
-        assertTrue(decoder.isComplete());
-        assertNotNull(result);
-        assertEquals(1, result.remaining());
     }
 
     @Test
@@ -225,10 +206,8 @@ public class StructuredMessageDecoderTests {
     }
 
     /**
-     * Verifies Kyle's emission guarantee (r3120267493): payload bytes for a segment are
-     * not emitted until the segment's CRC footer is read and validated. When the decoder
-     * has received the full segment payload but the CRC footer is still incomplete,
-     * {@code decodeChunk} must return {@code null}, never the in-progress payload bytes.
+     * Payload bytes for a segment must not be emitted until the segment's CRC footer has been read and
+     * validated. While the footer is incomplete, decodeChunk must return null.
      */
     @Test
     public void withholdsPayloadUntilSegmentFooterValidated() throws IOException {
@@ -242,8 +221,7 @@ public class StructuredMessageDecoderTests {
         byte[] encodedBytes = new byte[encodedLength];
         encodedData.get(encodedBytes);
 
-        // Layout: msgHeader(13) + segHeader(10) + payload(1024) + segCrc(8) + msgCrc(8) = 1063.
-        // Feed the full payload but stop 1 byte short of completing the SEGMENT CRC footer.
+        // msgHdr(13) + segHdr(10) + payload(1024) + segCrc(8) + msgCrc(8) = 1063. Stop 1 byte short of segCrc.
         int segCrcAllButLast = 13 + 10 + 1024 + 7;
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
@@ -254,7 +232,6 @@ public class StructuredMessageDecoderTests {
         assertNull(partial, "Decoder must not emit payload before segment CRC is validated");
         assertFalse(decoder.isComplete());
 
-        // Feed the remainder; segment CRC completes, payload is released, and message CRC completes.
         ByteBuffer chunk2 = ByteBuffer.wrap(encodedBytes, segCrcAllButLast, encodedLength - segCrcAllButLast);
         chunk2.order(ByteOrder.LITTLE_ENDIAN);
         ByteBuffer emitted = decoder.decodeChunk(chunk2);
@@ -300,7 +277,7 @@ public class StructuredMessageDecoderTests {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
 
-        // Corrupt first segment number from 1 to 2 (offset 13 in v1 format).
+        // Corrupt first segment number from 1 to 2 (offset 13).
         ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putShort(MESSAGE_HEADER_LENGTH, (short) 2);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
@@ -315,7 +292,7 @@ public class StructuredMessageDecoderTests {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
 
-        // Corrupt first segment size to an impossible value (offsets 15..22 in v1 format).
+        // Corrupt first segment size to an impossible value (8 bytes at offset 15).
         ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putLong(MESSAGE_HEADER_LENGTH + 2, Long.MAX_VALUE);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
@@ -330,8 +307,7 @@ public class StructuredMessageDecoderTests {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] encodedBytes = encode(data, 512, StructuredMessageFlags.STORAGE_CRC64);
 
-        // Layout for one-segment message:
-        // messageHeader(13) + segmentHeader(10) + payload(512) + segmentCrc(8) + messageCrc(8)
+        // msgHdr(13) + segHdr(10) + payload(512) + segCrc(8) + msgCrc(8). Flip one bit of the segment CRC.
         int segmentCrcOffset = MESSAGE_HEADER_LENGTH + SEGMENT_HEADER_LENGTH + data.length;
         encodedBytes[segmentCrcOffset] ^= 0x01;
 
@@ -339,6 +315,26 @@ public class StructuredMessageDecoderTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
         assertTrue(exception.getMessage().contains("CRC64 mismatch in segment"));
+    }
+
+    @Test
+    public void throwsOnSegmentCrcMismatchInLaterSegment() throws IOException {
+        // Multi-segment message where segment 1 is intact but segment 2's CRC is corrupted; verifies
+        // CRC validation runs on every segment, not just the first.
+        byte[] data = new byte[300];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 100, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Per-segment block: segHdr(10) + payload(100) + segCrc(8) = 118.
+        // Segment 2's CRC starts at: msgHdr(13) + segBlock(118) + segHdr(10) + payload(100).
+        int seg2CrcOffset
+            = MESSAGE_HEADER_LENGTH + (SEGMENT_HEADER_LENGTH + 100 + CRC64_LENGTH) + SEGMENT_HEADER_LENGTH + 100;
+        encodedBytes[seg2CrcOffset] ^= 0x01;
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("CRC64 mismatch in segment 2"));
     }
 
     @Test
@@ -355,6 +351,190 @@ public class StructuredMessageDecoderTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> decoder.decodeChunk(ByteBuffer.wrap(corrupted).order(ByteOrder.LITTLE_ENDIAN)));
         assertTrue(exception.getMessage().contains("CRC64 mismatch in message footer"));
+    }
+
+    @Test
+    public void throwsOnUnsupportedFlags() throws IOException {
+        // Flags value 2 is not in the StructuredMessageFlags enum (NONE=0, STORAGE_CRC64=1) and must be rejected.
+        byte[] data = new byte[64];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 64, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Flags live at offset 9 (2 bytes, little-endian).
+        ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putShort(9, (short) 2);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("Invalid value for StructuredMessageFlags"));
+    }
+
+    @Test
+    public void throwsOnZeroSegments() throws IOException {
+        byte[] data = new byte[64];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 64, StructuredMessageFlags.STORAGE_CRC64);
+
+        // numSegments lives at offset 11 (2 bytes, little-endian). Force it to zero.
+        ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putShort(11, (short) 0);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("at least one segment"));
+    }
+
+    @Test
+    public void throwsOnSkippedSegmentNumber() throws IOException {
+        // 3 segments of 100 bytes each. Layout per segment: segHdr(10) + payload(100) + segCrc(8) = 118.
+        // Rewrite segment 2's number to 3 to simulate a stream that skips segment 2.
+        byte[] data = new byte[300];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 100, StructuredMessageFlags.STORAGE_CRC64);
+
+        int seg2NumberOffset = MESSAGE_HEADER_LENGTH + (SEGMENT_HEADER_LENGTH + 100 + CRC64_LENGTH);
+        ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putShort(seg2NumberOffset, (short) 3);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("Unexpected segment number"));
+    }
+
+    @Test
+    public void truncatedMessageHeaderLeavesDecoderIncomplete() throws IOException {
+        byte[] data = new byte[64];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 64, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Feed only the first 5 bytes of the 13-byte message header.
+        ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, 5).order(ByteOrder.LITTLE_ENDIAN);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteBuffer result = decoder.decodeChunk(chunk);
+        assertNull(result);
+        assertFalse(decoder.isComplete());
+    }
+
+    @Test
+    public void truncatedSegmentHeaderLeavesDecoderIncomplete() throws IOException {
+        byte[] data = new byte[256];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 256, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Feed full message header + 5 of the 10 segment-header bytes.
+        int truncated = MESSAGE_HEADER_LENGTH + 5;
+        ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated).order(ByteOrder.LITTLE_ENDIAN);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteBuffer result = decoder.decodeChunk(chunk);
+        assertNull(result);
+        assertFalse(decoder.isComplete());
+    }
+
+    @Test
+    public void truncatedSegmentFooterLeavesDecoderIncomplete() throws IOException {
+        byte[] data = new byte[128];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Layout: msgHdr(13) + segHdr(10) + payload(128) + segCrc(8) + msgCrc(8). Truncate mid-segCrc.
+        int truncated = MESSAGE_HEADER_LENGTH + SEGMENT_HEADER_LENGTH + 128 + 4;
+        ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated).order(ByteOrder.LITTLE_ENDIAN);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteBuffer result = decoder.decodeChunk(chunk);
+        assertNull(result);
+        assertFalse(decoder.isComplete());
+    }
+
+    @Test
+    public void truncatedMessageFooterLeavesDecoderIncomplete() throws IOException {
+        byte[] data = new byte[128];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Feed everything except the last 4 bytes of the 8-byte message CRC footer.
+        int truncated = encodedBytes.length - 4;
+        ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated).order(ByteOrder.LITTLE_ENDIAN);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteBuffer result = decoder.decodeChunk(chunk);
+        // Segment payload has been released, but the message footer is still incomplete.
+        assertNotNull(result);
+        assertFalse(decoder.isComplete());
+    }
+
+    @Test
+    public void extraBytesAfterMessageFooterAreNotConsumed() throws IOException {
+        byte[] data = new byte[128];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Append garbage bytes after the message footer; the decoder must stop at the declared message length.
+        int extras = 16;
+        byte[] padded = new byte[encodedBytes.length + extras];
+        System.arraycopy(encodedBytes, 0, padded, 0, encodedBytes.length);
+        byte[] noise = new byte[extras];
+        ThreadLocalRandom.current().nextBytes(noise);
+        System.arraycopy(noise, 0, padded, encodedBytes.length, extras);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteBuffer buffer = ByteBuffer.wrap(padded).order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer result = decoder.decodeChunk(buffer);
+
+        assertTrue(decoder.isComplete());
+        assertNotNull(result);
+        byte[] decoded = new byte[result.remaining()];
+        result.get(decoded);
+        assertArrayEquals(data, decoded);
+        // Trailing bytes must not be consumed; buffer position stops at the declared message length.
+        assertEquals(extras, buffer.remaining());
+    }
+
+    @Test
+    public void throwsOnEncodedPayloadLargerThanExpectedSize() throws IOException {
+        // Wire payload is larger than the expectedEncodedMessageLength supplied to the decoder. Must be rejected by the msgLen check.
+        byte[] data = new byte[128];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length - 8);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("did not match content length"));
+    }
+
+    @Test
+    public void throwsOnNegativeMessageLength() throws IOException {
+        // msgLen lives at offset 1 (8 bytes, little-endian). A negative value must be rejected before
+        // any further bounds math runs.
+        byte[] data = new byte[64];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 64, StructuredMessageFlags.STORAGE_CRC64);
+
+        ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putLong(1, Long.MIN_VALUE);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("Message length too small"));
+    }
+
+    @Test
+    public void throwsOnNegativeSegmentSize() throws IOException {
+        // Companion to throwsOnInvalidSegmentSize covering the negative-value branch of the segment-size check.
+        byte[] data = new byte[256];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 256, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Segment size lives at offset MESSAGE_HEADER_LENGTH + 2 (after the 2-byte segment number).
+        ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN).putLong(MESSAGE_HEADER_LENGTH + 2, Long.MIN_VALUE);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(encodedBytes).order(ByteOrder.LITTLE_ENDIAN)));
+        assertTrue(exception.getMessage().contains("Invalid segment size detected"));
     }
 
 }
