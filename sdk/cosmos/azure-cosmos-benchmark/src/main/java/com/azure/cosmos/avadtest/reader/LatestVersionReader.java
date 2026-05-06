@@ -56,7 +56,7 @@ public final class LatestVersionReader implements AutoCloseable {
             .getDatabase(config.database())
             .getContainer(config.leaseContainer());
 
-        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-lv");
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-lv", config.runId());
 
         log.info("LatestVersionReader initialized: prefix={}, endpoint={}, region={}, workers={}",
             LEASE_PREFIX, config.readerEndpoint(), config.preferredRegion(), config.workerCount());

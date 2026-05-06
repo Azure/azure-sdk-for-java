@@ -84,7 +84,7 @@ public final class Ingestor implements AutoCloseable {
             .getDatabase(config.database())
             .getContainer(config.feedContainer());
 
-        this.reconWriter = new ReconciliationWriter(client, config.database(), "ingestor");
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "ingestor", config.runId());
 
         log.info("Ingestor initialized (bulk mode): endpoint={}, db={}, container={}, ops/sec={}, opsPerTick={}",
             config.endpoint(), config.database(), config.feedContainer(),

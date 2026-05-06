@@ -68,7 +68,7 @@ public final class AvadReader implements AutoCloseable {
             .getDatabase(config.database())
             .getContainer(config.leaseContainer());
 
-        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-avad");
+        this.reconWriter = new ReconciliationWriter(client, config.database(), "cfp-avad", config.runId());
 
         log.info("AvadReader initialized: prefix={}, endpoint={}, region={}, workers={}",
             LEASE_PREFIX, config.readerEndpoint(), config.preferredRegion(), config.workerCount());

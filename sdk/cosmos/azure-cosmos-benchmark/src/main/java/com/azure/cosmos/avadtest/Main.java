@@ -33,9 +33,6 @@ public final class Main {
     @Parameter(names = "--health-port", description = "Health server port (default: 8080)")
     private int healthPort = 8080;
 
-    @Parameter(names = "--run-id", description = "Soak run identifier (for health monitor)")
-    private String runId = "soak-default";
-
     @Parameter(names = "--gap-sla-minutes", description = "Minutes before an unconsumed event is flagged as a gap")
     private int gapSlaMinutes = 10;
 
@@ -117,7 +114,7 @@ public final class Main {
 
     private int runHealthMonitor() throws Exception {
         TestConfig config = loadConfig();
-        HealthMonitor monitor = new HealthMonitor(config, runId, gapSlaMinutes);
+        HealthMonitor monitor = new HealthMonitor(config, config.runId(), gapSlaMinutes);
         try {
             return monitor.runChecks();
         } finally {

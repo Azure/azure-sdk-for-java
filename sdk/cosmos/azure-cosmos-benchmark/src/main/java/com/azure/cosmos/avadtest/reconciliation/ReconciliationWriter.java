@@ -34,6 +34,7 @@ public final class ReconciliationWriter implements AutoCloseable {
     private static final String RECONCILIATION_CONTAINER = "reconciliation";
 
     private final String source;
+    private final String runId;
     private final CosmosAsyncContainer container;
     private final CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
     private final LongAdder writeCount = new LongAdder();
@@ -46,16 +47,18 @@ public final class ReconciliationWriter implements AutoCloseable {
      * @param client shared CosmosAsyncClient — caller owns lifecycle
      * @param database database name
      * @param source source identifier for reconciliation docs
+     * @param runId soak run identifier stamped on every doc
      */
-    public ReconciliationWriter(CosmosAsyncClient client, String database, String source) {
+    public ReconciliationWriter(CosmosAsyncClient client, String database, String source, String runId) {
         this.source = source;
+        this.runId = runId;
 
         this.container = client
             .getDatabase(database)
             .getContainer(RECONCILIATION_CONTAINER);
 
-        log.info("ReconciliationWriter initialized: source={}, container={}",
-            source, RECONCILIATION_CONTAINER);
+        log.info("ReconciliationWriter initialized: source={}, runId={}, container={}",
+            source, runId, RECONCILIATION_CONTAINER);
     }
 
     /**
@@ -68,6 +71,7 @@ public final class ReconciliationWriter implements AutoCloseable {
         doc.put("id", source + "-" + eventId);
         doc.put("correlationId", eventId);
         doc.put("source", source);
+        doc.put("runId", runId);
         doc.put("seqNo", seqNo);
         doc.put("opType", opType);
         doc.put("partitionKey", partitionKey);

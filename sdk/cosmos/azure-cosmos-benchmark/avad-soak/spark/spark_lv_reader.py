@@ -31,15 +31,22 @@ try:
 except:
     database = "graph_db"
 
+try:
+    run_id = dbutils.widgets.get("run_id")
+except:
+    run_id = os.environ.get("RUN_ID", "")
+
 feed_container = "avad-test"
 recon_container = "reconciliation"
 
 assert cosmos_endpoint, "Set cosmos_endpoint widget or COSMOS_ENDPOINT env var"
 assert cosmos_key, "Set cosmos_key widget or COSMOS_KEY env var"
+assert run_id, "Set run_id widget or RUN_ID env var"
 
 print(f"Endpoint: {cosmos_endpoint}")
 print(f"Database: {database}")
 print(f"Feed container: {feed_container}")
+print(f"Run ID: {run_id}")
 
 # COMMAND ----------
 
@@ -87,6 +94,7 @@ recon_df = (
         concat(lit(SOURCE + "-"), col("eventId")).alias("id"),
         col("eventId").alias("correlationId"),
         lit(SOURCE).alias("source"),
+        lit(run_id).alias("runId"),
         coalesce(col("seqNo"), lit(-1)).cast(LongType()).alias("seqNo"),
         coalesce(col("operationType"), lit("unknown")).alias("opType"),
         coalesce(col("tenantId"), lit("")).alias("partitionKey"),

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,11 +32,15 @@ public final class TestConfig {
     private final String feedContainer;
     private final String leaseContainer;
     private final String preferredRegion;
+    private final String runId;
     private final int opsPerSec;
     private final int docSizeBytes;
     private final int logicalPartitionCount;
     private final int durationSeconds;
     private final int workerCount;
+
+    private static final DateTimeFormatter RUN_ID_FORMAT =
+        DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").withZone(ZoneOffset.UTC);
 
     private TestConfig(Builder builder) {
         this.endpoint = builder.endpoint;
@@ -43,11 +50,16 @@ public final class TestConfig {
         this.feedContainer = builder.feedContainer;
         this.leaseContainer = builder.leaseContainer;
         this.preferredRegion = builder.preferredRegion;
+        this.runId = builder.runId;
         this.opsPerSec = builder.opsPerSec;
         this.docSizeBytes = builder.docSizeBytes;
         this.logicalPartitionCount = builder.logicalPartitionCount;
         this.durationSeconds = builder.durationSeconds;
         this.workerCount = builder.workerCount;
+    }
+
+    private static String generateRunId() {
+        return "soak-" + RUN_ID_FORMAT.format(Instant.now());
     }
 
     /**
@@ -66,6 +78,7 @@ public final class TestConfig {
             .feedContainer(resolve("COSMOS_FEED_CONTAINER", textOrNull(cosmos, "feedContainer"), "avad-test"))
             .leaseContainer(resolve("COSMOS_LEASE_CONTAINER", textOrNull(cosmos, "leaseContainer"), "avad-test-leases"))
             .preferredRegion(resolve("COSMOS_PREFERRED_REGION", textOrNull(cosmos, "preferredRegion"), "West Central US"))
+            .runId(resolve("RUN_ID", textOrNull(root, "runId"), generateRunId()))
             .opsPerSec(resolveInt("OPS_PER_SEC", intOrNull(ingestor, "opsPerSec"), 5000))
             .docSizeBytes(resolveInt("DOC_SIZE_BYTES", intOrNull(ingestor, "docSizeBytes"), 1024))
             .logicalPartitionCount(resolveInt("LOGICAL_PARTITION_COUNT", intOrNull(ingestor, "logicalPartitionCount"), 100000))
@@ -86,6 +99,7 @@ public final class TestConfig {
             .feedContainer(envOrDefault("COSMOS_FEED_CONTAINER", "avad-test"))
             .leaseContainer(envOrDefault("COSMOS_LEASE_CONTAINER", "avad-test-leases"))
             .preferredRegion(envOrDefault("COSMOS_PREFERRED_REGION", "West Central US"))
+            .runId(resolve("RUN_ID", null, generateRunId()))
             .opsPerSec(Integer.parseInt(envOrDefault("OPS_PER_SEC", "5000")))
             .docSizeBytes(Integer.parseInt(envOrDefault("DOC_SIZE_BYTES", "1024")))
             .logicalPartitionCount(Integer.parseInt(envOrDefault("LOGICAL_PARTITION_COUNT", "100000")))
@@ -149,6 +163,7 @@ public final class TestConfig {
     public String leaseContainer() { return leaseContainer; }
     public String preferredRegion() { return preferredRegion; }
     public List<String> preferredRegions() { return Collections.singletonList(preferredRegion); }
+    public String runId() { return runId; }
     public int opsPerSec() { return opsPerSec; }
     public int docSizeBytes() { return docSizeBytes; }
     public int logicalPartitionCount() { return logicalPartitionCount; }
@@ -157,7 +172,7 @@ public final class TestConfig {
 
     public static final class Builder {
         private String endpoint, regionalEndpoint, key, database, feedContainer, leaseContainer;
-        private String preferredRegion;
+        private String preferredRegion, runId;
         private int opsPerSec, docSizeBytes, logicalPartitionCount, durationSeconds, workerCount;
 
         public Builder endpoint(String v) { this.endpoint = v; return this; }
@@ -167,6 +182,7 @@ public final class TestConfig {
         public Builder feedContainer(String v) { this.feedContainer = v; return this; }
         public Builder leaseContainer(String v) { this.leaseContainer = v; return this; }
         public Builder preferredRegion(String v) { this.preferredRegion = v; return this; }
+        public Builder runId(String v) { this.runId = v; return this; }
         public Builder opsPerSec(int v) { this.opsPerSec = v; return this; }
         public Builder docSizeBytes(int v) { this.docSizeBytes = v; return this; }
         public Builder logicalPartitionCount(int v) { this.logicalPartitionCount = v; return this; }

@@ -40,8 +40,14 @@ try:
 except:
     database = "graph_db"
 
+try:
+    run_id = dbutils.widgets.get("run_id")
+except:
+    run_id = os.environ.get("RUN_ID", "")
+
 assert cosmos_endpoint, "Set cosmos_endpoint widget or COSMOS_ENDPOINT env var"
 assert cosmos_key, "Set cosmos_key widget or COSMOS_KEY env var"
+assert run_id, "Set run_id widget or RUN_ID env var — reconciliation is scoped by runId"
 
 recon_cfg = {
     "spark.cosmos.accountEndpoint": cosmos_endpoint,
@@ -53,6 +59,7 @@ recon_cfg = {
 
 print(f"Endpoint: {cosmos_endpoint}")
 print(f"Database: {database}")
+print(f"Run ID: {run_id}")
 
 # COMMAND ----------
 
@@ -71,6 +78,12 @@ from pyspark.sql.functions import col, lit, when
 
 available_cols = recon.columns
 print(f"Available columns: {available_cols}")
+
+# Filter by runId first — scope to this soak run only
+if "runId" in available_cols:
+    recon = recon.filter(col("runId") == run_id)
+else:
+    print("WARNING: no runId column found — reconciling ALL events (unscoped)")
 
 recon = recon.select(
     col("id"),
