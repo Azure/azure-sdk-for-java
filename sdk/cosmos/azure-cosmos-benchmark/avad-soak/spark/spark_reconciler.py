@@ -57,15 +57,33 @@ print(f"Database: {database}")
 # COMMAND ----------
 
 # Load entire reconciliation container into a cached DataFrame
+# Use only columns guaranteed to exist across all sources
 recon = (
     spark.read
     .format("cosmos.oltp")
     .options(**recon_cfg)
     .load()
-    .select("id", "correlationId", "source", "seqNo", "opType",
-            "partitionKey", "lsn", "hasPreviousImage", "crts", "timestamp")
     .cache()
 )
+
+# Select columns that exist, fill missing ones with defaults
+from pyspark.sql.functions import col, lit, when
+
+available_cols = recon.columns
+print(f"Available columns: {available_cols}")
+
+recon = recon.select(
+    col("id"),
+    col("correlationId") if "correlationId" in available_cols else lit(None).alias("correlationId"),
+    col("source"),
+    col("seqNo") if "seqNo" in available_cols else lit(-1).alias("seqNo"),
+    col("opType") if "opType" in available_cols else lit("unknown").alias("opType"),
+    col("partitionKey") if "partitionKey" in available_cols else lit("").alias("partitionKey"),
+    col("lsn") if "lsn" in available_cols else lit(-1).alias("lsn"),
+    col("hasPreviousImage") if "hasPreviousImage" in available_cols else lit(False).alias("hasPreviousImage"),
+    col("crts").cast("long") if "crts" in available_cols else lit(-1).cast("long").alias("crts"),
+    col("timestamp") if "timestamp" in available_cols else lit("").alias("timestamp"),
+).cache()
 
 total = recon.count()
 print(f"Total reconciliation docs: {total:,}")
