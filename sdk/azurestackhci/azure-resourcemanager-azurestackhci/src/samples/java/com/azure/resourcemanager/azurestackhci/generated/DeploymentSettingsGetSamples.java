@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class DeploymentSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetDeploymentSettings.json
+     * x-ms-original-file: 2026-04-01-preview/GetDeploymentSettings.json
      */
     /**
      * Sample code: Get Deployment Settings.

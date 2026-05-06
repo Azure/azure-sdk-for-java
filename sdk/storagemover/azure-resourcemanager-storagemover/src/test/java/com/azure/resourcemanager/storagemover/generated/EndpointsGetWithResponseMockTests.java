@@ -23,7 +23,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"ly\",\"endpointKind\":\"Source\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"gebdunygaeq\",\"tenantId\":\"bqfatpxllrxcyjmo\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"hhyxxrw\":{\"principalId\":\"arm\",\"clientId\":\"dmjsjqb\"},\"xkgymareqnajxqu\":{\"principalId\":\"co\",\"clientId\":\"hp\"},\"mzqa\":{\"principalId\":\"hky\",\"clientId\":\"beddgssofw\"},\"udfnbyxba\":{\"principalId\":\"rmnjijpx\",\"clientId\":\"q\"}}},\"id\":\"bjyvay\",\"name\":\"fimrzrtuzqogse\",\"type\":\"nevfdnw\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"uzsoi\",\"endpointKind\":\"Source\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"xtrthz\",\"tenantId\":\"ytdw\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ivpdtiir\":{\"principalId\":\"ubpaxhe\",\"clientId\":\"i\"},\"xrxxlep\":{\"principalId\":\"d\",\"clientId\":\"axoruzfgsquy\"},\"ooaojkniodkooebw\":{\"principalId\":\"amxjezwlw\",\"clientId\":\"xuqlcvydypat\"},\"infwjlfltkacjve\":{\"principalId\":\"jhemms\",\"clientId\":\"dkcrodt\"}}},\"id\":\"dlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class EndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .getWithResponse("ag", "rvimjwosytxitcsk", "cktqumiekkezzi", com.azure.core.util.Context.NONE)
+            .getWithResponse("gsexne", "fdnw", "wmewzsyy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ly", response.properties().description());
+        Assertions.assertEquals("uzsoi", response.properties().description());
         Assertions.assertEquals(EndpointKind.SOURCE, response.properties().endpointKind());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }

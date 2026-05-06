@@ -1,14 +1,56 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2026-04-28)
 
-### Features Added
+- Azure Resource Manager AppConfiguration client library for Java. This package contains Microsoft Azure SDK for AppConfiguration Management SDK. // (missing-service-description) Add service description. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Snapshot$DefinitionStages` was modified
 
-### Other Changes
+* Required stage 2 was added
+
+### Features Added
+
+* `models.AccessRuleProperties` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.NetworkSecurityProfile` was added
+
+* `models.IssueType` was added
+
+* `models.Severity` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.AccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+#### `models.PublicNetworkAccess` was modified
+
+* `SECURED_BY_PERIMETER` was added
+
+#### `AppConfigurationManager` was modified
+
+* `networkSecurityPerimeterConfigurations()` was added
 
 ## 1.2.0-beta.1 (2026-01-16)
 

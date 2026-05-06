@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceDeviceInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.NamespaceDeviceListResult;
+import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDeviceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -166,6 +168,26 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> revoke(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("deviceName") String deviceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeviceCredentialsRevokeRequest body,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> revokeSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("deviceName") String deviceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeviceCredentialsRevokeRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -910,6 +932,189 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
         Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> revokeWithResponseAsync(String resourceGroupName, String namespaceName,
+        String deviceName, DeviceCredentialsRevokeRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.revoke(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
+        DeviceCredentialsRevokeRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.revokeSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept, body,
+            Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
+        DeviceCredentialsRevokeRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.revokeSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRevokeAsync(String resourceGroupName, String namespaceName,
+        String deviceName, DeviceCredentialsRevokeRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = revokeWithResponseAsync(resourceGroupName, namespaceName, deviceName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
+        String deviceName, DeviceCredentialsRevokeRequest body) {
+        Response<BinaryData> response = revokeWithResponse(resourceGroupName, namespaceName, deviceName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
+        String deviceName, DeviceCredentialsRevokeRequest body, Context context) {
+        Response<BinaryData> response = revokeWithResponse(resourceGroupName, namespaceName, deviceName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> revokeAsync(String resourceGroupName, String namespaceName, String deviceName,
+        DeviceCredentialsRevokeRequest body) {
+        return beginRevokeAsync(resourceGroupName, namespaceName, deviceName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
+        DeviceCredentialsRevokeRequest body) {
+        beginRevoke(resourceGroupName, namespaceName, deviceName, body).getFinalResult();
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param deviceName The name of the device.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
+        DeviceCredentialsRevokeRequest body, Context context) {
+        beginRevoke(resourceGroupName, namespaceName, deviceName, body, context).getFinalResult();
     }
 
     /**

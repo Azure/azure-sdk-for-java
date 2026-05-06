@@ -458,6 +458,51 @@ public class SessionsMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldCompleteMessageWhenSessionIdDiffersInCase() {
+        // The session ID returned by the broker on the accepted session may differ in case from the session ID
+        // carried in the received message. The disposition lookup must be case-insensitive.
+        final String acceptedSessionId = "Session-ABC";
+        final String messageSessionId = "session-abc";
+
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(messageSessionId, 1);
+        final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
+        session1EpStates.next(AmqpEndpointState.ACTIVE);
+        final Session session1 = createMockSession(acceptedSessionId, session1Messages, session1EpStates);
+        when(session1.getLink().updateDisposition(any(), any())).thenReturn(Mono.empty());
+        final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
+
+        final int maxSessions = 1;
+        final int concurrency = 1;
+        final boolean autoDispositionDisabled = false;
+        final Set<ServiceBusReceivedMessage> unseenMessages = values(session1Messages);
+        Assertions.assertEquals(1, unseenMessages.size());
+        final ServiceBusReceivedMessage processedMessage = unseenMessages.iterator().next();
+        final Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
+            unseenMessages.remove(context.getMessage());
+        };
+        final Consumer<ServiceBusErrorContext> processError = e -> {
+        };
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions,
+            concurrency, autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> pump.begin()).thenAwait().thenCancel().verify();
+        }
+
+        Assertions.assertTrue(unseenMessages.isEmpty());
+        verify(session1.getLink()).updateDisposition(lockTokenCaptor.capture(), deliveryStateCaptor.capture());
+        final String lockToken = lockTokenCaptor.getValue();
+        final DeliveryState deliveryState = deliveryStateCaptor.getValue();
+        Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
+        Assertions.assertEquals(Accepted.getInstance(), deliveryState);
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     public void shouldEmitErrorIfBeginInvokedMoreThanOnce() {
         final String session1Id = "1";
 

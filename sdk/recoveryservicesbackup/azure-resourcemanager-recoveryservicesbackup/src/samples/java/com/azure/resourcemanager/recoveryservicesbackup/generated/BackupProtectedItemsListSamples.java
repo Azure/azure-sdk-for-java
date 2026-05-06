@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupProtectedItemsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/BackupProtectedItems_List.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/BackupProtectedItems_List.json
      */
     /**
      * Sample code: List protected items with backupManagementType filter as AzureIaasVm.

@@ -52,6 +52,14 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the kind property: This property identifies the purpose of the Cluster deployment. For example, a valid
+     * value is AzureLocal.
+     * 
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -88,6 +96,13 @@ public interface Cluster {
      * @return the cloudId value.
      */
     String cloudId();
+
+    /**
+     * Gets the ring property: The ring to which this cluster belongs to.
+     * 
+     * @return the ring value.
+     */
+    String ring();
 
     /**
      * Gets the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
@@ -190,6 +205,13 @@ public interface Cluster {
     String billingModel();
 
     /**
+     * Gets the billingProperties property: Billing properties of the cluster, including upcoming billing model details.
+     * 
+     * @return the billingProperties value.
+     */
+    ClusterBillingProperties billingProperties();
+
+    /**
      * Gets the registrationTimestamp property: First cluster sync timestamp.
      * 
      * @return the registrationTimestamp value.
@@ -239,6 +261,21 @@ public interface Cluster {
     ClusterPattern clusterPattern();
 
     /**
+     * Gets the confidentialVmProperties property: Represents the Confidential Virtual Machine (CVM) support intent and
+     * current status for the cluster resource.
+     * 
+     * @return the confidentialVmProperties value.
+     */
+    ConfidentialVmProperties confidentialVmProperties();
+
+    /**
+     * Gets the sdnProperties property: Software Defined Networking Properties of the cluster.
+     * 
+     * @return the sdnProperties value.
+     */
+    ClusterSdnProperties sdnProperties();
+
+    /**
      * Gets the localAvailabilityZones property: Local Availability Zone information for HCI cluster.
      * 
      * @return the localAvailabilityZones value.
@@ -251,6 +288,14 @@ public interface Cluster {
      * @return the identityProvider value.
      */
     IdentityProvider identityProvider();
+
+    /**
+     * Gets the storageType property: Storage type of the cluster. Indicates whether the cluster uses S2D, SAN, or a
+     * combination.
+     * 
+     * @return the storageType value.
+     */
+    StorageType storageType();
 
     /**
      * Gets the principalId property: The service principal ID of the system assigned identity. This property will only
@@ -365,7 +410,8 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithCloudManagementEndpoint,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithCloudManagementEndpoint,
             DefinitionStages.WithAadClientId, DefinitionStages.WithAadTenantId,
             DefinitionStages.WithAadApplicationObjectId, DefinitionStages.WithAadServicePrincipalObjectId,
             DefinitionStages.WithSoftwareAssuranceProperties, DefinitionStages.WithLogCollectionProperties,
@@ -399,6 +445,21 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: This property identifies the purpose of the Cluster deployment. For example,
+             * a valid value is AzureLocal.
+             * 
+             * @param kind This property identifies the purpose of the Cluster deployment. For example, a valid value is
+             * AzureLocal.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(String kind);
         }
 
         /**
@@ -799,6 +860,29 @@ public interface Cluster {
      */
     Cluster extendSoftwareAssuranceBenefit(SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
         Context context);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param changeRingRequest Change ring request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Cluster changeRing(ChangeRingRequest changeRingRequest);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param changeRingRequest Change ring request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Cluster changeRing(ChangeRingRequest changeRingRequest, Context context);
 
     /**
      * Trigger Log Collection on a cluster.

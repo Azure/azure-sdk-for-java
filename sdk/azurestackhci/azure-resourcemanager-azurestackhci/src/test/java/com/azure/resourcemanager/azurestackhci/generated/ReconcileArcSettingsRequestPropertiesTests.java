@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReconcileArcSettingsRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReconcileArcSettingsRequestProperties model
-            = BinaryData.fromString("{\"clusterNodes\":[\"yxwjkcp\",\"bnwbxgjvtbvpyssz\",\"nruj\",\"guhmuouqfpr\"]}")
-                .toObject(ReconcileArcSettingsRequestProperties.class);
-        Assertions.assertEquals("yxwjkcp", model.clusterNodes().get(0));
+        ReconcileArcSettingsRequestProperties model = BinaryData.fromString("{\"clusterNodes\":[\"wxzvlvqhjkb\"]}")
+            .toObject(ReconcileArcSettingsRequestProperties.class);
+        Assertions.assertEquals("wxzvlvqhjkb", model.clusterNodes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReconcileArcSettingsRequestProperties model = new ReconcileArcSettingsRequestProperties()
-            .withClusterNodes(Arrays.asList("yxwjkcp", "bnwbxgjvtbvpyssz", "nruj", "guhmuouqfpr"));
+        ReconcileArcSettingsRequestProperties model
+            = new ReconcileArcSettingsRequestProperties().withClusterNodes(Arrays.asList("wxzvlvqhjkb"));
         model = BinaryData.fromObject(model).toObject(ReconcileArcSettingsRequestProperties.class);
-        Assertions.assertEquals("yxwjkcp", model.clusterNodes().get(0));
+        Assertions.assertEquals("wxzvlvqhjkb", model.clusterNodes().get(0));
     }
 }

@@ -15,19 +15,19 @@ public final class RemoteSupportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoteSupportRequest model = BinaryData.fromString(
-            "{\"properties\":{\"accessLevel\":\"Diagnostics\",\"expirationTimeStamp\":\"2021-10-11T15:02:03Z\",\"remoteSupportType\":\"Revoke\"}}")
+            "{\"properties\":{\"accessLevel\":\"Diagnostics\",\"expirationTimeStamp\":\"2021-07-16T15:54:52Z\",\"remoteSupportType\":\"Enable\"}}")
             .toObject(RemoteSupportRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T15:02:03Z"), model.properties().expirationTimestamp());
-        Assertions.assertEquals(RemoteSupportType.REVOKE, model.properties().remoteSupportType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T15:54:52Z"), model.properties().expirationTimestamp());
+        Assertions.assertEquals(RemoteSupportType.ENABLE, model.properties().remoteSupportType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemoteSupportRequest model = new RemoteSupportRequest().withProperties(
-            new RemoteSupportRequestProperties().withExpirationTimestamp(OffsetDateTime.parse("2021-10-11T15:02:03Z"))
-                .withRemoteSupportType(RemoteSupportType.REVOKE));
+            new RemoteSupportRequestProperties().withExpirationTimestamp(OffsetDateTime.parse("2021-07-16T15:54:52Z"))
+                .withRemoteSupportType(RemoteSupportType.ENABLE));
         model = BinaryData.fromObject(model).toObject(RemoteSupportRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T15:02:03Z"), model.properties().expirationTimestamp());
-        Assertions.assertEquals(RemoteSupportType.REVOKE, model.properties().remoteSupportType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T15:54:52Z"), model.properties().expirationTimestamp());
+        Assertions.assertEquals(RemoteSupportType.ENABLE, model.properties().remoteSupportType());
     }
 }

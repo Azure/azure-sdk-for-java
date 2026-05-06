@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ClustersUploadCertificateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/UploadCertificate.json
+     * x-ms-original-file: 2026-04-01-preview/UploadCertificate.json
      */
     /**
      * Sample code: Upload certificate.

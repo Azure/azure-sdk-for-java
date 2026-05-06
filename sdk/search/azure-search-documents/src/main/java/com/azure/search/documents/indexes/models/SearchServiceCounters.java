@@ -65,12 +65,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     @Generated
     private final ResourceCounter skillsetCounter;
 
-    /*
-     * Total memory consumption of all vector indexes within the service, in bytes.
-     */
-    @Generated
-    private final ResourceCounter vectorIndexSizeCounter;
-
     /**
      * Creates an instance of SearchServiceCounters class.
      *
@@ -82,13 +76,13 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
      * @param skillsetCounter the skillsetCounter value to set.
-     * @param vectorIndexSizeCounter the vectorIndexSizeCounter value to set.
+     * @param vectorIndexSizeInBytes the vectorIndexSizeInBytes value to set.
      */
     @Generated
     private SearchServiceCounters(ResourceCounter aliasCounter, ResourceCounter documentCounter,
         ResourceCounter indexCounter, ResourceCounter indexerCounter, ResourceCounter dataSourceCounter,
         ResourceCounter storageSizeCounter, ResourceCounter synonymMapCounter, ResourceCounter skillsetCounter,
-        ResourceCounter vectorIndexSizeCounter) {
+        ResourceCounter vectorIndexSizeInBytes) {
         this.aliasCounter = aliasCounter;
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
@@ -97,7 +91,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
         this.skillsetCounter = skillsetCounter;
-        this.vectorIndexSizeCounter = vectorIndexSizeCounter;
+        this.vectorIndexSizeInBytes = vectorIndexSizeInBytes;
     }
 
     /**
@@ -181,17 +175,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     }
 
     /**
-     * Get the vectorIndexSizeCounter property: Total memory consumption of all vector indexes within the service, in
-     * bytes.
-     *
-     * @return the vectorIndexSizeCounter value.
-     */
-    @Generated
-    public ResourceCounter getVectorIndexSizeCounter() {
-        return this.vectorIndexSizeCounter;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -206,7 +189,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         jsonWriter.writeJsonField("storageSize", this.storageSizeCounter);
         jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter);
         jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter);
-        jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeCounter);
+        jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -230,7 +213,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
             ResourceCounter storageSizeCounter = null;
             ResourceCounter synonymMapCounter = null;
             ResourceCounter skillsetCounter = null;
-            ResourceCounter vectorIndexSizeCounter = null;
+            ResourceCounter vectorIndexSizeInBytes = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -251,13 +234,30 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                 } else if ("skillsetCount".equals(fieldName)) {
                     skillsetCounter = ResourceCounter.fromJson(reader);
                 } else if ("vectorIndexSize".equals(fieldName)) {
-                    vectorIndexSizeCounter = ResourceCounter.fromJson(reader);
+                    vectorIndexSizeInBytes = ResourceCounter.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new SearchServiceCounters(aliasCounter, documentCounter, indexCounter, indexerCounter,
-                dataSourceCounter, storageSizeCounter, synonymMapCounter, skillsetCounter, vectorIndexSizeCounter);
+                dataSourceCounter, storageSizeCounter, synonymMapCounter, skillsetCounter, vectorIndexSizeInBytes);
         });
+    }
+
+    /*
+     * Total memory consumption of all vector indexes within the service, in bytes.
+     */
+    @Generated
+    private final ResourceCounter vectorIndexSizeInBytes;
+
+    /**
+     * Get the vectorIndexSizeInBytes property: Total memory consumption of all vector indexes within the service, in
+     * bytes.
+     *
+     * @return the vectorIndexSizeInBytes value.
+     */
+    @Generated
+    public ResourceCounter getVectorIndexSizeInBytes() {
+        return this.vectorIndexSizeInBytes;
     }
 }

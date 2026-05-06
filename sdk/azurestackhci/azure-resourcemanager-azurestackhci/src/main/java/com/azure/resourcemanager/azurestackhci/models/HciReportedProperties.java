@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The device Configuration for HCI device.
@@ -39,6 +41,16 @@ public final class HciReportedProperties extends ReportedProperties {
      * Hci device hardware specific information.
      */
     private HciHardwareProfile hardwareProfile;
+
+    /*
+     * CVM support details for edge device.
+     */
+    private ConfidentialVmProfile confidentialVmProfile;
+
+    /*
+     * Most recent edge device sync timestamp in UTC.
+     */
+    private OffsetDateTime lastSyncTimestamp;
 
     /*
      * Extensions details for edge device.
@@ -102,6 +114,26 @@ public final class HciReportedProperties extends ReportedProperties {
     }
 
     /**
+     * Get the confidentialVmProfile property: CVM support details for edge device.
+     * 
+     * @return the confidentialVmProfile value.
+     */
+    @Override
+    public ConfidentialVmProfile confidentialVmProfile() {
+        return this.confidentialVmProfile;
+    }
+
+    /**
+     * Get the lastSyncTimestamp property: Most recent edge device sync timestamp in UTC.
+     * 
+     * @return the lastSyncTimestamp value.
+     */
+    @Override
+    public OffsetDateTime lastSyncTimestamp() {
+        return this.lastSyncTimestamp;
+    }
+
+    /**
      * Get the extensionProfile property: Extensions details for edge device.
      * 
      * @return the extensionProfile value.
@@ -149,6 +181,11 @@ public final class HciReportedProperties extends ReportedProperties {
                     deserializedHciReportedProperties.deviceState = DeviceState.fromString(reader.getString());
                 } else if ("extensionProfile".equals(fieldName)) {
                     deserializedHciReportedProperties.extensionProfile = ExtensionProfile.fromJson(reader);
+                } else if ("lastSyncTimestamp".equals(fieldName)) {
+                    deserializedHciReportedProperties.lastSyncTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("confidentialVmProfile".equals(fieldName)) {
+                    deserializedHciReportedProperties.confidentialVmProfile = ConfidentialVmProfile.fromJson(reader);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedHciReportedProperties.networkProfile = HciNetworkProfile.fromJson(reader);
                 } else if ("osProfile".equals(fieldName)) {

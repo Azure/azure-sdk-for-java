@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class DeploymentSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteDeploymentSettings.json
+     * x-ms-original-file: 2026-04-01-preview/DeleteDeploymentSettings.json
      */
     /**
      * Sample code: Delete Deployment Settings.

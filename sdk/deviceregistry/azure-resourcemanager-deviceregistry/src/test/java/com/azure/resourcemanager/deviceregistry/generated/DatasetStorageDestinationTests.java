@@ -13,16 +13,16 @@ public final class DatasetStorageDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetStorageDestination model
-            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"mxiebw\"}}")
+            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"wsrtjriplrbpbe\"}}")
                 .toObject(DatasetStorageDestination.class);
-        Assertions.assertEquals("mxiebw", model.configuration().path());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.configuration().path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatasetStorageDestination model = new DatasetStorageDestination()
-            .withConfiguration(new StorageDestinationConfiguration().withPath("mxiebw"));
+            .withConfiguration(new StorageDestinationConfiguration().withPath("wsrtjriplrbpbe"));
         model = BinaryData.fromObject(model).toObject(DatasetStorageDestination.class);
-        Assertions.assertEquals("mxiebw", model.configuration().path());
+        Assertions.assertEquals("wsrtjriplrbpbe", model.configuration().path());
     }
 }

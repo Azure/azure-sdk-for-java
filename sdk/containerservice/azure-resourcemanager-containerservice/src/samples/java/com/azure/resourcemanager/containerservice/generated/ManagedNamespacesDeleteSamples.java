@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedNamespacesDelete.json
+     * x-ms-original-file: 2026-02-01/ManagedNamespacesDelete.json
      */
     /**
      * Sample code: Delete Managed Namespace.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/RecoveryPoints_Get.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Get Azure Vm Recovery Point Details.

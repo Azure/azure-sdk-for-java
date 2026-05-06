@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
