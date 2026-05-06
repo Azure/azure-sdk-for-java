@@ -40,7 +40,10 @@ ABORT_ON_GAP="${ABORT_ON_GAP:-false}"
 export COSMOS_ACCOUNT="${COSMOS_ACCOUNT:-abhm-cfp-region-test}"
 export COSMOS_RG="${COSMOS_RG:-abhm-rg}"
 
-OUTPUT_DIR="$SCRIPT_DIR/soak-results-$(date +%Y%m%d-%H%M%S)"
+RUN_ID="${RUN_ID:-soak-$(date +%Y%m%d-%H%M%S)}"
+export RUN_ID
+
+OUTPUT_DIR="$SCRIPT_DIR/soak-results-$RUN_ID"
 mkdir -p "$OUTPUT_DIR"
 
 SOAK_DURATION_SEC=$((SOAK_DURATION_HOURS * 3600))
@@ -139,6 +142,7 @@ run_chaos_loop() {
 
 log "=== AVAD AKS Soak Test ==="
 log "Duration: ${SOAK_DURATION_HOURS}h | Chaos: $CHAOS_ENABLED"
+log "Run ID: $RUN_ID"
 log "Output: $OUTPUT_DIR"
 
 # 1. Namespace
@@ -151,6 +155,7 @@ HELM_ARGS=(
     "$SCRIPT_DIR/infra/chart"
     --namespace "$NAMESPACE"
     --values "$VALUES_FILE"
+    --set "global.runId=$RUN_ID"
 )
 [ -n "$VALUES_OVERRIDE" ] && HELM_ARGS+=(--values "$VALUES_OVERRIDE")
 helm "${HELM_ARGS[@]}"

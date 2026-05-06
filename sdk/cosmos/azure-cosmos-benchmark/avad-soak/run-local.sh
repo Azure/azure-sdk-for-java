@@ -72,7 +72,9 @@ JAVA_CMD="java -cp $CLASSPATH"
 MAIN_CLASS="com.azure.cosmos.avadtest.Main"
 
 # ── Output directory ──────────────────────────────────────────────────────
-OUTPUT_DIR="$SCRIPT_DIR/local-run-$(date +%Y%m%d-%H%M%S)"
+RUN_ID="soak-$(date +%Y%m%d-%H%M%S)"
+export RUN_ID
+OUTPUT_DIR="$SCRIPT_DIR/local-run-$RUN_ID"
 mkdir -p "$OUTPUT_DIR"
 
 log() { echo "[$(date '+%H:%M:%S')] $*" | tee -a "$OUTPUT_DIR/run.log"; }
@@ -88,7 +90,9 @@ cleanup() {
     [ -n "$AVAD_PID" ]     && kill "$AVAD_PID" 2>/dev/null     && wait "$AVAD_PID" 2>/dev/null     || true
     [ -n "$LV_PID" ]       && kill "$LV_PID" 2>/dev/null       && wait "$LV_PID" 2>/dev/null       || true
     log "All processes stopped"
+    log "Run ID: $RUN_ID"
     log "Logs: $OUTPUT_DIR"
+    log "Reconcile: RUN_ID=$RUN_ID java -cp ... Main --mode reconcile --full --config $CONFIG_FILE"
 }
 trap cleanup EXIT INT TERM
 
@@ -96,6 +100,7 @@ trap cleanup EXIT INT TERM
 
 log "=== AVAD Local Soak Test ==="
 log "Config: $CONFIG_FILE"
+log "Run ID: $RUN_ID"
 log "Output: $OUTPUT_DIR"
 
 # 1. Ingestor

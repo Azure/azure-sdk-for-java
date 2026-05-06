@@ -52,7 +52,8 @@ $JavaCmd = "java"
 $MainClass = "com.azure.cosmos.avadtest.Main"
 
 # ── Output directory ──────────────────────────────────────────────────────
-$RunId = Get-Date -Format "yyyyMMdd-HHmmss"
+$RunId = "soak-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+$env:RUN_ID = $RunId
 $OutputDir = "$ScriptDir\local-run-$RunId"
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 
@@ -67,6 +68,7 @@ function Log($msg) {
 
 Log "=== AVAD Local Soak Test ==="
 Log "Config: $ConfigFile"
+Log "Run ID: $RunId"
 Log "Output: $OutputDir"
 
 $ConfigPath = Resolve-Path $ConfigFile
@@ -135,5 +137,8 @@ try {
     if (-not $avadReader.HasExited) { Stop-Process -Id $avadReader.Id -Force -ErrorAction SilentlyContinue }
     if (-not $lvReader.HasExited)   { Stop-Process -Id $lvReader.Id -Force -ErrorAction SilentlyContinue }
     Log "All processes stopped"
+    Log "Run ID: $RunId"
     Log "Logs: $OutputDir"
+    Log "Reconcile: java -cp ... Main --mode reconcile --full --config $ConfigFile"
+    Log "  (RUN_ID=$RunId is already in env — reconciler will scope to this run)"
 }
