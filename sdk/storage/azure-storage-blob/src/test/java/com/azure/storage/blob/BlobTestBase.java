@@ -12,6 +12,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -104,6 +107,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -1387,6 +1391,53 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static boolean hasOnlyStructuredMessageDownloadHeaders(List<HttpHeaders> recordedRequestHeaders) {
         return hasStructuredMessageRequestHeaders(recordedRequestHeaders, false);
+    }
+
+    protected static void assertStructuredMessageResponseHeaders(HttpHeaders headers, int unencodedContentLength) {
+        assertTrue(validateBasicHeaders(headers));
+        assertEquals(StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE,
+            headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
+        assertEquals(String.valueOf(unencodedContentLength),
+            headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME));
+        assertEquals(String.valueOf(expectedStructuredMessageEncodedLength(unencodedContentLength)),
+            headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    protected static void assertStructuredMessageResponseHeaders(List<HttpHeaders> recordedResponseHeaders,
+        int unencodedContentLength, int minimumResponseCount) {
+        assertTrue(recordedResponseHeaders.size() >= minimumResponseCount,
+            "Expected at least " + minimumResponseCount + " GET response(s)");
+        recordedResponseHeaders
+            .forEach(headers -> assertStructuredMessageResponseHeaders(headers, unencodedContentLength));
+    }
+
+    protected static void assertStructuredMessageInitialDownloadResponseHeaders(HttpHeaders headers,
+        int totalUnencodedContentLength, int blockSize) {
+        if (totalUnencodedContentLength > 0) {
+            assertStructuredMessageResponseHeaders(headers, Math.min(totalUnencodedContentLength, blockSize));
+        }
+    }
+
+    protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        List<HttpHeaders> recordedRequestHeaders, List<HttpHeaders> recordedResponseHeaders) {
+        return new HttpPipelinePolicy() {
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_RETRY;
+            }
+
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+                return next.process().map(response -> {
+                    if (response.getRequest().getHttpMethod() == HttpMethod.GET
+                        && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
+                        recordedResponseHeaders.add(response.getHeaders());
+                    }
+                    return response;
+                });
+            }
+        };
     }
 
     private static boolean hasStructuredMessageRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
