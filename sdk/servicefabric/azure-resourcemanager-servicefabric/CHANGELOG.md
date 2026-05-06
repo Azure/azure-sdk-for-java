@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-04-22)
+## 1.1.0-beta.1 (2026-05-06)
 
 - Azure Resource Manager Service Fabric client library for Java. This package contains Microsoft Azure SDK for Service Fabric Management SDK. Azure Service Fabric Resource Provider API Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -61,9 +61,9 @@
 #### `models.ApplicationResourceUpdate` was modified
 
 * `location()` was removed
-* `tags()` was removed
 * `validate()` was removed
 * `systemData()` was removed
+* `tags()` was removed
 
 #### `models.ApplicationDeltaHealthPolicy` was modified
 
@@ -91,19 +91,19 @@
 
 #### `models.ServiceResourceUpdate` was modified
 
-* `validate()` was removed
-* `location()` was removed
 * `systemData()` was removed
+* `location()` was removed
+* `validate()` was removed
 * `tags()` was removed
 
 #### `models.AvailableOperationDisplay` was modified
 
 * `AvailableOperationDisplay()` was changed to private access
-* `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
-* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
 
 #### `models.NodeTypeDescription` was modified
 
@@ -118,11 +118,11 @@
 * `ClusterCodeVersionsResult()` was changed to private access
 * `withCodeVersion(java.lang.String)` was removed
 * `withSupportExpiryUtc(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `validate()` was removed
-* `withEnvironment(models.ClusterEnvironment)` was removed
 * `withId(java.lang.String)` was removed
+* `withEnvironment(models.ClusterEnvironment)` was removed
+* `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ApplicationUpgradePolicy` was modified
 
@@ -256,8 +256,8 @@
 #### `models.ApplicationResourceUpdate` was modified
 
 * `withSystemData(com.azure.core.management.SystemData)` was added
-* `withTags(java.util.Map)` was added
 * `withLocation(java.lang.String)` was added
+* `withTags(java.util.Map)` was added
 
 #### `models.Cluster$Update` was modified
 
