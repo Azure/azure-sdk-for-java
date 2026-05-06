@@ -114,12 +114,91 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
-    void testMultiTenantUsesPrefixIssuerValidation() {
+    void testValidateTenantIdRejectsCommon() {
         resourceServerRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.profile.tenant-id=common",
                 "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
             .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("security vulnerability");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsOrganizations() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be set to 'organizations'")
+                    .hasMessageContaining("security vulnerability");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsConsumers() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be set to 'consumers'")
+                    .hasMessageContaining("security vulnerability");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsNull() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                // When tenant-id is null, AadAuthenticationProperties.afterPropertiesSet() sets it to "common"
+                // Then our validation should reject "common"
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("security vulnerability");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsEmptyString() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                // When tenant-id is empty string, AadAuthenticationProperties.afterPropertiesSet() sets it to "common"
+                // Then our validation should reject "common"
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("security vulnerability");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdAcceptsValidGuid() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=12345678-1234-1234-1234-123456789012",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
@@ -129,7 +208,7 @@ class AadResourceServerConfigurationTests {
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("AadJwtIssuerValidator not found"));
 
-                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNull();
+                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNotNull();
             });
     }
 
@@ -192,6 +271,7 @@ class AadResourceServerConfigurationTests {
     void useDefaultWebSecurityConfigurerAdapter() {
         resourceServerRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
@@ -212,6 +292,7 @@ class AadResourceServerConfigurationTests {
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {

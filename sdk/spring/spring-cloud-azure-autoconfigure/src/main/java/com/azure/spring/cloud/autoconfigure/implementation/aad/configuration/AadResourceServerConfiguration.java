@@ -66,6 +66,7 @@ class AadResourceServerConfiguration {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
+        validateTenantId(tenantId);
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
@@ -75,17 +76,20 @@ class AadResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
-        if (isMultiTenantsApplication(tenantId)) {
-            validators.add(new AadJwtIssuerValidator());
-        } else {
-            validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
-        }
+        validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         validators.add(new JwtTimestampValidator());
         return validators;
     }
 
-    private static boolean isMultiTenantsApplication(String tenantId) {
-        return "common".equals(tenantId) || "organizations".equals(tenantId) || "consumers".equals(tenantId);
+    private static void validateTenantId(String tenantId) {
+        if ("common".equalsIgnoreCase(tenantId) 
+            || "organizations".equalsIgnoreCase(tenantId) 
+            || "consumers".equalsIgnoreCase(tenantId)) {
+            throw new IllegalArgumentException(
+                "For resource server, 'spring.cloud.azure.active-directory.profile.tenant-id' cannot be set to '" + tenantId + "'. "
+                + "This configuration would accept tokens from any Azure AD tenant, creating a security vulnerability. "
+                + "Please configure a specific tenant ID (GUID) to restrict token validation to your organization's tenant only.");
+        }
     }
 
     @EnableWebSecurity

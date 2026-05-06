@@ -21,32 +21,6 @@ class AadJwtIssuerValidatorTests {
         + "-id");
 
     @Test
-    void testNoStructureIssuerSuccessVerify() {
-        AadProfileProperties profile = new AadProfileProperties();
-        profile.setTenantId("fake-tenant-id");
-        when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
-
-        AadJwtIssuerValidator validator = new AadJwtIssuerValidator();
-        OAuth2TokenValidatorResult result = validator.validate(jwt);
-        assertThat(result).isNotNull();
-        assertThat(result.getErrors()).isEmpty();
-    }
-
-    @Test
-    void testNoStructureIssuerFailureVerify() {
-        AadProfileProperties profile = new AadProfileProperties();
-        profile.setTenantId("common");
-        when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
-
-        AadJwtIssuerValidator validator = new AadJwtIssuerValidator();
-        OAuth2TokenValidatorResult result = validator.validate(jwt);
-        assertThat(result).isNotNull();
-        assertThat(result.getErrors()).isNotEmpty();
-    }
-
-    @Test
     void testIssuerSuccessVerify() {
         AadProfileProperties profile = new AadProfileProperties();
         profile.setTenantId("fake-tenant-id");
