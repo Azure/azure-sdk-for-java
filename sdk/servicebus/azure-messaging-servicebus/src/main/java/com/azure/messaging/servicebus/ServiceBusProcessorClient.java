@@ -370,27 +370,54 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
      */
     @Override
-    public synchronized void close() {
-        if (processorV2 != null) {
-            processorV2.close();
+    public void close() {
+        final ServiceBusProcessor v2Snapshot;
+        final Duration drainTimeout;
+
+        // Snapshot state and mark the processor as closing while holding the monitor, but RELEASE
+        // the monitor before performing the blocking drain. Holding the monitor across the drain
+        // would stall shutdown for the full drain timeout if any in-flight handler calls a
+        // synchronized accessor (isRunning(), getIdentifier()) on this client: the handler would
+        // block on the monitor while close() is waiting for that handler to finish.
+        synchronized (this) {
+            v2Snapshot = processorV2;
+            if (v2Snapshot == null) {
+                isRunning.set(false);
+                v1Closing = true;
+                drainTimeout = processorOptions.getDrainTimeout();
+            } else {
+                drainTimeout = null;
+            }
+        }
+
+        if (v2Snapshot != null) {
+            // V2 path: drain happens inside processorV2.close(). Invoked outside the monitor so
+            // handlers calling isRunning()/getIdentifier() during drain do not stall shutdown.
+            v2Snapshot.close();
             return;
         }
-        isRunning.set(false);
-        // Drain in-flight V1 message handlers BEFORE cancelling subscriptions.
+
+        // V1 path: drain in-flight message handlers BEFORE cancelling subscriptions.
         // Cancelling subscriptions triggers Reactor's publishOn worker disposal, which interrupts
         // handler threads. Draining first ensures handlers can complete message settlement
         // before the underlying client is closed.
         // See https://github.com/Azure/azure-sdk-for-java/issues/45716
-        drainV1Handlers(processorOptions.getDrainTimeout());
-        receiverSubscriptions.keySet().forEach(Subscription::cancel);
-        receiverSubscriptions.clear();
-        if (monitorDisposable != null) {
-            monitorDisposable.dispose();
-            monitorDisposable = null;
-        }
-        if (asyncClient.get() != null) {
-            asyncClient.get().close();
-            asyncClient.set(null);
+        drainV1Handlers(drainTimeout);
+
+        // Re-acquire the monitor for the (non-blocking) cleanup so it does not race with
+        // start()/restartMessageReceiver(). Concurrent close() calls remain safe: every step
+        // below is guarded by a null check or operates on already-cleared collections.
+        synchronized (this) {
+            receiverSubscriptions.keySet().forEach(Subscription::cancel);
+            receiverSubscriptions.clear();
+            if (monitorDisposable != null) {
+                monitorDisposable.dispose();
+                monitorDisposable = null;
+            }
+            if (asyncClient.get() != null) {
+                asyncClient.get().close();
+                asyncClient.set(null);
+            }
         }
     }
 

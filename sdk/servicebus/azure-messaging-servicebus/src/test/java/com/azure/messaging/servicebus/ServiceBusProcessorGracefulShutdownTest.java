@@ -62,6 +62,10 @@ import static org.mockito.Mockito.when;
  *       Tests that {@code start()} after {@code close()} resets {@code v1Closing} so handlers run</li>
  *   <li><b>Re-entrant (concurrent)</b> — {@link #v1ReentrantCloseWaitsForOtherConcurrentHandlers()}:
  *       Tests re-entrant drain with concurrent handlers — waits for other handlers before closing</li>
+ *   <li><b>Monitor Released During Drain</b> — {@link #v1CloseShouldNotHoldClientMonitorDuringDrain()}:
+ *       Tests that {@code close()} releases the instance monitor across the drain wait, so handlers
+ *       calling synchronized accessors (e.g. {@code isRunning()}) do not stall shutdown until the
+ *       drain timeout expires</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -761,6 +765,100 @@ public class ServiceBusProcessorGracefulShutdownTest {
                 "Handler should run after restart, proving v1Closing was reset");
         } finally {
             processorClient.close();
+        }
+    }
+
+    /**
+     * Verifies that {@code close()} releases the {@code ServiceBusProcessorClient} instance monitor
+     * while waiting for in-flight handlers to drain. If the monitor were held throughout the drain,
+     * any handler that called a {@code synchronized} accessor on the same client (e.g.
+     * {@link ServiceBusProcessorClient#isRunning()}, {@link ServiceBusProcessorClient#getIdentifier()})
+     * would block on the monitor that {@code close()} holds while {@code close()} waits for that
+     * handler's count to reach zero - a stalemate that resolves only when the drain timeout elapses.
+     * Releasing the monitor across the drain wait lets the handler call those accessors freely,
+     * complete, and decrement the in-flight counter so {@code close()} returns promptly.
+     * <p>
+     * Regression test for the deadlock concern raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3198124414">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v1CloseShouldNotHoldClientMonitorDuringDrain() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.concat(Flux.just(message), Flux.never());
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        // The handler will (1) signal that it has started, (2) wait until close() has been invoked
+        // on a different thread, then (3) call isRunning() - which is synchronized on the same
+        // monitor that close() acquires. Without the fix, that call blocks until the drain timeout
+        // expires; with the fix, it returns immediately because close() released the monitor before
+        // waiting for the drain.
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch closeStarted = new CountDownLatch(1);
+        final AtomicReference<Boolean> handlerSawIsRunning = new AtomicReference<>();
+        final AtomicReference<ServiceBusProcessorClient> clientRef = new AtomicReference<>();
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                assertTrue(closeStarted.await(5, TimeUnit.SECONDS), "close() should have started");
+                handlerSawIsRunning.set(clientRef.get().isRunning());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        // Use the default 30-second drain timeout: a regression that re-introduces the monitor hold
+        // would force close() to wait the full 30s, which is well beyond the 5s assertion below.
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+        clientRef.set(processorClient);
+
+        processorClient.start();
+
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started");
+
+        final long startNanos = System.nanoTime();
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Brief sleep so close() has a chance to enter drainV1Handlers() before the handler
+            // attempts the synchronized isRunning() call.
+            Thread.sleep(200);
+            closeStarted.countDown();
+
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS),
+                "close() should complete promptly after the handler returns. If it stalled until "
+                    + "the 30s drain timeout, the instance monitor was held across the drain wait.");
+            final Duration closeDuration = Duration.ofNanos(System.nanoTime() - startNanos);
+            assertTrue(closeDuration.getSeconds() < 5,
+                "close() took " + closeDuration + ", expected < 5s (drain timeout is 30s).");
+
+            assertTrue(handlerSawIsRunning.get() != null, "Handler should have observed an isRunning() result");
+            assertFalse(handlerSawIsRunning.get(),
+                "isRunning() should return false because close() set isRunning=false before draining");
+        } finally {
+            closeStarted.countDown();
+            closeThread.join(5000);
         }
     }
 }
