@@ -55,7 +55,7 @@ feed_cfg = {
     "spark.cosmos.database": database,
     "spark.cosmos.container": feed_container,
     "spark.cosmos.read.partitioning.strategy": "Default",
-    "spark.cosmos.changeFeed.mode": "FullFidelity",
+    "spark.cosmos.changeFeed.mode": "AllVersionsAndDeletes",
     "spark.cosmos.changeFeed.startFrom": "Now",
     "spark.cosmos.changeFeed.itemCountPerTriggerHint": "1000",
 }
