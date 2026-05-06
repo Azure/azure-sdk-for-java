@@ -51,10 +51,7 @@ class AadResourceServerConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
-        String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
-        if (tenantId != null) {
-            tenantId = tenantId.trim();
-        }
+        String tenantId = getTrimmedTenantId(aadAuthenticationProperties);
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
@@ -69,10 +66,7 @@ class AadResourceServerConfiguration {
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
-        if (tenantId != null) {
-            tenantId = tenantId.trim();
-        }
+        String tenantId = getTrimmedTenantId(aadAuthenticationProperties);
         validateTenantId(tenantId);
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
@@ -90,6 +84,11 @@ class AadResourceServerConfiguration {
         validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         validators.add(new JwtTimestampValidator());
         return validators;
+    }
+
+    private static String getTrimmedTenantId(AadAuthenticationProperties aadAuthenticationProperties) {
+        String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
+        return tenantId != null ? tenantId.trim() : null;
     }
 
     private static void validateTenantId(String tenantId) {
