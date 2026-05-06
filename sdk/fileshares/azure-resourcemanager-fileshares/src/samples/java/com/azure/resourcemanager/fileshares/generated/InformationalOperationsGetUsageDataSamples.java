@@ -14,9 +14,9 @@ public final class InformationalOperationsGetUsageDataSamples {
     /**
      * Sample code: FileShare_GetUsageData_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetUsageDataMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetUsageDataMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getUsageDataWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 
@@ -26,9 +26,9 @@ public final class InformationalOperationsGetUsageDataSamples {
     /**
      * Sample code: FileShare_GetUsageData_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetUsageDataMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetUsageDataMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getUsageDataWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 }

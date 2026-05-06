@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.fileshares.FilesharesManager;
+import com.azure.resourcemanager.fileshares.FileSharesManager;
 import com.azure.resourcemanager.fileshares.models.EncryptionInTransitRequired;
 import com.azure.resourcemanager.fileshares.models.FileShare;
 import com.azure.resourcemanager.fileshares.models.MediaTier;
@@ -32,7 +32,7 @@ public final class FileSharesListMockTests {
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        FilesharesManager manager = FilesharesManager.configure()
+        FileSharesManager manager = FileSharesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));

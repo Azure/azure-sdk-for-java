@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsListByFileShareSamples {
     /**
      * Sample code: PrivateEndpointConnections_ListByFileShare.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        privateEndpointConnectionsListByFileShare(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        privateEndpointConnectionsListByFileShare(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .listByFileShare("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }

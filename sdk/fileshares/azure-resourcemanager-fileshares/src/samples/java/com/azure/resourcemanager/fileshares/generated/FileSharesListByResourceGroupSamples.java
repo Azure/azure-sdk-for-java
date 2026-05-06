@@ -14,10 +14,10 @@ public final class FileSharesListByResourceGroupSamples {
     /**
      * Sample code: FileShares_ListByParent_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListByParentMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListByParentMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().listByResourceGroup("rgfileshares", com.azure.core.util.Context.NONE);
     }
 
@@ -27,10 +27,10 @@ public final class FileSharesListByResourceGroupSamples {
     /**
      * Sample code: FileShares_ListByParent_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListByParentMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListByParentMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().listByResourceGroup("rgfileshares", com.azure.core.util.Context.NONE);
     }
 }

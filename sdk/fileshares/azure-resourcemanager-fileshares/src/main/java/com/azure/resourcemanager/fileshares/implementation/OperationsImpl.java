@@ -17,10 +17,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     public OperationsImpl(OperationsClient innerClient,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 }

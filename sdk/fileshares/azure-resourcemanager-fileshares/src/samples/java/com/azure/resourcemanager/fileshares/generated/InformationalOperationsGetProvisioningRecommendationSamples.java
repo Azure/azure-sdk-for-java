@@ -17,10 +17,10 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetProvisioningRecommendationMaximumSet(
-        com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()
@@ -34,10 +34,10 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetProvisioningRecommendationMinimumSet(
-        com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()

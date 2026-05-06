@@ -14,9 +14,9 @@ public final class FileSharesDeleteSamples {
     /**
      * Sample code: FileShares_Delete_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileSharesDeleteMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileSharesDeleteMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().delete("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
 }

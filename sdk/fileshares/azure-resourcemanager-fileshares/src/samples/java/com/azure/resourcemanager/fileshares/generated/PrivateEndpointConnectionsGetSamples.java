@@ -14,9 +14,9 @@ public final class PrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: PrivateEndpointConnections_Get.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void privateEndpointConnectionsGet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void privateEndpointConnectionsGet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .getWithResponse("rgfileshares", "fileshare", "privateEndpointConnection1",
                 com.azure.core.util.Context.NONE);

@@ -14,9 +14,9 @@ public final class PrivateLinkResourcesGetSamples {
     /**
      * Sample code: Get PrivateLinkResource.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void getPrivateLinkResource(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void getPrivateLinkResource(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateLinkResources()
             .getWithResponse("res4303", "testfileshare01", "fileshare", com.azure.core.util.Context.NONE);
     }

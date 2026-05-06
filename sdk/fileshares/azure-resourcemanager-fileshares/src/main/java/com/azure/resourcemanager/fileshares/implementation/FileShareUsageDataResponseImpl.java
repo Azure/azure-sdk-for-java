@@ -11,10 +11,10 @@ import com.azure.resourcemanager.fileshares.models.FileShareUsageDataResponse;
 public final class FileShareUsageDataResponseImpl implements FileShareUsageDataResponse {
     private FileShareUsageDataResponseInner innerObject;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     FileShareUsageDataResponseImpl(FileShareUsageDataResponseInner innerObject,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -27,7 +27,7 @@ public final class FileShareUsageDataResponseImpl implements FileShareUsageDataR
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 }

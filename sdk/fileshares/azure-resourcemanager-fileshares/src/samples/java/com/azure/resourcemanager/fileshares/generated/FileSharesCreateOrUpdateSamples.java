@@ -27,10 +27,10 @@ public final class FileSharesCreateOrUpdateSamples {
     /**
      * Sample code: FileShares_CreateOrUpdate_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .define("fileshare")
             .withRegion("westus")

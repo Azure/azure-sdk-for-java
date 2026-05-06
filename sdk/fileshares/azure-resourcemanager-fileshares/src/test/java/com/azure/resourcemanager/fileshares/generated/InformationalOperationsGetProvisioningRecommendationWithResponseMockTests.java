@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.fileshares.FilesharesManager;
+import com.azure.resourcemanager.fileshares.FileSharesManager;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationInput;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationResponse;
@@ -28,7 +28,7 @@ public final class InformationalOperationsGetProvisioningRecommendationWithRespo
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        FilesharesManager manager = FilesharesManager.configure()
+        FileSharesManager manager = FileSharesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));

@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void operationsListMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void operationsListMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
@@ -26,9 +26,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void operationsListMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void operationsListMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

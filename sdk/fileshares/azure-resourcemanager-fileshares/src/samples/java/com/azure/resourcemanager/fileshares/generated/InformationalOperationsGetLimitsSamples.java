@@ -14,9 +14,9 @@ public final class InformationalOperationsGetLimitsSamples {
     /**
      * Sample code: FileShare_GetLimits_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 
@@ -26,9 +26,9 @@ public final class InformationalOperationsGetLimitsSamples {
     /**
      * Sample code: FileShare_GetLimits_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 }

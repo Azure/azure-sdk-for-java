@@ -25,9 +25,9 @@ public final class FileSharesUpdateSamples {
     /**
      * Sample code: FileShares_Update_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileSharesUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileSharesUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         FileShare resource = manager.fileShares()
             .getByResourceGroupWithResponse("rgfileshares", "fileshare", com.azure.core.util.Context.NONE)
             .getValue();

@@ -57,10 +57,10 @@ public final class FileShareSnapshotsCreateOrUpdateFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_CreateOrUpdate_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .define("testfilesharesnapshot")
             .withExistingFileShare("rgfileshares", "fileshare")
@@ -96,10 +96,10 @@ public final class FileShareSnapshotsDeleteFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Delete_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotDeleteMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotDeleteMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .deleteFileShareSnapshot("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE);
@@ -120,9 +120,9 @@ public final class FileShareSnapshotsGetFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Get_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotGetMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotGetMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .getFileShareSnapshotWithResponse("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE);
@@ -143,9 +143,9 @@ public final class FileShareSnapshotsListByFileShareSamples {
     /**
      * Sample code: FileShareSnapshot_List_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotListMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotListMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots().listByFileShare("rgfileshares", "testfileshare", com.azure.core.util.Context.NONE);
     }
 
@@ -155,9 +155,9 @@ public final class FileShareSnapshotsListByFileShareSamples {
     /**
      * Sample code: FileShareSnapshot_List_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotListMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotListMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots().listByFileShare("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
 }
@@ -181,10 +181,10 @@ public final class FileShareSnapshotsUpdateFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Update_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         FileShareSnapshot resource = manager.fileShareSnapshots()
             .getFileShareSnapshotWithResponse("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE)
@@ -224,10 +224,10 @@ public final class FileSharesCheckNameAvailabilitySamples {
     /**
      * Sample code: FileShares_CheckNameAvailability_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCheckNameAvailabilityMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCheckNameAvailabilityMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .checkNameAvailabilityWithResponse("westus",
                 new CheckNameAvailabilityRequest().withName("fvykqbgmd").withType("Microsoft.FileShares/fileShares"),
@@ -240,10 +240,10 @@ public final class FileSharesCheckNameAvailabilitySamples {
     /**
      * Sample code: FileShares_CheckNameAvailability_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCheckNameAvailabilityMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCheckNameAvailabilityMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .checkNameAvailabilityWithResponse("westus", new CheckNameAvailabilityRequest(),
                 com.azure.core.util.Context.NONE);
@@ -277,10 +277,10 @@ public final class FileSharesCreateOrUpdateSamples {
     /**
      * Sample code: FileShares_CreateOrUpdate_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .define("fileshare")
             .withRegion("westus")
@@ -328,9 +328,9 @@ public final class FileSharesDeleteSamples {
     /**
      * Sample code: FileShares_Delete_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileSharesDeleteMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileSharesDeleteMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().delete("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
 }
@@ -349,9 +349,9 @@ public final class FileSharesGetByResourceGroupSamples {
     /**
      * Sample code: FileShares_Get_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileSharesGetMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileSharesGetMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .getByResourceGroupWithResponse("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
@@ -371,10 +371,10 @@ public final class FileSharesListSamples {
     /**
      * Sample code: FileShares_ListBySubscription_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListBySubscriptionMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListBySubscriptionMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().list(com.azure.core.util.Context.NONE);
     }
 
@@ -384,10 +384,10 @@ public final class FileSharesListSamples {
     /**
      * Sample code: FileShares_ListBySubscription_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListBySubscriptionMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListBySubscriptionMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -406,10 +406,10 @@ public final class FileSharesListByResourceGroupSamples {
     /**
      * Sample code: FileShares_ListByParent_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListByParentMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListByParentMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().listByResourceGroup("rgfileshares", com.azure.core.util.Context.NONE);
     }
 
@@ -419,10 +419,10 @@ public final class FileSharesListByResourceGroupSamples {
     /**
      * Sample code: FileShares_ListByParent_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListByParentMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListByParentMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().listByResourceGroup("rgfileshares", com.azure.core.util.Context.NONE);
     }
 }
@@ -452,9 +452,9 @@ public final class FileSharesUpdateSamples {
     /**
      * Sample code: FileShares_Update_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileSharesUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileSharesUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         FileShare resource = manager.fileShares()
             .getByResourceGroupWithResponse("rgfileshares", "fileshare", com.azure.core.util.Context.NONE)
             .getValue();
@@ -498,9 +498,9 @@ public final class InformationalOperationsGetLimitsSamples {
     /**
      * Sample code: FileShare_GetLimits_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 
@@ -510,9 +510,9 @@ public final class InformationalOperationsGetLimitsSamples {
     /**
      * Sample code: FileShare_GetLimits_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 }
@@ -534,10 +534,10 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetProvisioningRecommendationMaximumSet(
-        com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()
@@ -551,10 +551,10 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetProvisioningRecommendationMinimumSet(
-        com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()
@@ -577,9 +577,9 @@ public final class InformationalOperationsGetUsageDataSamples {
     /**
      * Sample code: FileShare_GetUsageData_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetUsageDataMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetUsageDataMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getUsageDataWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 
@@ -589,9 +589,9 @@ public final class InformationalOperationsGetUsageDataSamples {
     /**
      * Sample code: FileShare_GetUsageData_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareGetUsageDataMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareGetUsageDataMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.informationalOperations().getUsageDataWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 }
@@ -610,9 +610,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void operationsListMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void operationsListMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
@@ -622,9 +622,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void operationsListMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void operationsListMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -647,10 +647,10 @@ public final class PrivateEndpointConnectionsCreateSamples {
     /**
      * Sample code: PrivateEndpointConnections_Create.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        privateEndpointConnectionsCreate(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        privateEndpointConnectionsCreate(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .define("privateEndpointConnection1")
             .withExistingFileShare("rgfileshares", "fileshare")
@@ -675,10 +675,10 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: PrivateEndpointConnections_Delete.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        privateEndpointConnectionsDelete(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        privateEndpointConnectionsDelete(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .delete("rgfileshares", "fileshare", "privateEndpointConnection1", com.azure.core.util.Context.NONE);
     }
@@ -698,9 +698,9 @@ public final class PrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: PrivateEndpointConnections_Get.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void privateEndpointConnectionsGet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void privateEndpointConnectionsGet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .getWithResponse("rgfileshares", "fileshare", "privateEndpointConnection1",
                 com.azure.core.util.Context.NONE);
@@ -721,10 +721,10 @@ public final class PrivateEndpointConnectionsListByFileShareSamples {
     /**
      * Sample code: PrivateEndpointConnections_ListByFileShare.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        privateEndpointConnectionsListByFileShare(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        privateEndpointConnectionsListByFileShare(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .listByFileShare("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
@@ -744,9 +744,9 @@ public final class PrivateLinkResourcesGetSamples {
     /**
      * Sample code: Get PrivateLinkResource.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void getPrivateLinkResource(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void getPrivateLinkResource(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateLinkResources()
             .getWithResponse("res4303", "testfileshare01", "fileshare", com.azure.core.util.Context.NONE);
     }
@@ -766,9 +766,9 @@ public final class PrivateLinkResourcesListSamples {
     /**
      * Sample code: List PrivateLinkResources.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void listPrivateLinkResources(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void listPrivateLinkResources(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateLinkResources().list("res4303", "testfileshare01", com.azure.core.util.Context.NONE);
     }
 }

@@ -47,10 +47,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to FilesharesManager.
+ * Entry point to FileSharesManager.
  * Azure File Shares Resource Provider API.
  */
-public final class FilesharesManager {
+public final class FileSharesManager {
     private FileShares fileShares;
 
     private FileShareSnapshots fileShareSnapshots;
@@ -65,7 +65,7 @@ public final class FilesharesManager {
 
     private final FileSharesManagementClient clientObject;
 
-    private FilesharesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private FileSharesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new FileSharesManagementClientBuilder().pipeline(httpPipeline)
@@ -76,38 +76,38 @@ public final class FilesharesManager {
     }
 
     /**
-     * Creates an instance of fileshares service API entry point.
+     * Creates an instance of FileShares service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the fileshares service API instance.
+     * @return the FileShares service API instance.
      */
-    public static FilesharesManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static FileSharesManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of fileshares service API entry point.
+     * Creates an instance of FileShares service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the fileshares service API instance.
+     * @return the FileShares service API instance.
      */
-    public static FilesharesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static FileSharesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new FilesharesManager(httpPipeline, profile, null);
+        return new FileSharesManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create FilesharesManager with optional configuration.
+     * Gets a Configurable instance that can be used to create FileSharesManager with optional configuration.
      * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new FilesharesManager.Configurable();
+        return new FileSharesManager.Configurable();
     }
 
     /**
@@ -215,13 +215,13 @@ public final class FilesharesManager {
         }
 
         /**
-         * Creates an instance of fileshares service API entry point.
+         * Creates an instance of FileShares service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the fileshares service API instance.
+         * @return the FileShares service API instance.
          */
-        public FilesharesManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public FileSharesManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -274,7 +274,7 @@ public final class FilesharesManager {
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
-            return new FilesharesManager(httpPipeline, profile, defaultPollInterval);
+            return new FileSharesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 

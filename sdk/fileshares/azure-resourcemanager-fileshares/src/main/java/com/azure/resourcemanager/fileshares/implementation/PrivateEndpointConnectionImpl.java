@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionImpl
     implements PrivateEndpointConnection, PrivateEndpointConnection.Definition {
     private PrivateEndpointConnectionInner innerObject;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -46,7 +46,7 @@ public final class PrivateEndpointConnectionImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 
@@ -76,7 +76,7 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    PrivateEndpointConnectionImpl(String name, com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+    PrivateEndpointConnectionImpl(String name, com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;

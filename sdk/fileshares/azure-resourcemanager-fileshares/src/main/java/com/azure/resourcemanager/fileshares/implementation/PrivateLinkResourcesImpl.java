@@ -19,10 +19,10 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final PrivateLinkResourcesClient innerClient;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -60,7 +60,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 }

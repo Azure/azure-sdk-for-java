@@ -11,10 +11,10 @@ import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityResponse
 public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailabilityResponse {
     private CheckNameAvailabilityResponseInner innerObject;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 }

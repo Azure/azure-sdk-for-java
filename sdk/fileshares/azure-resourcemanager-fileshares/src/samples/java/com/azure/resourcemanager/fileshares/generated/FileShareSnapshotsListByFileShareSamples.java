@@ -14,9 +14,9 @@ public final class FileShareSnapshotsListByFileShareSamples {
     /**
      * Sample code: FileShareSnapshot_List_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotListMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotListMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots().listByFileShare("rgfileshares", "testfileshare", com.azure.core.util.Context.NONE);
     }
 
@@ -26,9 +26,9 @@ public final class FileShareSnapshotsListByFileShareSamples {
     /**
      * Sample code: FileShareSnapshot_List_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotListMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotListMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots().listByFileShare("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,9 +14,9 @@ public final class FileShareSnapshotsGetFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Get_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
-    public static void fileShareSnapshotGetMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+    public static void fileShareSnapshotGetMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .getFileShareSnapshotWithResponse("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE);

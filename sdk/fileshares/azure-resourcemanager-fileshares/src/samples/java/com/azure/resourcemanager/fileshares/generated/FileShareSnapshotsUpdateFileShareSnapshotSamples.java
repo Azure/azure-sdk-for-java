@@ -19,10 +19,10 @@ public final class FileShareSnapshotsUpdateFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Update_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         FileShareSnapshot resource = manager.fileShareSnapshots()
             .getFileShareSnapshotWithResponse("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE)

@@ -1,8 +1,8 @@
-# Azure Resource Manager fileshares client library for Java
+# Azure Resource Manager FileShares client library for Java
 
-Azure Resource Manager fileshares client library for Java.
+Azure Resource Manager FileShares client library for Java.
 
-This package contains Microsoft Azure SDK for fileshares Management SDK. Azure File Shares Resource Provider API. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for FileShares Management SDK. Azure File Shares Resource Provider API. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -56,7 +56,7 @@ AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-FilesharesManager manager = FilesharesManager
+FileSharesManager manager = FileSharesManager
     .authenticate(credential, profile);
 ```
 

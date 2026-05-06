@@ -16,7 +16,7 @@ public final class FileShareSnapshotImpl
     implements FileShareSnapshot, FileShareSnapshot.Definition, FileShareSnapshot.Update {
     private FileShareSnapshotInner innerObject;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -46,7 +46,7 @@ public final class FileShareSnapshotImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 
@@ -78,7 +78,7 @@ public final class FileShareSnapshotImpl
         return this;
     }
 
-    FileShareSnapshotImpl(String name, com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+    FileShareSnapshotImpl(String name, com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = new FileShareSnapshotInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -104,7 +104,7 @@ public final class FileShareSnapshotImpl
     }
 
     FileShareSnapshotImpl(FileShareSnapshotInner innerObject,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -11,10 +11,10 @@ import com.azure.resourcemanager.fileshares.models.FileShareLimitsResponse;
 public final class FileShareLimitsResponseImpl implements FileShareLimitsResponse {
     private FileShareLimitsResponseInner innerObject;
 
-    private final com.azure.resourcemanager.fileshares.FilesharesManager serviceManager;
+    private final com.azure.resourcemanager.fileshares.FileSharesManager serviceManager;
 
     FileShareLimitsResponseImpl(FileShareLimitsResponseInner innerObject,
-        com.azure.resourcemanager.fileshares.FilesharesManager serviceManager) {
+        com.azure.resourcemanager.fileshares.FileSharesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -27,7 +27,7 @@ public final class FileShareLimitsResponseImpl implements FileShareLimitsRespons
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.fileshares.FilesharesManager manager() {
+    private com.azure.resourcemanager.fileshares.FileSharesManager manager() {
         return this.serviceManager;
     }
 }

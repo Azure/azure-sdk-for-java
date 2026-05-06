@@ -18,10 +18,10 @@ public final class FileShareSnapshotsCreateOrUpdateFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_CreateOrUpdate_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotCreateOrUpdateMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .define("testfilesharesnapshot")
             .withExistingFileShare("rgfileshares", "fileshare")

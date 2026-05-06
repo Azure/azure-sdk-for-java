@@ -14,10 +14,10 @@ public final class FileShareSnapshotsDeleteFileShareSnapshotSamples {
     /**
      * Sample code: FileShareSnapshot_Delete_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileShareSnapshotDeleteMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileShareSnapshotDeleteMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShareSnapshots()
             .deleteFileShareSnapshot("rgfileshares", "fileshare", "testfilesharesnapshot",
                 com.azure.core.util.Context.NONE);

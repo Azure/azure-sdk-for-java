@@ -18,10 +18,10 @@ public final class PrivateEndpointConnectionsCreateSamples {
     /**
      * Sample code: PrivateEndpointConnections_Create.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        privateEndpointConnectionsCreate(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        privateEndpointConnectionsCreate(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.privateEndpointConnections()
             .define("privateEndpointConnection1")
             .withExistingFileShare("rgfileshares", "fileshare")

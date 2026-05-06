@@ -14,10 +14,10 @@ public final class FileSharesListSamples {
     /**
      * Sample code: FileShares_ListBySubscription_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListBySubscriptionMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListBySubscriptionMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().list(com.azure.core.util.Context.NONE);
     }
 
@@ -27,10 +27,10 @@ public final class FileSharesListSamples {
     /**
      * Sample code: FileShares_ListBySubscription_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesListBySubscriptionMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesListBySubscriptionMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares().list(com.azure.core.util.Context.NONE);
     }
 }

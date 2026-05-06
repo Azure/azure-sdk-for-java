@@ -16,10 +16,10 @@ public final class FileSharesCheckNameAvailabilitySamples {
     /**
      * Sample code: FileShares_CheckNameAvailability_MaximumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCheckNameAvailabilityMaximumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCheckNameAvailabilityMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .checkNameAvailabilityWithResponse("westus",
                 new CheckNameAvailabilityRequest().withName("fvykqbgmd").withType("Microsoft.FileShares/fileShares"),
@@ -32,10 +32,10 @@ public final class FileSharesCheckNameAvailabilitySamples {
     /**
      * Sample code: FileShares_CheckNameAvailability_MinimumSet.
      * 
-     * @param manager Entry point to FilesharesManager.
+     * @param manager Entry point to FileSharesManager.
      */
     public static void
-        fileSharesCheckNameAvailabilityMinimumSet(com.azure.resourcemanager.fileshares.FilesharesManager manager) {
+        fileSharesCheckNameAvailabilityMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
         manager.fileShares()
             .checkNameAvailabilityWithResponse("westus", new CheckNameAvailabilityRequest(),
                 com.azure.core.util.Context.NONE);
