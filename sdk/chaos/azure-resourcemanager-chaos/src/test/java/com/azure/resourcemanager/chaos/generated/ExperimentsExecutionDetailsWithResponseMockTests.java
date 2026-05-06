@@ -20,7 +20,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
     @Test
     public void testExecutionDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"type\":\"eacvl\",\"id\":\"ygdyftumrtw\",\"name\":\"wjslbiwkojgcyzt\",\"properties\":{\"status\":\"z\",\"startedAt\":\"2021-07-03T06:16:35Z\",\"stoppedAt\":\"2021-03-07T16:28:02Z\",\"failureReason\":\"hchqnrnrpx\",\"lastActionAt\":\"2021-08-04T01:59:45Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"qgaifmviklbydv\",\"stepId\":\"bejdznxcv\",\"status\":\"rhnj\",\"branches\":[{},{},{}]},{\"stepName\":\"v\",\"stepId\":\"ovqfzge\",\"status\":\"dftuljltduce\",\"branches\":[{},{},{},{}]},{\"stepName\":\"czu\",\"stepId\":\"ejwcwwqiok\",\"status\":\"sx\",\"branches\":[{},{}]}]}}}";
+            = "{\"type\":\"p\",\"id\":\"kdqzrdzsylo\",\"name\":\"gtrczzydmxzjijpv\",\"properties\":{\"status\":\"rkihcirld\",\"startedAt\":\"2021-09-20T22:33:09Z\",\"stoppedAt\":\"2021-05-06T09:32:51Z\",\"provisioningState\":\"Canceled\",\"failureReason\":\"nbkkjanurnnq\",\"lastActionAt\":\"2021-11-30T17:42:01Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"xqltgrd\",\"stepId\":\"ypxrx\",\"status\":\"fihwu\",\"branches\":[{},{},{}]},{\"stepName\":\"a\",\"stepId\":\"rbxrblmliowxihsp\",\"status\":\"wqagnepzwa\",\"branches\":[{}]},{\"stepName\":\"sbq\",\"stepId\":\"agwwrxaom\",\"status\":\"sgl\",\"branches\":[{},{},{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecutionDetails response = manager.experiments()
-            .executionDetailsWithResponse("fqntcyp", "xjvfoimwksl", "rcizjxvyd", com.azure.core.util.Context.NONE)
+            .executionDetailsWithResponse("vxnqmhrpqpd", "wmkoisq", "ssffxuifmc", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
