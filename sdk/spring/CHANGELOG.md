@@ -3,6 +3,20 @@
 Upgrade Spring Boot dependencies version to 4.0.5 and Spring Cloud dependencies version to 2025.1.1
 Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### New Features
+
+- Add `drainTimeout` property to Service Bus processor configuration to control the maximum wait time for in-flight message handlers to complete during processor shutdown. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
+
+### Spring Messaging Azure Service Bus
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### New Features
+
+- Add `drainTimeout` property to `ProcessorProperties` to control the maximum wait time for in-flight message handlers to complete during processor shutdown. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
+
 ## 6.2.0 (2026-03-25)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
