@@ -537,4 +537,46 @@ public class StructuredMessageDecoderTests {
         assertTrue(exception.getMessage().contains("Invalid segment size detected"));
     }
 
+    @Test
+    public void throwsOnInjectedRandomByte() throws IOException {
+        // Insert a single random byte at a random offset in the encoded wire bytes. The msgLen field still
+        // declares the original size, so any insertion must be rejected by validation.
+        byte[] data = new byte[256];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        int insertAt = ThreadLocalRandom.current().nextInt(encodedBytes.length + 1);
+        byte injected = (byte) ThreadLocalRandom.current().nextInt(256);
+
+        byte[] tampered = new byte[encodedBytes.length + 1];
+        System.arraycopy(encodedBytes, 0, tampered, 0, insertAt);
+        tampered[insertAt] = injected;
+        System.arraycopy(encodedBytes, insertAt, tampered, insertAt + 1, encodedBytes.length - insertAt);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(tampered.length);
+        assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(tampered).order(ByteOrder.LITTLE_ENDIAN)));
+    }
+
+    @Test
+    public void throwsOnRemovedRandomBytes() throws IOException {
+        // Remove a random run of bytes from a random offset in the encoded wire. The msgLen field still
+        // declares the original size, so any deletion must be rejected by validation.
+        byte[] data = new byte[256];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] encodedBytes = encode(data, 128, StructuredMessageFlags.STORAGE_CRC64);
+
+        int removeCount = 1 + ThreadLocalRandom.current().nextInt(8);
+        int removeAt = ThreadLocalRandom.current().nextInt(encodedBytes.length - removeCount);
+
+        byte[] tampered = new byte[encodedBytes.length - removeCount];
+        System.arraycopy(encodedBytes, 0, tampered, 0, removeAt);
+        System.arraycopy(encodedBytes, removeAt + removeCount, tampered, removeAt,
+            encodedBytes.length - removeAt - removeCount);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(tampered.length);
+        assertThrows(IllegalArgumentException.class,
+            () -> decoder.decodeChunk(ByteBuffer.wrap(tampered).order(ByteOrder.LITTLE_ENDIAN)));
+    }
+
 }
