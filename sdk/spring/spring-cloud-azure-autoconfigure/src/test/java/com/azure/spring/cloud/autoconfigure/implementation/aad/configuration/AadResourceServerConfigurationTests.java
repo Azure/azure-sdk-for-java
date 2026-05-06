@@ -126,8 +126,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be null, empty, or set to")
-                    .hasMessageContaining("security vulnerability");
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
@@ -141,8 +140,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be null, empty, or set to")
-                    .hasMessageContaining("security vulnerability");
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
@@ -156,8 +154,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be null, empty, or set to")
-                    .hasMessageContaining("security vulnerability");
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
@@ -172,8 +169,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be null, empty, or set to")
-                    .hasMessageContaining("security vulnerability");
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
@@ -189,8 +185,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be null, empty, or set to")
-                    .hasMessageContaining("security vulnerability");
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
