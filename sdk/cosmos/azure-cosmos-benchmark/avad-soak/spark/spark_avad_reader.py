@@ -58,6 +58,7 @@ feed_cfg = {
     "spark.cosmos.changeFeed.mode": "AllVersionsAndDeletes",
     "spark.cosmos.changeFeed.startFrom": "Now",
     "spark.cosmos.changeFeed.itemCountPerTriggerHint": "1000",
+    "spark.cosmos.read.inferSchema.enabled": "false",
 }
 
 # Write config — reconciliation container
@@ -72,7 +73,7 @@ recon_cfg = {
 
 # COMMAND ----------
 
-from pyspark.sql.functions import col, lit, concat, current_timestamp, coalesce
+from pyspark.sql.functions import col, lit, concat, current_timestamp, coalesce, get_json_object, when
 from pyspark.sql.types import StringType, LongType, BooleanType
 
 SOURCE = "spark-avad"
@@ -90,32 +91,45 @@ raw_df = (
 # MAGIC %md
 # MAGIC ### Schema Notes
 # MAGIC
-# MAGIC In Full Fidelity mode, the Spark connector exposes the same columns
-# MAGIC as Incremental mode: `id`, `eventId`, `seqNo`, `operationType`,
-# MAGIC `tenantId`, `payload`, `timestamp`. The connector flattens the change
-# MAGIC feed item — metadata like `lsn` and `crts` are not directly exposed
-# MAGIC as columns. previousImage availability depends on container config.
+# MAGIC With schema inference **disabled** (`inferSchema.enabled=false`), the
+# MAGIC Spark connector uses the default AVAD schema with these columns:
+# MAGIC - `_rawBody` (String) — current image as raw JSON
+# MAGIC - `id` (String) — document id
+# MAGIC - `_ts` (Long) — timestamp
+# MAGIC - `_etag` (String) — etag
+# MAGIC - `_lsn` (Long) — log sequence number
+# MAGIC - `metadata` (String) — metadata JSON
+# MAGIC - `previous` (String) — previous image as raw JSON
+# MAGIC - `operationType` (String) — create / replace / delete
+# MAGIC - `crts` (Long) — conflict resolution timestamp
+# MAGIC - `previousImageLSN` (Long) — previous image LSN
+# MAGIC
+# MAGIC **Why disable inference?** With inference enabled, the connector infers
+# MAGIC columns from container documents (user fields like eventId, tenantId),
+# MAGIC but the AVAD change feed wraps user fields inside the `current` sub-object.
+# MAGIC The V1 row converter can't find them at the top level → all null → rows
+# MAGIC filtered out. Disabling inference uses the correct AVAD schema.
 
 # COMMAND ----------
 
 # Transform to reconciliation schema
-# The Spark connector flattens AVAD events — use available columns directly.
-# LSN/CRTS/previousImage not exposed as columns by the connector.
+# With inference disabled, AVAD exposes metadata columns at top level.
+# User fields (eventId, tenantId) must be extracted from _rawBody JSON.
 recon_df = (
     raw_df
     .select(
-        concat(lit(SOURCE + "-"), col("eventId")).alias("id"),
-        col("eventId").alias("correlationId"),
+        concat(lit(SOURCE + "-"), col("id"), lit("-"), col("_lsn").cast(StringType())).alias("id"),
+        get_json_object(col("_rawBody"), "$.eventId").alias("correlationId"),
         lit(SOURCE).alias("source"),
-        coalesce(col("seqNo"), lit(-1)).cast(LongType()).alias("seqNo"),
+        col("_lsn").cast(LongType()).alias("seqNo"),
         coalesce(col("operationType"), lit("unknown")).alias("opType"),
-        coalesce(col("tenantId"), lit("")).alias("partitionKey"),
-        lit(-1).cast(LongType()).alias("lsn"),
-        lit(False).cast(BooleanType()).alias("hasPreviousImage"),
-        lit(-1).cast(LongType()).alias("crts"),
+        get_json_object(col("_rawBody"), "$.tenantId").alias("partitionKey"),
+        col("_lsn").cast(LongType()).alias("lsn"),
+        when(col("previous").isNotNull(), lit(True)).otherwise(lit(False)).cast(BooleanType()).alias("hasPreviousImage"),
+        col("crts").cast(LongType()).alias("crts"),
         current_timestamp().cast(StringType()).alias("timestamp"),
     )
-    .filter(col("correlationId").isNotNull())
+    .filter(col("operationType").isNotNull())
 )
 
 # COMMAND ----------
@@ -180,9 +194,11 @@ missing_prev = (
     .count()
 )
 total_avad = recon_data.filter(col("source") == SOURCE).count()
+has_prev = recon_data.filter((col("source") == SOURCE) & (col("hasPreviousImage") == True)).count()
 
 print(f"Spark AVAD total events: {total_avad}")
-print(f"Missing previousImage: {missing_prev}")
+print(f"Events with previousImage: {has_prev}")
+print(f"Missing previousImage (replace/delete): {missing_prev}")
 print("✅ OK" if missing_prev == 0 else f"❌ {missing_prev} events missing previousImage")
 
 # COMMAND ----------
