@@ -74,7 +74,10 @@ class AadResourceServerConfiguration {
             validAudiences.add(aadAuthenticationProperties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
+            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD,
+                audiences -> audiences != null
+                    && !audiences.isEmpty()
+                    && audiences.stream().anyMatch(validAudiences::contains)));
         }
         validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
         validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
