@@ -13,47 +13,6 @@ import java.util.Collection;
 public final class AIFoundryModelCatalogName extends ExpandableStringEnum<AIFoundryModelCatalogName> {
 
     /**
-     * OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName OPEN_AICLIPIMAGE_TEXT_EMBEDDINGS_VIT_BASE_PATCH32
-        = fromString("OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32");
-
-    /**
-     * OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName OPEN_AICLIPIMAGE_TEXT_EMBEDDINGS_VI_TLARGE_PATCH14336
-        = fromString("OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336");
-
-    /**
-     * Facebook-DinoV2-Image-Embeddings-ViT-Base.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName FACEBOOK_DINO_V2IMAGE_EMBEDDINGS_VI_TBASE
-        = fromString("Facebook-DinoV2-Image-Embeddings-ViT-Base");
-
-    /**
-     * Facebook-DinoV2-Image-Embeddings-ViT-Giant.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName FACEBOOK_DINO_V2IMAGE_EMBEDDINGS_VI_TGIANT
-        = fromString("Facebook-DinoV2-Image-Embeddings-ViT-Giant");
-
-    /**
-     * Cohere-embed-v3-english.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName COHERE_EMBED_V3ENGLISH = fromString("Cohere-embed-v3-english");
-
-    /**
-     * Cohere-embed-v3-multilingual.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName COHERE_EMBED_V3MULTILINGUAL
-        = fromString("Cohere-embed-v3-multilingual");
-
-    /**
      * Cohere embed v4 model for generating embeddings from both text and images.
      */
     @Generated
@@ -89,4 +48,45 @@ public final class AIFoundryModelCatalogName extends ExpandableStringEnum<AIFoun
     public static Collection<AIFoundryModelCatalogName> values() {
         return values(AIFoundryModelCatalogName.class);
     }
+
+    /**
+     * OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName OPEN_AI_CLIP_IMAGE_TEXT_EMBEDDINGS_VIT_BASE_PATCH32
+        = fromString("OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32");
+
+    /**
+     * OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName OPEN_AI_CLIP_IMAGE_TEXT_EMBEDDINGS_VIT_LARGE_PATCH14_336
+        = fromString("OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336");
+
+    /**
+     * Facebook-DinoV2-Image-Embeddings-ViT-Base.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName FACEBOOK_DINO_V2_IMAGE_EMBEDDINGS_VIT_BASE
+        = fromString("Facebook-DinoV2-Image-Embeddings-ViT-Base");
+
+    /**
+     * Facebook-DinoV2-Image-Embeddings-ViT-Giant.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName FACEBOOK_DINO_V2_IMAGE_EMBEDDINGS_VIT_GIANT
+        = fromString("Facebook-DinoV2-Image-Embeddings-ViT-Giant");
+
+    /**
+     * Cohere-embed-v3-english.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName COHERE_EMBED_V3_ENGLISH = fromString("Cohere-embed-v3-english");
+
+    /**
+     * Cohere-embed-v3-multilingual.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName COHERE_EMBED_V3_MULTILINGUAL
+        = fromString("Cohere-embed-v3-multilingual");
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class ReplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01/ReplicationDelete.json
+     * x-ms-original-file: 2026-01-01-preview/ReplicationDelete.json
      */
     /**
      * Sample code: ReplicationDelete.

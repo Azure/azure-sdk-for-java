@@ -24,9 +24,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger  = LoggerFactory.getLogger(StaleResourceRetryPolicy.class);
 
-    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
-
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;

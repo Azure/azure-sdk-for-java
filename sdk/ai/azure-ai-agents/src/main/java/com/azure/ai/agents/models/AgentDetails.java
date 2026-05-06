@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class AgentDetails implements JsonSerializable<AgentDetails> {
 
     /*
-     * The object type, which is always 'agent'.
-     */
-    @Generated
-    private final AgentObjectType object = AgentObjectType.AGENT;
-
-    /*
      * The unique identifier of the agent.
      */
     @Generated
@@ -40,16 +34,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      */
     @Generated
     private final AgentDetailsVersions versions;
-
-    /**
-     * Get the object property: The object type, which is always 'agent'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public AgentObjectType getObject() {
-        return this.object;
-    }
 
     /**
      * Get the id property: The unique identifier of the agent.
@@ -88,7 +72,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
@@ -139,5 +123,21 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         this.id = id;
         this.name = name;
         this.versions = versions;
+    }
+
+    /*
+     * The object type, which is always 'agent'.
+     */
+    @Generated
+    private final AgentObjectType objectType = AgentObjectType.AGENT;
+
+    /**
+     * Get the objectType property: The object type, which is always 'agent'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public AgentObjectType getObjectType() {
+        return this.objectType;
     }
 }

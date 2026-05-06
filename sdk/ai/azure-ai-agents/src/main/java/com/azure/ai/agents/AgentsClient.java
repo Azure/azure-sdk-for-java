@@ -28,6 +28,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.openai.models.conversations.Conversation;
 import java.util.Map;
@@ -164,7 +165,7 @@ public final class AgentsClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -183,13 +184,13 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent version Object along with {@link Response}.
+     * @return the {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Response<Void> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
+        return new SimpleResponse<>(internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions),
+            null);
     }
 
     /**
@@ -1458,6 +1459,33 @@ public final class AgentsClient {
     /**
      * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteAgentWithResponse(agentName, requestOptions), null);
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
@@ -1479,7 +1507,38 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
+    Response<BinaryData> internalDeleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteAgentWithResponse(agentName, requestOptions);
+    }
+
+    /**
+     * Deletes a specific version of an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted agent version Object along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> internalDeleteAgentVersionWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
     }
 }

@@ -2,20 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
-import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -26,18 +22,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
-import com.azure.search.documents.indexes.models.SemanticConfiguration;
-import com.azure.search.documents.indexes.models.SemanticField;
-import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
-import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchPagedIterable;
-import com.azure.search.documents.models.SuggestOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -69,12 +54,10 @@ import java.util.stream.Collectors;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.createIndexAction;
 import static com.azure.search.documents.TestHelpers.ifMatch;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -103,7 +86,7 @@ public class IndexManagementTests extends SearchTestBase {
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
-        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
+        sharedSynonymMap = sharedIndexClient.createOrUpdateSynonymMap(sharedSynonymMap);
     }
 
     @AfterAll
@@ -866,70 +849,16 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled")
+    @Disabled("listIndexStatsSummary removed in 2026-04-01 API version")
     public void canCreateAndGetIndexStatsSummarySync() {
-        List<String> indexNames = new ArrayList<>();
-
-        assertFalse(client.listIndexStatsSummary().stream().findAny().isPresent(), "Unexpected index stats summary.");
-
-        SearchIndex index = createTestIndex(null);
-        indexNames.add(index.getName());
-        client.createOrUpdateIndex(index);
-        indexesToDelete.add(index.getName());
-
-        assertEquals(1, client.listIndexStatsSummary().stream().count());
-
-        for (int i = 0; i < 4; i++) {
-            index = createTestIndex(null);
-            indexNames.add(index.getName());
-            client.createOrUpdateIndex(index);
-            indexesToDelete.add(index.getName());
-        }
-
-        List<String> returnedNames
-            = client.listIndexStatsSummary().stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
-        assertEquals(5, returnedNames.size());
-
-        for (String name : indexNames) {
-            assertTrue(returnedNames.contains(name),
-                () -> String.format("Stats summary didn't contain expected index '%s'. Found: '%s'", name,
-                    String.join(", ", returnedNames)));
-        }
+        // Disabled: listIndexStatsSummary and IndexStatisticsSummary were removed in the 2026-04-01 API version.
     }
 
     // I want an async version of the test above. Don't block, use StepVerifier instead.
     @Test
+    @Disabled("listIndexStatsSummary removed in 2026-04-01 API version")
     public void canCreateAndGetIndexStatsSummaryAsync() {
-
-        List<String> indexNames = new ArrayList<>();
-
-        StepVerifier.create(asyncClient.listIndexStatsSummary()).expectNextCount(0).verifyComplete();
-
-        SearchIndex index = createTestIndex(null);
-        indexNames.add(index.getName());
-        asyncClient.createOrUpdateIndex(index).block();
-        indexesToDelete.add(index.getName());
-
-        StepVerifier.create(asyncClient.listIndexStatsSummary()).expectNextCount(1).verifyComplete();
-
-        for (int i = 0; i < 4; i++) {
-            index = createTestIndex(null);
-            indexNames.add(index.getName());
-            asyncClient.createOrUpdateIndex(index).block();
-            indexesToDelete.add(index.getName());
-        }
-
-        StepVerifier.create(asyncClient.listIndexStatsSummary().map(IndexStatisticsSummary::getName).collectList())
-            .assertNext(returnedNames -> {
-                assertEquals(5, returnedNames.size());
-
-                for (String name : indexNames) {
-                    assertTrue(returnedNames.contains(name),
-                        () -> String.format("Stats summary didn't contain expected index '%s'. Found: '%s'", name,
-                            String.join(", ", returnedNames)));
-                }
-            })
-            .verifyComplete();
+        // Disabled: listIndexStatsSummary and IndexStatisticsSummary were removed in the 2026-04-01 API version.
     }
 
     @Test
@@ -1131,190 +1060,51 @@ public class IndexManagementTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void createIndexWithPurviewEnabledSucceeds() {
-        String indexName = randomIndexName("purview-enabled-index");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true)).setPurviewEnabled(true);
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        assertTrue(createdIndex.isPurviewEnabled());
-        assertTrue(createdIndex.getFields()
-            .stream()
-            .anyMatch(f -> "SensitivityLabel".equals(f.getName()) && f.isSensitivityLabel()));
-
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void createIndexWithPurviewEnabledRequiresSensitivityLabelField() {
-        String indexName = randomIndexName("purview-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)).setPurviewEnabled(true);
-
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> client.createIndex(index));
-
-        assertEquals(400, exception.getResponse().getStatusCode());
-        assertTrue(exception.getMessage().toLowerCase().contains("sensitivity")
-            || exception.getMessage().toLowerCase().contains("purview"));
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
-    @Disabled("Uses System.getenv; requires specific environment setup")
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void purviewEnabledIndexRejectsApiKeyAuth() {
-        String indexName = randomIndexName("purview-api-key-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true)).setPurviewEnabled(true);
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        String apiKey = System.getenv("AZURE_SEARCH_ADMIN_KEY");
-
-        SearchClient apiKeyClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(new AzureKeyCredential(apiKey))
-            .indexName(createdIndex.getName())
-            .buildClient();
-
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> apiKeyClient.search(new SearchOptions()).iterator().hasNext());
-
-        assertTrue(ex.getResponse().getStatusCode() == 401
-            || ex.getResponse().getStatusCode() == 403
-            || ex.getResponse().getStatusCode() == 400);
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void purviewEnabledIndexDisablesAutocompleteAndSuggest() {
-        String indexName = randomIndexName("purview-suggest-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true)).setPurviewEnabled(true)
-                        .setSuggesters(new SearchSuggester("sg", Collections.singletonList("HotelName")));
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
-
-        HttpResponseException ex1 = assertThrows(HttpResponseException.class,
-            () -> searchClient.autocomplete(new AutocompleteOptions("test", "sg")));
-        assertTrue(ex1.getResponse().getStatusCode() == 400 || ex1.getResponse().getStatusCode() == 403);
-
-        HttpResponseException ex2
-            = assertThrows(HttpResponseException.class, () -> searchClient.suggest(new SuggestOptions("test", "sg")));
-        assertTrue(ex2.getResponse().getStatusCode() == 400 || ex2.getResponse().getStatusCode() == 403);
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void cannotTogglePurviewEnabledAfterCreation() {
-        String indexName = randomIndexName("purview-toggle-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)).setPurviewEnabled(false);
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        createdIndex.setPurviewEnabled(true)
-            .getFields()
-            .add(new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                .setSensitivityLabel(true));
-
-        HttpResponseException ex
-            = assertThrows(HttpResponseException.class, () -> client.createOrUpdateIndex(createdIndex));
-
-        assertEquals(400, ex.getResponse().getStatusCode());
-        assertTrue(ex.getMessage().toLowerCase().contains("immutable")
-            || ex.getMessage().toLowerCase().contains("purview")
-            || ex.getMessage().toLowerCase().contains("cannot be changed"));
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void cannotModifySensitivityLabelFieldAfterCreation() {
-        String indexName = randomIndexName("purview-field-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true)).setPurviewEnabled(true);
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        createdIndex.getFields()
-            .stream()
-            .filter(f -> "SensitivityLabel".equals(f.getName()))
-            .findFirst()
-            .ifPresent(f -> f.setSensitivityLabel(false));
-
-        HttpResponseException ex
-            = assertThrows(HttpResponseException.class, () -> client.createOrUpdateIndex(createdIndex));
-
-        assertEquals(400, ex.getResponse().getStatusCode());
-        assertTrue(ex.getMessage().toLowerCase().contains("immutable")
-            || ex.getMessage().toLowerCase().contains("sensitivity"));
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void purviewEnabledIndexSupportsBasicSearch() {
-        String indexName = randomIndexName("purview-search-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true)).setPurviewEnabled(true);
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
-
-        Map<String, Object> document = createTestDocument();
-        searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
-        waitForIndexing();
-
-        SearchPagedIterable results = searchClient.search(new SearchOptions().setSearchText("Test"));
-        assertNotNull(results);
-        // getTotalCount() can be null, so check for non-null or use iterator
-        Long totalCount = results.iterableByPage().iterator().next().getCount();
-        assertTrue(totalCount == null || totalCount >= 0);
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setSensitivityLabel/setPurviewEnabled removed in 2026-04-01 API version")
     public void purviewEnabledIndexSupportsSemanticSearch() {
-        String indexName = randomIndexName("purview-semantic-test");
-        SearchIndex index
-            = new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true),
-                new SearchField("SensitivityLabel", SearchFieldDataType.STRING).setFilterable(true)
-                    .setSensitivityLabel(true))
-                        .setPurviewEnabled(true)
-                        .setSemanticSearch(new SemanticSearch().setDefaultConfigurationName("semantic")
-                            .setConfigurations(new SemanticConfiguration("semantic",
-                                new SemanticPrioritizedFields().setContentFields(new SemanticField("HotelName")))));
-
-        SearchIndex createdIndex = client.createIndex(index);
-        indexesToDelete.add(createdIndex.getName());
-
-        SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
-
-        Map<String, Object> document = createTestDocument();
-        searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
-        waitForIndexing();
-
-        SearchOptions searchOptions = new SearchOptions().setSearchText("Test").setQueryType(QueryType.SEMANTIC);
-
-        SearchPagedIterable results = searchClient.search(searchOptions);
-        assertNotNull(results);
-        results.iterableByPage().iterator().next();
+        // Disabled: setSensitivityLabel and setPurviewEnabled were removed in the 2026-04-01 API version.
     }
 
     static SearchIndex mutateCorsOptionsInIndex(SearchIndex index) {

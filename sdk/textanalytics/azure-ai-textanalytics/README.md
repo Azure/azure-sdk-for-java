@@ -455,7 +455,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [entity_linking]: https://learn.microsoft.com/azure/cognitive-services/language-service/entity-linking/overview
 [pii_entity_recognition]: https://learn.microsoft.com/azure/cognitive-services/language-service/personally-identifiable-information/overview
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-textanalytics
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [product_documentation]: https://learn.microsoft.com/azure/cognitive-services/language-service/overview
 [register_AAD_application]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [service_access]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows

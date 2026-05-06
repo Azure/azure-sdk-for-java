@@ -15,16 +15,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class WorkflowTest {
     private static final int TIMEOUT = 120_000;  // 2 minutes
@@ -54,39 +50,22 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readMyWrites(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadMyWrites");
-        cfg.setConnectionMode("DIRECT");
-        cfg.setNumberOfPreCreatedDocuments(100);
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "ReadMyWrites",
+            "DIRECT",
+            "SESSION",
+            2,
+            numberOfOperations,
+            100);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(groups = "fast", timeOut = TIMEOUT)
@@ -110,151 +89,45 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void writeThroughputWithDataProvider(boolean useNameLink) throws Exception {
-        int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteThroughput");
-        cfg.setConnectionMode("DIRECT");
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
-    }
-
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteThroughput");
-        cfg.setConnectionMode("DIRECT");
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
-    }
-
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void readThroughputWithDataProvider(boolean useNameLink) throws Exception {
-        int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadThroughput");
-        cfg.setConnectionMode("DIRECT");
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "WriteThroughput",
+            "DIRECT",
+            "SESSION",
+            2,
+            numberOfOperations,
+            0);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadThroughput");
-        cfg.setConnectionMode("DIRECT");
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "ReadThroughput",
+            "DIRECT",
+            "SESSION",
+            2,
+            numberOfOperations,
+            0);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @BeforeClass(groups = "fast", timeOut = TIMEOUT)
@@ -316,7 +189,8 @@ public class WorkflowTest {
         int numberOfPreCreatedDocuments) throws Exception {
 
         String json = String.format(
-            "{ \"tenants\": [{ "
+            "{ \"orchestrator\": { \"concurrency\": %d, \"numberOfOperations\": %d, "
+                + "\"tenants\": [{ "
                 + "\"serviceEndpoint\": \"%s\", "
                 + "\"masterKey\": \"%s\", "
                 + "\"databaseId\": \"%s\", "
@@ -324,13 +198,12 @@ public class WorkflowTest {
                 + "\"operation\": \"%s\", "
                 + "\"connectionMode\": \"%s\", "
                 + "\"consistencyLevel\": \"%s\", "
-                + "\"concurrency\": %d, "
-                + "\"numberOfOperations\": %d, "
                 + "\"numberOfPreCreatedDocuments\": %d "
-                + "}] }",
+                + "}] } }",
+            concurrency, numberOfOperations,
             serviceEndpoint, masterKey, databaseId, containerId,
             operation, connectionMode, consistencyLevel,
-            concurrency, numberOfOperations, numberOfPreCreatedDocuments);
+            numberOfPreCreatedDocuments);
 
         File tempFile = File.createTempFile("workload-config-", ".json");
         try (FileWriter writer = new FileWriter(tempFile)) {

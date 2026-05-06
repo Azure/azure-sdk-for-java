@@ -58,9 +58,10 @@ public final class AutoUpgradeProfilesImpl implements AutoUpgradeProfiles {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoUpgradeProfileImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AutoUpgradeProfile> listByFleet(String resourceGroupName, String fleetName, Context context) {
+    public PagedIterable<AutoUpgradeProfile> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<AutoUpgradeProfileInner> inner
-            = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoUpgradeProfileImpl(inner1, this.manager()));
     }
 

@@ -14,22 +14,21 @@ public final class DataflowGraphDestinationNodeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNodeSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"ooaojkniodkooebw\",\"dataDestination\":\"ujhemmsbvdkcrodt\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]}")
+            "{\"endpointRef\":\"rbuukzclewyhmlwp\",\"dataDestination\":\"ztzp\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]}")
             .toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("ooaojkniodkooebw", model.endpointRef());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.dataDestination());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.endpointRef());
+        Assertions.assertEquals("ztzp", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphDestinationNodeSettings model
-            = new DataflowGraphDestinationNodeSettings().withEndpointRef("ooaojkniodkooebw")
-                .withDataDestination("ujhemmsbvdkcrodt")
-                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
-                    new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction(),
-                    new DataflowGraphDestinationHeaderAction()));
+        DataflowGraphDestinationNodeSettings model = new DataflowGraphDestinationNodeSettings()
+            .withEndpointRef("rbuukzclewyhmlwp")
+            .withDataDestination("ztzp")
+            .withHeaders(
+                Arrays.asList(new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNodeSettings.class);
-        Assertions.assertEquals("ooaojkniodkooebw", model.endpointRef());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.dataDestination());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.endpointRef());
+        Assertions.assertEquals("ztzp", model.dataDestination());
     }
 }

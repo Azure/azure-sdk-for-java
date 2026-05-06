@@ -16,18 +16,18 @@ public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityProperties model = BinaryData.fromString(
-            "{\"principalId\":\"ewmdw\",\"tenantId\":\"eiachboosflnr\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wjdk\":{\"principalId\":\"eeh\",\"clientId\":\"vypyqrimzinpv\"},\"ifiyipjxsqwpgrj\":{\"principalId\":\"soodqxhcrmnoh\",\"clientId\":\"ckwhds\"}}}")
+            "{\"principalId\":\"ohjtckw\",\"tenantId\":\"soifiyipjxsqw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"hurzafblj\":{\"principalId\":\"norcjxvsnbyxqab\",\"clientId\":\"ocpcy\"},\"qajzyulpkudjkr\":{\"principalId\":\"pbtoqcjmkl\",\"clientId\":\"vbqid\"},\"locx\":{\"principalId\":\"hbzhfepg\",\"clientId\":\"qex\"},\"a\":{\"principalId\":\"paierh\",\"clientId\":\"csglum\"}}}")
             .toObject(IdentityProperties.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProperties model = new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("wjdk", new UserIdentityProperties(), "ifiyipjxsqwpgrj", new UserIdentityProperties()));
+        IdentityProperties model = new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("hurzafblj", new UserIdentityProperties(), "qajzyulpkudjkr",
+                new UserIdentityProperties(), "locx", new UserIdentityProperties(), "a", new UserIdentityProperties()));
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

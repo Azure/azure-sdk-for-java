@@ -50,7 +50,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     5 + CosmosConstants.readOperationEndToEndTimeoutInSeconds,
     scala.concurrent.duration.SECONDS)
 
-  private val rnd = Random
   // scalastyle:off null
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
@@ -204,46 +203,17 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
-    val loop = new Breaks()
-    var returnValue: Option[T] = None
-
-    loop.breakable {
-      while (true) {
-        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
-
-        try {
-          returnValue = Some(func())
-          retryCount.set(0)
-          loop.break
-        }
-        catch {
-          case cosmosException: CosmosException =>
-            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
-              val retryCountSnapshot = retryCount.incrementAndGet()
-              if (retryCountSnapshot > maxRetryCount) {
-                logError(
-                  s"Too many transient failure retry attempts in TransientIOErrorsRetryingIterator.$methodName",
-                  cosmosException)
-                throw cosmosException
-              } else {
-                logWarning(
-                  s"Transient failure handled in TransientIOErrorsRetryingIterator.$methodName -" +
-                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
-                  cosmosException)
-              }
-            } else {
-              throw cosmosException
-            }
-          case other: Throwable => throw other
-        }
-
+    TransientIOErrorsRetryingIterator.executeWithRetry(
+      "TransientIOErrorsRetryingIterator",
+      methodName,
+      func,
+      maxRetryCount,
+      maxRetryIntervalInMs,
+      retryCount,
+      () => {
         currentItemIterator = None
         currentFeedResponseIterator = None
-        Thread.sleep(retryIntervalInMs)
-      }
-    }
-
-    returnValue.get
+      })
   }
 
   private[this] def validateNextLsn(itemIterator: BufferedIterator[TSparkRow]): Boolean = {
@@ -275,7 +245,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 }
 
-private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
+private[spark] object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
   private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
 
   val executorService: ExecutorService = new ThreadPoolExecutor(
@@ -293,4 +263,60 @@ private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
   )
 
   val executionContext = ExecutionContext.fromExecutorService(executorService)
+
+  /**
+   * Shared retry logic for transient I/O failures. Both TransientIOErrorsRetryingIterator
+   * and TransientIOErrorsRetryingReadManyByPartitionKeyIterator delegate to this method
+   * to avoid duplicating the retry loop, backoff, and transient-failure classification.
+   */
+  def executeWithRetry[T](
+    callerName: String,
+    methodName: String,
+    func: () => T,
+    maxRetryCount: Long,
+    maxRetryIntervalInMs: Int,
+    retryCount: AtomicLong,
+    onRetry: () => Unit): T = {
+
+    val rnd = Random
+    val loop = new Breaks()
+    var returnValue: Option[T] = None
+
+    loop.breakable {
+      while (true) {
+        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
+
+        try {
+          returnValue = Some(func())
+          retryCount.set(0)
+          loop.break
+        }
+        catch {
+          case cosmosException: CosmosException =>
+            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
+              val retryCountSnapshot = retryCount.incrementAndGet()
+              if (retryCountSnapshot > maxRetryCount) {
+                logError(
+                  s"Too many transient failure retry attempts in $callerName.$methodName",
+                  cosmosException)
+                throw cosmosException
+              } else {
+                logWarning(
+                  s"Transient failure handled in $callerName.$methodName -" +
+                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
+                  cosmosException)
+              }
+            } else {
+              throw cosmosException
+            }
+          case other: Throwable => throw other
+        }
+
+        onRetry()
+        Thread.sleep(retryIntervalInMs)
+      }
+    }
+
+    returnValue.get
+  }
 }
