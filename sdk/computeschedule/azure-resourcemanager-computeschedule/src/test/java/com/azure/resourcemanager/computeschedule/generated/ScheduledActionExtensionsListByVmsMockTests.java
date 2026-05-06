@@ -16,6 +16,7 @@ import com.azure.resourcemanager.computeschedule.models.Language;
 import com.azure.resourcemanager.computeschedule.models.Month;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceType;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionResources;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionType;
@@ -30,7 +31,7 @@ public final class ScheduledActionExtensionsListByVmsMockTests {
     @Test
     public void testListByVms() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-03-09T05:15:25Z\",\"endTime\":\"2021-12-02T07:00Z\",\"schedule\":{\"scheduledTime\":\"tclusiypbsfgy\",\"timeZone\":\"gusl\",\"requestedWeekDays\":[\"Tuesday\",\"Sunday\",\"Monday\",\"Friday\"],\"requestedMonths\":[\"July\"],\"requestedDaysOfTheMonth\":[1056864137,860507177,2023877229],\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":435176888,\"retryWindowInMinutes\":2010332970}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"lolp\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"pqvujzraehtwdwrf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"yrcdlbhshfwprac\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ykhevxccedcpnmdy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Succeeded\",\"resourceNotificationSettings\":[{\"destination\":\"nhltiugcxn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"qiby\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"wxwlmdjrkvfgb\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"odacizs\",\"name\":\"q\",\"type\":\"hkr\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-05-14T02:17:19Z\",\"endTime\":\"2021-01-27T21:30:22Z\",\"schedule\":{\"scheduledTime\":\"vqagtltdhlf\",\"timeZone\":\"qojpy\",\"requestedWeekDays\":[\"Tuesday\",\"Saturday\",\"Saturday\",\"Thursday\"],\"requestedMonths\":[\"March\",\"January\"],\"requestedDaysOfTheMonth\":[840860863,1598759472,2043504503],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":1569168955,\"retryWindowInMinutes\":1235749271,\"onFailureAction\":\"Unknown\"}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"rafwgckhocxvdf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"qrouda\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"h\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":false,\"provisioningState\":\"Succeeded\",\"resourceNotificationSettings\":[{\"destination\":\"dhcxgkmoy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"bhmfdnbz\",\"name\":\"dvfvfcjnaeoi\",\"type\":\"rvhmgor\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,28 +41,27 @@ public final class ScheduledActionExtensionsListByVmsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScheduledActionResources> response
-            = manager.scheduledActionExtensions().listByVms("tlstvlzywem", com.azure.core.util.Context.NONE);
+            = manager.scheduledActionExtensions().listByVms("dxzxhi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET,
-            response.iterator().next().properties().resourceType());
+        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, response.iterator().next().properties().resourceType());
         Assertions.assertEquals(ScheduledActionType.HIBERNATE, response.iterator().next().properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T05:15:25Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T02:17:19Z"),
             response.iterator().next().properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T07:00Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T21:30:22Z"),
             response.iterator().next().properties().endTime());
-        Assertions.assertEquals("tclusiypbsfgy", response.iterator().next().properties().schedule().scheduledTime());
-        Assertions.assertEquals("gusl", response.iterator().next().properties().schedule().timeZone());
+        Assertions.assertEquals("vqagtltdhlf", response.iterator().next().properties().schedule().scheduledTime());
+        Assertions.assertEquals("qojpy", response.iterator().next().properties().schedule().timeZone());
         Assertions.assertEquals(WeekDay.TUESDAY,
             response.iterator().next().properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.JULY,
+        Assertions.assertEquals(Month.MARCH,
             response.iterator().next().properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(1056864137,
+        Assertions.assertEquals(840860863,
             response.iterator().next().properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
+        Assertions.assertEquals(OptimizationPreference.COST,
             response.iterator().next().properties().schedule().executionParameters().optimizationPreference());
-        Assertions.assertEquals(435176888,
+        Assertions.assertEquals(1569168955,
             response.iterator().next().properties().schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(2010332970,
+        Assertions.assertEquals(1235749271,
             response.iterator()
                 .next()
                 .properties()
@@ -69,15 +69,17 @@ public final class ScheduledActionExtensionsListByVmsMockTests {
                 .executionParameters()
                 .retryPolicy()
                 .retryWindowInMinutes());
-        Assertions.assertEquals(DeadlineType.UNKNOWN,
+        Assertions.assertEquals(ResourceOperationType.UNKNOWN,
+            response.iterator().next().properties().schedule().executionParameters().retryPolicy().onFailureAction());
+        Assertions.assertEquals(DeadlineType.INITIATE_AT,
             response.iterator().next().properties().schedule().deadlineType());
-        Assertions.assertEquals("lolp",
+        Assertions.assertEquals("rafwgckhocxvdf",
             response.iterator().next().properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US,
             response.iterator().next().properties().notificationSettings().get(0).language());
         Assertions.assertFalse(response.iterator().next().properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(response.iterator().next().properties().disabled());
+        Assertions.assertFalse(response.iterator().next().properties().disabled());
     }
 }
