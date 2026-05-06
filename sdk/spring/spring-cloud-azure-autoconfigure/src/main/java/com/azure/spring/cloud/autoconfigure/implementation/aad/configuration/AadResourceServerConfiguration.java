@@ -67,7 +67,6 @@ class AadResourceServerConfiguration {
         List<String> validAudiences = new ArrayList<>();
         String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
         validateTenantId(tenantId);
-        
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
@@ -77,11 +76,9 @@ class AadResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
-        
         validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
         validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         validators.add(new JwtTimestampValidator());
-        
         return validators;
     }
 
