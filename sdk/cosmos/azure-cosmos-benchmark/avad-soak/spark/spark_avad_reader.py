@@ -18,20 +18,29 @@
 
 # COMMAND ----------
 
-# Configuration
-cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint") if "cosmos_endpoint" in [w.name for w in dbutils.widgets.getAll()] else spark.conf.get("spark.cosmos.endpoint", "")
-cosmos_key = dbutils.widgets.get("cosmos_key") if "cosmos_key" in [w.name for w in dbutils.widgets.getAll()] else spark.conf.get("spark.cosmos.key", "")
-database = dbutils.widgets.get("database") if "database" in [w.name for w in dbutils.widgets.getAll()] else "graph_db"
+# Configuration — reads from notebook widgets (set via job parameters or manually)
+import os
+
+try:
+    cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint")
+except:
+    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
+
+try:
+    cosmos_key = dbutils.widgets.get("cosmos_key")
+except:
+    cosmos_key = os.environ.get("COSMOS_KEY", "")
+
+try:
+    database = dbutils.widgets.get("database")
+except:
+    database = "graph_db"
+
 feed_container = "avad-test"
 recon_container = "reconciliation"
 
-if not cosmos_endpoint or not cosmos_key:
-    import os
-    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
-    cosmos_key = os.environ.get("COSMOS_KEY", "")
-
-assert cosmos_endpoint, "Set COSMOS_ENDPOINT"
-assert cosmos_key, "Set COSMOS_KEY"
+assert cosmos_endpoint, "Set cosmos_endpoint widget or COSMOS_ENDPOINT env var"
+assert cosmos_key, "Set cosmos_key widget or COSMOS_KEY env var"
 
 print(f"Endpoint: {cosmos_endpoint}")
 print(f"Database: {database}")
@@ -63,10 +72,7 @@ recon_cfg = {
 
 # COMMAND ----------
 
-from pyspark.sql.functions import (
-    col, lit, concat, current_timestamp, coalesce,
-    when, get_json_object
-)
+from pyspark.sql.functions import col, lit, concat, current_timestamp, coalesce
 from pyspark.sql.types import StringType, LongType, BooleanType
 
 SOURCE = "spark-avad"
@@ -84,73 +90,32 @@ raw_df = (
 # MAGIC %md
 # MAGIC ### Schema Notes
 # MAGIC
-# MAGIC In Full Fidelity mode, the Spark connector exposes:
-# MAGIC - `_rawBody` — the full JSON of the change feed item
-# MAGIC - `current` — the current document state (null for deletes)
-# MAGIC - `previous` — the previous document state (present on replace/delete)
-# MAGIC - `metadata` — change feed metadata including `operationType`, `lsn`, `crts`
+# MAGIC In Full Fidelity mode, the Spark connector exposes the same columns
+# MAGIC as Incremental mode: `id`, `eventId`, `seqNo`, `operationType`,
+# MAGIC `tenantId`, `payload`, `timestamp`. The connector flattens the change
+# MAGIC feed item — metadata like `lsn` and `crts` are not directly exposed
+# MAGIC as columns. previousImage availability depends on container config.
 
 # COMMAND ----------
 
 # Transform to reconciliation schema
-# For AVAD, we need to handle:
-# 1. operationType from metadata (create/replace/delete)
-# 2. previousImage check (must be present on replace/delete)
-# 3. CRTS from metadata
-# 4. For deletes, extract fields from previous image (current is tombstone)
-
+# The Spark connector flattens AVAD events — use available columns directly.
+# LSN/CRTS/previousImage not exposed as columns by the connector.
 recon_df = (
     raw_df
-    .withColumn("_opType",
-        coalesce(
-            get_json_object(col("_rawBody"), "$.metadata.operationType"),
-            lit("unknown")
-        ).cast(StringType())
-    )
-    .withColumn("_lsnVal",
-        coalesce(
-            get_json_object(col("_rawBody"), "$.metadata.lsn").cast(LongType()),
-            lit(-1)
-        )
-    )
-    .withColumn("_crtsVal",
-        coalesce(
-            get_json_object(col("_rawBody"), "$.metadata.crts").cast(LongType()),
-            lit(-1)
-        )
-    )
-    .withColumn("_hasPrevious",
-        get_json_object(col("_rawBody"), "$.previous").isNotNull()
-    )
-    # For deletes, use previous image fields; otherwise use current
-    .withColumn("_eventId",
-        when(col("_opType") == "delete",
-             get_json_object(col("_rawBody"), "$.previous.eventId"))
-        .otherwise(coalesce(col("eventId"), lit("")))
-    )
-    .withColumn("_seqNo",
-        when(col("_opType") == "delete",
-             get_json_object(col("_rawBody"), "$.previous.seqNo").cast(LongType()))
-        .otherwise(coalesce(col("seqNo").cast(LongType()), lit(-1)))
-    )
-    .withColumn("_pk",
-        when(col("_opType") == "delete",
-             get_json_object(col("_rawBody"), "$.previous.tenantId"))
-        .otherwise(coalesce(col("tenantId"), lit("")))
-    )
-    .filter(col("_eventId").isNotNull() & (col("_eventId") != ""))
     .select(
-        concat(lit(SOURCE + "-"), col("_eventId")).alias("id"),
-        col("_eventId").alias("correlationId"),
+        concat(lit(SOURCE + "-"), col("eventId")).alias("id"),
+        col("eventId").alias("correlationId"),
         lit(SOURCE).alias("source"),
-        col("_seqNo").alias("seqNo"),
-        col("_opType").alias("opType"),
-        col("_pk").alias("partitionKey"),
-        col("_lsnVal").alias("lsn"),
-        col("_hasPrevious").cast(BooleanType()).alias("hasPreviousImage"),
-        col("_crtsVal").alias("crts"),
+        coalesce(col("seqNo"), lit(-1)).cast(LongType()).alias("seqNo"),
+        coalesce(col("operationType"), lit("unknown")).alias("opType"),
+        coalesce(col("tenantId"), lit("")).alias("partitionKey"),
+        lit(-1).cast(LongType()).alias("lsn"),
+        lit(False).cast(BooleanType()).alias("hasPreviousImage"),
+        lit(-1).cast(LongType()).alias("crts"),
         current_timestamp().cast(StringType()).alias("timestamp"),
     )
+    .filter(col("correlationId").isNotNull())
 )
 
 # COMMAND ----------
@@ -160,7 +125,7 @@ query = (
     recon_df.writeStream
     .format("cosmos.oltp")
     .options(**recon_cfg)
-    .option("checkpointLocation", f"/tmp/cosmos-avad-soak/spark-avad-checkpoint")
+    .option("checkpointLocation", f"/Workspace/avad-soak/checkpoints/spark-avad")
     .outputMode("append")
     .trigger(processingTime="10 seconds")
     .start()

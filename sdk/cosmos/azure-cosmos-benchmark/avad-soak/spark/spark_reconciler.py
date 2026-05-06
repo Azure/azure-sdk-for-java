@@ -25,12 +25,23 @@
 
 import os
 
-cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint") if "cosmos_endpoint" in [w.name for w in dbutils.widgets.getAll()] else os.environ.get("COSMOS_ENDPOINT", "")
-cosmos_key = dbutils.widgets.get("cosmos_key") if "cosmos_key" in [w.name for w in dbutils.widgets.getAll()] else os.environ.get("COSMOS_KEY", "")
-database = dbutils.widgets.get("database") if "database" in [w.name for w in dbutils.widgets.getAll()] else "graph_db"
+try:
+    cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint")
+except:
+    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
 
-assert cosmos_endpoint, "Set COSMOS_ENDPOINT"
-assert cosmos_key, "Set COSMOS_KEY"
+try:
+    cosmos_key = dbutils.widgets.get("cosmos_key")
+except:
+    cosmos_key = os.environ.get("COSMOS_KEY", "")
+
+try:
+    database = dbutils.widgets.get("database")
+except:
+    database = "graph_db"
+
+assert cosmos_endpoint, "Set cosmos_endpoint widget or COSMOS_ENDPOINT env var"
+assert cosmos_key, "Set cosmos_key widget or COSMOS_KEY env var"
 
 recon_cfg = {
     "spark.cosmos.accountEndpoint": cosmos_endpoint,

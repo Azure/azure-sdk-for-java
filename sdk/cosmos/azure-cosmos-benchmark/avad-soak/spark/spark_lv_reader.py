@@ -13,20 +13,29 @@
 
 # COMMAND ----------
 
-# Configuration
-cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint") if "cosmos_endpoint" in [w.name for w in dbutils.widgets.getAll()] else spark.conf.get("spark.cosmos.endpoint", "")
-cosmos_key = dbutils.widgets.get("cosmos_key") if "cosmos_key" in [w.name for w in dbutils.widgets.getAll()] else spark.conf.get("spark.cosmos.key", "")
-database = dbutils.widgets.get("database") if "database" in [w.name for w in dbutils.widgets.getAll()] else "graph_db"
+# Configuration — reads from notebook widgets (set via job parameters or manually)
+import os
+
+try:
+    cosmos_endpoint = dbutils.widgets.get("cosmos_endpoint")
+except:
+    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
+
+try:
+    cosmos_key = dbutils.widgets.get("cosmos_key")
+except:
+    cosmos_key = os.environ.get("COSMOS_KEY", "")
+
+try:
+    database = dbutils.widgets.get("database")
+except:
+    database = "graph_db"
+
 feed_container = "avad-test"
 recon_container = "reconciliation"
 
-if not cosmos_endpoint or not cosmos_key:
-    import os
-    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
-    cosmos_key = os.environ.get("COSMOS_KEY", "")
-
-assert cosmos_endpoint, "Set COSMOS_ENDPOINT"
-assert cosmos_key, "Set COSMOS_KEY"
+assert cosmos_endpoint, "Set cosmos_endpoint widget or COSMOS_ENDPOINT env var"
+assert cosmos_key, "Set cosmos_key widget or COSMOS_KEY env var"
 
 print(f"Endpoint: {cosmos_endpoint}")
 print(f"Database: {database}")
@@ -81,7 +90,7 @@ recon_df = (
         coalesce(col("seqNo"), lit(-1)).cast(LongType()).alias("seqNo"),
         coalesce(col("operationType"), lit("unknown")).alias("opType"),
         coalesce(col("tenantId"), lit("")).alias("partitionKey"),
-        coalesce(col("_lsn"), lit(-1)).cast(LongType()).alias("lsn"),
+        lit(-1).cast(LongType()).alias("lsn"),
         lit(False).cast(BooleanType()).alias("hasPreviousImage"),
         lit(-1).cast(LongType()).alias("crts"),
         current_timestamp().cast(StringType()).alias("timestamp"),
@@ -96,7 +105,7 @@ query = (
     recon_df.writeStream
     .format("cosmos.oltp")
     .options(**recon_cfg)
-    .option("checkpointLocation", f"/tmp/cosmos-avad-soak/spark-lv-checkpoint")
+    .option("checkpointLocation", f"/Workspace/avad-soak/checkpoints/spark-lv")
     .outputMode("append")
     .trigger(processingTime="10 seconds")
     .start()
