@@ -97,7 +97,7 @@ public class ReplicaLookUp {
                         records.put(mainEndpoint, srvRecords);
                         wait.put(mainEndpoint, Instant.now().plus(FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL));
                     } catch (AppConfigurationReplicaException e) {
-                        LOGGER.warn("Failed to find replicas due to: " + e.getMessage());
+                        LOGGER.warn("Failed to find replicas due to: {}", e.getMessage(), e);
                         wait.put(mainEndpoint, Instant.now().plus(MINIMAL_CLIENT_REFRESH_INTERVAL));
                     }
 
