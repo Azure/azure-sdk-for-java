@@ -1394,7 +1394,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders,
-                                                                        boolean requireStructuredContentLength) {
+        boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.getSize() == 0) {
             return false;
         }
@@ -1459,7 +1459,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasStructuredMessageDownloadRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
-                                                                        boolean requireStructuredContentLength) {
+        boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
@@ -1498,7 +1498,6 @@ public class BlobTestBase extends TestProxyTestBase {
             }
         });
     }
-
 
     protected static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {

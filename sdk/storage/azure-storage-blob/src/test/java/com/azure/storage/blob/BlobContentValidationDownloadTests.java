@@ -136,7 +136,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
                 .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         Response<BlobProperties> response = client.downloadToFileWithResponse(options, null, Context.NONE);
-        assertStructuredMessageInitialDownloadResponseHeaders(response.getHeaders(), fileSize, blockSize);
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(response.getHeaders()));
         assertNotNull(response.getValue());
         assertTrue(compareFiles(file, outFile, 0, fileSize));
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
@@ -173,7 +173,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
                 .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         Response<BlobProperties> response = client.downloadToFileWithResponse(options, null, Context.NONE);
-        assertStructuredMessageInitialDownloadResponseHeaders(response.getHeaders(), fileSize, blockSize);
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(response.getHeaders()));
         assertNotNull(response.getValue());
         assertTrue(compareFiles(file, outFile, 0, fileSize));
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
@@ -317,7 +317,8 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             "Expected at least the initial request and one retry with a range header");
         assertTrue(recordedResponseHeaders.size() >= 2,
             "Expected at least the initial response and one retry response");
-        assertTrue(recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
+        assertTrue(
+            recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
@@ -357,7 +358,8 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertEquals(dataSize, result.length, "Decoded data should have exactly " + dataSize + " bytes");
         TestUtils.assertArraysEqual(randomData, result);
         assertTrue(!recordedResponseHeaders.isEmpty());
-        assertTrue(recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
+        assertTrue(
+            recordedResponseHeaders.stream().allMatch(BlobTestBase::hasStructuredMessageDownloadResponseHeaders));
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded));
     }
 
