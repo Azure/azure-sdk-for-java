@@ -77,8 +77,8 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
-                // ISS + TID + Timestamp validators (no audience)
-                assertThat(defaultValidator).hasSize(3);
+                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
+                assertThat(defaultValidator).hasSize(4);
             });
     }
 
@@ -125,7 +125,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("cannot be null, empty, or set to")
                     .hasMessageContaining("security vulnerability");
             });
     }
@@ -140,7 +140,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be set to 'organizations'")
+                    .hasMessageContaining("cannot be null, empty, or set to")
                     .hasMessageContaining("security vulnerability");
             });
     }
@@ -155,7 +155,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be set to 'consumers'")
+                    .hasMessageContaining("cannot be null, empty, or set to")
                     .hasMessageContaining("security vulnerability");
             });
     }
@@ -171,7 +171,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("cannot be null, empty, or set to")
                     .hasMessageContaining("security vulnerability");
             });
     }
@@ -188,7 +188,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(context).hasFailed();
                 assertThat(context.getStartupFailure())
                     .hasRootCauseInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("cannot be set to 'common'")
+                    .hasMessageContaining("cannot be null, empty, or set to")
                     .hasMessageContaining("security vulnerability");
             });
     }
