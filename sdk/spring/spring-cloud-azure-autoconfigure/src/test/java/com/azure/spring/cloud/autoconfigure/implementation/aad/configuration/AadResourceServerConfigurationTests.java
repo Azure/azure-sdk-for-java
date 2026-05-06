@@ -69,16 +69,17 @@ class AadResourceServerConfigurationTests {
 
     @Test
     void testNotAudienceDefaultValidator() {
-        resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 AadResourceServerConfiguration bean = context
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
-                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
-                assertThat(defaultValidator).hasSize(4);
+                // No AUD validator (no app-id-uri or client-id configured) + TID + ISS + Timestamp validators
+                assertThat(defaultValidator).hasSize(3);
             });
     }
 
@@ -92,7 +93,7 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
-                // AUD + ISS + TID + Timestamp validators
+                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
                 assertThat(defaultValidator).hasSize(4);
             });
     }
