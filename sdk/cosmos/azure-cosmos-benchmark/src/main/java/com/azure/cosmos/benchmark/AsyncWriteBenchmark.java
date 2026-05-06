@@ -8,7 +8,6 @@ import com.azure.cosmos.models.PartitionKey;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.UUID;
 
@@ -17,8 +16,8 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
     private final String uuid;
     private final String dataFieldValue;
 
-    AsyncWriteBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
-        super(cfg, scheduler);
+    AsyncWriteBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
 
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
