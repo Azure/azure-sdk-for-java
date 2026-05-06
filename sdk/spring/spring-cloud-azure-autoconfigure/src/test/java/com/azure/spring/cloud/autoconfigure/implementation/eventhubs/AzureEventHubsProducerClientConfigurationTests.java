@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -32,17 +33,6 @@ class AzureEventHubsProducerClientConfigurationTests {
         contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub"
-            )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
-            });
-
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.producer.event-hub-name=test-eventhub"
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
@@ -97,6 +87,31 @@ class AzureEventHubsProducerClientConfigurationTests {
                     assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME);
+                }
+            );
+    }
+
+    @Test
+    void producerEventHubNameOverrideShouldConfigureDedicated() {
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=base-eventhub",
+                "spring.cloud.azure.eventhubs.producer.event-hub-name=override-eventhub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
+            .run(
+                context -> {
+                    assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
+                    assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
+                    assertThat(context).hasSingleBean(EventHubProducerClient.class);
+
+                    AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                    AzureEventHubsProperties.Producer producer = properties.buildProducerProperties();
+                    assertThat(producer.getEventHubName()).isEqualTo("override-eventhub");
+                    assertThat(producer.getNamespace()).isEqualTo("test-namespace");
                 }
             );
     }
