@@ -87,8 +87,8 @@ class AadResourceServerConfiguration {
 
     private static void validateTenantId(String tenantId) {
         if (!StringUtils.hasText(tenantId)
-            || "common".equalsIgnoreCase(tenantId) 
-            || "organizations".equalsIgnoreCase(tenantId) 
+            || "common".equalsIgnoreCase(tenantId)
+            || "organizations".equalsIgnoreCase(tenantId)
             || "consumers".equalsIgnoreCase(tenantId)) {
             throw new IllegalArgumentException(
                 "For resource server, 'spring.cloud.azure.active-directory.profile.tenant-id' cannot be null, empty, or set to 'common', 'organizations', or 'consumers'. "
