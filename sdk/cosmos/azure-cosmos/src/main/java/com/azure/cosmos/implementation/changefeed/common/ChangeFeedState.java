@@ -33,6 +33,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public abstract class ChangeFeedState extends JsonSerializable {
     private static final Comparator<Range<String>> MIN_RANGE_COMPARATOR = new Range.MinComparator<>();
     private static final Comparator<Range<String>> MAX_RANGE_COMPARATOR = new Range.MaxComparator<>();
+
+    // Lazily-initialized cache holding a pre-sorted snapshot of continuation tokens.
+    // Reused across multiple extractForEffectiveRange calls on the same instance to
+    // avoid redundant O(T log T) copy+sort per partition during Spark planning.
+    private volatile SortedTokensSnapshot cachedSortedTokensSnapshot;
+
     ChangeFeedState() {
     }
 
@@ -94,21 +100,41 @@ public abstract class ChangeFeedState extends JsonSerializable {
         return extractContinuationTokens(PartitionKeyInternalHelper.FullRange).getLeft();
     }
 
+    private List<CompositeContinuationToken> getOrCreateSortedContinuationTokens() {
+        FeedRangeContinuation continuation = this.getContinuation();
+        if (continuation == null) {
+            return Collections.emptyList();
+        }
+
+        SortedTokensSnapshot snapshot = this.cachedSortedTokensSnapshot;
+        if (snapshot != null && snapshot.continuationRef == continuation) {
+            return snapshot.sortedTokens;
+        }
+
+        List<CompositeContinuationToken> sorted = new ArrayList<>();
+        Collections.addAll(sorted, continuation.getCurrentContinuationTokens());
+        sorted.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
+
+        this.cachedSortedTokensSnapshot = new SortedTokensSnapshot(continuation, sorted);
+        return sorted;
+    }
+
     private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokens(
         Range<String> effectiveRange) {
 
         checkNotNull(effectiveRange);
 
         List<CompositeContinuationToken> extractedContinuationTokens = new ArrayList<>();
-        FeedRangeContinuation continuation = this.getContinuation();
         String min = null;
         String max = null;
-        if (continuation != null) {
-            List<CompositeContinuationToken> continuationTokensSnapshot = new ArrayList<>();
-            Collections.addAll(continuationTokensSnapshot, continuation.getCurrentContinuationTokens());
-            continuationTokensSnapshot.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
-            for (CompositeContinuationToken compositeContinuationToken : continuationTokensSnapshot) {
+        List<CompositeContinuationToken> sortedTokens = getOrCreateSortedContinuationTokens();
+
+        if (!sortedTokens.isEmpty()) {
+            int startIndex = findFirstPotentialOverlapIndex(sortedTokens, effectiveRange);
+
+            for (int i = startIndex; i < sortedTokens.size(); i++) {
+                CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
                 if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
                     Range<String> overlappingRange =
                         getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
@@ -127,6 +153,31 @@ public abstract class ChangeFeedState extends JsonSerializable {
                     }
                 }
             }
+
+            // Fallback: if binary search found no overlaps but started past index 0,
+            // do a full linear scan to handle non-contiguous or legacy overlapping ranges
+            if (extractedContinuationTokens.isEmpty() && startIndex > 0) {
+                for (int i = 0; i < sortedTokens.size(); i++) {
+                    CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
+                    if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
+                        Range<String> overlappingRange =
+                            getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
+
+                        extractedContinuationTokens.add(
+                            new CompositeContinuationToken(compositeContinuationToken.getToken(),
+                                overlappingRange));
+
+                        if (min == null) {
+                            min = overlappingRange.getMin();
+                        }
+                        max = overlappingRange.getMax();
+                    } else {
+                        if (extractedContinuationTokens.size() > 0) {
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         Range<String> totalRange = new Range<>(
@@ -136,6 +187,35 @@ public abstract class ChangeFeedState extends JsonSerializable {
             false);
 
         return Pair.of(extractedContinuationTokens, totalRange);
+    }
+
+    /**
+     * Binary search to find the first index in the sorted token list where
+     * overlapping tokens may start for the given effective range.
+     * Uses the same comparator as the sort to ensure consistency.
+     */
+    private static int findFirstPotentialOverlapIndex(
+        List<CompositeContinuationToken> sortedTokens,
+        Range<String> effectiveRange) {
+
+        int low = 0;
+        int high = sortedTokens.size() - 1;
+        int insertionPoint = sortedTokens.size();
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            int cmp = MIN_RANGE_COMPARATOR.compare(sortedTokens.get(mid).getRange(), effectiveRange);
+            if (cmp > 0) {
+                insertionPoint = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        // Back up by 1 to catch a token whose range.min <= effectiveRange.min
+        // but whose range.max extends past effectiveRange.min
+        return Math.max(0, insertionPoint - 1);
     }
 
     public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
@@ -279,6 +359,22 @@ public abstract class ChangeFeedState extends JsonSerializable {
             checkNotNull(right, "Argument 'right' must not be null.");
 
             return MIN_RANGE_COMPARATOR.compare(left.getRange(), right.getRange());
+        }
+    }
+
+    /**
+     * Holds a pre-sorted snapshot of continuation tokens along with the
+     * continuation reference it was built from for cache invalidation.
+     */
+    private static final class SortedTokensSnapshot {
+        final FeedRangeContinuation continuationRef;
+        final List<CompositeContinuationToken> sortedTokens;
+
+        SortedTokensSnapshot(
+            FeedRangeContinuation continuationRef,
+            List<CompositeContinuationToken> sortedTokens) {
+            this.continuationRef = continuationRef;
+            this.sortedTokens = sortedTokens;
         }
     }
 }
