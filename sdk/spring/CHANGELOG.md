@@ -8,7 +8,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 
 - AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted and will cause application startup to fail with an `IllegalArgumentException`. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
-- `AadJwtIssuerValidator` no-args constructor has been removed. Use `AadJwtIssuerValidator(AadTrustedIssuerRepository)` instead. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
 
 #### Bugs Fixed
 
