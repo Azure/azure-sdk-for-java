@@ -335,13 +335,13 @@
 #### `ChaosManager` was modified
 
 * `scenarioConfigurations()` was added
-* `actionVersions()` was added
 * `discoveredResources()` was added
+* `scenarioRuns()` was added
+* `actionVersions()` was added
+* `scenarios()` was added
 * `privateAccesses()` was added
 * `actions()` was added
-* `scenarios()` was added
 * `workspaces()` was added
-* `scenarioRuns()` was added
 
 ## 1.3.0 (2025-05-15)
 
