@@ -66,6 +66,9 @@ class AadResourceServerConfiguration {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
+        if (tenantId != null) {
+            tenantId = tenantId.trim();
+        }
         validateTenantId(tenantId);
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
