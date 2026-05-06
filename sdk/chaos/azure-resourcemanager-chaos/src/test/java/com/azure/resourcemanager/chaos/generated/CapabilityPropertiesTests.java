@@ -11,7 +11,7 @@ public final class CapabilityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityProperties model = BinaryData.fromString(
-            "{\"publisher\":\"gkdmb\",\"targetType\":\"zlobcufpd\",\"description\":\"rbt\",\"parametersSchema\":\"qjnqglhqgnufoooj\",\"urn\":\"ifsqesaagdfmg\",\"provisioningState\":\"Failed\"}")
+            "{\"publisher\":\"wlrxyb\",\"targetType\":\"oqijgkdmbpaz\",\"description\":\"bc\",\"parametersSchema\":\"pdznrbtcqqjnqgl\",\"urn\":\"gnufoooj\"}")
             .toObject(CapabilityProperties.class);
     }
 

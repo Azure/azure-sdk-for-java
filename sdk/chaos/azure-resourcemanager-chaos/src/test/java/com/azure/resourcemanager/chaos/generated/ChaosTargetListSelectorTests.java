@@ -16,26 +16,23 @@ public final class ChaosTargetListSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosTargetListSelector model = BinaryData.fromString(
-            "{\"type\":\"List\",\"targets\":[{\"type\":\"ChaosTarget\",\"id\":\"epcyvahfnlj\"},{\"type\":\"ChaosTarget\",\"id\":\"qxj\"},{\"type\":\"ChaosTarget\",\"id\":\"ujqgidok\"},{\"type\":\"ChaosTarget\",\"id\":\"ljyoxgvcltb\"}],\"id\":\"sncghkjeszz\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
+            "{\"type\":\"List\",\"targets\":[{\"type\":\"ChaosTarget\",\"id\":\"ncuxrhdwb\"},{\"type\":\"ChaosTarget\",\"id\":\"xbniwdjs\"}],\"id\":\"zt\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
             .toObject(ChaosTargetListSelector.class);
-        Assertions.assertEquals("sncghkjeszz", model.id());
+        Assertions.assertEquals("zt", model.id());
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.targets().get(0).type());
-        Assertions.assertEquals("epcyvahfnlj", model.targets().get(0).id());
+        Assertions.assertEquals("ncuxrhdwb", model.targets().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetListSelector model
-            = new ChaosTargetListSelector().withId("sncghkjeszz")
-                .withFilter(new ChaosTargetFilter())
-                .withTargets(Arrays.asList(
-                    new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("epcyvahfnlj"),
-                    new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("qxj"),
-                    new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("ujqgidok"),
-                    new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("ljyoxgvcltb")));
+        ChaosTargetListSelector model = new ChaosTargetListSelector().withId("zt")
+            .withFilter(new ChaosTargetFilter())
+            .withTargets(
+                Arrays.asList(new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("ncuxrhdwb"),
+                    new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("xbniwdjs")));
         model = BinaryData.fromObject(model).toObject(ChaosTargetListSelector.class);
-        Assertions.assertEquals("sncghkjeszz", model.id());
+        Assertions.assertEquals("zt", model.id());
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.targets().get(0).type());
-        Assertions.assertEquals("epcyvahfnlj", model.targets().get(0).id());
+        Assertions.assertEquals("ncuxrhdwb", model.targets().get(0).id());
     }
 }

@@ -12,9 +12,9 @@ public final class TargetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"gxg\":\"\\\"datagbwjzrnf\\\"\",\"fublj\":\"\\\"dataspemvtzfk\\\"\"},\"location\":\"xqeofjaeqjhqjba\",\"id\":\"msmjqulngsntn\",\"name\":\"ybkzgcwr\",\"type\":\"clxxwrljdo\"}],\"nextLink\":\"kcqvkocrc\"}")
+            "{\"value\":[{\"properties\":{\"kufubljo\":\"\\\"datanfygxgispemvtz\\\"\",\"v\":\"\\\"dataxqeofjaeqjhqjba\\\"\",\"zgcwrw\":\"\\\"datasmjqulngsntnbyb\\\"\"},\"location\":\"xxwr\",\"id\":\"douskcqvkocrcjdk\",\"name\":\"tnhxbn\",\"type\":\"biksq\"}],\"nextLink\":\"lssai\"}")
             .toObject(TargetListResult.class);
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.value().get(0).location());
-        Assertions.assertEquals("kcqvkocrc", model.nextLink());
+        Assertions.assertEquals("xxwr", model.value().get(0).location());
+        Assertions.assertEquals("lssai", model.nextLink());
     }
 }

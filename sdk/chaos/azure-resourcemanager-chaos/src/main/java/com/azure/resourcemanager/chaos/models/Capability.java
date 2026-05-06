@@ -75,14 +75,6 @@ public interface Capability {
     String urn();
 
     /**
-     * Gets the provisioningState property: Resource provisioning state. Not currently in use because resource is
-     * created synchronously.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
      * Gets the inner com.azure.resourcemanager.chaos.fluent.models.CapabilityInner object.
      * 
      * @return the inner object.

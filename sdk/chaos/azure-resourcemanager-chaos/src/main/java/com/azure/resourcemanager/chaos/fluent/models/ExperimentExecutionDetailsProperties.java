@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsPropertiesRunInformation;
-import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -35,11 +34,6 @@ public final class ExperimentExecutionDetailsProperties
      * String that represents the stop date time.
      */
     private OffsetDateTime stoppedAt;
-
-    /*
-     * Resource provisioning state. Not currently in use for executions.
-     */
-    private ProvisioningState provisioningState;
 
     /*
      * The reason why the execution failed.
@@ -87,15 +81,6 @@ public final class ExperimentExecutionDetailsProperties
      */
     public OffsetDateTime stoppedAt() {
         return this.stoppedAt;
-    }
-
-    /**
-     * Get the provisioningState property: Resource provisioning state. Not currently in use for executions.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -158,9 +143,6 @@ public final class ExperimentExecutionDetailsProperties
                 } else if ("stoppedAt".equals(fieldName)) {
                     deserializedExperimentExecutionDetailsProperties.stoppedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedExperimentExecutionDetailsProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
                 } else if ("failureReason".equals(fieldName)) {
                     deserializedExperimentExecutionDetailsProperties.failureReason = reader.getString();
                 } else if ("lastActionAt".equals(fieldName)) {
