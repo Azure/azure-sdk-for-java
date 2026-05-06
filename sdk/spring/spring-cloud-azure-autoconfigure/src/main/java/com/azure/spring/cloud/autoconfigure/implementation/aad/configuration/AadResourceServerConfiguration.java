@@ -63,10 +63,25 @@ class AadResourceServerConfiguration {
     }
 
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
+        // Validate JWT claims according to Microsoft's security best practices:
+        // https://learn.microsoft.com/en-us/entra/identity-platform/claims-validation
+        //
+        // This method creates validators for the following claims in order:
+        // 1. aud (Audience) - Ensures the token is intended for this application
+        // 2. tid (Tenant ID) - Ensures the token is from the configured tenant (critical for tenant isolation)
+        // 3. iss (Issuer) - Ensures the token is issued by the expected Azure AD tenant endpoint
+        // 4. exp/nbf (Timestamp) - Ensures the token is not expired or used before its valid time
+        //
+        // Note: Subject (sub, oid, roles, groups, wids) and Actor (scp) validation are NOT performed here.
+        // These are application-specific authorization concerns that vary by endpoint and should be handled
+        // in business logic using Spring Security's @PreAuthorize, @Secured, or custom authorization logic.
+        // See: https://learn.microsoft.com/en-us/entra/identity-platform/claims-validation#validate-the-subject
+        
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
         validateTenantId(tenantId);
+        
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
@@ -76,8 +91,11 @@ class AadResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
+        
+        validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
         validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         validators.add(new JwtTimestampValidator());
+        
         return validators;
     }
 

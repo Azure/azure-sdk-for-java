@@ -77,6 +77,7 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
+                // ISS + TID + Timestamp validators (no audience)
                 assertThat(defaultValidator).hasSize(3);
             });
     }
@@ -91,7 +92,8 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(3);
+                // AUD + ISS + TID + Timestamp validators
+                assertThat(defaultValidator).hasSize(4);
             });
     }
 
