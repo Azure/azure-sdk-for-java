@@ -5,10 +5,13 @@
 
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Breaking Changes
+
+- AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be a specific tenant ID (GUID) (empty string, `common`, `organizations`, `consumers` are invalid). ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+
 #### Bugs Fixed
 
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
-- Hardened AAD token validation defaults in `spring-cloud-azure-autoconfigure`: resource server issuer validation now enforces tenant-aware trusted issuers for single-tenant configurations, and `AadAuthenticationFilter` now enables explicit audience validation by default. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
 
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
