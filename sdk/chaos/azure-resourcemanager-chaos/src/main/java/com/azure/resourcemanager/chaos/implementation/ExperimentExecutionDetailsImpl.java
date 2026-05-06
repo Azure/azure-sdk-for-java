@@ -7,7 +7,6 @@ package com.azure.resourcemanager.chaos.implementation;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionDetailsInner;
 import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetails;
 import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsPropertiesRunInformation;
-import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.time.OffsetDateTime;
 
 public final class ExperimentExecutionDetailsImpl implements ExperimentExecutionDetails {
@@ -43,10 +42,6 @@ public final class ExperimentExecutionDetailsImpl implements ExperimentExecution
 
     public OffsetDateTime stoppedAt() {
         return this.innerModel().stoppedAt();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public String failureReason() {

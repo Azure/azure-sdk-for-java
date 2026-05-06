@@ -15,28 +15,30 @@ public final class ChaosExperimentStepTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosExperimentStep model = BinaryData.fromString(
-            "{\"name\":\"hwankixzbinjepu\",\"branches\":[{\"name\":\"mryw\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"zoqftiyqzrnkcqvy\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"lwh\"}]},{\"name\":\"lsicohoqqnwv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"yav\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"hheunmmqhgyx\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"konocu\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"oklyaxuconuq\"}]}]}")
+            "{\"name\":\"riwflzlfb\",\"branches\":[{\"name\":\"puz\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"ispnqzahmgkbrp\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"y\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"hibnuqqkpika\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"rgvtqag\"}]},{\"name\":\"buynhijggm\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"fsiarbutr\"}]},{\"name\":\"vpnazzm\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"runmp\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"ttdbhrbnl\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"nkxmyskpbhenbtk\"}]}]}")
             .toObject(ChaosExperimentStep.class);
-        Assertions.assertEquals("hwankixzbinjepu", model.name());
-        Assertions.assertEquals("mryw", model.branches().get(0).name());
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("riwflzlfb", model.name());
+        Assertions.assertEquals("puz", model.branches().get(0).name());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.branches().get(0).actions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosExperimentStep model = new ChaosExperimentStep().withName("hwankixzbinjepu")
+        ChaosExperimentStep model = new ChaosExperimentStep().withName("riwflzlfb")
             .withBranches(Arrays.asList(
-                new ChaosExperimentBranch().withName("mryw")
-                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("zoqftiyqzrnkcqvy"),
-                        new ChaosExperimentAction().withName("lwh"))),
-                new ChaosExperimentBranch().withName("lsicohoqqnwv")
-                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("yav"),
-                        new ChaosExperimentAction().withName("hheunmmqhgyx"),
-                        new ChaosExperimentAction().withName("konocu"),
-                        new ChaosExperimentAction().withName("oklyaxuconuq")))));
+                new ChaosExperimentBranch().withName("puz")
+                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("ispnqzahmgkbrp"),
+                        new ChaosExperimentAction().withName("y"), new ChaosExperimentAction().withName("hibnuqqkpika"),
+                        new ChaosExperimentAction().withName("rgvtqag"))),
+                new ChaosExperimentBranch().withName("buynhijggm")
+                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("fsiarbutr"))),
+                new ChaosExperimentBranch().withName("vpnazzm")
+                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("runmp"),
+                        new ChaosExperimentAction().withName("ttdbhrbnl"),
+                        new ChaosExperimentAction().withName("nkxmyskpbhenbtk")))));
         model = BinaryData.fromObject(model).toObject(ChaosExperimentStep.class);
-        Assertions.assertEquals("hwankixzbinjepu", model.name());
-        Assertions.assertEquals("mryw", model.branches().get(0).name());
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("riwflzlfb", model.name());
+        Assertions.assertEquals("puz", model.branches().get(0).name());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.branches().get(0).actions().get(0).name());
     }
 }

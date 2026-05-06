@@ -11,7 +11,7 @@ public final class CapabilityTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityTypeInner model = BinaryData.fromString(
-            "{\"properties\":{\"publisher\":\"wtnhxbnjbiksqr\",\"targetType\":\"ssainqpjwnzll\",\"displayName\":\"mppeebvmgxs\",\"description\":\"kyqduujit\",\"parametersSchema\":\"czdzev\",\"urn\":\"hkr\",\"kind\":\"d\",\"azureRbacActions\":[\"dsbdkvwrwjf\"],\"azureRbacDataActions\":[\"nhutjeltmrldhugj\"],\"requiredAzureRoleDefinitionIds\":[\"atqxho\",\"dgeablgphu\",\"icndvkaozwyifty\",\"xhurok\"],\"runtimeProperties\":{\"kind\":\"xolniwpwcukjfk\"}},\"id\":\"awxklr\",\"name\":\"plwckbas\",\"type\":\"ypnddhsgcb\"}")
+            "{\"properties\":{\"publisher\":\"jwnzlljfmp\",\"targetType\":\"ebvmgxsabkyqd\",\"displayName\":\"jitcjczdzevn\",\"description\":\"krwpdap\",\"parametersSchema\":\"sbdkvwr\",\"urn\":\"feusnhut\",\"kind\":\"ltmrldh\",\"azureRbacActions\":[\"zzd\"],\"azureRbacDataActions\":[\"xhocdgeablgphuti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"],\"requiredAzureRoleDefinitionIds\":[\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\",\"jkot\"],\"runtimeProperties\":{\"kind\":\"gou\"}},\"id\":\"ndlik\",\"name\":\"yqkgfg\",\"type\":\"bmadgak\"}")
             .toObject(CapabilityTypeInner.class);
     }
 }

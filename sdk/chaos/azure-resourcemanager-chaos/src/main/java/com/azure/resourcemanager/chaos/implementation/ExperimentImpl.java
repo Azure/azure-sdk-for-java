@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentInner;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
 import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
-import com.azure.resourcemanager.chaos.models.CustomerDataStorageProperties;
 import com.azure.resourcemanager.chaos.models.Experiment;
 import com.azure.resourcemanager.chaos.models.ExperimentUpdate;
 import com.azure.resourcemanager.chaos.models.ProvisioningState;
@@ -77,10 +76,6 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public CustomerDataStorageProperties customerDataStorage() {
-        return this.innerModel().customerDataStorage();
     }
 
     public Region region() {
@@ -230,11 +225,6 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
             this.updateProperties.withIdentity(identity);
             return this;
         }
-    }
-
-    public ExperimentImpl withCustomerDataStorage(CustomerDataStorageProperties customerDataStorage) {
-        this.innerModel().withCustomerDataStorage(customerDataStorage);
-        return this;
     }
 
     private boolean isInCreateMode() {

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.chaos.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.chaos.fluent.models.CapabilityInner;
 import com.azure.resourcemanager.chaos.models.Capability;
-import com.azure.resourcemanager.chaos.models.ProvisioningState;
 
 public final class CapabilityImpl implements Capability {
     private CapabilityInner innerObject;
@@ -53,10 +52,6 @@ public final class CapabilityImpl implements Capability {
 
     public String urn() {
         return this.innerModel().urn();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public CapabilityInner innerModel() {

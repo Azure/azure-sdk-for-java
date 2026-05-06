@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosTargetSimpleFilterParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosTargetSimpleFilterParameters model
-            = BinaryData.fromString("{\"zones\":[\"rbu\"]}").toObject(ChaosTargetSimpleFilterParameters.class);
-        Assertions.assertEquals("rbu", model.zones().get(0));
+        ChaosTargetSimpleFilterParameters model = BinaryData.fromString("{\"zones\":[\"kfplgmgsxnk\",\"zkd\"]}")
+            .toObject(ChaosTargetSimpleFilterParameters.class);
+        Assertions.assertEquals("kfplgmgsxnk", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChaosTargetSimpleFilterParameters model
-            = new ChaosTargetSimpleFilterParameters().withZones(Arrays.asList("rbu"));
+            = new ChaosTargetSimpleFilterParameters().withZones(Arrays.asList("kfplgmgsxnk", "zkd"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetSimpleFilterParameters.class);
-        Assertions.assertEquals("rbu", model.zones().get(0));
+        Assertions.assertEquals("kfplgmgsxnk", model.zones().get(0));
     }
 }

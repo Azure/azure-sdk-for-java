@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsPropertiesRunInformation;
-import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -106,15 +105,6 @@ public final class ExperimentExecutionDetailsInner implements JsonSerializable<E
      */
     public OffsetDateTime stoppedAt() {
         return this.innerProperties() == null ? null : this.innerProperties().stoppedAt();
-    }
-
-    /**
-     * Get the provisioningState property: Resource provisioning state. Not currently in use for executions.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

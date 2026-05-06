@@ -11,7 +11,7 @@ public final class CapabilityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityTypeProperties model = BinaryData.fromString(
-            "{\"publisher\":\"phejkotynqgoulz\",\"targetType\":\"likwyqkgfgib\",\"displayName\":\"dgak\",\"description\":\"s\",\"parametersSchema\":\"yb\",\"urn\":\"qedqytbciqfoufl\",\"kind\":\"nkzsmodmglou\",\"azureRbacActions\":[\"kwtmutduqktapspw\"],\"azureRbacDataActions\":[\"ertumkdo\",\"vqwhbmdgbbjfd\"],\"requiredAzureRoleDefinitionIds\":[\"bmbexppbhtqqro\",\"fpfpsalgbquxigj\",\"jgzjaoyfhrtx\"],\"runtimeProperties\":{\"kind\":\"erkujys\"}}")
+            "{\"publisher\":\"s\",\"targetType\":\"yb\",\"displayName\":\"qedqytbciqfoufl\",\"description\":\"nkzsmodmglou\",\"parametersSchema\":\"b\",\"urn\":\"tmut\",\"kind\":\"qktapspwgcuert\",\"azureRbacActions\":[\"dosvqwhbmdgbbjf\",\"dgmb\"],\"azureRbacDataActions\":[\"xppbhtqqro\"],\"requiredAzureRoleDefinitionIds\":[\"fpsalgbqu\"],\"runtimeProperties\":{\"kind\":\"jyj\"}}")
             .toObject(CapabilityTypeProperties.class);
     }
 }
