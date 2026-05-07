@@ -34,6 +34,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
@@ -88,7 +89,7 @@ class AadResourceServerConfiguration {
 
     private static String getTrimmedTenantId(AadAuthenticationProperties aadAuthenticationProperties) {
         String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
-        return tenantId != null ? tenantId.trim() : null;
+        return tenantId != null ? tenantId.trim().toLowerCase(Locale.ROOT) : null;
     }
 
     private static void validateTenantId(String tenantId) {

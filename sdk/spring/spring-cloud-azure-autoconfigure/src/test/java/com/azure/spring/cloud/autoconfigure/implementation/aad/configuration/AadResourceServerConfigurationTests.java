@@ -225,6 +225,24 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
+    void testValidateTenantIdNormalizesUppercaseGuid() {
+        // Uppercase GUIDs are valid; the configured value should be normalized to lowercase
+        // so that the tid/iss validators can match AAD tokens (which always use lowercase UUIDs).
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=12345678-ABCD-ABCD-ABCD-123456789012",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
+                assertThat(defaultValidator).hasSize(4);
+            });
+    }
+
+    @Test
     void testResourceServerHttpSecurityConfigured() {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
