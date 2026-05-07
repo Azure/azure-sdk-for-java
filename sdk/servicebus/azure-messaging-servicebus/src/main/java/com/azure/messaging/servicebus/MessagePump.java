@@ -215,13 +215,20 @@ final class MessagePump {
     }
 
     /**
-     * Wait for all in-flight message handlers to complete, up to the specified timeout.
-     * This is called during processor close to ensure graceful shutdown — all messages currently
+     * Wait for in-flight message handlers to complete, up to the specified timeout.
+     * This is called during processor close to ensure graceful shutdown — messages currently
      * being processed are allowed to complete (including settlement) before the underlying client
      * is disposed.
      *
+     * <p><strong>Re-entrant semantics:</strong> when invoked from within a message handler
+     * (i.e. the calling thread is the handler thread itself), this method waits only for
+     * <em>other</em> concurrent handlers to complete and excludes the calling handler from the
+     * wait condition - waiting for the calling handler to finish would self-deadlock. In that
+     * case, this method may return {@code true} while the calling handler is still executing.</p>
+     *
      * @param timeout the maximum time to wait for in-flight handlers to complete.
-     * @return true if all handlers completed within the timeout, false otherwise.
+     * @return {@code true} if all in-flight handlers (excluding the calling handler on the
+     *     re-entrant path) completed within the timeout, {@code false} otherwise.
      */
     boolean drainHandlers(Duration timeout) {
         closing = true;

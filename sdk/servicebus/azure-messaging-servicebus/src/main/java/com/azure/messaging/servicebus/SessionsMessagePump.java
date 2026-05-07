@@ -466,10 +466,16 @@ final class SessionsMessagePump {
         }
 
         /**
-         * Wait for all in-flight session message handlers to complete, up to the specified timeout.
-         * Called during session receiver termination to ensure graceful shutdown — all messages currently
-         * being processed are allowed to complete (including settlement) before the worker scheduler
-         * is disposed.
+         * Wait for in-flight session message handlers to complete, up to the specified timeout.
+         * Called during session receiver termination to ensure graceful shutdown — messages
+         * currently being processed are allowed to complete (including settlement) before the
+         * worker scheduler is disposed.
+         *
+         * <p><strong>Re-entrant semantics:</strong> when invoked from within a session message
+         * handler (i.e. the calling thread is the handler thread itself), this method waits only
+         * for <em>other</em> concurrent handlers on this session and excludes the calling handler
+         * from the wait condition - waiting for the calling handler to finish would self-deadlock.
+         * In that case, this method may return while the calling handler is still executing.</p>
          *
          * @param timeout the maximum time to wait for in-flight handlers to complete.
          */

@@ -740,8 +740,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     /**
-     * Wait for all in-flight V1 message handlers to complete, up to the specified timeout.
+     * Wait for in-flight V1 message handlers to complete, up to the specified timeout.
      * Called during V1 close to ensure graceful shutdown before disposing the underlying client.
+     *
+     * <p><strong>Re-entrant semantics:</strong> when invoked from within a V1 message handler
+     * (e.g. the user calls {@link #close() close()} inside their {@code processMessage}
+     * callback), this method waits only for <em>other</em> concurrent handlers and excludes the
+     * calling handler from the wait condition - waiting for the calling handler to finish would
+     * self-deadlock. In that case, this method may return while the calling handler is still
+     * executing or settling its message.</p>
      *
      * @param timeout the maximum time to wait for handlers to complete.
      */
