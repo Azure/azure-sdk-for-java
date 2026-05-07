@@ -12,6 +12,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
+import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
@@ -205,6 +206,9 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
         try {
             VoiceLiveSessionOptions sessionOptions
                 = new VoiceLiveSessionOptions().setInputAudioTranscription(getSpeechRecognitionSetting(model))
+                    .setTurnDetection(new ServerVadTurnDetection().setSilenceDurationMs(1000))
+                    .setInputAudioNoiseReduction(
+                        new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION))
                     .setInputAudioEchoCancellation(new AudioEchoCancellation());
 
             session = client.startSession(model).block(SESSION_TIMEOUT);
