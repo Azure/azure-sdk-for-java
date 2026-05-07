@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Improved partition planning performance for change feed with large number of feed ranges.
 
 #### Other Changes
 
