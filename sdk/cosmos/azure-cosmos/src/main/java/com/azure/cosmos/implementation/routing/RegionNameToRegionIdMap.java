@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Single source of truth for Azure region name mappings in the Cosmos Java SDK.
@@ -228,10 +227,6 @@ public class RegionNameToRegionIdMap {
     // Static map: lowercase-no-spaces key → canonical display name
     private static final Map<String, String> NORMALIZED_TO_CANONICAL;
 
-    // Dynamic map: populated from server-returned DatabaseAccountLocation names
-    // at runtime, so new regions not in the static list can still be normalized
-    private static final ConcurrentHashMap<String, String> DYNAMIC_NORMALIZED_TO_CANONICAL = new ConcurrentHashMap<>();
-
     static {
         Map<String, String> map = new HashMap<>();
 
@@ -275,9 +270,9 @@ public class RegionNameToRegionIdMap {
     /**
      * Normalizes a region name to the canonical CosmosDB format.
      * <p>
-     * Strips spaces, lowercases, and looks up in both the static known-region map
-     * and the dynamic map (populated from server responses). If recognized, returns
-     * the canonical form (e.g., "West US 3"). If not recognized, returns the input as-is.
+     * Strips spaces, lowercases, and looks up in the static known-region map.
+     * If recognized, returns the canonical form (e.g., "West US 3").
+     * If not recognized, returns the input as-is for forward compatibility.
      *
      * @param regionName the region name to normalize (any casing/spacing variant)
      * @return the canonical CosmosDB region name, or the original input if unrecognized
@@ -294,31 +289,7 @@ public class RegionNameToRegionIdMap {
             return canonical;
         }
 
-        canonical = DYNAMIC_NORMALIZED_TO_CANONICAL.get(normalized);
-        if (canonical != null) {
-            return canonical;
-        }
-
         return regionName;
-    }
-
-    /**
-     * Registers a canonical region name learned from a server response.
-     * <p>
-     * Called when processing {@code DatabaseAccountLocation} names from the account read response.
-     * This ensures that new Azure regions (not yet in the static list) can still be normalized
-     * correctly for subsequent preferred-region or exclude-region lookups.
-     *
-     * @param canonicalRegionName the canonical region name from the server (e.g., "West US 4")
-     */
-    public static void registerRegionName(String canonicalRegionName) {
-        if (StringUtils.isEmpty(canonicalRegionName)) {
-            return;
-        }
-        String key = canonicalRegionName.toLowerCase(Locale.ROOT).replace(" ", "");
-        if (!NORMALIZED_TO_CANONICAL.containsKey(key)) {
-            DYNAMIC_NORMALIZED_TO_CANONICAL.putIfAbsent(key, canonicalRegionName);
-        }
     }
 
     private static void addCanonicalMapping(Map<String, String> map, String canonicalName) {
