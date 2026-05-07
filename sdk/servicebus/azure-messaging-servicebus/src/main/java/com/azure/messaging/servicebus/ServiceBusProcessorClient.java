@@ -407,7 +407,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         synchronized (this) {
             v2Snapshot = processorV2;
             if (v2Snapshot == null) {
-                v1CloseInProgress.set(true);
+                // Only the first concurrent close() takes ownership of the V1 shutdown. Subsequent
+                // close() calls return early so they do not race with the owner's cleanup (e.g.
+                // they could otherwise re-enter sync2 after start() created fresh state and dispose
+                // those resources). The processor still gets closed - the owner finishes the work.
+                if (!v1CloseInProgress.compareAndSet(false, true)) {
+                    return;
+                }
                 isRunning.set(false);
                 v1Closing = true;
                 drainTimeout = processorOptions.getDrainTimeout();
@@ -522,8 +528,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
         if (v1CloseInProgress.get()) {
             // First-ever call but close() is mid-shutdown and never had a chance to cache.
-            // Don't create a receiver close() won't dispose; return empty string.
-            return "";
+            // Don't create a receiver close() won't dispose; return null - the V2 path also
+            // returns null when no identifier is available, keeping the API contract consistent.
+            return null;
         }
         // First call before any start() - preserve the lazy-init behavior so getIdentifier()
         // returns a non-null identifier even before the processor is started.

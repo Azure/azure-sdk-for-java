@@ -72,6 +72,9 @@ import static org.mockito.Mockito.when;
  *   <li><b>getIdentifier() During Close</b> — {@link #v1GetIdentifierDuringAndAfterCloseDoesNotCreateNewReceiver()}:
  *       Tests that {@code getIdentifier()} returns the cached identifier during/after close instead of
  *       lazy-creating a new receiver that would leak past the shutdown path</li>
+ *   <li><b>Concurrent Close Ownership</b> — {@link #v1ConcurrentCloseCallsDoNotRace()}:
+ *       Tests that only the first concurrent {@code close()} performs cleanup; the others return
+ *       immediately so they cannot dispose state created after the owner cleared the in-progress flag</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -1062,6 +1065,108 @@ public class ServiceBusProcessorGracefulShutdownTest {
         } finally {
             handlerCanProceed.countDown();
             closeThread.join(5000);
+        }
+    }
+
+    /**
+     * Verifies that concurrent {@code close()} calls do not race: only the first call performs
+     * the V1 cleanup; the others return early so they cannot dispose state created after the
+     * first call cleared {@code v1CloseInProgress}.
+     * <p>
+     * Background: Without ownership, two concurrent {@code close()} calls would both proceed
+     * through drain + cleanup. The first to finish would clear the flag and let a concurrent
+     * {@code start()} create new resources, which the still-running second {@code close()} would
+     * then dispose. The fix uses {@code v1CloseInProgress.compareAndSet(false, true)} so only one
+     * close call wins ownership; the others return immediately.
+     * </p>
+     * <p>
+     * Regression test for the concurrent-close race raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3198281771">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v1ConcurrentCloseCallsDoNotRace() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.concat(Flux.just(message), Flux.never());
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getIdentifier()).thenReturn("processor-id");
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started");
+
+        // First close() owns the V1 shutdown - it will block until the handler returns.
+        final CountDownLatch firstCloseDone = new CountDownLatch(1);
+        final Thread firstCloseThread = new Thread(() -> {
+            processorClient.close();
+            firstCloseDone.countDown();
+        });
+        firstCloseThread.start();
+
+        // Give the first close() a moment to enter drain (own v1CloseInProgress).
+        Thread.sleep(200);
+
+        // Second close() while the first is still draining - must return immediately because the
+        // first close owns the shutdown. We bound it at 1 second to catch a regression where the
+        // second close also waits on the drain (would take the full 30s drain timeout if it waited
+        // for the handler that the test deliberately keeps running).
+        final long secondCloseStart = System.nanoTime();
+        final CountDownLatch secondCloseDone = new CountDownLatch(1);
+        final Thread secondCloseThread = new Thread(() -> {
+            processorClient.close();
+            secondCloseDone.countDown();
+        });
+        secondCloseThread.start();
+
+        try {
+            assertTrue(secondCloseDone.await(1, TimeUnit.SECONDS),
+                "Second close() should return immediately when another close() owns the shutdown.");
+            final Duration secondDuration = Duration.ofNanos(System.nanoTime() - secondCloseStart);
+            assertTrue(secondDuration.toMillis() < 500,
+                "Second close() took " + secondDuration + ", expected immediate return.");
+
+            // The first close() is still blocked on the handler. Verify the asyncClient has NOT
+            // been closed yet - the second close() must not have torn things down.
+            verify(asyncClient, never()).close();
+
+            // Allow the handler to complete so the first close() can finish.
+            handlerCanProceed.countDown();
+            assertTrue(firstCloseDone.await(5, TimeUnit.SECONDS), "First close() should complete");
+
+            // The asyncClient is closed exactly once - by the first (owning) close() during cleanup.
+            verify(asyncClient, timeout(2000).times(1)).close();
+        } finally {
+            handlerCanProceed.countDown();
+            firstCloseThread.join(5000);
+            secondCloseThread.join(5000);
         }
     }
 }
