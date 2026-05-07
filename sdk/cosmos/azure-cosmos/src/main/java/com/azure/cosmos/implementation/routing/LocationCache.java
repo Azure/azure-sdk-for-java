@@ -345,11 +345,14 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
+        // Normalize user-configured exclude regions to canonical form for consistent comparison
+        List<String> normalizedUserExcludeRegions = normalizeRegionNames(userConfiguredExcludeRegions);
+
         // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)) {
-                if (!userConfiguredExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                if (!normalizedUserExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
                     applicableEndpoints.add(endpoint);
                 }
             }
@@ -392,7 +395,7 @@ public class LocationCache {
             new UnmodifiableList<>(applicableEndpoints),
             regionNameByRegionalRoutingContext,
             regionalRoutingContextByRegionName,
-            userConfiguredExcludeRegions,
+            normalizedUserExcludeRegions,
             endpointsRemovedByInternalExcludeRegions,
             internalExcludeRegions,
             regionalRoutingContexts,
@@ -499,7 +502,7 @@ public class LocationCache {
                     Utils.ValueHolder<RegionalRoutingContext> regionalRoutingContextValueHolder = new Utils.ValueHolder<>(null);
 
                     if (Utils.tryGetValue(regionalRoutingContextsByRegionName, internalExcludeRegion, regionalRoutingContextValueHolder)) {
-                        if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext) && !userConfiguredExcludeRegions.contains(internalExcludeRegion)) {
+                        if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext) && !containsRegionIgnoreCase(userConfiguredExcludeRegions, internalExcludeRegion)) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
@@ -1047,6 +1050,32 @@ public class LocationCache {
         return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
+    private static List<String> normalizeRegionNames(List<String> regionNames) {
+        if (regionNames == null || regionNames.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<String> normalized = new ArrayList<>(regionNames.size());
+        for (String region : regionNames) {
+            if (region != null) {
+                normalized.add(RegionNameMapper.getCosmosDBRegionName(region));
+            }
+        }
+        return normalized;
+    }
+
+    private static boolean containsRegionIgnoreCase(List<String> regions, String target) {
+        if (regions == null || regions.isEmpty()) {
+            return false;
+        }
+        String normalizedTarget = RegionNameMapper.getCosmosDBRegionName(target);
+        for (String region : regions) {
+            if (RegionNameMapper.getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static class DatabaseAccountLocationsInfo {
         private UnmodifiableList<RegionalRoutingContext> writeRegionalRoutingContexts;
         private UnmodifiableList<RegionalRoutingContext> readRegionalRoutingContexts;
@@ -1066,7 +1095,7 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> RegionNameMapper.getCosmosDBRegionName(loc).toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
                 = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());

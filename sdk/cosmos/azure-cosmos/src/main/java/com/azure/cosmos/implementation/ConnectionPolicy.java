@@ -12,8 +12,12 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
+import com.azure.cosmos.implementation.routing.RegionNameMapper;
+
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -484,7 +488,19 @@ public final class ConnectionPolicy {
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
-        this.preferredRegions = preferredRegions;
+        if (preferredRegions == null || preferredRegions.isEmpty()) {
+            this.preferredRegions = preferredRegions;
+            return this;
+        }
+
+        // Normalize each region to canonical form and dedupe (order-preserving)
+        LinkedHashSet<String> deduped = new LinkedHashSet<>();
+        for (String region : preferredRegions) {
+            if (region != null) {
+                deduped.add(RegionNameMapper.getCosmosDBRegionName(region));
+            }
+        }
+        this.preferredRegions = new ArrayList<>(deduped);
         return this;
     }
 
