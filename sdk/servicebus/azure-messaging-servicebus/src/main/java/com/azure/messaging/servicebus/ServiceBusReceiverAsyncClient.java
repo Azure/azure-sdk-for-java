@@ -1747,8 +1747,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         .addKeyValue("recoveryKind", recoveryKind)
                         .log("Receive link creation failed, performing {} recovery.", recoveryKind, e);
 
-                    // For LINK errors during link creation, the session hosting the link may be stale.
-                    // Ask the connection to remove it so the next retry creates a fresh session + link.
+                    // For both LINK and CONNECTION recovery, the session hosting the failed link may
+                    // be stale. Ask the connection to remove it so the next retry creates a fresh
+                    // session + link. CONNECTION recovery additionally invalidates the cached
+                    // connection below so the next retry rebuilds connection, session, and link.
                     Mono<Void> recovery = connectionProcessor.flatMap(connection -> {
                         final boolean removed = connection.removeSession(entityPath);
                         LOGGER.atVerbose()
