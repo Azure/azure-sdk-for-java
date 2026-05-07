@@ -507,7 +507,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      * Gets the identifier of the instance of {@link ServiceBusProcessorClient}.
      *
-     * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient}.
+     * <p>The identifier is captured from the underlying receiver as soon as one exists. After
+     * {@link #close() close()} returns, this method continues to return the identifier of the
+     * receiver that was active before shutdown so callers (logs, diagnostics) get a stable value.</p>
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient},
+     *     or {@code null} if no identifier is available yet. {@code null} can be returned in two
+     *     cases: (1) on the V2 path before the first call to {@link #start() start()} has created
+     *     the underlying processor, and (2) on the V1 path when {@link #close() close()} is in
+     *     progress on a brand-new processor that has never been started (so no identifier was
+     *     ever cached). In all other cases - while running, after {@code start()}, during/after
+     *     {@code close()} on a previously-started processor - this method returns a non-null
+     *     identifier.
      */
     public synchronized String getIdentifier() {
         if (processorV2 != null) {
