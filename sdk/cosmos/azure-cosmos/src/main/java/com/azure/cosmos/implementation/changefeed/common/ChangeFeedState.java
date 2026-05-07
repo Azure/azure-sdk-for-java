@@ -94,7 +94,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
     public List<CompositeContinuationToken> extractContinuationTokens() {
         return extractContinuationTokensForRange(
             PartitionKeyInternalHelper.FullRange,
-            getSortedTokensAndRanges()).getLeft();
+            getSortedContinuationTokens()).getLeft();
     }
 
     /**
@@ -116,9 +116,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
      * Extracts a list of {@link ChangeFeedState} instances, one per input effective range.
      * <p>
      * Continuation tokens are sorted once (O(T log T)) and then each range lookup uses
-     * binary search (O(log T)), following the same pattern as
+     * binary search (O(log T)) to find the starting position, followed by a forward scan
+     * through contiguous overlapping tokens. This follows the same binary search pattern as
      * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}.
-     * This avoids the O(P × T log T) cost of sorting per range when called in a loop.
      * <p>
      * The returned list preserves the input order: result.get(i) corresponds to
      * effectiveRanges.get(i).
@@ -130,14 +130,14 @@ public abstract class ChangeFeedState extends JsonSerializable {
         checkNotNull(effectiveRanges, "Argument 'effectiveRanges' must not be null.");
         checkArgument(!effectiveRanges.isEmpty(), "Argument 'effectiveRanges' must not be empty.");
 
-        SortedTokensAndRanges sorted = getSortedTokensAndRanges();
+        List<CompositeContinuationToken> sortedTokens = getSortedContinuationTokens();
 
         List<ChangeFeedState> results = new ArrayList<>(effectiveRanges.size());
         for (Range<String> effectiveRange : effectiveRanges) {
             checkNotNull(effectiveRange, "Effective range must not be null.");
 
             Pair<List<CompositeContinuationToken>, Range<String>> extracted =
-                extractContinuationTokensForRange(effectiveRange, sorted);
+                extractContinuationTokensForRange(effectiveRange, sortedTokens);
 
             List<CompositeContinuationToken> tokens = extracted.getLeft();
             Range<String> totalRange = extracted.getRight();
@@ -160,36 +160,28 @@ public abstract class ChangeFeedState extends JsonSerializable {
         return results;
     }
 
-    /**
-     * Sorts continuation tokens once and builds a parallel list of their ranges
-     * for use with {@link Collections#binarySearch}.
-     */
-    private SortedTokensAndRanges getSortedTokensAndRanges() {
+    private List<CompositeContinuationToken> getSortedContinuationTokens() {
         FeedRangeContinuation continuation = this.getContinuation();
         if (continuation == null) {
-            return new SortedTokensAndRanges(Collections.emptyList(), Collections.emptyList());
+            return Collections.emptyList();
         }
 
         List<CompositeContinuationToken> sortedTokens = new ArrayList<>();
         Collections.addAll(sortedTokens, continuation.getCurrentContinuationTokens());
         sortedTokens.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
-
-        List<Range<String>> sortedRanges = new ArrayList<>(sortedTokens.size());
-        for (CompositeContinuationToken token : sortedTokens) {
-            sortedRanges.add(token.getRange());
-        }
-
-        return new SortedTokensAndRanges(sortedTokens, sortedRanges);
+        return sortedTokens;
     }
 
     /**
-     * Finds overlapping continuation tokens for an effective range using binary search,
-     * following the same pattern as
-     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}.
+     * Finds overlapping continuation tokens for an effective range using binary search
+     * to locate the starting position, then scanning forward through contiguous overlapping
+     * tokens. This follows the same pattern as
+     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}
+     * and assumes non-overlapping, contiguous partition ranges (Cosmos DB contract).
      */
     private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokensForRange(
         Range<String> effectiveRange,
-        SortedTokensAndRanges sorted) {
+        List<CompositeContinuationToken> sortedTokens) {
 
         checkNotNull(effectiveRange);
 
@@ -197,20 +189,21 @@ public abstract class ChangeFeedState extends JsonSerializable {
         String min = null;
         String max = null;
 
-        if (!sorted.sortedTokens.isEmpty()) {
-            // Binary search for the scan window, matching InMemoryCollectionRoutingMap pattern
-            int minIndex = Collections.binarySearch(sorted.sortedRanges, effectiveRange, MIN_RANGE_COMPARATOR);
-            if (minIndex < 0) {
-                minIndex = Math.max(0, -minIndex - 2);
+        if (!sortedTokens.isEmpty()) {
+            // Binary search for the first potential overlap position,
+            // matching InMemoryCollectionRoutingMap.getOverlappingRanges pattern
+            int startIndex = Collections.binarySearch(
+                sortedTokens, new CompositeContinuationToken(null, effectiveRange),
+                ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
+            if (startIndex < 0) {
+                // Insertion point - 1: back up to catch a token whose range.min <= effectiveRange.min
+                // but whose range.max extends past effectiveRange.min
+                startIndex = Math.max(0, -startIndex - 2);
             }
 
-            int maxIndex = Collections.binarySearch(sorted.sortedRanges, effectiveRange, MAX_RANGE_COMPARATOR);
-            if (maxIndex < 0) {
-                maxIndex = Math.min(sorted.sortedRanges.size() - 1, -maxIndex - 1);
-            }
-
-            for (int i = minIndex; i <= maxIndex; i++) {
-                CompositeContinuationToken token = sorted.sortedTokens.get(i);
+            // Scan forward from startIndex through contiguous overlapping tokens
+            for (int i = startIndex; i < sortedTokens.size(); i++) {
+                CompositeContinuationToken token = sortedTokens.get(i);
                 if (Range.checkOverlapping(effectiveRange, token.getRange())) {
                     Range<String> overlappingRange = getOverlappingRange(effectiveRange, token.getRange());
                     extractedTokens.add(new CompositeContinuationToken(
@@ -219,6 +212,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
                         min = overlappingRange.getMin();
                     }
                     max = overlappingRange.getMax();
+                } else if (!extractedTokens.isEmpty()) {
+                    // Non-overlapping after finding overlaps — contiguous ranges are exhausted
+                    break;
                 }
             }
         }
@@ -349,22 +345,6 @@ public abstract class ChangeFeedState extends JsonSerializable {
             checkNotNull(right, "Argument 'right' must not be null.");
 
             return MIN_RANGE_COMPARATOR.compare(left.getRange(), right.getRange());
-        }
-    }
-
-    /**
-     * Holds a pre-sorted list of continuation tokens alongside a parallel list of
-     * their ranges, enabling {@link Collections#binarySearch} on the ranges.
-     */
-    private static final class SortedTokensAndRanges {
-        final List<CompositeContinuationToken> sortedTokens;
-        final List<Range<String>> sortedRanges;
-
-        SortedTokensAndRanges(
-            List<CompositeContinuationToken> sortedTokens,
-            List<Range<String>> sortedRanges) {
-            this.sortedTokens = sortedTokens;
-            this.sortedRanges = sortedRanges;
         }
     }
 }
