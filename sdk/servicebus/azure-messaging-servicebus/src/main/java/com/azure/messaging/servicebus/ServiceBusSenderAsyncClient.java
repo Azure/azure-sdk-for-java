@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
@@ -885,8 +884,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
         final Mono<Void> withRetry = RetryUtil.withRetry(
-            sendMessage
-                .onErrorResume(e -> recoverBeforeRetry(e, "sendBatch", operationLink).then(Mono.error(asRetriable(e)))),
+            sendMessage.onErrorResume(
+                e -> recoverBeforeRetry(e, "sendBatch", operationLink).then(Mono.error(RecoveryUtils.asRetriable(e)))),
             retryOptions, timeoutMessage).onErrorMap(this::mapError);
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
@@ -966,7 +965,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             getSendLink(callSite).doOnNext(operationLink::set)
                 .flatMap(link -> link.getLinkSize().map(size -> Tuples.of(link, size)))
                 .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndSize-" + callSite, operationLink)
-                    .then(Mono.error(asRetriable(e)))),
+                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
             retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
     }
 
@@ -1023,25 +1022,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return recovery;
-    }
-
-    /**
-     * Ensures the error is retriable by the standard {@link RetryUtil#createRetry} filter.
-     * That filter only accepts {@link TimeoutException} or transient {@link AmqpException}.
-     * Non-AMQP errors like {@code IllegalStateException("Cannot publish when disposed")}
-     * that {@link RecoveryKind} classifies as LINK would otherwise be rejected, bypassing
-     * the recovery we just performed. This wraps such errors as transient AmqpException.
-     */
-    private static Throwable asRetriable(Throwable error) {
-        if (error instanceof TimeoutException
-            || (error instanceof AmqpException && ((AmqpException) error).isTransient())) {
-            return error;
-        }
-        final RecoveryKind kind = RecoveryKind.classify(error);
-        if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
-            return new AmqpException(true, error.getMessage(), error, null);
-        }
-        return error;
     }
 
     private String entityId() {

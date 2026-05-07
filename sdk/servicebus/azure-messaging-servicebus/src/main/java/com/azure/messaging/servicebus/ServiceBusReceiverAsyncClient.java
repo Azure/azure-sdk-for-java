@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -1769,13 +1768,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         recovery
                             = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
                     }
-                    // Ensure the error passes the standard retry filter. Non-AMQP errors
-                    // (e.g., IllegalStateException) classified as LINK/CONNECTION must be wrapped
-                    // as transient AmqpException so RetryUtil.createRetry accepts them for retry.
-                    final Throwable retriable = (e instanceof TimeoutException
-                        || (e instanceof AmqpException && ((AmqpException) e).isTransient()))
-                            ? e
-                            : new AmqpException(true, e.getMessage(), e, null);
+                    // Use the shared retry-filter wrapper so non-AMQP errors classified as
+                    // LINK/CONNECTION (e.g., IllegalStateException) are wrapped as transient
+                    // AmqpException and accepted by RetryUtil.createRetry. Centralising this
+                    // logic in RecoveryUtils keeps the sender and receiver paths consistent.
+                    final Throwable retriable = RecoveryUtils.asRetriable(e);
                     return recovery.then(Mono.error(retriable));
                 }
                 return Mono.error(e);
