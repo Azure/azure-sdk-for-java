@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed quadratic O(P × T log T) performance in `ChangeFeedState.extractForEffectiveRange` that caused excessive driver-side microbatch planning time in the Spark change feed connector for containers with many feed ranges / continuation tokens. The method now sorts continuation tokens once per planning pass and uses binary search for overlap detection, reducing complexity to O(T log T + P log T). - See [PR 49084](https://github.com/Azure/azure-sdk-for-java/pull/49084)
+* Fixed quadratic O(P × T log T) performance in `ChangeFeedState.extractForEffectiveRange` that caused excessive driver-side microbatch planning time in the Spark change feed connector for containers with many feed ranges / continuation tokens. Added batch API `extractForEffectiveRanges(List)` that sorts continuation tokens once and uses binary search for overlap detection (matching the `InMemoryCollectionRoutingMap` pattern), reducing complexity to O(T log T + P log T). - See [PR 49084](https://github.com/Azure/azure-sdk-for-java/pull/49084)
 
 #### Other Changes
 

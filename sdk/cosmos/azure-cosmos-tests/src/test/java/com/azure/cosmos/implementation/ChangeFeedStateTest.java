@@ -399,18 +399,37 @@ public class ChangeFeedStateTest {
 
     @Test(groups = "unit")
     public void changeFeedState_extractForEffectiveRange_multipleCallsProduceCorrectResults() {
-        // Verify that calling extractForEffectiveRange multiple times on the same
-        // state with different ranges returns correct tokens each time (sort-once caching)
+        // Verify that calling extractForEffectiveRanges (batch API) returns correct
+        // tokens for multiple ranges from the same continuation (sort-once).
         int tokenCount = 100;
         ChangeFeedState state = createStateWithManyTokens(tokenCount);
 
-        // Extract first range: tokens 0-9
+        List<Range<String>> ranges = new ArrayList<>();
+        // First range: tokens 0-9
         String min0 = String.format("%06X", 0);
         String max10 = String.format("%06X", 10);
-        List<CompositeContinuationToken> tokens1 =
-            state.extractForEffectiveRange(new Range<>(min0, max10, true, false))
-                .extractContinuationTokens();
+        ranges.add(new Range<>(min0, max10, true, false));
 
+        // Middle range: tokens 50-59
+        String min50 = String.format("%06X", 50);
+        String max60 = String.format("%06X", 60);
+        ranges.add(new Range<>(min50, max60, true, false));
+
+        // Last range: tokens 90-99
+        String min90 = String.format("%06X", 90);
+        String max100 = String.format("%06X", 100);
+        ranges.add(new Range<>(min90, max100, true, false));
+
+        // Single token
+        String min25 = String.format("%06X", 25);
+        String max26 = String.format("%06X", 26);
+        ranges.add(new Range<>(min25, max26, true, false));
+
+        List<ChangeFeedState> results = state.extractForEffectiveRanges(ranges);
+        assertThat(results).hasSize(4);
+
+        // Verify first range: tokens 0-9
+        List<CompositeContinuationToken> tokens1 = results.get(0).extractContinuationTokens();
         assertThat(tokens1).hasSize(10);
         for (int i = 0; i < 10; i++) {
             assertThat(tokens1.get(i).getToken()).isEqualTo("token_" + i);
@@ -418,37 +437,22 @@ public class ChangeFeedStateTest {
             assertThat(tokens1.get(i).getRange().getMax()).isEqualTo(String.format("%06X", i + 1));
         }
 
-        // Extract middle range: tokens 50-59
-        String min50 = String.format("%06X", 50);
-        String max60 = String.format("%06X", 60);
-        List<CompositeContinuationToken> tokens2 =
-            state.extractForEffectiveRange(new Range<>(min50, max60, true, false))
-                .extractContinuationTokens();
-
+        // Verify middle range: tokens 50-59
+        List<CompositeContinuationToken> tokens2 = results.get(1).extractContinuationTokens();
         assertThat(tokens2).hasSize(10);
         for (int i = 0; i < 10; i++) {
             assertThat(tokens2.get(i).getToken()).isEqualTo("token_" + (50 + i));
         }
 
-        // Extract last range: tokens 90-99
-        String min90 = String.format("%06X", 90);
-        String max100 = String.format("%06X", 100);
-        List<CompositeContinuationToken> tokens3 =
-            state.extractForEffectiveRange(new Range<>(min90, max100, true, false))
-                .extractContinuationTokens();
-
+        // Verify last range: tokens 90-99
+        List<CompositeContinuationToken> tokens3 = results.get(2).extractContinuationTokens();
         assertThat(tokens3).hasSize(10);
         for (int i = 0; i < 10; i++) {
             assertThat(tokens3.get(i).getToken()).isEqualTo("token_" + (90 + i));
         }
 
-        // Extract single token
-        String min25 = String.format("%06X", 25);
-        String max26 = String.format("%06X", 26);
-        List<CompositeContinuationToken> tokens4 =
-            state.extractForEffectiveRange(new Range<>(min25, max26, true, false))
-                .extractContinuationTokens();
-
+        // Verify single token
+        List<CompositeContinuationToken> tokens4 = results.get(3).extractContinuationTokens();
         assertThat(tokens4).hasSize(1);
         assertThat(tokens4.get(0).getToken()).isEqualTo("token_25");
     }
@@ -460,23 +464,23 @@ public class ChangeFeedStateTest {
         int tokenCount = 5000;
         ChangeFeedState state = createStateWithManyTokens(tokenCount);
 
-        // Pre-compute range strings outside the timed section to avoid
-        // String.format overhead affecting measurement.
-        String[] mins = new String[tokenCount];
-        String[] maxs = new String[tokenCount];
+        // Build all ranges upfront outside the timed section
+        List<Range<String>> ranges = new ArrayList<>(tokenCount);
         for (int i = 0; i < tokenCount; i++) {
-            mins[i] = String.format("%06X", i);
-            maxs[i] = String.format("%06X", i + 1);
+            ranges.add(new Range<>(
+                String.format("%06X", i),
+                String.format("%06X", i + 1),
+                true, false));
         }
 
         long startTime = System.nanoTime();
 
-        // Extract for every individual partition range (simulates Spark planning)
-        for (int i = 0; i < tokenCount; i++) {
-            List<CompositeContinuationToken> tokens =
-                state.extractForEffectiveRange(new Range<>(mins[i], maxs[i], true, false))
-                    .extractContinuationTokens();
+        // Extract for all individual partition ranges at once (simulates Spark planning)
+        List<ChangeFeedState> results = state.extractForEffectiveRanges(ranges);
 
+        assertThat(results).hasSize(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            List<CompositeContinuationToken> tokens = results.get(i).extractContinuationTokens();
             assertThat(tokens).hasSize(1);
             assertThat(tokens.get(0).getToken()).isEqualTo("token_" + i);
         }
@@ -484,9 +488,7 @@ public class ChangeFeedStateTest {
         long elapsedMs = (System.nanoTime() - startTime) / 1_000_000;
 
         // Sanity check only: the optimized O(T log T + P log T) approach should
-        // complete in well under 60 seconds. The quadratic version would take
-        // minutes and effectively hang. This is not a strict perf benchmark —
-        // it simply guards against accidental regressions to O(P * T log T).
+        // complete in well under 60 seconds.
         assertThat(elapsedMs)
             .as("5,000 extractions took %d ms, should be < 60,000 ms", elapsedMs)
             .isLessThan(60_000);
@@ -697,64 +699,24 @@ public class ChangeFeedStateTest {
     }
 
     @Test(groups = "unit")
-    public void changeFeedState_extractForEffectiveRange_cacheInvalidatedAfterSetContinuation() {
-        // Verify that replacing the continuation via setContinuation() invalidates
-        // the cached sorted snapshot, ensuring subsequent extractions use the new tokens.
-        String containerRid = "/cols/" + UUID.randomUUID();
-        String pkRangeId = UUID.randomUUID().toString();
-        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+    public void changeFeedState_extractForEffectiveRanges_singleBatchAndSingleCallParity() {
+        // Verifies that extractForEffectiveRange (single) and extractForEffectiveRanges (batch)
+        // produce identical results for the same input ranges.
+        ChangeFeedState state = createStateWithManyTokens(20);
 
-        // Create state with 10 tokens
-        ChangeFeedState state = createStateWithFixedRid(containerRid, pkRangeId, feedRange, 10);
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(new Range<>(String.format("%06X", 0), String.format("%06X", 5), true, false));
+        ranges.add(new Range<>(String.format("%06X", 10), String.format("%06X", 15), true, false));
+        ranges.add(new Range<>(String.format("%06X", 18), String.format("%06X", 20), true, false));
 
-        // Prime the cache by extracting a range
-        List<CompositeContinuationToken> tokensBefore =
-            state.extractForEffectiveRange(new Range<>(
-                String.format("%06X", 0), String.format("%06X", 5), true, false))
-                .extractContinuationTokens();
-        assertThat(tokensBefore).hasSize(5);
+        List<ChangeFeedState> batchResults = state.extractForEffectiveRanges(ranges);
 
-        // Build a replacement continuation with only 3 tokens but same containerRid
-        ChangeFeedState newState = createStateWithFixedRid(containerRid, pkRangeId, feedRange, 3);
-        state.setContinuation(newState.getContinuation());
-
-        // Extract all tokens - should reflect the new 3-token continuation, not the stale 10-token cache
-        List<CompositeContinuationToken> tokensAfter = state.extractContinuationTokens();
-        assertThat(tokensAfter).hasSize(3);
-        for (int i = 0; i < 3; i++) {
-            assertThat(tokensAfter.get(i).getToken()).isEqualTo("token_" + i);
+        for (int i = 0; i < ranges.size(); i++) {
+            ChangeFeedState singleResult = state.extractForEffectiveRange(ranges.get(i));
+            assertThat(batchResults.get(i).toString())
+                .as("Batch result at index %d should match single-range result", i)
+                .isEqualTo(singleResult.toString());
         }
-    }
-
-    private ChangeFeedState createStateWithFixedRid(
-        String containerRid,
-        String pkRangeId,
-        FeedRangePartitionKeyRangeImpl feedRange,
-        int tokenCount) {
-
-        StringBuilder continuationEntries = new StringBuilder();
-        for (int i = 0; i < tokenCount; i++) {
-            if (i > 0) {
-                continuationEntries.append(",");
-            }
-            String min = String.format("%06X", i);
-            String max = String.format("%06X", i + 1);
-            String token = "token_" + i;
-            continuationEntries.append(
-                String.format("{\"token\":\"%s\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}", token, min, max));
-        }
-
-        String continuationJson = String.format(
-            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
-            containerRid, continuationEntries, pkRangeId);
-
-        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
-        return new ChangeFeedStateV1(
-            containerRid,
-            feedRange,
-            ChangeFeedMode.INCREMENTAL,
-            ChangeFeedStartFromInternal.createFromNow(),
-            continuation);
     }
 
     private ChangeFeedState createStateWithTokenRanges(String[][] tokenRanges) {

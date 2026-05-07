@@ -34,32 +34,11 @@ public abstract class ChangeFeedState extends JsonSerializable {
     private static final Comparator<Range<String>> MIN_RANGE_COMPARATOR = new Range.MinComparator<>();
     private static final Comparator<Range<String>> MAX_RANGE_COMPARATOR = new Range.MaxComparator<>();
 
-    // Lazily-initialized cache holding a pre-sorted snapshot of continuation tokens.
-    // Reused across multiple extractForEffectiveRange calls on the same instance to
-    // avoid redundant O(T log T) copy+sort per partition during Spark planning.
-    // Benign race by design: concurrent callers may both create a snapshot,
-    // but the list wrapper is unmodifiable and volatile ensures safe publication.
-    // Note: the contained CompositeContinuationToken instances are themselves mutable;
-    // this cache only guarantees a stable sorted order, not deep immutability.
-    // This class is NOT thread-safe for concurrent setContinuation() calls.
-    private transient volatile SortedTokensSnapshot cachedSortedTokensSnapshot;
-
     ChangeFeedState() {
     }
 
     public abstract FeedRangeContinuation getContinuation();
 
-    /**
-     * Sets the continuation for this change feed state.
-     * <p>
-     * Implementations must assign a new {@link FeedRangeContinuation} reference rather than
-     * mutating the existing one in-place. The base class uses reference-equality detection
-     * to invalidate a lazily-cached sorted-token snapshot. If the same reference is reused
-     * with modified contents, the cache will serve stale data.
-     *
-     * @param continuation the new continuation to set
-     * @return this {@link ChangeFeedState} instance
-     */
     public abstract ChangeFeedState setContinuation(FeedRangeContinuation continuation);
 
     public abstract FeedRangeInternal getFeedRange();
@@ -113,77 +92,133 @@ public abstract class ChangeFeedState extends JsonSerializable {
     public abstract void populateRequest(RxDocumentServiceRequest request, int maxItemCount);
 
     public List<CompositeContinuationToken> extractContinuationTokens() {
-        return extractContinuationTokens(PartitionKeyInternalHelper.FullRange).getLeft();
+        return extractContinuationTokensForRange(
+            PartitionKeyInternalHelper.FullRange,
+            getSortedTokensAndRanges()).getLeft();
     }
 
-    private List<CompositeContinuationToken> getOrCreateSortedContinuationTokens() {
+    /**
+     * Extracts a {@link ChangeFeedState} for a single effective range.
+     * <p>
+     * For callers that need to extract states for multiple ranges from the same
+     * continuation, prefer {@link #extractForEffectiveRanges(List)} which sorts
+     * the continuation tokens once and reuses the sorted list across all ranges.
+     *
+     * @param effectiveRange the partition range to extract for
+     * @return a new {@link ChangeFeedState} scoped to the given range
+     */
+    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
+        checkNotNull(effectiveRange);
+        return extractForEffectiveRanges(Collections.singletonList(effectiveRange)).get(0);
+    }
+
+    /**
+     * Extracts a list of {@link ChangeFeedState} instances, one per input effective range.
+     * <p>
+     * Continuation tokens are sorted once (O(T log T)) and then each range lookup uses
+     * binary search (O(log T)), following the same pattern as
+     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}.
+     * This avoids the O(P × T log T) cost of sorting per range when called in a loop.
+     * <p>
+     * The returned list preserves the input order: result.get(i) corresponds to
+     * effectiveRanges.get(i).
+     *
+     * @param effectiveRanges the list of partition ranges to extract for
+     * @return a list of {@link ChangeFeedState}, one per input range, in the same order
+     */
+    public List<ChangeFeedState> extractForEffectiveRanges(List<Range<String>> effectiveRanges) {
+        checkNotNull(effectiveRanges, "Argument 'effectiveRanges' must not be null.");
+        checkArgument(!effectiveRanges.isEmpty(), "Argument 'effectiveRanges' must not be empty.");
+
+        SortedTokensAndRanges sorted = getSortedTokensAndRanges();
+
+        List<ChangeFeedState> results = new ArrayList<>(effectiveRanges.size());
+        for (Range<String> effectiveRange : effectiveRanges) {
+            checkNotNull(effectiveRange, "Effective range must not be null.");
+
+            Pair<List<CompositeContinuationToken>, Range<String>> extracted =
+                extractContinuationTokensForRange(effectiveRange, sorted);
+
+            List<CompositeContinuationToken> tokens = extracted.getLeft();
+            Range<String> totalRange = extracted.getRight();
+
+            FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
+
+            results.add(new ChangeFeedStateV1(
+                this.getContainerRid(),
+                feedRange,
+                this.getMode(),
+                this.getStartFromSettings(),
+                FeedRangeContinuation.create(
+                    this.getContainerRid(),
+                    feedRange,
+                    tokens
+                )
+            ));
+        }
+
+        return results;
+    }
+
+    /**
+     * Sorts continuation tokens once and builds a parallel list of their ranges
+     * for use with {@link Collections#binarySearch}.
+     */
+    private SortedTokensAndRanges getSortedTokensAndRanges() {
         FeedRangeContinuation continuation = this.getContinuation();
         if (continuation == null) {
-            return Collections.emptyList();
+            return new SortedTokensAndRanges(Collections.emptyList(), Collections.emptyList());
         }
 
-        SortedTokensSnapshot snapshot = this.cachedSortedTokensSnapshot;
-        // Intentional reference equality (==): setContinuation() replaces the reference,
-        // invalidating the cache. In-place mutations via applyServerResponseContinuation()
-        // do not change the reference and do not affect token range order, so the cache
-        // remains valid.
-        if (snapshot != null && snapshot.continuationRef == continuation) {
-            return snapshot.sortedTokens;
+        List<CompositeContinuationToken> sortedTokens = new ArrayList<>();
+        Collections.addAll(sortedTokens, continuation.getCurrentContinuationTokens());
+        sortedTokens.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
+
+        List<Range<String>> sortedRanges = new ArrayList<>(sortedTokens.size());
+        for (CompositeContinuationToken token : sortedTokens) {
+            sortedRanges.add(token.getRange());
         }
 
-        List<CompositeContinuationToken> sorted = new ArrayList<>();
-        Collections.addAll(sorted, continuation.getCurrentContinuationTokens());
-        sorted.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
-
-        SortedTokensSnapshot newSnapshot = new SortedTokensSnapshot(continuation, Collections.unmodifiableList(sorted));
-        this.cachedSortedTokensSnapshot = newSnapshot;
-        return newSnapshot.sortedTokens;
+        return new SortedTokensAndRanges(sortedTokens, sortedRanges);
     }
 
-    private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokens(
-        Range<String> effectiveRange) {
+    /**
+     * Finds overlapping continuation tokens for an effective range using binary search,
+     * following the same pattern as
+     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}.
+     */
+    private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokensForRange(
+        Range<String> effectiveRange,
+        SortedTokensAndRanges sorted) {
 
         checkNotNull(effectiveRange);
 
-        List<CompositeContinuationToken> extractedContinuationTokens = new ArrayList<>();
+        List<CompositeContinuationToken> extractedTokens = new ArrayList<>();
         String min = null;
         String max = null;
 
-        List<CompositeContinuationToken> sortedTokens = getOrCreateSortedContinuationTokens();
+        if (!sorted.sortedTokens.isEmpty()) {
+            // Binary search for the scan window, matching InMemoryCollectionRoutingMap pattern
+            int minIndex = Collections.binarySearch(sorted.sortedRanges, effectiveRange, MIN_RANGE_COMPARATOR);
+            if (minIndex < 0) {
+                minIndex = Math.max(0, -minIndex - 2);
+            }
 
-        if (!sortedTokens.isEmpty()) {
-            int startIndex = findFirstPotentialOverlapIndex(sortedTokens, effectiveRange);
+            int maxIndex = Collections.binarySearch(sorted.sortedRanges, effectiveRange, MAX_RANGE_COMPARATOR);
+            if (maxIndex < 0) {
+                maxIndex = Math.min(sorted.sortedRanges.size() - 1, -maxIndex - 1);
+            }
 
-            // Primary scan from binary search starting position
-            MinMaxAccumulator primaryMinMax = new MinMaxAccumulator();
-            collectOverlapping(sortedTokens, effectiveRange, startIndex, sortedTokens.size(),
-                extractedContinuationTokens, primaryMinMax);
-            min = primaryMinMax.min;
-            max = primaryMinMax.max;
-
-            // Fallback: if binary search started past index 0, scan earlier indices for any
-            // overlapping tokens that the binary search may have skipped. This handles both
-            // complete misses (no overlaps found in primary scan) and partial misses (some
-            // overlaps missed due to non-contiguous token ranges). Note: the early-break
-            // optimization in collectOverlapping still applies, so this does not handle
-            // arbitrary non-contiguous overlapping ranges — it preserves the original
-            // linear scan behavior which assumes contiguous overlaps (Cosmos DB contract).
-            if (startIndex > 0) {
-                List<CompositeContinuationToken> missedTokens = new ArrayList<>();
-                MinMaxAccumulator fallbackMinMax = new MinMaxAccumulator();
-                collectOverlapping(sortedTokens, effectiveRange, 0, startIndex,
-                    missedTokens, fallbackMinMax);
-                if (!missedTokens.isEmpty()) {
-                    // Prepend missed tokens (they precede startIndex in sorted order)
-                    missedTokens.addAll(extractedContinuationTokens);
-                    extractedContinuationTokens = missedTokens;
-                    // Missed tokens come first in sorted order, so their min is the overall min
-                    min = fallbackMinMax.min;
-                    // Take the larger max between fallback and primary results
-                    if (max == null || (fallbackMinMax.max != null
-                        && fallbackMinMax.max.compareTo(max) > 0)) {
-                        max = fallbackMinMax.max;
+            for (int i = minIndex; i <= maxIndex; i++) {
+                CompositeContinuationToken token = sorted.sortedTokens.get(i);
+                if (Range.checkOverlapping(effectiveRange, token.getRange())) {
+                    Range<String> overlappingRange = getOverlappingRange(effectiveRange, token.getRange());
+                    extractedTokens.add(new CompositeContinuationToken(
+                        token.getToken(), overlappingRange));
+                    if (min == null) {
+                        min = overlappingRange.getMin();
                     }
+                    max = overlappingRange.getMax();
                 }
             }
         }
@@ -194,104 +229,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             true,
             false);
 
-        return Pair.of(extractedContinuationTokens, totalRange);
-    }
-
-    /**
-     * Collects continuation tokens from sortedTokens[fromIndex..toIndex) that overlap
-     * with effectiveRange. Each collected token's range is trimmed to the overlapping
-     * region. Applies an early-break optimization: stops scanning when a non-overlapping
-     * token is encountered after at least one overlapping token has been found.
-     *
-     * @param sortedTokens the sorted continuation token list
-     * @param effectiveRange the range to check for overlaps
-     * @param fromIndex start index (inclusive)
-     * @param toIndex end index (exclusive)
-     * @param out list to append matching tokens to
-     * @param minMax accumulator for tracking min/max of overlapping ranges;
-     *               min is set to the first overlap's min, max to the last overlap's max
-     */
-    private void collectOverlapping(
-        List<CompositeContinuationToken> sortedTokens,
-        Range<String> effectiveRange,
-        int fromIndex,
-        int toIndex,
-        List<CompositeContinuationToken> out,
-        MinMaxAccumulator minMax) {
-
-        for (int i = fromIndex; i < toIndex; i++) {
-            CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
-            if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
-                Range<String> overlappingRange =
-                    getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
-                out.add(new CompositeContinuationToken(
-                    compositeContinuationToken.getToken(), overlappingRange));
-                if (minMax.min == null) {
-                    minMax.min = overlappingRange.getMin();
-                }
-                minMax.max = overlappingRange.getMax();
-            } else {
-                // Early-break: assumes overlapping tokens are contiguous after sorting.
-                // Safe for non-overlapping partition ranges (Cosmos DB contract).
-                // Inherited from original linear scan behavior.
-                if (!out.isEmpty()) {
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Binary search to find the first index in the sorted token list where
-     * overlapping tokens may start for the given effective range.
-     * Uses the same comparator as the sort to ensure consistency.
-     */
-    private static int findFirstPotentialOverlapIndex(
-        List<CompositeContinuationToken> sortedTokens,
-        Range<String> effectiveRange) {
-
-        int low = 0;
-        int high = sortedTokens.size() - 1;
-        int insertionPoint = sortedTokens.size();
-
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            int cmp = MIN_RANGE_COMPARATOR.compare(sortedTokens.get(mid).getRange(), effectiveRange);
-            if (cmp > 0) {
-                insertionPoint = mid;
-                high = mid - 1;
-            } else {
-                low = mid + 1;
-            }
-        }
-
-        // Back up by 1 to catch a token whose range.min <= effectiveRange.min
-        // but whose range.max extends past effectiveRange.min
-        return Math.max(0, insertionPoint - 1);
-    }
-
-    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
-        checkNotNull(effectiveRange);
-
-        Pair<List<CompositeContinuationToken>, Range<String>> effectiveTokensAndMinMax =
-            this.extractContinuationTokens(effectiveRange);
-
-        List<CompositeContinuationToken> extractedContinuationTokens = effectiveTokensAndMinMax.getLeft();
-        Range<String> totalRange = effectiveTokensAndMinMax.getRight();
-
-        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
-
-        return new ChangeFeedStateV1(
-            this.getContainerRid(),
-            feedRange,
-            this.getMode(),
-            this.getStartFromSettings(),
-            FeedRangeContinuation.create(
-                this.getContainerRid(),
-                feedRange,
-                extractedContinuationTokens
-            )
-        );
+        return Pair.of(extractedTokens, totalRange);
     }
 
     private Range<String> getOverlappingRange(Range<String> left, Range<String> right) {
@@ -415,26 +353,18 @@ public abstract class ChangeFeedState extends JsonSerializable {
     }
 
     /**
-     * Tracks the min and max range values while collecting overlapping tokens.
+     * Holds a pre-sorted list of continuation tokens alongside a parallel list of
+     * their ranges, enabling {@link Collections#binarySearch} on the ranges.
      */
-    private static final class MinMaxAccumulator {
-        String min;
-        String max;
-    }
-
-    /**
-     * Holds a pre-sorted snapshot of continuation tokens along with the
-     * continuation reference it was built from for cache invalidation.
-     */
-    private static final class SortedTokensSnapshot {
-        final FeedRangeContinuation continuationRef;
+    private static final class SortedTokensAndRanges {
         final List<CompositeContinuationToken> sortedTokens;
+        final List<Range<String>> sortedRanges;
 
-        SortedTokensSnapshot(
-            FeedRangeContinuation continuationRef,
-            List<CompositeContinuationToken> sortedTokens) {
-            this.continuationRef = continuationRef;
+        SortedTokensAndRanges(
+            List<CompositeContinuationToken> sortedTokens,
+            List<Range<String>> sortedRanges) {
             this.sortedTokens = sortedTokens;
+            this.sortedRanges = sortedRanges;
         }
     }
 }
