@@ -8,8 +8,6 @@
 
 ### Bugs Fixed
 
-### Other Changes
-
 ## 1.0.35 (2026-05-05)
 
 ### Other Changes
