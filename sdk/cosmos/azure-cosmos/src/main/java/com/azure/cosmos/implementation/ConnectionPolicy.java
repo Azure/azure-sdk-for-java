@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -493,14 +492,15 @@ public final class ConnectionPolicy {
             return this;
         }
 
-        // Normalize each region to canonical form and dedupe (order-preserving)
-        LinkedHashSet<String> deduped = new LinkedHashSet<>();
+        // Normalize each region to canonical CosmosDB form (e.g., "westus3" → "West US 3").
+        // Unknown regions not in the static map are passed through as-is.
+        List<String> normalized = new ArrayList<>(preferredRegions.size());
         for (String region : preferredRegions) {
             if (region != null) {
-                deduped.add(RegionNameToRegionIdMap.getCosmosDBRegionName(region));
+                normalized.add(RegionNameToRegionIdMap.getCosmosDBRegionName(region));
             }
         }
-        this.preferredRegions = new ArrayList<>(deduped);
+        this.preferredRegions = normalized;
         return this;
     }
 

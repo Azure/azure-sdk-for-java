@@ -1024,18 +1024,6 @@ public class LocationCacheTest {
     }
 
     @Test(groups = "unit")
-    public void preferredRegions_duplicateAfterNormalizationShouldDedupe() {
-        // "westus3" and "West US 3" normalize to the same thing — should dedupe
-        LocationCache locationCache = createCacheWithRealRegions(
-            Arrays.asList("westus3", "West US 3", "east us"));
-
-        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
-        // Should have 2 preferred (deduped West US 3) + 1 remaining
-        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
-        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
-    }
-
-    @Test(groups = "unit")
     public void excludeRegions_lowercaseNoSpacesShouldExclude() {
         // Preferred regions in canonical form, exclude region with no spaces
         LocationCache locationCache = createCacheWithRealRegions(
