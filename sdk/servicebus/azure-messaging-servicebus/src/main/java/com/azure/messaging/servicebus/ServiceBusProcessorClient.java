@@ -217,6 +217,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     // again after close() returns to begin a new processing cycle (the flag is cleared in close()'s
     // finally block).
     private final AtomicBoolean v1CloseInProgress = new AtomicBoolean(false);
+    // Most-recent identifier captured from the V1 asyncClient. Lets getIdentifier() return a
+    // stable value during/after close() without lazy-creating a fresh receiver that close() would
+    // not dispose. Refreshed every time getIdentifier() observes a live asyncClient and once more
+    // by close() before nulling it.
+    private volatile String cachedV1Identifier;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -437,6 +442,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     monitorDisposable = null;
                 }
                 if (asyncClient.get() != null) {
+                    // Capture the identifier before disposing so a later getIdentifier() call can
+                    // return the same value without lazy-creating a fresh receiver.
+                    cachedV1Identifier = asyncClient.get().getIdentifier();
                     asyncClient.get().close();
                     asyncClient.set(null);
                 }
@@ -499,11 +507,29 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (processorV2 != null) {
             return processorV2.getIdentifier();
         }
-        if (asyncClient.get() == null) {
-            asyncClient.set(createNewReceiver());
+        final ServiceBusReceiverAsyncClient current = asyncClient.get();
+        if (current != null) {
+            // Live client - refresh the cache and return its identifier.
+            cachedV1Identifier = current.getIdentifier();
+            return cachedV1Identifier;
         }
-
-        return asyncClient.get().getIdentifier();
+        if (cachedV1Identifier != null) {
+            // The processor was started at some point and we captured the identifier. Return it
+            // without lazy-creating a new receiver - otherwise a getIdentifier() call during
+            // close()'s drain window or after close() returned would leak a receiver that the
+            // shutdown path is no longer responsible for.
+            return cachedV1Identifier;
+        }
+        if (v1CloseInProgress.get()) {
+            // First-ever call but close() is mid-shutdown and never had a chance to cache.
+            // Don't create a receiver close() won't dispose; return empty string.
+            return "";
+        }
+        // First call before any start() - preserve the lazy-init behavior so getIdentifier()
+        // returns a non-null identifier even before the processor is started.
+        asyncClient.set(createNewReceiver());
+        cachedV1Identifier = asyncClient.get().getIdentifier();
+        return cachedV1Identifier;
     }
 
     private synchronized void receiveMessages() {

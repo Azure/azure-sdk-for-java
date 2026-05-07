@@ -69,6 +69,9 @@ import static org.mockito.Mockito.when;
  *   <li><b>Concurrent Start During Close</b> — {@link #v1ConcurrentStartDuringCloseDrainIsIgnored()}:
  *       Tests that a concurrent {@code start()} during {@code close()}'s drain window is ignored
  *       so it does not create new resources that the in-progress {@code close()} would tear down</li>
+ *   <li><b>getIdentifier() During Close</b> — {@link #v1GetIdentifierDuringAndAfterCloseDoesNotCreateNewReceiver()}:
+ *       Tests that {@code getIdentifier()} returns the cached identifier during/after close instead of
+ *       lazy-creating a new receiver that would leak past the shutdown path</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -957,6 +960,105 @@ public class ServiceBusProcessorGracefulShutdownTest {
             verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
             // Original asyncClient was closed exactly once by close().
             verify(asyncClient, timeout(2000)).close();
+        } finally {
+            handlerCanProceed.countDown();
+            closeThread.join(5000);
+        }
+    }
+
+    /**
+     * Verifies that {@code getIdentifier()} does not lazy-create a fresh receiver during or after
+     * {@code close()}, so it cannot leak a receiver that the shutdown path is no longer responsible
+     * for disposing.
+     * <p>
+     * Background: {@code close()} releases the instance monitor across the drain wait. The original
+     * {@code getIdentifier()} would lazy-create a new receiver whenever {@code asyncClient} was
+     * {@code null}, so a concurrent {@code getIdentifier()} call after {@code close()} nulled the
+     * client (or after {@code close()} returned) would invoke the receiver builder again and leave
+     * a fresh, unmanaged client behind. The fix caches the identifier whenever it is observed and
+     * once more in {@code close()} before nulling the client, so {@code getIdentifier()} can return
+     * a stable value without creating a receiver during/after shutdown.
+     * </p>
+     * <p>
+     * Regression test for the lazy-receiver leak raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3198250076">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v1GetIdentifierDuringAndAfterCloseDoesNotCreateNewReceiver() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.concat(Flux.just(message), Flux.never());
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        // Builder must be invoked exactly once - by the original start(). Neither getIdentifier()
+        // during the drain window nor after close() returned may trigger a second invocation.
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getIdentifier()).thenReturn("processor-id-1");
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started");
+
+        // Confirm getIdentifier() works while running (also seeds the cache).
+        assertTrue("processor-id-1".equals(processorClient.getIdentifier()),
+            "getIdentifier() should return the live client's identifier while running");
+
+        // Begin close on a separate thread; it will block in drainV1Handlers().
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Give close() a moment to enter drain.
+            Thread.sleep(200);
+
+            // Concurrent getIdentifier() during the drain window. Must NOT create a new receiver
+            // (cachedV1Identifier was seeded by the call above; before fix, it would have hit the
+            // synchronized monitor and stalled; with monitor released and no cache, would have
+            // lazily created a receiver).
+            assertTrue("processor-id-1".equals(processorClient.getIdentifier()),
+                "getIdentifier() during close drain should return the cached identifier");
+
+            // Allow the handler to complete so close() can finish.
+            handlerCanProceed.countDown();
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "close() should complete");
+
+            // After close(), getIdentifier() must still return the cached identifier and must not
+            // create a new receiver via the builder.
+            assertTrue("processor-id-1".equals(processorClient.getIdentifier()),
+                "getIdentifier() after close should return the cached identifier");
+
+            // Builder was invoked exactly once - no leaked receiver from any getIdentifier() call.
+            verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
         } finally {
             handlerCanProceed.countDown();
             closeThread.join(5000);
