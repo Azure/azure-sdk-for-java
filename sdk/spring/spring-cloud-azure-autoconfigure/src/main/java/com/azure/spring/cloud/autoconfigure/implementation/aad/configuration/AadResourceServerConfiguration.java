@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadResourceServerProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -33,6 +34,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
@@ -50,8 +52,9 @@ class AadResourceServerConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
+        String tenantId = getTrimmedTenantId(aadAuthenticationProperties);
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
-            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
+            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
                 .restOperations(createRestTemplate(restTemplateBuilder))
@@ -64,6 +67,8 @@ class AadResourceServerConfiguration {
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
+        String tenantId = getTrimmedTenantId(aadAuthenticationProperties);
+        validateTenantId(tenantId);
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
@@ -71,11 +76,39 @@ class AadResourceServerConfiguration {
             validAudiences.add(aadAuthenticationProperties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
+            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD,
+                audiences -> audiences != null
+                    && !audiences.isEmpty()
+                    && audiences.stream().anyMatch(validAudiences::contains)));
         }
-        validators.add(new AadJwtIssuerValidator());
+        validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
+        validators.add(new AadJwtIssuerValidator(new AadTrustedIssuerRepository(tenantId)));
         validators.add(new JwtTimestampValidator());
         return validators;
+    }
+
+    private static String getTrimmedTenantId(AadAuthenticationProperties aadAuthenticationProperties) {
+        String tenantId = aadAuthenticationProperties.getProfile().getTenantId();
+        return tenantId != null ? tenantId.trim().toLowerCase(Locale.ROOT) : null;
+    }
+
+    private static void validateTenantId(String tenantId) {
+        if (!StringUtils.hasText(tenantId)
+            || "common".equalsIgnoreCase(tenantId)
+            || "organizations".equalsIgnoreCase(tenantId)
+            || "consumers".equalsIgnoreCase(tenantId)) {
+            throw new IllegalArgumentException(
+                "For resource server, "
+                    + "'spring.cloud.azure.active-directory.profile.tenant-id' "
+                    + "cannot be null, empty, or set to 'common', "
+                    + "'organizations', or 'consumers'. "
+                    + "These values are not supported for resource server token "
+                    + "validation because a specific tenant ID is required to "
+                    + "validate the token 'tid' claim and issuer against a "
+                    + "single Azure AD tenant. "
+                    + "Please configure an explicit tenant ID for your "
+                    + "organization's tenant.");
+        }
     }
 
     @EnableWebSecurity
