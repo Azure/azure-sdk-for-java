@@ -234,7 +234,7 @@ public class RegionNameToRegionIdMap {
             addCanonicalMapping(map, canonicalName);
         }
 
-        // Additional regions that don't have IDs yet (from .NET SDK Regions.cs / Azure portal)
+        // Additional regions from LocationNames.cs that don't have IDs yet
         addCanonicalMapping(map, "West US 3");
         addCanonicalMapping(map, "East US 3");
         addCanonicalMapping(map, "Brazil Southeast");
@@ -262,6 +262,16 @@ public class RegionNameToRegionIdMap {
         addCanonicalMapping(map, "Saudi Arabia East");
         addCanonicalMapping(map, "China East 3");
         addCanonicalMapping(map, "China North 3");
+        addCanonicalMapping(map, "East US SLV");
+        addCanonicalMapping(map, "Southeast US");
+        addCanonicalMapping(map, "Southwest US");
+        addCanonicalMapping(map, "South Central US 2");
+        addCanonicalMapping(map, "Southeast US 3");
+        addCanonicalMapping(map, "Southeast US 5");
+        addCanonicalMapping(map, "Northeast US 5");
+        addCanonicalMapping(map, "India South Central");
+        addCanonicalMapping(map, "Southeast Asia 3");
+        addCanonicalMapping(map, "West Central US FRE");
 
         NORMALIZED_TO_CANONICAL = Collections.unmodifiableMap(map);
     }
