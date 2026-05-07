@@ -5,8 +5,10 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ import java.util.Map;
  *       returned as-is.</li>
  * </ol>
  */
-public class RegionNameToRegionIdMap {
+public class RegionUtils {
 
     // ========================================================================
     // Region ID mappings — used only for session token region-level progress
@@ -357,6 +359,47 @@ public class RegionNameToRegionIdMap {
         }
 
         return regionName;
+    }
+
+    /**
+     * Normalizes a list of region names to canonical CosmosDB format.
+     * Unknown regions not in the static map are passed through as-is.
+     *
+     * @param regionNames the list of region names to normalize
+     * @return a new list with each region normalized
+     */
+    public static List<String> normalizeRegionNames(List<String> regionNames) {
+        if (regionNames == null || regionNames.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<String> normalized = new ArrayList<>(regionNames.size());
+        for (String region : regionNames) {
+            if (region != null) {
+                normalized.add(getCosmosDBRegionName(region));
+            }
+        }
+        return normalized;
+    }
+
+    /**
+     * Checks whether a list of region names contains the target region,
+     * using canonical normalization + case-insensitive comparison.
+     *
+     * @param regions the list of region names to search
+     * @param target the target region name to find
+     * @return true if any region in the list matches the target after normalization
+     */
+    public static boolean containsRegionIgnoreCase(List<String> regions, String target) {
+        if (regions == null || regions.isEmpty()) {
+            return false;
+        }
+        String normalizedTarget = getCosmosDBRegionName(target);
+        for (String region : regions) {
+            if (getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void addCanonicalMapping(Map<String, String> map, String canonicalName) {

@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionUtils;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +126,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 String normalizedRegionRoutedTo = this.normalizedRegionLookupMap.get(regionRoutedTo);
 
-                int regionId = RegionNameToRegionIdMap.getRegionId(normalizedRegionRoutedTo);
+                int regionId = RegionUtils.getRegionId(normalizedRegionRoutedTo);
 
                 if (regionId != -1) {
                     long localLsn = localLsnByRegion.v.getOrDefault(regionId, Long.MIN_VALUE);
@@ -355,7 +355,7 @@ public class PartitionScopedRegionLevelProgress {
                 for (Map.Entry<Integer, Long> localLsnByRegionEntry : localLsnByRegion.v.entrySet()) {
 
                     int regionId = localLsnByRegionEntry.getKey();
-                    String normalizedRegionName = RegionNameToRegionIdMap.getRegionName(regionId);
+                    String normalizedRegionName = RegionUtils.getRegionName(regionId);
 
                     // the regionId to normalizedRegionName does not exist
                     if (normalizedRegionName.equals(StringUtils.EMPTY)) {
@@ -401,7 +401,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 // Obtain globalLsn from hub region
                 for (String lesserPreferredRegionPkProbablyRequestedFrom : lesserPreferredRegionsPkProbablyRequestedFrom) {
-                    int regionId = RegionNameToRegionIdMap.getRegionId(lesserPreferredRegionPkProbablyRequestedFrom);
+                    int regionId = RegionUtils.getRegionId(lesserPreferredRegionPkProbablyRequestedFrom);
                     boolean isHubRegion = !localLsnByRegion.v.containsKey(regionId);
 
                     if (isHubRegion) {

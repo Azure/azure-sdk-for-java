@@ -12,7 +12,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
-import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -497,7 +497,7 @@ public final class ConnectionPolicy {
         List<String> normalized = new ArrayList<>(preferredRegions.size());
         for (String region : preferredRegions) {
             if (region != null) {
-                normalized.add(RegionNameToRegionIdMap.getCosmosDBRegionName(region));
+                normalized.add(RegionUtils.getCosmosDBRegionName(region));
             }
         }
         this.preferredRegions = normalized;

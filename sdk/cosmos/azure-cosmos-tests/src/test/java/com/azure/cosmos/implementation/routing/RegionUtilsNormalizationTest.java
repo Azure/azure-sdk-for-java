@@ -9,9 +9,9 @@ import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link RegionNameToRegionIdMap}
+ * Tests for {@link RegionUtils}
  */
-public class RegionNameToRegionIdMapNormalizationTest {
+public class RegionUtilsNormalizationTest {
 
     @DataProvider(name = "regionNameVariants")
     public Object[][] regionNameVariants() {
@@ -76,33 +76,33 @@ public class RegionNameToRegionIdMapNormalizationTest {
 
     @Test(groups = "unit", dataProvider = "regionNameVariants")
     public void shouldNormalizeRegionNameVariants(String input, String expectedCanonical) {
-        String result = RegionNameToRegionIdMap.getCosmosDBRegionName(input);
+        String result = RegionUtils.getCosmosDBRegionName(input);
         assertThat(result).isEqualTo(expectedCanonical);
     }
 
     @Test(groups = "unit")
     public void shouldPassthroughUnknownRegions() {
         // Unknown regions should be returned as-is for forward compatibility
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
+        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
+        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
     }
 
     @Test(groups = "unit")
     public void shouldHandleNullAndEmpty() {
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName(null)).isNull();
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("")).isEqualTo("");
+        assertThat(RegionUtils.getCosmosDBRegionName(null)).isNull();
+        assertThat(RegionUtils.getCosmosDBRegionName("")).isEqualTo("");
     }
 
     @Test(groups = "unit")
     public void shouldHandleBlankString() {
         // Blank strings (only spaces) → stripped to "" → not in map → returned as-is
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("   ")).isEqualTo("   ");
+        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("   ");
     }
 
     @Test(groups = "unit")
     public void shouldPassthroughUnknownRegionsAsIs() {
         // Unknown regions not in the static map should be returned as-is
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("futureregion99")).isEqualTo("futureregion99");
-        assertThat(RegionNameToRegionIdMap.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
+        assertThat(RegionUtils.getCosmosDBRegionName("futureregion99")).isEqualTo("futureregion99");
+        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
     }
 }
