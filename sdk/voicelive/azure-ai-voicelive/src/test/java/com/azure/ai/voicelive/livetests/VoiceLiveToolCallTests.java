@@ -49,7 +49,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     private static final String API_VERSION_2025_05_01_PREVIEW = "2025-05-01-preview";
 
     // ===== test_realtime_service_tool_call =====
-    // Python: models=[gpt-4o-realtime, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
     // Uses _get_speech_recognition_setting(model), audio=4-1.wav, tool=assess_pronunciation
     // Voice: AzureStandardVoice("en-US-AriaNeural")
 
@@ -92,7 +92,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         List<SessionUpdateResponseFunctionCallArgumentsDelta> functionCallResults = new ArrayList<>();
         CountDownLatch firstDeltaLatch = new CountDownLatch(1);
         // Track response completions so we can re-issue response.create() if VAD
-        // triggered a non-tool-call response first (gpt-4o-realtime race condition).
+        // triggered a non-tool-call response first (gpt-realtime race condition).
         CountDownLatch responseDoneLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
@@ -136,7 +136,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
 
             // Send audio and response.create() in tight succession to beat server VAD.
-            // With gpt-4o-realtime, the default server VAD detects speech, auto-commits the
+            // With gpt-realtime, the default server VAD detects speech, auto-commits the
             // buffer and triggers its own response before a delayed response.create() arrives.
             session.sendInputAudio(audioData)
                 .then(session.sendEvent(new ClientEventResponseCreate()))
