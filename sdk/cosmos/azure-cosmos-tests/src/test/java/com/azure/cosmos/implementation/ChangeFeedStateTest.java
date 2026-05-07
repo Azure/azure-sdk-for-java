@@ -507,13 +507,16 @@ public class ChangeFeedStateTest {
 
     @Test(groups = "unit")
     public void changeFeedState_microbenchmark_30k_batchVsSingleCall() {
+        // Simulates realistic Spark planning with 30K feed ranges using production-length
+        // EPK strings (~32 hex chars, matching real hash-partitioned Cosmos DB containers).
         int tokenCount = 30_000;
-        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+        ChangeFeedState state = createStateWithRealisticTokens(tokenCount);
 
+        // Build ranges matching the token ranges
         List<Range<String>> ranges = new ArrayList<>(tokenCount);
         for (int i = 0; i < tokenCount; i++) {
             ranges.add(new Range<>(
-                String.format("%06X", i), String.format("%06X", i + 1), true, false));
+                toRealisticEpk(i, tokenCount), toRealisticEpk(i + 1, tokenCount), true, false));
         }
 
         // Warmup
@@ -546,7 +549,7 @@ public class ChangeFeedStateTest {
         }
 
         System.out.println(String.format(
-            "[Microbenchmark] 30K feed ranges: batch API = %d ms, single-call loop = %d ms, speedup = %.1fx",
+            "[Microbenchmark] 30K feed ranges (production-length EPKs): batch API = %d ms, single-call loop = %d ms, speedup = %.1fx",
             batchElapsedMs, singleElapsedMs,
             singleElapsedMs > 0 ? (double) singleElapsedMs / batchElapsedMs : Double.NaN));
 
@@ -749,6 +752,44 @@ public class ChangeFeedStateTest {
         String continuationJson = String.format(
             "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
             containerRid, entries, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        return new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), continuation);
+    }
+
+    /**
+     * Generates a production-length EPK hex string (~32 chars) that evenly divides
+     * the key space into {@code totalPartitions} segments. Mimics the format of
+     * real Cosmos DB effective partition key values (hex-encoded binary).
+     */
+    private static String toRealisticEpk(int index, int totalPartitions) {
+        // Map index to a position in a 64-bit key space, then format as 32 hex chars
+        // to match production EPK string lengths
+        long value = (long) ((double) index / totalPartitions * Long.MAX_VALUE);
+        return String.format("%016X0000000000000000", value);
+    }
+
+    private ChangeFeedState createStateWithRealisticTokens(int tokenCount) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        StringBuilder continuationEntries = new StringBuilder();
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationEntries.append(",");
+            }
+            String min = toRealisticEpk(i, tokenCount);
+            String max = toRealisticEpk(i + 1, tokenCount);
+            continuationEntries.append(
+                String.format("{\"token\":\"token_%d\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}", i, min, max));
+        }
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
+            containerRid, continuationEntries, pkRangeId);
 
         FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
         return new ChangeFeedStateV1(
