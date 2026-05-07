@@ -37,7 +37,10 @@ public abstract class ChangeFeedState extends JsonSerializable {
     // Lazily-initialized cache holding a pre-sorted snapshot of continuation tokens.
     // Reused across multiple extractForEffectiveRange calls on the same instance to
     // avoid redundant O(T log T) copy+sort per partition during Spark planning.
-    private volatile SortedTokensSnapshot cachedSortedTokensSnapshot;
+    // Benign race by design: concurrent callers may both create a snapshot,
+    // but the snapshot is immutable and volatile ensures safe publication.
+    // This class is NOT thread-safe for concurrent setContinuation() calls.
+    private transient volatile SortedTokensSnapshot cachedSortedTokensSnapshot;
 
     ChangeFeedState() {
     }
@@ -211,6 +214,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
                 }
                 minMax[1] = overlappingRange.getMax();
             } else {
+                // Early-break: assumes overlapping tokens are contiguous after sorting.
+                // Safe for non-overlapping partition ranges (Cosmos DB contract).
+                // Inherited from original linear scan behavior.
                 if (!out.isEmpty()) {
                     break;
                 }

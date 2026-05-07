@@ -673,6 +673,67 @@ public class ChangeFeedStateTest {
         assertThat(middleToken.get(0).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
     }
 
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_cacheInvalidatedAfterSetContinuation() {
+        // Verify that replacing the continuation via setContinuation() invalidates
+        // the cached sorted snapshot, ensuring subsequent extractions use the new tokens.
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        // Create state with 10 tokens
+        ChangeFeedState state = createStateWithFixedRid(containerRid, pkRangeId, feedRange, 10);
+
+        // Prime the cache by extracting a range
+        List<CompositeContinuationToken> tokensBefore =
+            state.extractForEffectiveRange(new Range<>(
+                String.format("%06X", 0), String.format("%06X", 5), true, false))
+                .extractContinuationTokens();
+        assertThat(tokensBefore).hasSize(5);
+
+        // Build a replacement continuation with only 3 tokens but same containerRid
+        ChangeFeedState newState = createStateWithFixedRid(containerRid, pkRangeId, feedRange, 3);
+        state.setContinuation(newState.getContinuation());
+
+        // Extract all tokens - should reflect the new 3-token continuation, not the stale 10-token cache
+        List<CompositeContinuationToken> tokensAfter = state.extractContinuationTokens();
+        assertThat(tokensAfter).hasSize(3);
+        for (int i = 0; i < 3; i++) {
+            assertThat(tokensAfter.get(i).getToken()).isEqualTo("token_" + i);
+        }
+    }
+
+    private ChangeFeedState createStateWithFixedRid(
+        String containerRid,
+        String pkRangeId,
+        FeedRangePartitionKeyRangeImpl feedRange,
+        int tokenCount) {
+
+        StringBuilder continuationEntries = new StringBuilder();
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationEntries.append(",");
+            }
+            String min = String.format("%06X", i);
+            String max = String.format("%06X", i + 1);
+            String token = "token_" + i;
+            continuationEntries.append(
+                String.format("{\"token\":\"%s\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}", token, min, max));
+        }
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
+            containerRid, continuationEntries, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(),
+            continuation);
+    }
+
     private ChangeFeedState createStateWithTokenRanges(String[][] tokenRanges) {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
