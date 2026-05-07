@@ -612,10 +612,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
+                    // Errors must always flow to the user's processError callback even during
+                    // shutdown - they don't touch the receiver and the application has the right
+                    // to know what failed before close completes. Only message dispatches take
+                    // the drain-aware fast path: avoids counting skip-path invocations against
+                    // the drain so a busy upstream cannot keep activeV1HandlerCount > 0 while
+                    // close() is waiting.
+                    final boolean isErrorContext = serviceBusMessageContext.hasError();
+                    if (!isErrorContext && v1Closing) {
+                        LOGGER.verbose("Skipping V1 handler execution (early), processor is closing.");
+                        return;
+                    }
                     activeV1HandlerCount.incrementAndGet();
                     isV1HandlerThread.set(Boolean.TRUE);
                     try {
-                        if (v1Closing) {
+                        if (!isErrorContext && v1Closing) {
+                            // v1Closing may have flipped between the early check above and this
+                            // point (a check-then-act race). Race-loser invocations still skip
+                            // work; the increment is balanced by the decrement in finally.
                             LOGGER.verbose("Skipping V1 handler execution, processor is closing.");
                             return;
                         }
@@ -625,7 +639,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                         Exception exception = null;
                         AutoCloseable scope = tracer.makeSpanCurrent(span);
                         try {
-                            if (serviceBusMessageContext.hasError()) {
+                            if (isErrorContext) {
                                 handleError(serviceBusMessageContext.getThrowable());
                             } else {
                                 ServiceBusReceivedMessageContext serviceBusReceivedMessageContext

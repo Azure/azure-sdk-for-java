@@ -571,9 +571,10 @@ final class SessionsMessagePump {
             activeHandlerCount.incrementAndGet();
             isHandlerThread.set(Boolean.TRUE);
             try {
-                // TOCTOU: closing may have flipped between the early check above and this point.
-                // Re-check inside the counted region so the rare race-loser still skips work; the
-                // increment will be balanced by the decrement in finally and notifyAll the drain.
+                // closing may have flipped between the early check above and this point
+                // (a check-then-act race). Re-check inside the counted region so the rare
+                // race-loser still skips work; the increment will be balanced by the decrement
+                // in finally and notifyAll the drain.
                 if (closing) {
                     logger.atVerbose().log("Skipping handler execution, session pump is closing.");
                     return;

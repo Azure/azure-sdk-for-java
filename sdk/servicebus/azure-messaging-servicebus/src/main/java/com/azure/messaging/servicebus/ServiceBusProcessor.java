@@ -278,6 +278,11 @@ final class ServiceBusProcessor {
                 pump.drainHandlers(drainTimeout);
             }
             disposable.dispose();
+            // Clear the reference now that the pump's underlying client and subscription are gone
+            // so we don't retain it past its useful lifetime. A subsequent start() cycle will
+            // assign a fresh pump in beginIntern() before any drain on this RollingMessagePump
+            // can run again.
+            currentPump = null;
         }
 
         /**
