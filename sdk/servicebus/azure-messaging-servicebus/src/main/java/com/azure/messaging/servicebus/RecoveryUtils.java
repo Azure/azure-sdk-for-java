@@ -5,13 +5,12 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.RecoveryKind;
-import com.azure.core.amqp.implementation.RetryUtil;
 
 import java.util.concurrent.TimeoutException;
 
 /**
  * Package-private utilities shared by the sender and receiver call sites that compose
- * tiered recovery on top of {@link RetryUtil#withRetry}.
+ * tiered recovery on top of {@link com.azure.core.amqp.implementation.RetryUtil#withRetry}.
  */
 final class RecoveryUtils {
 
@@ -19,7 +18,8 @@ final class RecoveryUtils {
     }
 
     /**
-     * Ensures the error is retriable by the standard {@link RetryUtil#createRetry} filter.
+     * Ensures the error is retriable by the standard
+     * {@link com.azure.core.amqp.implementation.RetryUtil#createRetry} filter.
      * That filter only accepts {@link TimeoutException} or transient {@link AmqpException}.
      * Non-AMQP errors like {@code IllegalStateException("Cannot publish when disposed")}
      * that {@link RecoveryKind} classifies as LINK would otherwise be rejected, bypassing
