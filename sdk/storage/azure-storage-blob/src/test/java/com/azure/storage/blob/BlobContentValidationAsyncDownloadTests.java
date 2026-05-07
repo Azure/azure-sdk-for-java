@@ -31,6 +31,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -48,7 +49,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     private final List<File> createdFiles = new ArrayList<>();
 
     private byte[] data;
-    private HttpHeaders recordedRequestHeaders;
+    private List<HttpHeaders> recordedRequestHeaders;
     private HttpHeaders recordedResponseHeaders;
     private BlobAsyncClient blobClient;
     private BlobAsyncClient downloadClient;
@@ -59,7 +60,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     public void beforeTest() {
         super.beforeTest();
         data = null;
-        recordedRequestHeaders = new HttpHeaders();
+        recordedRequestHeaders = new CopyOnWriteArrayList<>();
         recordedResponseHeaders = new HttpHeaders();
         blobClient = null;
         downloadClient = null;
@@ -70,7 +71,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         createdFiles.forEach(File::delete);
         createdFiles.clear();
         data = null;
-        recordedRequestHeaders = new HttpHeaders();
+        recordedRequestHeaders = new CopyOnWriteArrayList<>();
         recordedResponseHeaders = new HttpHeaders();
         blobClient = null;
         downloadClient = null;
@@ -100,7 +101,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
             return FluxUtil.collectBytesInByteBufferStream(r.getValue());
         })).assertNext(result -> TestUtils.assertArraysEqual(data, result)).verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -119,7 +120,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
             TestUtils.assertArraysEqual(data, r.getValue().toBytes());
         }).verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -157,7 +158,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         }).verifyComplete();
 
         assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -194,7 +195,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         }).verifyComplete();
 
         assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -211,7 +212,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 assertNotNull(result);
                 assertEquals(data.length, result.length);
             }).verifyComplete();
-        assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -230,7 +231,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
                 return FluxUtil.collectBytesInByteBufferStream(r.getValue());
             })).assertNext(result -> TestUtils.assertArraysEqual(data, result)).verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -247,7 +248,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
-        assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -267,7 +268,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 TestUtils.assertArraysEqual(data, r.getValue().toBytes());
             })
             .verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -304,7 +305,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         assertTrue(mockPolicy.getRangeHeaders().size() >= 2,
             "Expected at least the initial request and one retry with a range header");
         assertTrue(hasStructuredMessageDownloadResponseHeaders(recordedResponseHeaders));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -342,7 +343,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 TestUtils.assertArraysEqual(data, result);
             }).verifyComplete();
         assertTrue(hasStructuredMessageDownloadResponseHeaders(recordedResponseHeaders));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -367,7 +368,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 assertEquals(expectedCrc, actualCrc);
             })
             .verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -398,7 +399,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -429,7 +430,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
 }

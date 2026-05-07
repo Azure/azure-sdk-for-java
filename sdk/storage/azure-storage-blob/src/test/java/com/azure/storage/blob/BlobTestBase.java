@@ -100,6 +100,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1403,31 +1404,22 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
-        HttpHeaders recordedRequestHeaders, List<HttpHeaders> recordedResponseHeaders) {
-        return new HttpPipelinePolicy() {
-            @Override
-            public HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_RETRY;
+        HttpHeaders recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        return getRequestAndResponseHeaderSniffer(targetUrlPrefix, headers -> {
+            synchronized (recordedRequestHeaders) {
+                recordedRequestHeaders.setAllHttpHeaders(headers);
             }
-
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                synchronized (recordedRequestHeaders) {
-                    recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
-                }
-                return next.process().map(response -> {
-                    if (response.getRequest().getHttpMethod() == HttpMethod.GET
-                        && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
-                        recordedResponseHeaders.add(response.getHeaders());
-                    }
-                    return response;
-                });
-            }
-        };
+        }, recordedResponseHeaders);
     }
 
     protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
-        HttpHeaders recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        List<HttpHeaders> recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        return getRequestAndResponseHeaderSniffer(targetUrlPrefix, recordedRequestHeaders::add,
+            recordedResponseHeaders);
+    }
+
+    private static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        Consumer<HttpHeaders> requestRecorder, HttpHeaders recordedResponseHeaders) {
         return new HttpPipelinePolicy() {
             @Override
             public HttpPipelinePosition getPipelinePosition() {
@@ -1436,9 +1428,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                synchronized (recordedRequestHeaders) {
-                    recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
-                }
+                requestRecorder.accept(context.getHttpRequest().getHeaders());
                 return next.process().map(response -> {
                     if (response.getRequest().getHttpMethod() == HttpMethod.GET
                         && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
@@ -1550,41 +1540,11 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Creates a BlobClient that records outgoing request headers into the supplied headers.
-     */
-    protected BlobClient createBlobClientWithRequestSniffer(HttpHeaders recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            synchronized (recordedRequestHeaders) {
-                recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
-            }
-            return next.process();
-        };
-        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
-    }
-
-    /**
      * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
      */
     protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
         HttpPipelinePolicy sniffPolicy = (context, next) -> {
             recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
-            return next.process();
-        };
-        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
-    }
-
-    /**
-     * Creates a BlobAsyncClient that records outgoing request headers into the supplied headers.
-     */
-    protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(HttpHeaders recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            synchronized (recordedRequestHeaders) {
-                recordedRequestHeaders.setAllHttpHeaders(context.getHttpRequest().getHeaders());
-            }
             return next.process();
         };
         BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
