@@ -11,6 +11,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -50,6 +51,7 @@ public final class ConnectionPolicy {
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
     private Http2ConnectionConfig http2ConnectionConfig;
+    private IHttpClientInterceptor httpClientInterceptor;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -662,6 +664,15 @@ public final class ConnectionPolicy {
         checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
 
         this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
+    public IHttpClientInterceptor getHttpClientInterceptor() {
+        return this.httpClientInterceptor;
+    }
+
+    public ConnectionPolicy setHttpClientInterceptor(IHttpClientInterceptor interceptor) {
+        this.httpClientInterceptor = interceptor;
         return this;
     }
 

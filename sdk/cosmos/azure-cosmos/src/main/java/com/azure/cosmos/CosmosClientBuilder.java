@@ -159,6 +159,7 @@ public class CosmosClientBuilder implements
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
     private Map<CosmosAdditionalHeaderName, String> additionalHeaders;
+    private com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor httpClientInterceptor;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -1364,6 +1365,7 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
         this.connectionPolicy.setServerCertValidationDisabled(this.serverCertValidationDisabled);
+        this.connectionPolicy.setHttpClientInterceptor(this.httpClientInterceptor);
         return this.connectionPolicy;
     }
 
@@ -1554,6 +1556,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder) {
                     return builder.isPerPartitionAutomaticFailoverEnabled();
+                }
+
+                @Override
+                public void setHttpClientInterceptor(CosmosClientBuilder builder, com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor interceptor) {
+                    builder.httpClientInterceptor = interceptor;
                 }
             });
     }

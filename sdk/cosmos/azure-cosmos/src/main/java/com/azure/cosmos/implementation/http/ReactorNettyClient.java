@@ -11,6 +11,7 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.util.ReferenceCountUtil;
@@ -140,8 +141,33 @@ public class ReactorNettyClient implements HttpClient {
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                                            .validateHeaders(true));
 
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
+            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        if (httpCfgAccessor().isEffectivelyEnabled(http2Cfg)) {
+
+        boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
+        this.httpClient = this.httpClient.doOnConnected(connection -> {
+            // Manual HTTP/2 PING keepalive — sends PING frames when the connection is idle
+            // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
+            // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
+            // and the second fires for stream channels (parent()!=null).
+            // We install on the parent channel — detect it via Http2MultiplexHandler in the pipeline.
+            if (Configs.isHttp2PingHealthEnabled()
+                && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
+                int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                if (pingIntervalSeconds > 0) {
+                    Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds);
+                }
+            }
+
+            // Test hook: allows injection of custom handlers (e.g., PING frame counter)
+            java.util.function.Consumer<Connection> doOnConnectedCb = ReactorNettyClient.this.httpClientConfig.getDoOnConnectedCallback();
+            if (doOnConnectedCb != null) {
+                doOnConnectedCb.accept(connection);
+            }
+        });
+
+        if (isH2Enabled) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -153,7 +179,7 @@ public class ReactorNettyClient implements HttpClient {
                 .http2Settings(settings -> settings
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(64 * 1024)        // 64KB max frame size
-                    .maxConcurrentStreams(httpCfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:

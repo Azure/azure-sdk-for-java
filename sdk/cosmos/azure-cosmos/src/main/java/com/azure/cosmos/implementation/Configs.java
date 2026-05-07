@@ -145,6 +145,17 @@ public class Configs {
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS = "COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE = "COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
+
+    // HTTP/2 PING keepalive — keeps connections alive for sparse workloads by preventing
+    // intermediate infrastructure (NAT gateways, firewalls, load balancers) from silently
+    // reaping idle connections. PING is NOT used for eviction — degraded connections are
+    // handled by the response timeout retry path.
+    // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
+    private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
+    private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
+    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 10;
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -738,6 +749,20 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static boolean isHttp2PingHealthEnabled() {
+        String value = System.getProperty(HTTP2_PING_HEALTH_ENABLED);
+        if (value != null && !value.isEmpty()) {
+            return Boolean.parseBoolean(value);
+        }
+        return DEFAULT_HTTP2_PING_HEALTH_ENABLED;
+    }
+
+    public static int getHttp2PingIntervalInSeconds() {
+        return getJVMConfigAsInt(
+            HTTP2_PING_INTERVAL_IN_SECONDS,
+            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
     }
 
     public static Integer getPendingAcquireMaxCount() {

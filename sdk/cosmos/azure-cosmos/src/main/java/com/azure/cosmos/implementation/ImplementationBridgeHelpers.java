@@ -171,6 +171,8 @@ public class ImplementationBridgeHelpers {
             void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
 
             boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
+
+            void setHttpClientInterceptor(CosmosClientBuilder builder, com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor interceptor);
         }
     }
 
