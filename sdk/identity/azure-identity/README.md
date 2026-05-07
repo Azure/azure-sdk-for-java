@@ -89,7 +89,7 @@ This allows for trying all of the developer credentials on your machine while ha
 
 ## Examples
 
-You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples).
+You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md).
 
 ### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
 
@@ -305,30 +305,30 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_apc]: https://learn.microsoft.com/java/api/com.azure.identity.azurepipelinescredential?view=azure-java-stable
 [cred_apc_ref]: https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml
 [cred_az]: https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable
-[cred_az_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli
+[cred_az_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#azure-cli-credential
 [cred_az_ref]: https://learn.microsoft.com/cli/azure/authenticate-azure-cli
 [cred_azd]: https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable
 [cred_azd_ref]: https://learn.microsoft.com/azure/developer/azure-developer-cli/reference#azd-auth
 [cred_azpwsh]: https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable
-[cred_azpwsh_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-powershell
+[cred_azpwsh_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#azure-powershell-credential
 [cred_azpwsh_ref]: https://learn.microsoft.com/powershell/azure/authenticate-azureps
 [cred_cac]: https://learn.microsoft.com/java/api/com.azure.identity.clientassertioncredential?view=azure-java-stable
 [cred_ccc]: https://learn.microsoft.com/java/api/com.azure.identity.clientcertificatecredential?view=azure-java-stable
-[cred_ccc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate
+[cred_ccc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#service-principal--client-certificate
 [cred_csc]: https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable
-[cred_csc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret
+[cred_csc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#service-principal--client-secret
 [cred_ctc]: https://learn.microsoft.com/java/api/com.azure.identity.chainedtokencredential?view=azure-java-stable
 [cred_ctc_example]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
 [cred_dac]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable
 [cred_dac_example]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [cred_dcc]: https://learn.microsoft.com/java/api/com.azure.identity.devicecodecredential?view=azure-java-stable
-[cred_dcc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow
+[cred_dcc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#device-code-flow-iot--headless
 [cred_dcc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-device-code
 [cred_ec]: https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable
 [cred_ibc]: https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable
-[cred_ibc_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser
+[cred_ibc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#interactive-browser
 [cred_ij]: https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable
-[cred_ij_example]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea
+[cred_ij_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#intellij-idea-credential
 [cred_ij_ref]: https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/sign-in-instructions
 [cred_mic]: https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable
 [cred_mic_sa_ref]: https://learn.microsoft.com/azure/developer/java/sdk/authentication/system-assigned-managed-identity

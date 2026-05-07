@@ -15,6 +15,7 @@
   <version>7.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
 
   <name>Spring Cloud Azure Core</name>
+  <description>Spring Cloud Azure Core</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
   <developers>
     <developer>
@@ -40,7 +41,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>7.0.6</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
+      <version>7.0.7</version> <!-- {x-version-update;springboot4_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -124,7 +125,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.6</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.7</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -181,7 +182,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[7.0.6]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[7.0.7]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

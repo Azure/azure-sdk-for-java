@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.49.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.48.0 (2026-05-01)
 
 #### Features Added
