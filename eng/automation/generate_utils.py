@@ -244,6 +244,11 @@ def compare_with_maven_package(
                 version=previous_version,
             )
         )
+        if r.status_code == 404:
+            logging.warning(
+                "[Changelog][Skip] previous version {0} not found on Maven (404)".format(previous_version)
+            )
+            return breaking, changelog, breaking_changes
         r.raise_for_status()
         old_jar_fd, old_jar = tempfile.mkstemp(".jar")
         try:
