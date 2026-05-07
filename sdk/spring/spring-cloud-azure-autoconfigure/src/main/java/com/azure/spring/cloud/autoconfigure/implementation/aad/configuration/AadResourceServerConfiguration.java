@@ -97,9 +97,16 @@ class AadResourceServerConfiguration {
             || "organizations".equalsIgnoreCase(tenantId)
             || "consumers".equalsIgnoreCase(tenantId)) {
             throw new IllegalArgumentException(
-                "For resource server, 'spring.cloud.azure.active-directory.profile.tenant-id' cannot be null, empty, or set to 'common', 'organizations', or 'consumers'. "
-                + "These values are not supported for resource server token validation because a specific tenant ID is required to validate the token 'tid' claim and issuer against a single Azure AD tenant. "
-                + "Please configure an explicit tenant ID for your organization's tenant.");
+                "For resource server, "
+                    + "'spring.cloud.azure.active-directory.profile.tenant-id' "
+                    + "cannot be null, empty, or set to 'common', "
+                    + "'organizations', or 'consumers'. "
+                    + "These values are not supported for resource server token "
+                    + "validation because a specific tenant ID is required to "
+                    + "validate the token 'tid' claim and issuer against a "
+                    + "single Azure AD tenant. "
+                    + "Please configure an explicit tenant ID for your "
+                    + "organization's tenant.");
         }
     }
 
