@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>4.0.5</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.5</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -160,7 +160,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[4.0.5]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
               </includes>
             </bannedDependencies>

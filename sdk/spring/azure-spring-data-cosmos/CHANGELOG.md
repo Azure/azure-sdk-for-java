@@ -10,6 +10,12 @@
 
 #### Other Changes
 
+### 6.3.0 (2026-04-29)
+
+#### Bugs Fixed
+
+* Fixed a bug where count and sum queries defined in a Java text block in `@Query` caused a class cast exception - See [Bug #47910](https://github.com/Azure/azure-sdk-for-java/issues/47910).
+
 ### 7.2.0 (2026-04-17)
 
 #### Other Changes

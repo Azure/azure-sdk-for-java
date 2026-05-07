@@ -3,7 +3,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAdditionalHeaderName;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;

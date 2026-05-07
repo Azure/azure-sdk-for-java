@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
@@ -236,6 +237,19 @@ public class Sample03_AnalyzeInvoice {
             }
         }
         // END:ContentUnderstandingExtractInvoiceFields
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInput
+        // The fields above can also be packaged into a single LLM-ready text block.
+        // toLlmInput renders all extracted fields as YAML front matter followed by
+        // the markdown body, so an LLM can consume both structured data and document text
+        // in one shot. For advanced options, see Sample_Advanced_ToLlmInput.
+        System.out.println("\n============================================================");
+        System.out.println("LLM-READY OUTPUT (fields + markdown)");
+        System.out.println("============================================================");
+
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInput
 
         System.out.println("\nInvoice analysis completed successfully");
     }
