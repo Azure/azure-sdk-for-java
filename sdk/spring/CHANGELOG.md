@@ -6,6 +6,11 @@ Upgrade Spring Boot dependencies version to 4.0.6 and Spring Cloud dependencies 
 
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Breaking Changes
+
+- AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted and will cause application startup to fail with an `IllegalArgumentException`. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- `AadAuthenticationFilter` now enables explicit audience validation by default. The filter will verify that the JWT's `aud` (audience) claim matches either `spring.cloud.azure.active-directory.credential.client-id` or `spring.cloud.azure.active-directory.app-id-uri`. Tokens issued for other applications will be rejected with `BadJWTException`. This prevents cross-application token reuse and aligns with OAuth2/OIDC security best practices. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+
 #### Bugs Fixed
 
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
