@@ -66,6 +66,9 @@ import static org.mockito.Mockito.when;
  *       Tests that {@code close()} releases the instance monitor across the drain wait, so handlers
  *       calling synchronized accessors (e.g. {@code isRunning()}) do not stall shutdown until the
  *       drain timeout expires</li>
+ *   <li><b>Concurrent Start During Close</b> — {@link #v1ConcurrentStartDuringCloseDrainIsIgnored()}:
+ *       Tests that a concurrent {@code start()} during {@code close()}'s drain window is ignored
+ *       so it does not create new resources that the in-progress {@code close()} would tear down</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -858,6 +861,104 @@ public class ServiceBusProcessorGracefulShutdownTest {
                 "isRunning() should return false because close() set isRunning=false before draining");
         } finally {
             closeStarted.countDown();
+            closeThread.join(5000);
+        }
+    }
+
+    /**
+     * Verifies that a concurrent {@code start()} call during {@code close()}'s drain window is
+     * ignored, so it does not create new resources that the in-progress {@code close()} would
+     * immediately tear down.
+     * <p>
+     * Background: {@code close()} releases the client's instance monitor across the drain wait
+     * (see {@link #v1CloseShouldNotHoldClientMonitorDuringDrain()}). Without an explicit
+     * "close in progress" guard, a concurrent {@code start()} could acquire the monitor during
+     * that window, reset {@code v1Closing}, create a fresh async client, and start the connection
+     * monitor - only for {@code close()} to proceed into its cleanup phase and dispose those
+     * brand-new resources, leaving the user with a processor that appears started but has no
+     * working subscription.
+     * </p>
+     * <p>
+     * Regression test for the lifecycle race raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3198194844">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v1ConcurrentStartDuringCloseDrainIsIgnored() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.concat(Flux.just(message), Flux.never());
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        // The builder should be invoked exactly once by the original start(); a concurrent start()
+        // during close drain must NOT create a second receiver.
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started");
+
+        // Run close() on a separate thread - it will block in the drain wait until the handler
+        // returns (handlerCanProceed has not yet been counted down).
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Give close() a moment to enter drainV1Handlers() (monitor released, drain blocking).
+            Thread.sleep(200);
+
+            // Concurrent start() during the drain window. Without the v1CloseInProgress guard,
+            // this would create a new receiver and mark the processor running again, only for
+            // close() to subsequently dispose it. With the guard, start() returns without taking
+            // any action.
+            processorClient.start();
+
+            // The receiver builder should still have been invoked exactly once - the concurrent
+            // start() must not have created a second client.
+            verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
+            // The processor must not be reported as running while close is mid-shutdown.
+            assertFalse(processorClient.isRunning(), "Processor should not be running during close()'s drain window");
+
+            // Allow the original handler to complete so close() can finish.
+            handlerCanProceed.countDown();
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "close() should complete");
+
+            // After close() returns, isRunning should still be false and no extra receiver was created.
+            assertFalse(processorClient.isRunning(), "Processor should be stopped after close()");
+            verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
+            // Original asyncClient was closed exactly once by close().
+            verify(asyncClient, timeout(2000)).close();
+        } finally {
+            handlerCanProceed.countDown();
             closeThread.join(5000);
         }
     }

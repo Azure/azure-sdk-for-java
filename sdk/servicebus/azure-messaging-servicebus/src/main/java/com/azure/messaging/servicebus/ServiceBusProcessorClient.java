@@ -210,6 +210,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Object v1DrainLock = new Object();
     private final ThreadLocal<Boolean> isV1HandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
     private volatile boolean v1Closing;
+    // True while close() is between snapshotting state and finishing cleanup. Used to prevent
+    // start()/stop()/restartMessageReceiver() from racing with an in-progress shutdown - close()
+    // releases the instance monitor across the drain wait so other lifecycle methods could
+    // otherwise interleave and create state that close() then tears down. start() may be invoked
+    // again after close() returns to begin a new processing cycle (the flag is cleared in close()'s
+    // finally block).
+    private final AtomicBoolean v1CloseInProgress = new AtomicBoolean(false);
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -303,6 +310,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             processorV2.start();
             return;
         }
+        if (v1CloseInProgress.get()) {
+            // close() is mid-shutdown - it has set isRunning=false and will tear down state when
+            // the drain returns. Refuse to start so we don't create resources that close() then
+            // immediately discards. Caller can retry start() once close() has returned.
+            LOGGER.info("Processor close() is in progress; ignoring start() call.");
+            return;
+        }
         if (isRunning.getAndSet(true)) {
             LOGGER.info("Processor is already running");
             return;
@@ -347,6 +361,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             processorV2.stop();
             return;
         }
+        if (v1CloseInProgress.get()) {
+            // close() has already set isRunning=false and is draining. A concurrent stop() would
+            // be a no-op against the same state and could confuse the wasStopped semantics.
+            LOGGER.info("Processor close() is in progress; ignoring stop() call.");
+            return;
+        }
         wasStopped = true;
         isRunning.set(false);
     }
@@ -382,6 +402,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         synchronized (this) {
             v2Snapshot = processorV2;
             if (v2Snapshot == null) {
+                v1CloseInProgress.set(true);
                 isRunning.set(false);
                 v1Closing = true;
                 drainTimeout = processorOptions.getDrainTimeout();
@@ -397,27 +418,32 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
 
-        // V1 path: drain in-flight message handlers BEFORE cancelling subscriptions.
-        // Cancelling subscriptions triggers Reactor's publishOn worker disposal, which interrupts
-        // handler threads. Draining first ensures handlers can complete message settlement
-        // before the underlying client is closed.
-        // See https://github.com/Azure/azure-sdk-for-java/issues/45716
-        drainV1Handlers(drainTimeout);
+        try {
+            // V1 path: drain in-flight message handlers BEFORE cancelling subscriptions.
+            // Cancelling subscriptions triggers Reactor's publishOn worker disposal, which interrupts
+            // handler threads. Draining first ensures handlers can complete message settlement
+            // before the underlying client is closed.
+            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+            drainV1Handlers(drainTimeout);
 
-        // Re-acquire the monitor for the (non-blocking) cleanup so it does not race with
-        // start()/restartMessageReceiver(). Concurrent close() calls remain safe: every step
-        // below is guarded by a null check or operates on already-cleared collections.
-        synchronized (this) {
-            receiverSubscriptions.keySet().forEach(Subscription::cancel);
-            receiverSubscriptions.clear();
-            if (monitorDisposable != null) {
-                monitorDisposable.dispose();
-                monitorDisposable = null;
+            // Re-acquire the monitor for the (non-blocking) cleanup so it does not race with
+            // start()/restartMessageReceiver(). Concurrent close() calls remain safe: every step
+            // below is guarded by a null check or operates on already-cleared collections.
+            synchronized (this) {
+                receiverSubscriptions.keySet().forEach(Subscription::cancel);
+                receiverSubscriptions.clear();
+                if (monitorDisposable != null) {
+                    monitorDisposable.dispose();
+                    monitorDisposable = null;
+                }
+                if (asyncClient.get() != null) {
+                    asyncClient.get().close();
+                    asyncClient.set(null);
+                }
             }
-            if (asyncClient.get() != null) {
-                asyncClient.get().close();
-                asyncClient.set(null);
-            }
+        } finally {
+            // Clear the in-progress flag last so a subsequent start() can begin a fresh cycle.
+            v1CloseInProgress.set(false);
         }
     }
 
@@ -608,6 +634,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private synchronized void restartMessageReceiver(Subscription requester) {
+        if (v1CloseInProgress.get()) {
+            // Connection monitor or onError fallback fired during shutdown; don't recreate the
+            // receiver - close() is about to dispose it anyway.
+            return;
+        }
         if (!isRunning()) {
             return;
         }
