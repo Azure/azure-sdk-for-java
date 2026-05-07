@@ -5267,4 +5267,74 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 4 * TIMEOUT)
+    public void nonCanonicalPreferredRegions_ppcbShouldStillRouteCorrectly() {
+
+        if (this.writeRegions == null || this.writeRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account");
+        }
+
+        // Build space-stripped preferred regions: "West US 3" → "westus3"
+        List<String> nonCanonicalRegions = new ArrayList<>();
+        for (String region : this.writeRegions) {
+            nonCanonicalRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+        }
+
+        CosmosClientBuilder clientBuilder = getClientBuilder()
+            .multipleWriteRegionsEnabled(true)
+            .preferredRegions(nonCanonicalRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
+        CosmosAsyncClient asyncClient = null;
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            CosmosAsyncContainer container = asyncClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            // Create an item and read it back — verify routing via diagnostics
+            TestObject testObject = TestObject.create();
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+            readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+
+            CosmosItemResponse<TestObject> readResponse = container
+                .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
+                .block();
+
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+            CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames()).isNotEmpty();
+
+            // The contacted region should match the first preferred region (in lowercased canonical form)
+            String expectedFirstRegion = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
+            assertThat(diagnosticsContext.getContactedRegionNames().iterator().next())
+                .isEqualTo(expectedFirstRegion);
+
+        } finally {
+            if (asyncClient != null) {
+                asyncClient.close();
+            }
+        }
+    }
 }
