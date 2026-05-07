@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusProcessor.RollingMessagePump;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,6 +79,11 @@ import static org.mockito.Mockito.when;
  *   <li><b>V2 Concurrent Start During Close</b> — {@link #v2ConcurrentStartDuringCloseDrainIsIgnored()}:
  *       Tests that a concurrent {@code start()} during {@code processorV2.close()}'s drain window
  *       is ignored, mirroring the V1 guarantee</li>
+ *   <li><b>RECEIVE_AND_DELETE No Skip (V2)</b> — {@link #v2ReceiveAndDeleteModeDoesNotSkipDuringDrain()}:
+ *       Tests that the V2 pump's drain skip-path does NOT drop messages in RECEIVE_AND_DELETE mode -
+ *       the broker has already removed those messages, so skipping would lose them permanently</li>
+ *   <li><b>RECEIVE_AND_DELETE No Skip (V1)</b> — {@link #v1ReceiveAndDeleteModeDoesNotSkipDuringDrain()}:
+ *       Mirrors the V2 guarantee for the V1 onNext path</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -126,6 +132,21 @@ public class ServiceBusProcessorGracefulShutdownTest {
     }
 
     /**
+     * Returns a real {@link ReceiverOptions} configured for PEEK_LOCK. Every test in this file
+     * targets the PEEK_LOCK shutdown semantics (broker re-delivers any message dropped during
+     * drain), so production code reading {@code client.getReceiverOptions().getReceiveMode()}
+     * must see PEEK_LOCK on the mocked async clients to take the drain-aware fast path. A
+     * RECEIVE_AND_DELETE-specific test would build a different value here.
+     *
+     * <p>Uses the real {@code ReceiverOptions} factory rather than a Mockito mock to avoid the
+     * "UnfinishedStubbing" trap that arises when this helper is invoked inside another
+     * {@code when(...).thenReturn(...)} clause.</p>
+     */
+    private static ReceiverOptions peekLockOptions() {
+        return ReceiverOptions.createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, null, false);
+    }
+
+    /**
      * Verifies that when the V2 processor pump is disposed, in-flight message handlers
      * are allowed to complete before the underlying client is closed.
      * <p>
@@ -148,6 +169,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
 
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getReceiverOptions()).thenReturn(peekLockOptions());
         when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
         when(client.getEntityPath()).thenReturn("entityPath");
         when(client.isConnectionClosed()).thenReturn(false);
@@ -254,6 +276,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         final ServiceBusReceiverInstrumentation instrumentation
             = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "entityPath", null, ReceiverKind.PROCESSOR);
         when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         // V1 path uses receiveMessagesWithContext, publishOn(boundedElastic) matches real behavior
         // and ensures the handler runs on a separate thread (needed for drain testing).
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
@@ -343,6 +366,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
 
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
         when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getReceiverOptions()).thenReturn(peekLockOptions());
         when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
         when(client.getEntityPath()).thenReturn("entityPath");
         when(client.isConnectionClosed()).thenReturn(false);
@@ -416,6 +440,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
         when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getReceiverOptions()).thenReturn(peekLockOptions());
         when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
         when(client.getEntityPath()).thenReturn("entityPath");
         when(client.isConnectionClosed()).thenReturn(false);
@@ -486,6 +511,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
         when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(client.getReceiverOptions()).thenReturn(peekLockOptions());
         when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
         when(client.getEntityPath()).thenReturn("entityPath");
         when(client.isConnectionClosed()).thenReturn(false);
@@ -599,6 +625,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         // Two messages arrive on separate parallel rails, processed concurrently.
         when(asyncClient.receiveMessagesWithContext()).thenReturn(Flux.just(message1, message2)
             .map(ServiceBusMessageContext::new)
@@ -691,6 +718,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         // Emit message1 immediately, then message2 after a delay (simulating a message arriving
         // during the drain-to-cancel window).
         when(asyncClient.receiveMessagesWithContext()).thenReturn(Flux
@@ -783,6 +811,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
             when(client.getEntityPath()).thenReturn("entityPath");
             when(client.isConnectionClosed()).thenReturn(false);
             when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+            when(client.getReceiverOptions()).thenReturn(peekLockOptions());
             doNothing().when(client).close();
         }
 
@@ -851,6 +880,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
             .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
         doNothing().when(asyncClient).close();
@@ -952,6 +982,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
             .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
         doNothing().when(asyncClient).close();
@@ -1052,6 +1083,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         when(asyncClient.getIdentifier()).thenReturn("processor-id-1");
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
             .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
@@ -1148,6 +1180,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         when(asyncClient.getIdentifier()).thenReturn("processor-id");
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new)
             .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
@@ -1253,6 +1286,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // during V2 close drain must NOT invoke the builder a second time.
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getReceiverOptions()).thenReturn(peekLockOptions());
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
         when(asyncClient.getEntityPath()).thenReturn("entityPath");
         when(asyncClient.isConnectionClosed()).thenReturn(false);
@@ -1323,6 +1357,192 @@ public class ServiceBusProcessorGracefulShutdownTest {
             verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
         } finally {
             handlerCanProceed.countDown();
+            closeThread.join(5000);
+        }
+    }
+
+    /**
+     * Verifies that in {@code RECEIVE_AND_DELETE} mode the V2 pump's drain skip-path does NOT
+     * drop messages: every message that arrives during the drain window must still reach
+     * {@code processMessage}.
+     * <p>
+     * Background: the broker settles RECEIVE_AND_DELETE messages on delivery, so any message
+     * already in the pipeline when {@code drainHandlers()} sets {@code closing=true} has been
+     * removed from the entity. Skipping the user callback for those messages would lose them
+     * permanently. The fix gates the skip on PEEK_LOCK only.
+     * </p>
+     * <p>
+     * Regression test for the data-loss concern raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3204430541">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v2ReceiveAndDeleteModeDoesNotSkipDuringDrain() throws InterruptedException {
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
+
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        // RECEIVE_AND_DELETE - production code must NOT take the drain skip-path on this client.
+        when(client.getReceiverOptions()).thenReturn(
+            ReceiverOptions.createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, null, false));
+        when(client.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(client.getEntityPath()).thenReturn("entityPath");
+        when(client.isConnectionClosed()).thenReturn(false);
+        when(client.isAutoLockRenewRequested()).thenReturn(false);
+
+        final reactor.core.publisher.Sinks.Many<ServiceBusReceivedMessage> messageSink
+            = reactor.core.publisher.Sinks.many().unicast().onBackpressureBuffer();
+        when(client.nonSessionProcessorReceiveV2())
+            .thenReturn(messageSink.asFlux().publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(client).close();
+
+        final CountDownLatch handler1Started = new CountDownLatch(1);
+        final CountDownLatch handler1CanProceed = new CountDownLatch(1);
+        final CountDownLatch handler2Invoked = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            if (messageContext.getMessage() == message1) {
+                handler1Started.countDown();
+                try {
+                    handler1CanProceed.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                // RECEIVE_AND_DELETE: this MUST be invoked even while drain is in progress,
+                // otherwise message2 is permanently lost.
+                handler2Invoked.countDown();
+            }
+        };
+
+        // enableAutoDisposition=false: matches RECEIVE_AND_DELETE semantics (no settlement).
+        // concurrency=2 lets flatMap dispatch both handlers in parallel.
+        final MessagePump pump = new MessagePump(client, messageConsumer, e -> {
+        }, 2, false);
+        final AtomicReference<reactor.core.Disposable> subscription = new AtomicReference<>();
+        subscription.set(pump.begin().subscribe());
+
+        messageSink.tryEmitNext(message1);
+        assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started");
+
+        // Start drain on a separate thread - it sets closing=true and waits for handler1.
+        final CountDownLatch drainDone = new CountDownLatch(1);
+        final Thread drainThread = new Thread(() -> {
+            pump.drainHandlers(Duration.ofSeconds(10));
+            drainDone.countDown();
+        });
+        drainThread.start();
+
+        // Wait deterministically for drainHandlers() to enter its wait loop (closing=true is set
+        // before the wait begins, so once the thread is parked we know the flag is observable).
+        waitFor(
+            () -> drainThread.getState() == Thread.State.WAITING
+                || drainThread.getState() == Thread.State.TIMED_WAITING,
+            "drainHandlers() to enter waiting state (closing flag set)");
+
+        // Emit message2 AFTER closing=true. In PEEK_LOCK this would be skipped; in
+        // RECEIVE_AND_DELETE it MUST be delivered to handler2 because the broker has already
+        // settled it.
+        messageSink.tryEmitNext(message2);
+
+        assertTrue(handler2Invoked.await(5, TimeUnit.SECONDS),
+            "Handler2 must run during RECEIVE_AND_DELETE drain - skipping it would lose the message permanently");
+
+        // Release handler1 so drain can complete.
+        handler1CanProceed.countDown();
+        assertTrue(drainDone.await(5, TimeUnit.SECONDS), "Drain should complete");
+        subscription.get().dispose();
+    }
+
+    /**
+     * Verifies that in {@code RECEIVE_AND_DELETE} mode the V1 processor's drain skip-path does
+     * NOT drop messages: every message that arrives during the drain window must still reach
+     * {@code processMessage}. Mirrors the V2 guarantee in
+     * {@link #v2ReceiveAndDeleteModeDoesNotSkipDuringDrain()}.
+     * <p>
+     * Regression test for the data-loss concern raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3204430650">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v1ReceiveAndDeleteModeDoesNotSkipDuringDrain() throws InterruptedException {
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        // RECEIVE_AND_DELETE - V1 onNext must NOT take the v1Closing skip-path on this client.
+        when(asyncClient.getReceiverOptions()).thenReturn(
+            ReceiverOptions.createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, null, false));
+
+        final reactor.core.publisher.Sinks.Many<ServiceBusReceivedMessage> messageSink
+            = reactor.core.publisher.Sinks.many().unicast().onBackpressureBuffer();
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageSink.asFlux()
+            .map(ServiceBusMessageContext::new)
+            .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handler1Started = new CountDownLatch(1);
+        final CountDownLatch handler1CanProceed = new CountDownLatch(1);
+        final CountDownLatch handler2Invoked = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            if (messageContext.getMessage() == message1) {
+                handler1Started.countDown();
+                try {
+                    handler1CanProceed.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                handler2Invoked.countDown();
+            }
+        };
+
+        // maxConcurrentCalls=2 so V1 uses the parallel/runOn path (concurrency=1 takes the
+        // single-subscriber path that only request(1)s after each handler completes, which would
+        // not deliver message2 because isRunning becomes false during close).
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(2);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+        messageSink.tryEmitNext(message1);
+        assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started");
+
+        // Begin close on a separate thread. close() will set v1Closing=true and block on the drain.
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Wait deterministically for close() to take ownership and set v1Closing=true.
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
+
+            // Emit message2 during the drain window. In PEEK_LOCK this would be skipped; in
+            // RECEIVE_AND_DELETE the broker has already removed the message, so V1 onNext MUST
+            // dispatch it to handler2.
+            messageSink.tryEmitNext(message2);
+
+            assertTrue(handler2Invoked.await(5, TimeUnit.SECONDS),
+                "Handler2 must run during RECEIVE_AND_DELETE drain - skipping it would lose the message permanently");
+
+            // Release handler1 so close() can finish.
+            handler1CanProceed.countDown();
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "close() should complete");
+        } finally {
+            handler1CanProceed.countDown();
             closeThread.join(5000);
         }
     }

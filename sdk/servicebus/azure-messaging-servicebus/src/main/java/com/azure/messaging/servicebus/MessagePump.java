@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -62,6 +63,12 @@ final class MessagePump {
     private final Object drainLock = new Object();
     private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
     private volatile boolean closing;
+    // True when the receive mode is PEEK_LOCK, in which case it is safe to skip handler dispatch
+    // for messages that arrive after closing=true (the broker still owns the lock and will
+    // redeliver). False for RECEIVE_AND_DELETE, where the broker has already removed the message
+    // before delivery - skipping the handler in that mode would lose the message permanently, so
+    // we must always invoke processMessage even during the drain window.
+    private final boolean skipDuringDrain;
 
     /**
      * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -91,6 +98,13 @@ final class MessagePump {
         this.concurrency = concurrency;
         this.enableAutoDisposition = enableAutoDisposition;
         this.enableAutoLockRenew = client.isAutoLockRenewRequested();
+        // Cached at construction so the hot path (handleMessage) reads a primitive instead of
+        // walking the receiver options each call. PEEK_LOCK is safe to skip during drain (broker
+        // redelivers); RECEIVE_AND_DELETE is not (message would be lost). When the client cannot
+        // report a receive mode (test mocks that didn't stub getReceiverOptions()) default to the
+        // safer no-skip behavior so messages cannot be dropped silently.
+        final ReceiverOptions options = client.getReceiverOptions();
+        this.skipDuringDrain = options != null && options.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
         if (concurrency > 1) {
             this.workerScheduler = Schedulers.boundedElastic();
         } else {
@@ -151,7 +165,12 @@ final class MessagePump {
         // we could keep activeHandlerCount > 0 long enough to push drain to its timeout. Reading
         // the volatile flag here ensures messages that arrive after closing=true is set are
         // dropped without touching the drain's exit condition.
-        if (closing) {
+        //
+        // Skip is gated on PEEK_LOCK only: in that mode the broker still owns the lock and will
+        // redeliver any message we drop. In RECEIVE_AND_DELETE, the broker has already removed
+        // the message before delivery, so dropping it here would lose it permanently - those
+        // messages must always reach processMessage even during the drain window.
+        if (closing && skipDuringDrain) {
             logger.atVerbose().log("Skipping handler execution (early), pump is closing.");
             return;
         }
@@ -161,8 +180,8 @@ final class MessagePump {
             // closing may have flipped between the early check above and this point
             // (a check-then-act race). Re-check inside the counted region so the rare race-loser
             // still skips work; the increment will be balanced by the decrement in finally and
-            // notifyAll the drain.
-            if (closing) {
+            // notifyAll the drain. Same RECEIVE_AND_DELETE exemption applies.
+            if (closing && skipDuringDrain) {
                 logger.atVerbose().log("Skipping handler execution, pump is closing.");
                 return;
             }

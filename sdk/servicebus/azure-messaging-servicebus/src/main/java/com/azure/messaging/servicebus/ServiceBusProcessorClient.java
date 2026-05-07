@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcesso
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
@@ -593,6 +594,16 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
+        // Cache the receive mode so the onNext hot-path reads a primitive instead of walking the
+        // receiver options each call. PEEK_LOCK is safe to skip during drain (broker still owns
+        // the lock and will redeliver any message we drop). RECEIVE_AND_DELETE is not - the broker
+        // has already removed the message before delivery, so dropping it here would lose it
+        // permanently. Only PEEK_LOCK takes the drain-aware fast path. When the client cannot
+        // report a receive mode (test mocks that didn't stub getReceiverOptions()) default to the
+        // safer no-skip behavior so messages cannot be dropped silently.
+        final ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
+        final boolean skipDuringDrain
+            = receiverOptions != null && receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
         CoreSubscriber<ServiceBusMessageContext>[] subscribers
@@ -617,16 +628,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     // to know what failed before close completes. Only message dispatches take
                     // the drain-aware fast path: avoids counting skip-path invocations against
                     // the drain so a busy upstream cannot keep activeV1HandlerCount > 0 while
-                    // close() is waiting.
+                    // close() is waiting. The skip is gated on PEEK_LOCK only - in
+                    // RECEIVE_AND_DELETE the broker has already removed the message, so dropping
+                    // it here would lose it permanently.
                     final boolean isErrorContext = serviceBusMessageContext.hasError();
-                    if (!isErrorContext && v1Closing) {
+                    if (!isErrorContext && v1Closing && skipDuringDrain) {
                         LOGGER.verbose("Skipping V1 handler execution (early), processor is closing.");
                         return;
                     }
                     activeV1HandlerCount.incrementAndGet();
                     isV1HandlerThread.set(Boolean.TRUE);
                     try {
-                        if (!isErrorContext && v1Closing) {
+                        if (!isErrorContext && v1Closing && skipDuringDrain) {
                             // v1Closing may have flipped between the early check above and this
                             // point (a check-then-act race). Race-loser invocations still skip
                             // work; the increment is balanced by the decrement in finally.

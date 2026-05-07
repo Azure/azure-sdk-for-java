@@ -154,6 +154,12 @@ final class SessionsMessagePump {
     private final AtomicReference<List<RollingSessionReceiver>> rollingReceiversRef = new AtomicReference<>(EMPTY);
     private final SessionReceiversTracker receiversTracker;
     private final Mono<ServiceBusSessionAcquirer.Session> nextSession;
+    // True when the receive mode is PEEK_LOCK. Cached here from the ctor's receiveMode parameter
+    // (which is otherwise only forwarded to SessionReceiversTracker) so each rolling receiver can
+    // be told whether it is safe to skip handler dispatch during drain. RECEIVE_AND_DELETE
+    // sessions must always invoke processMessage even during shutdown - see RollingSessionReceiver
+    // for the data-loss rationale.
+    private final boolean skipDuringDrain;
 
     SessionsMessagePump(String identifier, String fullyQualifiedNamespace, String entityPath,
         ServiceBusReceiveMode receiveMode, ServiceBusReceiverInstrumentation instrumentation,
@@ -191,6 +197,7 @@ final class SessionsMessagePump {
         this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace,
             entityPath, receiveMode, instrumentation);
         this.nextSession = new NextSession(pumpId, fullyQualifiedNamespace, entityPath, sessionAcquirer).mono();
+        this.skipDuringDrain = receiveMode == ServiceBusReceiveMode.PEEK_LOCK;
     }
 
     String getIdentifier() {
@@ -279,7 +286,7 @@ final class SessionsMessagePump {
             final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
                 fullyQualifiedNamespace, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout,
                 concurrencyPerSession, prefetch, enableAutoDisposition, serializer, retryPolicy, processMessage,
-                processError, receiversTracker, drainTimeout);
+                processError, receiversTracker, drainTimeout, skipDuringDrain);
             rollingReceivers.add(rollingReceiver);
         }
         return rollingReceivers;
@@ -376,6 +383,12 @@ final class SessionsMessagePump {
         private final Object drainLock = new Object();
         private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
         private volatile boolean closing;
+        // True when the receive mode is PEEK_LOCK, in which case it is safe to skip handler
+        // dispatch for messages that arrive after closing=true (the broker still owns the lock
+        // and will redeliver). False for RECEIVE_AND_DELETE, where the broker has already removed
+        // the message before delivery - skipping the handler in that mode would lose the message
+        // permanently, so we must always invoke processMessage even during the drain window.
+        private final boolean skipDuringDrain;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final boolean enableAutoDisposition;
@@ -394,7 +407,7 @@ final class SessionsMessagePump {
             Duration maxSessionLockRenew, Duration sessionIdleTimeout, int concurrency, int prefetch,
             boolean enableAutoDisposition, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            SessionReceiversTracker receiversTracker, Duration drainTimeout) {
+            SessionReceiversTracker receiversTracker, Duration drainTimeout, boolean skipDuringDrain) {
             super(INIT);
             this.pumpId = pumpId;
             final Map<String, Object> loggingContext = new HashMap<>(3);
@@ -416,6 +429,7 @@ final class SessionsMessagePump {
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
             this.drainTimeout = drainTimeout;
+            this.skipDuringDrain = skipDuringDrain;
             this.nextSessionStream
                 = new NextSessionStream(pumpId, rollerId, fullyQualifiedNamespace, entityPath, nextSession);
             final Flux<ServiceBusSessionReactorReceiver> nextSessionReceiverStream
@@ -563,7 +577,12 @@ final class SessionsMessagePump {
             // every skip we could keep activeHandlerCount > 0 long enough to push drain to its
             // timeout. Reading the volatile flag here ensures messages that arrive after
             // closing=true is set are dropped without touching the drain's exit condition.
-            if (closing) {
+            //
+            // Skip is gated on PEEK_LOCK only: in that mode the broker still owns the lock and
+            // will redeliver any message we drop. In RECEIVE_AND_DELETE, the broker has already
+            // removed the message before delivery, so dropping it here would lose it permanently
+            // - those messages must always reach processMessage even during the drain window.
+            if (closing && skipDuringDrain) {
                 logger.atVerbose().log("Skipping handler execution (early), session pump is closing.");
                 return;
             }
@@ -574,8 +593,8 @@ final class SessionsMessagePump {
                 // closing may have flipped between the early check above and this point
                 // (a check-then-act race). Re-check inside the counted region so the rare
                 // race-loser still skips work; the increment will be balanced by the decrement
-                // in finally and notifyAll the drain.
-                if (closing) {
+                // in finally and notifyAll the drain. Same RECEIVE_AND_DELETE exemption applies.
+                if (closing && skipDuringDrain) {
                     logger.atVerbose().log("Skipping handler execution, session pump is closing.");
                     return;
                 }
