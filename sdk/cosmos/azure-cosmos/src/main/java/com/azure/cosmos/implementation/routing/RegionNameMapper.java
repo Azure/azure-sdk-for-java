@@ -9,20 +9,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-<<<<<<< Updated upstream
-=======
 import java.util.concurrent.ConcurrentHashMap;
->>>>>>> Stashed changes
 
 /**
  * Maps region name variants (any casing/spacing) to the canonical CosmosDB region name format.
  * <p>
  * For example, "westus2" → "West US 2", "west us 3" → "West US 3", "EAST US" → "East US".
  * <p>
-<<<<<<< Updated upstream
- * If the input region name is not recognized, it is returned as-is to support forward compatibility
- * with new Azure regions that may not yet be in the static list.
-=======
  * Uses a two-tier lookup:
  * <ol>
  *   <li>A static map of well-known Azure regions (compiled into the SDK).</li>
@@ -30,20 +23,16 @@ import java.util.concurrent.ConcurrentHashMap;
  *       not yet in the static list).</li>
  * </ol>
  * If the input region name is not found in either map, it is returned as-is.
->>>>>>> Stashed changes
  */
 public final class RegionNameMapper {
 
     private static final Map<String, String> NORMALIZED_TO_CANONICAL;
 
-<<<<<<< Updated upstream
-=======
     // Dynamic map populated from server-returned DatabaseAccountLocation names.
     // This ensures new Azure regions not yet in the static list are still normalized
     // correctly after the first account read.
     private static final ConcurrentHashMap<String, String> DYNAMIC_NORMALIZED_TO_CANONICAL = new ConcurrentHashMap<>();
 
->>>>>>> Stashed changes
     static {
         Map<String, String> map = new HashMap<>();
 
@@ -158,15 +147,9 @@ public final class RegionNameMapper {
     /**
      * Normalizes a region name to the canonical CosmosDB format.
      * <p>
-<<<<<<< Updated upstream
-     * Strips spaces, lowercases, and looks up in the known-region map.
-     * If recognized, returns the canonical form (e.g., "West US 3").
-     * If not recognized, returns the input as-is for forward compatibility.
-=======
      * Strips spaces, lowercases, and looks up in both the static known-region map
      * and the dynamic map (populated from server responses). If recognized, returns
      * the canonical form (e.g., "West US 3"). If not recognized, returns the input as-is.
->>>>>>> Stashed changes
      *
      * @param regionName the region name to normalize (any casing/spacing variant)
      * @return the canonical CosmosDB region name, or the original input if unrecognized
@@ -177,9 +160,6 @@ public final class RegionNameMapper {
         }
 
         String normalized = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
-<<<<<<< Updated upstream
-        return NORMALIZED_TO_CANONICAL.getOrDefault(normalized, regionName);
-=======
 
         // Check static map first (most common case)
         String canonical = NORMALIZED_TO_CANONICAL.get(normalized);
@@ -214,7 +194,6 @@ public final class RegionNameMapper {
         if (!NORMALIZED_TO_CANONICAL.containsKey(key)) {
             DYNAMIC_NORMALIZED_TO_CANONICAL.putIfAbsent(key, canonicalRegionName);
         }
->>>>>>> Stashed changes
     }
 
     private static void addMapping(Map<String, String> map, String canonicalName) {

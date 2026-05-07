@@ -98,8 +98,6 @@ public class RegionNameMapperTest {
         // Blank strings (only spaces) → stripped to "" → not in map → returned as-is
         assertThat(RegionNameMapper.getCosmosDBRegionName("   ")).isEqualTo("   ");
     }
-<<<<<<< Updated upstream
-=======
 
     @Test(groups = "unit")
     public void shouldNormalizeAfterDynamicRegistration() {
@@ -124,5 +122,4 @@ public class RegionNameMapperTest {
         RegionNameMapper.registerRegionName("west us"); // wrong casing
         assertThat(RegionNameMapper.getCosmosDBRegionName("westus")).isEqualTo("West US");
     }
->>>>>>> Stashed changes
 }
