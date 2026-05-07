@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -626,6 +627,34 @@ public class ChangeFeedStateTest {
             ChangeFeedStartFromInternal.createFromNow(), null);
 
         state.extractForEffectiveRange(new Range<>("AA", "BB", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_binarySearchBacktrack() {
+        // Tokens: [000000,000002), [000002,000004), [000004,000006)
+        // Query:  [000003,000005) — starts mid-way through the second token
+        // binarySearch returns insertionPoint=2 (negative), so startIndex = Math.max(0, 2-2) = 1
+        // This exercises the backtrack path where startIndex > 0 after binary search
+        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
+            {"000000", "000002"}, {"000002", "000004"}, {"000004", "000006"}
+        });
+
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>("000003", "000005", true, false))
+                .extractContinuationTokens();
+
+        assertThat(tokens).hasSize(2);
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("000003", "000004", true, false));
+        assertThat(tokens.get(0).getToken()).isEqualTo("tok_1");
+        assertThat(tokens.get(1).getRange()).isEqualTo(new Range<>("000004", "000005", true, false));
+        assertThat(tokens.get(1).getToken()).isEqualTo("tok_2");
+
+        // Also verify batch API produces the same result
+        List<ChangeFeedState> batchResults = state.extractForEffectiveRanges(
+            Collections.singletonList(new Range<>("000003", "000005", true, false)));
+        assertThat(batchResults).hasSize(1);
+        assertThat(batchResults.get(0).toString())
+            .isEqualTo(state.extractForEffectiveRange(new Range<>("000003", "000005", true, false)).toString());
     }
 
     private ChangeFeedState createStateWithManyTokens(int tokenCount) {
