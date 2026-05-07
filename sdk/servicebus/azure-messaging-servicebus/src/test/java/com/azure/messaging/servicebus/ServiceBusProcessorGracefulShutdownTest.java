@@ -75,6 +75,9 @@ import static org.mockito.Mockito.when;
  *   <li><b>Concurrent Close Ownership</b> — {@link #v1ConcurrentCloseCallsDoNotRace()}:
  *       Tests that only the first concurrent {@code close()} performs cleanup; the others return
  *       immediately so they cannot dispose state created after the owner cleared the in-progress flag</li>
+ *   <li><b>V2 Concurrent Start During Close</b> — {@link #v2ConcurrentStartDuringCloseDrainIsIgnored()}:
+ *       Tests that a concurrent {@code start()} during {@code processorV2.close()}'s drain window
+ *       is ignored, mirroring the V1 guarantee</li>
  *   <li><b>V2 Session</b> — Not directly unit-testable. The drain in
  *       {@code SessionsMessagePump.RollingSessionReceiver.terminate()} uses the identical
  *       {@code AtomicInteger} + {@code Object} monitor wait/notifyAll pattern as {@code MessagePump}.
@@ -490,13 +493,13 @@ public class ServiceBusProcessorGracefulShutdownTest {
         when(client.complete(any())).thenReturn(Mono.empty());
         doNothing().when(client).close();
 
-        // Emit message1 immediately, then message2 after a short delay (to ensure message1's handler starts first).
-        // Use concurrency=2 so flatMap can dispatch both handlers concurrently.
+        // Use a Sinks.Many for fully controlled emission timing - we choose exactly when each
+        // message enters the pipeline rather than relying on a wall-clock delay. concurrency=2
+        // lets flatMap dispatch handlers in parallel.
+        final reactor.core.publisher.Sinks.Many<ServiceBusReceivedMessage> messageSink
+            = reactor.core.publisher.Sinks.many().unicast().onBackpressureBuffer();
         when(client.nonSessionProcessorReceiveV2())
-            .thenReturn(Flux
-                .concat(Flux.just(message1), Flux.just(message2).delayElements(Duration.ofMillis(200)),
-                    Flux.<ServiceBusReceivedMessage>never())
-                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+            .thenReturn(messageSink.asFlux().publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
 
         final CountDownLatch handler1Started = new CountDownLatch(1);
         final CountDownLatch handler1CanProceed = new CountDownLatch(1);
@@ -522,7 +525,8 @@ public class ServiceBusProcessorGracefulShutdownTest {
         final AtomicReference<reactor.core.Disposable> subscription = new AtomicReference<>();
         subscription.set(pump.begin().subscribe());
 
-        // Wait for handler1 to start.
+        // Emit message1 explicitly and wait for handler1 to start.
+        messageSink.tryEmitNext(message1);
         assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started processing");
 
         // Call drainHandlers on a separate thread. This sets closing=true and waits for handler1.
@@ -543,11 +547,16 @@ public class ServiceBusProcessorGracefulShutdownTest {
                 || drainThread.getState() == Thread.State.TIMED_WAITING,
             "drainHandlers() to enter waiting state (closing flag set)");
 
-        // Small additional window for message2 (delayed 200ms after subscribe in the source flux)
-        // to be emitted and flow through the reactive pipeline so its onNext observes closing=true
-        // and skips dispatch. The exact moment message2 reaches MessagePump's closing-flag check
-        // is not externally observable without exposing internal state for tests.
-        Thread.sleep(300);
+        // Now emit message2 - it enters the pipeline AFTER closing=true has been set, so its
+        // onNext path must observe closing=true and skip dispatch.
+        messageSink.tryEmitNext(message2);
+
+        // Verify deterministically that message2 is NOT delivered to messageConsumer. Mockito's
+        // `after(N).never()` waits N ms then asserts; if message2 were delivered (regression),
+        // the assertion would still hold here because handler2ProcessMessageInvoked is a flag we
+        // poll separately. The wait window covers reactor pipeline propagation.
+        org.mockito.Mockito.verify(client, org.mockito.Mockito.after(500).never()).complete(message2);
+        assertFalse(handler2ProcessMessageInvoked.get(), "Second handler should have been skipped by the closing flag");
 
         // Release handler1 so the drain can complete.
         handler1CanProceed.countDown();
@@ -556,7 +565,7 @@ public class ServiceBusProcessorGracefulShutdownTest {
         assertTrue(drainDone.await(5, TimeUnit.SECONDS), "Drain should complete after handler1 finishes");
         assertTrue(drainResult.get(), "Drain should return true (all handlers completed)");
 
-        // The second message's handler should NOT have invoked processMessage because closing was true.
+        // Final cross-check after drain completes - handler2 must still have been skipped.
         assertFalse(handler2ProcessMessageInvoked.get(), "Second handler should have been skipped by the closing flag");
 
         // Clean up.
@@ -1216,6 +1225,108 @@ public class ServiceBusProcessorGracefulShutdownTest {
             handlerCanProceed.countDown();
             firstCloseThread.join(5000);
             secondCloseThread.join(5000);
+        }
+    }
+
+    /**
+     * Verifies that a concurrent {@code start()} call during a V2 {@code close()}'s drain window
+     * is ignored, mirroring the V1 guarantee in {@link #v1ConcurrentStartDuringCloseDrainIsIgnored()}.
+     * <p>
+     * Background: {@code close()} releases the outer {@code ServiceBusProcessorClient} monitor
+     * before delegating to {@code processorV2.close()} (whose internal drain blocks for in-flight
+     * handler settlement). Without an explicit {@code v2CloseInProgress} guard, a concurrent
+     * {@code start()} could acquire the outer monitor during the drain window and call
+     * {@code processorV2.start()}, leaving the inner processor running after the outer
+     * {@code close()} returns - even though the caller observed {@code close()} returning
+     * successfully.
+     * </p>
+     * <p>
+     * Regression test for the V2 lifecycle race raised on
+     * <a href="https://github.com/Azure/azure-sdk-for-java/pull/48192#discussion_r3198481760">PR #48192</a>.
+     * </p>
+     */
+    @Test
+    public void v2ConcurrentStartDuringCloseDrainIsIgnored() throws InterruptedException {
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+
+        final ServiceBusReceiverClientBuilder receiverBuilder = mock(ServiceBusReceiverClientBuilder.class);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+
+        // Builder must be invoked exactly once - by the original start(). A concurrent start()
+        // during V2 close drain must NOT invoke the builder a second time.
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn("FQDN");
+        when(asyncClient.getEntityPath()).thenReturn("entityPath");
+        when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.isAutoLockRenewRequested()).thenReturn(false);
+        when(asyncClient.complete(any())).thenReturn(Mono.empty());
+        // Emit one message then hang so the V2 drain has something to wait for.
+        when(asyncClient.nonSessionProcessorReceiveV2())
+            .thenReturn(Flux.concat(Flux.just(message), Flux.<ServiceBusReceivedMessage>never())
+                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic()));
+        doNothing().when(asyncClient).close();
+
+        final CountDownLatch handlerStarted = new CountDownLatch(1);
+        final CountDownLatch handlerCanProceed = new CountDownLatch(1);
+
+        final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
+            handlerStarted.countDown();
+            try {
+                handlerCanProceed.await(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+
+        // V2 path: setV2(true) so the outer ServiceBusProcessorClient delegates to a real
+        // ServiceBusProcessor (RollingMessagePump under the hood).
+        final ServiceBusProcessorClientOptions options
+            = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setV2(true);
+        final ServiceBusProcessorClient processorClient
+            = new ServiceBusProcessorClient(receiverBuilder, "entityPath", null, null, messageConsumer, error -> {
+            }, options);
+
+        processorClient.start();
+        assertTrue(handlerStarted.await(5, TimeUnit.SECONDS), "Handler should have started");
+
+        // Begin V2 close on a separate thread; it will block in processorV2.close()'s drain
+        // until the handler returns.
+        final CountDownLatch closeDone = new CountDownLatch(1);
+        final Thread closeThread = new Thread(() -> {
+            processorClient.close();
+            closeDone.countDown();
+        });
+        closeThread.start();
+
+        try {
+            // Wait deterministically for V2 close to be in-progress. Polling isRunning() is the
+            // closest observable signal: processorV2's close() sets its internal isRunning=false
+            // before draining, and our outer v2CloseInProgress flag is set in the same critical
+            // section that captures processorV2 for the close call.
+            waitFor(() -> !processorClient.isRunning(), "V2 close() to be in progress");
+
+            // Concurrent start() during the V2 drain window. Without the v2CloseInProgress guard,
+            // this would invoke processorV2.start() and create a new RollingMessagePump that the
+            // outer close() can't track; with the guard, start() returns without taking action.
+            processorClient.start();
+
+            // The receiver builder should still have been invoked exactly once - the concurrent
+            // start() must not have created a second client behind the in-flight close().
+            verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
+            assertFalse(processorClient.isRunning(),
+                "Processor should not report running while V2 close()'s drain is in progress");
+
+            // Allow the handler to complete so V2 close() can finish.
+            handlerCanProceed.countDown();
+            assertTrue(closeDone.await(5, TimeUnit.SECONDS), "V2 close() should complete");
+
+            // After close() returns, no extra receivers were created and the processor remains stopped.
+            assertFalse(processorClient.isRunning(), "Processor should be stopped after V2 close()");
+            verify(receiverBuilder, Mockito.times(1)).buildAsyncClientForProcessor();
+        } finally {
+            handlerCanProceed.countDown();
+            closeThread.join(5000);
         }
     }
 }

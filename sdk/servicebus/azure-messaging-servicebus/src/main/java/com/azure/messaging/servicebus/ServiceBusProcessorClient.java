@@ -217,6 +217,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     // again after close() returns to begin a new processing cycle (the flag is cleared in close()'s
     // finally block).
     private final AtomicBoolean v1CloseInProgress = new AtomicBoolean(false);
+    // Same gate as v1CloseInProgress but for the V2 path. close() releases the instance monitor
+    // before delegating to processorV2.close() (whose internal drain blocks for in-flight handler
+    // settlement). Without this gate, a concurrent start()/stop() call could acquire the outer
+    // monitor during the drain window and call processorV2.start(), leaving the inner processor
+    // running after the outer close() returns.
+    private final AtomicBoolean v2CloseInProgress = new AtomicBoolean(false);
     // Most-recent identifier captured from the V1 asyncClient. Lets getIdentifier() return a
     // stable value during/after close() without lazy-creating a fresh receiver that close() would
     // not dispose. Refreshed every time getIdentifier() observes a live asyncClient and once more
@@ -312,6 +318,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized void start() {
         if (processorV2 != null) {
+            if (v2CloseInProgress.get()) {
+                // close() is mid-shutdown on the V2 path - don't restart processorV2 underneath
+                // it. Caller can retry start() once close() has returned.
+                LOGGER.info("Processor close() is in progress; ignoring start() call.");
+                return;
+            }
             processorV2.start();
             return;
         }
@@ -363,6 +375,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized void stop() {
         if (processorV2 != null) {
+            if (v2CloseInProgress.get()) {
+                LOGGER.info("Processor close() is in progress; ignoring stop() call.");
+                return;
+            }
             processorV2.stop();
             return;
         }
@@ -398,6 +414,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     public void close() {
         final ServiceBusProcessor v2Snapshot;
         final Duration drainTimeout;
+        final boolean wonV2Close;
 
         // Snapshot state and mark the processor as closing while holding the monitor, but RELEASE
         // the monitor before performing the blocking drain. Holding the monitor across the drain
@@ -417,15 +434,27 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 isRunning.set(false);
                 v1Closing = true;
                 drainTimeout = processorOptions.getDrainTimeout();
+                wonV2Close = false;
             } else {
+                // V2 path: claim ownership symmetrically so concurrent start()/stop() return early
+                // and a second concurrent close() returns immediately rather than re-invoking
+                // processorV2.close() while the owner is still draining.
+                wonV2Close = v2CloseInProgress.compareAndSet(false, true);
                 drainTimeout = null;
             }
         }
 
         if (v2Snapshot != null) {
-            // V2 path: drain happens inside processorV2.close(). Invoked outside the monitor so
-            // handlers calling isRunning()/getIdentifier() during drain do not stall shutdown.
-            v2Snapshot.close();
+            if (!wonV2Close) {
+                return;
+            }
+            try {
+                // V2 path: drain happens inside processorV2.close(). Invoked outside the monitor
+                // so handlers calling isRunning()/getIdentifier() during drain do not stall shutdown.
+                v2Snapshot.close();
+            } finally {
+                v2CloseInProgress.set(false);
+            }
             return;
         }
 
