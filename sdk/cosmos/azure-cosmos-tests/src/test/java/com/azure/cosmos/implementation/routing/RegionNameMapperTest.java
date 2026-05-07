@@ -98,4 +98,31 @@ public class RegionNameMapperTest {
         // Blank strings (only spaces) → stripped to "" → not in map → returned as-is
         assertThat(RegionNameMapper.getCosmosDBRegionName("   ")).isEqualTo("   ");
     }
+<<<<<<< Updated upstream
+=======
+
+    @Test(groups = "unit")
+    public void shouldNormalizeAfterDynamicRegistration() {
+        // Before registration: unknown region passes through as-is
+        String unknownSpaceStripped = "futureregion99";
+        assertThat(RegionNameMapper.getCosmosDBRegionName(unknownSpaceStripped)).isEqualTo(unknownSpaceStripped);
+
+        // Simulate server returning this new region name
+        RegionNameMapper.registerRegionName("Future Region 99");
+
+        // After registration: all variants normalize to canonical form
+        assertThat(RegionNameMapper.getCosmosDBRegionName("futureregion99")).isEqualTo("Future Region 99");
+        assertThat(RegionNameMapper.getCosmosDBRegionName("future region 99")).isEqualTo("Future Region 99");
+        assertThat(RegionNameMapper.getCosmosDBRegionName("FUTURE REGION 99")).isEqualTo("Future Region 99");
+        assertThat(RegionNameMapper.getCosmosDBRegionName("FutureRegion99")).isEqualTo("Future Region 99");
+        assertThat(RegionNameMapper.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
+    }
+
+    @Test(groups = "unit")
+    public void dynamicRegistrationShouldNotOverrideStaticEntries() {
+        // "West US" is in the static map — dynamic registration should not overwrite it
+        RegionNameMapper.registerRegionName("west us"); // wrong casing
+        assertThat(RegionNameMapper.getCosmosDBRegionName("westus")).isEqualTo("West US");
+    }
+>>>>>>> Stashed changes
 }

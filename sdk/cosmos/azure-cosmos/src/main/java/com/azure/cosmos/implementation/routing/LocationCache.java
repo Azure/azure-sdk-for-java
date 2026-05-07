@@ -913,6 +913,10 @@ public class LocationCache {
                 if (!Strings.isNullOrEmpty(gatewayDbAccountLocation.getName())) {
                     try {
 
+                        // Register the canonical server name so future user inputs
+                        // (e.g., "westus4") can be normalized even for new regions
+                        RegionNameMapper.registerRegionName(gatewayDbAccountLocation.getName());
+
                         String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
                         URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
