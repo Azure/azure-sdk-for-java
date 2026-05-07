@@ -8,8 +8,6 @@
 
 ### Bugs Fixed
 
-- Fixed a bug where the sub-level `event-hub-name` property under `spring.cloud.azure.eventhubs.consumer` or `spring.cloud.azure.eventhubs.producer` was ignored when the base-level `spring.cloud.azure.eventhubs.event-hub-name` was also configured, causing the produced clients to connect to the base event hub instead of the overridden one. [#43593](https://github.com/Azure/azure-sdk-for-java/issues/43593)
-
 ### Other Changes
 
 ## 7.1.0 (2026-03-11)
