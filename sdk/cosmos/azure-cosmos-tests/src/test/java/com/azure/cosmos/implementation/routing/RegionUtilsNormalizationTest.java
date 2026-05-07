@@ -6,6 +6,9 @@ package com.azure.cosmos.implementation.routing;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -81,10 +84,10 @@ public class RegionUtilsNormalizationTest {
     }
 
     @Test(groups = "unit")
-    public void shouldPassthroughUnknownRegions() {
-        // Unknown regions should be returned as-is for forward compatibility
-        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
-        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
+    public void shouldNormalizeUnknownRegions() {
+        // Unknown regions should be returned in normalized form (lowercase, no spaces)
+        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("mycustomregion");
+        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("futureregion42");
     }
 
     @Test(groups = "unit")
@@ -95,14 +98,65 @@ public class RegionUtilsNormalizationTest {
 
     @Test(groups = "unit")
     public void shouldHandleBlankString() {
-        // Blank strings (only spaces) → stripped to "" → not in map → returned as-is
-        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("   ");
+        // Blank strings (only spaces) → stripped to "" → normalized to ""
+        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("");
     }
 
     @Test(groups = "unit")
-    public void shouldPassthroughUnknownRegionsAsIs() {
-        // Unknown regions not in the static map should be returned as-is
+    public void unknownRegionVariantsShouldCollapse() {
+        // Unknown regions: different variants should collapse to the same normalized form
         assertThat(RegionUtils.getCosmosDBRegionName("futureregion99")).isEqualTo("futureregion99");
-        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
+        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("futureregion99");
+        assertThat(RegionUtils.getCosmosDBRegionName("FUTURE REGION 99")).isEqualTo("futureregion99");
+    }
+
+    // ========================================================================
+    // normalizeRegionNames tests
+    // ========================================================================
+
+    @Test(groups = "unit")
+    public void normalizeRegionNames_shouldNormalizeList() {
+        assertThat(RegionUtils.normalizeRegionNames(Arrays.asList("westus3", "east us")))
+            .containsExactly("West US 3", "East US");
+    }
+
+    @Test(groups = "unit")
+    public void normalizeRegionNames_shouldHandleNullAndEmpty() {
+        assertThat(RegionUtils.normalizeRegionNames(null)).isEmpty();
+        assertThat(RegionUtils.normalizeRegionNames(Collections.emptyList())).isEmpty();
+    }
+
+    @Test(groups = "unit")
+    public void normalizeRegionNames_shouldDropNullElements() {
+        assertThat(RegionUtils.normalizeRegionNames(Arrays.asList("East US", null, "westus3")))
+            .containsExactly("East US", "West US 3");
+    }
+
+    // ========================================================================
+    // containsRegionIgnoreCase tests
+    // ========================================================================
+
+    @Test(groups = "unit")
+    public void containsRegionIgnoreCase_shouldMatchNormalized() {
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList("westus3"), "West US 3")).isTrue();
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList("West US 3"), "WEST US 3")).isTrue();
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList("West US 3"), "westus3")).isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void containsRegionIgnoreCase_shouldReturnFalseForNonMatch() {
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList("East US"), "West US 3")).isFalse();
+    }
+
+    @Test(groups = "unit")
+    public void containsRegionIgnoreCase_shouldHandleNullAndEmpty() {
+        assertThat(RegionUtils.containsRegionIgnoreCase(null, "anything")).isFalse();
+        assertThat(RegionUtils.containsRegionIgnoreCase(Collections.emptyList(), "anything")).isFalse();
+    }
+
+    @Test(groups = "unit")
+    public void containsRegionIgnoreCase_shouldHandleNullElements() {
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList("East US", null), "East US")).isTrue();
+        assertThat(RegionUtils.containsRegionIgnoreCase(Arrays.asList(null, null), "East US")).isFalse();
     }
 }

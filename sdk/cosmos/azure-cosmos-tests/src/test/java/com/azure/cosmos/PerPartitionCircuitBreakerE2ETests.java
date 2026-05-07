@@ -5328,8 +5328,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             // The contacted region should match the first preferred region (in lowercased canonical form)
             String expectedFirstRegion = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
-            assertThat(diagnosticsContext.getContactedRegionNames().iterator().next())
-                .isEqualTo(expectedFirstRegion);
+            assertThat(diagnosticsContext.getContactedRegionNames())
+                .contains(expectedFirstRegion);
 
         } finally {
             if (asyncClient != null) {

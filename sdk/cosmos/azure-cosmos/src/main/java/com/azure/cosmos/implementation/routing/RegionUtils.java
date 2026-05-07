@@ -35,7 +35,7 @@ public class RegionUtils {
     // This is a SUBSET of all known regions — only regions with assigned IDs.
     // ========================================================================
 
-    public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
+    public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(new HashMap<String, Integer>() {
         {
             put("East US", 1);
             put("East US 2", 2);
@@ -162,147 +162,23 @@ public class RegionUtils {
             put("Southeast Asia 3", 123);
             put("North Europe 3", 124);
         }
-    };
+    });
 
-    public static final Map<Integer, String> REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS = new HashMap<Integer, String>() {
-        {
-            put(1, "eastus");
-            put(2, "eastus2");
-            put(3, "centralus");
-            put(4, "northcentralus");
-            put(5, "southcentralus");
-            put(6, "westcentralus");
-            put(7, "westus");
-            put(8, "westus2");
-            put(9, "canadaeast");
-            put(10, "canadacentral");
-            put(11, "brazilsouth");
-            put(12, "northeurope");
-            put(13, "westeurope");
-            put(14, "francecentral");
-            put(15, "francesouth");
-            put(16, "ukwest");
-            put(17, "uksouth");
-            put(18, "germanycentral");
-            put(19, "germanynortheast");
-            put(20, "germanynorth");
-            put(21, "germanywestcentral");
-            put(22, "switzerlandnorth");
-            put(23, "switzerlandwest");
-            put(24, "southeastasia");
-            put(25, "eastasia");
-            put(26, "australiaeast");
-            put(27, "australiasoutheast");
-            put(28, "australiacentral");
-            put(29, "australiacentral2");
-            put(30, "chinaeast");
-            put(31, "chinanorth");
-            put(32, "centralindia");
-            put(33, "westindia");
-            put(34, "southindia");
-            put(35, "japaneast");
-            put(36, "japanwest");
-            put(37, "koreacentral");
-            put(38, "koreasouth");
-            put(39, "usgovvirginia");
-            put(40, "usgoviowa");
-            put(41, "usgovarizona");
-            put(42, "usgovtexas");
-            put(43, "usdodeast");
-            put(44, "usdodcentral");
-            put(45, "usseceast");
-            put(46, "ussecwest");
-            put(47, "southafricawest");
-            put(48, "southafricanorth");
-            put(49, "uaecentral");
-            put(50, "uaenorth");
-            put(51, "centraluseuap");
-            put(52, "eastus2euap");
-            put(53, "northeurope2");
-            put(54, "easteurope");
-            put(55, "apacsoutheast2");
-            put(56, "uksouth2");
-            put(57, "uknorth");
-            put(58, "eastusstg");
-            put(59, "southcentralusstg");
-            put(60, "norwayeast");
-            put(61, "norwaywest");
-            put(62, "usgovwyoming");
-            put(63, "usdodsouthwest");
-            put(64, "usdodwestcentral");
-            put(65, "usdodsouthcentral");
-            put(66, "chinaeast2");
-            put(67, "chinanorth2");
-            put(68, "usnateast");
-            put(69, "usnatwest");
-            put(70, "chinanorth10");
-            put(71, "swedencentral");
-            put(72, "swedensouth");
-            put(73, "koreasouth2");
-            put(74, "brazilsoutheast");
-            put(75, "brazilnortheast");
-            put(76, "chilecentral");
-            put(77, "westus3");
-            put(78, "jioindiawest");
-            put(79, "jioindiacentral");
-            put(80, "qatarcentral");
-            put(81, "israelcentral");
-            put(82, "mexicocentral");
-            put(83, "spaincentral");
-            put(84, "taiwannorth");
-            put(85, "singaporegov");
-            put(86, "polandcentral");
-            put(87, "chilenorthcentral");
-            put(88, "usseccentral");
-            put(89, "malaysiawest");
-            put(90, "newzealandnorth");
-            put(91, "italynorth");
-            put(92, "eastusslv");
-            put(93, "chinanorth3");
-            put(94, "chinaeast3");
-            put(95, "austriaeast");
-            put(96, "taiwannorthwest");
-            put(97, "belgiumcentral");
-            put(98, "malaysiasouth");
-            put(99, "indiasouthcentral");
-            put(100, "indonesiacentral");
-            put(101, "finlandcentral");
-            put(102, "israelnorthwest");
-            put(103, "denmarkeast");
-            put(104, "southeastus");
-            put(105, "ocave");
-            put(106, "arlem");
-            put(107, "bleufrancecentral");
-            put(108, "bleufrancesouth");
-            put(109, "deloscloudgermanycentral");
-            put(110, "deloscloudgermanynorth");
-            put(111, "singaporecentral");
-            put(112, "singaporenorth");
-            put(113, "ussecwestcentral");
-            put(114, "southcentralus2");
-            put(115, "southwestus");
-            put(116, "eastus3");
-            put(117, "southeastus3");
-            put(118, "usnatnorth");
-            put(119, "southeastus5");
-            put(120, "saudiarabiaeast");
-            put(121, "westcentralusfre");
-            put(122, "northeastus5");
-            put(123, "southeastasia3");
-            put(124, "northeurope3");
-        }
-    };
+    public static final Map<Integer, String> REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS;
 
     public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS;
 
     static {
-        // Build normalized→ID map from REGION_NAME_TO_REGION_ID_MAPPINGS
-        Map<String, Integer> normalizedMap = new HashMap<>();
+        // Derive both maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS
+        Map<Integer, String> idToNormalized = new HashMap<>();
+        Map<String, Integer> normalizedToId = new HashMap<>();
         for (Map.Entry<String, Integer> entry : REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
             String normalized = entry.getKey().toLowerCase(Locale.ROOT).replace(" ", "");
-            normalizedMap.put(normalized, entry.getValue());
+            normalizedToId.put(normalized, entry.getValue());
+            idToNormalized.putIfAbsent(entry.getValue(), normalized);
         }
-        NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(normalizedMap);
+        NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(normalizedToId);
+        REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS = Collections.unmodifiableMap(idToNormalized);
     }
 
     public static String getRegionName(int regionId) {
@@ -341,10 +217,13 @@ public class RegionUtils {
      * <p>
      * Strips spaces, lowercases, and looks up in the static known-region map.
      * If recognized, returns the canonical form (e.g., "West US 3").
-     * If not recognized, returns the input as-is for forward compatibility.
+     * If not recognized, returns the normalized form (lowercase, no spaces)
+     * for forward compatibility — this ensures unknown regions still match
+     * after LocationCache applies toLowerCase() to server-returned names.
      *
      * @param regionName the region name to normalize (any casing/spacing variant)
-     * @return the canonical CosmosDB region name, or the original input if unrecognized
+     * @return the canonical CosmosDB region name, or the lowercase space-stripped
+     *         form if unrecognized
      */
     public static String getCosmosDBRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
@@ -358,7 +237,7 @@ public class RegionUtils {
             return canonical;
         }
 
-        return regionName;
+        return normalized;
     }
 
     /**
@@ -395,7 +274,7 @@ public class RegionUtils {
         }
         String normalizedTarget = getCosmosDBRegionName(target);
         for (String region : regions) {
-            if (getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+            if (region != null && getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
                 return true;
             }
         }

@@ -346,7 +346,7 @@ public class LocationCache {
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
         // Normalize user-configured exclude regions to canonical form for consistent comparison.
-    // Unknown regions not in the static map are passed through as-is.
+        // Unknown regions not in the static map are passed through as-is.
         List<String> normalizedUserExcludeRegions = RegionUtils.normalizeRegionNames(userConfiguredExcludeRegions);
 
         // exclude those regions which are user excluded first
