@@ -556,9 +556,24 @@ final class SessionsMessagePump {
             final ServiceBusReceivedMessage message
                 = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
 
+            // Fast-path early return: avoid counting skip-path invocations against the drain.
+            // Under sustained throughput, the per-session messageFlux is still live while
+            // drainHandlers() is waiting (the worker scheduler is only disposed after drain
+            // returns), so flatMap keeps dispatching messages. If we incremented the counter for
+            // every skip we could keep activeHandlerCount > 0 long enough to push drain to its
+            // timeout. Reading the volatile flag here ensures messages that arrive after
+            // closing=true is set are dropped without touching the drain's exit condition.
+            if (closing) {
+                logger.atVerbose().log("Skipping handler execution (early), session pump is closing.");
+                return;
+            }
+
             activeHandlerCount.incrementAndGet();
             isHandlerThread.set(Boolean.TRUE);
             try {
+                // TOCTOU: closing may have flipped between the early check above and this point.
+                // Re-check inside the counted region so the rare race-loser still skips work; the
+                // increment will be balanced by the decrement in finally and notifyAll the drain.
                 if (closing) {
                     logger.atVerbose().log("Skipping handler execution, session pump is closing.");
                     return;

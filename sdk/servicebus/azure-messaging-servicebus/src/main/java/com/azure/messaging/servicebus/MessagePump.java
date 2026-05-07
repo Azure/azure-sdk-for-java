@@ -144,9 +144,23 @@ final class MessagePump {
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
+        // Fast-path early return: avoid counting skip-path invocations against the drain. Under
+        // sustained throughput with concurrency > 1, the upstream subscription is still live
+        // while drainHandlers() is waiting (the subscription is only disposed after drain returns),
+        // so flatMap keeps dispatching messages. If we incremented the counter for every skip
+        // we could keep activeHandlerCount > 0 long enough to push drain to its timeout. Reading
+        // the volatile flag here ensures messages that arrive after closing=true is set are
+        // dropped without touching the drain's exit condition.
+        if (closing) {
+            logger.atVerbose().log("Skipping handler execution (early), pump is closing.");
+            return;
+        }
         activeHandlerCount.incrementAndGet();
         isHandlerThread.set(Boolean.TRUE);
         try {
+            // TOCTOU: closing may have flipped between the early check above and this point.
+            // Re-check inside the counted region so the rare race-loser still skips work; the
+            // increment will be balanced by the decrement in finally and notifyAll the drain.
             if (closing) {
                 logger.atVerbose().log("Skipping handler execution, pump is closing.");
                 return;
