@@ -10,17 +10,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
 
-#### New Features
-
-- Add `drainTimeout` property to Service Bus processor configuration to control the maximum wait time for in-flight message handlers to complete during processor shutdown. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
-
-### Spring Messaging Azure Service Bus
-This section includes changes in `spring-messaging-azure-servicebus` module.
-
-#### New Features
-
-- Add `drainTimeout` property to `ProcessorProperties` to control the maximum wait time for in-flight message handlers to complete during processor shutdown. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
-
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 

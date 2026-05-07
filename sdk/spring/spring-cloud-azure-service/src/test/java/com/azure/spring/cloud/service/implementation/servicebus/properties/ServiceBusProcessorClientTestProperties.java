@@ -11,7 +11,6 @@ public class ServiceBusProcessorClientTestProperties extends ServiceBusReceiverC
     private Integer maxConcurrentCalls;
     private Integer maxConcurrentSessions;
     private Duration sessionIdleTimeout;
-    private Duration drainTimeout;
 
     @Override
     public Integer getMaxConcurrentCalls() {
@@ -38,14 +37,5 @@ public class ServiceBusProcessorClientTestProperties extends ServiceBusReceiverC
 
     public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
         this.sessionIdleTimeout = sessionIdleTimeout;
-    }
-
-    @Override
-    public Duration getDrainTimeout() {
-        return drainTimeout;
-    }
-
-    public void setDrainTimeout(Duration drainTimeout) {
-        this.drainTimeout = drainTimeout;
     }
 }
