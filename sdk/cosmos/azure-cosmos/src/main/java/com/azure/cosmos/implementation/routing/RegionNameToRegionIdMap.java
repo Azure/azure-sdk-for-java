@@ -13,15 +13,14 @@ import java.util.Map;
 /**
  * Single source of truth for Azure region name mappings in the Cosmos Java SDK.
  * <p>
- * Provides three capabilities:
+ * Provides two capabilities:
  * <ol>
  *   <li><b>Region ID mapping</b> — canonical name ↔ numeric ID for session token region-level progress tracking.
  *       Must stay in sync with
  *       <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=%2FProduct%2FCosmos%2FCosmosFabric%2FBackend%2FCommon%2FRegionToIdMap.cs&amp;version=GBmaster">RegionToIdMap.cs</a>.</li>
  *   <li><b>Region name normalization</b> — maps any user-supplied variant ("westus3", "west us 3", "WEST US 3")
- *       to the canonical CosmosDB format ("West US 3").</li>
- *   <li><b>Dynamic registration</b> — learns new canonical names from server responses at runtime, so regions
- *       not yet in the static list can still be normalized after the first account read.</li>
+ *       to the canonical CosmosDB format ("West US 3"). Unknown regions not in the static map are
+ *       returned as-is.</li>
  * </ol>
  */
 public class RegionNameToRegionIdMap {
