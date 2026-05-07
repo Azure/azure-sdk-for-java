@@ -12,6 +12,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -55,7 +56,9 @@ final class ServiceBusProcessor {
         this.processMessage = processMessage;
         this.concurrency = concurrency;
         this.enableAutoDisposition = enableAutoDisposition;
-        this.drainTimeout = drainTimeout;
+        // Fail fast at construction time so a null timeout cannot surface as an NPE later in
+        // RollingMessagePump.dispose() / MessagePump.drainHandlers(...) during shutdown.
+        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
 
         synchronized (lock) {
             this.isRunning = false;
@@ -81,7 +84,9 @@ final class ServiceBusProcessor {
         this.processMessage = processMessage;
         this.concurrency = concurrency;
         this.enableAutoDisposition = null;
-        this.drainTimeout = drainTimeout;
+        // Fail fast at construction time so a null timeout cannot surface as an NPE later in
+        // RollingMessagePump.dispose() / SessionsMessagePump.drainHandlers(...) during shutdown.
+        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
 
         synchronized (lock) {
             this.isRunning = false;
