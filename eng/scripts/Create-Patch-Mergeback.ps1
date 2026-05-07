@@ -1,3 +1,6 @@
+#Requires -Version 7.0
+#Requires -PSEdition Core
+
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
@@ -18,10 +21,11 @@ entries back into the current working branch. It performs three steps:
 
   2. CHANGELOG.md: For each library whose dependency-version changed, take
      the topmost (newest) entry from the release branch's CHANGELOG and
-     insert it into the current branch's CHANGELOG. The new entry is
-     inserted directly under the existing "## ... (Unreleased)" heading
-     when one exists, otherwise it is inserted before the first dated
-     entry (immediately after the "# Release History" heading).
+     insert it into the current branch's CHANGELOG. When an existing
+     "## ... (Unreleased)" section is present, the new entry is inserted
+     after that entire section (before the next "##" heading). Otherwise,
+     it is inserted before the first dated entry (immediately after the
+     "# Release History" heading).
 
   3. Runs `python eng/versioning/update_versions.py --skip-readme` to
      propagate the new dependency-versions into all pom.xml files.
@@ -60,6 +64,14 @@ $RepoRoot = (Resolve-Path $RepoRoot).Path
 Push-Location $RepoRoot
 try {
     Write-Host "Repo root: $RepoRoot"
+
+    $workingTreeStatus = git status --porcelain
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to check working tree status."
+    }
+    if ($workingTreeStatus) {
+        throw "Working tree is not clean. Commit, stash, or discard local changes before running this script."
+    }
 
     # ---------------------------------------------------------------------
     # Resolve the release branch ref.
