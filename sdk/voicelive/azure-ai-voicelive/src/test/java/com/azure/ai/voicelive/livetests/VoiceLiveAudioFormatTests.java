@@ -44,18 +44,18 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> modelAndSamplingRateProvider() {
-        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", 16000), Arguments.of("gpt-4o-realtime", 44100),
-            Arguments.of("gpt-4o-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
+        return withApiVersions(Stream.of(Arguments.of("gpt-realtime", 16000), Arguments.of("gpt-realtime", 44100),
+            Arguments.of("gpt-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
             Arguments.of("gpt-4.1", 8000)), API_VERSION_GA, API_VERSION_PREVIEW);
     }
 
     static Stream<Arguments> modelAndInputAudioFormatProvider() {
         return withApiVersions(Stream.of(Arguments.of("gpt-4o", "g711_ulaw", "azure_semantic_vad"),
             Arguments.of("gpt-4o", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "server_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "server_vad")));
+            Arguments.of("gpt-realtime", "g711_ulaw", "azure_semantic_vad"),
+            Arguments.of("gpt-realtime", "g711_ulaw", "server_vad"),
+            Arguments.of("gpt-realtime", "g711_alaw", "azure_semantic_vad"),
+            Arguments.of("gpt-realtime", "g711_alaw", "server_vad")));
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatAzureVoiceProvider() {
@@ -67,8 +67,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatOpenAIVoiceProvider() {
-        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", "pcm16"),
-            Arguments.of("gpt-4o-realtime", "g711_ulaw"), Arguments.of("gpt-4o-realtime", "g711_alaw")));
+        return withApiVersions(Stream.of(Arguments.of("gpt-realtime", "pcm16"),
+            Arguments.of("gpt-realtime", "g711_ulaw"), Arguments.of("gpt-realtime", "g711_alaw")));
     }
 
     @ParameterizedTest
