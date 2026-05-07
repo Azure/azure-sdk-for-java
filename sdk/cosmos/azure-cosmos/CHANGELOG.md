@@ -8,7 +8,9 @@
 
 #### Bugs Fixed
 
-#### Other Changes(2026-05-01)
+#### Other Changes
+
+### 4.80.0 (2026-05-01)
 
 #### Features Added
 * Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
