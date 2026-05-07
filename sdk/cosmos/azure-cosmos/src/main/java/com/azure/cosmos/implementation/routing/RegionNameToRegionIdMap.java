@@ -16,8 +16,8 @@ import java.util.Map;
  * Provides two capabilities:
  * <ol>
  *   <li><b>Region ID mapping</b> — canonical name ↔ numeric ID for session token region-level progress tracking.
- *       Must stay in sync with
- *       <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=%2FProduct%2FCosmos%2FCosmosFabric%2FBackend%2FCommon%2FRegionToIdMap.cs&amp;version=GBmaster">RegionToIdMap.cs</a>.</li>
+ *       Must stay in sync with the authoritative regionToIdMapping in
+ *       <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=/Product/Services/Documents/ImageStore/Storage/SingleServiceMasterServerApplication/ServerServicePackage/Settings.xml">Settings.xml</a>.</li>
  *   <li><b>Region name normalization</b> — maps any user-supplied variant ("westus3", "west us 3", "WEST US 3")
  *       to the canonical CosmosDB format ("West US 3"). Unknown regions not in the static map are
  *       returned as-is.</li>
@@ -26,7 +26,11 @@ import java.util.Map;
 public class RegionNameToRegionIdMap {
 
     // ========================================================================
-    // Region ID mappings (synced with backend RegionToIdMap.cs)
+    // Region ID mappings — used only for session token region-level progress
+    // tracking (localLsn). Must stay in sync with the authoritative
+    // regionToIdMapping in Settings.xml:
+    // https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=/Product/Services/Documents/ImageStore/Storage/SingleServiceMasterServerApplication/ServerServicePackage/Settings.xml
+    // This is a SUBSET of all known regions — only regions with assigned IDs.
     // ========================================================================
 
     public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
@@ -104,6 +108,39 @@ public class RegionNameToRegionIdMap {
             put("Sweden Central", 71);
             put("Sweden South", 72);
             put("Korea South 2", 73);
+            put("Brazil Southeast", 74);
+            put("Brazil Northeast", 75);
+            put("Chile Central", 76);
+            put("West US 3", 77);
+            put("Jio India West", 78);
+            put("Jio India Central", 79);
+            put("Qatar Central", 80);
+            put("Israel Central", 81);
+            put("Mexico Central", 82);
+            put("Spain Central", 83);
+            put("Taiwan North", 84);
+            put("Singapore Gov", 85);
+            put("Poland Central", 86);
+            put("Chile North Central", 87);
+            put("USSec Central", 88);
+            put("Malaysia West", 89);
+            put("New Zealand North", 90);
+            put("Italy North", 91);
+            put("East US SLV", 92);
+            put("China North 3", 93);
+            put("China East 3", 94);
+            put("Austria East", 95);
+            put("Taiwan Northwest", 96);
+            put("Belgium Central", 97);
+            put("Malaysia South", 98);
+            put("India South Central", 99);
+            put("Indonesia Central", 100);
+            put("Finland Central", 101);
+            put("Israel Northwest", 102);
+            put("Denmark East", 103);
+            put("Southeast US", 104);
+            put("Ocave", 105);
+            put("Arlem", 106);
             put("Bleu France Central", 107);
             put("Bleu France South", 108);
             put("Delos Cloud Germany Central", 109);
@@ -111,6 +148,17 @@ public class RegionNameToRegionIdMap {
             put("Singapore Central", 111);
             put("Singapore North", 112);
             put("USSec West Central", 113);
+            put("South Central US 2", 114);
+            put("Southwest US", 115);
+            put("East US 3", 116);
+            put("Southeast US 3", 117);
+            put("USNat North", 118);
+            put("Southeast US 5", 119);
+            put("Saudi Arabia East", 120);
+            put("West Central US FRE", 121);
+            put("Northeast US 5", 122);
+            put("Southeast Asia 3", 123);
+            put("North Europe 3", 124);
         }
     };
 
@@ -189,6 +237,39 @@ public class RegionNameToRegionIdMap {
             put(71, "swedencentral");
             put(72, "swedensouth");
             put(73, "koreasouth2");
+            put(74, "brazilsoutheast");
+            put(75, "brazilnortheast");
+            put(76, "chilecentral");
+            put(77, "westus3");
+            put(78, "jioindiawest");
+            put(79, "jioindiacentral");
+            put(80, "qatarcentral");
+            put(81, "israelcentral");
+            put(82, "mexicocentral");
+            put(83, "spaincentral");
+            put(84, "taiwannorth");
+            put(85, "singaporegov");
+            put(86, "polandcentral");
+            put(87, "chilenorthcentral");
+            put(88, "usseccentral");
+            put(89, "malaysiawest");
+            put(90, "newzealandnorth");
+            put(91, "italynorth");
+            put(92, "eastusslv");
+            put(93, "chinanorth3");
+            put(94, "chinaeast3");
+            put(95, "austriaeast");
+            put(96, "taiwannorthwest");
+            put(97, "belgiumcentral");
+            put(98, "malaysiasouth");
+            put(99, "indiasouthcentral");
+            put(100, "indonesiacentral");
+            put(101, "finlandcentral");
+            put(102, "israelnorthwest");
+            put(103, "denmarkeast");
+            put(104, "southeastus");
+            put(105, "ocave");
+            put(106, "arlem");
             put(107, "bleufrancecentral");
             put(108, "bleufrancesouth");
             put(109, "deloscloudgermanycentral");
@@ -196,6 +277,17 @@ public class RegionNameToRegionIdMap {
             put(111, "singaporecentral");
             put(112, "singaporenorth");
             put(113, "ussecwestcentral");
+            put(114, "southcentralus2");
+            put(115, "southwestus");
+            put(116, "eastus3");
+            put(117, "southeastus3");
+            put(118, "usnatnorth");
+            put(119, "southeastus5");
+            put(120, "saudiarabiaeast");
+            put(121, "westcentralusfre");
+            put(122, "northeastus5");
+            put(123, "southeastasia3");
+            put(124, "northeurope3");
         }
     };
 
@@ -220,7 +312,10 @@ public class RegionNameToRegionIdMap {
     }
 
     // ========================================================================
-    // Region name normalization (any variant → canonical CosmosDB format)
+    // Region name normalization — canonical names derived from the ID map
+    // (sourced from Settings.xml regionToIdMapping). Used for normalizing
+    // user-supplied preferred regions and excluded regions to the canonical
+    // CosmosDB format. Unknown regions not in this map are passed through as-is.
     // ========================================================================
 
     // Static map: lowercase-no-spaces key → canonical display name
@@ -229,49 +324,12 @@ public class RegionNameToRegionIdMap {
     static {
         Map<String, String> map = new HashMap<>();
 
-        // Seed from the ID map (all backend-known regions)
+        // Seed from the ID map — Settings.xml is the authoritative source for all
+        // canonical region names. Every region with an assigned ID is automatically
+        // included in the normalization map.
         for (String canonicalName : REGION_NAME_TO_REGION_ID_MAPPINGS.keySet()) {
             addCanonicalMapping(map, canonicalName);
         }
-
-        // Additional regions from LocationNames.cs that don't have IDs yet
-        addCanonicalMapping(map, "West US 3");
-        addCanonicalMapping(map, "East US 3");
-        addCanonicalMapping(map, "Brazil Southeast");
-        addCanonicalMapping(map, "Mexico Central");
-        addCanonicalMapping(map, "Chile Central");
-        addCanonicalMapping(map, "Poland Central");
-        addCanonicalMapping(map, "Italy North");
-        addCanonicalMapping(map, "Spain Central");
-        addCanonicalMapping(map, "Austria East");
-        addCanonicalMapping(map, "Belgium Central");
-        addCanonicalMapping(map, "Denmark East");
-        addCanonicalMapping(map, "Finland Central");
-        addCanonicalMapping(map, "Greece Central");
-        addCanonicalMapping(map, "Jio India Central");
-        addCanonicalMapping(map, "Jio India West");
-        addCanonicalMapping(map, "New Zealand North");
-        addCanonicalMapping(map, "Indonesia Central");
-        addCanonicalMapping(map, "Malaysia South");
-        addCanonicalMapping(map, "Malaysia West");
-        addCanonicalMapping(map, "Taiwan North");
-        addCanonicalMapping(map, "Taiwan Northwest");
-        addCanonicalMapping(map, "Qatar Central");
-        addCanonicalMapping(map, "Israel Central");
-        addCanonicalMapping(map, "Israel Northwest");
-        addCanonicalMapping(map, "Saudi Arabia East");
-        addCanonicalMapping(map, "China East 3");
-        addCanonicalMapping(map, "China North 3");
-        addCanonicalMapping(map, "East US SLV");
-        addCanonicalMapping(map, "Southeast US");
-        addCanonicalMapping(map, "Southwest US");
-        addCanonicalMapping(map, "South Central US 2");
-        addCanonicalMapping(map, "Southeast US 3");
-        addCanonicalMapping(map, "Southeast US 5");
-        addCanonicalMapping(map, "Northeast US 5");
-        addCanonicalMapping(map, "India South Central");
-        addCanonicalMapping(map, "Southeast Asia 3");
-        addCanonicalMapping(map, "West Central US FRE");
 
         NORMALIZED_TO_CANONICAL = Collections.unmodifiableMap(map);
     }
