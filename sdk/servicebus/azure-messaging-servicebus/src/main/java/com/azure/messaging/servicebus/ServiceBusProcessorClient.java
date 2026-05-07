@@ -362,7 +362,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         // (parallel scheduler backing Flux.interval), so that we don't block any of the parallel threads.
         if (monitorDisposable == null) {
             monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
-                if (this.asyncClient.get().isConnectionClosed()) {
+                // Snapshot asyncClient before dereferencing - close() nulls the field after
+                // disposing this monitor, but a tick already in flight can still race past
+                // monitorDisposable.dispose() and observe asyncClient == null.
+                final ServiceBusReceiverAsyncClient currentClient = this.asyncClient.get();
+                if (currentClient == null) {
+                    return;
+                }
+                if (currentClient.isConnectionClosed()) {
                     restartMessageReceiver(null);
                 }
             }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);

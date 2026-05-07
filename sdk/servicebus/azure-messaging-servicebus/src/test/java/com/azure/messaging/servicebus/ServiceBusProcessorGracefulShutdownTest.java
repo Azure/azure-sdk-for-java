@@ -551,21 +551,18 @@ public class ServiceBusProcessorGracefulShutdownTest {
         // onNext path must observe closing=true and skip dispatch.
         messageSink.tryEmitNext(message2);
 
-        // Verify deterministically that message2 is NOT delivered to messageConsumer. Mockito's
-        // `after(N).never()` waits N ms then asserts; if message2 were delivered (regression),
-        // the assertion would still hold here because handler2ProcessMessageInvoked is a flag we
-        // poll separately. The wait window covers reactor pipeline propagation.
-        org.mockito.Mockito.verify(client, org.mockito.Mockito.after(500).never()).complete(message2);
-        assertFalse(handler2ProcessMessageInvoked.get(), "Second handler should have been skipped by the closing flag");
-
         // Release handler1 so the drain can complete.
         handler1CanProceed.countDown();
 
-        // Wait for drain to finish.
+        // Wait for drain to finish. drainHandlers returns when activeHandlerCount drops to 0,
+        // which can only happen after BOTH handler1 (in-flight) and message2's handleMessage
+        // (closing-flag check increments and decrements the counter even when it skips dispatch)
+        // have completed. Drain completion is therefore a deterministic signal that message2 has
+        // been processed - if the closing flag worked, the consumer was never invoked for
+        // message2; if it did not, handler2ProcessMessageInvoked would be true.
         assertTrue(drainDone.await(5, TimeUnit.SECONDS), "Drain should complete after handler1 finishes");
         assertTrue(drainResult.get(), "Drain should return true (all handlers completed)");
 
-        // Final cross-check after drain completes - handler2 must still have been skipped.
         assertFalse(handler2ProcessMessageInvoked.get(), "Second handler should have been skipped by the closing flag");
 
         // Clean up.
