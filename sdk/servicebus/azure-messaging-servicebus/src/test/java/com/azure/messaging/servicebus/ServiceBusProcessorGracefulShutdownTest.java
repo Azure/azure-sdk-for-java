@@ -193,8 +193,13 @@ public class ServiceBusProcessorGracefulShutdownTest {
         disposeThread.start();
 
         try {
-            // Give dispose a moment to start; it should be blocked in drainHandlers().
-            Thread.sleep(200);
+            // Wait deterministically for dispose to be blocked in drainHandlers() (the drain
+            // sets the closing flag and blocks on the in-flight handler counter monitor, so the
+            // thread transitions to WAITING/TIMED_WAITING). Avoids the flakiness of a fixed sleep.
+            waitFor(
+                () -> disposeThread.getState() == Thread.State.WAITING
+                    || disposeThread.getState() == Thread.State.TIMED_WAITING,
+                "dispose() to be blocked in drainHandlers()");
 
             // Verify: client has NOT been closed yet (handler is still running, drain is blocking dispose).
             verify(client, never()).close();
@@ -292,8 +297,10 @@ public class ServiceBusProcessorGracefulShutdownTest {
         closeThread.start();
 
         try {
-            // Give close a moment to start; it should be blocked in drainV1Handlers().
-            Thread.sleep(200);
+            // Wait deterministically for close() to enter drainV1Handlers(). close() sets
+            // isRunning=false inside its first synchronized block before entering drain, so once
+            // the predicate returns true we know close has at least taken ownership.
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
 
             // Verify: client has NOT been closed yet (handler is still running, drain is blocking close).
             verify(asyncClient, never()).close();
@@ -527,8 +534,20 @@ public class ServiceBusProcessorGracefulShutdownTest {
         });
         drainThread.start();
 
-        // Give time for drain to start (sets closing=true) and for message2 to arrive.
-        Thread.sleep(500);
+        // Wait deterministically for drainHandlers() to enter its wait loop. The drain thread
+        // sets closing=true and then blocks on the in-flight handler counter monitor, so once
+        // it transitions to WAITING/TIMED_WAITING we know the closing flag has been set. Avoids
+        // the flakiness of a fixed sleep on slow/contended CI.
+        waitFor(
+            () -> drainThread.getState() == Thread.State.WAITING
+                || drainThread.getState() == Thread.State.TIMED_WAITING,
+            "drainHandlers() to enter waiting state (closing flag set)");
+
+        // Small additional window for message2 (delayed 200ms after subscribe in the source flux)
+        // to be emitted and flow through the reactive pipeline so its onNext observes closing=true
+        // and skips dispatch. The exact moment message2 reaches MessagePump's closing-flag check
+        // is not externally observable without exposing internal state for tests.
+        Thread.sleep(300);
 
         // Release handler1 so the drain can complete.
         handler1CanProceed.countDown();
@@ -623,8 +642,11 @@ public class ServiceBusProcessorGracefulShutdownTest {
         assertTrue(handler1Started.await(5, TimeUnit.SECONDS), "Handler1 should have started processing");
         assertTrue(handler2Started.await(5, TimeUnit.SECONDS), "Handler2 should have started processing");
 
-        // Give handler2's close() a moment to enter drainV1Handlers and start waiting.
-        Thread.sleep(300);
+        // Wait deterministically for handler2's re-entrant close() to take ownership and enter
+        // drainV1Handlers(). close() sets isRunning=false inside its first synchronized block,
+        // so once the predicate returns true we know the re-entrant close has progressed past
+        // ownership acquisition.
+        waitFor(() -> !processorClient.isRunning(), "handler2's re-entrant close() to have set isRunning=false");
 
         // Handler1 is still running, handler2 is blocked in close() waiting for handler1 to finish.
         verify(asyncClient, never()).close();
@@ -710,8 +732,11 @@ public class ServiceBusProcessorGracefulShutdownTest {
         closeThread.start();
 
         try {
-            // Give close a moment to enter drainV1Handlers (sets v1Closing=true).
-            Thread.sleep(200);
+            // Wait deterministically for close() to enter drainV1Handlers and have set
+            // v1Closing=true (close() sets isRunning=false inside its first synchronized block
+            // before entering drain, so once the predicate returns true we know close has
+            // taken ownership).
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
 
             // Release handler1 so the drain completes. After drain returns, close() proceeds to
             // cancel subscriptions. Message2 may arrive in this window via the outstanding request(1).
