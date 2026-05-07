@@ -190,6 +190,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .extractForEffectiveRanges(cosmosRanges)
       .asScala
       .map(_.toString)
+      .toSeq
   }
 
   def parseChangeFeedState(changeFeedStateJsonString: String): ChangeFeedState = {
