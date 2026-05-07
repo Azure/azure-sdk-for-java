@@ -107,6 +107,10 @@ public abstract class ChangeFeedState extends JsonSerializable {
         }
 
         SortedTokensSnapshot snapshot = this.cachedSortedTokensSnapshot;
+        // Intentional reference equality (==): setContinuation() replaces the reference,
+        // invalidating the cache. In-place mutations via applyServerResponseContinuation()
+        // do not change the reference and do not affect token range order, so the cache
+        // remains valid.
         if (snapshot != null && snapshot.continuationRef == continuation) {
             return snapshot.sortedTokens;
         }
@@ -115,7 +119,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
         Collections.addAll(sorted, continuation.getCurrentContinuationTokens());
         sorted.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
-        this.cachedSortedTokensSnapshot = new SortedTokensSnapshot(continuation, sorted);
+        this.cachedSortedTokensSnapshot = new SortedTokensSnapshot(continuation, Collections.unmodifiableList(sorted));
         return sorted;
     }
 
@@ -133,48 +137,32 @@ public abstract class ChangeFeedState extends JsonSerializable {
         if (!sortedTokens.isEmpty()) {
             int startIndex = findFirstPotentialOverlapIndex(sortedTokens, effectiveRange);
 
-            for (int i = startIndex; i < sortedTokens.size(); i++) {
-                CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
-                if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
-                    Range<String> overlappingRange =
-                        getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
+            // Primary scan from binary search starting position
+            String[] primaryMinMax = new String[2];
+            collectOverlapping(sortedTokens, effectiveRange, startIndex, sortedTokens.size(),
+                extractedContinuationTokens, primaryMinMax);
+            min = primaryMinMax[0];
+            max = primaryMinMax[1];
 
-                    extractedContinuationTokens.add(
-                        new CompositeContinuationToken(compositeContinuationToken.getToken(),
-                            overlappingRange));
-
-                    if (min == null) {
-                        min = overlappingRange.getMin();
-                    }
-                    max = overlappingRange.getMax();
-                } else {
-                    if (extractedContinuationTokens.size() > 0) {
-                        break;
-                    }
-                }
-            }
-
-            // Fallback: if binary search found no overlaps but started past index 0,
-            // do a full linear scan to handle non-contiguous or legacy overlapping ranges
-            if (extractedContinuationTokens.isEmpty() && startIndex > 0) {
-                for (int i = 0; i < sortedTokens.size(); i++) {
-                    CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
-                    if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
-                        Range<String> overlappingRange =
-                            getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
-
-                        extractedContinuationTokens.add(
-                            new CompositeContinuationToken(compositeContinuationToken.getToken(),
-                                overlappingRange));
-
-                        if (min == null) {
-                            min = overlappingRange.getMin();
-                        }
-                        max = overlappingRange.getMax();
-                    } else {
-                        if (extractedContinuationTokens.size() > 0) {
-                            break;
-                        }
+            // Fallback: if binary search started past index 0, scan earlier indices for any
+            // overlapping tokens that the binary search may have skipped. This handles both
+            // complete misses (no overlaps found in primary scan) and partial misses (some
+            // overlaps missed due to non-contiguous or legacy overlapping ranges).
+            if (startIndex > 0) {
+                List<CompositeContinuationToken> missedTokens = new ArrayList<>();
+                String[] fallbackMinMax = new String[2];
+                collectOverlapping(sortedTokens, effectiveRange, 0, startIndex,
+                    missedTokens, fallbackMinMax);
+                if (!missedTokens.isEmpty()) {
+                    // Prepend missed tokens (they precede startIndex in sorted order)
+                    missedTokens.addAll(extractedContinuationTokens);
+                    extractedContinuationTokens = missedTokens;
+                    // Missed tokens come first in sorted order, so their min is the overall min
+                    min = fallbackMinMax[0];
+                    // Take the larger max between fallback and primary results
+                    if (max == null || (fallbackMinMax[1] != null
+                        && fallbackMinMax[1].compareTo(max) > 0)) {
+                        max = fallbackMinMax[1];
                     }
                 }
             }
@@ -187,6 +175,47 @@ public abstract class ChangeFeedState extends JsonSerializable {
             false);
 
         return Pair.of(extractedContinuationTokens, totalRange);
+    }
+
+    /**
+     * Collects continuation tokens from sortedTokens[fromIndex..toIndex) that overlap
+     * with effectiveRange. Each collected token's range is trimmed to the overlapping
+     * region. Applies an early-break optimization: stops scanning when a non-overlapping
+     * token is encountered after at least one overlapping token has been found.
+     *
+     * @param sortedTokens the sorted continuation token list
+     * @param effectiveRange the range to check for overlaps
+     * @param fromIndex start index (inclusive)
+     * @param toIndex end index (exclusive)
+     * @param out list to append matching tokens to
+     * @param minMax two-element array for tracking [min, max] of overlapping ranges;
+     *               minMax[0] is set to the first overlap's min, minMax[1] to the last overlap's max
+     */
+    private void collectOverlapping(
+        List<CompositeContinuationToken> sortedTokens,
+        Range<String> effectiveRange,
+        int fromIndex,
+        int toIndex,
+        List<CompositeContinuationToken> out,
+        String[] minMax) {
+
+        for (int i = fromIndex; i < toIndex; i++) {
+            CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
+            if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
+                Range<String> overlappingRange =
+                    getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
+                out.add(new CompositeContinuationToken(
+                    compositeContinuationToken.getToken(), overlappingRange));
+                if (minMax[0] == null) {
+                    minMax[0] = overlappingRange.getMin();
+                }
+                minMax[1] = overlappingRange.getMax();
+            } else {
+                if (!out.isEmpty()) {
+                    break;
+                }
+            }
+        }
     }
 
     /**

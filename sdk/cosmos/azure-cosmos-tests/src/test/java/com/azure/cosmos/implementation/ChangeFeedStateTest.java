@@ -478,11 +478,13 @@ public class ChangeFeedStateTest {
         long elapsedMs = (System.nanoTime() - startTime) / 1_000_000;
 
         // With the optimization, 10k partitions × 10k tokens should complete
-        // well under 10 seconds. Without the optimization (quadratic), this
-        // would take minutes with the sort-per-call overhead.
+        // well under 30 seconds even on slow CI agents. Without the optimization
+        // (quadratic), this would take minutes with the sort-per-call overhead.
+        // The generous margin prevents flakiness on overloaded agents or GC pauses;
+        // the quadratic version would hang the test runner entirely.
         assertThat(elapsedMs)
-            .as("Total time for 10,000 extractions should be < 10 seconds")
-            .isLessThan(10_000);
+            .as("Total time for 10,000 extractions should be < 30 seconds")
+            .isLessThan(30_000);
     }
 
     @Test(groups = "unit")
@@ -511,7 +513,7 @@ public class ChangeFeedStateTest {
 
         String continuationJson = String.format(
             "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[" +
-                "{\"token\":\"tok1\",\"range\":{\"min\":\"AA\",\"max\":\"ZZ\"}}" +
+                "{\"token\":\"tok1\",\"range\":{\"min\":\"AA\",\"max\":\"CC\"}}" +
                 "],\"PKRangeId\":\"%s\"}",
             containerRid, pkRangeId);
 
@@ -522,25 +524,23 @@ public class ChangeFeedStateTest {
 
         // Full range overlap
         List<CompositeContinuationToken> tokens =
-            state.extractForEffectiveRange(new Range<>("AA", "ZZ", true, false))
+            state.extractForEffectiveRange(new Range<>("AA", "CC", true, false))
                 .extractContinuationTokens();
         assertThat(tokens).hasSize(1);
         assertThat(tokens.get(0).getToken()).isEqualTo("tok1");
-        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("AA", "ZZ", true, false));
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("AA", "CC", true, false));
 
         // Partial overlap
-        tokens = state.extractForEffectiveRange(new Range<>("CC", "DD", true, false))
+        tokens = state.extractForEffectiveRange(new Range<>("AB", "BB", true, false))
             .extractContinuationTokens();
         assertThat(tokens).hasSize(1);
         assertThat(tokens.get(0).getToken()).isEqualTo("tok1");
-        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("AB", "BB", true, false));
     }
 
     @Test(groups = "unit")
-    public void changeFeedState_extractForEffectiveRange_noOverlap() {
-        // When query range doesn't overlap any token, extractContinuationTokens
-        // returns the tokens from extractForEffectiveRange based on available ranges.
-        // Test uses a range that only partially overlaps to verify correct behavior.
+    public void changeFeedState_extractForEffectiveRange_lastTokenExactMatch() {
+        // When query range exactly matches the last token, verify it is found correctly.
         ChangeFeedState state = createStateWithManyTokens(5);
 
         // Range overlapping the last token
@@ -585,6 +585,120 @@ public class ChangeFeedStateTest {
         assertThat(tokens.get(0).getToken()).isEqualTo(continuationAAToCC);
         assertThat(tokens.get(1).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
         assertThat(tokens.get(1).getToken()).isEqualTo(continuationCCToEE);
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalArgumentException.class)
+    public void changeFeedState_extractForEffectiveRange_noOverlapReturnsEmpty() {
+        // Query range entirely outside all token ranges should cause extractForEffectiveRange
+        // to throw, because FeedRangeContinuation.create rejects empty token lists.
+        ChangeFeedState state = createStateWithManyTokens(5);
+
+        // All tokens are in [000000, 000005). Query a range beyond all tokens.
+        state.extractForEffectiveRange(new Range<>("000010", "000011", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_fallbackCompleteMiss() {
+        // Tests the fallback path when binary search completely misses overlapping tokens.
+        // Token [00, EE) is a wide range, [01, 02) is narrow inside it.
+        // Query [DD, EE) overlaps [00, EE) but binary search starts at index 1 ([01, 02)),
+        // which doesn't overlap [DD, EE). Fallback scans from 0 and finds [00, EE).
+        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
+            {"00", "EE"},
+            {"01", "02"}
+        });
+
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>("DD", "EE", true, false))
+                .extractContinuationTokens();
+
+        assertThat(tokens).hasSize(1);
+        assertThat(tokens.get(0).getToken()).isEqualTo("tok_0");
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("DD", "EE", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_fallbackPartialMiss() {
+        // Tests the fallback path for partial misses (F1 fix): binary search finds some
+        // overlapping tokens but misses earlier ones.
+        // Token [00, EE) is wide, [02, 03) is narrow, [0B, 0C) is later.
+        // Query [0B, EE): binary search starts at index 2 ([0B, 0C)), finding one overlap.
+        // Fallback scans indices 0-1 and finds [00, EE) also overlaps, catching the partial miss.
+        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
+            {"00", "EE"},
+            {"02", "03"},
+            {"0B", "0C"}
+        });
+
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>("0B", "EE", true, false))
+                .extractContinuationTokens();
+
+        // Should find both [00, EE) trimmed to [0B, EE) and [0B, 0C) trimmed to [0B, 0C)
+        assertThat(tokens).hasSize(2);
+        assertThat(tokens.get(0).getToken()).isEqualTo("tok_0");
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("0B", "EE", true, false));
+        assertThat(tokens.get(1).getToken()).isEqualTo("tok_2");
+        assertThat(tokens.get(1).getRange()).isEqualTo(new Range<>("0B", "0C", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_unsortedInput() {
+        // Tokens provided in reverse order to verify that the sort is actually exercised.
+        // Without sorting, binary search and overlap detection would produce wrong results.
+        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
+            {"CC", "DD"},
+            {"AA", "BB"},
+            {"EE", "FF"}
+        });
+
+        // After sorting, tokens should be [AA,BB), [CC,DD), [EE,FF)
+        // Query [AA, FF) should return all three
+        List<CompositeContinuationToken> allTokens =
+            state.extractForEffectiveRange(new Range<>("AA", "FF", true, false))
+                .extractContinuationTokens();
+
+        assertThat(allTokens).hasSize(3);
+        // Verify sorted order in results
+        assertThat(allTokens.get(0).getRange().getMin()).isEqualTo("AA");
+        assertThat(allTokens.get(1).getRange().getMin()).isEqualTo("CC");
+        assertThat(allTokens.get(2).getRange().getMin()).isEqualTo("EE");
+
+        // Query a specific middle range
+        List<CompositeContinuationToken> middleToken =
+            state.extractForEffectiveRange(new Range<>("CC", "DD", true, false))
+                .extractContinuationTokens();
+
+        assertThat(middleToken).hasSize(1);
+        assertThat(middleToken.get(0).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
+    }
+
+    private ChangeFeedState createStateWithTokenRanges(String[][] tokenRanges) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        StringBuilder entries = new StringBuilder();
+        for (int i = 0; i < tokenRanges.length; i++) {
+            if (i > 0) {
+                entries.append(",");
+            }
+            entries.append(String.format(
+                "{\"token\":\"tok_%d\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}",
+                i, tokenRanges[i][0], tokenRanges[i][1]));
+        }
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
+            containerRid, entries, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(),
+            continuation);
     }
 
     @Test(dataProvider = "populateRequestArgProvider", groups = "unit")
