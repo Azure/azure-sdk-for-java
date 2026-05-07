@@ -483,12 +483,12 @@ public class ChangeFeedStateTest {
         // The generous margin prevents flakiness on overloaded agents or GC pauses;
         // the quadratic version would hang the test runner entirely.
         assertThat(elapsedMs)
-            .as("Total time for 10,000 extractions should be < 30 seconds")
+            .as("10,000 extractions took %d ms, should be < 30,000 ms", elapsedMs)
             .isLessThan(30_000);
     }
 
     @Test(groups = "unit")
-    public void changeFeedState_extractForEffectiveRange_nullContinuation() {
+    public void changeFeedState_extractContinuationTokens_nullContinuation() {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
@@ -503,6 +503,24 @@ public class ChangeFeedStateTest {
         // With null continuation, extractContinuationTokens returns empty
         List<CompositeContinuationToken> tokens = state.extractContinuationTokens();
         assertThat(tokens).isEmpty();
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalArgumentException.class)
+    public void changeFeedState_extractForEffectiveRange_nullContinuation_throws() {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        ChangeFeedState state = new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(),
+            null);
+
+        // With null continuation, extractForEffectiveRange passes an empty token list to
+        // FeedRangeContinuation.create(), which throws IllegalArgumentException.
+        state.extractForEffectiveRange(new Range<>("AA", "BB", true, false));
     }
 
     @Test(groups = "unit")

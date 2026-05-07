@@ -47,6 +47,17 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract FeedRangeContinuation getContinuation();
 
+    /**
+     * Sets the continuation for this change feed state.
+     * <p>
+     * Implementations must assign a new {@link FeedRangeContinuation} reference rather than
+     * mutating the existing one in-place. The base class uses reference-equality detection
+     * to invalidate a lazily-cached sorted-token snapshot. If the same reference is reused
+     * with modified contents, the cache will serve stale data.
+     *
+     * @param continuation the new continuation to set
+     * @return this {@link ChangeFeedState} instance
+     */
     public abstract ChangeFeedState setContinuation(FeedRangeContinuation continuation);
 
     public abstract FeedRangeInternal getFeedRange();
@@ -141,19 +152,22 @@ public abstract class ChangeFeedState extends JsonSerializable {
             int startIndex = findFirstPotentialOverlapIndex(sortedTokens, effectiveRange);
 
             // Primary scan from binary search starting position
-            String[] primaryMinMax = new String[2];
+            MinMaxAccumulator primaryMinMax = new MinMaxAccumulator();
             collectOverlapping(sortedTokens, effectiveRange, startIndex, sortedTokens.size(),
                 extractedContinuationTokens, primaryMinMax);
-            min = primaryMinMax[0];
-            max = primaryMinMax[1];
+            min = primaryMinMax.min;
+            max = primaryMinMax.max;
 
             // Fallback: if binary search started past index 0, scan earlier indices for any
             // overlapping tokens that the binary search may have skipped. This handles both
             // complete misses (no overlaps found in primary scan) and partial misses (some
-            // overlaps missed due to non-contiguous or legacy overlapping ranges).
+            // overlaps missed due to non-contiguous token ranges). Note: the early-break
+            // optimization in collectOverlapping still applies, so this does not handle
+            // arbitrary non-contiguous overlapping ranges — it preserves the original
+            // linear scan behavior which assumes contiguous overlaps (Cosmos DB contract).
             if (startIndex > 0) {
                 List<CompositeContinuationToken> missedTokens = new ArrayList<>();
-                String[] fallbackMinMax = new String[2];
+                MinMaxAccumulator fallbackMinMax = new MinMaxAccumulator();
                 collectOverlapping(sortedTokens, effectiveRange, 0, startIndex,
                     missedTokens, fallbackMinMax);
                 if (!missedTokens.isEmpty()) {
@@ -161,11 +175,11 @@ public abstract class ChangeFeedState extends JsonSerializable {
                     missedTokens.addAll(extractedContinuationTokens);
                     extractedContinuationTokens = missedTokens;
                     // Missed tokens come first in sorted order, so their min is the overall min
-                    min = fallbackMinMax[0];
+                    min = fallbackMinMax.min;
                     // Take the larger max between fallback and primary results
-                    if (max == null || (fallbackMinMax[1] != null
-                        && fallbackMinMax[1].compareTo(max) > 0)) {
-                        max = fallbackMinMax[1];
+                    if (max == null || (fallbackMinMax.max != null
+                        && fallbackMinMax.max.compareTo(max) > 0)) {
+                        max = fallbackMinMax.max;
                     }
                 }
             }
@@ -191,8 +205,8 @@ public abstract class ChangeFeedState extends JsonSerializable {
      * @param fromIndex start index (inclusive)
      * @param toIndex end index (exclusive)
      * @param out list to append matching tokens to
-     * @param minMax two-element array for tracking [min, max] of overlapping ranges;
-     *               minMax[0] is set to the first overlap's min, minMax[1] to the last overlap's max
+     * @param minMax accumulator for tracking min/max of overlapping ranges;
+     *               min is set to the first overlap's min, max to the last overlap's max
      */
     private void collectOverlapping(
         List<CompositeContinuationToken> sortedTokens,
@@ -200,7 +214,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
         int fromIndex,
         int toIndex,
         List<CompositeContinuationToken> out,
-        String[] minMax) {
+        MinMaxAccumulator minMax) {
 
         for (int i = fromIndex; i < toIndex; i++) {
             CompositeContinuationToken compositeContinuationToken = sortedTokens.get(i);
@@ -209,10 +223,10 @@ public abstract class ChangeFeedState extends JsonSerializable {
                     getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
                 out.add(new CompositeContinuationToken(
                     compositeContinuationToken.getToken(), overlappingRange));
-                if (minMax[0] == null) {
-                    minMax[0] = overlappingRange.getMin();
+                if (minMax.min == null) {
+                    minMax.min = overlappingRange.getMin();
                 }
-                minMax[1] = overlappingRange.getMax();
+                minMax.max = overlappingRange.getMax();
             } else {
                 // Early-break: assumes overlapping tokens are contiguous after sorting.
                 // Safe for non-overlapping partition ranges (Cosmos DB contract).
@@ -395,6 +409,14 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
             return MIN_RANGE_COMPARATOR.compare(left.getRange(), right.getRange());
         }
+    }
+
+    /**
+     * Tracks the min and max range values while collecting overlapping tokens.
+     */
+    private static final class MinMaxAccumulator {
+        String min;
+        String max;
     }
 
     /**
