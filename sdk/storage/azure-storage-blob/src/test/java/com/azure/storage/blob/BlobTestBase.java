@@ -1390,16 +1390,10 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders) {
-        return hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false);
-    }
-
-    protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders,
-        boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.getSize() == 0) {
             return false;
         }
-        return hasStructuredMessageDownloadRequestHeaders(Collections.singletonList(recordedRequestHeaders),
-            requireStructuredContentLength);
+        return hasStructuredMessageDownloadRequestHeaders(Collections.singletonList(recordedRequestHeaders), false);
     }
 
     protected static boolean hasStructuredMessageDownloadResponseHeaders(HttpHeaders headers) {
