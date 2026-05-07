@@ -17,6 +17,7 @@ import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -438,5 +439,320 @@ public class ChangeFeedStateTest {
             assertThat(headers.containsKey(key)).isTrue();
             assertThat(headers.get(key)).isEqualTo(expectedHeaders.get(key));
         }
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_multipleCallsProduceCorrectResults() {
+        int tokenCount = 100;
+        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(new Range<>(String.format("%06X", 0), String.format("%06X", 10), true, false));
+        ranges.add(new Range<>(String.format("%06X", 50), String.format("%06X", 60), true, false));
+        ranges.add(new Range<>(String.format("%06X", 90), String.format("%06X", 100), true, false));
+        ranges.add(new Range<>(String.format("%06X", 25), String.format("%06X", 26), true, false));
+
+        List<ChangeFeedState> results = state.extractForEffectiveRanges(ranges);
+        assertThat(results).hasSize(4);
+
+        List<CompositeContinuationToken> tokens1 = results.get(0).extractContinuationTokens();
+        assertThat(tokens1).hasSize(10);
+        for (int i = 0; i < 10; i++) {
+            assertThat(tokens1.get(i).getToken()).isEqualTo("token_" + i);
+        }
+
+        List<CompositeContinuationToken> tokens2 = results.get(1).extractContinuationTokens();
+        assertThat(tokens2).hasSize(10);
+        for (int i = 0; i < 10; i++) {
+            assertThat(tokens2.get(i).getToken()).isEqualTo("token_" + (50 + i));
+        }
+
+        List<CompositeContinuationToken> tokens3 = results.get(2).extractContinuationTokens();
+        assertThat(tokens3).hasSize(10);
+        for (int i = 0; i < 10; i++) {
+            assertThat(tokens3.get(i).getToken()).isEqualTo("token_" + (90 + i));
+        }
+
+        List<CompositeContinuationToken> tokens4 = results.get(3).extractContinuationTokens();
+        assertThat(tokens4).hasSize(1);
+        assertThat(tokens4.get(0).getToken()).isEqualTo("token_25");
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_largeScale() {
+        int tokenCount = 5000;
+        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        List<Range<String>> ranges = new ArrayList<>(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            ranges.add(new Range<>(
+                String.format("%06X", i), String.format("%06X", i + 1), true, false));
+        }
+
+        long startTime = System.nanoTime();
+        List<ChangeFeedState> results = state.extractForEffectiveRanges(ranges);
+        long elapsedMs = (System.nanoTime() - startTime) / 1_000_000;
+
+        assertThat(results).hasSize(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            List<CompositeContinuationToken> tokens = results.get(i).extractContinuationTokens();
+            assertThat(tokens).hasSize(1);
+            assertThat(tokens.get(0).getToken()).isEqualTo("token_" + i);
+        }
+
+        assertThat(elapsedMs)
+            .as("5,000 extractions took %d ms, should be < 60,000 ms", elapsedMs)
+            .isLessThan(60_000);
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_microbenchmark_30k_batchVsSingleCall() {
+        int tokenCount = 30_000;
+        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        List<Range<String>> ranges = new ArrayList<>(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            ranges.add(new Range<>(
+                String.format("%06X", i), String.format("%06X", i + 1), true, false));
+        }
+
+        // Warmup
+        state.extractForEffectiveRange(ranges.get(0));
+
+        // Batch API
+        long batchStart = System.nanoTime();
+        List<ChangeFeedState> batchResults = state.extractForEffectiveRanges(ranges);
+        long batchElapsedMs = (System.nanoTime() - batchStart) / 1_000_000;
+
+        assertThat(batchResults).hasSize(tokenCount);
+        for (int checkIdx : new int[]{0, 1, tokenCount / 2, tokenCount - 2, tokenCount - 1}) {
+            List<CompositeContinuationToken> tokens = batchResults.get(checkIdx).extractContinuationTokens();
+            assertThat(tokens).hasSize(1);
+            assertThat(tokens.get(0).getToken()).isEqualTo("token_" + checkIdx);
+        }
+
+        // Single-call loop
+        long singleStart = System.nanoTime();
+        List<ChangeFeedState> singleResults = new ArrayList<>(tokenCount);
+        for (Range<String> range : ranges) {
+            singleResults.add(state.extractForEffectiveRange(range));
+        }
+        long singleElapsedMs = (System.nanoTime() - singleStart) / 1_000_000;
+
+        // Verify parity
+        for (int checkIdx : new int[]{0, tokenCount / 4, tokenCount / 2, 3 * tokenCount / 4, tokenCount - 1}) {
+            assertThat(batchResults.get(checkIdx).toString())
+                .isEqualTo(singleResults.get(checkIdx).toString());
+        }
+
+        System.out.println(String.format(
+            "[Microbenchmark] 30K feed ranges: batch API = %d ms, single-call loop = %d ms, speedup = %.1fx",
+            batchElapsedMs, singleElapsedMs,
+            singleElapsedMs > 0 ? (double) singleElapsedMs / batchElapsedMs : Double.NaN));
+
+        assertThat(batchElapsedMs)
+            .as("Batch extraction of 30K ranges took %d ms, should be < 30,000 ms", batchElapsedMs)
+            .isLessThan(30_000);
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRanges_singleBatchAndSingleCallParity() {
+        ChangeFeedState state = createStateWithManyTokens(20);
+
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(new Range<>(String.format("%06X", 0), String.format("%06X", 5), true, false));
+        ranges.add(new Range<>(String.format("%06X", 10), String.format("%06X", 15), true, false));
+        ranges.add(new Range<>(String.format("%06X", 18), String.format("%06X", 20), true, false));
+
+        List<ChangeFeedState> batchResults = state.extractForEffectiveRanges(ranges);
+
+        for (int i = 0; i < ranges.size(); i++) {
+            ChangeFeedState singleResult = state.extractForEffectiveRange(ranges.get(i));
+            assertThat(batchResults.get(i).toString())
+                .as("Batch result at index %d should match single-range result", i)
+                .isEqualTo(singleResult.toString());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_singleToken() {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[" +
+                "{\"token\":\"tok1\",\"range\":{\"min\":\"AA\",\"max\":\"CC\"}}" +
+                "],\"PKRangeId\":\"%s\"}",
+            containerRid, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        ChangeFeedState state = new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), continuation);
+
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>("AA", "CC", true, false))
+                .extractContinuationTokens();
+        assertThat(tokens).hasSize(1);
+        assertThat(tokens.get(0).getToken()).isEqualTo("tok1");
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("AA", "CC", true, false));
+
+        tokens = state.extractForEffectiveRange(new Range<>("AB", "BB", true, false))
+            .extractContinuationTokens();
+        assertThat(tokens).hasSize(1);
+        assertThat(tokens.get(0).getToken()).isEqualTo("tok1");
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("AB", "BB", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_lastTokenExactMatch() {
+        ChangeFeedState state = createStateWithManyTokens(5);
+
+        String min4 = String.format("%06X", 4);
+        String max5 = String.format("%06X", 5);
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>(min4, max5, true, false))
+                .extractContinuationTokens();
+
+        assertThat(tokens).hasSize(1);
+        assertThat(tokens.get(0).getToken()).isEqualTo("token_4");
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_fullRange() {
+        int tokenCount = 20;
+        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        List<CompositeContinuationToken> tokens = state.extractContinuationTokens();
+
+        assertThat(tokens).hasSize(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            assertThat(tokens.get(i).getToken()).isEqualTo("token_" + i);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_partialOverlapAcrossTokenBoundary() {
+        String continuationAAToCC = "tok_aa_cc";
+        String continuationCCToEE = "tok_cc_ee";
+        ChangeFeedState state = this.createDefaultStateWithContinuation(continuationAAToCC, continuationCCToEE);
+
+        List<CompositeContinuationToken> tokens =
+            state.extractForEffectiveRange(new Range<>("BB", "DD", true, false))
+                .extractContinuationTokens();
+
+        assertThat(tokens).hasSize(2);
+        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("BB", "CC", true, false));
+        assertThat(tokens.get(0).getToken()).isEqualTo(continuationAAToCC);
+        assertThat(tokens.get(1).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
+        assertThat(tokens.get(1).getToken()).isEqualTo(continuationCCToEE);
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalArgumentException.class)
+    public void changeFeedState_extractForEffectiveRange_noOverlapReturnsEmpty() {
+        ChangeFeedState state = createStateWithManyTokens(5);
+        state.extractForEffectiveRange(new Range<>("000010", "000011", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractForEffectiveRange_unsortedInput() {
+        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
+            {"CC", "DD"}, {"AA", "BB"}, {"EE", "FF"}
+        });
+
+        List<CompositeContinuationToken> allTokens =
+            state.extractForEffectiveRange(new Range<>("AA", "FF", true, false))
+                .extractContinuationTokens();
+
+        assertThat(allTokens).hasSize(3);
+        assertThat(allTokens.get(0).getRange().getMin()).isEqualTo("AA");
+        assertThat(allTokens.get(1).getRange().getMin()).isEqualTo("CC");
+        assertThat(allTokens.get(2).getRange().getMin()).isEqualTo("EE");
+
+        List<CompositeContinuationToken> middleToken =
+            state.extractForEffectiveRange(new Range<>("CC", "DD", true, false))
+                .extractContinuationTokens();
+
+        assertThat(middleToken).hasSize(1);
+        assertThat(middleToken.get(0).getRange()).isEqualTo(new Range<>("CC", "DD", true, false));
+    }
+
+    @Test(groups = "unit")
+    public void changeFeedState_extractContinuationTokens_nullContinuation() {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        ChangeFeedState state = new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), null);
+
+        List<CompositeContinuationToken> tokens = state.extractContinuationTokens();
+        assertThat(tokens).isEmpty();
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalArgumentException.class)
+    public void changeFeedState_extractForEffectiveRange_nullContinuation_throws() {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        ChangeFeedState state = new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), null);
+
+        state.extractForEffectiveRange(new Range<>("AA", "BB", true, false));
+    }
+
+    private ChangeFeedState createStateWithManyTokens(int tokenCount) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        StringBuilder continuationEntries = new StringBuilder();
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationEntries.append(",");
+            }
+            String min = String.format("%06X", i);
+            String max = String.format("%06X", i + 1);
+            continuationEntries.append(
+                String.format("{\"token\":\"token_%d\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}", i, min, max));
+        }
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
+            containerRid, continuationEntries, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        return new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), continuation);
+    }
+
+    private ChangeFeedState createStateWithTokenRanges(String[][] tokenRanges) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        StringBuilder entries = new StringBuilder();
+        for (int i = 0; i < tokenRanges.length; i++) {
+            if (i > 0) {
+                entries.append(",");
+            }
+            entries.append(String.format(
+                "{\"token\":\"tok_%d\",\"range\":{\"min\":\"%s\",\"max\":\"%s\"}}",
+                i, tokenRanges[i][0], tokenRanges[i][1]));
+        }
+
+        String continuationJson = String.format(
+            "{\"V\":1,\"Rid\":\"%s\",\"Continuation\":[%s],\"PKRangeId\":\"%s\"}",
+            containerRid, entries, pkRangeId);
+
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+        return new ChangeFeedStateV1(
+            containerRid, feedRange, ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromNow(), continuation);
     }
 }
