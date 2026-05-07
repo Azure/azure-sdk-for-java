@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> audioParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -108,7 +108,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> audioEnhancementsParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -183,7 +183,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> echoCancellationParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 

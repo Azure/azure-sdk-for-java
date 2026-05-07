@@ -44,7 +44,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     // using speechDurationMs(800) as the closest available parameter.
 
     static Stream<Arguments> longTtsVadDurationParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW, MODEL_GPT_4O },
+        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -135,8 +135,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> multilingualParams() {
         return withApiVersions(Stream.of(
-            Arguments.of("gpt-4o-realtime-preview, default", MODEL_GPT_4O_REALTIME_PREVIEW,
-                new AzureSemanticVadTurnDetectionMultilingual()),
+            Arguments.of("gpt-realtime, default", MODEL_GPT_REALTIME, new AzureSemanticVadTurnDetectionMultilingual()),
             Arguments.of("gpt-4o, default", MODEL_GPT_4O, new AzureSemanticVadTurnDetectionMultilingual()),
             Arguments.of("gpt-4o, speechDuration200", MODEL_GPT_4O,
                 new AzureSemanticVadTurnDetectionMultilingual().setSpeechDurationMs(200)),
