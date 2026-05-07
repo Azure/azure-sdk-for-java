@@ -154,7 +154,7 @@ public final class SkillsAsyncClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -164,8 +164,8 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.getSkillWithResponseAsync(skillName, requestOptions);
+    public Mono<Response<BinaryData>> getSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSkillWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -178,7 +178,7 @@ public final class SkillsAsyncClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -188,8 +188,8 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.downloadSkillWithResponseAsync(skillName, requestOptions);
+    public Mono<Response<BinaryData>> downloadSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.downloadSkillWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -275,7 +275,7 @@ public final class SkillsAsyncClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param updateSkillRequest The updateSkillRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -286,9 +286,9 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateSkillWithResponse(String skillName, BinaryData updateSkillRequest,
+    public Mono<Response<BinaryData>> updateSkillWithResponse(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateSkillWithResponseAsync(skillName, updateSkillRequest, requestOptions);
+        return this.serviceClient.updateSkillWithResponseAsync(name, updateSkillRequest, requestOptions);
     }
 
     /**
@@ -304,7 +304,7 @@ public final class SkillsAsyncClient {
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -314,8 +314,8 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillWithResponseAsync(skillName, requestOptions);
+    public Mono<Response<BinaryData>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteSkillWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -399,7 +399,7 @@ public final class SkillsAsyncClient {
     /**
      * Retrieves a skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -410,17 +410,17 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> getSkill(String skillName) {
+    public Mono<SkillDetails> getSkill(String name) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono)
+        return getSkillWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 
     /**
      * Downloads a skill package.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -431,10 +431,10 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadSkill(String skillName) {
+    public Mono<BinaryData> downloadSkill(String name) {
         // Generated convenience method for downloadSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono);
+        return downloadSkillWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -523,7 +523,7 @@ public final class SkillsAsyncClient {
     /**
      * Updates an existing skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param description A human-readable description of the skill.
      * @param instructions Instructions that define the behavior of the skill.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
@@ -542,21 +542,21 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> updateSkill(String skillName, String description, String instructions,
+    public Mono<SkillDetails> updateSkill(String name, String description, String instructions,
         Map<String, String> metadata) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj
             = new UpdateSkillRequest().setDescription(description).setInstructions(instructions).setMetadata(metadata);
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 
     /**
      * Updates an existing skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -567,12 +567,12 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> updateSkill(String skillName) {
+    public Mono<SkillDetails> updateSkill(String name) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest();
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 

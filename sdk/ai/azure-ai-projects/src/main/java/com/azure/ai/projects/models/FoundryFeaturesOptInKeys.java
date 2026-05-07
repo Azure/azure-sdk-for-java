@@ -41,7 +41,12 @@ public enum FoundryFeaturesOptInKeys {
     /**
      * Enum value Toolboxes=V1Preview.
      */
-    TOOLBOXES_V1_PREVIEW("Toolboxes=V1Preview");
+    TOOLBOXES_V1_PREVIEW("Toolboxes=V1Preview"),
+
+    /**
+     * Enum value DataGenerationJobs=V1Preview.
+     */
+    DATA_GENERATION_JOBS_V1_PREVIEW("DataGenerationJobs=V1Preview");
 
     /**
      * The actual serialized value for a FoundryFeaturesOptInKeys instance.

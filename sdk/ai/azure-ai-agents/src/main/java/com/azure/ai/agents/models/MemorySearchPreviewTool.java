@@ -119,6 +119,8 @@ public final class MemorySearchPreviewTool extends Tool {
         jsonWriter.writeStringField("memory_store_name", this.memoryStoreName);
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("search_options", this.searchOptions);
         jsonWriter.writeNumberField("update_delay", this.updateDelaySeconds);
         return jsonWriter.writeEndObject();
@@ -139,6 +141,8 @@ public final class MemorySearchPreviewTool extends Tool {
             String memoryStoreName = null;
             String scope = null;
             ToolType type = ToolType.MEMORY_SEARCH_PREVIEW;
+            String name = null;
+            String description = null;
             MemorySearchOptions searchOptions = null;
             Integer updateDelaySeconds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -150,6 +154,10 @@ public final class MemorySearchPreviewTool extends Tool {
                     scope = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else if ("search_options".equals(fieldName)) {
                     searchOptions = MemorySearchOptions.fromJson(reader);
                 } else if ("update_delay".equals(fieldName)) {
@@ -161,6 +169,8 @@ public final class MemorySearchPreviewTool extends Tool {
             MemorySearchPreviewTool deserializedMemorySearchPreviewTool
                 = new MemorySearchPreviewTool(memoryStoreName, scope);
             deserializedMemorySearchPreviewTool.type = type;
+            deserializedMemorySearchPreviewTool.name = name;
+            deserializedMemorySearchPreviewTool.description = description;
             deserializedMemorySearchPreviewTool.searchOptions = searchOptions;
             deserializedMemorySearchPreviewTool.updateDelaySeconds = updateDelaySeconds;
             return deserializedMemorySearchPreviewTool;
@@ -194,6 +204,62 @@ public final class MemorySearchPreviewTool extends Tool {
     @Generated
     public MemorySearchPreviewTool setUpdateDelaySeconds(Integer updateDelaySeconds) {
         this.updateDelaySeconds = updateDelaySeconds;
+        return this;
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the MemorySearchPreviewTool object itself.
+     */
+    @Generated
+    public MemorySearchPreviewTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the MemorySearchPreviewTool object itself.
+     */
+    @Generated
+    public MemorySearchPreviewTool setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

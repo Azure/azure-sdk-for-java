@@ -376,10 +376,10 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSession(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("x-session-isolation-key") String isolationKey,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSessionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createSessionRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/agents/{agent_name}/endpoint/sessions")
         @ExpectedResponses({ 201 })
@@ -388,10 +388,10 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSessionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("x-session-isolation-key") String isolationKey,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSessionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createSessionRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/agents/{agent_name}/endpoint/sessions/{session_id}")
         @ExpectedResponses({ 200 })
@@ -423,8 +423,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSession(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @HeaderParam("x-session-isolation-key") String isolationKey, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}/endpoint/sessions/{session_id}")
         @ExpectedResponses({ 204 })
@@ -434,8 +433,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSessionSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @HeaderParam("x-session-isolation-key") String isolationKey, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/endpoint/sessions")
         @ExpectedResponses({ 200 })
@@ -525,6 +523,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -620,6 +619,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -782,6 +782,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -947,6 +948,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1075,6 +1077,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1206,6 +1209,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1323,6 +1327,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1439,6 +1444,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1555,6 +1561,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1672,6 +1679,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1852,6 +1860,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1972,6 +1981,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2086,6 +2096,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2204,6 +2215,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2322,6 +2334,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2410,6 +2423,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2484,6 +2498,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2558,6 +2573,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2615,6 +2631,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2667,6 +2684,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2803,6 +2821,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2878,6 +2897,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2946,6 +2966,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -3018,6 +3039,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -3124,6 +3146,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -3276,6 +3299,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -3392,8 +3416,6 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
      * @param createSessionRequest The createSessionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3404,11 +3426,11 @@ public final class AgentsImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSessionWithResponseAsync(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createSessionWithResponseAsync(String agentName, BinaryData createSessionRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createSession(this.client.getEndpoint(), agentName, isolationKey,
+        return FluxUtil.withContext(context -> service.createSession(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, createSessionRequest, requestOptions,
             context));
     }
@@ -3457,8 +3479,6 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
      * @param createSessionRequest The createSessionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3469,11 +3489,11 @@ public final class AgentsImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSessionWithResponse(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> createSessionWithResponse(String agentName, BinaryData createSessionRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSessionSync(this.client.getEndpoint(), agentName, isolationKey,
+        return service.createSessionSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), contentType, accept, createSessionRequest, requestOptions,
             Context.NONE);
     }
@@ -3585,8 +3605,6 @@ public final class AgentsImpl {
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3595,10 +3613,10 @@ public final class AgentsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionWithResponseAsync(String agentName, String sessionId, String isolationKey,
+    public Mono<Response<Void>> deleteSessionWithResponseAsync(String agentName, String sessionId,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteSession(this.client.getEndpoint(), agentName, sessionId,
-            isolationKey, this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -3616,8 +3634,6 @@ public final class AgentsImpl {
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3626,9 +3642,8 @@ public final class AgentsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, String isolationKey,
-        RequestOptions requestOptions) {
-        return service.deleteSessionSync(this.client.getEndpoint(), agentName, sessionId, isolationKey,
+    public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, RequestOptions requestOptions) {
+        return service.deleteSessionSync(this.client.getEndpoint(), agentName, sessionId,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 

@@ -89,6 +89,7 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
         return jsonReader.readObject(reader -> {
             String runtime = null;
             List<String> entryPoint = null;
+            String contentHash = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,11 +97,33 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
                     runtime = reader.getString();
                 } else if ("entry_point".equals(fieldName)) {
                     entryPoint = reader.readArray(reader1 -> reader1.getString());
+                } else if ("content_hash".equals(fieldName)) {
+                    contentHash = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new CodeConfiguration(runtime, entryPoint);
+            CodeConfiguration deserializedCodeConfiguration = new CodeConfiguration(runtime, entryPoint);
+            deserializedCodeConfiguration.contentHash = contentHash;
+            return deserializedCodeConfiguration;
         });
+    }
+
+    /*
+     * The SHA-256 hex digest of the uploaded code zip. Set by the service from the `x-ms-code-zip-sha256` request
+     * header; read-only in responses and never accepted in request payloads.
+     */
+    @Generated
+    private String contentHash;
+
+    /**
+     * Get the contentHash property: The SHA-256 hex digest of the uploaded code zip. Set by the service from the
+     * `x-ms-code-zip-sha256` request header; read-only in responses and never accepted in request payloads.
+     *
+     * @return the contentHash value.
+     */
+    @Generated
+    public String getContentHash() {
+        return this.contentHash;
     }
 }
