@@ -229,6 +229,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     // not dispose. Refreshed every time getIdentifier() observes a live asyncClient and once more
     // by close() before nulling it.
     private volatile String cachedV1Identifier;
+    // Namespace + entity path captured from the V1 asyncClient. Used by handleError() so that
+    // processError can be invoked even after asyncClient has been nulled by close() cleanup -
+    // e.g. a re-entrant close() called from within processMessage that completes after the
+    // calling handler throws. Without these, handleError() would NPE on asyncClient.get() and
+    // silently swallow the user's exception.
+    private volatile String cachedV1FullyQualifiedNamespace;
+    private volatile String cachedV1EntityPath;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -594,6 +601,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
+        // Cache the namespace + entity path so handleError() works even after close() has nulled
+        // asyncClient (re-entrant close from within processMessage). Refreshed on every receive
+        // cycle so a restart against a different builder picks up new values.
+        cachedV1FullyQualifiedNamespace = receiverClient.getFullyQualifiedNamespace();
+        cachedV1EntityPath = receiverClient.getEntityPath();
         // Cache the receive mode so the onNext hot-path reads a primitive instead of walking the
         // receiver options each call. PEEK_LOCK is safe to skip during drain (broker still owns
         // the lock and will redeliver any message we drop). RECEIVE_AND_DELETE is not - the broker
@@ -731,9 +743,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private void handleError(Throwable throwable) {
         try {
-            ServiceBusReceiverAsyncClient client = asyncClient.get();
-            final String fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
-            final String entityPath = client.getEntityPath();
+            // Read the cached values so processError still fires after asyncClient has been
+            // nulled by close() cleanup - e.g. a re-entrant close() from within processMessage
+            // that completes before the calling handler throws. Falls back to the live client
+            // when the cache hasn't been populated yet (first-ever error before any receive
+            // cycle), and only then to defaults so the error context is never NPE-suppressed.
+            String fullyQualifiedNamespace = cachedV1FullyQualifiedNamespace;
+            String entityPath = cachedV1EntityPath;
+            if (fullyQualifiedNamespace == null || entityPath == null) {
+                final ServiceBusReceiverAsyncClient client = asyncClient.get();
+                if (client != null) {
+                    if (fullyQualifiedNamespace == null) {
+                        fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
+                    }
+                    if (entityPath == null) {
+                        entityPath = client.getEntityPath();
+                    }
+                }
+            }
             processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception ex) {
             LOGGER.verbose("Error from error handler. Ignoring error.", ex);
