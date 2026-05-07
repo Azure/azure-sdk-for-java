@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.4.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.4` to version `1.4.6`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
 ## 1.4.3 (2026-01-29)
 
 ### Other Changes
