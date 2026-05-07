@@ -107,6 +107,22 @@ public class ServiceBusProcessorGracefulShutdownTest {
     }
 
     /**
+     * Polls the supplied predicate every 5 ms (up to 5 seconds) and fails the test if it never
+     * becomes true. Used to wait for asynchronous lifecycle transitions deterministically without
+     * relying on a fixed {@link Thread#sleep(long)}.
+     */
+    private static void waitFor(java.util.function.BooleanSupplier condition, String description)
+        throws InterruptedException {
+        final long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+        while (!condition.getAsBoolean()) {
+            if (System.nanoTime() > deadline) {
+                throw new AssertionError("Timed out waiting for " + description);
+            }
+            Thread.sleep(5);
+        }
+    }
+
+    /**
      * Verifies that when the V2 processor pump is disposed, in-flight message handlers
      * are allowed to complete before the underlying client is closed.
      * <p>
@@ -850,9 +866,10 @@ public class ServiceBusProcessorGracefulShutdownTest {
         closeThread.start();
 
         try {
-            // Brief sleep so close() has a chance to enter drainV1Handlers() before the handler
-            // attempts the synchronized isRunning() call.
-            Thread.sleep(200);
+            // Wait deterministically for close() to take ownership before signalling the handler
+            // to call isRunning(). Polling avoids the flakiness of a fixed Thread.sleep on
+            // slow/contended CI.
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
             closeStarted.countDown();
 
             assertTrue(closeDone.await(5, TimeUnit.SECONDS),
@@ -939,8 +956,10 @@ public class ServiceBusProcessorGracefulShutdownTest {
         closeThread.start();
 
         try {
-            // Give close() a moment to enter drainV1Handlers() (monitor released, drain blocking).
-            Thread.sleep(200);
+            // Wait deterministically for close() to take ownership (sets isRunning=false then
+            // v1CloseInProgress=true inside its first synchronized block). Polling isRunning()
+            // avoids the flakiness of a fixed Thread.sleep on slow/contended CI.
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
 
             // Concurrent start() during the drain window. Without the v1CloseInProgress guard,
             // this would create a new receiver and mark the processor running again, only for
@@ -1041,8 +1060,9 @@ public class ServiceBusProcessorGracefulShutdownTest {
         closeThread.start();
 
         try {
-            // Give close() a moment to enter drain.
-            Thread.sleep(200);
+            // Wait deterministically for close() to enter the drain window. Polling avoids the
+            // flakiness of a fixed Thread.sleep on slow/contended CI.
+            waitFor(() -> !processorClient.isRunning(), "close() to have set isRunning=false");
 
             // Concurrent getIdentifier() during the drain window. Must NOT create a new receiver
             // (cachedV1Identifier was seeded by the call above; before fix, it would have hit the
@@ -1131,8 +1151,12 @@ public class ServiceBusProcessorGracefulShutdownTest {
         });
         firstCloseThread.start();
 
-        // Give the first close() a moment to enter drain (own v1CloseInProgress).
-        Thread.sleep(200);
+        // Wait deterministically for the first close() to take ownership (sets isRunning=false
+        // then v1CloseInProgress=true). Polling isRunning() avoids the flakiness of a fixed
+        // Thread.sleep on slow/contended CI - if the first close thread were delayed, the second
+        // close could win ownership and block on the drain, failing the immediate-return
+        // assertion below.
+        waitFor(() -> !processorClient.isRunning(), "first close() to have taken ownership");
 
         // Second close() while the first is still draining - must return immediately because the
         // first close owns the shutdown. We bound it at 1 second to catch a regression where the
