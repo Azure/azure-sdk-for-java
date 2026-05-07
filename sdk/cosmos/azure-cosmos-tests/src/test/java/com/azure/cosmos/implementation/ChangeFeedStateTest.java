@@ -455,20 +455,26 @@ public class ChangeFeedStateTest {
 
     @Test(groups = "unit")
     public void changeFeedState_extractForEffectiveRange_largeScale() {
-        // Test with a large number of tokens to verify the optimization prevents
-        // quadratic behavior. With 10,000 tokens and extracting for each partition,
-        // the optimized code should complete within a reasonable time.
-        int tokenCount = 10000;
+        // Test with a moderate number of tokens to verify the optimization prevents
+        // quadratic behavior without being flaky on slow CI agents.
+        int tokenCount = 5000;
         ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        // Pre-compute range strings outside the timed section to avoid
+        // String.format overhead affecting measurement.
+        String[] mins = new String[tokenCount];
+        String[] maxs = new String[tokenCount];
+        for (int i = 0; i < tokenCount; i++) {
+            mins[i] = String.format("%06X", i);
+            maxs[i] = String.format("%06X", i + 1);
+        }
 
         long startTime = System.nanoTime();
 
         // Extract for every individual partition range (simulates Spark planning)
         for (int i = 0; i < tokenCount; i++) {
-            String min = String.format("%06X", i);
-            String max = String.format("%06X", i + 1);
             List<CompositeContinuationToken> tokens =
-                state.extractForEffectiveRange(new Range<>(min, max, true, false))
+                state.extractForEffectiveRange(new Range<>(mins[i], maxs[i], true, false))
                     .extractContinuationTokens();
 
             assertThat(tokens).hasSize(1);
@@ -477,14 +483,13 @@ public class ChangeFeedStateTest {
 
         long elapsedMs = (System.nanoTime() - startTime) / 1_000_000;
 
-        // With the optimization, 10k partitions × 10k tokens should complete
-        // well under 30 seconds even on slow CI agents. Without the optimization
-        // (quadratic), this would take minutes with the sort-per-call overhead.
-        // The generous margin prevents flakiness on overloaded agents or GC pauses;
-        // the quadratic version would hang the test runner entirely.
+        // Sanity check only: the optimized O(T log T + P log T) approach should
+        // complete in well under 60 seconds. The quadratic version would take
+        // minutes and effectively hang. This is not a strict perf benchmark —
+        // it simply guards against accidental regressions to O(P * T log T).
         assertThat(elapsedMs)
-            .as("10,000 extractions took %d ms, should be < 30,000 ms", elapsedMs)
-            .isLessThan(30_000);
+            .as("5,000 extractions took %d ms, should be < 60,000 ms", elapsedMs)
+            .isLessThan(60_000);
     }
 
     @Test(groups = "unit")

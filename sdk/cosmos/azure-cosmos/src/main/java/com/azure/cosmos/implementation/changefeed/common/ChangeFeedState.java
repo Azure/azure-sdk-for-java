@@ -38,7 +38,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
     // Reused across multiple extractForEffectiveRange calls on the same instance to
     // avoid redundant O(T log T) copy+sort per partition during Spark planning.
     // Benign race by design: concurrent callers may both create a snapshot,
-    // but the snapshot is immutable and volatile ensures safe publication.
+    // but the list wrapper is unmodifiable and volatile ensures safe publication.
+    // Note: the contained CompositeContinuationToken instances are themselves mutable;
+    // this cache only guarantees a stable sorted order, not deep immutability.
     // This class is NOT thread-safe for concurrent setContinuation() calls.
     private transient volatile SortedTokensSnapshot cachedSortedTokensSnapshot;
 
@@ -133,8 +135,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
         Collections.addAll(sorted, continuation.getCurrentContinuationTokens());
         sorted.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
-        this.cachedSortedTokensSnapshot = new SortedTokensSnapshot(continuation, Collections.unmodifiableList(sorted));
-        return sorted;
+        SortedTokensSnapshot newSnapshot = new SortedTokensSnapshot(continuation, Collections.unmodifiableList(sorted));
+        this.cachedSortedTokensSnapshot = newSnapshot;
+        return newSnapshot.sortedTokens;
     }
 
     private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokens(
