@@ -915,7 +915,7 @@ public class LocationCache {
 
                         // Register the canonical server name so future user inputs
                         // (e.g., "westus4") can be normalized even for new regions
-                        RegionNameMapper.registerRegionName(gatewayDbAccountLocation.getName());
+                        RegionNameToRegionIdMap.registerRegionName(gatewayDbAccountLocation.getName());
 
                         String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
                         URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
@@ -1061,7 +1061,7 @@ public class LocationCache {
         List<String> normalized = new ArrayList<>(regionNames.size());
         for (String region : regionNames) {
             if (region != null) {
-                normalized.add(RegionNameMapper.getCosmosDBRegionName(region));
+                normalized.add(RegionNameToRegionIdMap.getCosmosDBRegionName(region));
             }
         }
         return normalized;
@@ -1071,9 +1071,9 @@ public class LocationCache {
         if (regions == null || regions.isEmpty()) {
             return false;
         }
-        String normalizedTarget = RegionNameMapper.getCosmosDBRegionName(target);
+        String normalizedTarget = RegionNameToRegionIdMap.getCosmosDBRegionName(target);
         for (String region : regions) {
-            if (RegionNameMapper.getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+            if (RegionNameToRegionIdMap.getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
                 return true;
             }
         }
@@ -1099,7 +1099,7 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> RegionNameMapper.getCosmosDBRegionName(loc).toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> RegionNameToRegionIdMap.getCosmosDBRegionName(loc).toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
                 = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());

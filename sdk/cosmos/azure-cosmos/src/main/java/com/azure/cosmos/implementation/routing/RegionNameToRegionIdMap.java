@@ -5,16 +5,32 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ATTENTION: Please ensure the below map is consistent with <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=%2FProduct%2FCosmos%2FCosmosFabric%2FBackend%2FCommon%2FRegionToIdMap.cs&version=GBmaster">RegionToIdMap.cs</a> to avoid breaking behavior.
+ * Single source of truth for Azure region name mappings in the Cosmos Java SDK.
  * <p>
- * The purpose of the below map is to track region-specific progress from the session token (localLsn). If we know
- * the region name a request was routed to - the below map will help us obtain the localLsn for that region and partition combination
- * */
+ * Provides three capabilities:
+ * <ol>
+ *   <li><b>Region ID mapping</b> — canonical name ↔ numeric ID for session token region-level progress tracking.
+ *       Must stay in sync with
+ *       <a href="https://msdata.visualstudio.com/CosmosDB/_git/CosmosDB?path=%2FProduct%2FCosmos%2FCosmosFabric%2FBackend%2FCommon%2FRegionToIdMap.cs&amp;version=GBmaster">RegionToIdMap.cs</a>.</li>
+ *   <li><b>Region name normalization</b> — maps any user-supplied variant ("westus3", "west us 3", "WEST US 3")
+ *       to the canonical CosmosDB format ("West US 3").</li>
+ *   <li><b>Dynamic registration</b> — learns new canonical names from server responses at runtime, so regions
+ *       not yet in the static list can still be normalized after the first account read.</li>
+ * </ol>
+ */
 public class RegionNameToRegionIdMap {
+
+    // ========================================================================
+    // Region ID mappings (synced with backend RegionToIdMap.cs)
+    // ========================================================================
+
     public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
         {
             put("East US", 1);
@@ -70,7 +86,7 @@ public class RegionNameToRegionIdMap {
             put("Central US EUAP", 51);
             put("East US 2 EUAP", 52);
             put("North Europe 2", 53);
-            put("easteurope", 54);
+            put("East Europe", 54);
             put("APAC Southeast 2", 55);
             put("UK South 2", 56);
             put("UK North", 57);
@@ -90,167 +106,112 @@ public class RegionNameToRegionIdMap {
             put("Sweden Central", 71);
             put("Sweden South", 72);
             put("Korea South 2", 73);
+            put("Bleu France Central", 107);
+            put("Bleu France South", 108);
+            put("Delos Cloud Germany Central", 109);
+            put("Delos Cloud Germany North", 110);
+            put("Singapore Central", 111);
+            put("Singapore North", 112);
             put("USSec West Central", 113);
         }
     };
 
     public static final Map<Integer, String> REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS = new HashMap<Integer, String>() {
         {
-            put(49, "uaecentral");
+            put(1, "eastus");
+            put(2, "eastus2");
+            put(3, "centralus");
+            put(4, "northcentralus");
+            put(5, "southcentralus");
+            put(6, "westcentralus");
+            put(7, "westus");
+            put(8, "westus2");
+            put(9, "canadaeast");
+            put(10, "canadacentral");
+            put(11, "brazilsouth");
+            put(12, "northeurope");
+            put(13, "westeurope");
             put(14, "francecentral");
-            put(65, "usdodsouthcentral");
+            put(15, "francesouth");
+            put(16, "ukwest");
+            put(17, "uksouth");
+            put(18, "germanycentral");
+            put(19, "germanynortheast");
+            put(20, "germanynorth");
+            put(21, "germanywestcentral");
+            put(22, "switzerlandnorth");
+            put(23, "switzerlandwest");
+            put(24, "southeastasia");
+            put(25, "eastasia");
             put(26, "australiaeast");
             put(27, "australiasoutheast");
-            put(16, "ukwest");
-            put(40, "usgoviowa");
-            put(72, "swedensouth");
-            put(69, "usnatwest");
-            put(13, "westeurope");
-            put(50, "uaenorth");
-            put(53, "northeurope2");
-            put(36, "japanwest");
-            put(5, "southcentralus");
-            put(37, "koreacentral");
-            put(60, "norwayeast");
-            put(11, "brazilsouth");
-            put(29, "australiacentral2");
             put(28, "australiacentral");
-            put(73, "koreasouth2");
-            put(32, "centralindia");
-            put(35, "japaneast");
-            put(45, "usseceast");
-            put(25, "eastasia");
-            put(6, "westcentralus");
-            put(19, "germanynortheast");
-            put(23, "switzerlandwest");
-            put(52, "eastus2euap");
-            put(8, "westus2");
-            put(43, "usdodeast");
-            put(17, "uksouth");
-            put(56, "uksouth2");
-            put(10, "canadacentral");
-            put(68, "usnateast");
-            put(20, "germanynorth");
-            put(9, "canadaeast");
-            put(67, "chinanorth2");
-            put(22, "switzerlandnorth");
-            put(58, "eastusstg");
-            put(1, "eastus");
-            put(57, "uknorth");
-            put(4, "northcentralus");
-            put(54, "easteurope");
-            put(42, "usgovtexas");
-            put(61, "norwaywest");
-            put(55, "apacsoutheast2");
-            put(12, "northeurope");
-            put(59, "southcentralusstg");
-            put(21, "germanywestcentral");
-            put(24, "southeastasia");
-            put(71, "swedencentral");
-            put(31, "chinanorth");
-            put(62, "usgovwyoming");
+            put(29, "australiacentral2");
             put(30, "chinaeast");
-            put(2, "eastus2");
-            put(34, "southindia");
-            put(51, "centraluseuap");
-            put(18, "germanycentral");
-            put(7, "westus");
-            put(44, "usdodcentral");
-            put(66, "chinaeast2");
-            put(39, "usgovvirginia");
-            put(64, "usdodwestcentral");
-            put(70, "chinanorth10");
-            put(41, "usgovarizona");
+            put(31, "chinanorth");
+            put(32, "centralindia");
             put(33, "westindia");
+            put(34, "southindia");
+            put(35, "japaneast");
+            put(36, "japanwest");
+            put(37, "koreacentral");
             put(38, "koreasouth");
-            put(3, "centralus");
-            put(63, "usdodsouthwest");
-            put(47, "southafricawest");
+            put(39, "usgovvirginia");
+            put(40, "usgoviowa");
+            put(41, "usgovarizona");
+            put(42, "usgovtexas");
+            put(43, "usdodeast");
+            put(44, "usdodcentral");
+            put(45, "usseceast");
             put(46, "ussecwest");
-            put(15, "francesouth");
+            put(47, "southafricawest");
             put(48, "southafricanorth");
+            put(49, "uaecentral");
+            put(50, "uaenorth");
+            put(51, "centraluseuap");
+            put(52, "eastus2euap");
+            put(53, "northeurope2");
+            put(54, "easteurope");
+            put(55, "apacsoutheast2");
+            put(56, "uksouth2");
+            put(57, "uknorth");
+            put(58, "eastusstg");
+            put(59, "southcentralusstg");
+            put(60, "norwayeast");
+            put(61, "norwaywest");
+            put(62, "usgovwyoming");
+            put(63, "usdodsouthwest");
+            put(64, "usdodwestcentral");
+            put(65, "usdodsouthcentral");
+            put(66, "chinaeast2");
+            put(67, "chinanorth2");
+            put(68, "usnateast");
+            put(69, "usnatwest");
+            put(70, "chinanorth10");
+            put(71, "swedencentral");
+            put(72, "swedensouth");
+            put(73, "koreasouth2");
+            put(107, "bleufrancecentral");
+            put(108, "bleufrancesouth");
+            put(109, "deloscloudgermanycentral");
+            put(110, "deloscloudgermanynorth");
+            put(111, "singaporecentral");
+            put(112, "singaporenorth");
             put(113, "ussecwestcentral");
         }
     };
 
-    public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = new HashMap<String, Integer>() {
-        {
-            put("southafricanorth", 48);
-            put("westus2", 8);
-            put("australiacentral", 28);
-            put("apacsoutheast2", 55);
-            put("eastasia", 25);
-            put("uknorth", 57);
-            put("francecentral", 14);
-            put("southafricawest", 47);
-            put("usgovtexas", 42);
-            put("koreacentral", 37);
-            put("centralus", 3);
-            put("japaneast", 35);
-            put("westeurope", 13);
-            put("norwayeast", 60);
-            put("eastus", 1);
-            put("australiasoutheast", 27);
-            put("centralindia", 32);
-            put("usdodeast", 43);
-            put("germanycentral", 18);
-            put("usdodwestcentral", 64);
-            put("switzerlandwest", 23);
-            put("chinaeast2", 66);
-            put("westus", 7);
-            put("northcentralus", 4);
-            put("usdodcentral", 44);
-            put("uaenorth", 50);
-            put("centraluseuap", 51);
-            put("germanywestcentral", 21);
-            put("ussecwest", 46);
-            put("usnateast", 68);
-            put("uksouth", 17);
-            put("usgovvirginia", 39);
-            put("usgoviowa", 40);
-            put("chinanorth2", 67);
-            put("germanynorth", 20);
-            put("easteurope", 54);
-            put("uksouth2", 56);
-            put("ukwest", 16);
-            put("japanwest", 36);
-            put("usdodsouthcentral", 65);
-            put("australiaeast", 26);
-            put("westindia", 33);
-            put("australiacentral2", 29);
-            put("southindia", 34);
-            put("eastus2euap", 52);
-            put("canadaeast", 9);
-            put("southeastasia", 24);
-            put("koreasouth", 38);
-            put("southcentralus", 5);
-            put("eastusstg", 58);
-            put("chinanorth10", 70);
-            put("swedensouth", 72);
-            put("westcentralus", 6);
-            put("eastus2", 2);
-            put("chinaeast", 30);
-            put("usgovarizona", 41);
-            put("norwaywest", 61);
-            put("uaecentral", 49);
-            put("swedencentral", 71);
-            put("usdodsouthwest", 63);
-            put("usnatwest", 69);
-            put("chinanorth", 31);
-            put("northeurope2", 53);
-            put("usgovwyoming", 62);
-            put("brazilsouth", 11);
-            put("koreasouth2", 73);
-            put("canadacentral", 10);
-            put("southcentralusstg", 59);
-            put("usseceast", 45);
-            put("francesouth", 15);
-            put("germanynortheast", 19);
-            put("switzerlandnorth", 22);
-            put("northeurope", 12);
-            put("ussecwestcentral", 113);
+    public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS;
+
+    static {
+        // Build normalized→ID map from REGION_NAME_TO_REGION_ID_MAPPINGS
+        Map<String, Integer> normalizedMap = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
+            String normalized = entry.getKey().toLowerCase(Locale.ROOT).replace(" ", "");
+            normalizedMap.put(normalized, entry.getValue());
         }
-    };
+        NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(normalizedMap);
+    }
 
     public static String getRegionName(int regionId) {
         return REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS.getOrDefault(regionId, StringUtils.EMPTY);
@@ -258,5 +219,110 @@ public class RegionNameToRegionIdMap {
 
     public static int getRegionId(String regionName) {
         return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
+    }
+
+    // ========================================================================
+    // Region name normalization (any variant → canonical CosmosDB format)
+    // ========================================================================
+
+    // Static map: lowercase-no-spaces key → canonical display name
+    private static final Map<String, String> NORMALIZED_TO_CANONICAL;
+
+    // Dynamic map: populated from server-returned DatabaseAccountLocation names
+    // at runtime, so new regions not in the static list can still be normalized
+    private static final ConcurrentHashMap<String, String> DYNAMIC_NORMALIZED_TO_CANONICAL = new ConcurrentHashMap<>();
+
+    static {
+        Map<String, String> map = new HashMap<>();
+
+        // Seed from the ID map (all backend-known regions)
+        for (String canonicalName : REGION_NAME_TO_REGION_ID_MAPPINGS.keySet()) {
+            addCanonicalMapping(map, canonicalName);
+        }
+
+        // Additional regions that don't have IDs yet (from .NET SDK Regions.cs / Azure portal)
+        addCanonicalMapping(map, "West US 3");
+        addCanonicalMapping(map, "East US 3");
+        addCanonicalMapping(map, "Brazil Southeast");
+        addCanonicalMapping(map, "Mexico Central");
+        addCanonicalMapping(map, "Chile Central");
+        addCanonicalMapping(map, "Poland Central");
+        addCanonicalMapping(map, "Italy North");
+        addCanonicalMapping(map, "Spain Central");
+        addCanonicalMapping(map, "Austria East");
+        addCanonicalMapping(map, "Belgium Central");
+        addCanonicalMapping(map, "Denmark East");
+        addCanonicalMapping(map, "Finland Central");
+        addCanonicalMapping(map, "Greece Central");
+        addCanonicalMapping(map, "Jio India Central");
+        addCanonicalMapping(map, "Jio India West");
+        addCanonicalMapping(map, "New Zealand North");
+        addCanonicalMapping(map, "Indonesia Central");
+        addCanonicalMapping(map, "Malaysia South");
+        addCanonicalMapping(map, "Malaysia West");
+        addCanonicalMapping(map, "Taiwan North");
+        addCanonicalMapping(map, "Taiwan Northwest");
+        addCanonicalMapping(map, "Qatar Central");
+        addCanonicalMapping(map, "Israel Central");
+        addCanonicalMapping(map, "Israel Northwest");
+        addCanonicalMapping(map, "Saudi Arabia East");
+        addCanonicalMapping(map, "China East 3");
+        addCanonicalMapping(map, "China North 3");
+
+        NORMALIZED_TO_CANONICAL = Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * Normalizes a region name to the canonical CosmosDB format.
+     * <p>
+     * Strips spaces, lowercases, and looks up in both the static known-region map
+     * and the dynamic map (populated from server responses). If recognized, returns
+     * the canonical form (e.g., "West US 3"). If not recognized, returns the input as-is.
+     *
+     * @param regionName the region name to normalize (any casing/spacing variant)
+     * @return the canonical CosmosDB region name, or the original input if unrecognized
+     */
+    public static String getCosmosDBRegionName(String regionName) {
+        if (StringUtils.isEmpty(regionName)) {
+            return regionName;
+        }
+
+        String normalized = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+
+        String canonical = NORMALIZED_TO_CANONICAL.get(normalized);
+        if (canonical != null) {
+            return canonical;
+        }
+
+        canonical = DYNAMIC_NORMALIZED_TO_CANONICAL.get(normalized);
+        if (canonical != null) {
+            return canonical;
+        }
+
+        return regionName;
+    }
+
+    /**
+     * Registers a canonical region name learned from a server response.
+     * <p>
+     * Called when processing {@code DatabaseAccountLocation} names from the account read response.
+     * This ensures that new Azure regions (not yet in the static list) can still be normalized
+     * correctly for subsequent preferred-region or exclude-region lookups.
+     *
+     * @param canonicalRegionName the canonical region name from the server (e.g., "West US 4")
+     */
+    public static void registerRegionName(String canonicalRegionName) {
+        if (StringUtils.isEmpty(canonicalRegionName)) {
+            return;
+        }
+        String key = canonicalRegionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        if (!NORMALIZED_TO_CANONICAL.containsKey(key)) {
+            DYNAMIC_NORMALIZED_TO_CANONICAL.putIfAbsent(key, canonicalRegionName);
+        }
+    }
+
+    private static void addCanonicalMapping(Map<String, String> map, String canonicalName) {
+        String key = canonicalName.toLowerCase(Locale.ROOT).replace(" ", "");
+        map.putIfAbsent(key, canonicalName);
     }
 }
