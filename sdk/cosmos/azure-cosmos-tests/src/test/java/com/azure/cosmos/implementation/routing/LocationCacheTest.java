@@ -948,4 +948,163 @@ public class LocationCacheTest {
 
         return dal;
     }
+
+    // ========================================================================
+    // Region name normalization integration tests
+    // ========================================================================
+
+    private static final URI WestUS3Endpoint = createUrl("https://westus3.documents.azure.com");
+    private static final URI EastUSEndpoint = createUrl("https://eastus.documents.azure.com");
+    private static final URI NorthEuropeEndpoint = createUrl("https://northeurope.documents.azure.com");
+
+    private static DatabaseAccount createDatabaseAccountWithRealRegions() {
+        return ModelBridgeUtils.createDatabaseAccount(
+            // read endpoints (server returns canonical names)
+            ImmutableList.of(
+                createDatabaseAccountLocation("West US 3", WestUS3Endpoint.toString()),
+                createDatabaseAccountLocation("East US", EastUSEndpoint.toString()),
+                createDatabaseAccountLocation("North Europe", NorthEuropeEndpoint.toString())),
+            // write endpoints
+            ImmutableList.of(
+                createDatabaseAccountLocation("West US 3", WestUS3Endpoint.toString()),
+                createDatabaseAccountLocation("East US", EastUSEndpoint.toString()),
+                createDatabaseAccountLocation("North Europe", NorthEuropeEndpoint.toString())),
+            true);
+    }
+
+    private LocationCache createCacheWithRealRegions(List<String> preferredRegions) {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(preferredRegions);
+
+        LocationCache locationCache = new LocationCache(
+            connectionPolicy,
+            DefaultEndpoint,
+            configs);
+
+        locationCache.onDatabaseAccountRead(createDatabaseAccountWithRealRegions());
+        return locationCache;
+    }
+
+    @Test(groups = "unit")
+    public void preferredRegions_lowercaseShouldMatchCanonical() {
+        // Customer passes "west us 3" (all lowercase) instead of "West US 3"
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("west us 3", "east us", "north europe"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(NorthEuropeEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void preferredRegions_noSpacesShouldMatchCanonical() {
+        // Customer passes "westus3" (no spaces) instead of "West US 3"
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("westus3", "eastus", "northeurope"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(NorthEuropeEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void preferredRegions_uppercaseShouldMatchCanonical() {
+        // Customer passes "WEST US 3" (all uppercase)
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("WEST US 3", "EAST US", "NORTH EUROPE"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(NorthEuropeEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void preferredRegions_duplicateAfterNormalizationShouldDedupe() {
+        // "westus3" and "West US 3" normalize to the same thing — should dedupe
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("westus3", "West US 3", "east us"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        // Should have 2 preferred (deduped West US 3) + 1 remaining
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegions_lowercaseNoSpacesShouldExclude() {
+        // Preferred regions in canonical form, exclude region with no spaces
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+
+        AtomicReference<CosmosExcludedRegions> excludedRef = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("westus3"))));
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(locationCache);
+        connectionPolicy.setExcludedRegionsSupplier(excludedRef::get);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        List<RegionalRoutingContext> applicableEndpoints =
+            locationCache.getApplicableReadRegionRoutingContexts(request);
+
+        // "westus3" should exclude "West US 3"
+        assertThat(applicableEndpoints.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(WestUS3Endpoint);
+        assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegions_mixedCasingShouldExclude() {
+        // Exclude with weird casing: "EAST us", "north EUROPE"
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+
+        AtomicReference<CosmosExcludedRegions> excludedRef = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("EAST us", "north EUROPE"))));
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(locationCache);
+        connectionPolicy.setExcludedRegionsSupplier(excludedRef::get);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        List<RegionalRoutingContext> applicableEndpoints =
+            locationCache.getApplicableReadRegionRoutingContexts(request);
+
+        // Only West US 3 should remain
+        assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+        assertThat(applicableEndpoints.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(EastUSEndpoint)
+            .doesNotContain(NorthEuropeEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegions_requestLevelNoSpacesShouldExclude() {
+        // Request-level exclude with space-stripped names
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        request.requestContext.setExcludeRegions(Arrays.asList("eastus"));
+
+        List<RegionalRoutingContext> applicableEndpoints =
+            locationCache.getApplicableReadRegionRoutingContexts(request);
+
+        assertThat(applicableEndpoints.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(EastUSEndpoint);
+        assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
+    }
 }
