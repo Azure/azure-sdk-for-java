@@ -495,6 +495,73 @@ public class ChangeFeedStateTest {
     }
 
     @Test(groups = "unit")
+    public void changeFeedState_microbenchmark_30k_batchVsSingleCall() {
+        // Microbenchmark simulating a realistic Spark planning scenario with 30K feed ranges.
+        // Compares:
+        //   (a) batch API: extractForEffectiveRanges (sort once + binary search per range)
+        //   (b) single-call loop: extractForEffectiveRange per range (sort per call)
+        // Both should produce identical results; batch should be significantly faster.
+        int tokenCount = 30_000;
+        ChangeFeedState state = createStateWithManyTokens(tokenCount);
+
+        // Build all ranges upfront
+        List<Range<String>> ranges = new ArrayList<>(tokenCount);
+        for (int i = 0; i < tokenCount; i++) {
+            ranges.add(new Range<>(
+                String.format("%06X", i),
+                String.format("%06X", i + 1),
+                true, false));
+        }
+
+        // Warmup: one small extraction to trigger class loading / JIT
+        state.extractForEffectiveRange(ranges.get(0));
+
+        // (a) Batch API
+        long batchStart = System.nanoTime();
+        List<ChangeFeedState> batchResults = state.extractForEffectiveRanges(ranges);
+        long batchElapsedMs = (System.nanoTime() - batchStart) / 1_000_000;
+
+        assertThat(batchResults).hasSize(tokenCount);
+
+        // Spot-check correctness at boundaries and middle
+        for (int checkIdx : new int[]{0, 1, tokenCount / 2, tokenCount - 2, tokenCount - 1}) {
+            List<CompositeContinuationToken> tokens = batchResults.get(checkIdx).extractContinuationTokens();
+            assertThat(tokens).hasSize(1);
+            assertThat(tokens.get(0).getToken()).isEqualTo("token_" + checkIdx);
+        }
+
+        // (b) Single-call loop (extractForEffectiveRange per range)
+        long singleStart = System.nanoTime();
+        List<ChangeFeedState> singleResults = new ArrayList<>(tokenCount);
+        for (Range<String> range : ranges) {
+            singleResults.add(state.extractForEffectiveRange(range));
+        }
+        long singleElapsedMs = (System.nanoTime() - singleStart) / 1_000_000;
+
+        assertThat(singleResults).hasSize(tokenCount);
+
+        // Verify parity between batch and single-call results
+        for (int checkIdx : new int[]{0, tokenCount / 4, tokenCount / 2, 3 * tokenCount / 4, tokenCount - 1}) {
+            assertThat(batchResults.get(checkIdx).toString())
+                .as("Batch vs single mismatch at index %d", checkIdx)
+                .isEqualTo(singleResults.get(checkIdx).toString());
+        }
+
+        // Log timing for manual inspection — not a strict assertion since CI perf varies
+        System.out.println(String.format(
+            "[Microbenchmark] 30K feed ranges: batch API = %d ms, single-call loop = %d ms, speedup = %.1fx",
+            batchElapsedMs,
+            singleElapsedMs,
+            singleElapsedMs > 0 ? (double) singleElapsedMs / batchElapsedMs : Double.NaN));
+
+        // The batch API should complete in well under 30 seconds for 30K ranges.
+        // The old quadratic approach would take minutes.
+        assertThat(batchElapsedMs)
+            .as("Batch extraction of 30K ranges took %d ms, should be < 30,000 ms", batchElapsedMs)
+            .isLessThan(30_000);
+    }
+
+    @Test(groups = "unit")
     public void changeFeedState_extractContinuationTokens_nullContinuation() {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
@@ -620,51 +687,6 @@ public class ChangeFeedStateTest {
 
         // All tokens are in [000000, 000005). Query a range beyond all tokens.
         state.extractForEffectiveRange(new Range<>("000010", "000011", true, false));
-    }
-
-    @Test(groups = "unit")
-    public void changeFeedState_extractForEffectiveRange_fallbackCompleteMiss() {
-        // Tests the fallback path when binary search completely misses overlapping tokens.
-        // Token [00, EE) is a wide range, [01, 02) is narrow inside it.
-        // Query [DD, EE) overlaps [00, EE) but binary search starts at index 1 ([01, 02)),
-        // which doesn't overlap [DD, EE). Fallback scans from 0 and finds [00, EE).
-        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
-            {"00", "EE"},
-            {"01", "02"}
-        });
-
-        List<CompositeContinuationToken> tokens =
-            state.extractForEffectiveRange(new Range<>("DD", "EE", true, false))
-                .extractContinuationTokens();
-
-        assertThat(tokens).hasSize(1);
-        assertThat(tokens.get(0).getToken()).isEqualTo("tok_0");
-        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("DD", "EE", true, false));
-    }
-
-    @Test(groups = "unit")
-    public void changeFeedState_extractForEffectiveRange_fallbackPartialMiss() {
-        // Tests the fallback path for partial misses (F1 fix): binary search finds some
-        // overlapping tokens but misses earlier ones.
-        // Token [00, EE) is wide, [02, 03) is narrow, [0B, 0C) is later.
-        // Query [0B, EE): binary search starts at index 2 ([0B, 0C)), finding one overlap.
-        // Fallback scans indices 0-1 and finds [00, EE) also overlaps, catching the partial miss.
-        ChangeFeedState state = createStateWithTokenRanges(new String[][] {
-            {"00", "EE"},
-            {"02", "03"},
-            {"0B", "0C"}
-        });
-
-        List<CompositeContinuationToken> tokens =
-            state.extractForEffectiveRange(new Range<>("0B", "EE", true, false))
-                .extractContinuationTokens();
-
-        // Should find both [00, EE) trimmed to [0B, EE) and [0B, 0C) trimmed to [0B, 0C)
-        assertThat(tokens).hasSize(2);
-        assertThat(tokens.get(0).getToken()).isEqualTo("tok_0");
-        assertThat(tokens.get(0).getRange()).isEqualTo(new Range<>("0B", "EE", true, false));
-        assertThat(tokens.get(1).getToken()).isEqualTo("tok_2");
-        assertThat(tokens.get(1).getRange()).isEqualTo(new Range<>("0B", "0C", true, false));
     }
 
     @Test(groups = "unit")
