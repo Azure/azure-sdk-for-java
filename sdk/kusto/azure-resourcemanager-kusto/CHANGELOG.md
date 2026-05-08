@@ -1,14 +1,364 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package api-version 2025-02-14. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ListResourceSkusResult` was removed
 
-### Other Changes
+#### `models.FollowerDatabaseListResultGet` was removed
+
+#### `models.ScriptListResult` was removed
+
+#### `models.SandboxCustomImagesListResult` was removed
+
+#### `models.SkuDescriptionList` was removed
+
+#### `models.ClusterPrincipalAssignmentListResult` was removed
+
+#### `models.DatabasePrincipalAssignmentListResult` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.DataConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.DatabaseListResult` was removed
+
+#### `models.FollowerDatabaseListResult` was removed
+
+#### `models.OutboundNetworkDependenciesEndpointListResult` was removed
+
+#### `models.AttachedDatabaseConfigurationListResult` was removed
+
+#### `models.ClusterListResult` was removed
+
+#### `models.ManagedPrivateEndpointListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.VirtualNetworkConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.DatabasePrincipalListRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureCapacity` was modified
+
+* `AzureCapacity()` was changed to private access
+* `withMaximum(int)` was removed
+* `withMinimum(int)` was removed
+* `withScaleType(models.AzureScaleType)` was removed
+* `validate()` was removed
+* `withDefaultProperty(int)` was removed
+
+#### `models.SkuLocationInfoItem` was modified
+
+* `SkuLocationInfoItem()` was changed to private access
+* `withLocation(java.lang.String)` was removed
+* `withZones(java.util.List)` was removed
+* `validate()` was removed
+* `withZoneDetails(java.util.List)` was removed
+
+#### `models.IotHubDataConnection` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSkuZoneDetails` was modified
+
+* `ResourceSkuZoneDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationsResultsLocationsGetHeaders` was modified
+
+* `withAzureAsyncOperation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.DataConnectionValidationResult` was modified
+
+* `DataConnectionValidationResult()` was changed to private access
+* `validate()` was removed
+* `withErrorMessage(java.lang.String)` was removed
+
+#### `models.ResourceSkuCapabilities` was modified
+
+* `ResourceSkuCapabilities()` was changed to private access
+* `validate()` was removed
+
+#### `models.EventHubDataConnection` was modified
+
+* `validate()` was removed
+
+#### `models.CalloutPolicyToRemove` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityUserAssignedIdentities` was modified
+
+* `validate()` was removed
+
+#### `models.OptimizedAutoscale` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPrincipalAssignmentCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AttachedDatabaseConfigurationsCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+#### `models.EventGridDataConnection` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointProperty` was modified
+
+* `PrivateEndpointProperty()` was changed to private access
+* `validate()` was removed
+
+#### `models.AcceptedAudiences` was modified
+
+* `validate()` was removed
+
+#### `models.DatabasePrincipalAssignmentCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseInviteFollowerRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TrustedExternalTenant` was modified
+
+* `validate()` was removed
+
+#### `models.ReadOnlyFollowingDatabase` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CalloutPoliciesList` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointDependency` was modified
+
+* `EndpointDependency()` was changed to private access
+* `validate()` was removed
+* `withDomainName(java.lang.String)` was removed
+* `withEndpointDetails(java.util.List)` was removed
+
+#### `models.SuspensionDetails` was modified
+
+* `SuspensionDetails()` was changed to private access
+* `validate()` was removed
+* `withSuspensionStartDate(java.time.OffsetDateTime)` was removed
+
+#### `models.EndpointDetail` was modified
+
+* `EndpointDetail()` was changed to private access
+* `validate()` was removed
+* `withPort(java.lang.Integer)` was removed
+* `withIpAddress(java.lang.String)` was removed
+
+#### `models.PrivateLinkServiceConnectionStateProperty` was modified
+
+* `validate()` was removed
+
+#### `models.SandboxCustomImagesCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ReadWriteDatabase` was modified
+
+* `validate()` was removed
+
+#### `models.DataConnectionCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TableLevelSharingProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSku` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseStatistics` was modified
+
+* `DatabaseStatistics()` was changed to private access
+* `withSize(java.lang.Float)` was removed
+* `validate()` was removed
+
+#### `models.CosmosDbDataConnection` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterMigrateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.MigrationClusterProperties` was modified
+
+* `MigrationClusterProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.ManagedPrivateEndpointsCheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameRequest` was modified
+
+* `validate()` was removed
+
+#### `models.LanguageExtensionsList` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.EventHubDataConnectionWithManagedIdentity` was added
+
+* `models.EventGridDataConnectionWithManagedIdentity` was added
+
+#### `models.DataConnection` was modified
+
+* `systemData()` was added
+
+#### `models.IotHubDataFormat` was modified
+
+* `AZMONSTREAM` was added
+
+#### `models.DatabasePrincipalListResult` was modified
+
+* `nextLink()` was added
+
+#### `models.IotHubDataConnection` was modified
+
+* `systemData()` was added
+
+#### `models.DataConnectionKind` was modified
+
+* `EVENT_GRID_WITH_MANAGED_IDENTITY` was added
+* `EVENT_HUB_WITH_MANAGED_IDENTITY` was added
+
+#### `models.KeyVaultProperties` was modified
+
+* `federatedIdentityClientId()` was added
+* `withFederatedIdentityClientId(java.lang.String)` was added
+
+#### `models.EventHubDataConnection` was modified
+
+* `systemData()` was added
+
+#### `models.Script$Definition` was modified
+
+* `withManagedIdentityResourceId(java.lang.String)` was added
+
+#### `models.EventGridDataConnection` was modified
+
+* `systemData()` was added
+
+#### `models.DatabasePrincipalAssignment` was modified
+
+* `systemData()` was added
+
+#### `models.PublicNetworkAccess` was modified
+
+* `SECURED_BY_PERIMETER` was added
+
+#### `models.EventHubDataFormat` was modified
+
+* `AZMONSTREAM` was added
+
+#### `models.ReadOnlyFollowingDatabase` was modified
+
+* `systemData()` was added
+
+#### `models.EventGridDataFormat` was modified
+
+* `AZMONSTREAM` was added
+
+#### `models.OutboundNetworkDependenciesEndpoint` was modified
+
+* `systemData()` was added
+
+#### `models.SandboxCustomImage` was modified
+
+* `systemData()` was added
+
+#### `models.AttachedDatabaseConfiguration` was modified
+
+* `systemData()` was added
+
+#### `models.ClusterPrincipalAssignment` was modified
+
+* `systemData()` was added
+
+#### `models.Script` was modified
+
+* `managedIdentityResourceId()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `systemData()` was added
+
+#### `models.ReadWriteDatabase` was modified
+
+* `systemData()` was added
+
+#### `models.Script$Update` was modified
+
+* `withManagedIdentityResourceId(java.lang.String)` was added
+
+#### `models.CosmosDbDataConnection` was modified
+
+* `systemData()` was added
+
+#### `models.Database` was modified
+
+* `systemData()` was added
+
+#### `models.LanguageExtensionsList` was modified
+
+* `withNextLink(java.lang.String)` was added
+* `nextLink()` was added
 
 ## 1.2.0 (2025-01-24)
 
