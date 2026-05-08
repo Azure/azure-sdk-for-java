@@ -1,14 +1,30 @@
 # Release History
 
-## 2.62.0-beta.1 (Unreleased)
+## 2.62.0 (2026-05-08)
 
-### Features Added
+### azure-resourcemanager-compute
 
-### Breaking Changes
+#### Breaking Changes
 
-### Bugs Fixed
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.cloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.cloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.cloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.cloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.cloudServiceClient().getCloudServiceOperatingSystems()`.
+
+#### Dependency Updates
+
+- Updated `ComputeRP api-version` to `2025-11-01`.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-01`.
 
 ### Other Changes
+
+- Updated dependencies from resources.
 
 ## 2.61.0 (2026-04-03)
 
