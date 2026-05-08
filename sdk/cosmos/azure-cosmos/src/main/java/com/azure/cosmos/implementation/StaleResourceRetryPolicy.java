@@ -124,6 +124,14 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                             this.sessionContainer.clearTokenByResourceId(oldCollectionRid.get());
                         }
 
+                        // Reset request context so the retry re-resolves the collection
+                        // and sends the updated intended-collection-rid header.
+                        if (this.request != null) {
+                            this.request.forceNameCacheRefresh = true;
+                            this.request.requestContext.resolvedCollectionRid = null;
+                            this.request.getHeaders().remove(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
+                        }
+
                         this.retried = true;
                         if (this.shouldSuppressRetry.get()) {
                             return Mono.just(ShouldRetryResult.error(e));

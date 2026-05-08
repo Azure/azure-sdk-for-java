@@ -98,6 +98,76 @@ public class StaleResourceExceptionRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 
+    @DataProvider(name = "staleContainerExceptionProvider")
+    public Object[][] staleContainerExceptionProvider() {
+        return new Object[][] {
+            //status code, subStatusCode
+            { HttpConstants.StatusCodes.GONE, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE },
+            { HttpConstants.StatusCodes.BADREQUEST, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS },
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "staleContainerExceptionProvider")
+    public void requestContextResetOnRetry(int statusCode, int subStatusCode) {
+        // Validates that when StaleResourceRetryPolicy retries a stale-container
+        // exception, it resets the request context so the retry re-resolves the
+        // collection and sends the updated intended-collection-rid header.
+        String testCollectionLink = "/dbs/test/colls/contextResetTest";
+
+        DocumentCollection documentCollection = new DocumentCollection();
+        documentCollection.setId("contextResetTest");
+        documentCollection.setResourceId("oldRid");
+
+        DocumentCollection documentCollectionAfterRefresh = new DocumentCollection();
+        documentCollectionAfterRefresh.setId("contextResetTest");
+        documentCollectionAfterRefresh.setResourceId("newRid");
+
+        RxCollectionCache rxCollectionCache = Mockito.mock(RxCollectionCache.class);
+        Mockito
+            .when(rxCollectionCache.resolveByNameAsync(Mockito.any(), Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
+            .thenReturn(Mono.just(documentCollection))
+            .thenReturn(Mono.just(documentCollectionAfterRefresh));
+        doNothing().when(rxCollectionCache).refresh(Mockito.any(), Mockito.any(), Mockito.isNull());
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        doNothing().when(sessionContainer).clearTokenByResourceId(documentCollection.getResourceId());
+
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
+            rxCollectionCache,
+            null,
+            testCollectionLink,
+            null,
+            null,
+            sessionContainer,
+            TestUtils.mockDiagnosticsClientContext(),
+            null
+        );
+
+        // Simulate a request with a stale resolvedCollectionRid and intended header
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            TestUtils.mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/test/colls/contextResetTest/docs/doc1", ResourceType.Document);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.resolvedCollectionRid = "oldRid";
+        request.getHeaders().put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, "oldRid");
+
+        staleResourceRetryPolicy.onBeforeSendRequest(request);
+
+        CosmosException exception = BridgeInternal.createCosmosException(statusCode);
+        BridgeInternal.setSubStatusCode(exception, subStatusCode);
+
+        ShouldRetryResult shouldRetryResult = staleResourceRetryPolicy.shouldRetry(exception).block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+
+        // Verify request context was reset for a clean retry
+        assertThat(request.requestContext.resolvedCollectionRid).isNull();
+        assertThat(request.forceNameCacheRefresh).isTrue();
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER)).isNull();
+
+        // Verify session token was cleaned up for the old rid
+        verify(sessionContainer, Mockito.times(1)).clearTokenByResourceId("oldRid");
+    }
+
     @Test(groups = "unit")
     public void cleanSessionToken() {
         String testCollectionLink = "/dbs/test/colls/staledExceptionTest";
