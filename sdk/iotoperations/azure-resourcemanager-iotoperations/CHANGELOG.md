@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0 (2026-04-09)
 
 - Azure Resource Manager IoT Operations client library for Java. This package contains Microsoft Azure SDK for IoT Operations Management SDK. Microsoft.IoTOperations Resource Provider management API. Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

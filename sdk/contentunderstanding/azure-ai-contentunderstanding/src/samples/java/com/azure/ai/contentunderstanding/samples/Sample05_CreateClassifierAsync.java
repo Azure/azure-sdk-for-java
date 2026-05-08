@@ -10,10 +10,20 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentContentSegment;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +54,7 @@ public class Sample05_CreateClassifierAsync {
 
     private static String createdAnalyzerId;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample05Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -79,7 +89,8 @@ public class Sample05_CreateClassifierAsync {
 
         categories.put("Invoice", new ContentCategoryDefinition()
             .setDescription("Billing documents issued by sellers or service providers to request payment "
-                + "for goods or services, detailing items, prices, taxes, totals, and payment terms."));
+                + "for goods or services, detailing items, prices, taxes, totals, and payment terms.")
+            .setAnalyzerId("prebuilt-invoice")); // Route Invoice segments for field extraction
 
         categories.put("Bank_Statement", new ContentCategoryDefinition()
             .setDescription("Official statements issued by banks that summarize account activity over a period, "
@@ -145,6 +156,37 @@ public class Sample05_CreateClassifierAsync {
                 if (result.getConfig() != null && result.getConfig().isSegmentEnabled() != null) {
                     System.out.println("  Segmentation enabled: " + result.getConfig().isSegmentEnabled());
                 }
+            })
+            .then(Mono.fromRunnable(() -> {
+                // Analyze a document with the classifier, then convert to LLM input
+                System.out.println("\nAnalyzing document with classifier '" + finalAnalyzerId + "'...");
+            }))
+            .then(Mono.defer(() -> {
+                try {
+                    byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
+                    PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOp
+                        = client.beginAnalyzeBinary(finalAnalyzerId, BinaryData.fromBytes(fileBytes));
+                    return analyzeOp.last().flatMap(p -> p.getFinalResult());
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+            }))
+            .doOnNext(analyzeResult -> {
+                if (analyzeResult.getContents() != null && !analyzeResult.getContents().isEmpty()) {
+                    DocumentContent doc = (DocumentContent) analyzeResult.getContents().get(0);
+                    if (doc.getSegments() != null && !doc.getSegments().isEmpty()) {
+                        System.out.println("Found " + doc.getSegments().size() + " segment(s):");
+                        for (DocumentContentSegment seg : doc.getSegments()) {
+                            System.out.println("  Category: " + (seg.getCategory() != null ? seg.getCategory() : "(unknown)"));
+                        }
+                    }
+                }
+
+                String llmText = LlmInputHelper.toLlmInput(analyzeResult);
+                System.out.println("\n============================================================");
+                System.out.println("CLASSIFICATION RESULT AS LLM INPUT");
+                System.out.println("============================================================");
+                System.out.println(llmText);
             })
             .then(Mono.fromRunnable(() -> {
                 // Cleanup - delete the created classifier analyzer
