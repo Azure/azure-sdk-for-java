@@ -121,6 +121,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         request.requestContext = new DocumentServiceRequestContext();
         request.requestContext.resolvedCollectionRid = "rid_0";
+        request.getHeaders().put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, "rid_0");
         renameCollectionAwareClientRetryPolicy.onBeforeSendRequest(request);
 
         NotFoundException notFoundException = new NotFoundException();
@@ -138,6 +139,10 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 .nullException()
                 .shouldRetry(true)
                 .build());
+
+        // Verify stale intended-collection-rid header was removed so it gets
+        // re-populated with the new collection rid on retry
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER)).isNull();
     }
 
     /**

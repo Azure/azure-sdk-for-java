@@ -70,6 +70,7 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
 
                     request.forceNameCacheRefresh = true;
                     request.requestContext.resolvedCollectionRid = null;
+                    request.getHeaders().remove(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
 
                     Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
