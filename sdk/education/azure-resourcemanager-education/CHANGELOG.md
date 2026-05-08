@@ -1,14 +1,39 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager Education client library for Java. This package contains Microsoft Azure SDK for Education Management SDK. Education client provides access to education resources for Azure subscriptions. Package api-version 2021-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.GrantListResponse` was removed
 
-### Other Changes
+#### `models.StudentLabListResult` was removed
+
+#### `models.LabListResult` was removed
+
+#### `models.JoinRequestList` was removed
+
+#### `models.StudentListResult` was removed
+
+#### `models.RedeemRequest` was modified
+
+* `validate()` was removed
+
+#### `models.InviteCodeGenerateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `Operation()` was changed to private access
+* `validate()` was removed
+* `withDisplay(models.OperationDisplay)` was removed
 
 ## 1.0.0-beta.4 (2024-10-14)
 

@@ -50,8 +50,7 @@
  */
 public final class GrantsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Grant.json
+     * x-ms-original-file: 2021-12-01-preview/Grant.json
      */
     /**
      * Sample code: Grant.
@@ -64,9 +63,7 @@ public final class GrantsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * GrantIncludeAllocatedBudget.json
+     * x-ms-original-file: 2021-12-01-preview/GrantIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantIncludeAllocatedBudget.
@@ -88,9 +85,7 @@ public final class GrantsGetSamples {
  */
 public final class GrantsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * GrantDefaultListIncludeAllocatedBudget.json
+     * x-ms-original-file: 2021-12-01-preview/GrantDefaultListIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantListIncludeAllocatedBudget.
@@ -102,9 +97,7 @@ public final class GrantsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantDefaultList
-     * .json
+     * x-ms-original-file: 2021-12-01-preview/GrantDefaultList.json
      */
     /**
      * Sample code: GrantList.
@@ -125,9 +118,7 @@ public final class GrantsListSamples {
  */
 public final class GrantsListAllSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * GrantListIncludeAllocatedBudget.json
+     * x-ms-original-file: 2021-12-01-preview/GrantListIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantListIncludeAllocatedBudget.
@@ -139,8 +130,7 @@ public final class GrantsListAllSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantList.json
+     * x-ms-original-file: 2021-12-01-preview/GrantList.json
      */
     /**
      * Sample code: GrantList.
@@ -161,9 +151,7 @@ public final class GrantsListAllSamples {
  */
 public final class JoinRequestsApproveSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * JoinRequestApproveAndDeny.json
+     * x-ms-original-file: 2021-12-01-preview/JoinRequestApproveAndDenyForApprove.json
      */
     /**
      * Sample code: JoinRequestApprove.
@@ -186,9 +174,7 @@ public final class JoinRequestsApproveSamples {
  */
 public final class JoinRequestsDenySamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * JoinRequestApproveAndDeny.json
+     * x-ms-original-file: 2021-12-01-preview/JoinRequestApproveAndDeny.json
      */
     /**
      * Sample code: JoinRequestDeny.
@@ -211,8 +197,7 @@ public final class JoinRequestsDenySamples {
  */
 public final class JoinRequestsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequest.json
+     * x-ms-original-file: 2021-12-01-preview/JoinRequest.json
      */
     /**
      * Sample code: JoinRequest.
@@ -235,9 +220,7 @@ public final class JoinRequestsGetSamples {
  */
 public final class JoinRequestsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestList.
-     * json
+     * x-ms-original-file: 2021-12-01-preview/JoinRequestList.json
      */
     /**
      * Sample code: JoinRequestList.
@@ -264,8 +247,7 @@ import java.time.OffsetDateTime;
  */
 public final class LabsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateLab.json
+     * x-ms-original-file: 2021-12-01-preview/CreateLab.json
      */
     /**
      * Sample code: CreateLab.
@@ -292,8 +274,7 @@ public final class LabsCreateOrUpdateSamples {
  */
 public final class LabsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteLab.json
+     * x-ms-original-file: 2021-12-01-preview/DeleteLab.json
      */
     /**
      * Sample code: DeleteLab.
@@ -318,9 +299,7 @@ import com.azure.resourcemanager.education.models.InviteCodeGenerateRequest;
  */
 public final class LabsGenerateInviteCodeSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * GenerateInviteCode.json
+     * x-ms-original-file: 2021-12-01-preview/GenerateInviteCode.json
      */
     /**
      * Sample code: CreateLab.
@@ -343,9 +322,7 @@ public final class LabsGenerateInviteCodeSamples {
  */
 public final class LabsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabIncludeBudget
-     * .json
+     * x-ms-original-file: 2021-12-01-preview/LabIncludeBudget.json
      */
     /**
      * Sample code: LabIncludeBudget.
@@ -359,8 +336,7 @@ public final class LabsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Lab.json
+     * x-ms-original-file: 2021-12-01-preview/Lab.json
      */
     /**
      * Sample code: Lab.
@@ -383,9 +359,7 @@ public final class LabsGetSamples {
  */
 public final class LabsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * LabListWithInvoiceSectionNameIncludeBudget.json
+     * x-ms-original-file: 2021-12-01-preview/LabListWithInvoiceSectionNameIncludeBudget.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionNameIncludeBudget.
@@ -400,9 +374,7 @@ public final class LabsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * LabListWithInvoiceSectionName.json
+     * x-ms-original-file: 2021-12-01-preview/LabListWithInvoiceSectionName.json
      */
     /**
      * Sample code: LabListWithInvoiceSectionName.
@@ -425,8 +397,7 @@ public final class LabsListSamples {
  */
 public final class LabsListAllSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabList.json
+     * x-ms-original-file: 2021-12-01-preview/LabList.json
      */
     /**
      * Sample code: LabList.
@@ -439,9 +410,7 @@ public final class LabsListAllSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
-     * LabListIncludeBudget.json
+     * x-ms-original-file: 2021-12-01-preview/LabListIncludeBudget.json
      */
     /**
      * Sample code: LabListIncludeBudget.
@@ -463,9 +432,7 @@ public final class LabsListAllSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GetOperations.
-     * json
+     * x-ms-original-file: 2021-12-01-preview/GetOperations.json
      */
     /**
      * Sample code: GetOperations.
@@ -488,8 +455,7 @@ import com.azure.resourcemanager.education.models.RedeemRequest;
  */
 public final class ResourceProviderRedeemInvitationCodeSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/RedeemCode.json
+     * x-ms-original-file: 2021-12-01-preview/RedeemCode.json
      */
     /**
      * Sample code: RedeemCode.
@@ -513,8 +479,7 @@ public final class ResourceProviderRedeemInvitationCodeSamples {
  */
 public final class StudentLabsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLab.json
+     * x-ms-original-file: 2021-12-01-preview/StudentLab.json
      */
     /**
      * Sample code: StudentLab.
@@ -535,9 +500,7 @@ public final class StudentLabsGetSamples {
  */
 public final class StudentLabsListAllSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentLabList.
-     * json
+     * x-ms-original-file: 2021-12-01-preview/StudentLabList.json
      */
     /**
      * Sample code: StudentLabList.
@@ -563,9 +526,7 @@ import java.time.OffsetDateTime;
  */
 public final class StudentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/CreateStudent.
-     * json
+     * x-ms-original-file: 2021-12-01-preview/CreateStudent.json
      */
     /**
      * Sample code: Student.
@@ -595,9 +556,7 @@ public final class StudentsCreateOrUpdateSamples {
  */
 public final class StudentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/DeleteStudent.
-     * json
+     * x-ms-original-file: 2021-12-01-preview/DeleteStudent.json
      */
     /**
      * Sample code: DeleteLab.
@@ -620,8 +579,7 @@ public final class StudentsDeleteSamples {
  */
 public final class StudentsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Student.json
+     * x-ms-original-file: 2021-12-01-preview/Student.json
      */
     /**
      * Sample code: Student.
@@ -644,8 +602,7 @@ public final class StudentsGetSamples {
  */
 public final class StudentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/StudentList.json
+     * x-ms-original-file: 2021-12-01-preview/StudentList.json
      */
     /**
      * Sample code: StudentList.
