@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-databricks</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,8 +75,8 @@ workspace = databricksManager.workspaces()
     .define(workspaceName)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
-    .withManagedResourceGroupId(managedResourceGroupId)
-    .withSku(new Sku().withName("standard"))
+    .withComputeMode(ComputeMode.SERVERLESS)
+    .withSku(new Sku().withName("premium"))
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/databricks/azure-resourcemanager-databricks/SAMPLE.md)
