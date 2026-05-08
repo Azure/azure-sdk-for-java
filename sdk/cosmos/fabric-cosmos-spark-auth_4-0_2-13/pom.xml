@@ -533,12 +533,16 @@
       </build>
     </profile>
 
-    <!-- Library cannot build for Java 16 and below -->
+    <!-- Skip build and tests for Java < 17 - Spark 4.0 dependencies require Java 17+ -->
     <profile>
       <id>java8</id>
       <activation>
         <jdk>[,17)</jdk>
       </activation>
+      <properties>
+        <cosmos.spark.skip>true</cosmos.spark.skip>
+        <skipTests>true</skipTests>
+      </properties>
       <build>
         <plugins>
           <plugin>
