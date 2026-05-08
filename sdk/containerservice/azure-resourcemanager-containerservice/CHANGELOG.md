@@ -1,14 +1,16 @@
 # Release History
 
-## 2.60.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.60.0-beta.1 (2026-04-21)
 
 ### Bugs Fixed
 
+- Fixed bug that `nodeImageVersion` was not settable in `ManagedClusterAgentPoolProfileProperties`. 
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-02-preview`.
 
 ## 2.59.0 (2026-04-20)
 

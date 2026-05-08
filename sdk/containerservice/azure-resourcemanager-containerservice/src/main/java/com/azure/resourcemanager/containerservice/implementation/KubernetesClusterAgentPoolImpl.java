@@ -294,7 +294,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withTypePropertiesType(innerModel().type());
         agentPoolInner.withMode(innerModel().mode());
         agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
-        //        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());     // nodeImageVersion is readOnly now
+        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
         agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
         agentPoolInner.withPowerState(innerModel().powerState());
         agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
