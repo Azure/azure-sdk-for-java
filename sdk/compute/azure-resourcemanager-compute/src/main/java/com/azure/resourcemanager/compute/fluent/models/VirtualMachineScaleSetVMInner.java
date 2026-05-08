@@ -659,6 +659,17 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the virtualMachineResourceId property: Specifies the ARM resource ID of the standalone virtual machine
+     * associated with this VMSS VM. This property is only applicable to Virtual Machine Scale Sets with Flexible
+     * orchestration mode. Minimum api-version: 2025-11-01.
+     * 
+     * @return the virtualMachineResourceId value.
+     */
+    public String virtualMachineResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineResourceId();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

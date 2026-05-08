@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectableContainersListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureStorage/ProtectableContainers_List.json
+     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectableContainers_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureStorage.

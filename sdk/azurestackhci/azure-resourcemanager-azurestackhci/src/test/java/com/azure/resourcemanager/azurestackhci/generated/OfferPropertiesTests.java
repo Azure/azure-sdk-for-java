@@ -12,13 +12,13 @@ public final class OfferPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"hurzafblj\",\"publisherId\":\"pbtoqcjmkl\",\"content\":\"vbqid\",\"contentVersion\":\"ajzyul\",\"skuMappings\":[{\"catalogPlanId\":\"jkrlkhbzhfepg\",\"marketplaceSkuId\":\"qex\",\"marketplaceSkuVersions\":[\"c\",\"scpai\",\"rhhbcs\",\"l\"]}]}")
+            "{\"provisioningState\":\"jxdultskzbbtdzu\",\"publisherId\":\"e\",\"content\":\"gpw\",\"contentVersion\":\"uh\",\"skuMappings\":[{\"catalogPlanId\":\"sjyofdx\",\"marketplaceSkuId\":\"us\",\"marketplaceSkuVersions\":[\"ouwaboekqvkeln\",\"mvb\",\"wyjsflhhcaalnjix\"]}]}")
             .toObject(OfferProperties.class);
-        Assertions.assertEquals("pbtoqcjmkl", model.publisherId());
-        Assertions.assertEquals("vbqid", model.content());
-        Assertions.assertEquals("ajzyul", model.contentVersion());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("qex", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("c", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("e", model.publisherId());
+        Assertions.assertEquals("gpw", model.content());
+        Assertions.assertEquals("uh", model.contentVersion());
+        Assertions.assertEquals("sjyofdx", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("us", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("ouwaboekqvkeln", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

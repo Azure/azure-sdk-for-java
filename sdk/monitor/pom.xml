@@ -10,14 +10,15 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-monitor-ingestion</module>
-      <module>azure-monitor-ingestion-perf</module>
-      <module>azure-monitor-opentelemetry-exporter</module>
-      <module>azure-monitor-opentelemetry-autoconfigure</module>
-      <module>azure-monitor-query</module>
-      <module>azure-monitor-query-logs</module>
-      <module>azure-monitor-query-metrics</module>
-      <module>azure-monitor-query-perf</module>
-      <module>azure-resourcemanager-monitor</module>
+    <module>azure-monitor-ingestion</module>
+    <module>azure-monitor-ingestion-perf</module>
+    <module>azure-monitor-opentelemetry-autoconfigure</module>
+    <module>azure-monitor-opentelemetry-exporter</module>
+    <module>azure-monitor-query</module>
+    <module>azure-monitor-query-logs</module>
+    <module>azure-monitor-query-metrics</module>
+    <module>azure-monitor-query-perf</module>
+    <module>azure-resourcemanager-monitor</module>
+    <module>azure-resourcemanager-monitor-slis</module>
   </modules>
 </project>

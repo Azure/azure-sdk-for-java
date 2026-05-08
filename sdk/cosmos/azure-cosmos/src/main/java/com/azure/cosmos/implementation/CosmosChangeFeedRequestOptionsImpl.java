@@ -216,6 +216,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return null;
     }
 
+    @Override
     public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
@@ -421,6 +422,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.customSerializer = overrideOption(cosmosRequestOptions.getCustomItemSerializer(), this.customSerializer);
     }
 
 }

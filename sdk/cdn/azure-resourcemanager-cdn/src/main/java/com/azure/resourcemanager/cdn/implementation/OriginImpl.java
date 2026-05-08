@@ -10,7 +10,6 @@ import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.Origin;
-import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
 import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
@@ -85,11 +84,6 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
     }
 
     @Override
-    public OriginCapacityResourceProperties originCapacityResource() {
-        return this.innerModel().originCapacityResource();
-    }
-
-    @Override
     public EnabledState enabledState() {
         return this.innerModel().enabledState();
     }
@@ -137,7 +131,6 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
                 .withPriority(this.innerModel().priority())
                 .withWeight(this.innerModel().weight())
                 .withSharedPrivateLinkResource(this.innerModel().sharedPrivateLinkResource())
-                .withOriginCapacityResource(this.innerModel().originCapacityResource())
                 .withEnabledState(this.innerModel().enabledState())
                 .withEnforceCertificateNameCheck(this.innerModel().enforceCertificateNameCheck());
         return this.parent()
@@ -229,12 +222,6 @@ class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, Origi
     @Override
     public OriginImpl withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         this.innerModel().withSharedPrivateLinkResource(sharedPrivateLinkResource);
-        return this;
-    }
-
-    @Override
-    public OriginImpl withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
-        this.innerModel().withOriginCapacityResource(originCapacityResource);
         return this;
     }
 

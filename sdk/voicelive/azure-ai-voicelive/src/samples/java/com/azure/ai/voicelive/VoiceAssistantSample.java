@@ -25,7 +25,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -89,8 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class VoiceAssistantSample {
 
     // Service configuration constants
-    private static final String DEFAULT_API_VERSION = "2025-10-01";
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
 
     // Environment variable names
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
@@ -364,7 +362,6 @@ public final class VoiceAssistantSample {
         for (String arg : args) {
             if ("--use-token-credential".equals(arg)) {
                 useTokenCredential = true;
-                break;
             }
         }
 
@@ -465,7 +462,6 @@ public final class VoiceAssistantSample {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
             .buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
@@ -485,7 +481,6 @@ public final class VoiceAssistantSample {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
             .buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
@@ -514,49 +509,42 @@ public final class VoiceAssistantSample {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to receive server events asynchronously
-                session.receiveEvents()
-                    .doOnSubscribe(subscription -> System.out.println("🔗 Subscribed to event stream"))
-                    .doOnComplete(() -> System.out.println("⚠️ Event stream completed (this might indicate a connection issue)"))
-                    .doOnError(error -> System.out.println("❌ Event stream error: " + error.getMessage()))
-                    .subscribe(
-                        event -> handleServerEvent(event, audioProcessor),
-                        error -> System.err.println("❌ Error receiving events: " + error.getMessage()),
-                        () -> System.out.println("✓ Event stream completed")
-                    );
-
+                // Send session configuration, then listen for events.
                 System.out.println("📤 Sending session.update configuration...");
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> System.out.println("✓ Session configuration sent"))
+                return session.sendEvent(updateEvent)
+                    .doOnSuccess(v -> {
+                        System.out.println("✓ Session configuration sent");
+
+                        // Start audio systems
+                        audioProcessor.startPlayback();
+
+                        System.out.println("🎤 VOICE ASSISTANT READY");
+                        System.out.println("Start speaking to begin conversation");
+                        System.out.println("Press Ctrl+C to exit");
+
+                        // Install shutdown hook for graceful cleanup
+                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                            try {
+                                System.out.println("\n🛑 Shutting down gracefully...");
+                            } catch (Exception ignored) {
+                                // jansi may have torn down the ANSI output stream already
+                            }
+                            audioProcessor.shutdown();
+                            try {
+                                session.closeAsync().block(Duration.ofSeconds(5));
+                            } catch (Exception e) {
+                                // Suppress errors during forced JVM shutdown -
+                                // the WebSocket connection may already be partially torn down
+                            }
+                        }));
+                    })
                     .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .subscribe();
-
-
-                // Start audio systems
-                audioProcessor.startPlayback();
-
-                System.out.println("🎤 VOICE ASSISTANT READY");
-                System.out.println("Start speaking to begin conversation");
-                System.out.println("Press Ctrl+C to exit");
-
-                // Install shutdown hook for graceful cleanup
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n🛑 Shutting down gracefully...");
-                    audioProcessor.shutdown();
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown -
-                        // the WebSocket connection may already be partially torn down
-                    }
-                }));
-
-                // Keep the reactive chain alive to continue processing events
-                // Mono.never() prevents the chain from completing, allowing the event stream to run
-                // The shutdown hook above handles cleanup when the JVM exits (Ctrl+C)
-                // Note: In production, use a proper signal mechanism (e.g., CountDownLatch, CompletableFuture)
-                return Mono.never();
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleServerEvent(event, audioProcessor))
+                        .doOnComplete(() -> System.out.println("✓ Event stream completed"))
+                        .doOnError(error -> System.err.println("❌ Error receiving events: " + error.getMessage())))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
             .doFinally(signalType -> {

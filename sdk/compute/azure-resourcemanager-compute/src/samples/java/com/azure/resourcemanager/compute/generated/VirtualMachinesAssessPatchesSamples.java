@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesAssessPatchesSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
      */
     /**
      * Sample code: Assess patch state of a virtual machine.

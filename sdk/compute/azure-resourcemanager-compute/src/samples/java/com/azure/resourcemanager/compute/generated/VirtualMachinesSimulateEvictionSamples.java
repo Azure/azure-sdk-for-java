@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesSimulateEvictionSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
      */
     /**
      * Sample code: Simulate Eviction a virtual machine.

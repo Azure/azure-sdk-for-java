@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a run command.

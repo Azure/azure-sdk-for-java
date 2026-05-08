@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesValidateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ValidateEdgeDevices.json
+     * x-ms-original-file: 2026-04-01-preview/ValidateEdgeDevices.json
      */
     /**
      * Sample code: Validate Edge Devices.

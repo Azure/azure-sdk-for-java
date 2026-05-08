@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
+import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponseProperties;
 
 public final class SvmPeerCommandResponseImpl implements SvmPeerCommandResponse {
     private SvmPeerCommandResponseInner innerObject;
@@ -18,8 +19,8 @@ public final class SvmPeerCommandResponseImpl implements SvmPeerCommandResponse 
         this.serviceManager = serviceManager;
     }
 
-    public String svmPeeringCommand() {
-        return this.innerModel().svmPeeringCommand();
+    public SvmPeerCommandResponseProperties properties() {
+        return this.innerModel().properties();
     }
 
     public SvmPeerCommandResponseInner innerModel() {

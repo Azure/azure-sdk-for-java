@@ -12,14 +12,14 @@ public final class ExtensionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"extensionParameters\":{\"forceUpdateTag\":\"vhcs\",\"publisher\":\"zlwxaeaovur\",\"type\":\"dndsbdweade\",\"typeHandlerVersion\":\"mwntopagttmvmma\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataylkjztjiuazjcg\\\"\",\"protectedSettings\":\"\\\"dataitpfinzcpdl\\\"\",\"enableAutomaticUpgrade\":false},\"aggregateState\":\"Error\",\"perNodeExtensionDetails\":[{\"name\":\"bd\",\"extension\":\"cqguef\",\"typeHandlerVersion\":\"ompheqdur\",\"state\":\"Succeeded\",\"instanceView\":{}},{\"name\":\"lf\",\"extension\":\"u\",\"typeHandlerVersion\":\"ckyeclcdigpta\",\"state\":\"PartiallyConnected\",\"instanceView\":{}},{\"name\":\"qxucycijoc\",\"extension\":\"iutgj\",\"typeHandlerVersion\":\"z\",\"state\":\"PartiallyConnected\",\"instanceView\":{}}],\"managedBy\":\"User\"},\"id\":\"jb\",\"name\":\"xjeaoqaqbzgyh\",\"type\":\"w\"}],\"nextLink\":\"uatbwbqamteuliy\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"PartiallyConnected\",\"extensionParameters\":{\"forceUpdateTag\":\"zwv\",\"publisher\":\"rgyngydgrpxnca\",\"type\":\"qao\",\"typeHandlerVersion\":\"jrkc\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataglvlmfejdoqeyk\\\"\",\"protectedSettings\":\"\\\"datatygxhqfgq\\\"\",\"enableAutomaticUpgrade\":false},\"aggregateState\":\"Deleting\",\"perNodeExtensionDetails\":[{\"name\":\"lgflwfg\",\"extension\":\"iucijjcea\",\"typeHandlerVersion\":\"ijjj\",\"state\":\"PartiallySucceeded\",\"instanceView\":{}},{\"name\":\"caszk\",\"extension\":\"kvccxetyvkunmig\",\"typeHandlerVersion\":\"hi\",\"state\":\"Disconnected\",\"instanceView\":{}},{\"name\":\"g\",\"extension\":\"pinde\",\"typeHandlerVersion\":\"abbxbhmedeil\",\"state\":\"Error\",\"instanceView\":{}}],\"managedBy\":\"Azure\"},\"id\":\"x\",\"name\":\"irz\",\"type\":\"ihvwyp\"}],\"nextLink\":\"u\"}")
             .toObject(ExtensionList.class);
-        Assertions.assertEquals("vhcs", model.value().get(0).forceUpdateTag());
-        Assertions.assertEquals("zlwxaeaovur", model.value().get(0).publisher());
-        Assertions.assertEquals("dndsbdweade", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("mwntopagttmvmma", model.value().get(0).typeHandlerVersion());
+        Assertions.assertEquals("zwv", model.value().get(0).forceUpdateTag());
+        Assertions.assertEquals("rgyngydgrpxnca", model.value().get(0).publisher());
+        Assertions.assertEquals("qao", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("jrkc", model.value().get(0).typeHandlerVersion());
         Assertions.assertTrue(model.value().get(0).autoUpgradeMinorVersion());
         Assertions.assertFalse(model.value().get(0).enableAutomaticUpgrade());
-        Assertions.assertEquals("uatbwbqamteuliy", model.nextLink());
+        Assertions.assertEquals("u", model.nextLink());
     }
 }

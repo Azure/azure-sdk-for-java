@@ -306,36 +306,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      * {@inheritDoc}
      */
     @Override
-    public ManagedClusterAgentPoolProfile withUpgradeStrategy(UpgradeStrategy upgradeStrategy) {
-        super.withUpgradeStrategy(upgradeStrategy);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedClusterAgentPoolProfile withEnableOSDiskFullCaching(Boolean enableOSDiskFullCaching) {
-        super.withEnableOSDiskFullCaching(enableOSDiskFullCaching);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ManagedClusterAgentPoolProfile withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
         super.withUpgradeSettings(upgradeSettings);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedClusterAgentPoolProfile
-        withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen) {
-        super.withUpgradeSettingsBlueGreen(upgradeSettingsBlueGreen);
         return this;
     }
 
@@ -426,15 +398,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
         super.withNodeTaints(nodeTaints);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedClusterAgentPoolProfile withNodeInitializationTaints(List<String> nodeInitializationTaints) {
-        super.withNodeInitializationTaints(nodeInitializationTaints);
         return this;
     }
 
@@ -577,16 +540,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      * {@inheritDoc}
      */
     @Override
-    public ManagedClusterAgentPoolProfile
-        withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
-        super.withArtifactStreamingProfile(artifactStreamingProfile);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ManagedClusterAgentPoolProfile withVirtualMachinesProfile(VirtualMachinesProfile virtualMachinesProfile) {
         super.withVirtualMachinesProfile(virtualMachinesProfile);
         return this;
@@ -621,16 +574,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedClusterAgentPoolProfile
-        withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
-        super.withNodeCustomizationProfile(nodeCustomizationProfile);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -644,9 +587,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         }
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
-        }
-        if (upgradeSettingsBlueGreen() != null) {
-            upgradeSettingsBlueGreen().validate();
         }
         if (powerState() != null) {
             powerState().validate();
@@ -675,9 +615,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         if (gatewayProfile() != null) {
             gatewayProfile().validate();
         }
-        if (artifactStreamingProfile() != null) {
-            artifactStreamingProfile().validate();
-        }
         if (virtualMachinesProfile() != null) {
             virtualMachinesProfile().validate();
         }
@@ -689,9 +626,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         }
         if (localDnsProfile() != null) {
             localDnsProfile().validate();
-        }
-        if (nodeCustomizationProfile() != null) {
-            nodeCustomizationProfile().validate();
         }
     }
 
@@ -724,10 +658,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("type", type() == null ? null : type().toString());
         jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
         jsonWriter.writeStringField("orchestratorVersion", orchestratorVersion());
-        jsonWriter.writeStringField("upgradeStrategy", upgradeStrategy() == null ? null : upgradeStrategy().toString());
-        jsonWriter.writeBooleanField("enableOSDiskFullCaching", enableOSDiskFullCaching());
         jsonWriter.writeJsonField("upgradeSettings", upgradeSettings());
-        jsonWriter.writeJsonField("upgradeSettingsBlueGreen", upgradeSettingsBlueGreen());
         jsonWriter.writeJsonField("powerState", powerState());
         jsonWriter.writeArrayField("availabilityZones", availabilityZones(),
             (writer, element) -> writer.writeString(element));
@@ -741,8 +672,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("nodeLabels", nodeLabels(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("nodeTaints", nodeTaints(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("nodeInitializationTaints", nodeInitializationTaints(),
-            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("proximityPlacementGroupID", proximityPlacementGroupId());
         jsonWriter.writeJsonField("kubeletConfig", kubeletConfig());
         jsonWriter.writeJsonField("linuxOSConfig", linuxOSConfig());
@@ -759,13 +688,11 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeJsonField("securityProfile", securityProfile());
         jsonWriter.writeJsonField("gpuProfile", gpuProfile());
         jsonWriter.writeJsonField("gatewayProfile", gatewayProfile());
-        jsonWriter.writeJsonField("artifactStreamingProfile", artifactStreamingProfile());
         jsonWriter.writeJsonField("virtualMachinesProfile", virtualMachinesProfile());
         jsonWriter.writeArrayField("virtualMachineNodesStatus", virtualMachineNodesStatus(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", status());
         jsonWriter.writeJsonField("localDNSProfile", localDnsProfile());
-        jsonWriter.writeJsonField("nodeCustomizationProfile", nodeCustomizationProfile());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -839,18 +766,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                     deserializedManagedClusterAgentPoolProfile.currentOrchestratorVersion = reader.getString();
                 } else if ("nodeImageVersion".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.nodeImageVersion = reader.getString();
-                } else if ("upgradeStrategy".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile
-                        .withUpgradeStrategy(UpgradeStrategy.fromString(reader.getString()));
-                } else if ("enableOSDiskFullCaching".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile
-                        .withEnableOSDiskFullCaching(reader.getNullable(JsonReader::getBoolean));
                 } else if ("upgradeSettings".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withUpgradeSettings(AgentPoolUpgradeSettings.fromJson(reader));
-                } else if ("upgradeSettingsBlueGreen".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile
-                        .withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings.fromJson(reader));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.provisioningState = reader.getString();
                 } else if ("powerState".equals(fieldName)) {
@@ -881,9 +799,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("nodeTaints".equals(fieldName)) {
                     List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterAgentPoolProfile.withNodeTaints(nodeTaints);
-                } else if ("nodeInitializationTaints".equals(fieldName)) {
-                    List<String> nodeInitializationTaints = reader.readArray(reader1 -> reader1.getString());
-                    deserializedManagedClusterAgentPoolProfile.withNodeInitializationTaints(nodeInitializationTaints);
                 } else if ("proximityPlacementGroupID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withProximityPlacementGroupId(reader.getString());
                 } else if ("kubeletConfig".equals(fieldName)) {
@@ -922,9 +837,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("gatewayProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withGatewayProfile(AgentPoolGatewayProfile.fromJson(reader));
-                } else if ("artifactStreamingProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile
-                        .withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile.fromJson(reader));
                 } else if ("virtualMachinesProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withVirtualMachinesProfile(VirtualMachinesProfile.fromJson(reader));
@@ -936,9 +848,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                     deserializedManagedClusterAgentPoolProfile.withStatus(AgentPoolStatus.fromJson(reader));
                 } else if ("localDNSProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withLocalDnsProfile(LocalDnsProfile.fromJson(reader));
-                } else if ("nodeCustomizationProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile
-                        .withNodeCustomizationProfile(NodeCustomizationProfile.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

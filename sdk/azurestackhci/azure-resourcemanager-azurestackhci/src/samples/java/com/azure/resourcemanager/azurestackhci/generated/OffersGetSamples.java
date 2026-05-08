@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class OffersGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetOffer.json
+     * x-ms-original-file: 2026-04-01-preview/GetOffer.json
      */
     /**
      * Sample code: Get Offer.

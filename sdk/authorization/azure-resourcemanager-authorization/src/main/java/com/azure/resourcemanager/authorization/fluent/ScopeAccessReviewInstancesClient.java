@@ -21,7 +21,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +36,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +50,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -66,7 +66,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +80,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -96,7 +96,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -112,7 +112,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -129,7 +129,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Update access review instance.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param properties Access review instance properties.
@@ -145,7 +145,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
@@ -161,7 +161,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,7 +174,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,7 +187,7 @@ public interface ScopeAccessReviewInstancesClient {
     /**
      * Get access review instances.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are

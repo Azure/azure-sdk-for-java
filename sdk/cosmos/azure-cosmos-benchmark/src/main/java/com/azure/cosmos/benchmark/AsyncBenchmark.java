@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,9 +45,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    // Shared Reactor scheduler for benchmark workload dispatch.
-    // Uses Schedulers.parallel() (global shared singleton). Must NOT be disposed by the benchmark.
-    final Scheduler benchmarkScheduler;
+    private final AtomicLong operationCounter = new AtomicLong(0);
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -61,10 +58,9 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
 
-    AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
+    AsyncBenchmark(TenantWorkloadConfig cfg) {
 
         workloadConfig = cfg;
-        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()
@@ -225,7 +221,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                 .blockLast(Duration.ofMinutes(10));
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer,
-                cfg.getConcurrency());
+                cfg.getIngestionRetryConcurrency());
 
             docsToRead = generatedDocs;
         } else {
@@ -335,71 +331,22 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
     protected abstract Mono<T> performWorkload(long i);
 
-    @SuppressWarnings("unchecked")
-    public void run() throws Exception {
-
-        long startTime = System.currentTimeMillis();
-        int concurrency = workloadConfig.getConcurrency();
-
-        Flux<Long> source;
-        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
-        if (maxDuration != null) {
-            // Time-based termination
-            final long deadline = startTime + maxDuration.toMillis();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    if (System.currentTimeMillis() < deadline) {
-                        sink.next(state.getAndIncrement());
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
-        } else {
-            // Count-based termination using Flux.generate to avoid long-to-int truncation
-            long numberOfOps = workloadConfig.getNumberOfOperations();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    long current = state.getAndIncrement();
-                    if (current < numberOfOps) {
-                        sink.next(current);
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
+    @Override
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
+        Mono<T> workload = performWorkload(operationIndex);
+        Mono<T> delayed = sparsityMono(operationIndex);
+        if (delayed != null) {
+            workload = delayed.then(workload);
         }
-
-        AtomicLong completedCount = new AtomicLong(0);
-
-        source
-            .flatMap(i -> {
-                Mono<T> workload = performWorkload(i);
-                Mono<T> delayed = sparsityMono(i);
-                if (delayed != null) {
-                    workload = delayed.then(workload);
-                }
-                return workload
-                    .subscribeOn(benchmarkScheduler)
-                    .doOnSuccess(v -> {
-                        completedCount.incrementAndGet();
-                        AsyncBenchmark.this.onSuccess();
-                    })
-                    .doOnError(e -> {
-                        completedCount.incrementAndGet();
-                        logger.error("Encountered failure {} on thread {}",
-                            e.getMessage(), Thread.currentThread().getName(), e);
-                        AsyncBenchmark.this.onError(e);
-                    })
-                    .onErrorResume(e -> Mono.empty());
-            }, concurrency)
-            .blockLast();
-
-        long endTime = System.currentTimeMillis();
-        logger.info("[{}] operations performed in [{}] seconds.",
-            completedCount.get(), (int) ((endTime - startTime) / 1000));
+        return workload
+            .doOnSuccess(v -> AsyncBenchmark.this.onSuccess())
+            .doOnError(e -> {
+                logger.error("Encountered failure {} on thread {}",
+                    e.getMessage(), Thread.currentThread().getName(), e);
+                AsyncBenchmark.this.onError(e);
+            })
+            .onErrorResume(e -> Mono.empty());
     }
 
     protected Mono sparsityMono(long i) {

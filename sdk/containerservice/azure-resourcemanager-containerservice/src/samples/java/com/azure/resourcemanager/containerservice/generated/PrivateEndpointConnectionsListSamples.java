@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: 2026-02-01/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: List Private Endpoint Connections by Managed Cluster.
