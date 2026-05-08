@@ -1,56 +1,171 @@
 # Code snippets and samples
 
 
-## HanaInstances
-
-- [Create](#hanainstances_create)
-- [Delete](#hanainstances_delete)
-- [GetByResourceGroup](#hanainstances_getbyresourcegroup)
-- [List](#hanainstances_list)
-- [ListByResourceGroup](#hanainstances_listbyresourcegroup)
-- [Restart](#hanainstances_restart)
-- [Shutdown](#hanainstances_shutdown)
-- [Start](#hanainstances_start)
-- [Update](#hanainstances_update)
-
 ## Operations
 
 - [List](#operations_list)
-### HanaInstances_Create
+
+## ProviderInstances
+
+- [Create](#providerinstances_create)
+- [Delete](#providerinstances_delete)
+- [Get](#providerinstances_get)
+- [List](#providerinstances_list)
+
+## SapMonitors
+
+- [Create](#sapmonitors_create)
+- [Delete](#sapmonitors_delete)
+- [GetByResourceGroup](#sapmonitors_getbyresourcegroup)
+- [List](#sapmonitors_list)
+- [Update](#sapmonitors_update)
+### Operations_List
 
 ```java
-import com.azure.resourcemanager.hanaonazure.models.IpAddress;
-import com.azure.resourcemanager.hanaonazure.models.NetworkProfile;
-import com.azure.resourcemanager.hanaonazure.models.OSProfile;
-import java.util.Arrays;
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2020-02-07-preview/HanaOperations_List.json
+     */
+    /**
+     * Sample code: List all HANA management operations supported by HANA RP.
+     * 
+     * @param manager Entry point to HanaManager.
+     */
+    public static void
+        listAllHANAManagementOperationsSupportedByHANARP(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProviderInstances_Create
+
+```java
+/**
+ * Samples for ProviderInstances Create.
+ */
+public final class ProviderInstancesCreateSamples {
+    /*
+     * x-ms-original-file: 2020-02-07-preview/ProviderInstances_Create.json
+     */
+    /**
+     * Sample code: Create a SAP Monitor.
+     * 
+     * @param manager Entry point to HanaManager.
+     */
+    public static void createASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.providerInstances()
+            .define("myProviderInstance")
+            .withExistingSapMonitor("myResourceGroup", "mySapMonitor")
+            .withTypePropertiesType("hana")
+            .withProperties(
+                "{\"hostname\":\"10.0.0.6\",\"dbName\":\"SYSTEMDB\",\"sqlPort\":30013,\"dbUsername\":\"SYSTEM\",\"dbPassword\":\"PASSWORD\"}")
+            .withMetadata("{\"key\":\"value\"}")
+            .create();
+    }
+}
+```
+
+### ProviderInstances_Delete
+
+```java
+/**
+ * Samples for ProviderInstances Delete.
+ */
+public final class ProviderInstancesDeleteSamples {
+    /*
+     * x-ms-original-file: 2020-02-07-preview/ProviderInstances_Delete.json
+     */
+    /**
+     * Sample code: Deletes a SAP monitor.
+     * 
+     * @param manager Entry point to HanaManager.
+     */
+    public static void deletesASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.providerInstances()
+            .delete("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProviderInstances_Get
+
+```java
+/**
+ * Samples for ProviderInstances Get.
+ */
+public final class ProviderInstancesGetSamples {
+    /*
+     * x-ms-original-file: 2020-02-07-preview/ProviderInstances_Get.json
+     */
+    /**
+     * Sample code: Get properties of a SAP monitor.
+     * 
+     * @param manager Entry point to HanaManager.
+     */
+    public static void getPropertiesOfASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.providerInstances()
+            .getWithResponse("myResourceGroup", "mySapMonitor", "myProviderInstance", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProviderInstances_List
+
+```java
+/**
+ * Samples for ProviderInstances List.
+ */
+public final class ProviderInstancesListSamples {
+    /*
+     * x-ms-original-file: 2020-02-07-preview/ProviderInstances_List.json
+     */
+    /**
+     * Sample code: List all SAP Monitors in a subscription.
+     * 
+     * @param manager Entry point to HanaManager.
+     */
+    public static void listAllSAPMonitorsInASubscription(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.providerInstances().list("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SapMonitors_Create
+
+```java
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for HanaInstances Create.
+ * Samples for SapMonitors Create.
  */
-public final class HanaInstancesCreateSamples {
+public final class SapMonitorsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Create.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_Create.json
      */
     /**
-     * Sample code: Create a HANA instance.
+     * Sample code: Create a SAP Monitor.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void createAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances()
-            .define("myHanaInstance")
+    public static void createASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.sapMonitors()
+            .define("mySapMonitor")
             .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
-            .withOsProfile(new OSProfile().withComputerName("myComputerName").withSshPublicKey("fakeTokenPlaceholder"))
-            .withNetworkProfile(new NetworkProfile()
-                .withNetworkInterfaces(Arrays.asList(new IpAddress().withIpAddress("100.100.100.100"))))
-            .withPartnerNodeId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HanaOnAzure/hanaInstances/myHanaInstance2")
+            .withLogAnalyticsWorkspaceArmId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.operationalinsights/workspaces/myWorkspace")
+            .withEnableCustomerAnalytics(true)
+            .withLogAnalyticsWorkspaceId("00000000-0000-0000-0000-000000000000")
+            .withLogAnalyticsWorkspaceSharedKey(
+                "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000==")
+            .withMonitorSubnet(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet")
             .create();
     }
 
@@ -68,209 +183,107 @@ public final class HanaInstancesCreateSamples {
 }
 ```
 
-### HanaInstances_Delete
+### SapMonitors_Delete
 
 ```java
 /**
- * Samples for HanaInstances Delete.
+ * Samples for SapMonitors Delete.
  */
-public final class HanaInstancesDeleteSamples {
+public final class SapMonitorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Delete.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_Delete.json
      */
     /**
-     * Sample code: Delete a HANA instance.
+     * Sample code: Deletes a SAP monitor.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void deleteAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().delete("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE);
+    public static void deletesASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.sapMonitors().delete("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### HanaInstances_GetByResourceGroup
+### SapMonitors_GetByResourceGroup
 
 ```java
 /**
- * Samples for HanaInstances GetByResourceGroup.
+ * Samples for SapMonitors GetByResourceGroup.
  */
-public final class HanaInstancesGetByResourceGroupSamples {
+public final class SapMonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Get.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_Get.json
      */
     /**
-     * Sample code: Get properties of a HANA instance.
+     * Sample code: Get properties of a SAP monitor.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void getPropertiesOfAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances()
-            .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE);
+    public static void getPropertiesOfASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.sapMonitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### HanaInstances_List
+### SapMonitors_List
 
 ```java
 /**
- * Samples for HanaInstances List.
+ * Samples for SapMonitors List.
  */
-public final class HanaInstancesListSamples {
+public final class SapMonitorsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_List.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_List.json
      */
     /**
-     * Sample code: List all HANA instances in a subscription.
+     * Sample code: List all SAP Monitors in a subscription.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void listAllHANAInstancesInASubscription(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().list(com.azure.core.util.Context.NONE);
+    public static void listAllSAPMonitorsInASubscription(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        manager.sapMonitors().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### HanaInstances_ListByResourceGroup
+### SapMonitors_Update
 
 ```java
-/**
- * Samples for HanaInstances ListByResourceGroup.
- */
-public final class HanaInstancesListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: List all HANA instances in a resource group.
-     * 
-     * @param manager Entry point to HanaManager.
-     */
-    public static void listAllHANAInstancesInAResourceGroup(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HanaInstances_Restart
-
-```java
-/**
- * Samples for HanaInstances Restart.
- */
-public final class HanaInstancesRestartSamples {
-    /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Restart.json
-     */
-    /**
-     * Sample code: Restart a HANA instance.
-     * 
-     * @param manager Entry point to HanaManager.
-     */
-    public static void restartAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().restart("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HanaInstances_Shutdown
-
-```java
-/**
- * Samples for HanaInstances Shutdown.
- */
-public final class HanaInstancesShutdownSamples {
-    /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Shutdown.json
-     */
-    /**
-     * Sample code: Shutdown a HANA instance.
-     * 
-     * @param manager Entry point to HanaManager.
-     */
-    public static void shutdownAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().shutdown("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HanaInstances_Start
-
-```java
-/**
- * Samples for HanaInstances Start.
- */
-public final class HanaInstancesStartSamples {
-    /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_Start.json
-     */
-    /**
-     * Sample code: Start a HANA instance.
-     * 
-     * @param manager Entry point to HanaManager.
-     */
-    public static void startAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.hanaInstances().start("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### HanaInstances_Update
-
-```java
-import com.azure.resourcemanager.hanaonazure.models.HanaInstance;
+import com.azure.resourcemanager.hanaonazure.models.SapMonitor;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for HanaInstances Update.
+ * Samples for SapMonitors Update.
  */
-public final class HanaInstancesUpdateSamples {
+public final class SapMonitorsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_PatchTags_Delete.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_PatchTags_Delete.json
      */
     /**
-     * Sample code: Delete Tags field of a HANA instance.
+     * Sample code: Delete Tags field of a SAP monitor.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void deleteTagsFieldOfAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        HanaInstance resource = manager.hanaInstances()
-            .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
+    public static void deleteTagsFieldOfASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        SapMonitor resource = manager.sapMonitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withTags(mapOf()).apply();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaInstances_PatchTags.json
+     * x-ms-original-file: 2020-02-07-preview/SapMonitors_PatchTags.json
      */
     /**
-     * Sample code: Update Tags field of a HANA instance.
+     * Sample code: Update Tags field of a SAP monitor.
      * 
      * @param manager Entry point to HanaManager.
      */
-    public static void updateTagsFieldOfAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        HanaInstance resource = manager.hanaInstances()
-            .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
+    public static void updateTagsFieldOfASAPMonitor(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
+        SapMonitor resource = manager.sapMonitors()
+            .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withTags(mapOf("testkey", "fakeTokenPlaceholder")).apply();
     }
@@ -285,30 +298,6 @@ public final class HanaInstancesUpdateSamples {
             map.put(key, value);
         }
         return map;
-    }
-}
-```
-
-### Operations_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
-     * HanaOperations_List.json
-     */
-    /**
-     * Sample code: List all HANA management operations supported by HANA RP.
-     * 
-     * @param manager Entry point to HanaManager.
-     */
-    public static void
-        listAllHANAManagementOperationsSupportedByHANARP(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

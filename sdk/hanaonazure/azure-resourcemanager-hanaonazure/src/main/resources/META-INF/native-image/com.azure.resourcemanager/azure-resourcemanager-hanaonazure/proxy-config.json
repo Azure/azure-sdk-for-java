@@ -1,1 +1,1 @@
-[["com.azure.resourcemanager.hanaonazure.implementation.HanaInstancesClientImpl$HanaInstancesService"],["com.azure.resourcemanager.hanaonazure.implementation.OperationsClientImpl$OperationsService"]]
+[["com.azure.resourcemanager.hanaonazure.implementation.OperationsClientImpl$OperationsService"],["com.azure.resourcemanager.hanaonazure.implementation.ProviderInstancesClientImpl$ProviderInstancesService"],["com.azure.resourcemanager.hanaonazure.implementation.SapMonitorsClientImpl$SapMonitorsService"]]

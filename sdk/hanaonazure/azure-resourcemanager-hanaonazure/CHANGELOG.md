@@ -1,14 +1,90 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager Hana client library for Java. This package contains Microsoft Azure SDK for Hana Management SDK. The SAP HANA on Azure Management Client. Package api-version 2020-02-07-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SapSystemId` was removed
 
-### Other Changes
+#### `models.HanaInstance` was removed
+
+#### `models.HanaInstancePowerStateEnum` was removed
+
+#### `models.HardwareProfile` was removed
+
+#### `models.HanaInstancesListResult` was removed
+
+#### `models.HanaInstance$Definition` was removed
+
+#### `models.HanaInstanceSizeNamesEnum` was removed
+
+#### `models.StorageProfile` was removed
+
+#### `models.HanaHardwareTypeNamesEnum` was removed
+
+#### `models.HanaInstance$Update` was removed
+
+#### `models.OperationList` was removed
+
+#### `models.HanaInstance$UpdateStages` was removed
+
+#### `models.NetworkProfile` was removed
+
+#### `models.HanaInstance$DefinitionStages` was removed
+
+#### `models.IpAddress` was removed
+
+#### `models.HanaInstances` was removed
+
+#### `models.Disk` was removed
+
+#### `models.OSProfile` was removed
+
+#### `models.Display` was modified
+
+* `Display()` was changed to private access
+* `validate()` was removed
+
+#### `HanaManager` was modified
+
+* `hanaInstances()` was removed
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was removed
+
+#### `models.Tags` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.SapMonitor$Definition` was added
+
+* `models.SapMonitor` was added
+
+* `models.SapMonitors` was added
+
+* `models.ProviderInstances` was added
+
+* `models.ProviderInstance` was added
+
+* `models.ProviderInstance$Definition` was added
+
+* `models.SapMonitor$UpdateStages` was added
+
+* `models.SapMonitor$DefinitionStages` was added
+
+* `models.ProviderInstance$DefinitionStages` was added
+
+* `models.SapMonitor$Update` was added
+
+#### `HanaManager` was modified
+
+* `sapMonitors()` was added
+* `providerInstances()` was added
 
 ## 1.0.0-beta.3 (2024-10-17)
 
