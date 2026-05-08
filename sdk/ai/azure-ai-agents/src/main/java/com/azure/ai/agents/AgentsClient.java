@@ -20,6 +20,7 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.UpdateAgentDetailsPatchRequest;
 import com.azure.ai.agents.models.VersionIndicator;
@@ -52,7 +53,7 @@ public final class AgentsClient {
     /**
      * Retrieves the agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -155,7 +156,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -175,9 +176,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -299,7 +300,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -444,7 +445,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -500,9 +501,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -606,7 +607,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -626,9 +627,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -759,7 +760,7 @@ public final class AgentsClient {
     /**
      * Creates an agent from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -775,9 +776,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -873,7 +874,7 @@ public final class AgentsClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -888,9 +889,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -987,7 +988,7 @@ public final class AgentsClient {
     /**
      * Create a new agent version from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1002,9 +1003,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1221,7 +1222,7 @@ public final class AgentsClient {
     /**
      * Retrieves a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1407,7 +1408,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1562,7 +1563,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1709,7 +1710,7 @@ public final class AgentsClient {
     /**
      * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1737,7 +1738,7 @@ public final class AgentsClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1779,7 +1780,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1790,9 +1791,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1840,7 +1841,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1936,7 +1937,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2354,7 +2355,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2396,7 +2397,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2438,9 +2439,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2630,6 +2631,37 @@ public final class AgentsClient {
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param createAgentVersionInput The request body for creating an agent version, which includes the agent definition and optional metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
+        CreateAgentVersionInput createAgentVersionInput) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
