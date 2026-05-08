@@ -23,6 +23,7 @@ Run a specific sample from the Azure AI Content Understanding Java SDK.
 > 2. "Have you **built the SDK** or is it available on Maven Central?" -- If no, direct them to Step 2 below.
 > 3. "Have you configured your **environment variables** (endpoint and credentials)?" -- If no, direct them to Step 3.
 > 4. "Have you run `Sample00_UpdateDefaults` to configure model defaults?" -- If no and they want to use prebuilt analyzers, guide them to run it first.
+> 5. *(Deferred — only if the user later picks `Sample16_CreateAnalyzerWithLabels`.)* "Do you plan to **train with labeled data**? If yes, you'll need an Azure Blob container with the receipt label files uploaded and a SAS URL." Walk them through Step 5's Sample16 subsection when relevant.
 
 ## Package Directory
 
@@ -76,8 +77,10 @@ Creates classifier to categorize documents (Loan_Application, Invoice, Bank_Stat
 - Key concepts: Content categories, segmentation, document routing
 
 #### `Sample16_CreateAnalyzerWithLabels`
-Builds analyzers with training labels (labeled data from Azure Blob Storage).
-- Key concepts: Labeled data, knowledge sources, Blob Storage SAS URIs
+Builds an analyzer using **labeled training data** loaded from Azure Blob Storage. The repo ships labeled receipt data at `src/samples/resources/receipt_labels/` (`*.jpg`, `*.jpg.labels.json`, optional `*.jpg.result.json`).
+- Key concepts: `LabeledDataKnowledgeSource`, knowledge sources on `ContentAnalyzerConfig`, container SAS URLs, optional path prefix, falls back to creating analyzer **without** training data if SAS URL is unset
+- Requires either: (a) a SAS URL for an Azure Blob container with labeled data uploaded, or (b) accepting that no training data is used
+- For an easier labeling workflow, use [Azure AI Content Understanding Studio](https://contentunderstanding.ai.azure.com/)
 
 ### Analyzer Management
 
@@ -99,7 +102,7 @@ Copies analyzer within the same resource.
 
 #### `Sample15_GrantCopyAuth`
 Cross-resource copying between different Azure resources/regions.
-- Requires additional env vars: `CONTENTUNDERSTANDING_TARGET_ENDPOINT`, `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`
+- Requires additional env vars: `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID`, `CONTENTUNDERSTANDING_SOURCE_REGION`, `CONTENTUNDERSTANDING_TARGET_ENDPOINT`, `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`, `CONTENTUNDERSTANDING_TARGET_REGION`, `CONTENTUNDERSTANDING_TARGET_KEY` (optional)
 
 ### Result Management
 
@@ -110,6 +113,12 @@ Retrieves keyframe images from video analysis.
 #### `Sample13_DeleteResult`
 Deletes analysis results for data cleanup.
 - Key concepts: Result retention (24-hour auto-deletion), compliance
+
+### Advanced Helpers
+
+#### `Sample_Advanced_ToLlmInput`
+Advanced usage of the `LlmInputHelper.toLlmInput` helper that converts an `AnalysisResult` into LLM-ready text. For introductory usage, see `Sample01_AnalyzeBinary`, `Sample03_AnalyzeInvoice`, and `Sample05_CreateClassifier`.
+- Key concepts: `ToLlmInputOptions`, content ranges, multi-modal flattening, prompt-friendly formatting
 
 ## Workflow
 
@@ -215,23 +224,72 @@ $env:TEXT_EMBEDDING_3_LARGE_DEPLOYMENT = "text-embedding-3-large"
 > **[ASK USER] Authentication method:**
 > Ask the user: "How would you like to **authenticate** with Azure?"
 > - **Option A: DefaultAzureCredential (recommended)** — Uses `az login` or managed identity. No API key needed. Make sure you have run `az login`.
-> - **Option B: API Key** — Provide your `CONTENTUNDERSTANDING_KEY` from the Azure Portal → Keys and Endpoint → Key1 or Key2.
+> - **Option B: API Key** — Provide your `CONTENTUNDERSTANDING_KEY` from the Azure Portal → Keys and Endpoint → Key1 or Key2. Update `.env` so `CONTENTUNDERSTANDING_KEY=<your-key>` (replace the empty default).
 
 > **[ASK USER] Confirm env vars:**
 > After the user sets their variables, ask: "Does this configuration look correct?" Wait for confirmation before proceeding.
 
+### Step 4: Choose the Sample
+
+> **[ASK USER] Which sample?:**
+> Ask the user: "Which sample would you like to run?" with options:
+> - `Sample00_UpdateDefaults` — Configure model defaults (one-time setup, required first)
+> - `Sample02_AnalyzeUrl` — Analyze content from a URL (recommended for first-time users)
+> - `Sample01_AnalyzeBinary` — Analyze a local PDF/image file
+> - `Sample03_AnalyzeInvoice` — Extract structured fields from an invoice
+> - `Sample04_CreateAnalyzer` — Create a custom analyzer
+> - `Sample16_CreateAnalyzerWithLabels` — Create an analyzer with labeled training data
+> - Other — Let me see the full list
+
+> **[ASK USER] Sync or async?:**
+> Ask: "Would you like to run the **sync** or **async** version of this sample?"
+> - Sync (default) — e.g., `Sample02_AnalyzeUrl`
+> - Async — e.g., `Sample02_AnalyzeUrlAsync`
+
+### Step 5: Configure Sample-Specific Settings
+
+Most samples only need the base environment variables from Step 3. The following samples require **additional configuration** before running.
+
+> **[ASK USER] Sample-specific config:**
+> Based on the sample chosen in Step 4, walk the user through the matching subsection below:
+> - **Prebuilt-analyzer samples** — `Sample02_AnalyzeUrl`, `Sample01_AnalyzeBinary`, `Sample03_AnalyzeInvoice`, `Sample10_AnalyzeConfigs`, `Sample11_AnalyzeReturnRawJson`, `Sample12_GetResultFile`, `Sample13_DeleteResult` → "Have you run `Sample00_UpdateDefaults`?" subsection
+> - `Sample01_AnalyzeBinary`, `Sample10_AnalyzeConfigs` → also "Samples that need a local file" subsection
+> - `Sample15_GrantCopyAuth` → "Sample15_GrantCopyAuth cross-resource environment" subsection
+> - `Sample16_CreateAnalyzerWithLabels` → "Sample16_CreateAnalyzerWithLabels training data" subsection
+> - `Sample00_UpdateDefaults` — sets up the model defaults itself; only the base env vars from Step 3 are needed
+> - Custom-analyzer samples (`Sample04_CreateAnalyzer`, `Sample05_CreateClassifier`) and management samples (`Sample06`–`Sample09`, `Sample14`) — only the base env vars from Step 3 are needed
+>
+> If none apply, proceed directly to Step 6.
+
 #### Settings by sample
 
-| Setting                             | Required By            | Description                                                                                                  |
-| ----------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `CONTENTUNDERSTANDING_ENDPOINT`     | **All samples**        | Your Microsoft Foundry resource endpoint URL                                                                 |
-| `CONTENTUNDERSTANDING_KEY`          | All samples (optional) | API key for key-based auth. If empty, `DefaultAzureCredential` is used (recommended — run `az login` first) |
-| `GPT_4_1_DEPLOYMENT`                | Sample00_UpdateDefaults| Deployment name for gpt-4.1 model (default: `gpt-4.1`)                                                       |
-| `GPT_4_1_MINI_DEPLOYMENT`           | Sample00_UpdateDefaults| Deployment name for gpt-4.1-mini model (default: `gpt-4.1-mini`)                                             |
-| `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT` | Sample00_UpdateDefaults| Deployment name for text-embedding-3-large model (default: `text-embedding-3-large`)                         |
+| Setting                                      | Required By                       | Description                                                                                                  |
+| -------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `CONTENTUNDERSTANDING_ENDPOINT`              | **All samples**                   | Your Microsoft Foundry resource endpoint URL                                                                 |
+| `CONTENTUNDERSTANDING_KEY`                   | All samples (optional)            | API key for key-based auth. If empty, `DefaultAzureCredential` is used (recommended — run `az login` first) |
+| `GPT_4_1_DEPLOYMENT`                         | Sample00_UpdateDefaults           | Deployment name for gpt-4.1 model (default: `gpt-4.1`)                                                       |
+| `GPT_4_1_MINI_DEPLOYMENT`                    | Sample00_UpdateDefaults           | Deployment name for gpt-4.1-mini model (default: `gpt-4.1-mini`)                                             |
+| `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT`          | Sample00_UpdateDefaults           | Deployment name for text-embedding-3-large model (default: `text-embedding-3-large`)                         |
+| `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID`    | Sample15_GrantCopyAuth            | Source ARM resource ID for cross-resource copy                                                               |
+| `CONTENTUNDERSTANDING_SOURCE_REGION`         | Sample15_GrantCopyAuth            | Region of the source Foundry resource (e.g., `westus`)                                                       |
+| `CONTENTUNDERSTANDING_TARGET_ENDPOINT`       | Sample15_GrantCopyAuth            | Target Foundry resource endpoint for cross-resource copy                                                     |
+| `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`    | Sample15_GrantCopyAuth            | Target ARM resource ID for cross-resource copy                                                               |
+| `CONTENTUNDERSTANDING_TARGET_REGION`         | Sample15_GrantCopyAuth            | Region of the target Foundry resource (e.g., `eastus`)                                                       |
+| `CONTENTUNDERSTANDING_TARGET_KEY`            | Sample15_GrantCopyAuth (optional) | API key for the target resource. If empty, `DefaultAzureCredential` is used                                  |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` | Sample16_CreateAnalyzerWithLabels | Optional SAS URL for the Azure Blob container with labeled training data. If unset, the analyzer is created **without** training data |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX`  | Sample16_CreateAnalyzerWithLabels | Optional path prefix within the container (e.g., `receipt_labels/`). Omit if files are at the container root |
 
-| `CONTENTUNDERSTANDING_TARGET_ENDPOINT`     | Sample15_GrantCopyAuth | Target Foundry resource endpoint for cross-resource copy    |
-| `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`  | Sample15_GrantCopyAuth | Target ARM resource ID for cross-resource copy              |
+#### Have you run `Sample00_UpdateDefaults`?
+
+Most samples that use prebuilt analyzers (e.g., `Sample02_AnalyzeUrl`, `Sample03_AnalyzeInvoice`, `Sample10_AnalyzeConfigs`, `Sample11_AnalyzeReturnRawJson`) require model deployments to be configured. `Sample00_UpdateDefaults` writes a one-time mapping from logical model names (gpt-4.1, gpt-4.1-mini, text-embedding-3-large) to your Foundry resource's actual deployment names. Without it, prebuilt analyzers fail with `Model deployment not found`.
+
+> **[ASK USER] Update defaults check:**
+> Ask: "Have you previously run `Sample00_UpdateDefaults` for this Foundry resource?"
+> - If yes: Continue to the next subsection (or Step 6 if none apply).
+> - If no and the chosen sample uses prebuilt analyzers:
+>   1. Run `Sample00_UpdateDefaults` now using the command in Step 6: `mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults" -Dexec.classpathScope=test`
+>   2. Wait for it to print success.
+>   3. Then come back to Step 4, re-select the **original** sample the user wanted, and continue from Step 5.
 
 #### Samples that need a local file
 
@@ -247,34 +305,74 @@ The `Sample01_AnalyzeBinary` and `Sample10_AnalyzeConfigs` samples load a local 
 
 The `Sample15_GrantCopyAuth` sample requires **two separate Microsoft Foundry resources** (source and target).
 
-Add the following environment variables:
+Add the following environment variables to your `.env` file:
 
-```bash
-export CONTENTUNDERSTANDING_TARGET_ENDPOINT="https://your-target-foundry.services.ai.azure.com/"
-export CONTENTUNDERSTANDING_TARGET_RESOURCE_ID="/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.CognitiveServices/accounts/{targetAccountName}"
 ```
+CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.CognitiveServices/accounts/{sourceAccountName}
+CONTENTUNDERSTANDING_SOURCE_REGION=westus
+CONTENTUNDERSTANDING_TARGET_ENDPOINT=https://your-target-foundry.services.ai.azure.com/
+CONTENTUNDERSTANDING_TARGET_RESOURCE_ID=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.CognitiveServices/accounts/{targetAccountName}
+CONTENTUNDERSTANDING_TARGET_REGION=eastus
+# Optional — only if you want key-based auth for the target resource:
+# CONTENTUNDERSTANDING_TARGET_KEY=<your-target-resource-key>
+```
+
+Then reload your shell: `set -a && source .env && set +a`.
 
 > **[ASK USER] Cross-resource setup (Sample15_GrantCopyAuth only):**
 > If the user chose Sample15_GrantCopyAuth, ask:
 > 1. "Do you have **two separate Microsoft Foundry resources** (source and target) set up?" — If no, guide them to create a second resource.
-> 2. "Please provide the **target** resource endpoint URL and ARM Resource ID."
-> 3. Confirm: "Both resources must have the **Cognitive Services User** role assigned if using `DefaultAzureCredential`. Is this configured?"
+> 2. "Please provide the **source** ARM Resource ID and region, and the **target** endpoint URL, ARM Resource ID, and region."
+> 3. "Will you authenticate the target resource with `DefaultAzureCredential` (recommended) or with `CONTENTUNDERSTANDING_TARGET_KEY`?"
+> 4. Confirm: "Both resources must have the **Cognitive Services User** role assigned if using `DefaultAzureCredential`. Is this configured?"
 
-### Step 4: Choose and Run the Sample
+#### Setting up Sample16_CreateAnalyzerWithLabels training data
 
-> **[ASK USER] Which sample?:**
-> Ask the user: "Which sample would you like to run?" with options:
-> - `Sample00_UpdateDefaults` — Configure model defaults (one-time setup, required first)
-> - `Sample02_AnalyzeUrl` — Analyze content from a URL (recommended for first-time users)
-> - `Sample01_AnalyzeBinary` — Analyze a local PDF/image file
-> - `Sample03_AnalyzeInvoice` — Extract structured fields from an invoice
-> - `Sample04_CreateAnalyzer` — Create a custom analyzer
-> - Other — Let me see the full list
+The `Sample16_CreateAnalyzerWithLabels` sample creates an analyzer with **labeled training data** loaded from Azure Blob Storage via a SAS URL.
 
-> **[ASK USER] Sync or async?:**
-> Ask: "Would you like to run the **sync** or **async** version of this sample?"
-> - Sync (default) — e.g., `Sample02_AnalyzeUrl`
-> - Async — e.g., `Sample02_AnalyzeUrlAsync`
+> **Note (Java vs. Python parity):** The Java sample only supports providing a pre-uploaded SAS URL ("Option A"). Unlike the Python equivalent (`sample_create_analyzer_with_labels.py`), the Java sample does **not** auto-upload local files using `DefaultAzureCredential`. You must upload the labeled receipts manually before running.
+
+> **Note:** If `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` is **not set**, the sample still runs but creates an analyzer **without** training data. To exercise the labeled-data path, follow the steps below.
+
+The repo ships labeled receipt training data at `src/samples/resources/receipt_labels/`. Two labeled receipts are included; each receipt has three associated files:
+
+```
+17a84146-e910-460c-bf80-a625e6f64fea.jpg          # original image
+17a84146-e910-460c-bf80-a625e6f64fea.jpg.labels.json  # labeled fields (required)
+17a84146-e910-460c-bf80-a625e6f64fea.jpg.result.json  # OCR result (optional)
+29d60394-3da1-4714-abdc-ff0993009872.jpg
+29d60394-3da1-4714-abdc-ff0993009872.jpg.labels.json
+29d60394-3da1-4714-abdc-ff0993009872.jpg.result.json
+```
+
+Upload these into an Azure Blob container and provide a SAS URL.
+
+> **Manual upload steps:**
+> 1. Create an Azure Blob Storage container (or use an existing one).
+> 2. Upload **all** files from `src/samples/resources/receipt_labels/` (the `.jpg`, `.jpg.labels.json`, and optional `.jpg.result.json` files listed above) into the container. You may upload them at the container root or inside a subfolder (e.g., `receipt_labels/`).
+> 3. In Azure Portal: open the storage account, then either navigate Storage account → Containers → your container → **Shared access tokens**, or use the Portal search bar to find "Shared access tokens" (the exact UI path varies by Portal version). Set an expiry, grant at least **List** and **Read** permissions, then generate the SAS URL.
+> 4. Add the SAS URL to your `.env` file:
+>    ```
+>    CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL=https://<account>.blob.core.windows.net/<container>?sv=...&se=...
+>    # Only if you uploaded into a subfolder:
+>    CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX=receipt_labels/
+>    ```
+>    *(Both `receipt_labels` and `receipt_labels/` work as prefix values — the SDK handles the trailing slash either way.)*
+> 5. Reload your shell: `set -a && source .env && set +a`.
+
+> **[ASK USER] Sample16 training data (Sample16_CreateAnalyzerWithLabels only):**
+> If the user chose `Sample16_CreateAnalyzerWithLabels`, ask:
+> 1. "Do you want to **train with labeled data** (recommended) or **create the analyzer without training data**?"
+>    - If **without training data**: **Leave `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` empty or unset in `.env`** (this is the implicit switch). Skip the next questions and proceed to Step 6 — the sample will still run.
+>    - If **with training data**: Continue.
+> 2. "Have you uploaded the contents of `src/samples/resources/receipt_labels/` to an Azure Blob container and generated a SAS URL?" — If no, walk them through the manual upload steps above.
+> 3. "Did you upload the files at the **container root** or inside a **subfolder**?"
+>    - If root: leave `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX` unset.
+>    - If subfolder: ask for the prefix path (e.g., `receipt_labels/`).
+> 4. "Please provide the **SAS URL**."
+> 5. Confirm: "The SAS token must have at least **List** and **Read** permissions and must **not be expired**."
+
+### Step 6: Run the Sample
 
 Run the sample with Maven directly:
 
@@ -297,6 +395,9 @@ mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample
 
 # Run invoice extraction
 mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" -Dexec.classpathScope=test
+
+# Run analyzer with labeled training data
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample16_CreateAnalyzerWithLabels" -Dexec.classpathScope=test
 ```
 
 > **Note:** The `-Dexec.classpathScope=test` flag is **required**. Samples live in `src/samples/`, which is compiled as a test source root — not part of the main classpath. This is an Azure SDK for Java convention: samples are not shipped in the published JAR, and they depend on test-scoped dependencies (e.g., `azure-identity`). Without this flag, Maven cannot find the sample classes and will fail with `ClassNotFoundException`.
@@ -408,6 +509,9 @@ Wraps `mvn exec:java` with sample name resolution, validation, and optional `.en
 | `FileNotFoundException` for binary samples | Run samples from the package root directory (`sdk/contentunderstanding/azure-ai-contentunderstanding`) |
 | `Parent POM not resolved` | Run `mvn install -DskipTests -f ../../parents/azure-client-sdk-parent/pom.xml` first |
 | `Permission denied` when running scripts | Make scripts executable: `chmod +x .github/skills/cu-sdk-sample-run/scripts/*.sh` |
+| Sample16: `AuthenticationFailed` / `403` reading training data | The SAS URL is invalid, expired, or missing required permissions. Regenerate the SAS with at least **List** and **Read** and a fresh expiry, then re-source `.env` |
+| Sample16: `BlobNotFound` or empty training set | The `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX` does not match where you uploaded the files. Either upload files at the container root and unset the prefix, or set the prefix to the actual subfolder (e.g., `receipt_labels/`) |
+| Sample16: created analyzer has no training data | `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` was empty when the sample ran. Set it in `.env`, re-run `set -a && source .env && set +a`, then re-run the sample |
 
 ## Related Skills
 

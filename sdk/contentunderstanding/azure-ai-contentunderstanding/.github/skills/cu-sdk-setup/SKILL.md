@@ -246,6 +246,13 @@ if (Test-Path ".env") {
 >   5. Target ARM resource ID (same format as above, for the target Foundry resource)
 >   6. Target region (e.g., `swedencentral`)
 
+> **[ASK USER] Labeled training data (optional):**
+> Ask: "Do you plan to use **labeled training data** (`Sample16_CreateAnalyzerWithLabels`)?"
+> - If no: Skip this section. The sample still runs but creates an analyzer **without** training data.
+> - If yes: Gather the following additional values:
+>   1. SAS URL for the Azure Blob container that holds your uploaded label files (full URL including the `?sv=...&se=...` query). The repo ships labeled receipts at `src/samples/resources/receipt_labels/` — you upload these into a container, then generate a SAS with at least **List** and **Read** permissions (Azure Portal → Storage account → Containers → your container → **Shared access tokens**).
+>   2. (Optional) Path prefix within the container (e.g., `receipt_labels/`). Leave empty if files sit at the container root.
+
 #### 4.3 Validate Configuration
 
 > **[ASK USER] Validate configuration:**
@@ -308,6 +315,19 @@ CONTENTUNDERSTANDING_TARGET_ENDPOINT=https://<your-target-resource>.services.ai.
 CONTENTUNDERSTANDING_TARGET_KEY=
 CONTENTUNDERSTANDING_TARGET_RESOURCE_ID=/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.CognitiveServices/accounts/{targetAccountName}
 CONTENTUNDERSTANDING_TARGET_REGION=swedencentral
+```
+
+**Optional add-on for `Sample16_CreateAnalyzerWithLabels`:**
+
+Append the following lines to your `.env` if you want Sample16 to train with labeled data. If unset, the sample still runs but creates an analyzer **without** training data.
+
+```bash
+# Labeled training data (only for Sample16_CreateAnalyzerWithLabels)
+# Full container SAS URL (must include ?sv=...&se=...). Required for labeled training.
+CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL=https://<account>.blob.core.windows.net/<container>?sv=...&se=...
+
+# Optional path prefix within the container. Omit if files are at the container root.
+CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX=receipt_labels/
 ```
 
 ### Step 5: Azure Resource Setup (if not done)
