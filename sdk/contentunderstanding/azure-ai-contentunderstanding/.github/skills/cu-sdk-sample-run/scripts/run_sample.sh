@@ -84,7 +84,14 @@ list_samples() {
   echo ""
 }
 
-# Load environment variables from a .env file
+# Load environment variables from a .env file.
+#
+# Only simple NAME=VALUE assignments are accepted (with an optional leading
+# `export `). Names must be valid shell identifiers ([A-Za-z_][A-Za-z0-9_]*).
+# A single matching pair of surrounding double or single quotes is stripped
+# from the value. Anything else is skipped with a warning. We deliberately
+# avoid `eval` so a malicious or malformed .env file cannot execute arbitrary
+# commands or trigger command substitution.
 load_env_file() {
   local envfile="$1"
   if [[ ! -f "$envfile" ]]; then
@@ -92,15 +99,29 @@ load_env_file() {
     exit 1
   fi
   print_info "Loading environment variables from: $envfile"
-  set -o allexport
-  # Read .env, skip comments and blank lines
+  local line name value lineno=0
   while IFS= read -r line || [[ -n "$line" ]]; do
+    lineno=$((lineno + 1))
     # Skip empty lines and comments
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-    # Remove surrounding quotes from values
-    eval "export $line" 2>/dev/null || true
+    # Strip optional leading `export ` (with surrounding whitespace)
+    line="${line#"${line%%[![:space:]]*}"}"  # ltrim
+    line="${line#export }"
+    # Require NAME=VALUE with a valid identifier on the left
+    if [[ ! "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]]; then
+      print_warning "  Skipping line $lineno (not a NAME=VALUE assignment)"
+      continue
+    fi
+    name="${BASH_REMATCH[1]}"
+    value="${BASH_REMATCH[2]}"
+    # Strip a single matching pair of surrounding double or single quotes
+    if [[ "$value" =~ ^\"(.*)\"$ ]]; then
+      value="${BASH_REMATCH[1]}"
+    elif [[ "$value" =~ ^\'(.*)\'$ ]]; then
+      value="${BASH_REMATCH[1]}"
+    fi
+    export "$name=$value"
   done < "$envfile"
-  set +o allexport
   print_success "✓ Environment variables loaded"
 }
 
@@ -196,8 +217,10 @@ if [[ -z "${CONTENTUNDERSTANDING_ENDPOINT:-}" ]]; then
   echo ""
 fi
 
-# Build command
-MVN_CMD="mvn exec:java -Dexec.mainClass=\"${FULL_CLASS}\" -Dexec.classpathScope=test"
+# Build command. Sample classes live under src/samples/java and are compiled
+# as test sources, so we must run test-compile before exec:java; otherwise on
+# a clean checkout the sample class will not exist on the classpath.
+MVN_CMD="mvn -DskipTests test-compile exec:java -Dexec.mainClass=\"${FULL_CLASS}\" -Dexec.classpathScope=test"
 
 if [[ $DRY_RUN -eq 1 ]]; then
   echo "DRY RUN: would execute:"
@@ -210,7 +233,7 @@ fi
 # Run the sample
 print_info "Running: $SAMPLE_NAME"
 echo ""
-mvn exec:java -Dexec.mainClass="${FULL_CLASS}" -Dexec.classpathScope=test
+mvn -DskipTests test-compile exec:java -Dexec.mainClass="${FULL_CLASS}" -Dexec.classpathScope=test
 
 echo ""
 print_success "✓ Sample completed: $SAMPLE_NAME"

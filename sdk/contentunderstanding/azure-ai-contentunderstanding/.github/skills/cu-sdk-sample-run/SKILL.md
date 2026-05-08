@@ -123,14 +123,14 @@ cd sdk/contentunderstanding/azure-ai-contentunderstanding
 
 The SDK package must be available for Maven to resolve. It will be published to **Maven Central** — if it's already available there, Maven will download it automatically and you can **skip this step**.
 
-If the package is **not yet published** (or you want to test local changes), build and install it to your local Maven repository. **Run from the azure-sdk-for-java repo root:**
+If the package is **not yet published** (or you want to test local changes), build and install it to your local Maven repository. The recommended command (run from the azure-sdk-for-java repo root) is:
 
 ```bash
 cd ~/repos/azure-sdk-for-java   # or wherever you cloned the repo
 mvn install -DskipTests -pl sdk/contentunderstanding/azure-ai-contentunderstanding -am
 ```
 
-> **Important:** You must build from the repo root with `-pl` and `-am` flags. Building from within the package directory will fail because in-repo dependencies cannot be resolved without the `-am` (also-make) flag.
+> **Tip:** Building from the repo root with `-pl ... -am` is preferred when you are contributing across modules or testing in-repo dependency changes (e.g., a local `azure-core` patch). For most users, `mvn install -DskipTests` from within `sdk/contentunderstanding/azure-ai-contentunderstanding` also works, since this module's parent POM is resolved via `relativePath` and its runtime dependencies (e.g., `azure-core`) come from published artifacts.
 
 > **[ASK USER] Build check:**
 > Ask: "Is the package already published on Maven Central, or do you need to build locally?"
