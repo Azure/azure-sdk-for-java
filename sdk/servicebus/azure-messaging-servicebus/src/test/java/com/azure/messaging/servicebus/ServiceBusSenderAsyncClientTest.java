@@ -1122,7 +1122,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(largeLinkSize));
         when(sendLink.getMaxBatchSize()).thenReturn(Mono.just(vendorBatchSize));
         when(managementNode.schedule(anyList(), eq(instant), eq(vendorBatchSize), eq(LINK_NAME), isNull()))
-            .thenReturn(Flux.fromStream(IntStream.range(0, count).mapToObj(i -> sequenceNumberReturned + i)));
+            .thenReturn(Flux.range(0, count).map(i -> sequenceNumberReturned + i));
 
         // Act & Assert - scheduleMessages(Iterable) → createMessageBatch() reads vendor property (1 MB),
         // then passes that value to managementNode.schedule(), NOT the raw 100 MB.
