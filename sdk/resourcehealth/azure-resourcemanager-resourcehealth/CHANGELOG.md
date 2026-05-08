@@ -1,14 +1,226 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager ResourceHealth client library for Java. This package contains Microsoft Azure SDK for ResourceHealth Management SDK. The Resource Health Client. Package api-version 2025-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AvailabilityStatusListResult` was removed
 
-### Other Changes
+#### `models.ServiceImpactingEventStatus` was modified
+
+* `ServiceImpactingEventStatus()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.RecommendedAction` was modified
+
+* `RecommendedAction()` was changed to private access
+* `validate()` was removed
+* `withAction(java.lang.String)` was removed
+* `withActionUrl(java.lang.String)` was removed
+* `withActionUrlText(java.lang.String)` was removed
+
+#### `models.AvailabilityStatusProperties` was modified
+
+* `AvailabilityStatusProperties()` was changed to private access
+* `withReportedTime(java.time.OffsetDateTime)` was removed
+* `withSummary(java.lang.String)` was removed
+* `withTitle(java.lang.String)` was removed
+* `withDetailedStatus(java.lang.String)` was removed
+* `withHealthEventId(java.lang.String)` was removed
+* `validate()` was removed
+* `withOccuredTime(java.time.OffsetDateTime)` was removed
+* `withResolutionEta(java.time.OffsetDateTime)` was removed
+* `withReasonChronicity(models.ReasonChronicityTypes)` was removed
+* `withHealthEventType(java.lang.String)` was removed
+* `withAvailabilityState(models.AvailabilityStateValues)` was removed
+* `withRootCauseAttributionTime(java.time.OffsetDateTime)` was removed
+* `withReasonType(java.lang.String)` was removed
+* `withServiceImpactingEvents(java.util.List)` was removed
+* `withRecentlyResolved(models.AvailabilityStatusPropertiesRecentlyResolved)` was removed
+* `withRecommendedActions(java.util.List)` was removed
+* `withHealthEventCause(java.lang.String)` was removed
+* `withHealthEventCategory(java.lang.String)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
+* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.ServiceImpactingEvent` was modified
+
+* `ServiceImpactingEvent()` was changed to private access
+* `withEventStartTime(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withEventStatusLastModifiedTime(java.time.OffsetDateTime)` was removed
+* `withCorrelationId(java.lang.String)` was removed
+* `withIncidentProperties(models.ServiceImpactingEventIncidentProperties)` was removed
+* `withStatus(models.ServiceImpactingEventStatus)` was removed
+
+#### `models.ServiceImpactingEventIncidentProperties` was modified
+
+* `ServiceImpactingEventIncidentProperties()` was changed to private access
+* `withTitle(java.lang.String)` was removed
+* `withIncidentType(java.lang.String)` was removed
+* `validate()` was removed
+* `withService(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
+
+#### `models.Operation` was modified
+
+* `Operation()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplay(models.OperationDisplay)` was removed
+* `validate()` was removed
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `AvailabilityStatusPropertiesRecentlyResolved()` was changed to private access
+* `withUnavailableSummary(java.lang.String)` was removed
+* `withUnavailableOccuredTime(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withResolvedTime(java.time.OffsetDateTime)` was removed
+
+### Features Added
+
+* `models.EventsOperations` was added
+
+* `models.EventLevelValues` was added
+
+* `models.IssueNameParameter` was added
+
+* `models.SecurityAdvisoryImpactedResources` was added
+
+* `models.KeyValueItem` was added
+
+* `models.Impact` was added
+
+* `models.ImpactedResources` was added
+
+* `models.EventTypeValues` was added
+
+* `models.MetadataEntity` was added
+
+* `models.StatusBanner` was added
+
+* `models.EventPropertiesRecommendedActionsItem` was added
+
+* `models.ImpactedServiceRegion` was added
+
+* `models.EventStatusValues` was added
+
+* `models.EmergingIssueImpact` was added
+
+* `models.EventOperations` was added
+
+* `models.Event` was added
+
+* `models.ChildAvailabilityStatuses` was added
+
+* `models.EmergingIssues` was added
+
+* `models.EmergingIssuesGetResult` was added
+
+* `models.Metadatas` was added
+
+* `models.SeverityValues` was added
+
+* `models.StageValues` was added
+
+* `models.ChildResources` was added
+
+* `models.ImpactedRegion` was added
+
+* `models.EventSubTypeValues` was added
+
+* `models.EventPropertiesRecommendedActions` was added
+
+* `models.StatusActiveEvent` was added
+
+* `models.LinkTypeValues` was added
+
+* `models.EventImpactedResource` was added
+
+* `models.LevelValues` was added
+
+* `models.Faq` was added
+
+* `models.EventSourceValues` was added
+
+* `models.Link` was added
+
+* `models.Scenario` was added
+
+* `models.LinkDisplayText` was added
+
+* `models.Update` was added
+
+* `models.EventPropertiesArticle` was added
+
+* `models.EventPropertiesAdditionalInformation` was added
+
+* `models.MetadataSupportedValueDetail` was added
+
+#### `models.ServiceImpactingEventStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RecommendedAction` was modified
+
+* `actionUrlComment()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `ResourceHealthManager` was modified
+
+* `eventsOperations()` was added
+* `childAvailabilityStatuses()` was added
+* `emergingIssues()` was added
+* `eventOperations()` was added
+* `metadatas()` was added
+* `childResources()` was added
+* `securityAdvisoryImpactedResources()` was added
+* `impactedResources()` was added
+
+#### `models.AvailabilityStatusProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `context()` was added
+* `articleId()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `category()` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ServiceImpactingEvent` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ServiceImpactingEventIncidentProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Operation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.1.0-beta.3 (2024-12-06)
 
