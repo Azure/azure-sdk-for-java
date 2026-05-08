@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointProperties;
+import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
 import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
-import com.azure.resourcemanager.trafficmanager.models.EndpointUpdate;
 
 /**
- * Samples for Endpoints UpdateV2.
+ * Samples for Endpoints Update.
  */
-public final class EndpointsUpdateV2Samples {
+public final class EndpointsUpdateSamples {
     /*
      * x-ms-original-file: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
      */
@@ -23,9 +22,8 @@ public final class EndpointsUpdateV2Samples {
     public static void endpointPATCHExternalTarget(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
-            .updateV2WithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
+            .updateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187",
-                new EndpointUpdate().withProperties(new EndpointProperties().withTarget("another.foobar.contoso.com")),
-                com.azure.core.util.Context.NONE);
+                new EndpointInner().withTarget("another.foobar.contoso.com"), com.azure.core.util.Context.NONE);
     }
 }

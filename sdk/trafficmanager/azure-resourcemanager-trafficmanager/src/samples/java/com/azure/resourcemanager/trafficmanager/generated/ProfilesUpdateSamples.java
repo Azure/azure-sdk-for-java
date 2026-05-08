@@ -4,18 +4,17 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
+import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfigCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
-import com.azure.resourcemanager.trafficmanager.models.ProfilePropertiesUpdate;
-import com.azure.resourcemanager.trafficmanager.models.ProfileUpdate;
 import com.azure.resourcemanager.trafficmanager.models.RecordType;
 import java.util.Arrays;
 
 /**
- * Samples for Profiles UpdateV2.
+ * Samples for Profiles Update.
  */
-public final class ProfilesUpdateV2Samples {
+public final class ProfilesUpdateSamples {
     /*
      * x-ms-original-file: 2024-04-01-preview/Profile-PATCH-MonitorConfig.json
      */
@@ -27,9 +26,8 @@ public final class ProfilesUpdateV2Samples {
     public static void profilePATCHMonitorConfig(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
-            .updateV2WithResponse("azuresdkfornetautoresttrafficmanager2583",
-                "azuresdkfornetautoresttrafficmanager6192",
-                new ProfileUpdate().withProperties(new ProfilePropertiesUpdate()
+            .updateWithResponse("azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192",
+                new ProfileInner()
                     .withMonitorConfig(new MonitorConfig().withProtocol(MonitorProtocol.HTTP)
                         .withPort(80L)
                         .withPath("/testpath.aspx")
@@ -38,7 +36,7 @@ public final class ProfilesUpdateV2Samples {
                         .withToleratedNumberOfFailures(4L)
                         .withCustomHeaders(Arrays.asList(
                             new MonitorConfigCustomHeadersItem().withName("header-1").withValue("value-1"),
-                            new MonitorConfigCustomHeadersItem().withName("header-2").withValue("value-2"))))),
+                            new MonitorConfigCustomHeadersItem().withName("header-2").withValue("value-2")))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -53,9 +51,7 @@ public final class ProfilesUpdateV2Samples {
     public static void profilePATCHRecordType(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
-            .updateV2WithResponse("azuresdkfornetautoresttrafficmanager2583",
-                "azuresdkfornetautoresttrafficmanager6192",
-                new ProfileUpdate().withProperties(new ProfilePropertiesUpdate().withRecordType(RecordType.CNAME)),
-                com.azure.core.util.Context.NONE);
+            .updateWithResponse("azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192",
+                new ProfileInner().withRecordType(RecordType.CNAME), com.azure.core.util.Context.NONE);
     }
 }

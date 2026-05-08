@@ -9,10 +9,10 @@
 #### `models.TrafficFlow` was modified
 
 * `TrafficFlow()` was changed to private access
-* `withQueryExperiences(java.util.List)` was removed
-* `withLongitude(java.lang.Double)` was removed
 * `withLatitude(java.lang.Double)` was removed
 * `withSourceIp(java.lang.String)` was removed
+* `withLongitude(java.lang.Double)` was removed
+* `withQueryExperiences(java.util.List)` was removed
 
 #### `models.QueryExperience` was modified
 
@@ -30,19 +30,13 @@
 #### `models.Region` was modified
 
 * `Region()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withCode(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 * `withRegions(java.util.List)` was removed
 
 ### Features Added
 
-* `models.EndpointUpdate` was added
-
-* `models.ProfilePropertiesUpdate` was added
-
 * `models.RecordType` was added
-
-* `models.ProfileUpdate` was added
 
 ## 2.53.7 (2026-03-30)
 
