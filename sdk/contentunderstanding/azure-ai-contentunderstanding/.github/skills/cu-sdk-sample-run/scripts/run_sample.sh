@@ -105,7 +105,7 @@ load_env_file() {
     # Skip empty lines and comments
     [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
     # Strip optional leading `export ` (with surrounding whitespace)
-    line="${line#"${line%%[![:space:]]*}"}"  # ltrim
+    line="${line#"${line%%[![:space:]]*}"}"  # strip leading whitespace
     line="${line#export }"
     # Require NAME=VALUE with a valid identifier on the left
     if [[ ! "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)=(.*)$ ]]; then
