@@ -169,7 +169,9 @@ public final class SkillsAsyncClient {
     }
 
     /**
-     * Downloads a skill package.
+     * Downloads a skill package as a ZIP archive containing {@code SKILL.md}. Returns the original uploaded archive for
+     * skills created via {@code createSkillFromPackage}; materializes a ZIP from stored instructions for skills created
+     * via {@code createSkill}.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -418,7 +420,9 @@ public final class SkillsAsyncClient {
     }
 
     /**
-     * Downloads a skill package.
+     * Downloads a skill package as a ZIP archive containing {@code SKILL.md}. Returns the original uploaded archive for
+     * skills created via {@code createSkillFromPackage}; materializes a ZIP from stored instructions for skills created
+     * via {@code createSkill}.
      *
      * @param skillName The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
