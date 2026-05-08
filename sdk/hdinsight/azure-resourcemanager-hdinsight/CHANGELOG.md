@@ -1,14 +1,478 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.4 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager HDInsight client library for Java. This package contains Microsoft Azure SDK for HDInsight Management SDK. The HDInsight Management Client. Package api-version 2025-01-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.ApplicationListResult` was removed
+
+#### `models.ScriptActionExecutionHistoryList` was removed
+
+#### `models.ScriptActionsList` was removed
+
+#### `models.ClusterListResult` was removed
+
+#### `models.ResourceId` was modified
+
+* `validate()` was removed
+
+#### `models.LocalizedName` was modified
+
+* `LocalizedName()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.NetworkProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LinuxOperatingSystemProfile` was modified
+
+* `validate()` was removed
+
+#### `models.Role` was modified
+
+* `validate()` was removed
+
+#### `models.OsProfile` was modified
+
+* `validate()` was removed
+
+#### `models.DiskEncryptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SshPublicKey` was modified
+
+* `validate()` was removed
+
+#### `models.KafkaRestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCreateParametersExtended` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationGetEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterDiskEncryptionParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Errors` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `PrivateEndpoint()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ScriptActionExecutionSummary` was modified
+
+* `ScriptActionExecutionSummary()` was changed to private access
+* `validate()` was removed
+
+#### `models.AzureMonitorTableConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.EntraUserInfo` was modified
+
+* `validate()` was removed
+
+#### `models.HardwareProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VmSizeProperty` was modified
+
+* `VmSizeProperty()` was changed to private access
+* `withWebWorkerResourceDiskSizeInMb(java.lang.Long)` was removed
+* `withMaxDataDiskCount(java.lang.Long)` was removed
+* `withDataDiskStorageTier(java.lang.String)` was removed
+* `validate()` was removed
+* `withSupportedByVirtualMachines(java.lang.Boolean)` was removed
+* `withVirtualMachineResourceDiskSizeInMb(java.lang.Long)` was removed
+* `withName(java.lang.String)` was removed
+* `withCores(java.lang.Integer)` was removed
+* `withMemoryInMb(java.lang.Long)` was removed
+* `withSupportedByWebWorkerRoles(java.lang.Boolean)` was removed
+* `withLabel(java.lang.String)` was removed
+
+#### `models.ClusterResizeParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withMetricSpecifications(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.Usage` was modified
+
+* `Usage()` was changed to private access
+* `withUnit(java.lang.String)` was removed
+* `withCurrentValue(java.lang.Long)` was removed
+* `withLimit(java.lang.Long)` was removed
+* `validate()` was removed
+
+#### `models.ClientGroupInfo` was modified
+
+* `validate()` was removed
+
+#### `models.AutoscaleSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityCheckRequestParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCreateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaCapability` was modified
+
+* `QuotaCapability()` was changed to private access
+* `withRegionalQuotas(java.util.List)` was removed
+* `validate()` was removed
+* `withMaxCoresAllowed(java.lang.Long)` was removed
+* `withCoresUsed(java.lang.Long)` was removed
+
+#### `models.VersionsCapability` was modified
+
+* `VersionsCapability()` was changed to private access
+* `withAvailable(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.BillingMeters` was modified
+
+* `BillingMeters()` was changed to private access
+* `withUnit(java.lang.String)` was removed
+* `withMeter(java.lang.String)` was removed
+* `validate()` was removed
+* `withMeterParameter(java.lang.String)` was removed
+
+#### `models.DiskBillingMeters` was modified
+
+* `DiskBillingMeters()` was changed to private access
+* `withDiskRpMeter(java.lang.String)` was removed
+* `withSku(java.lang.String)` was removed
+* `withTier(models.Tier)` was removed
+* `validate()` was removed
+
+#### `models.Autoscale` was modified
+
+* `validate()` was removed
+
+#### `models.StorageProfile` was modified
+
+* `validate()` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
+* `withInternalName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.PrivateLinkConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.IpConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateGatewaySettingsParameters` was modified
+
+* `validate()` was removed
+
+#### `models.RegionsCapability` was modified
+
+* `RegionsCapability()` was changed to private access
+* `withAvailable(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+
+#### `models.AutoscaleTimeAndCapacity` was modified
+
+* `validate()` was removed
+
+#### `models.VmSizeCompatibilityFilterV2` was modified
+
+* `VmSizeCompatibilityFilterV2()` was changed to private access
+* `withClusterVersions(java.util.List)` was removed
+* `withComputeIsolationSupported(java.lang.String)` was removed
+* `withEspApplied(java.lang.String)` was removed
+* `validate()` was removed
+* `withFilterMode(models.FilterMode)` was removed
+* `withOsType(java.util.List)` was removed
+* `withRegions(java.util.List)` was removed
+* `withVmSizes(java.util.List)` was removed
+* `withClusterFlavors(java.util.List)` was removed
+* `withNodeTypes(java.util.List)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ValidationErrorInfo` was modified
+
+* `ValidationErrorInfo()` was changed to private access
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withErrorResource(java.lang.String)` was removed
+* `withMessageArguments(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.SshProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualNetworkProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteScriptActionParameters` was modified
+
+* `validate()` was removed
+
+#### `models.VersionSpec` was modified
+
+* `VersionSpec()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withComponentVersions(java.util.Map)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withIsDefault(java.lang.Boolean)` was removed
+
+#### `models.RegionalQuotaCapability` was modified
+
+* `RegionalQuotaCapability()` was changed to private access
+* `withRegionName(java.lang.String)` was removed
+* `withCoresUsed(java.lang.Long)` was removed
+* `withCoresAvailable(java.lang.Long)` was removed
+* `validate()` was removed
+
+#### `models.DataDisksGroups` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptAction` was modified
+
+* `validate()` was removed
+
+#### `models.StorageAccount` was modified
+
+* `validate()` was removed
+
+#### `models.BillingResources` was modified
+
+* `BillingResources()` was changed to private access
+* `withRegion(java.lang.String)` was removed
+* `withDiskBillingMeters(java.util.List)` was removed
+* `withBillingMeters(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.ConnectivityEndpoint` was modified
+
+* `ConnectivityEndpoint()` was changed to private access
+* `withLocation(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withProtocol(java.lang.String)` was removed
+* `withPrivateIpAddress(java.lang.String)` was removed
+* `withPort(java.lang.Integer)` was removed
+* `validate()` was removed
+
+#### `models.AutoscaleConfigurationUpdateParameter` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecifications` was modified
+
+* `MetricSpecifications()` was changed to private access
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
+* `withSourceMdmAccount(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withDelegateMetricNameOverride(java.lang.String)` was removed
+* `withMetricFilterPattern(java.lang.String)` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+
+#### `models.AzureMonitorSelectedConfigurations` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPatchParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeIsolationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExcludedServicesConfig` was modified
+
+* `ExcludedServicesConfig()` was changed to private access
+* `validate()` was removed
+* `withExcludedServicesList(java.lang.String)` was removed
+* `withExcludedServicesConfigId(java.lang.String)` was removed
+
+#### `models.AutoscaleRecurrence` was modified
+
+* `validate()` was removed
+
+#### `models.Extension` was modified
+
+* `validate()` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `validate()` was removed
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+
+#### `models.ApplicationGetHttpsEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCreateRequestValidationParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AaddsResourceDetails` was modified
+
+* `AaddsResourceDetails()` was changed to private access
+* `withResourceId(java.lang.String)` was removed
+* `validate()` was removed
+* `withSubnetId(java.lang.String)` was removed
+* `withInitialSyncComplete(java.lang.Boolean)` was removed
+* `withDomainName(java.lang.String)` was removed
+* `withLdapsPublicCertificateInBase64(java.lang.String)` was removed
+* `withLdapsEnabled(java.lang.Boolean)` was removed
+* `withTenantId(java.lang.String)` was removed
+
+#### `models.EncryptionInTransitProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutoscaleCapacity` was modified
+
+* `validate()` was removed
+
+#### `models.IpTag` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMonitorRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateClusterIdentityCertificateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaInfo` was modified
+
+* `QuotaInfo()` was changed to private access
+* `validate()` was removed
+* `withCoresUsed(java.lang.Integer)` was removed
+
+#### `models.ClusterGetProperties` was modified
+
+* `ClusterGetProperties()` was changed to private access
+* `withPrivateLinkConfigurations(java.util.List)` was removed
+* `withDiskEncryptionProperties(models.DiskEncryptionProperties)` was removed
+* `withClusterHdpVersion(java.lang.String)` was removed
+* `withStorageProfile(models.StorageProfile)` was removed
+* `withOsType(models.OSType)` was removed
+* `withComputeIsolationProperties(models.ComputeIsolationProperties)` was removed
+* `withQuotaInfo(models.QuotaInfo)` was removed
+* `withEncryptionInTransitProperties(models.EncryptionInTransitProperties)` was removed
+* `withCreatedDate(java.lang.String)` was removed
+* `withConnectivityEndpoints(java.util.List)` was removed
+* `withClusterId(java.lang.String)` was removed
+* `withExcludedServicesConfig(models.ExcludedServicesConfig)` was removed
+* `withClusterDefinition(models.ClusterDefinition)` was removed
+* `withErrors(java.util.List)` was removed
+* `withComputeProfile(models.ComputeProfile)` was removed
+* `validate()` was removed
+* `withClusterState(java.lang.String)` was removed
+* `withProvisioningState(models.HDInsightClusterProvisioningState)` was removed
+* `withSecurityProfile(models.SecurityProfile)` was removed
+* `withKafkaRestProperties(models.KafkaRestProperties)` was removed
+* `withNetworkProperties(models.NetworkProperties)` was removed
+* `withClusterVersion(java.lang.String)` was removed
+* `withMinSupportedTlsVersion(java.lang.String)` was removed
+* `withTier(models.Tier)` was removed
+
+#### `models.RuntimeScriptAction` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterMonitoringRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
 
 ## 1.1.0-beta.3 (2025-10-15)
 
