@@ -16,14 +16,6 @@
 
 - [List](#operations_list)
 
-## Subscription
-
-- [AcceptOwnership](#subscription_acceptownership)
-- [AcceptOwnershipStatus](#subscription_acceptownershipstatus)
-- [Cancel](#subscription_cancel)
-- [Enable](#subscription_enable)
-- [Rename](#subscription_rename)
-
 ## SubscriptionOperation
 
 - [Get](#subscriptionoperation_get)
@@ -33,6 +25,15 @@
 - [AddUpdatePolicyForTenant](#subscriptionpolicy_addupdatepolicyfortenant)
 - [GetPolicyForTenant](#subscriptionpolicy_getpolicyfortenant)
 - [ListPolicyForTenant](#subscriptionpolicy_listpolicyfortenant)
+
+## Subscriptions
+
+- [AcceptTargetDirectory](#subscriptions_accepttargetdirectory)
+- [DeleteTargetDirectory](#subscriptions_deletetargetdirectory)
+- [GetTargetDirectory](#subscriptions_gettargetdirectory)
+- [List](#subscriptions_list)
+- [PutTargetDirectory](#subscriptions_puttargetdirectory)
+- [TargetDirectoryStatus](#subscriptions_targetdirectorystatus)
 ### Alias_Create
 
 ```java
@@ -48,8 +49,7 @@ import java.util.Map;
  */
 public final class AliasCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/createAlias.json
+     * x-ms-original-file: 2025-11-01-preview/createAlias.json
      */
     /**
      * Sample code: CreateAlias.
@@ -58,7 +58,7 @@ public final class AliasCreateSamples {
      */
     public static void createAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
         manager.alias()
-            .create("aliasForNewSub", new PutAliasRequest().withProperties(new PutAliasRequestProperties()
+            .create("dummyalias", new PutAliasRequest().withProperties(new PutAliasRequestProperties()
                 .withDisplayName("Test Subscription")
                 .withWorkload(Workload.PRODUCTION)
                 .withBillingScope(
@@ -92,8 +92,7 @@ public final class AliasCreateSamples {
  */
 public final class AliasDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/deleteAlias.json
+     * x-ms-original-file: 2025-11-01-preview/deleteAlias.json
      */
     /**
      * Sample code: DeleteAlias.
@@ -101,7 +100,7 @@ public final class AliasDeleteSamples {
      * @param manager Entry point to SubscriptionManager.
      */
     public static void deleteAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.alias().deleteWithResponse("aliasForNewSub", com.azure.core.util.Context.NONE);
+        manager.alias().deleteWithResponse("dummyalias", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -114,8 +113,7 @@ public final class AliasDeleteSamples {
  */
 public final class AliasGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getAlias.json
+     * x-ms-original-file: 2025-11-01-preview/getAlias.json
      */
     /**
      * Sample code: GetAlias.
@@ -123,7 +121,7 @@ public final class AliasGetSamples {
      * @param manager Entry point to SubscriptionManager.
      */
     public static void getAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.alias().getWithResponse("aliasForNewSub", com.azure.core.util.Context.NONE);
+        manager.alias().getWithResponse("dummyalias", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -136,8 +134,7 @@ public final class AliasGetSamples {
  */
 public final class AliasListSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/listAlias.json
+     * x-ms-original-file: 2025-11-01-preview/listAlias.json
      */
     /**
      * Sample code: ListAlias.
@@ -145,7 +142,7 @@ public final class AliasListSamples {
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.alias().listWithResponse(com.azure.core.util.Context.NONE);
+        manager.alias().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -158,9 +155,7 @@ public final class AliasListSamples {
  */
 public final class BillingAccountGetPolicySamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/
-     * getBillingAccountPolicy.json
+     * x-ms-original-file: 2025-11-01-preview/getBillingAccountPolicy.json
      */
     /**
      * Sample code: GetBillingAccountPolicy.
@@ -181,8 +176,7 @@ public final class BillingAccountGetPolicySamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getOperations.json
+     * x-ms-original-file: 2025-11-01-preview/getOperations.json
      */
     /**
      * Sample code: getOperations.
@@ -195,151 +189,6 @@ public final class OperationsListSamples {
 }
 ```
 
-### Subscription_AcceptOwnership
-
-```java
-import com.azure.resourcemanager.subscription.models.AcceptOwnershipRequest;
-import com.azure.resourcemanager.subscription.models.AcceptOwnershipRequestProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for Subscription AcceptOwnership.
- */
-public final class SubscriptionAcceptOwnershipSamples {
-    /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/
-     * acceptSubscriptionOwnership.json
-     */
-    /**
-     * Sample code: AcceptOwnership.
-     * 
-     * @param manager Entry point to SubscriptionManager.
-     */
-    public static void acceptOwnership(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.subscriptions()
-            .acceptOwnership("291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
-                new AcceptOwnershipRequest()
-                    .withProperties(new AcceptOwnershipRequestProperties().withDisplayName("Test Subscription")
-                        .withTags(mapOf("tag1", "Messi", "tag2", "Ronaldo", "tag3", "Lebron"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### Subscription_AcceptOwnershipStatus
-
-```java
-/**
- * Samples for Subscription AcceptOwnershipStatus.
- */
-public final class SubscriptionAcceptOwnershipStatusSamples {
-    /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/
-     * acceptOwnershipStatus.json
-     */
-    /**
-     * Sample code: AcceptOwnershipStatus.
-     * 
-     * @param manager Entry point to SubscriptionManager.
-     */
-    public static void acceptOwnershipStatus(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.subscriptions()
-            .acceptOwnershipStatusWithResponse("291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscription_Cancel
-
-```java
-/**
- * Samples for Subscription Cancel.
- */
-public final class SubscriptionCancelSamples {
-    /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/cancelSubscription.
-     * json
-     */
-    /**
-     * Sample code: cancelSubscription.
-     * 
-     * @param manager Entry point to SubscriptionManager.
-     */
-    public static void cancelSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.subscriptions()
-            .cancelWithResponse("83aa47df-e3e9-49ff-877b-94304bf3d3ad", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscription_Enable
-
-```java
-/**
- * Samples for Subscription Enable.
- */
-public final class SubscriptionEnableSamples {
-    /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/enableSubscription.
-     * json
-     */
-    /**
-     * Sample code: enableSubscription.
-     * 
-     * @param manager Entry point to SubscriptionManager.
-     */
-    public static void enableSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.subscriptions()
-            .enableWithResponse("7948bcee-488c-47ce-941c-38e20ede803d", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subscription_Rename
-
-```java
-import com.azure.resourcemanager.subscription.models.SubscriptionName;
-
-/**
- * Samples for Subscription Rename.
- */
-public final class SubscriptionRenameSamples {
-    /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/renameSubscription.
-     * json
-     */
-    /**
-     * Sample code: renameSubscription.
-     * 
-     * @param manager Entry point to SubscriptionManager.
-     */
-    public static void renameSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager.subscriptions()
-            .renameWithResponse("83aa47df-e3e9-49ff-877b-94304bf3d3ad",
-                new SubscriptionName().withSubscriptionName("Test Sub"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### SubscriptionOperation_Get
 
 ```java
@@ -348,9 +197,7 @@ public final class SubscriptionRenameSamples {
  */
 public final class SubscriptionOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/
-     * getSubscriptionOperation.json
+     * x-ms-original-file: 2025-11-01-preview/getSubscriptionOperation.json
      */
     /**
      * Sample code: getPendingSubscriptionOperations.
@@ -370,16 +217,13 @@ public final class SubscriptionOperationGetSamples {
 ```java
 import com.azure.resourcemanager.subscription.models.PutTenantPolicyRequestProperties;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Samples for SubscriptionPolicy AddUpdatePolicyForTenant.
  */
 public final class SubscriptionPolicyAddUpdatePolicyForTenantSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/changeTenantPolicy.
-     * json
+     * x-ms-original-file: 2025-11-01-preview/changeTenantPolicy.json
      */
     /**
      * Sample code: TenantPolicy.
@@ -391,8 +235,8 @@ public final class SubscriptionPolicyAddUpdatePolicyForTenantSamples {
             .addUpdatePolicyForTenantWithResponse(
                 new PutTenantPolicyRequestProperties().withBlockSubscriptionsLeavingTenant(true)
                     .withBlockSubscriptionsIntoTenant(true)
-                    .withExemptedPrincipals(Arrays.asList(UUID.fromString("e879cf0f-2b4d-5431-109a-f72fc9868693"),
-                        UUID.fromString("9792da87-c97b-410d-a97d-27021ba09ce6"))),
+                    .withExemptedPrincipals(
+                        Arrays.asList("e879cf0f-2b4d-5431-109a-f72fc9868693", "9792da87-c97b-410d-a97d-27021ba09ce6")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -406,9 +250,7 @@ public final class SubscriptionPolicyAddUpdatePolicyForTenantSamples {
  */
 public final class SubscriptionPolicyGetPolicyForTenantSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicy.
-     * json
+     * x-ms-original-file: 2025-11-01-preview/getTenantPolicy.json
      */
     /**
      * Sample code: getTenantPolicy.
@@ -429,9 +271,7 @@ public final class SubscriptionPolicyGetPolicyForTenantSamples {
  */
 public final class SubscriptionPolicyListPolicyForTenantSamples {
     /*
-     * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getTenantPolicyList
-     * .json
+     * x-ms-original-file: 2025-11-01-preview/getTenantPolicyList.json
      */
     /**
      * Sample code: getTenantPolicyList.
@@ -440,6 +280,147 @@ public final class SubscriptionPolicyListPolicyForTenantSamples {
      */
     public static void getTenantPolicyList(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
         manager.subscriptionPolicies().listPolicyForTenant(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_AcceptTargetDirectory
+
+```java
+/**
+ * Samples for Subscriptions AcceptTargetDirectory.
+ */
+public final class SubscriptionsAcceptTargetDirectorySamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/acceptTargetDirectory.json
+     */
+    /**
+     * Sample code: acceptTargetDirectory.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void acceptTargetDirectory(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions()
+            .acceptTargetDirectoryWithResponse("6c3c85bc-5366-4eaa-8055-a10529eafd03",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_DeleteTargetDirectory
+
+```java
+/**
+ * Samples for Subscriptions DeleteTargetDirectory.
+ */
+public final class SubscriptionsDeleteTargetDirectorySamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/deleteTargetDirectory.json
+     */
+    /**
+     * Sample code: deleteTargetDirectory.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void deleteTargetDirectory(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions()
+            .deleteTargetDirectoryWithResponse("ebe4f8fd-d8b3-4867-bcf4-b2407edd196d",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_GetTargetDirectory
+
+```java
+/**
+ * Samples for Subscriptions GetTargetDirectory.
+ */
+public final class SubscriptionsGetTargetDirectorySamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/getTargetDirectory.json
+     */
+    /**
+     * Sample code: getTargetDirectory.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void getTargetDirectory(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions()
+            .getTargetDirectoryWithResponse("ebe4f8fd-d8b3-4867-bcf4-b2407edd196d", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_List
+
+```java
+/**
+ * Samples for Subscriptions List.
+ */
+public final class SubscriptionsListSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/listTargetDirectory.json
+     */
+    /**
+     * Sample code: listTargetDirectory.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void listTargetDirectory(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions().list("ebe4f8fd-d8b3-4867-bcf4-b2407edd196d", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_PutTargetDirectory
+
+```java
+import com.azure.resourcemanager.subscription.models.TargetDirectoryRequest;
+import com.azure.resourcemanager.subscription.models.TargetDirectoryRequestProperties;
+
+/**
+ * Samples for Subscriptions PutTargetDirectory.
+ */
+public final class SubscriptionsPutTargetDirectorySamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/putTargetDirectory.json
+     */
+    /**
+     * Sample code: putTargetDirectory.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void putTargetDirectory(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions()
+            .putTargetDirectoryWithResponse("ecce7b25-862b-44a2-9e21-a1baa50618eb",
+                new TargetDirectoryRequest().withProperties(
+                    new TargetDirectoryRequestProperties().withDestinationOwnerId("abhaypratap@live.com")
+                        .withDestinationTenantId("111a82eb-4c7b-48bb-962b-49363c510130")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Subscriptions_TargetDirectoryStatus
+
+```java
+/**
+ * Samples for Subscriptions TargetDirectoryStatus.
+ */
+public final class SubscriptionsTargetDirectoryStatusSamples {
+    /*
+     * x-ms-original-file: 2025-11-01-preview/targetDirectoryStatus.json
+     */
+    /**
+     * Sample code: targetDirectoryStatus.
+     * 
+     * @param manager Entry point to SubscriptionManager.
+     */
+    public static void targetDirectoryStatus(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
+        manager.subscriptions()
+            .targetDirectoryStatusWithResponse("e1084a54-27ab-4b72-a3ba-89fac9548f49",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

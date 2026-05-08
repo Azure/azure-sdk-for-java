@@ -1,14 +1,145 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager Subscription client library for Java. This package contains Microsoft Azure SDK for Subscription Management SDK.  Package api-version 2025-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.SubscriptionAliasListResult` was removed
+
+#### `models.GetTenantPolicyListResponse` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.TenantPolicy` was modified
+
+* `TenantPolicy()` was changed to private access
+* `withExemptedPrincipals(java.util.List)` was removed
+* `withBlockSubscriptionsLeavingTenant(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withBlockSubscriptionsIntoTenant(java.lang.Boolean)` was removed
+
+#### `models.BillingAccountPoliciesResponseProperties` was modified
+
+* `BillingAccountPoliciesResponseProperties()` was changed to private access
+* `validate()` was removed
+* `withAllowTransfers(java.lang.Boolean)` was removed
+* `withServiceTenants(java.util.List)` was removed
+
+#### `models.PutAliasRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PutTenantPolicyRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PutAliasRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceTenantResponse` was modified
+
+* `ServiceTenantResponse()` was changed to private access
+* `validate()` was removed
+* `withTenantId(java.lang.String)` was removed
+* `withTenantName(java.lang.String)` was removed
+
+#### `models.AcceptOwnershipRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionAliasResponseProperties` was modified
+
+* `SubscriptionAliasResponseProperties()` was changed to private access
+* `withProvisioningState(models.ProvisioningState)` was removed
+* `withCreatedTime(java.lang.String)` was removed
+* `withResellerId(java.lang.String)` was removed
+* `withBillingScope(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `withManagementGroupId(java.lang.String)` was removed
+* `validate()` was removed
+* `withWorkload(models.Workload)` was removed
+* `withSubscriptionOwnerId(java.lang.String)` was removed
+
+#### `models.PutAliasRequestAdditionalProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AcceptOwnershipRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Alias` was modified
+
+* `models.SubscriptionAliasListResult list()` -> `com.azure.core.http.rest.PagedIterable list()`
+* `listWithResponse(com.azure.core.util.Context)` was removed
+
+#### `models.SubscriptionName` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionOperationsGetHeaders` was modified
+
+* `java.lang.Long retryAfter()` -> `java.lang.Integer retryAfter()`
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `withRetryAfter(java.lang.Long)` was removed
+
+#### `SubscriptionManager` was modified
+
+* `fluent.SubscriptionClient serviceClient()` -> `fluent.SubscriptionManagementClient serviceClient()`
+
+### Features Added
+
+* `models.Origin` was added
+
+* `models.TargetDirectoryResult` was added
+
+* `models.TargetDirectoryRequestProperties` was added
+
+* `models.ActionType` was added
+
+* `models.TargetDirectoryResultProperties` was added
+
+* `models.ChangeDirectoryOperationStatus` was added
+
+* `models.TargetDirectoryRequest` was added
+
+#### `models.Operation` was modified
+
+* `actionType()` was added
+* `origin()` was added
+
+#### `models.Subscriptions` was modified
+
+* `acceptTargetDirectory(java.lang.String)` was added
+* `deleteTargetDirectoryWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `putTargetDirectory(java.lang.String,models.TargetDirectoryRequest)` was added
+* `getTargetDirectory(java.lang.String)` was added
+* `list(java.lang.String)` was added
+* `targetDirectoryStatusWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getTargetDirectoryWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `putTargetDirectoryWithResponse(java.lang.String,models.TargetDirectoryRequest,com.azure.core.util.Context)` was added
+* `acceptTargetDirectoryWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,com.azure.core.util.Context)` was added
+* `targetDirectoryStatus(java.lang.String)` was added
+* `deleteTargetDirectory(java.lang.String)` was added
+
+#### `models.Alias` was modified
+
+* `list(com.azure.core.util.Context)` was added
 
 ## 1.1.0-beta.1 (2026-01-08)
 
