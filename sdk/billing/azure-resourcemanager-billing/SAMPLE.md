@@ -25,7 +25,6 @@
 ## BillingAccounts
 
 - [AddPaymentTerms](#billingaccounts_addpaymentterms)
-- [CancelPaymentTerms](#billingaccounts_cancelpaymentterms)
 - [ConfirmTransition](#billingaccounts_confirmtransition)
 - [Get](#billingaccounts_get)
 - [List](#billingaccounts_list)
@@ -288,8 +287,7 @@ import com.azure.resourcemanager.billing.models.AddressDetails;
  */
 public final class AddressValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateInvalid.json
+     * x-ms-original-file: 2024-04-01/addressValidateInvalid.json
      */
     /**
      * Sample code: AddressValidateInvalid.
@@ -306,8 +304,7 @@ public final class AddressValidateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/addressValidateValid.json
+     * x-ms-original-file: 2024-04-01/addressValidateValid.json
      */
     /**
      * Sample code: AddressValidateValid.
@@ -333,8 +330,7 @@ public final class AddressValidateSamples {
  */
 public final class AgreementsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/agreementByName.json
+     * x-ms-original-file: 2024-04-01/agreementByName.json
      */
     /**
      * Sample code: AgreementByName.
@@ -357,8 +353,7 @@ public final class AgreementsGetSamples {
  */
 public final class AgreementsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * agreementsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/agreementsListByBillingAccount.json
      */
     /**
      * Sample code: AgreementsListByBillingAccount.
@@ -387,8 +382,7 @@ import com.azure.resourcemanager.billing.models.ProvisioningTenantState;
  */
 public final class AssociatedTenantsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * associatedTenantsCreateOrUpdate.json
+     * x-ms-original-file: 2024-04-01/associatedTenantsCreateOrUpdate.json
      */
     /**
      * Sample code: AssociatedTenantsCreateOrUpdate.
@@ -416,8 +410,7 @@ public final class AssociatedTenantsCreateOrUpdateSamples {
  */
 public final class AssociatedTenantsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/associatedTenantsDelete.json
+     * x-ms-original-file: 2024-04-01/associatedTenantsDelete.json
      */
     /**
      * Sample code: AssociatedTenantsDelete.
@@ -440,8 +433,7 @@ public final class AssociatedTenantsDeleteSamples {
  */
 public final class AssociatedTenantsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/associatedTenantsGet.json
+     * x-ms-original-file: 2024-04-01/associatedTenantsGet.json
      */
     /**
      * Sample code: AssociatedTenantsGet.
@@ -464,8 +456,7 @@ public final class AssociatedTenantsGetSamples {
  */
 public final class AssociatedTenantsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * associatedTenantsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/associatedTenantsListByBillingAccount.json
      */
     /**
      * Sample code: AssociatedTenantsListByBillingAccount.
@@ -489,8 +480,7 @@ public final class AssociatedTenantsListByBillingAccountSamples {
  */
 public final class AvailableBalancesGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * availableBalanceGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/availableBalanceGetByBillingAccount.json
      */
     /**
      * Sample code: AvailableBalanceGetByBillingAccount.
@@ -514,8 +504,7 @@ public final class AvailableBalancesGetByBillingAccountSamples {
  */
 public final class AvailableBalancesGetByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * availableBalanceGetByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/availableBalanceGetByBillingProfile.json
      */
     /**
      * Sample code: AvailableBalanceGetByBillingProfile.
@@ -543,8 +532,7 @@ import java.util.Arrays;
  */
 public final class BillingAccountsAddPaymentTermsSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentTermsAdd.json
+     * x-ms-original-file: 2024-04-01/paymentTermsAdd.json
      */
     /**
      * Sample code: PaymentTermsAdd.
@@ -562,32 +550,6 @@ public final class BillingAccountsAddPaymentTermsSamples {
 }
 ```
 
-### BillingAccounts_CancelPaymentTerms
-
-```java
-import java.time.OffsetDateTime;
-
-/**
- * Samples for BillingAccounts CancelPaymentTerms.
- */
-public final class BillingAccountsCancelPaymentTermsSamples {
-    /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentTermsCancel.json
-     */
-    /**
-     * Sample code: PaymentTermsCancel.
-     * 
-     * @param manager Entry point to BillingManager.
-     */
-    public static void paymentTermsCancel(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts()
-            .cancelPaymentTerms("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
-                OffsetDateTime.parse("2023-01-05T22:39:34.2606750Z"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### BillingAccounts_ConfirmTransition
 
 ```java
@@ -596,8 +558,7 @@ public final class BillingAccountsCancelPaymentTermsSamples {
  */
 public final class BillingAccountsConfirmTransitionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountsConfirmTransition.json
+     * x-ms-original-file: 2024-04-01/billingAccountsConfirmTransition.json
      */
     /**
      * Sample code: BillingAccountsConfirmTransition.
@@ -621,9 +582,7 @@ public final class BillingAccountsConfirmTransitionSamples {
  */
 public final class BillingAccountsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsGetWithExpand.
-     * json
+     * x-ms-original-file: 2024-04-01/billingAccountsGetWithExpand.json
      */
     /**
      * Sample code: BillingAccountsGetWithExpand.
@@ -637,8 +596,7 @@ public final class BillingAccountsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountWithExpandForPONumber.json
+     * x-ms-original-file: 2024-04-01/billingAccountWithExpandForPONumber.json
      */
     /**
      * Sample code: BillingAccountWithExpandForPONumber.
@@ -650,8 +608,7 @@ public final class BillingAccountsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsGetEA.json
+     * x-ms-original-file: 2024-04-01/billingAccountsGetEA.json
      */
     /**
      * Sample code: BillingAccountsGetEA.
@@ -663,8 +620,7 @@ public final class BillingAccountsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountWithRegistrationNumberWithType.json
+     * x-ms-original-file: 2024-04-01/billingAccountWithRegistrationNumberWithType.json
      */
     /**
      * Sample code: BillingAccountWithRegistrationNumberWithType.
@@ -679,8 +635,7 @@ public final class BillingAccountsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsGet.json
+     * x-ms-original-file: 2024-04-01/billingAccountsGet.json
      */
     /**
      * Sample code: BillingAccountsGet.
@@ -694,8 +649,7 @@ public final class BillingAccountsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountWithRegistrationNumberWithDefaultType.json
+     * x-ms-original-file: 2024-04-01/billingAccountWithRegistrationNumberWithDefaultType.json
      */
     /**
      * Sample code: BillingAccountWithRegistrationNumberWithDefaultType.
@@ -719,8 +673,7 @@ public final class BillingAccountsGetSamples {
  */
 public final class BillingAccountsListSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountForLegacyAccountDetails.json
+     * x-ms-original-file: 2024-04-01/billingAccountForLegacyAccountDetails.json
      */
     /**
      * Sample code: BillingAccountForLegacyAccountDetails.
@@ -734,8 +687,7 @@ public final class BillingAccountsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsList.json
+     * x-ms-original-file: 2024-04-01/billingAccountsList.json
      */
     /**
      * Sample code: BillingAccountsList.
@@ -749,8 +701,7 @@ public final class BillingAccountsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountsListWithExpandForPONumber.json
+     * x-ms-original-file: 2024-04-01/billingAccountsListWithExpandForPONumber.json
      */
     /**
      * Sample code: BillingAccountsListWithExpandForPONumber.
@@ -774,8 +725,7 @@ public final class BillingAccountsListSamples {
  */
 public final class BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoiceSectionsWithCreateSubscriptionPermissionList.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsWithCreateSubscriptionPermissionList.json
      */
     /**
      * Sample code: InvoiceSectionsWithCreateSubscriptionPermissionList.
@@ -805,8 +755,7 @@ import com.azure.resourcemanager.billing.models.BillingAccountPropertiesSoldTo;
  */
 public final class BillingAccountsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingAccountsUpdate.json
+     * x-ms-original-file: 2024-04-01/billingAccountsUpdate.json
      */
     /**
      * Sample code: BillingAccountsUpdate.
@@ -827,8 +776,7 @@ public final class BillingAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingAccountUpdateWithPONumber.json
+     * x-ms-original-file: 2024-04-01/billingAccountUpdateWithPONumber.json
      */
     /**
      * Sample code: BillingAccountUpdateWithPONumber.
@@ -857,8 +805,7 @@ import java.util.Arrays;
  */
 public final class BillingAccountsValidatePaymentTermsSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentTermInvalid.json
+     * x-ms-original-file: 2024-04-01/paymentTermInvalid.json
      */
     /**
      * Sample code: PaymentTermInvalid.
@@ -876,8 +823,7 @@ public final class BillingAccountsValidatePaymentTermsSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentTermValid.json
+     * x-ms-original-file: 2024-04-01/paymentTermValid.json
      */
     /**
      * Sample code: PaymentTermValid.
@@ -907,9 +853,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/checkAccessByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/checkAccessByBillingAccount.json
      */
     /**
      * Sample code: CheckAccessByBillingAccount.
@@ -938,9 +882,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/checkAccessByBillingProfile.
-     * json
+     * x-ms-original-file: 2024-04-01/checkAccessByBillingProfile.json
      */
     /**
      * Sample code: CheckAccessByBillingProfile.
@@ -969,8 +911,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/checkAccessByCustomer.json
+     * x-ms-original-file: 2024-04-01/checkAccessByCustomer.json
      */
     /**
      * Sample code: CheckAccessByCustomer.
@@ -999,8 +940,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByDepartmentSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/checkAccessByDepartment.json
+     * x-ms-original-file: 2024-04-01/checkAccessByDepartment.json
      */
     /**
      * Sample code: CheckAccessByDepartment.
@@ -1029,8 +969,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * checkAccessByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/checkAccessByEnrollmentAccount.json
      */
     /**
      * Sample code: CheckAccessByEnrollmentAccount.
@@ -1059,9 +998,7 @@ import java.util.Arrays;
  */
 public final class BillingPermissionsCheckAccessByInvoiceSectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/checkAccessByInvoiceSection.
-     * json
+     * x-ms-original-file: 2024-04-01/checkAccessByInvoiceSection.json
      */
     /**
      * Sample code: CheckAccessByInvoiceSection.
@@ -1087,8 +1024,7 @@ public final class BillingPermissionsCheckAccessByInvoiceSectionSamples {
  */
 public final class BillingPermissionsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByBillingAccount.json
      */
     /**
      * Sample code: BillingPermissionsListByBillingAccount.
@@ -1113,8 +1049,7 @@ public final class BillingPermissionsListByBillingAccountSamples {
  */
 public final class BillingPermissionsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByBillingProfile.json
      */
     /**
      * Sample code: BillingPermissionsListByBillingProfile.
@@ -1139,8 +1074,7 @@ public final class BillingPermissionsListByBillingProfileSamples {
  */
 public final class BillingPermissionsListByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByCustomer.json
      */
     /**
      * Sample code: BillingPermissionsListByCustomer.
@@ -1163,8 +1097,7 @@ public final class BillingPermissionsListByCustomerSamples {
  */
 public final class BillingPermissionsListByCustomerAtBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByCustomerAtBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByCustomerAtBillingAccount.json
      */
     /**
      * Sample code: BillingPermissionsListByCustomerAtBillingAccount.
@@ -1189,8 +1122,7 @@ public final class BillingPermissionsListByCustomerAtBillingAccountSamples {
  */
 public final class BillingPermissionsListByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByDepartment.json
      */
     /**
      * Sample code: BillingPermissionsListByDepartment.
@@ -1211,8 +1143,7 @@ public final class BillingPermissionsListByDepartmentSamples {
  */
 public final class BillingPermissionsListByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingPermissionsListByEnrollmentAccount.
@@ -1234,8 +1165,7 @@ public final class BillingPermissionsListByEnrollmentAccountSamples {
  */
 public final class BillingPermissionsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPermissionsListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingPermissionsListByInvoiceSection.json
      */
     /**
      * Sample code: BillingPermissionsListByInvoiceSection.
@@ -1267,9 +1197,7 @@ import java.util.Arrays;
  */
 public final class BillingProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesCreateOrUpdate
-     * .json
+     * x-ms-original-file: 2024-04-01/billingProfilesCreateOrUpdate.json
      */
     /**
      * Sample code: BillingProfilesCreateOrUpdate.
@@ -1325,8 +1253,7 @@ public final class BillingProfilesCreateOrUpdateSamples {
  */
 public final class BillingProfilesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesDelete.json
+     * x-ms-original-file: 2024-04-01/billingProfilesDelete.json
      */
     /**
      * Sample code: BillingProfilesDelete.
@@ -1349,8 +1276,7 @@ public final class BillingProfilesDeleteSamples {
  */
 public final class BillingProfilesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesGet.json
+     * x-ms-original-file: 2024-04-01/billingProfilesGet.json
      */
     /**
      * Sample code: BillingProfilesGet.
@@ -1373,8 +1299,7 @@ public final class BillingProfilesGetSamples {
  */
 public final class BillingProfilesListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingProfilesListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingProfilesListByBillingAccount.json
      */
     /**
      * Sample code: BillingProfilesListByBillingAccount.
@@ -1398,8 +1323,7 @@ public final class BillingProfilesListByBillingAccountSamples {
  */
 public final class BillingProfilesValidateDeleteEligibilitySamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingProfilesValidateDeleteEligibilityFailure.json
+     * x-ms-original-file: 2024-04-01/billingProfilesValidateDeleteEligibilityFailure.json
      */
     /**
      * Sample code: BillingProfilesValidateDeleteEligibilityFailure.
@@ -1415,8 +1339,7 @@ public final class BillingProfilesValidateDeleteEligibilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingProfilesValidateDeleteEligibilitySuccess.json
+     * x-ms-original-file: 2024-04-01/billingProfilesValidateDeleteEligibilitySuccess.json
      */
     /**
      * Sample code: BillingProfilesValidateDeleteEligibilitySuccess.
@@ -1441,8 +1364,7 @@ public final class BillingProfilesValidateDeleteEligibilitySamples {
  */
 public final class BillingPropertyGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingPropertyGetMCA.json
+     * x-ms-original-file: 2024-04-01/billingPropertyGetMCA.json
      */
     /**
      * Sample code: BillingPropertyGetMCA.
@@ -1454,8 +1376,7 @@ public final class BillingPropertyGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingPropertyGetMOSP.json
+     * x-ms-original-file: 2024-04-01/billingPropertyGetMOSP.json
      */
     /**
      * Sample code: BillingPropertyGetMOSP.
@@ -1467,8 +1388,7 @@ public final class BillingPropertyGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingPropertyGetMPA.json
+     * x-ms-original-file: 2024-04-01/billingPropertyGetMPA.json
      */
     /**
      * Sample code: BillingPropertyGetMPA.
@@ -1493,8 +1413,7 @@ import com.azure.resourcemanager.billing.models.BillingPropertyPropertiesSubscri
  */
 public final class BillingPropertyUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPropertyPatchSubscriptionServiceUsageAddress.json
+     * x-ms-original-file: 2024-04-01/billingPropertyPatchSubscriptionServiceUsageAddress.json
      */
     /**
      * Sample code: BillingPropertyPatchSubscriptionServiceUsageAddress.
@@ -1519,8 +1438,7 @@ public final class BillingPropertyUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingPropertyPatchCostCenter.json
+     * x-ms-original-file: 2024-04-01/billingPropertyPatchCostCenter.json
      */
     /**
      * Sample code: BillingPropertyPatchCostCenter.
@@ -1551,9 +1469,7 @@ import java.util.Map;
  */
 public final class BillingRequestsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRequestsCreateOrUpdate
-     * .json
+     * x-ms-original-file: 2024-04-01/billingRequestsCreateOrUpdate.json
      */
     /**
      * Sample code: BillingRequestsCreateOrUpdate.
@@ -1595,8 +1511,7 @@ public final class BillingRequestsCreateOrUpdateSamples {
  */
 public final class BillingRequestsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRequestsGet.json
+     * x-ms-original-file: 2024-04-01/billingRequestsGet.json
      */
     /**
      * Sample code: BillingRequestsGet.
@@ -1618,8 +1533,7 @@ public final class BillingRequestsGetSamples {
  */
 public final class BillingRequestsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRequestsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByBillingAccount.json
      */
     /**
      * Sample code: BillingRequestsListByBillingAccount.
@@ -1643,8 +1557,7 @@ public final class BillingRequestsListByBillingAccountSamples {
  */
 public final class BillingRequestsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRequestsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByBillingProfile.json
      */
     /**
      * Sample code: BillingRequestsListByBillingProfile.
@@ -1668,9 +1581,7 @@ public final class BillingRequestsListByBillingProfileSamples {
  */
 public final class BillingRequestsListByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRequestsListByCustomer
-     * .json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByCustomer.json
      */
     /**
      * Sample code: BillingRequestsListByCustomer.
@@ -1694,8 +1605,7 @@ public final class BillingRequestsListByCustomerSamples {
  */
 public final class BillingRequestsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRequestsListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByInvoiceSection.json
      */
     /**
      * Sample code: BillingRequestsListByInvoiceSection.
@@ -1720,9 +1630,7 @@ public final class BillingRequestsListByInvoiceSectionSamples {
  */
 public final class BillingRequestsListByUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingRequestsListByUser.
-     * json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByUser.json
      */
     /**
      * Sample code: BillingRequestsListByUser.
@@ -1734,8 +1642,7 @@ public final class BillingRequestsListByUserSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRequestsListByUserWithFilter.json
+     * x-ms-original-file: 2024-04-01/billingRequestsListByUserWithFilter.json
      */
     /**
      * Sample code: BillingRequestsListByUserWithFilter.
@@ -1760,8 +1667,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateByBillingAccount.
@@ -1793,8 +1699,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateByBillingProfile.
@@ -1827,8 +1732,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateByCustomer.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateByCustomer.
@@ -1859,8 +1763,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateByInvoiceSection.
@@ -1894,8 +1797,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateOrUpdateByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateOrUpdateByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateOrUpdateByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateOrUpdateByBillingAccount.
@@ -1928,8 +1830,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateOrUpdateByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateOrUpdateByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateOrUpdateByDepartment.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateOrUpdateByDepartment.
@@ -1962,8 +1863,7 @@ import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
  */
 public final class BillingRoleAssignmentsCreateOrUpdateByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentCreateOrUpdateByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentCreateOrUpdateByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentCreateOrUpdateByEnrollmentAccount.
@@ -1993,8 +1893,7 @@ public final class BillingRoleAssignmentsCreateOrUpdateByEnrollmentAccountSample
  */
 public final class BillingRoleAssignmentsDeleteByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByBillingAccount.
@@ -2020,8 +1919,7 @@ public final class BillingRoleAssignmentsDeleteByBillingAccountSamples {
  */
 public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByBillingProfile.
@@ -2047,8 +1945,7 @@ public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
  */
 public final class BillingRoleAssignmentsDeleteByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByCustomer.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByCustomer.
@@ -2074,8 +1971,7 @@ public final class BillingRoleAssignmentsDeleteByCustomerSamples {
  */
 public final class BillingRoleAssignmentsDeleteByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByDepartment.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByDepartment.
@@ -2099,8 +1995,7 @@ public final class BillingRoleAssignmentsDeleteByDepartmentSamples {
  */
 public final class BillingRoleAssignmentsDeleteByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByEnrollmentAccount.
@@ -2124,8 +2019,7 @@ public final class BillingRoleAssignmentsDeleteByEnrollmentAccountSamples {
  */
 public final class BillingRoleAssignmentsDeleteByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentDeleteByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentDeleteByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleAssignmentDeleteByInvoiceSection.
@@ -2152,8 +2046,7 @@ public final class BillingRoleAssignmentsDeleteByInvoiceSectionSamples {
  */
 public final class BillingRoleAssignmentsGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByBillingAccount.
@@ -2179,8 +2072,7 @@ public final class BillingRoleAssignmentsGetByBillingAccountSamples {
  */
 public final class BillingRoleAssignmentsGetByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByBillingProfile.
@@ -2206,8 +2098,7 @@ public final class BillingRoleAssignmentsGetByBillingProfileSamples {
  */
 public final class BillingRoleAssignmentsGetByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByCustomer.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByCustomer.
@@ -2233,8 +2124,7 @@ public final class BillingRoleAssignmentsGetByCustomerSamples {
  */
 public final class BillingRoleAssignmentsGetByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByDepartment.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByDepartment.
@@ -2257,8 +2147,7 @@ public final class BillingRoleAssignmentsGetByDepartmentSamples {
  */
 public final class BillingRoleAssignmentsGetByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByEnrollmentAccount.
@@ -2282,8 +2171,7 @@ public final class BillingRoleAssignmentsGetByEnrollmentAccountSamples {
  */
 public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentGetByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentGetByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleAssignmentGetByInvoiceSection.
@@ -2310,8 +2198,7 @@ public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
  */
 public final class BillingRoleAssignmentsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByBillingAccount.
@@ -2336,8 +2223,7 @@ public final class BillingRoleAssignmentsListByBillingAccountSamples {
  */
 public final class BillingRoleAssignmentsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByBillingProfile.
@@ -2362,8 +2248,7 @@ public final class BillingRoleAssignmentsListByBillingProfileSamples {
  */
 public final class BillingRoleAssignmentsListByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByCustomer.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByCustomer.
@@ -2387,8 +2272,7 @@ public final class BillingRoleAssignmentsListByCustomerSamples {
  */
 public final class BillingRoleAssignmentsListByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByDepartment.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByDepartment.
@@ -2411,8 +2295,7 @@ public final class BillingRoleAssignmentsListByDepartmentSamples {
  */
 public final class BillingRoleAssignmentsListByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByEnrollmentAccount.
@@ -2434,8 +2317,7 @@ public final class BillingRoleAssignmentsListByEnrollmentAccountSamples {
  */
 public final class BillingRoleAssignmentsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleAssignmentListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleAssignmentListByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleAssignmentListByInvoiceSection.
@@ -2460,8 +2342,7 @@ public final class BillingRoleAssignmentsListByInvoiceSectionSamples {
  */
 public final class BillingRoleAssignmentsResolveByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * resolveBillingRoleAssignmentByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/resolveBillingRoleAssignmentByBillingAccount.json
      */
     /**
      * Sample code: ResolveBillingRoleAssignmentByBillingAccount.
@@ -2486,8 +2367,7 @@ public final class BillingRoleAssignmentsResolveByBillingAccountSamples {
  */
 public final class BillingRoleAssignmentsResolveByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * resolveBillingRoleAssignmentByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/resolveBillingRoleAssignmentByBillingProfile.json
      */
     /**
      * Sample code: ResolveBillingRoleAssignmentByBillingProfile.
@@ -2512,8 +2392,7 @@ public final class BillingRoleAssignmentsResolveByBillingProfileSamples {
  */
 public final class BillingRoleAssignmentsResolveByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * resolveBillingRoleAssignmentByCustomer.json
+     * x-ms-original-file: 2024-04-01/resolveBillingRoleAssignmentByCustomer.json
      */
     /**
      * Sample code: ResolveBillingRoleAssignmentByCustomer.
@@ -2538,8 +2417,7 @@ public final class BillingRoleAssignmentsResolveByCustomerSamples {
  */
 public final class BillingRoleAssignmentsResolveByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * resolveBillingRoleAssignmentByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/resolveBillingRoleAssignmentByInvoiceSection.json
      */
     /**
      * Sample code: ResolveBillingRoleAssignmentByInvoiceSection.
@@ -2564,8 +2442,7 @@ public final class BillingRoleAssignmentsResolveByInvoiceSectionSamples {
  */
 public final class BillingRoleDefinitionGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByBillingAccount.
@@ -2590,8 +2467,7 @@ public final class BillingRoleDefinitionGetByBillingAccountSamples {
  */
 public final class BillingRoleDefinitionGetByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByBillingProfile.
@@ -2616,8 +2492,7 @@ public final class BillingRoleDefinitionGetByBillingProfileSamples {
  */
 public final class BillingRoleDefinitionGetByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByCustomer.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByCustomer.
@@ -2642,8 +2517,7 @@ public final class BillingRoleDefinitionGetByCustomerSamples {
  */
 public final class BillingRoleDefinitionGetByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByDepartment.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByDepartment.
@@ -2666,8 +2540,7 @@ public final class BillingRoleDefinitionGetByDepartmentSamples {
  */
 public final class BillingRoleDefinitionGetByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByEnrollmentAccount.
@@ -2691,8 +2564,7 @@ public final class BillingRoleDefinitionGetByEnrollmentAccountSamples {
  */
 public final class BillingRoleDefinitionGetByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionGetByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionGetByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleDefinitionGetByInvoiceSection.
@@ -2718,8 +2590,7 @@ public final class BillingRoleDefinitionGetByInvoiceSectionSamples {
  */
 public final class BillingRoleDefinitionListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByBillingAccount.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByBillingAccount.
@@ -2744,8 +2615,7 @@ public final class BillingRoleDefinitionListByBillingAccountSamples {
  */
 public final class BillingRoleDefinitionListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByBillingProfile.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByBillingProfile.
@@ -2770,8 +2640,7 @@ public final class BillingRoleDefinitionListByBillingProfileSamples {
  */
 public final class BillingRoleDefinitionListByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByCustomer.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByCustomer.
@@ -2794,8 +2663,7 @@ public final class BillingRoleDefinitionListByCustomerSamples {
  */
 public final class BillingRoleDefinitionListByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByDepartment.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByDepartment.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByDepartment.
@@ -2816,8 +2684,7 @@ public final class BillingRoleDefinitionListByDepartmentSamples {
  */
 public final class BillingRoleDefinitionListByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByEnrollmentAccount.
@@ -2839,8 +2706,7 @@ public final class BillingRoleDefinitionListByEnrollmentAccountSamples {
  */
 public final class BillingRoleDefinitionListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingRoleDefinitionListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingRoleDefinitionListByInvoiceSection.json
      */
     /**
      * Sample code: BillingRoleDefinitionListByInvoiceSection.
@@ -2860,17 +2726,15 @@ public final class BillingRoleDefinitionListByInvoiceSectionSamples {
 ### BillingSubscriptions_Cancel
 
 ```java
-import com.azure.resourcemanager.billing.models.CancellationReason;
 import com.azure.resourcemanager.billing.models.CancelSubscriptionRequest;
+import com.azure.resourcemanager.billing.models.CancellationReason;
 
 /**
  * Samples for BillingSubscriptions Cancel.
  */
 public final class BillingSubscriptionsCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsCancel.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsCancel.json
      */
     /**
      * Sample code: BillingSubscriptionsCancel.
@@ -2896,9 +2760,7 @@ public final class BillingSubscriptionsCancelSamples {
  */
 public final class BillingSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsDelete.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsDelete.json
      */
     /**
      * Sample code: BillingSubscriptionsDelete.
@@ -2921,8 +2783,7 @@ public final class BillingSubscriptionsDeleteSamples {
  */
 public final class BillingSubscriptionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsGet.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsGet.json
      */
     /**
      * Sample code: BillingSubscriptionsGet.
@@ -2945,8 +2806,7 @@ public final class BillingSubscriptionsGetSamples {
  */
 public final class BillingSubscriptionsGetByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionGetByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionGetByBillingProfile.json
      */
     /**
      * Sample code: BillingSubscriptionGetByBillingProfile.
@@ -2970,8 +2830,7 @@ public final class BillingSubscriptionsGetByBillingProfileSamples {
  */
 public final class BillingSubscriptionsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByBillingAccount.json
      */
     /**
      * Sample code: BillingSubscriptionsListByBillingAccount.
@@ -2996,8 +2855,7 @@ public final class BillingSubscriptionsListByBillingAccountSamples {
  */
 public final class BillingSubscriptionsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByBillingProfileEA.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByBillingProfileEA.json
      */
     /**
      * Sample code: BillingSubscriptionsListByBillingProfileEA.
@@ -3012,8 +2870,7 @@ public final class BillingSubscriptionsListByBillingProfileSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByBillingProfileMCA.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByBillingProfileMCA.json
      */
     /**
      * Sample code: BillingSubscriptionsListByBillingProfileMCA.
@@ -3039,8 +2896,7 @@ public final class BillingSubscriptionsListByBillingProfileSamples {
  */
 public final class BillingSubscriptionsListByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByCustomer.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByCustomer.json
      */
     /**
      * Sample code: BillingSubscriptionsListByCustomer.
@@ -3064,8 +2920,7 @@ public final class BillingSubscriptionsListByCustomerSamples {
  */
 public final class BillingSubscriptionsListByCustomerAtBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByCustomerAtBillingAccount.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByCustomerAtBillingAccount.json
      */
     /**
      * Sample code: BillingSubscriptionsListByCustomerAtBillingAccount.
@@ -3090,8 +2945,7 @@ public final class BillingSubscriptionsListByCustomerAtBillingAccountSamples {
  */
 public final class BillingSubscriptionsListByEnrollmentAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByEnrollmentAccount.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByEnrollmentAccount.json
      */
     /**
      * Sample code: BillingSubscriptionsListByEnrollmentAccount.
@@ -3115,8 +2969,7 @@ public final class BillingSubscriptionsListByEnrollmentAccountSamples {
  */
 public final class BillingSubscriptionsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionsListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsListByInvoiceSection.json
      */
     /**
      * Sample code: BillingSubscriptionsListByInvoiceSection.
@@ -3144,9 +2997,7 @@ import com.azure.resourcemanager.billing.models.BillingSubscriptionMergeRequest;
  */
 public final class BillingSubscriptionsMergeSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsMerge.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsMerge.json
      */
     /**
      * Sample code: BillingSubscriptionsMerge.
@@ -3175,8 +3026,7 @@ import com.azure.resourcemanager.billing.models.MoveBillingSubscriptionRequest;
  */
 public final class BillingSubscriptionsMoveSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionMove.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionMove.json
      */
     /**
      * Sample code: BillingSubscriptionMove.
@@ -3204,9 +3054,7 @@ import com.azure.resourcemanager.billing.models.BillingSubscriptionSplitRequest;
  */
 public final class BillingSubscriptionsSplitSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsSplit.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsSplit.json
      */
     /**
      * Sample code: BillingSubscriptionsSplit.
@@ -3237,9 +3085,7 @@ import com.azure.resourcemanager.billing.models.BillingSubscriptionPatch;
  */
 public final class BillingSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsUpdate.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionsUpdate.json
      */
     /**
      * Sample code: BillingSubscriptionsUpdate.
@@ -3265,8 +3111,7 @@ import com.azure.resourcemanager.billing.models.MoveBillingSubscriptionRequest;
  */
 public final class BillingSubscriptionsValidateMoveEligibilitySamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionValidateMoveSuccess.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionValidateMoveSuccess.json
      */
     /**
      * Sample code: BillingSubscriptionValidateMoveSuccess.
@@ -3285,8 +3130,7 @@ public final class BillingSubscriptionsValidateMoveEligibilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionValidateMoveFailure.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionValidateMoveFailure.json
      */
     /**
      * Sample code: BillingSubscriptionValidateMoveFailure.
@@ -3316,8 +3160,7 @@ import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionAliasI
  */
 public final class BillingSubscriptionsAliasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * billingSubscriptionAliasCreateOrUpdate.json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionAliasCreateOrUpdate.json
      */
     /**
      * Sample code: BillingSubscriptionAliasCreateOrUpdate.
@@ -3347,9 +3190,7 @@ public final class BillingSubscriptionsAliasesCreateOrUpdateSamples {
  */
 public final class BillingSubscriptionsAliasesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionAliasGet.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionAliasGet.json
      */
     /**
      * Sample code: BillingSubscriptionAliasGet.
@@ -3372,9 +3213,7 @@ public final class BillingSubscriptionsAliasesGetSamples {
  */
 public final class BillingSubscriptionsAliasesListByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionAliasList.
-     * json
+     * x-ms-original-file: 2024-04-01/billingSubscriptionAliasList.json
      */
     /**
      * Sample code: BillingSubscriptionAliasList.
@@ -3398,8 +3237,7 @@ public final class BillingSubscriptionsAliasesListByBillingAccountSamples {
  */
 public final class CustomersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/customersGet.json
+     * x-ms-original-file: 2024-04-01/customersGet.json
      */
     /**
      * Sample code: CustomersGet.
@@ -3422,9 +3260,7 @@ public final class CustomersGetSamples {
  */
 public final class CustomersGetByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/customersGetByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/customersGetByBillingAccount.json
      */
     /**
      * Sample code: CustomersGetByBillingAccount.
@@ -3448,9 +3284,7 @@ public final class CustomersGetByBillingAccountSamples {
  */
 public final class CustomersListByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/customersListByBillingAccount
-     * .json
+     * x-ms-original-file: 2024-04-01/customersListByBillingAccount.json
      */
     /**
      * Sample code: CustomersListByBillingAccount.
@@ -3465,8 +3299,7 @@ public final class CustomersListByBillingAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * customersListByBillingAccountWithExpand.json
+     * x-ms-original-file: 2024-04-01/customersListByBillingAccountWithExpand.json
      */
     /**
      * Sample code: CustomersListByBillingAccountWithExpand.
@@ -3491,9 +3324,7 @@ public final class CustomersListByBillingAccountSamples {
  */
 public final class CustomersListByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/customersListByBillingProfile
-     * .json
+     * x-ms-original-file: 2024-04-01/customersListByBillingProfile.json
      */
     /**
      * Sample code: CustomersListByBillingProfile.
@@ -3517,8 +3348,7 @@ public final class CustomersListByBillingProfileSamples {
  */
 public final class DepartmentsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/departmentGet.json
+     * x-ms-original-file: 2024-04-01/departmentGet.json
      */
     /**
      * Sample code: DepartmentGet.
@@ -3539,8 +3369,7 @@ public final class DepartmentsGetSamples {
  */
 public final class DepartmentsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * departmentsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/departmentsListByBillingAccount.json
      */
     /**
      * Sample code: DepartmentsListByBillingAccount.
@@ -3562,8 +3391,7 @@ public final class DepartmentsListByBillingAccountSamples {
  */
 public final class EnrollmentAccountsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/enrollmentAccountGet.json
+     * x-ms-original-file: 2024-04-01/enrollmentAccountGet.json
      */
     /**
      * Sample code: EnrollmentAccountGet.
@@ -3584,9 +3412,7 @@ public final class EnrollmentAccountsGetSamples {
  */
 public final class EnrollmentAccountsGetByDepartmentSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/enrollmentAccountByDepartment
-     * .json
+     * x-ms-original-file: 2024-04-01/enrollmentAccountByDepartment.json
      */
     /**
      * Sample code: EnrollmentAccountByDepartment.
@@ -3608,8 +3434,7 @@ public final class EnrollmentAccountsGetByDepartmentSamples {
  */
 public final class EnrollmentAccountsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * enrollmentAccountsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/enrollmentAccountsListByBillingAccount.json
      */
     /**
      * Sample code: EnrollmentAccountsListByBillingAccount.
@@ -3632,8 +3457,7 @@ public final class EnrollmentAccountsListByBillingAccountSamples {
  */
 public final class EnrollmentAccountsListByDepartmentSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * enrollmentAccountsListByDepartment.json
+     * x-ms-original-file: 2024-04-01/enrollmentAccountsListByDepartment.json
      */
     /**
      * Sample code: EnrollmentAccountsListByDepartment.
@@ -3661,9 +3485,7 @@ import java.util.Map;
  */
 public final class InvoiceSectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsCreateOrUpdate
-     * .json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsCreateOrUpdate.json
      */
     /**
      * Sample code: InvoiceSectionsCreateOrUpdate.
@@ -3702,8 +3524,7 @@ public final class InvoiceSectionsCreateOrUpdateSamples {
  */
 public final class InvoiceSectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsDelete.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsDelete.json
      */
     /**
      * Sample code: InvoiceSectionsDelete.
@@ -3726,8 +3547,7 @@ public final class InvoiceSectionsDeleteSamples {
  */
 public final class InvoiceSectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoiceSectionsGet.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsGet.json
      */
     /**
      * Sample code: InvoiceSectionsGet.
@@ -3750,8 +3570,7 @@ public final class InvoiceSectionsGetSamples {
  */
 public final class InvoiceSectionsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoiceSectionsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsListByBillingProfile.json
      */
     /**
      * Sample code: InvoiceSectionsListByBillingProfile.
@@ -3775,8 +3594,7 @@ public final class InvoiceSectionsListByBillingProfileSamples {
  */
 public final class InvoiceSectionsValidateDeleteEligibilitySamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoiceSectionsValidateDeleteEligibilityFailure.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsValidateDeleteEligibilityFailure.json
      */
     /**
      * Sample code: InvoiceSectionsValidateDeleteEligibilityFailure.
@@ -3792,8 +3610,7 @@ public final class InvoiceSectionsValidateDeleteEligibilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoiceSectionsValidateDeleteEligibilitySuccess.json
+     * x-ms-original-file: 2024-04-01/invoiceSectionsValidateDeleteEligibilitySuccess.json
      */
     /**
      * Sample code: InvoiceSectionsValidateDeleteEligibilitySuccess.
@@ -3818,8 +3635,7 @@ public final class InvoiceSectionsValidateDeleteEligibilitySamples {
  */
 public final class InvoicesAmendSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesAmend.json
+     * x-ms-original-file: 2024-04-01/invoicesAmend.json
      */
     /**
      * Sample code: InvoicesAmend.
@@ -3842,8 +3658,7 @@ public final class InvoicesAmendSamples {
  */
 public final class InvoicesDownloadByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesDownloadByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/invoicesDownloadByBillingAccount.json
      */
     /**
      * Sample code: InvoicesDownloadByBillingAccount.
@@ -3867,8 +3682,7 @@ public final class InvoicesDownloadByBillingAccountSamples {
  */
 public final class InvoicesDownloadByBillingSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesDownloadByBillingSubscription.json
+     * x-ms-original-file: 2024-04-01/invoicesDownloadByBillingSubscription.json
      */
     /**
      * Sample code: InvoicesDownloadByBillingSubscription.
@@ -3892,8 +3706,7 @@ import java.util.Arrays;
  */
 public final class InvoicesDownloadDocumentsByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesDownloadDocumentsByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/invoicesDownloadDocumentsByBillingAccount.json
      */
     /**
      * Sample code: InvoicesDownloadDocumentsByBillingAccount.
@@ -3923,8 +3736,7 @@ import java.util.Arrays;
  */
 public final class InvoicesDownloadDocumentsByBillingSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesDownloadDocumentsByBillingSubscription.json
+     * x-ms-original-file: 2024-04-01/invoicesDownloadDocumentsByBillingSubscription.json
      */
     /**
      * Sample code: InvoicesDownloadDocumentsByBillingSubscription.
@@ -3950,8 +3762,7 @@ public final class InvoicesDownloadDocumentsByBillingSubscriptionSamples {
  */
 public final class InvoicesDownloadSummaryByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesDownloadSummaryByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/invoicesDownloadSummaryByBillingAccount.json
      */
     /**
      * Sample code: InvoicesDownloadSummaryByBillingAccount.
@@ -3973,8 +3784,7 @@ public final class InvoicesDownloadSummaryByBillingAccountSamples {
  */
 public final class InvoicesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGet.json
+     * x-ms-original-file: 2024-04-01/invoicesGet.json
      */
     /**
      * Sample code: InvoicesGet.
@@ -3995,9 +3805,7 @@ public final class InvoicesGetSamples {
  */
 public final class InvoicesGetByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesGetByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/invoicesGetByBillingAccount.json
      */
     /**
      * Sample code: InvoicesGetByBillingAccount.
@@ -4021,8 +3829,7 @@ public final class InvoicesGetByBillingAccountSamples {
  */
 public final class InvoicesGetByBillingSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesGetByBillingSubscription.json
+     * x-ms-original-file: 2024-04-01/invoicesGetByBillingSubscription.json
      */
     /**
      * Sample code: InvoicesGetByBillingSubscription.
@@ -4045,9 +3852,7 @@ import java.time.LocalDate;
  */
 public final class InvoicesListByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/invoicesListByBillingAccount.json
      */
     /**
      * Sample code: InvoicesListByBillingAccount.
@@ -4074,9 +3879,7 @@ import java.time.LocalDate;
  */
 public final class InvoicesListByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingProfile.
-     * json
+     * x-ms-original-file: 2024-04-01/invoicesListByBillingProfile.json
      */
     /**
      * Sample code: InvoicesListByBillingProfile.
@@ -4103,8 +3906,7 @@ import java.time.LocalDate;
  */
 public final class InvoicesListByBillingSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * invoicesListByBillingSubscription.json
+     * x-ms-original-file: 2024-04-01/invoicesListByBillingSubscription.json
      */
     /**
      * Sample code: InvoicesListByBillingSubscription.
@@ -4127,8 +3929,7 @@ public final class InvoicesListByBillingSubscriptionSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/operationsList.json
+     * x-ms-original-file: 2024-04-01/operationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -4149,8 +3950,7 @@ public final class OperationsListSamples {
  */
 public final class PartnerTransfersCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/partnerTransfersCancel.json
+     * x-ms-original-file: 2024-04-01/partnerTransfersCancel.json
      */
     /**
      * Sample code: PartnerTransferCancel.
@@ -4174,8 +3974,7 @@ public final class PartnerTransfersCancelSamples {
  */
 public final class PartnerTransfersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/partnerTransfersGet.json
+     * x-ms-original-file: 2024-04-01/partnerTransfersGet.json
      */
     /**
      * Sample code: PartnerTransferGet.
@@ -4201,8 +4000,7 @@ import com.azure.resourcemanager.billing.models.PartnerInitiateTransferRequest;
  */
 public final class PartnerTransfersInitiateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/partnerTransfersInitiate.json
+     * x-ms-original-file: 2024-04-01/partnerTransfersInitiate.json
      */
     /**
      * Sample code: InitiatePartnerTransfer.
@@ -4228,8 +4026,7 @@ public final class PartnerTransfersInitiateSamples {
  */
 public final class PartnerTransfersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/partnerTransfersList.json
+     * x-ms-original-file: 2024-04-01/partnerTransfersList.json
      */
     /**
      * Sample code: PartnerTransfersList.
@@ -4252,9 +4049,7 @@ public final class PartnerTransfersListSamples {
  */
 public final class PaymentMethodsDeleteByUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentMethodsDeleteByUser.
-     * json
+     * x-ms-original-file: 2024-04-01/paymentMethodsDeleteByUser.json
      */
     /**
      * Sample code: DeletePaymentMethodOwnedByUser.
@@ -4275,8 +4070,7 @@ public final class PaymentMethodsDeleteByUserSamples {
  */
 public final class PaymentMethodsGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * paymentMethodsGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsGetByBillingAccount.json
      */
     /**
      * Sample code: PaymentMethodGetAtBillingProfile.
@@ -4300,8 +4094,7 @@ public final class PaymentMethodsGetByBillingAccountSamples {
  */
 public final class PaymentMethodsGetByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * paymentMethodsGetByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsGetByBillingProfile.json
      */
     /**
      * Sample code: PaymentMethodsGetByBillingProfile.
@@ -4325,8 +4118,7 @@ public final class PaymentMethodsGetByBillingProfileSamples {
  */
 public final class PaymentMethodsGetByUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentMethodsGetByUser.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsGetByUser.json
      */
     /**
      * Sample code: GetPaymentMethodOwnedByUser.
@@ -4347,8 +4139,7 @@ public final class PaymentMethodsGetByUserSamples {
  */
 public final class PaymentMethodsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * paymentMethodsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsListByBillingAccount.json
      */
     /**
      * Sample code: PaymentMethodsListByBillingAccount.
@@ -4372,8 +4163,7 @@ public final class PaymentMethodsListByBillingAccountSamples {
  */
 public final class PaymentMethodsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * paymentMethodsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsListByBillingProfile.json
      */
     /**
      * Sample code: PaymentMethodsListByBillingProfile.
@@ -4397,8 +4187,7 @@ public final class PaymentMethodsListByBillingProfileSamples {
  */
 public final class PaymentMethodsListByUserSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/paymentMethodsListByUser.json
+     * x-ms-original-file: 2024-04-01/paymentMethodsListByUser.json
      */
     /**
      * Sample code: ListPaymentMethodOwnedByUser.
@@ -4427,9 +4216,7 @@ import com.azure.resourcemanager.billing.models.SavingsPlanPurchasesPolicy;
  */
 public final class PoliciesCreateOrUpdateByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/policiesPutByBillingAccount.json
      */
     /**
      * Sample code: PoliciesPutByBillingAccount.
@@ -4465,9 +4252,7 @@ import com.azure.resourcemanager.billing.models.SavingsPlanPurchasesPolicy;
  */
 public final class PoliciesCreateOrUpdateByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByBillingProfile.
-     * json
+     * x-ms-original-file: 2024-04-01/policiesPutByBillingProfile.json
      */
     /**
      * Sample code: PoliciesPutByBillingProfile.
@@ -4501,8 +4286,7 @@ import com.azure.resourcemanager.billing.models.ViewChargesPolicy;
  */
 public final class PoliciesCreateOrUpdateByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesPutByCustomer.json
+     * x-ms-original-file: 2024-04-01/policiesPutByCustomer.json
      */
     /**
      * Sample code: PoliciesPutByCustomer.
@@ -4533,8 +4317,7 @@ import com.azure.resourcemanager.billing.models.ViewChargesPolicy;
  */
 public final class PoliciesCreateOrUpdateByCustomerAtBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * policiesPutByCustomerAtBillingAccount.json
+     * x-ms-original-file: 2024-04-01/policiesPutByCustomerAtBillingAccount.json
      */
     /**
      * Sample code: PoliciesPutByCustomerAtBillingAccount.
@@ -4561,9 +4344,7 @@ public final class PoliciesCreateOrUpdateByCustomerAtBillingAccountSamples {
  */
 public final class PoliciesGetByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/policiesGetByBillingAccount.json
      */
     /**
      * Sample code: PoliciesGetByBillingAccount.
@@ -4584,9 +4365,7 @@ public final class PoliciesGetByBillingAccountSamples {
  */
 public final class PoliciesGetByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByBillingProfile.
-     * json
+     * x-ms-original-file: 2024-04-01/policiesGetByBillingProfile.json
      */
     /**
      * Sample code: PoliciesGetByBillingProfile.
@@ -4612,8 +4391,7 @@ import com.azure.resourcemanager.billing.models.ServiceDefinedResourceName;
  */
 public final class PoliciesGetByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByCustomer.json
+     * x-ms-original-file: 2024-04-01/policiesGetByCustomer.json
      */
     /**
      * Sample code: PoliciesGetByCustomer.
@@ -4638,8 +4416,7 @@ public final class PoliciesGetByCustomerSamples {
  */
 public final class PoliciesGetByCustomerAtBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * policiesGetByCustomerAtBillingAccount.json
+     * x-ms-original-file: 2024-04-01/policiesGetByCustomerAtBillingAccount.json
      */
     /**
      * Sample code: PoliciesGetByCustomerAtBillingAccount.
@@ -4663,9 +4440,7 @@ public final class PoliciesGetByCustomerAtBillingAccountSamples {
  */
 public final class PoliciesGetBySubscriptionSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetBySubscription.
-     * json
+     * x-ms-original-file: 2024-04-01/policiesGetBySubscription.json
      */
     /**
      * Sample code: PoliciesGetBySubscription.
@@ -4686,8 +4461,7 @@ public final class PoliciesGetBySubscriptionSamples {
  */
 public final class ProductsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsGet.json
+     * x-ms-original-file: 2024-04-01/productsGet.json
      */
     /**
      * Sample code: ProductsGet.
@@ -4710,9 +4484,7 @@ public final class ProductsGetSamples {
  */
 public final class ProductsListByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByBillingAccount.
-     * json
+     * x-ms-original-file: 2024-04-01/productsListByBillingAccount.json
      */
     /**
      * Sample code: ProductsListByBillingAccount.
@@ -4736,9 +4508,7 @@ public final class ProductsListByBillingAccountSamples {
  */
 public final class ProductsListByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByBillingProfile.
-     * json
+     * x-ms-original-file: 2024-04-01/productsListByBillingProfile.json
      */
     /**
      * Sample code: ProductsListByBillingProfile.
@@ -4763,8 +4533,7 @@ public final class ProductsListByBillingProfileSamples {
  */
 public final class ProductsListByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByCustomer.json
+     * x-ms-original-file: 2024-04-01/productsListByCustomer.json
      */
     /**
      * Sample code: ProductsListByCustomer.
@@ -4787,9 +4556,7 @@ public final class ProductsListByCustomerSamples {
  */
 public final class ProductsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsListByInvoiceSection.
-     * json
+     * x-ms-original-file: 2024-04-01/productsListByInvoiceSection.json
      */
     /**
      * Sample code: ProductsListByInvoiceSection.
@@ -4816,8 +4583,7 @@ import com.azure.resourcemanager.billing.models.MoveProductRequest;
  */
 public final class ProductsMoveSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productMove.json
+     * x-ms-original-file: 2024-04-01/productMove.json
      */
     /**
      * Sample code: ProductMove.
@@ -4847,8 +4613,7 @@ import com.azure.resourcemanager.billing.models.ProductProperties;
  */
 public final class ProductsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsUpdate.json
+     * x-ms-original-file: 2024-04-01/productsUpdate.json
      */
     /**
      * Sample code: ProductsUpdate.
@@ -4875,9 +4640,7 @@ import com.azure.resourcemanager.billing.models.MoveProductRequest;
  */
 public final class ProductsValidateMoveEligibilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productValidateMoveFailure.
-     * json
+     * x-ms-original-file: 2024-04-01/productValidateMoveFailure.json
      */
     /**
      * Sample code: ProductValidateMoveFailure.
@@ -4895,9 +4658,7 @@ public final class ProductsValidateMoveEligibilitySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productValidateMoveSuccess.
-     * json
+     * x-ms-original-file: 2024-04-01/productValidateMoveSuccess.json
      */
     /**
      * Sample code: ProductValidateMoveSuccess.
@@ -4929,8 +4690,7 @@ import java.util.Arrays;
  */
 public final class RecipientTransfersAcceptSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/recipientTransfersAccept.json
+     * x-ms-original-file: 2024-04-01/recipientTransfersAccept.json
      */
     /**
      * Sample code: AcceptTransfer.
@@ -4958,9 +4718,7 @@ public final class RecipientTransfersAcceptSamples {
  */
 public final class RecipientTransfersDeclineSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/recipientTransfersDecline.
-     * json
+     * x-ms-original-file: 2024-04-01/recipientTransfersDecline.json
      */
     /**
      * Sample code: DeclineTransfer.
@@ -4981,8 +4739,7 @@ public final class RecipientTransfersDeclineSamples {
  */
 public final class RecipientTransfersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/recipientTransfersGet.json
+     * x-ms-original-file: 2024-04-01/recipientTransfersGet.json
      */
     /**
      * Sample code: RecipientTransferGet.
@@ -5003,8 +4760,7 @@ public final class RecipientTransfersGetSamples {
  */
 public final class RecipientTransfersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/recipientTransfersList.json
+     * x-ms-original-file: 2024-04-01/recipientTransfersList.json
      */
     /**
      * Sample code: RecipientTransfersList.
@@ -5030,9 +4786,7 @@ import java.util.Arrays;
  */
 public final class RecipientTransfersValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/recipientTransfersValidate.
-     * json
+     * x-ms-original-file: 2024-04-01/recipientTransfersValidate.json
      */
     /**
      * Sample code: ValidateTransfer.
@@ -5060,8 +4814,7 @@ public final class RecipientTransfersValidateSamples {
  */
 public final class ReservationOrdersGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationOrderGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationOrderGetByBillingAccount.json
      */
     /**
      * Sample code: reservationOrderGetByBillingAccount.
@@ -5076,8 +4829,7 @@ public final class ReservationOrdersGetByBillingAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationOrderGetByBillingAccountWithExpandPlanInformation.json
+     * x-ms-original-file: 2024-04-01/reservationOrderGetByBillingAccountWithExpandPlanInformation.json
      */
     /**
      * Sample code: reservationOrderGetByBillingAccountWithExpandPlanInformation.
@@ -5102,8 +4854,7 @@ public final class ReservationOrdersGetByBillingAccountSamples {
  */
 public final class ReservationOrdersListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationOrdersListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationOrdersListByBillingAccount.json
      */
     /**
      * Sample code: reservationOrderListByBillingAccount.
@@ -5127,8 +4878,7 @@ public final class ReservationOrdersListByBillingAccountSamples {
  */
 public final class ReservationsGetByReservationOrderSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationGetByBillingAccountManagementGroup.json
+     * x-ms-original-file: 2024-04-01/reservationGetByBillingAccountManagementGroup.json
      */
     /**
      * Sample code: reservationGetByBillingAccountManagementGroup.
@@ -5145,8 +4895,7 @@ public final class ReservationsGetByReservationOrderSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationGetByBillingAccount.json
      */
     /**
      * Sample code: reservationGetByBillingAccount.
@@ -5162,8 +4911,7 @@ public final class ReservationsGetByReservationOrderSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationGetByBillingAccountSingleScope.json
+     * x-ms-original-file: 2024-04-01/reservationGetByBillingAccountSingleScope.json
      */
     /**
      * Sample code: reservationGetByBillingAccountSingleScope.
@@ -5180,8 +4928,7 @@ public final class ReservationsGetByReservationOrderSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationGetByBillingAccountSingleResourceGroup.json
+     * x-ms-original-file: 2024-04-01/reservationGetByBillingAccountSingleResourceGroup.json
      */
     /**
      * Sample code: reservationGetByBillingAccountSingleResourceGroup.
@@ -5207,8 +4954,7 @@ public final class ReservationsGetByReservationOrderSamples {
  */
 public final class ReservationsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationsListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationsListByBillingAccount.json
      */
     /**
      * Sample code: reservationsListByBillingAccount.
@@ -5232,8 +4978,7 @@ public final class ReservationsListByBillingAccountSamples {
  */
 public final class ReservationsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/reservationsListByBillingProfile.json
      */
     /**
      * Sample code: ReservationsListByBillingProfile.
@@ -5257,8 +5002,7 @@ public final class ReservationsListByBillingProfileSamples {
  */
 public final class ReservationsListByReservationOrderSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationsGetFromOrderByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationsGetFromOrderByBillingAccount.json
      */
     /**
      * Sample code: reservationsGetFromOrderByBillingAccount.
@@ -5285,8 +5029,7 @@ import com.azure.resourcemanager.billing.models.PatchModel;
  */
 public final class ReservationsUpdateByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * reservationUpdateByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/reservationUpdateByBillingAccount.json
      */
     /**
      * Sample code: ReservationUpdate.
@@ -5311,8 +5054,7 @@ public final class ReservationsUpdateByBillingAccountSamples {
  */
 public final class SavingsPlanOrdersGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanOrderGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanOrderGetByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanOrderGet.
@@ -5327,8 +5069,7 @@ public final class SavingsPlanOrdersGetByBillingAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanOrderExpandedScheduleGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanOrderExpandedScheduleGetByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanOrderWithExpandedPaymentsGet.
@@ -5353,8 +5094,7 @@ public final class SavingsPlanOrdersGetByBillingAccountSamples {
  */
 public final class SavingsPlanOrdersListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanOrderListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanOrderListByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanOrderList.
@@ -5378,8 +5118,7 @@ public final class SavingsPlanOrdersListByBillingAccountSamples {
  */
 public final class SavingsPlansGetByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanGetByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanGetByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanGet.
@@ -5395,8 +5134,7 @@ public final class SavingsPlansGetByBillingAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanGetExpandRenewPropertiesByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanGetExpandRenewPropertiesByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanGetExpandRenewProperties.
@@ -5421,8 +5159,7 @@ public final class SavingsPlansGetByBillingAccountSamples {
  */
 public final class SavingsPlansListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlansListByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlansListByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlansList.
@@ -5446,8 +5183,7 @@ public final class SavingsPlansListByBillingAccountSamples {
  */
 public final class SavingsPlansListBySavingsPlanOrderSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlansListBySavingsPlanOrders.json
+     * x-ms-original-file: 2024-04-01/savingsPlansListBySavingsPlanOrders.json
      */
     /**
      * Sample code: SavingsPlansInOrderList.
@@ -5483,8 +5219,7 @@ import com.azure.resourcemanager.billing.models.Sku;
  */
 public final class SavingsPlansUpdateByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanUpdateByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanUpdateByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanUpdate.
@@ -5536,8 +5271,7 @@ import java.util.Arrays;
  */
 public final class SavingsPlansValidateUpdateByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * savingsPlanValidateUpdateByBillingAccount.json
+     * x-ms-original-file: 2024-04-01/savingsPlanValidateUpdateByBillingAccount.json
      */
     /**
      * Sample code: SavingsPlanValidateUpdate.
@@ -5566,8 +5300,7 @@ public final class SavingsPlansValidateUpdateByBillingAccountSamples {
  */
 public final class TransactionsGetTransactionSummaryByInvoiceSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * transactionSummaryGetByInvoice.json
+     * x-ms-original-file: 2024-04-01/transactionSummaryGetByInvoice.json
      */
     /**
      * Sample code: TransactionSummaryGetByInvoice.
@@ -5594,8 +5327,7 @@ import java.time.LocalDate;
  */
 public final class TransactionsListByBillingProfileSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * transactionsListByBillingProfile.json
+     * x-ms-original-file: 2024-04-01/transactionsListByBillingProfile.json
      */
     /**
      * Sample code: TransactionsListByBillingProfile.
@@ -5624,9 +5356,7 @@ import java.time.LocalDate;
  */
 public final class TransactionsListByCustomerSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByCustomer.
-     * json
+     * x-ms-original-file: 2024-04-01/transactionsListByCustomer.json
      */
     /**
      * Sample code: TransactionsListByCustomer.
@@ -5651,9 +5381,7 @@ public final class TransactionsListByCustomerSamples {
  */
 public final class TransactionsListByInvoiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsListByInvoice.
-     * json
+     * x-ms-original-file: 2024-04-01/transactionsListByInvoice.json
      */
     /**
      * Sample code: TransactionsListByInvoice.
@@ -5679,8 +5407,7 @@ import java.time.LocalDate;
  */
 public final class TransactionsListByInvoiceSectionSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
-     * transactionsListByInvoiceSection.json
+     * x-ms-original-file: 2024-04-01/transactionsListByInvoiceSection.json
      */
     /**
      * Sample code: TransactionsListByInvoiceSection.
@@ -5706,9 +5433,7 @@ public final class TransactionsListByInvoiceSectionSamples {
  */
 public final class TransactionsTransactionsDownloadByInvoiceSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transactionsDownloadByInvoice
-     * .json
+     * x-ms-original-file: 2024-04-01/transactionsDownloadByInvoice.json
      */
     /**
      * Sample code: TransactionsDownloadByInvoice.
@@ -5732,8 +5457,7 @@ public final class TransactionsTransactionsDownloadByInvoiceSamples {
  */
 public final class TransfersCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transfersCancel.json
+     * x-ms-original-file: 2024-04-01/transfersCancel.json
      */
     /**
      * Sample code: TransferCancel.
@@ -5756,8 +5480,7 @@ public final class TransfersCancelSamples {
  */
 public final class TransfersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transfersGet.json
+     * x-ms-original-file: 2024-04-01/transfersGet.json
      */
     /**
      * Sample code: TransferGet.
@@ -5782,8 +5505,7 @@ import com.azure.resourcemanager.billing.models.InitiateTransferRequest;
  */
 public final class TransfersInitiateSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transfersInitiate.json
+     * x-ms-original-file: 2024-04-01/transfersInitiate.json
      */
     /**
      * Sample code: InitiateTransfer.
@@ -5809,8 +5531,7 @@ public final class TransfersInitiateSamples {
  */
 public final class TransfersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/transfersList.json
+     * x-ms-original-file: 2024-04-01/transfersList.json
      */
     /**
      * Sample code: TransfersList.

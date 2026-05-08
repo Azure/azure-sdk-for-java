@@ -1,14 +1,890 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager Billing client library for Java. This package contains Microsoft Azure SDK for Billing Management SDK. Documentation for Microsoft.Billing. Package api-version 2024-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.InvoiceSectionListResult` was removed
 
-### Other Changes
+#### `models.BillingPermissionListResult` was removed
+
+#### `models.DepartmentListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SavingsPlanModelListResult` was removed
+
+#### `models.ReservationsListResult` was removed
+
+#### `models.BillingRoleDefinitionListResult` was removed
+
+#### `models.PaymentMethodsListResult` was removed
+
+#### `models.SavingsPlanOrderModelList` was removed
+
+#### `models.BillingProfileListResult` was removed
+
+#### `models.ReservationList` was removed
+
+#### `models.AssociatedTenantListResult` was removed
+
+#### `models.CustomerListResult` was removed
+
+#### `models.BillingAccountListResult` was removed
+
+#### `models.EnrollmentAccountListResult` was removed
+
+#### `models.TransactionListResult` was removed
+
+#### `models.BillingSubscriptionAliasListResult` was removed
+
+#### `models.InvoiceListResult` was removed
+
+#### `models.ProductListResult` was removed
+
+#### `models.BillingRequestListResult` was removed
+
+#### `models.InvoiceSectionWithCreateSubPermissionListResult` was removed
+
+#### `models.RecipientTransferDetailsListResult` was removed
+
+#### `models.TransferDetailsListResult` was removed
+
+#### `models.ReservationOrderList` was removed
+
+#### `models.PartnerTransferDetailsListResult` was removed
+
+#### `models.SavingsPlanModelList` was removed
+
+#### `models.BillingSubscriptionListResult` was removed
+
+#### `models.AgreementListResult` was removed
+
+#### `models.PaymentMethodLinksListResult` was removed
+
+#### `models.ReservationSummary` was modified
+
+* `ReservationSummary()` was changed to private access
+* `validate()` was removed
+
+#### `models.BillingRequestPropertiesReviewedBy` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionEnrollmentDetails` was modified
+
+* `validate()` was removed
+
+#### `models.Payment` was modified
+
+* `Payment()` was changed to private access
+* `validate()` was removed
+* `withAmount(models.PaymentAmount)` was removed
+
+#### `models.BillingProfilePropertiesIndirectRelationshipInfo` was modified
+
+* `validate()` was removed
+
+#### `models.BillingAccountPropertiesEnrollmentDetails` was modified
+
+* `validate()` was removed
+
+#### `models.BillingRoleDefinitionProperties` was modified
+
+* `BillingRoleDefinitionProperties()` was changed to private access
+* `validate()` was removed
+* `withRoleName(java.lang.String)` was removed
+
+#### `models.UtilizationAggregates` was modified
+
+* `UtilizationAggregates()` was changed to private access
+* `validate()` was removed
+
+#### `models.IndirectRelationshipInfo` was modified
+
+* `validate()` was removed
+
+#### `models.InvoicePropertiesSubTotal` was modified
+
+* `InvoicePropertiesSubTotal()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransactionProperties` was modified
+
+* `TransactionProperties()` was changed to private access
+* `withInvoice(java.lang.String)` was removed
+* `withUnits(java.lang.Float)` was removed
+* `withInvoiceSectionDisplayName(java.lang.String)` was removed
+* `withConsumptionCommitmentDecremented(models.TransactionPropertiesConsumptionCommitmentDecremented)` was removed
+* `withProductType(java.lang.String)` was removed
+* `withServicePeriodEndDate(java.time.OffsetDateTime)` was removed
+* `withUnitOfMeasure(java.lang.String)` was removed
+* `withAzurePlan(java.lang.String)` was removed
+* `withInvoiceId(java.lang.String)` was removed
+* `withSubTotal(models.TransactionPropertiesSubTotal)` was removed
+* `withMarketPrice(models.TransactionPropertiesMarketPrice)` was removed
+* `withReasonCode(java.lang.String)` was removed
+* `withSpecialTaxationType(models.SpecialTaxationType)` was removed
+* `withUnitType(java.lang.String)` was removed
+* `withAzureCreditApplied(models.TransactionPropertiesAzureCreditApplied)` was removed
+* `withEffectivePrice(models.TransactionPropertiesEffectivePrice)` was removed
+* `withIsThirdParty(java.lang.Boolean)` was removed
+* `withTransactionType(java.lang.String)` was removed
+* `withExchangeRate(java.lang.Float)` was removed
+* `withBillingProfileDisplayName(java.lang.Object)` was removed
+* `withDiscount(java.lang.Float)` was removed
+* `withProductDescription(java.lang.String)` was removed
+* `withDate(java.time.OffsetDateTime)` was removed
+* `withRefundTransactionDetails(models.TransactionPropertiesRefundTransactionDetails)` was removed
+* `withProductTypeId(java.lang.String)` was removed
+* `withTax(models.TransactionPropertiesTax)` was removed
+* `withCustomerDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+* `withProductFamily(java.lang.String)` was removed
+* `withBillingProfileId(java.lang.String)` was removed
+* `withPricingCurrency(java.lang.String)` was removed
+* `withCustomerId(java.lang.String)` was removed
+* `withInvoiceSectionId(java.lang.String)` was removed
+* `withKind(models.TransactionKind)` was removed
+* `withQuantity(java.lang.Integer)` was removed
+* `withBillingCurrency(java.lang.String)` was removed
+* `withCreditType(models.CreditType)` was removed
+* `withServicePeriodStartDate(java.time.OffsetDateTime)` was removed
+* `withTransactionAmount(models.TransactionPropertiesTransactionAmount)` was removed
+* `withPartNumber(java.lang.String)` was removed
+
+#### `models.CancelSubscriptionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AssociatedTenantProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BillingPropertyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BillingRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AddressDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ReservationUtilizationAggregates` was modified
+
+* `ReservationUtilizationAggregates()` was changed to private access
+* `validate()` was removed
+
+#### `models.AvailableBalanceProperties` was modified
+
+* `AvailableBalanceProperties()` was changed to private access
+* `validate()` was removed
+* `withAmount(models.AvailableBalancePropertiesAmount)` was removed
+* `withTotalPaymentsOnAccount(models.AvailableBalancePropertiesTotalPaymentsOnAccount)` was removed
+
+#### `models.EnrollmentDetails` was modified
+
+* `validate()` was removed
+
+#### `models.BillingRoleAssignmentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InvoicePropertiesRefundDetails` was modified
+
+* `InvoicePropertiesRefundDetails()` was changed to private access
+* `withAmountRequested(models.RefundDetailsSummaryAmountRequested)` was removed
+* `withAmountRefunded(models.RefundDetailsSummaryAmountRefunded)` was removed
+* `validate()` was removed
+
+#### `models.AzurePlan` was modified
+
+* `validate()` was removed
+
+#### `models.DeleteBillingProfileEligibilityDetail` was modified
+
+* `DeleteBillingProfileEligibilityDetail()` was changed to private access
+* `withCode(models.DeleteBillingProfileEligibilityCode)` was removed
+* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.BillingAccountPolicyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RegistrationNumber` was modified
+
+* `validate()` was removed
+
+#### `models.Principal` was modified
+
+* `validate()` was removed
+
+#### `models.InvoiceProperties` was modified
+
+* `InvoiceProperties()` was changed to private access
+* `withSubTotal(models.InvoicePropertiesSubTotal)` was removed
+* `withFreeAzureCreditApplied(models.InvoicePropertiesFreeAzureCreditApplied)` was removed
+* `withTaxAmount(models.InvoicePropertiesTaxAmount)` was removed
+* `withAzurePrepaymentApplied(models.InvoicePropertiesAzurePrepaymentApplied)` was removed
+* `withBilledAmount(models.InvoicePropertiesBilledAmount)` was removed
+* `withTotalAmount(models.InvoicePropertiesTotalAmount)` was removed
+* `withAmountDue(models.InvoicePropertiesAmountDue)` was removed
+* `withRefundDetails(models.InvoicePropertiesRefundDetails)` was removed
+* `validate()` was removed
+* `withRebillDetails(models.InvoicePropertiesRebillDetails)` was removed
+* `withCreditAmount(models.InvoicePropertiesCreditAmount)` was removed
+
+#### `models.InvoicePropertiesTaxAmount` was modified
+
+* `InvoicePropertiesTaxAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProductPropertiesLastCharge` was modified
+
+* `validate()` was removed
+
+#### `models.TransactionPropertiesTransactionAmount` was modified
+
+* `TransactionPropertiesTransactionAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.CustomerProperties` was modified
+
+* `CustomerProperties()` was changed to private access
+* `validate()` was removed
+* `withEnabledAzurePlans(java.util.List)` was removed
+* `withResellers(java.util.List)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.BillingProfilePropertiesBillTo` was modified
+
+* `validate()` was removed
+
+#### `models.BillingPlanInformation` was modified
+
+* `BillingPlanInformation()` was changed to private access
+* `withNextPaymentDueDate(java.time.LocalDate)` was removed
+* `withPricingCurrencyTotal(models.Price)` was removed
+* `validate()` was removed
+* `withStartDate(java.time.LocalDate)` was removed
+* `withTransactions(java.util.List)` was removed
+
+#### `models.BillingProfilePropertiesSoldTo` was modified
+
+* `validate()` was removed
+
+#### `models.PatchModel` was modified
+
+* `validate()` was removed
+
+#### `models.BillingSubscriptionPatch` was modified
+
+* `validate()` was removed
+
+#### `models.BillingProfilePropertiesShipTo` was modified
+
+* `validate()` was removed
+
+#### `models.Commitment` was modified
+
+* `validate()` was removed
+
+#### `models.ReservationSplitProperties` was modified
+
+* `ReservationSplitProperties()` was changed to private access
+* `withSplitDestinations(java.util.List)` was removed
+* `validate()` was removed
+* `withSplitSource(java.lang.String)` was removed
+
+#### `models.ProductProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RefundTransactionDetailsAmountRequested` was modified
+
+* `RefundTransactionDetailsAmountRequested()` was changed to private access
+* `validate()` was removed
+
+#### `models.PolicySummary` was modified
+
+* `validate()` was removed
+
+#### `models.Amount` was modified
+
+* `validate()` was removed
+
+#### `models.Beneficiary` was modified
+
+* `validate()` was removed
+
+#### `models.ExtendedStatusInfo` was modified
+
+* `ExtendedStatusInfo()` was changed to private access
+* `validate()` was removed
+* `withSubscriptionId(java.lang.String)` was removed
+* `withStatusCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.AppliedScopeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MoveProductErrorDetails` was modified
+
+* `validate()` was removed
+
+#### `models.PaymentMethodLogo` was modified
+
+* `PaymentMethodLogo()` was changed to private access
+* `validate()` was removed
+
+#### `models.AvailableBalancePropertiesAmount` was modified
+
+* `AvailableBalancePropertiesAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.ReservationPaymentDetail` was modified
+
+* `ReservationPaymentDetail()` was changed to private access
+* `withPricingCurrencyTotal(models.Price)` was removed
+* `withStatus(models.PaymentStatus)` was removed
+* `withBillingCurrencyTotal(models.Price)` was removed
+* `withExtendedStatusInfo(models.ReservationExtendedStatusInfo)` was removed
+* `validate()` was removed
+* `withBillingAccount(java.lang.String)` was removed
+* `withPaymentDate(java.time.LocalDate)` was removed
+* `withDueDate(java.time.LocalDate)` was removed
+
+#### `models.MoveProductRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PaymentAmount` was modified
+
+* `PaymentAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProductPropertiesReseller` was modified
+
+* `validate()` was removed
+
+#### `models.InitiateTransferRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TransactionPropertiesSubTotal` was modified
+
+* `TransactionPropertiesSubTotal()` was changed to private access
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.PurchaseRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SavingsPlanValidResponseProperty` was modified
+
+* `SavingsPlanValidResponseProperty()` was changed to private access
+* `withReason(java.lang.String)` was removed
+* `validate()` was removed
+* `withValid(java.lang.Boolean)` was removed
+* `withReasonCode(java.lang.String)` was removed
+
+#### `models.PaymentTermsEligibilityDetail` was modified
+
+* `PaymentTermsEligibilityDetail()` was changed to private access
+* `withCode(models.PaymentTermsEligibilityCode)` was removed
+* `validate()` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.ReservationPurchaseRequest` was modified
+
+* `validate()` was removed
+
+#### `models.BillingSubscriptionSplitRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AvailableBalancePropertiesTotalPaymentsOnAccount` was modified
+
+* `AvailableBalancePropertiesTotalPaymentsOnAccount()` was changed to private access
+* `validate()` was removed
+
+#### `models.DetailedTransferStatus` was modified
+
+* `DetailedTransferStatus()` was changed to private access
+* `validate()` was removed
+* `withErrorDetails(models.TransferError)` was removed
+
+#### `models.PaymentTerm` was modified
+
+* `validate()` was removed
+
+#### `models.BillingAccountProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProxyResourceWithTags` was modified
+
+* `validate()` was removed
+
+#### `models.BillingProfileInfo` was modified
+
+* `BillingProfileInfo()` was changed to private access
+* `withBillingProfileSystemId(java.lang.String)` was removed
+* `withBillingAccountId(java.lang.String)` was removed
+* `withBillingProfileDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+* `withBillingProfileId(java.lang.String)` was removed
+* `withIndirectRelationshipOrganizationName(java.lang.String)` was removed
+
+#### `models.ReservationAppliedScopeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MoveProductEligibilityResultErrorDetails` was modified
+
+* `MoveProductEligibilityResultErrorDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.BillingSubscriptionMergeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CheckAccessRequest` was modified
+
+* `validate()` was removed
+
+#### `models.MoveBillingSubscriptionErrorDetails` was modified
+
+* `MoveBillingSubscriptionErrorDetails()` was changed to private access
+* `withMessage(java.lang.String)` was removed
+* `withDetails(java.lang.String)` was removed
+* `validate()` was removed
+* `withCode(models.SubscriptionTransferValidationErrorCode)` was removed
+
+#### `models.InvoicePropertiesRebillDetails` was modified
+
+* `InvoicePropertiesRebillDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.InvoiceDocument` was modified
+
+* `InvoiceDocument()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransactionPropertiesAzureCreditApplied` was modified
+
+* `TransactionPropertiesAzureCreditApplied()` was changed to private access
+* `validate()` was removed
+
+#### `models.SubscriptionPolicyProperties` was modified
+
+* `SubscriptionPolicyProperties()` was changed to private access
+* `withPolicies(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.ProductDetails` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerInitiateTransferRequest` was modified
+
+* `validate()` was removed
+
+#### `models.RenewPropertiesResponse` was modified
+
+* `RenewPropertiesResponse()` was changed to private access
+* `withPricingCurrencyTotal(models.Price)` was removed
+* `withBillingCurrencyTotal(models.Price)` was removed
+* `withPurchaseProperties(models.ReservationPurchaseRequest)` was removed
+* `validate()` was removed
+
+#### `models.TransactionPropertiesMarketPrice` was modified
+
+* `TransactionPropertiesMarketPrice()` was changed to private access
+* `validate()` was removed
+
+#### `models.BillingAccountPropertiesSoldTo` was modified
+
+* `validate()` was removed
+
+#### `models.EnrollmentDetailsIndirectRelationshipInfo` was modified
+
+* `validate()` was removed
+
+#### `models.TransactionPropertiesRefundTransactionDetails` was modified
+
+* `TransactionPropertiesRefundTransactionDetails()` was changed to private access
+* `withAmountRequested(models.RefundTransactionDetailsAmountRequested)` was removed
+* `withAmountRefunded(models.RefundTransactionDetailsAmountRefunded)` was removed
+* `withRefundOperationId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.InvoicePropertiesFreeAzureCreditApplied` was modified
+
+* `InvoicePropertiesFreeAzureCreditApplied()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransactionPropertiesConsumptionCommitmentDecremented` was modified
+
+* `TransactionPropertiesConsumptionCommitmentDecremented()` was changed to private access
+* `validate()` was removed
+
+#### `models.SavingsPlanUpdateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.RefundTransactionDetailsAmountRefunded` was modified
+
+* `RefundTransactionDetailsAmountRefunded()` was changed to private access
+* `validate()` was removed
+
+#### `models.SavingsPlanSummaryCount` was modified
+
+* `SavingsPlanSummaryCount()` was changed to private access
+* `validate()` was removed
+
+#### `models.InvoicePropertiesTotalAmount` was modified
+
+* `InvoicePropertiesTotalAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.RenewProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TransactionPropertiesEffectivePrice` was modified
+
+* `TransactionPropertiesEffectivePrice()` was changed to private access
+* `validate()` was removed
+
+#### `models.BillingAccountPolicyPropertiesEnterpriseAgreementPolicies` was modified
+
+* `validate()` was removed
+
+#### `models.RebillDetails` was modified
+
+* `validate()` was removed
+
+#### `models.InvoiceSectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ReservationSwapProperties` was modified
+
+* `ReservationSwapProperties()` was changed to private access
+* `validate()` was removed
+* `withSwapDestination(java.lang.String)` was removed
+* `withSwapSource(java.lang.String)` was removed
+
+#### `models.TaxIdentifier` was modified
+
+* `validate()` was removed
+
+#### `models.NextBillingCycleDetails` was modified
+
+* `NextBillingCycleDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.InvoicePropertiesCreditAmount` was modified
+
+* `InvoicePropertiesCreditAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.RefundDetailsSummaryAmountRequested` was modified
+
+* `RefundDetailsSummaryAmountRequested()` was changed to private access
+* `validate()` was removed
+
+#### `models.MoveBillingSubscriptionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PaymentDetail` was modified
+
+* `PaymentDetail()` was changed to private access
+* `withBillingCurrencyTotal(models.Price)` was removed
+* `withPricingCurrencyTotal(models.Price)` was removed
+* `validate()` was removed
+* `withDueDate(java.time.LocalDate)` was removed
+* `withPaymentDate(java.time.LocalDate)` was removed
+* `withStatus(models.PaymentStatus)` was removed
+
+#### `models.RefundDetailsSummaryAmountRefunded` was modified
+
+* `RefundDetailsSummaryAmountRefunded()` was changed to private access
+* `validate()` was removed
+
+#### `models.BillingProfilePropertiesCurrentPaymentTerm` was modified
+
+* `validate()` was removed
+
+#### `models.BillingRequestPropertiesCreatedBy` was modified
+
+* `validate()` was removed
+
+#### `models.BillingAccountPropertiesRegistrationNumber` was modified
+
+* `validate()` was removed
+
+#### `models.AgreementProperties` was modified
+
+* `AgreementProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.SavingsPlanUpdateValidateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Utilization` was modified
+
+* `Utilization()` was changed to private access
+* `validate()` was removed
+* `withAggregates(java.util.List)` was removed
+
+#### `models.ValidationResultProperties` was modified
+
+* `ValidationResultProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.Price` was modified
+
+* `validate()` was removed
+
+#### `models.ExtendedStatusDefinitionProperties` was modified
+
+* `ExtendedStatusDefinitionProperties()` was changed to private access
+* `withSubscriptionId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DeleteInvoiceSectionEligibilityDetail` was modified
+
+* `DeleteInvoiceSectionEligibilityDetail()` was changed to private access
+* `withMessage(java.lang.String)` was removed
+* `withCode(models.DeleteInvoiceSectionEligibilityCode)` was removed
+* `validate()` was removed
+
+#### `models.InvoicePropertiesBilledAmount` was modified
+
+* `InvoicePropertiesBilledAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.EnterpriseAgreementPolicies` was modified
+
+* `validate()` was removed
+
+#### `models.BillingPropertyPropertiesEnrollmentDetails` was modified
+
+* `validate()` was removed
+
+#### `models.BillingProfileProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SystemOverrides` was modified
+
+* `validate()` was removed
+
+#### `models.PaymentOnAccount` was modified
+
+* `PaymentOnAccount()` was changed to private access
+* `validate()` was removed
+* `withAmount(models.PaymentOnAccountAmount)` was removed
+
+#### `models.EnrollmentAccountProperties` was modified
+
+* `EnrollmentAccountProperties()` was changed to private access
+* `withCostCenter(java.lang.String)` was removed
+* `withIsDevTestEnabled(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.BillingAccountPatch` was modified
+
+* `validate()` was removed
+
+#### `models.RefundDetailsSummary` was modified
+
+* `validate()` was removed
+* `models.RefundDetailsSummary withAmountRequested(models.RefundDetailsSummaryAmountRequested)` -> `models.RefundDetailsSummary withAmountRequested(models.RefundDetailsSummaryAmountRequested)`
+* `models.RefundDetailsSummary withAmountRefunded(models.RefundDetailsSummaryAmountRefunded)` -> `models.RefundDetailsSummary withAmountRefunded(models.RefundDetailsSummaryAmountRefunded)`
+
+#### `models.AcceptTransferRequest` was modified
+
+* `validate()` was removed
+
+#### `models.RefundTransactionDetails` was modified
+
+* `validate()` was removed
+* `models.RefundTransactionDetails withAmountRequested(models.RefundTransactionDetailsAmountRequested)` -> `models.RefundTransactionDetails withAmountRequested(models.RefundTransactionDetailsAmountRequested)`
+* `models.RefundTransactionDetails withRefundOperationId(java.lang.String)` -> `models.RefundTransactionDetails withRefundOperationId(java.lang.String)`
+* `models.RefundTransactionDetails withAmountRefunded(models.RefundTransactionDetailsAmountRefunded)` -> `models.RefundTransactionDetails withAmountRefunded(models.RefundTransactionDetailsAmountRefunded)`
+
+#### `models.BillingProfilePolicyPropertiesEnterpriseAgreementPolicies` was modified
+
+* `validate()` was removed
+
+#### `models.ReservationOrderBillingPlanInformation` was modified
+
+* `ReservationOrderBillingPlanInformation()` was changed to private access
+* `validate()` was removed
+* `withNextPaymentDueDate(java.time.LocalDate)` was removed
+* `withTransactions(java.util.List)` was removed
+* `withStartDate(java.time.LocalDate)` was removed
+* `withPricingCurrencyTotal(models.Price)` was removed
+
+#### `models.BillingProfilePolicyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Participant` was modified
+
+* `Participant()` was changed to private access
+* `validate()` was removed
+
+#### `models.ReservationMergeProperties` was modified
+
+* `ReservationMergeProperties()` was changed to private access
+* `validate()` was removed
+* `withMergeSources(java.util.List)` was removed
+* `withMergeDestination(java.lang.String)` was removed
+
+#### `models.ValidateTransferResponse` was modified
+
+* `ValidateTransferResponse()` was changed to private access
+* `withResults(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.BillingSubscriptionStatusDetails` was modified
+
+* `BillingSubscriptionStatusDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.DocumentDownloadRequest` was modified
+
+* `validate()` was removed
+
+#### `models.BillingRequestPropertiesLastUpdatedBy` was modified
+
+* `validate()` was removed
+
+#### `models.FailedPayment` was modified
+
+* `FailedPayment()` was changed to private access
+* `validate()` was removed
+
+#### `models.Reseller` was modified
+
+* `validate()` was removed
+
+#### `models.SkuName` was modified
+
+* `validate()` was removed
+
+#### `models.DepartmentProperties` was modified
+
+* `DepartmentProperties()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withCostCenter(java.lang.String)` was removed
+
+#### `models.RenewalTermDetails` was modified
+
+* `RenewalTermDetails()` was changed to private access
+* `validate()` was removed
+* `withQuantity(java.lang.Long)` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ReservationExtendedStatusInfo` was modified
+
+* `ReservationExtendedStatusInfo()` was changed to private access
+* `validate()` was removed
+* `withStatusCode(models.ReservationStatusCode)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withProperties(models.ExtendedStatusDefinitionProperties)` was removed
+
+#### `models.CustomerPolicyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InvoicePropertiesAmountDue` was modified
+
+* `InvoicePropertiesAmountDue()` was changed to private access
+* `validate()` was removed
+
+#### `models.ReservationSkuProperty` was modified
+
+* `validate()` was removed
+
+#### `models.InvoicePropertiesAzurePrepaymentApplied` was modified
+
+* `InvoicePropertiesAzurePrepaymentApplied()` was changed to private access
+* `validate()` was removed
+
+#### `models.TransferError` was modified
+
+* `TransferError()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProductPatch` was modified
+
+* `validate()` was removed
+
+#### `models.SavingsPlanUpdateRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BillingPropertyPropertiesSubscriptionServiceUsageAddress` was modified
+
+* `validate()` was removed
+
+#### `models.TransactionPropertiesTax` was modified
+
+* `TransactionPropertiesTax()` was changed to private access
+* `validate()` was removed
+
+#### `models.PaymentOnAccountAmount` was modified
+
+* `PaymentOnAccountAmount()` was changed to private access
+* `validate()` was removed
+
+#### `models.SpendingLimitDetails` was modified
+
+* `SpendingLimitDetails()` was changed to private access
+* `withEndDate(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withType(models.SpendingLimitType)` was removed
+* `withStatus(models.SpendingLimitStatus)` was removed
+* `withAmount(java.lang.Float)` was removed
+* `withStartDate(java.time.OffsetDateTime)` was removed
+* `withCurrency(java.lang.String)` was removed
+
+### Features Added
+
+#### `models.InvoicePropertiesRefundDetails` was modified
+
+* `amountRequested()` was added
+* `amountRefunded()` was added
+
+#### `models.TransactionPropertiesRefundTransactionDetails` was modified
+
+* `amountRequested()` was added
+* `refundOperationId()` was added
+* `amountRefunded()` was added
 
 ## 1.0.0 (2024-09-05)
 
