@@ -34,8 +34,7 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -48,6 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -140,6 +140,9 @@ public final class MCPSample {
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
         // Create VoiceLive client using DefaultAzureCredential (recommended).
         // To use an API key instead:
         //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
@@ -151,85 +154,94 @@ public final class MCPSample {
 
         // Start the session
         client.startSession(DEFAULT_MODEL)
+            // Configure the session with MCP tools.
             .flatMap(session -> {
                 System.out.println("✓ Session started successfully");
                 sessionRef.set(session);
 
-                // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Send session configuration with MCP tools, then listen for events.
                 System.out.println("📤 Sending session configuration with MCP tools...");
                 ClientEventSessionUpdate sessionConfig = createSessionConfigWithMCPTools();
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleServerEvent(session, event, activeMCPCallId, audioProcessor))
-                    .doOnError(error -> {
-                        System.err.println("❌ Error processing events: " + error.getMessage());
-                        running.set(false);
-                    })
-                    .doOnComplete(() -> System.out.println("✓ Event stream completed"));
-
-                return Flux.merge(
-                    eventStream,
-                    eventSubscribed.asMono()
-                        .then(session.sendEvent(sessionConfig))
-                        .doOnSuccess(v -> {
-                            System.out.println("✓ Session configured with MCP tools");
-                            System.out.println();
-                            printSeparator();
-                            System.out.println("🎤 MCP VOICE ASSISTANT READY");
-                            System.out.println("🎯 Available MCP Tools:");
-                            System.out.println("  • deepwiki: Can search and read wiki structure");
-                            System.out.println("  • azure_doc: Requires approval for tool calls");
-                            System.out.println();
-                            System.out.println("Try asking:");
-                            System.out.println("  • 'Can you summary github repo azure sdk for java?'");
-                            System.out.println("  • 'Can you summary azure docs about voice live?'");
-                            System.out.println("Press Ctrl+C to exit");
-                            printSeparator();
-                            System.out.println();
-
-                            // Start audio playback
-                            audioProcessor.startPlayback();
-
-                            // Add shutdown hook
-                            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                                System.out.println("\n👋 Shutting down MCP voice assistant...");
-                                running.set(false);
-                                AudioProcessor processor = audioProcessorRef.get();
-                                if (processor != null) {
-                                    processor.cleanup();
-                                }
-                                try {
-                                    session.closeAsync().block(Duration.ofSeconds(5));
-                                } catch (Exception e) {
-                                    // Suppress errors during forced JVM shutdown
-                                }
-                            }));
-                        })
-                        .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                        .thenMany(Flux.<SessionUpdate>empty()))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
+                return session.sendEvent(sessionConfig).thenReturn(session);
             })
-            .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
-            .doFinally(signalType -> {
-                AudioProcessor processor = audioProcessorRef.get();
-                if (processor != null) {
-                    processor.cleanup();
-                }
-                VoiceLiveSessionAsyncClient s = sessionRef.get();
-                if (s != null) {
-                    try {
-                        s.close();
-                    } catch (Exception e) {
-                        // Suppress errors during cleanup
+            // Start audio playback and install shutdown hook before listening for events.
+            .flatMap(session -> {
+                AudioProcessor audioProcessor = audioProcessorRef.get();
+                System.out.println();
+                printSeparator();
+                System.out.println("🎤 MCP VOICE ASSISTANT READY");
+                System.out.println("🎯 Available MCP Tools:");
+                System.out.println("  • deepwiki: Can search and read wiki structure");
+                System.out.println("  • azure_doc: Requires approval for tool calls");
+                System.out.println();
+                System.out.println("Try asking:");
+                System.out.println("  • 'Can you summary github repo azure sdk for java?'");
+                System.out.println("  • 'Can you summary azure docs about voice live?'");
+                System.out.println("Press Ctrl+C to exit");
+                printSeparator();
+                System.out.println();
+
+                audioProcessor.startPlayback();
+
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("\n👋 Shutting down MCP voice assistant...");
+                    running.set(false);
+                    AudioProcessor processor = audioProcessorRef.get();
+                    if (processor != null) {
+                        processor.cleanup();
                     }
-                }
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown
+                    }
+                }));
+
+                return Mono.just(session);
             })
-            .block();
+            // Subscribe to the server event stream and block until it completes.
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                event -> handleServerEvent(sessionRef.get(), event, activeMCPCallId, audioProcessorRef.get()),
+                error -> {
+                    System.err.println("❌ Error processing events: " + error.getMessage());
+                    running.set(false);
+                    cleanupMCP(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Event stream completed");
+                    cleanupMCP(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                }
+            );
+
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Cleanup audio processor and close session.
+     */
+    private static void cleanupMCP(AtomicReference<AudioProcessor> audioProcessorRef,
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        AudioProcessor processor = audioProcessorRef.getAndSet(null);
+        if (processor != null) {
+            processor.cleanup();
+        }
+        VoiceLiveSessionAsyncClient s = sessionRef.getAndSet(null);
+        if (s != null) {
+            try {
+                s.close();
+            } catch (Exception e) {
+                // Suppress errors during cleanup
+            }
+        }
     }
 
     /**
@@ -532,9 +544,11 @@ public final class MCPSample {
                             int bytesRead = microphone.read(buffer, 0, buffer.length);
                             if (bytesRead > 0) {
                                 byte[] audioData = Arrays.copyOf(buffer, bytesRead);
+                                // sendInputAudio returns a cold Mono - it must be subscribed
+                                // for the audio to actually be sent over the WebSocket.
                                 session.sendInputAudio(BinaryData.fromBytes(audioData))
                                     .subscribe(
-                                        v -> {},
+                                        v -> { },
                                         error -> System.err.println("Error sending audio: " + error.getMessage())
                                     );
                             }

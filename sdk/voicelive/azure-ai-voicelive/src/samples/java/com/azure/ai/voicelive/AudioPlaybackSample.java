@@ -20,11 +20,8 @@ import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
-import java.time.Duration;
 import java.util.Collections;
 
 import javax.sound.sampled.AudioFormat;
@@ -34,7 +31,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -89,6 +88,7 @@ public final class AudioPlaybackSample {
     private static final int CHANNELS = 1;            // Mono
     private static final int SAMPLE_SIZE_BITS = 16;   // 16-bit PCM
     private static final int CHUNK_SIZE = 1200;       // 50ms chunks
+    private static final long COMPLETION_TIMEOUT_SECONDS = 60;
 
     /**
      * Main method to run the audio playback sample.
@@ -138,54 +138,61 @@ public final class AudioPlaybackSample {
         final AtomicReference<SourceDataLine> speakerRef = new AtomicReference<>();
         final AtomicReference<Thread> playbackThreadRef = new AtomicReference<>();
 
-        // Start session
-        client.startSession("gpt-realtime")
-            .flatMap(session -> {
-                System.out.println("✓ Session started");
+        // Latch keeps main alive until the response completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
 
-                // Build the receive stream first, then gate the send pipeline on its subscription.
-                // This avoids missing early events from the SDK's hot shared event stream.
+        // Open a WebSocket session against the realtime model.
+        client.startSession("gpt-realtime")
+            // Configure the session (voice, modalities, audio formats, instructions).
+            .flatMap(session -> {
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
+                return session.sendEvent(updateEvent).thenReturn(session);
+            })
+            // Open the speaker line and start the playback worker thread before
+            // any audio deltas arrive, so chunks can be played as soon as they stream in.
+            .flatMap(session -> {
+                startPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
+                return Mono.just(session);
+            })
+            // Send a user message that prompts the model to produce a spoken reply.
+            .flatMap(session -> {
                 InputTextContentPart textContent = new InputTextContentPart(
                     "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
                 UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
                 ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
                     .setItem(messageItem);
+                return session.sendEvent(createEvent).thenReturn(session);
+            })
+            // Ask the model to start generating a response for the queued message.
+            .flatMap(session -> {
                 ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleEvent(event, audioQueue))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()));
-
-                Mono<Void> sendPipeline = eventSubscribed.asMono()
-                    .then(session.sendEvent(updateEvent))
-                    .doOnSuccess(v -> {
-                        System.out.println("✓ Session configured");
-                        startPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
-                    })
-                    .then(Mono.delay(Duration.ofMillis(500))) // Wait for session to be fully ready
-                    .then(Mono.fromRunnable(() ->
-                        System.out.println("📤 Sending text message to trigger audio response...")))
-                    .then(session.sendEvent(createEvent))
-                    .then(Mono.delay(Duration.ofMillis(100)))
-                    .then(Mono.fromRunnable(() ->
-                        System.out.println("🎯 Triggering response generation...")))
-                    .then(session.sendEvent(responseEvent))
-                    .then();
-
-                return Flux.merge(
-                    eventStream.take(Duration.ofSeconds(10)), // Listen for 10 seconds then complete
-                    sendPipeline.thenMany(Flux.<SessionUpdate>empty()))
-                    .then()
-                    .doFinally(signal -> System.out.println("\n✓ Sample completed - audio playback demonstrated"));
+                return session.sendEvent(responseEvent).thenReturn(session);
             })
-            .doFinally(signalType -> {
-                // Cleanup
-                stopPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
-            })
-            .block(); // Block for demo purposes
+            // Subscribe to the server event stream (session.created, audio deltas, etc.).
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                // onNext: route each server event (audio chunks go to the playback queue).
+                event -> handleEvent(event, audioQueue, completionLatch),
+                // onError: log and release main so it can clean up and exit.
+                error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    completionLatch.countDown();
+                },
+                // onComplete: stream ended cleanly; release main.
+                completionLatch::countDown
+            );
+
+        try {
+            if (!completionLatch.await(COMPLETION_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+                System.err.println("Timed out waiting for audio response to complete.");
+            } else {
+                System.out.println("\n✓ Sample completed - audio playback demonstrated");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            stopPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
+        }
     }
 
     /**
@@ -299,12 +306,15 @@ public final class AudioPlaybackSample {
     }
 
     /**
-     * Handle incoming server events.
+     * Handle incoming server events. Queues audio chunks for playback and signals completion
+     * when the response is finished or an error is reported.
      *
      * @param event The server event
      * @param audioQueue Queue to receive audio data
+     * @param completionLatch Latch to release when the response is complete or fails
      */
-    private static void handleEvent(SessionUpdate event, BlockingQueue<byte[]> audioQueue) {
+    private static void handleEvent(SessionUpdate event, BlockingQueue<byte[]> audioQueue,
+        CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {
@@ -326,8 +336,13 @@ public final class AudioPlaybackSample {
             }
         } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
             System.out.println("✓ Audio response complete");
+        } else if (eventType == ServerEventType.RESPONSE_DONE) {
+            System.out.println("✓ Response complete");
+            completionLatch.countDown();
         } else if (eventType == ServerEventType.ERROR) {
-            System.err.println("❌ Error occurred in session " + ((SessionUpdateError) event).getError().getMessage());
+            System.err.println("❌ Error occurred in session "
+                + ((SessionUpdateError) event).getError().getMessage());
+            completionLatch.countDown();
         }
     }
 

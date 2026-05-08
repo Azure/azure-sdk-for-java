@@ -17,15 +17,16 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -122,36 +123,51 @@ public final class MicrophoneInputSample {
         final AtomicReference<TargetDataLine> microphoneRef = new AtomicReference<>();
         final AtomicReference<Thread> captureThreadRef = new AtomicReference<>();
 
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
         // Start session
         client.startSession("gpt-realtime")
+            // Configure the session.
             .flatMap(session -> {
                 System.out.println("✓ Session started");
-
-                // Send session configuration, then listen for events.
+                // Install Ctrl+C handler that stops capture, closes the session, and releases the latch.
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("\n👋 Shutting down...");
+                    stopMicrophone(isCapturing, microphoneRef, captureThreadRef);
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown
+                    }
+                    completionLatch.countDown();
+                }));
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleEvent(event, isCapturing))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()));
+                return session.sendEvent(updateEvent).thenReturn(session);
+            })
+            // Start microphone capture once the session is configured.
+            .flatMap(session -> {
+                startMicrophone(session, isCapturing, microphoneRef, captureThreadRef);
+                return Mono.just(session);
+            })
+            // Subscribe to the server event stream.
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                event -> handleEvent(event, isCapturing),
+                error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    completionLatch.countDown();
+                },
+                completionLatch::countDown
+            );
 
-                return Flux.merge(
-                    eventStream,
-                    eventSubscribed.asMono()
-                        .then(session.sendEvent(updateEvent))
-                        .doOnSuccess(v -> {
-                            System.out.println("\u2713 Session configured");
-                            // Start microphone capture
-                            startMicrophone(session, isCapturing, microphoneRef, captureThreadRef);
-                        })
-                        .thenMany(Flux.<SessionUpdate>empty()))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
-            })
-            .doFinally(signalType -> {
-                // Cleanup
-                stopMicrophone(isCapturing, microphoneRef, captureThreadRef);
-            })
-            .block(); // Block for demo purposes
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            stopMicrophone(isCapturing, microphoneRef, captureThreadRef);
+        }
     }
 
     /**
@@ -209,11 +225,12 @@ public final class MicrophoneInputSample {
                     try {
                         int bytesRead = microphone.read(buffer, 0, buffer.length);
                         if (bytesRead > 0) {
-                            // Send audio to VoiceLive service
+                            // Send audio to VoiceLive service. sendInputAudio returns a cold
+                            // Mono - it must be subscribed for the audio to actually be sent.
                             byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
                             session.sendInputAudio(BinaryData.fromBytes(audioChunk))
                                 .subscribe(
-                                    v -> {},
+                                    v -> { },
                                     error -> System.err.println("Error sending audio: " + error.getMessage())
                                 );
                         }

@@ -15,11 +15,10 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample demonstrating different authentication methods for VoiceLive service.
@@ -226,35 +225,51 @@ public final class AuthenticationMethodsSample {
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(24000);
 
+        // Latch keeps main alive until an error occurs or Ctrl+C is pressed.
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
+        System.out.println("Press Ctrl+C to exit");
+
         // Start session to verify authentication
         client.startSession("gpt-realtime")
+            // Configure the session.
             .flatMap(session -> {
                 System.out.println("✅ Authentication successful!");
                 System.out.println("✓ Session started successfully with " + authMethodName);
-
-                // Send session configuration, then listen for events.
+                // Install Ctrl+C handler that closes the session and releases the latch.
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("\n👋 Shutting down...");
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown
+                    }
+                    completionLatch.countDown();
+                }));
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleEvent(event))
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .take(java.time.Duration.ofSeconds(2));
+                return session.sendEvent(updateEvent).thenReturn(session);
+            })
+            // Subscribe to the server event stream.
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                AuthenticationMethodsSample::handleEvent,
+                error -> {
+                    System.err.println("❌ Authentication failed!");
+                    System.err.println("   Error: " + error.getMessage());
+                    System.err.println();
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Authentication test completed successfully\n");
+                    completionLatch.countDown();
+                }
+            );
 
-                return Flux.merge(
-                    eventStream,
-                    eventSubscribed.asMono()
-                        .then(session.sendEvent(updateEvent))
-                        .doOnSuccess(v -> System.out.println("✓ Session configured successfully"))
-                        .thenMany(Flux.<SessionUpdate>empty()))
-                    .then(Mono.fromRunnable(() -> System.out.println("✓ Authentication test completed successfully\n")));
-            })
-            .doOnError(error -> {
-                System.err.println("❌ Authentication failed!");
-                System.err.println("   Error: " + error.getMessage());
-                System.err.println();
-            })
-            .block(); // Block for demo purposes
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**

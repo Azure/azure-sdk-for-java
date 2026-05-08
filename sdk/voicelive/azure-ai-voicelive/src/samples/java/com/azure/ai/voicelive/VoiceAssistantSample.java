@@ -25,8 +25,7 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Mono;
 
 
 import javax.sound.sampled.AudioFormat;
@@ -39,6 +38,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -517,77 +517,89 @@ public final class VoiceAssistantSample {
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
         // Execute the reactive workflow - start with just the model
         client.startSession(DEFAULT_MODEL)
+            // Configure the session.
             .flatMap(session -> {
                 System.out.println("✓ Session started successfully");
                 sessionRef.set(session);
 
-                // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Send session configuration, then listen for events.
                 System.out.println("📤 Sending session.update configuration...");
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleServerEvent(event, audioProcessor))
-                    .doOnComplete(() -> System.out.println("✓ Event stream completed"))
-                    .doOnError(error -> System.err.println("❌ Error receiving events: " + error.getMessage()));
-
-                return Flux.merge(
-                    eventStream,
-                    eventSubscribed.asMono()
-                        .then(session.sendEvent(updateEvent))
-                        .doOnSuccess(v -> {
-                            System.out.println("✓ Session configuration sent");
-
-                            // Start audio systems
-                            audioProcessor.startPlayback();
-
-                            System.out.println("🎤 VOICE ASSISTANT READY");
-                            System.out.println("Start speaking to begin conversation");
-                            System.out.println("Press Ctrl+C to exit");
-
-                            // Install shutdown hook for graceful cleanup
-                            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                                try {
-                                    System.out.println("\n🛑 Shutting down gracefully...");
-                                } catch (Exception ignored) {
-                                    // jansi may have torn down the ANSI output stream already
-                                }
-                                audioProcessor.shutdown();
-                                try {
-                                    session.closeAsync().block(Duration.ofSeconds(5));
-                                } catch (Exception e) {
-                                    // Suppress errors during forced JVM shutdown -
-                                    // the WebSocket connection may already be partially torn down
-                                }
-                            }));
-                        })
-                        .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                        .thenMany(Flux.<SessionUpdate>empty()))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
+                return session.sendEvent(updateEvent).thenReturn(session);
             })
-            .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
-            .doFinally(signalType -> {
-                // Cleanup audio processor and close session
+            // Start audio playback and install shutdown hook before listening for events.
+            .flatMap(session -> {
                 AudioProcessor audioProcessor = audioProcessorRef.get();
-                if (audioProcessor != null) {
-                    audioProcessor.shutdown();
-                }
-                VoiceLiveSessionAsyncClient session = sessionRef.get();
-                if (session != null) {
+                audioProcessor.startPlayback();
+
+                System.out.println("🎤 VOICE ASSISTANT READY");
+                System.out.println("Start speaking to begin conversation");
+                System.out.println("Press Ctrl+C to exit");
+
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     try {
-                        session.close();
-                    } catch (Exception e) {
-                        // Suppress errors during cleanup
+                        System.out.println("\n🛑 Shutting down gracefully...");
+                    } catch (Exception ignored) {
+                        // jansi may have torn down the ANSI output stream already
                     }
-                }
+                    audioProcessor.shutdown();
+                    try {
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown -
+                        // the WebSocket connection may already be partially torn down
+                    }
+                }));
+
+                return Mono.just(session);
             })
-            .block(); // Block only for demo purposes; use reactive patterns in production
+            // Subscribe to the server event stream and block until it completes.
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                event -> handleServerEvent(event, audioProcessorRef.get()),
+                error -> {
+                    System.err.println("❌ Error receiving events: " + error.getMessage());
+                    cleanupVoiceAssistant(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Event stream completed");
+                    cleanupVoiceAssistant(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                }
+            );
+
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Cleanup audio processor and close session.
+     */
+    private static void cleanupVoiceAssistant(AtomicReference<AudioProcessor> audioProcessorRef,
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
+        if (audioProcessor != null) {
+            audioProcessor.shutdown();
+        }
+        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
+        if (session != null) {
+            try {
+                session.close();
+            } catch (Exception e) {
+                // Suppress errors during cleanup
+            }
+        }
     }
 
     /**

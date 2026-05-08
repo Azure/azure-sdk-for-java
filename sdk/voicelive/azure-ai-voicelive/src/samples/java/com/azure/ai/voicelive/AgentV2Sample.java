@@ -28,9 +28,7 @@ import com.azure.ai.voicelive.models.ServerEventWarning;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -44,6 +42,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -247,7 +246,7 @@ public class AgentV2Sample {
         private final AtomicBoolean running = new AtomicBoolean(false);
         private final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
-        // volatile: written by reactor thread (doOnSuccess), read by shutdown-hook thread
+        // volatile: written by reactor thread (flatMap on startSession), read by shutdown-hook thread
         private volatile VoiceLiveSessionAsyncClient session;
         private volatile AudioProcessor audioProcessor;
 
@@ -272,38 +271,25 @@ public class AgentV2Sample {
 
             // Connect using AgentSessionConfig
             client.startSession(agentConfig)
+                // Configure the session.
                 .flatMap(s -> {
                     this.session = s;
                     System.out.println("Connected to VoiceLive service");
 
-                    // Initialize audio processor
                     this.audioProcessor = new AudioProcessor(s);
 
-                    Sinks.One<Void> eventSubscribed = Sinks.one();
-                    Flux<SessionUpdate> eventStream = s.receiveEvents()
-                        .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                        .doOnNext(this::handleEvent)
-                        .doOnComplete(() -> {
-                            System.out.println("Event stream completed");
-                            shutdown();
-                        })
-                        .doOnError(error -> {
-                            System.err.println("Error receiving events: " + error.getMessage());
-                            shutdown();
-                        });
-
-                    Mono<Void> configurePipeline = eventSubscribed.asMono()
-                        .then(configureSession());
-
-                    return Flux.merge(
-                        eventStream,
-                        configurePipeline.thenMany(Flux.<SessionUpdate>empty()))
-                        .then();
+                    return configureSession().thenReturn(s);
                 })
+                // Subscribe to the server event stream.
+                .flatMapMany(s -> s.receiveEvents())
                 .subscribe(
-                    v -> {},
-                    e -> {
-                        System.err.println("Agent V2 session failed: " + e.getMessage());
+                    this::handleEvent,
+                    error -> {
+                        System.err.println("Error receiving events: " + error.getMessage());
+                        shutdown();
+                    },
+                    () -> {
+                        System.out.println("Event stream completed");
                         shutdown();
                     }
                 );
@@ -358,10 +344,7 @@ public class AgentV2Sample {
 
             // Send session update
             ClientEventSessionUpdate sessionUpdate = new ClientEventSessionUpdate(sessionOptions);
-            return session.sendEvent(sessionUpdate)
-                .doOnSuccess(v -> System.out.println("Session configuration sent"))
-                .doOnError(e -> System.err.println("Failed to configure session: " + e.getMessage()))
-                .then();
+            return session.sendEvent(sessionUpdate).then();
         }
 
         private void handleEvent(SessionUpdate event) {
@@ -465,12 +448,16 @@ public class AgentV2Sample {
                     audioProcessor.shutdown();
                 }
 
-                if (session != null) {
-                    session.closeAsync()
-                        .onErrorComplete()
-                        .doFinally(signal -> shutdownLatch.countDown())
-                        .subscribe();
-                } else {
+                try {
+                    if (session != null) {
+                        // closeAsync() returns a cold Mono - we must subscribe (block) for it to run.
+                        // Block with a timeout so a hung close can't hang the shutdown hook.
+                        session.closeAsync().block(Duration.ofSeconds(5));
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error closing session: " + e.getMessage());
+                } finally {
+                    // Always release the latch so start()'s await() returns.
                     shutdownLatch.countDown();
                 }
             }
@@ -548,9 +535,11 @@ public class AgentV2Sample {
                         ? buffer.clone()
                         : Arrays.copyOf(buffer, bytesRead);
 
+                    // sendInputAudio returns a cold Mono - it must be subscribed for the
+                    // audio to actually be sent over the WebSocket.
                     session.sendInputAudio(audioData)
                         .subscribe(
-                            v -> {},
+                            v -> { },
                             error -> System.err.println("Error sending audio: " + error.getMessage())
                         );
                 }

@@ -34,8 +34,7 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -53,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -161,81 +161,92 @@ public final class FunctionCallingSample {
         // Track pending function calls: callId -> (functionName, previousItemId)
         Map<String, String[]> pendingFunctionCalls = new ConcurrentHashMap<>();
 
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
         // Start session
         client.startSession(DEFAULT_MODEL)
+            // Configure the session with function tools.
             .flatMap(session -> {
                 sessionRef.set(session);
                 System.out.println("✓ Session started successfully");
 
-                // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Send session configuration with function tools, then listen for events.
                 System.out.println("📤 Sending session configuration with function tools...");
                 ClientEventSessionUpdate sessionConfig = createSessionConfigWithFunctions();
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdate> eventStream = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> handleServerEvent(session, event, audioProcessor, pendingFunctionCalls))
-                    .doOnError(error -> {
-                        System.err.println("Error processing events: " + error.getMessage());
-                        running.set(false);
-                    })
-                    .doOnComplete(() -> System.out.println("✓ Event stream completed"));
-
-                return Flux.merge(
-                    eventStream,
-                    eventSubscribed.asMono()
-                        .then(session.sendEvent(sessionConfig))
-                        .doOnSuccess(v -> {
-                            System.out.println("✓ Session configured with function tools");
-
-                            // Start audio playback
-                            audioProcessor.startPlayback();
-
-                            String separator = new String(new char[70]).replace("\0", "=");
-                            System.out.println("\n" + separator);
-                            System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
-                            System.out.println("Try saying:");
-                            System.out.println("  • 'What's the current time?'");
-                            System.out.println("  • 'What's the weather in Seattle?'");
-                            System.out.println("  • 'What time is it in UTC?'");
-                            System.out.println("Press Ctrl+C to exit");
-                            System.out.println(separator + "\n");
-
-                            // Add shutdown hook
-                            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                                System.out.println("\n👋 Shutting down voice assistant...");
-                                running.set(false);
-                                audioProcessor.cleanup();
-                                try {
-                                    session.closeAsync().block(Duration.ofSeconds(5));
-                                } catch (Exception e) {
-                                    // Suppress errors during forced JVM shutdown
-                                }
-                            }));
-                        })
-                        .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                        .thenMany(Flux.<SessionUpdate>empty()))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
+                return session.sendEvent(sessionConfig).thenReturn(session);
             })
-            .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
-            .doFinally(signalType -> {
+            // Start audio playback and install shutdown hook before listening for events.
+            .flatMap(session -> {
                 AudioProcessor audioProcessor = audioProcessorRef.get();
-                if (audioProcessor != null) {
+                audioProcessor.startPlayback();
+
+                String separator = new String(new char[70]).replace("\0", "=");
+                System.out.println("\n" + separator);
+                System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
+                System.out.println("Try saying:");
+                System.out.println("  • 'What's the current time?'");
+                System.out.println("  • 'What's the weather in Seattle?'");
+                System.out.println("  • 'What time is it in UTC?'");
+                System.out.println("Press Ctrl+C to exit");
+                System.out.println(separator + "\n");
+
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("\n👋 Shutting down voice assistant...");
+                    running.set(false);
                     audioProcessor.cleanup();
-                }
-                VoiceLiveSessionAsyncClient s = sessionRef.get();
-                if (s != null) {
                     try {
-                        s.close();
+                        session.closeAsync().block(Duration.ofSeconds(5));
                     } catch (Exception e) {
-                        // Suppress errors during cleanup
+                        // Suppress errors during forced JVM shutdown
                     }
-                }
+                }));
+
+                return Mono.just(session);
             })
-            .block();
+            // Subscribe to the server event stream and block until it completes.
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                event -> handleServerEvent(sessionRef.get(), event, audioProcessorRef.get(), pendingFunctionCalls),
+                error -> {
+                    System.err.println("Error processing events: " + error.getMessage());
+                    running.set(false);
+                    cleanupFunctionCalling(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Event stream completed");
+                    cleanupFunctionCalling(audioProcessorRef, sessionRef);
+                    completionLatch.countDown();
+                }
+            );
+
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Cleanup audio processor and close session.
+     */
+    private static void cleanupFunctionCalling(AtomicReference<AudioProcessor> audioProcessorRef,
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
+        if (audioProcessor != null) {
+            audioProcessor.cleanup();
+        }
+        VoiceLiveSessionAsyncClient s = sessionRef.getAndSet(null);
+        if (s != null) {
+            try {
+                s.close();
+            } catch (Exception e) {
+                // Suppress errors during cleanup
+            }
+        }
     }
 
     /**
