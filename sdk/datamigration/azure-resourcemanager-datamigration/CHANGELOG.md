@@ -1,14 +1,1587 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager DataMigration client library for Java. This package contains Microsoft Azure SDK for DataMigration Management SDK. The SQL Migration management API provides a RESTful set of web APIs that allow users to migrate their SQL Server databases to Azure SQL. Package api-version 2025-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.DataItemMigrationSummaryResult` was removed
+
+#### `models.ServiceSkuList` was removed
+
+#### `models.MigrationValidationDatabaseLevelResult` was removed
+
+#### `models.ResourceSkusResult` was removed
+
+#### `models.MigrationServiceListResult` was removed
+
+#### `models.DataMigrationServiceList` was removed
+
+#### `models.DatabaseMigrationBaseListResult` was removed
+
+#### `models.DatabaseSummaryResult` was removed
+
+#### `models.ProjectList` was removed
+
+#### `models.DatabaseMigrationListResult` was removed
+
+#### `models.QuotaList` was removed
+
+#### `models.FileList` was removed
+
+#### `models.SqlMigrationListResult` was removed
+
+#### `models.DatabaseMigrationCosmosDbMongoListResult` was removed
+
+#### `models.TaskList` was removed
+
+#### `models.DatabaseMigrationCosmosDbMongo$DefinitionStages` was modified
+
+* `withExistingDatabaseAccount(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.ProjectTask$DefinitionStages` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.GetTdeCertificatesSqlTaskOutput` was modified
+
+* `GetTdeCertificatesSqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputMigrationLevel` was modified
+
+* `MigrateSqlServerSqlMISyncTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputValidationResult` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputValidationResult()` was changed to private access
+* `validate()` was removed
+* `withSummaryResults(java.util.Map)` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.QueryAnalysisValidationResult` was modified
+
+* `QueryAnalysisValidationResult()` was changed to private access
+* `validate()` was removed
+* `withQueryResults(models.QueryExecutionResult)` was removed
+* `withValidationErrors(models.ValidationError)` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel` was modified
+
+* `MigrateSqlServerSqlMISyncTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.SqlDbMigrationStatusDetails` was modified
+
+* `SqlDbMigrationStatusDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlSyncTaskOutput` was modified
+
+* `GetUserTablesSqlSyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.SqlConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.SqlBackupSetInfo` was modified
+
+* `SqlBackupSetInfo()` was changed to private access
+* `java.util.UUID backupSetId()` -> `java.lang.String backupSetId()`
+* `validate()` was removed
+
+#### `models.UploadOciDriverTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesMySqlTaskOutput` was modified
+
+* `GetUserTablesMySqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ServiceSku` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMIDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel` was modified
+
+* `MigrateSchemaSqlServerSqlDbTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseMigrationsMongoToCosmosDbvCoreMongoes` was modified
+
+* `create(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseMigrationCosmosDbMongoInner,com.azure.core.util.Context)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseMigrationCosmosDbMongoInner)` was removed
+
+#### `models.ConnectToTargetAzureDbForMySqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSsisTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskOutputDatabaseLevel` was modified
+
+* `MigrateSchemaSqlServerSqlDbTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrationValidationResult` was modified
+
+* `MigrationValidationResult()` was changed to private access
+* `validate()` was removed
+* `withSummaryResults(java.util.Map)` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSkuCapacity` was modified
+
+* `ResourceSkuCapacity()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrationServiceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbDatabaseInfo` was modified
+
+* `MongoDbDatabaseInfo()` was changed to private access
+* `withQualifiedName(java.lang.String)` was removed
+* `withDataSize(long)` was removed
+* `withName(java.lang.String)` was removed
+* `withAverageDocumentSize(long)` was removed
+* `validate()` was removed
+* `withCollections(java.util.List)` was removed
+* `withDocumentCount(long)` was removed
+* `withSupportsSharding(boolean)` was removed
+
+#### `models.DatabaseMigrationBaseProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSkuCosts` was modified
+
+* `ResourceSkuCosts()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.InstallOciDriverTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaName` was modified
+
+* `QuotaName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.ConnectToSourceOracleSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MySqlConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ValidationError` was modified
+
+* `ValidationError()` was changed to private access
+* `withText(java.lang.String)` was removed
+* `validate()` was removed
+* `withSeverity(models.Severity)` was removed
+
+#### `models.BackupFileInfo` was modified
+
+* `BackupFileInfo()` was changed to private access
+* `withFamilySequenceNumber(java.lang.Integer)` was removed
+* `withStatus(models.BackupFileStatus)` was removed
+* `withFileLocation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DatabaseMigrationPropertiesSqlDb` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesPostgreSqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMISyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectFileProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbShardKeySetting` was modified
+
+* `validate()` was removed
+
+#### `models.FileShare` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourcePostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BackupConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputLoginLevel` was modified
+
+* `MigrateSqlServerSqlMITaskOutputLoginLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MongoDbThrottlingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlMISyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.SsisMigrationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ErrorInfo` was modified
+
+* `ErrorInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlDbSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSsisTaskOutputProjectLevel` was modified
+
+* `MigrateSsisTaskOutputProjectLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.ResourceSkuCapabilities` was modified
+
+* `ResourceSkuCapabilities()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseMigrationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseMigrationsSqlDbs` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskOutputError` was modified
+
+* `MigrateSqlServerSqlMISyncTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrationOperationInput` was modified
+
+* `validate()` was removed
+* `withMigrationOperationId(java.util.UUID)` was removed
+* `java.util.UUID migrationOperationId()` -> `java.lang.String migrationOperationId()`
+
+#### `models.ResourceSkuRestrictions` was modified
+
+* `ResourceSkuRestrictions()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateOracleAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel` was modified
+
+* `MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskOutputDatabaseLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlOfflineTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.InstallOciDriverTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlMISyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrationStatusDetails` was modified
+
+* `MigrationStatusDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSsisTaskOutputMigrationLevel` was modified
+
+* `MigrateSsisTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputDatabaseLevelValidationResult()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProjectTask$Definition` was modified
+
+* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.MigrationReportResult` was modified
+
+* `MigrationReportResult()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withReportUrl(java.lang.String)` was removed
+
+#### `models.ConnectToSourcePostgreSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateMongoDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbDatabaseProgress` was modified
+
+* `MongoDbDatabaseProgress()` was changed to private access
+* `withElapsedTime(java.lang.String)` was removed
+* `withLastReplayTime(java.time.OffsetDateTime)` was removed
+* `withEventsReplayed(long)` was removed
+* `withEventsPending(long)` was removed
+* `withTotalDocuments(long)` was removed
+* `withLastEventTime(java.time.OffsetDateTime)` was removed
+* `withErrors(java.util.Map)` was removed
+* `withDocumentsCopied(long)` was removed
+* `validate()` was removed
+* `withTotalBytes(long)` was removed
+* `withName(java.lang.String)` was removed
+* `withState(models.MongoDbMigrationState)` was removed
+* `withBytesCopied(long)` was removed
+* `withQualifiedName(java.lang.String)` was removed
+* `withCollections(java.util.Map)` was removed
+
+#### `models.MongoDbShardKeyInfo` was modified
+
+* `MongoDbShardKeyInfo()` was changed to private access
+* `withIsUnique(boolean)` was removed
+* `withFields(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.ConnectToSourceOracleSyncTaskOutput` was modified
+
+* `ConnectToSourceOracleSyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.OperationsDisplayDefinition` was modified
+
+* `OperationsDisplayDefinition()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateSyncMigrationInputSqlServerTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MigrationValidationOptions` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbClusterInfo` was modified
+
+* `MongoDbClusterInfo()` was changed to private access
+* `withVersion(java.lang.String)` was removed
+* `withType(models.MongoDbClusterType)` was removed
+* `validate()` was removed
+* `withDatabases(java.util.List)` was removed
+* `withSupportsSharding(boolean)` was removed
+
+#### `models.ConnectToTargetSqlMITaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputTaskLevel` was modified
+
+* `ConnectToSourceSqlServerTaskOutputTaskLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbMigrationProgress` was modified
+
+* `MongoDbMigrationProgress()` was changed to private access
+* `withQualifiedName(java.lang.String)` was removed
+* `withState(models.MongoDbMigrationState)` was removed
+* `withBytesCopied(long)` was removed
+* `withTotalBytes(long)` was removed
+* `withEventsReplayed(long)` was removed
+* `withName(java.lang.String)` was removed
+* `withElapsedTime(java.lang.String)` was removed
+* `withTotalDocuments(long)` was removed
+* `withDocumentsCopied(long)` was removed
+* `validate()` was removed
+* `withLastEventTime(java.time.OffsetDateTime)` was removed
+* `withLastReplayTime(java.time.OffsetDateTime)` was removed
+* `withEventsPending(long)` was removed
+* `withErrors(java.util.Map)` was removed
+* `withDatabases(java.util.Map)` was removed
+
+#### `models.MigrateOracleAzureDbForPostgreSqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbCollectionInfo` was modified
+
+* `MongoDbCollectionInfo()` was changed to private access
+* `withSupportsSharding(boolean)` was removed
+* `withIsSystemCollection(boolean)` was removed
+* `withDataSize(long)` was removed
+* `withDocumentCount(long)` was removed
+* `withIsView(boolean)` was removed
+* `withDatabaseName(java.lang.String)` was removed
+* `withIsCapped(boolean)` was removed
+* `withQualifiedName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withShardKey(models.MongoDbShardKeyInfo)` was removed
+* `validate()` was removed
+* `withAverageDocumentSize(long)` was removed
+* `withViewOf(java.lang.String)` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceTasks` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner,com.azure.core.util.Context)` was removed
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner,com.azure.core.util.Context)` was removed
+
+#### `models.BackupSetInfo` was modified
+
+* `BackupSetInfo()` was changed to private access
+* `withIsBackupRestored(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withLastModifiedTime(java.time.OffsetDateTime)` was removed
+* `withLastLsn(java.lang.String)` was removed
+* `withBackupSetId(java.lang.String)` was removed
+* `withBackupType(models.BackupType)` was removed
+* `withListOfBackupFiles(java.util.List)` was removed
+* `withDatabaseName(java.lang.String)` was removed
+* `withBackupFinishedDate(java.time.OffsetDateTime)` was removed
+* `withFirstLsn(java.lang.String)` was removed
+* `withBackupStartDate(java.time.OffsetDateTime)` was removed
+
+#### `models.MigrateSyncCompleteCommandInput` was modified
+
+* `validate()` was removed
+
+#### `models.UploadOciDriverTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseLevel` was modified
+
+* `MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.ReportableException` was modified
+
+* `ReportableException()` was changed to private access
+* `validate()` was removed
+* `withLineNumber(java.lang.String)` was removed
+* `withActionableMessage(java.lang.String)` was removed
+* `withFilePath(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withHResult(java.lang.Integer)` was removed
+* `withStackTrace(java.lang.String)` was removed
+
+#### `models.CheckOciDriverTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DataIntegrityValidationResult` was modified
+
+* `DataIntegrityValidationResult()` was changed to private access
+* `withValidationErrors(models.ValidationError)` was removed
+* `withFailedObjects(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMITaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesMySqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError` was modified
+
+* `MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseError()` was changed to private access
+* `withErrorMessage(java.lang.String)` was removed
+* `validate()` was removed
+* `withEvents(java.util.List)` was removed
+
+#### `models.MongoDbProgress` was modified
+
+* `models.MongoDbProgress withTotalDocuments(long)` -> `models.MongoDbProgress withTotalDocuments(long)`
+* `models.MongoDbProgress withState(models.MongoDbMigrationState)` -> `models.MongoDbProgress withState(models.MongoDbMigrationState)`
+* `models.MongoDbProgress withTotalBytes(long)` -> `models.MongoDbProgress withTotalBytes(long)`
+* `models.MongoDbProgress withLastReplayTime(java.time.OffsetDateTime)` -> `models.MongoDbProgress withLastReplayTime(java.time.OffsetDateTime)`
+* `models.MongoDbProgress withBytesCopied(long)` -> `models.MongoDbProgress withBytesCopied(long)`
+* `validate()` was removed
+* `models.MongoDbProgress withElapsedTime(java.lang.String)` -> `models.MongoDbProgress withElapsedTime(java.lang.String)`
+* `models.MongoDbProgress withErrors(java.util.Map)` -> `models.MongoDbProgress withErrors(java.util.Map)`
+* `models.MongoDbProgress withEventsReplayed(long)` -> `models.MongoDbProgress withEventsReplayed(long)`
+* `models.MongoDbProgress withEventsPending(long)` -> `models.MongoDbProgress withEventsPending(long)`
+* `models.MongoDbProgress withName(java.lang.String)` -> `models.MongoDbProgress withName(java.lang.String)`
+* `models.MongoDbProgress withLastEventTime(java.time.OffsetDateTime)` -> `models.MongoDbProgress withLastEventTime(java.time.OffsetDateTime)`
+* `models.MongoDbProgress withDocumentsCopied(long)` -> `models.MongoDbProgress withDocumentsCopied(long)`
+* `models.MongoDbProgress withQualifiedName(java.lang.String)` -> `models.MongoDbProgress withQualifiedName(java.lang.String)`
+
+#### `models.MigrateMISyncCompleteCommandOutput` was modified
+
+* `MigrateMISyncCompleteCommandOutput()` was changed to private access
+* `withErrors(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.SqlBackupFileInfo` was modified
+
+* `SqlBackupFileInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlDbTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.SourceLocation` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputError` was modified
+
+* `MigrateSqlServerSqlDbSyncTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MiSqlConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesPostgreSqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.SqlDbOfflineConfiguration` was modified
+
+* `SqlDbOfflineConfiguration()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputError` was modified
+
+* `MigrateMySqlAzureDbForMySqlSyncTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlSyncTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.AzureBlob` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputAgentJobLevel` was modified
+
+* `MigrateSqlServerSqlMITaskOutputAgentJobLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskOutputError` was modified
+
+* `MigrateSchemaSqlServerSqlDbTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlTaskOutputError` was modified
+
+* `MigrateSchemaSqlTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MongoDbDatabaseSettings` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesPostgreSqlTaskOutput` was modified
+
+* `GetUserTablesPostgreSqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.SqlMigrationTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.BlobShare` was modified
+
+* `validate()` was removed
+
+#### `models.MongoMigrationCollection` was modified
+
+* `validate()` was removed
+
+#### `models.MigrationEligibilityInfo` was modified
+
+* `MigrationEligibilityInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.GetUserTablesMySqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputDatabaseLevel` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.OfflineConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetAzureDbForMySqlTaskOutput` was modified
+
+* `ConnectToTargetAzureDbForMySqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlDbSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbFinishCommand` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMISyncTaskOutput` was modified
+
+* `ValidateMigrationInputSqlServerSqlMISyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseMigrationsSqlMis` was modified
+
+* `models.DatabaseMigrationSqlMi delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)`
+* `models.DatabaseMigrationSqlMi deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.DatabaseMigrationSqlMi deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)`
+* `models.DatabaseMigrationSqlMi delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `getByIdWithResponse(java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ValidateSyncMigrationInputSqlServerTaskOutput` was modified
+
+* `ValidateSyncMigrationInputSqlServerTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError` was modified
+
+* `MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError()` was changed to private access
+* `withEvents(java.util.List)` was removed
+* `withErrorMessage(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DatabaseInfo` was modified
+
+* `validate()` was removed
+
+#### `models.QueryExecutionResult` was modified
+
+* `QueryExecutionResult()` was changed to private access
+* `validate()` was removed
+* `withTargetResult(models.ExecutionStatistics)` was removed
+* `withQueryText(java.lang.String)` was removed
+* `withSourceResult(models.ExecutionStatistics)` was removed
+* `withStatementsInBatch(java.lang.Long)` was removed
+
+#### `models.MongoDbCollectionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.MongoMigrationProgressDetails` was modified
+
+* `MongoMigrationProgressDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSsisTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.SchemaComparisonValidationResult` was modified
+
+* `SchemaComparisonValidationResult()` was changed to private access
+* `withValidationErrors(models.ValidationError)` was removed
+* `validate()` was removed
+* `withSchemaDifferences(models.SchemaComparisonValidationResultType)` was removed
+* `withTargetDatabaseObjectCount(java.util.Map)` was removed
+* `withSourceDatabaseObjectCount(java.util.Map)` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputDatabaseError` was modified
+
+* `MigrateSqlServerSqlDbSyncTaskOutputDatabaseError()` was changed to private access
+* `withEvents(java.util.List)` was removed
+* `validate()` was removed
+* `withErrorMessage(java.lang.String)` was removed
+
+#### `models.MongoDbMigrationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseMigrationCosmosDbMongo$Definition` was modified
+
+* `withExistingDatabaseAccount(java.lang.String,java.lang.String)` was removed
+
+#### `models.SelectedCertificateInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlDbTaskOutput` was modified
+
+* `ConnectToTargetSqlDbTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.InstallOciDriverTaskOutput` was modified
+
+* `InstallOciDriverTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputTableLevel` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbShardKeyField` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMITaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput` was modified
+
+* `ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput()` was changed to private access
+* `withDatabaseSchemaMap(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseError` was modified
+
+* `MigrateOracleAzureDbPostgreSqlSyncTaskOutputDatabaseError()` was changed to private access
+* `withErrorMessage(java.lang.String)` was removed
+* `withEvents(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutputDatabaseSchemaMapItem` was modified
+
+* `ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutputDatabaseSchemaMapItem()` was changed to private access
+* `validate()` was removed
+* `withSchemas(java.util.List)` was removed
+* `withDatabase(java.lang.String)` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OracleOciDriverInfo` was modified
+
+* `OracleOciDriverInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetAzureDbForMySqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesOracleTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputMigrationLevel` was modified
+
+* `MigrateSqlServerSqlMITaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MongoDbError` was modified
+
+* `MongoDbError()` was changed to private access
+* `validate()` was removed
+* `withType(models.MongoDbErrorType)` was removed
+* `withCode(java.lang.String)` was removed
+* `withCount(java.lang.Integer)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel` was modified
+
+* `MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+* `withDatabaseCount(java.lang.Float)` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputError` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.NodeMonitoringData` was modified
+
+* `NodeMonitoringData()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseMigrationPropertiesCosmosDbMongo` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceOracleSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseFileInfo` was modified
+
+* `DatabaseFileInfo()` was changed to private access
+* `validate()` was removed
+* `withFileType(models.DatabaseFileType)` was removed
+* `withId(java.lang.String)` was removed
+* `withPhysicalFullName(java.lang.String)` was removed
+* `withLogicalName(java.lang.String)` was removed
+* `withDatabaseName(java.lang.String)` was removed
+* `withSizeMB(java.lang.Double)` was removed
+* `withRestoreFullName(java.lang.String)` was removed
+
+#### `models.SqlMigrationServiceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSyncCompleteCommandProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UploadOciDriverTaskOutput` was modified
+
+* `UploadOciDriverTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlDbSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SchemaComparisonValidationResultType` was modified
+
+* `SchemaComparisonValidationResultType()` was changed to private access
+* `withObjectName(java.lang.String)` was removed
+* `withObjectType(models.ObjectType)` was removed
+* `validate()` was removed
+* `withUpdateAction(models.UpdateActionType)` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputTableLevel` was modified
+
+* `MigrateSqlServerSqlDbSyncTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseTable` was modified
+
+* `DatabaseTable()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToSourcePostgreSqlSyncTaskOutput` was modified
+
+* `ConnectToSourcePostgreSqlSyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.SqlFileShare` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesOracleTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbFinishCommandInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.ServerProperties` was modified
+
+* `ServerProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrationValidationDatabaseSummaryResult` was modified
+
+* `MigrationValidationDatabaseSummaryResult()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseBackupInfo` was modified
+
+* `DatabaseBackupInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.MongoDbCancelCommand` was modified
+
+* `validate()` was removed
+
+#### `models.SqlConnectionInformation` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbCollectionProgress` was modified
+
+* `MongoDbCollectionProgress()` was changed to private access
+* `withElapsedTime(java.lang.String)` was removed
+* `withErrors(java.util.Map)` was removed
+* `withTotalBytes(long)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withDocumentsCopied(long)` was removed
+* `withEventsReplayed(long)` was removed
+* `withLastReplayTime(java.time.OffsetDateTime)` was removed
+* `withEventsPending(long)` was removed
+* `withLastEventTime(java.time.OffsetDateTime)` was removed
+* `withQualifiedName(java.lang.String)` was removed
+* `withBytesCopied(long)` was removed
+* `withTotalDocuments(long)` was removed
+* `withState(models.MongoDbMigrationState)` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel` was modified
+
+* `MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateMongoDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMISyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseMigrationPropertiesSqlVm` was modified
+
+* `validate()` was removed
+
+#### `models.GetTdeCertificatesSqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMISyncCompleteCommandProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProjectTask` was modified
+
+* `commandWithResponse(fluent.models.CommandPropertiesInner,com.azure.core.util.Context)` was removed
+* `command(fluent.models.CommandPropertiesInner)` was removed
+
+#### `models.SyncMigrationDatabaseErrorEvent` was modified
+
+* `SyncMigrationDatabaseErrorEvent()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToMongoDbTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SchemaMigrationSetting` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskOutputMigrationLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlOfflineTaskOutputMigrationLevel()` was changed to private access
+* `withMigrationReportResult(models.MigrationReportResult)` was removed
+* `validate()` was removed
+* `withDatabases(java.lang.String)` was removed
+
+#### `models.MongoDbConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskOutput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputAgentJobLevel` was modified
+
+* `ConnectToSourceSqlServerTaskOutputAgentJobLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.AvailableServiceSkuSku` was modified
+
+* `AvailableServiceSkuSku()` was changed to private access
+* `withTier(java.lang.String)` was removed
+* `withSize(java.lang.String)` was removed
+* `withFamily(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.CheckOciDriverTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput` was modified
+
+* `ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutputTableLevel` was modified
+
+* `MigrateOracleAzureDbPostgreSqlSyncTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.AzureActiveDirectoryApp` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskOutputTableLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlOfflineTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSsisTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceMySqlTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputError` was modified
+
+* `MigrateSqlServerSqlMITaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError` was modified
+
+* `MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError()` was changed to private access
+* `validate()` was removed
+* `withEvents(java.util.List)` was removed
+
+#### `models.MigrateSqlServerSqlMITaskOutputDatabaseLevel` was modified
+
+* `MigrateSqlServerSqlMITaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetAzureDbForPostgreSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseLevel` was modified
+
+* `MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputLoginLevel` was modified
+
+* `ConnectToSourceSqlServerTaskOutputLoginLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MongoConnectionInformation` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSchemaSqlServerSqlDbDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineDatabaseInput` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbCommandInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlMISyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutputMigrationLevel` was modified
+
+* `MigrateOracleAzureDbPostgreSqlSyncTaskOutputMigrationLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.Tasks` was modified
+
+* `define(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+
+#### `models.GetUserTablesOracleTaskOutput` was modified
+
+* `GetUserTablesOracleTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.CopyProgressDetails` was modified
+
+* `CopyProgressDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToSourceNonSqlTaskOutput` was modified
+
+* `ConnectToSourceNonSqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ExecutionStatistics` was modified
+
+* `ExecutionStatistics()` was changed to private access
+* `validate()` was removed
+* `withHasErrors(java.lang.Boolean)` was removed
+* `withElapsedTimeMs(java.lang.Float)` was removed
+* `withExecutionCount(java.lang.Long)` was removed
+* `withCpuTimeMs(java.lang.Float)` was removed
+* `withWaitStats(java.util.Map)` was removed
+* `withSqlErrors(java.util.List)` was removed
+
+#### `models.ConnectToTargetSqlMITaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToSourceMySqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlMISyncTaskOutput` was modified
+
+* `ConnectToTargetSqlMISyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.GetTdeCertificatesSqlTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseMigrationsMongoToCosmosDbRUMongoes` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `define(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ValidateMigrationInputSqlServerSqlMITaskOutput` was modified
+
+* `ValidateMigrationInputSqlServerSqlMITaskOutput()` was changed to private access
+* `withDatabaseBackupInfo(models.DatabaseBackupInfo)` was removed
+* `validate()` was removed
+
+#### `models.MigrateMISyncCompleteCommandInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskOutputError` was modified
+
+* `MigrateMySqlAzureDbForMySqlOfflineTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbTaskOutputMigrationLevel` was modified
+
+* `MigrateSqlServerSqlDbTaskOutputMigrationLevel()` was changed to private access
+* `withMigrationReportResult(models.MigrationReportResult)` was removed
+* `validate()` was removed
+* `withMigrationValidationResult(models.MigrationValidationResult)` was removed
+
+#### `models.ConnectToSourceSqlServerTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlOfflineTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbObjectInfo` was modified
+
+* `models.MongoDbObjectInfo withAverageDocumentSize(long)` -> `models.MongoDbObjectInfo withAverageDocumentSize(long)`
+* `models.MongoDbObjectInfo withQualifiedName(java.lang.String)` -> `models.MongoDbObjectInfo withQualifiedName(java.lang.String)`
+* `models.MongoDbObjectInfo withDataSize(long)` -> `models.MongoDbObjectInfo withDataSize(long)`
+* `models.MongoDbObjectInfo withName(java.lang.String)` -> `models.MongoDbObjectInfo withName(java.lang.String)`
+* `models.MongoDbObjectInfo withDocumentCount(long)` -> `models.MongoDbObjectInfo withDocumentCount(long)`
+* `validate()` was removed
+
+#### `models.AvailableServiceSkuCapacity` was modified
+
+* `AvailableServiceSkuCapacity()` was changed to private access
+* `withMaximum(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withMinimum(java.lang.Integer)` was removed
+* `withDefaultProperty(java.lang.Integer)` was removed
+* `withScaleType(models.ServiceScalability)` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel` was modified
+
+* `MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.OracleConnectionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateMySqlAzureDbForMySqlSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TargetLocation` was modified
+
+* `validate()` was removed
+
+#### `models.DatabaseMigrationPropertiesSqlMi` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerSqlMISyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskOutputError` was modified
+
+* `MigrateOracleAzureDbPostgreSqlSyncTaskOutputError()` was changed to private access
+* `validate()` was removed
+
+#### `models.DatabaseMigrationsSqlVms` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.DatabaseMigrationSqlVm delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)`
+* `models.DatabaseMigrationSqlVm deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.DatabaseMigrationSqlVm delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `models.DatabaseMigrationSqlVm deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)`
+* `getByIdWithResponse(java.lang.String,java.util.UUID,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.WaitStatistics` was modified
+
+* `WaitStatistics()` was changed to private access
+* `validate()` was removed
+* `withWaitCount(java.lang.Long)` was removed
+* `withWaitTimeMs(java.lang.Float)` was removed
+* `withWaitType(java.lang.String)` was removed
+
+#### `models.OrphanedUserInfo` was modified
+
+* `OrphanedUserInfo()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withDatabaseName(java.lang.String)` was removed
+
+#### `models.MigrateOracleAzureDbPostgreSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetSqlMITaskOutput` was modified
+
+* `ConnectToTargetSqlMITaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ValidateOracleAzureDbPostgreSqlSyncTaskOutput` was modified
+
+* `ValidateOracleAzureDbPostgreSqlSyncTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectToSourceSqlServerTaskOutputDatabaseLevel` was modified
+
+* `ConnectToSourceSqlServerTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.GetUserTablesSqlTaskOutput` was modified
+
+* `GetUserTablesSqlTaskOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSqlServerSqlDbSyncTaskProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbRestartCommand` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskInput` was modified
+
+* `validate()` was removed
+
+#### `models.MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel` was modified
+
+* `MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputDatabaseLevel()` was changed to private access
+* `validate()` was removed
+
+#### `models.MigrateSyncCompleteCommandOutput` was modified
+
+* `MigrateSyncCompleteCommandOutput()` was changed to private access
+* `validate()` was removed
+
+#### `models.CheckOciDriverTaskOutput` was modified
+
+* `CheckOciDriverTaskOutput()` was changed to private access
+* `withInstalledDriver(models.OracleOciDriverInfo)` was removed
+* `validate()` was removed
+
+### Features Added
+
+#### `models.DatabaseMigrationsMongoToCosmosDbvCoreMongoes` was modified
+
+* `deleteById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.MongoDbDatabaseInfo` was modified
+
+* `qualifiedName()` was added
+* `dataSize()` was added
+* `documentCount()` was added
+* `averageDocumentSize()` was added
+* `name()` was added
+
+#### `models.DatabaseMigrationPropertiesSqlDb` was modified
+
+* `withSqlServerInstanceId(java.lang.String)` was added
+
+#### `models.DatabaseMigrationProperties` was modified
+
+* `sqlServerInstanceId()` was added
+* `withSqlServerInstanceId(java.lang.String)` was added
+
+#### `models.DatabaseMigrationsSqlDbs` was modified
+
+* `getByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.MigrationOperationInput` was modified
+
+* `withMigrationOperationId(java.lang.String)` was added
+
+#### `models.ProjectTask$Definition` was modified
+
+* `withExistingService(java.lang.String,java.lang.String)` was added
+
+#### `models.MongoDbCollectionInfo` was modified
+
+* `dataSize()` was added
+* `averageDocumentSize()` was added
+* `name()` was added
+* `qualifiedName()` was added
+* `documentCount()` was added
+
+#### `models.ServiceTasks` was modified
+
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DatabaseMigrationsSqlMis` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DatabaseMigrationCosmosDbMongo$Definition` was modified
+
+* `withExistingMongoCluster(java.lang.String,java.lang.String)` was added
+
+#### `models.DatabaseMigrationPropertiesSqlVm` was modified
+
+* `withSqlServerInstanceId(java.lang.String)` was added
+
+#### `models.ResourceType` was modified
+
+* `DATABASE_MIGRATION_PROPERTIES` was added
+
+#### `models.Tasks` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner,com.azure.core.util.Context)` was added
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ProjectTaskInner,com.azure.core.util.Context)` was added
+
+#### `models.DatabaseMigrationsMongoToCosmosDbRUMongoes` was modified
+
+* `create(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseMigrationCosmosDbMongoInner,com.azure.core.util.Context)` was added
+* `create(java.lang.String,java.lang.String,java.lang.String,fluent.models.DatabaseMigrationCosmosDbMongoInner)` was added
+
+#### `models.DatabaseMigrationPropertiesSqlMi` was modified
+
+* `withSqlServerInstanceId(java.lang.String)` was added
+
+#### `models.DatabaseMigrationsSqlVms` was modified
+
+* `getByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.2.0 (2025-09-30)
 
