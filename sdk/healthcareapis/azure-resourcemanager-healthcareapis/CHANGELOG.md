@@ -1,14 +1,327 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager HealthcareApis client library for Java. This package contains Microsoft Azure SDK for HealthcareApis Management SDK.  Package api-version 2025-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.IotConnectorCollection` was removed
 
-### Other Changes
+#### `models.ServicesResource` was removed
+
+#### `models.ServicesDescriptionListResult` was removed
+
+#### `models.DicomServiceCollection` was removed
+
+#### `models.WorkspaceList` was removed
+
+#### `models.PrivateLinkResource` was removed
+
+#### `models.ServiceManagedIdentity` was removed
+
+#### `models.ListOperations` was removed
+
+#### `models.IotFhirDestinationCollection` was removed
+
+#### `models.ResourceCore` was removed
+
+#### `models.FhirServiceCollection` was removed
+
+#### `models.PrivateEndpointConnectionListResultDescription` was removed
+
+#### `models.TaggedResource` was removed
+
+#### `models.LocationBasedResource` was removed
+
+#### `models.PrivateEndpointConnectionDescription$DefinitionStages` was modified
+
+* `withExistingService(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.ServicesPatchDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceAcrConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `validate()` was removed
+* `withLogSpecifications(java.util.List)` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.MetricDimension` was modified
+
+* `MetricDimension()` was changed to private access
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.ServiceOciArtifactEntry` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceAuthenticationConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ImplementationGuidesConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.CheckNameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServiceAcrConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceTags` was modified
+
+* `validate()` was removed
+
+#### `models.IotConnectorPatchResource` was modified
+
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.ServiceAccessPolicyEntry` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceManagedIdentityIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.DicomServicePatchResource` was modified
+
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `validate()` was removed
+
+#### `models.SmartIdentityProviderConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceImportConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.StorageConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.IotDestinationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withCategory(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withSupportedAggregationTypes(java.util.List)` was removed
+* `withSourceMdmAccount(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withMetricFilterPattern(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+
+#### `models.WorkspacePrivateEndpointConnections` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionDescriptionInner)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionDescriptionInner,com.azure.core.util.Context)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `deleteById(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `define(java.lang.String)` was removed
+
+#### `models.ServicesResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServiceCorsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceCorsConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DicomServiceAuthenticationConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.Encryption` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServiceAuthenticationConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServiceExportConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.IotMappingProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `validate()` was removed
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.ServicesProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceCosmosDbConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.SmartIdentityProviderApplication` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServiceImportConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.FhirServicePatchResource` was modified
+
+* `withTags(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.CorsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.IotEventHubIngestionEndpointConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionDescription$Definition` was modified
+
+* `withExistingService(java.lang.String,java.lang.String)` was removed
+
+#### `models.WorkspacePatchResource` was modified
+
+* `validate()` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ResourceVersionPolicyConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceExportConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionCustomerManagedKeyEncryption` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.StorageIndexingConfiguration` was added
+
+#### `models.PrivateLinkResourceListResultDescription` was modified
+
+* `nextLink()` was added
+
+#### `models.IotConnectorPatchResource` was modified
+
+* `tags()` was added
+
+#### `models.DicomServicePatchResource` was modified
+
+* `tags()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+
+#### `models.StorageConfiguration` was modified
+
+* `storageIndexingConfiguration()` was added
+* `withStorageIndexingConfiguration(models.StorageIndexingConfiguration)` was added
+
+#### `models.WorkspacePrivateEndpointConnections` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,models.PrivateEndpointConnection)` was added
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,models.PrivateEndpointConnection,com.azure.core.util.Context)` was added
+
+#### `models.FhirServicePatchResource` was modified
+
+* `tags()` was added
+
+#### `models.PrivateEndpointConnectionDescription$Definition` was modified
+
+* `withExistingWorkspace(java.lang.String,java.lang.String)` was added
 
 ## 1.2.0 (2024-12-19)
 
