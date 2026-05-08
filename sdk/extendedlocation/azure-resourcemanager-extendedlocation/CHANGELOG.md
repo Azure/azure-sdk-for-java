@@ -1,14 +1,74 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-05-08)
 
-### Features Added
+- Azure Resource Manager CustomLocations client library for Java. This package contains Microsoft Azure SDK for CustomLocations Management SDK. The customLocations Rest API spec. Package api-version 2021-08-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.EnabledResourceTypesListResult` was removed
 
-### Other Changes
+#### `models.CustomLocationListResult` was removed
+
+#### `models.CustomLocationOperationsList` was removed
+
+#### `models.EnabledResourceTypePropertiesTypesMetadataItem` was modified
+
+* `EnabledResourceTypePropertiesTypesMetadataItem()` was changed to private access
+* `validate()` was removed
+* `withResourceProviderNamespace(java.lang.String)` was removed
+* `withApiVersion(java.lang.String)` was removed
+* `withResourceType(java.lang.String)` was removed
+
+#### `models.CustomLocationPropertiesAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.PatchableCustomLocations` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ResourceSyncRule$DefinitionStages` was added
+
+* `models.ResourceSyncRule` was added
+
+* `models.ResourceSyncRulePropertiesSelector` was added
+
+* `models.ResourceSyncRules` was added
+
+* `models.ResourceSyncRule$Update` was added
+
+* `models.MatchExpressionsProperties` was added
+
+* `models.ResourceSyncRule$Definition` was added
+
+* `models.CustomLocationFindTargetResourceGroupResult` was added
+
+* `models.CustomLocationFindTargetResourceGroupProperties` was added
+
+* `models.PatchableResourceSyncRule` was added
+
+* `models.ResourceSyncRule$UpdateStages` was added
+
+#### `models.CustomLocations` was modified
+
+* `findTargetResourceGroup(java.lang.String,java.lang.String,models.CustomLocationFindTargetResourceGroupProperties)` was added
+* `findTargetResourceGroupWithResponse(java.lang.String,java.lang.String,models.CustomLocationFindTargetResourceGroupProperties,com.azure.core.util.Context)` was added
+
+#### `CustomLocationsManager` was modified
+
+* `resourceSyncRules()` was added
+
+#### `models.CustomLocation` was modified
+
+* `findTargetResourceGroupWithResponse(models.CustomLocationFindTargetResourceGroupProperties,com.azure.core.util.Context)` was added
+* `findTargetResourceGroup(models.CustomLocationFindTargetResourceGroupProperties)` was added
 
 ## 1.0.0 (2025-01-03)
 
