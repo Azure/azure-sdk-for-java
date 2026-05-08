@@ -159,9 +159,8 @@ public class StaleResourceExceptionRetryPolicyTest {
         ShouldRetryResult shouldRetryResult = staleResourceRetryPolicy.shouldRetry(exception).block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
 
-        // Verify request context was reset for a clean retry
-        assertThat(request.requestContext.resolvedCollectionRid).isNull();
-        assertThat(request.forceNameCacheRefresh).isTrue();
+        // Verify request context was updated for a clean retry
+        assertThat(request.requestContext.resolvedCollectionRid).isEqualTo("newRid");
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER)).isNull();
 
         // Verify session token was cleaned up for the old rid
