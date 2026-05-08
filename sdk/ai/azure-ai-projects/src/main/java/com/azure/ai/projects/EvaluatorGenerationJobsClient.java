@@ -253,8 +253,8 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData job, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(job, requestOptions);
+    public Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+        return this.serviceClient.createGenerationJobWithResponse(job, requestOptions);
     }
 
     /**
@@ -375,8 +375,8 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(jobId, requestOptions);
+    public Response<BinaryData> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getGenerationJobWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -514,8 +514,8 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listGenerationJobs(RequestOptions requestOptions) {
+        return this.serviceClient.listGenerationJobs(requestOptions);
     }
 
     /**
@@ -635,8 +635,8 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelWithResponse(jobId, requestOptions);
+    public Response<BinaryData> cancelGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelGenerationJobWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -663,8 +663,8 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(jobId, requestOptions);
+    public Response<Void> deleteGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGenerationJobWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -689,9 +689,9 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob create(EvaluatorGenerationJob job, FoundryFeaturesOptInKeys foundryFeatures,
-        String operationId) {
-        // Generated convenience method for createWithResponse
+    public EvaluatorGenerationJob createGenerationJob(EvaluatorGenerationJob job,
+        FoundryFeaturesOptInKeys foundryFeatures, String operationId) {
+        // Generated convenience method for createGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -699,7 +699,7 @@ public final class EvaluatorGenerationJobsClient {
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return createWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
+        return createGenerationJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
             .toObject(EvaluatorGenerationJob.class);
     }
 
@@ -721,10 +721,10 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob create(EvaluatorGenerationJob job) {
-        // Generated convenience method for createWithResponse
+    public EvaluatorGenerationJob createGenerationJob(EvaluatorGenerationJob job) {
+        // Generated convenience method for createGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
+        return createGenerationJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
             .toObject(EvaluatorGenerationJob.class);
     }
 
@@ -748,13 +748,13 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob get(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getWithResponse
+    public EvaluatorGenerationJob getGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
+        return getGenerationJobWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
     }
 
     /**
@@ -775,10 +775,10 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob get(String jobId) {
-        // Generated convenience method for getWithResponse
+    public EvaluatorGenerationJob getGenerationJob(String jobId) {
+        // Generated convenience method for getGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
+        return getGenerationJobWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
     }
 
     /**
@@ -807,9 +807,9 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorGenerationJob> list(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
-        PageOrder order, String after, String before, EvaluatorCategory category) {
-        // Generated convenience method for list
+    public PagedIterable<EvaluatorGenerationJob> listGenerationJobs(FoundryFeaturesOptInKeys foundryFeatures,
+        Integer limit, PageOrder order, String after, String before, EvaluatorCategory category) {
+        // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -829,7 +829,7 @@ public final class EvaluatorGenerationJobsClient {
         if (category != null) {
             requestOptions.addQueryParam("category", category.toString(), false);
         }
-        return serviceClient.list(requestOptions)
+        return serviceClient.listGenerationJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -845,10 +845,10 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorGenerationJob> list() {
-        // Generated convenience method for list
+    public PagedIterable<EvaluatorGenerationJob> listGenerationJobs() {
+        // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions)
+        return serviceClient.listGenerationJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -871,13 +871,13 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob cancel(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for cancelWithResponse
+    public EvaluatorGenerationJob cancelGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for cancelGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return cancelWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
+        return cancelGenerationJobWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
     }
 
     /**
@@ -897,10 +897,10 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob cancel(String jobId) {
-        // Generated convenience method for cancelWithResponse
+    public EvaluatorGenerationJob cancelGenerationJob(String jobId) {
+        // Generated convenience method for cancelGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
+        return cancelGenerationJobWithResponse(jobId, requestOptions).getValue().toObject(EvaluatorGenerationJob.class);
     }
 
     /**
@@ -919,13 +919,13 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        deleteWithResponse(jobId, requestOptions).getValue();
+        deleteGenerationJobWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
@@ -942,9 +942,9 @@ public final class EvaluatorGenerationJobsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String jobId) {
-        // Generated convenience method for deleteWithResponse
+    public void deleteGenerationJob(String jobId) {
+        // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteWithResponse(jobId, requestOptions).getValue();
+        deleteGenerationJobWithResponse(jobId, requestOptions).getValue();
     }
 }

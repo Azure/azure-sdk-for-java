@@ -85,7 +85,7 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createGenerationJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -96,7 +96,7 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createGenerationJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -107,9 +107,9 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluator_generation_jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -117,7 +117,17 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
+        Response<BinaryData> getGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/evaluator_generation_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listGenerationJobs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -127,17 +137,7 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/evaluator_generation_jobs")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listGenerationJobsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -147,9 +147,9 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancel(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> cancelGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/evaluator_generation_jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -157,8 +157,18 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+        Response<BinaryData> cancelGenerationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/evaluator_generation_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteGenerationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
         @Delete("/evaluator_generation_jobs/{jobId}")
@@ -167,16 +177,7 @@ public final class EvaluatorGenerationJobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
-
-        @Delete("/evaluator_generation_jobs/{jobId}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
+        Response<Void> deleteGenerationJobSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 
@@ -391,10 +392,11 @@ public final class EvaluatorGenerationJobsImpl {
      * from source materials along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createGenerationJobWithResponseAsync(BinaryData job,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createGenerationJob(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
@@ -609,11 +611,11 @@ public final class EvaluatorGenerationJobsImpl {
      * from source materials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData job, RequestOptions requestOptions) {
+    public Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), contentType,
-            accept, job, requestOptions, Context.NONE);
+        return service.createGenerationJobSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -734,9 +736,9 @@ public final class EvaluatorGenerationJobsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), jobId,
+        return FluxUtil.withContext(context -> service.getGenerationJob(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -857,10 +859,10 @@ public final class EvaluatorGenerationJobsImpl {
      * Gets the details of an evaluator generation job by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), jobId, this.client.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.getGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -998,10 +1000,10 @@ public final class EvaluatorGenerationJobsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listGenerationJobsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(),
+            .withContext(context -> service.listGenerationJobs(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -1141,8 +1143,8 @@ public final class EvaluatorGenerationJobsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions));
+    public PagedFlux<BinaryData> listGenerationJobsAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listGenerationJobsSinglePageAsync(requestOptions));
     }
 
     /**
@@ -1279,9 +1281,9 @@ public final class EvaluatorGenerationJobsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listGenerationJobsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listGenerationJobsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1421,8 +1423,8 @@ public final class EvaluatorGenerationJobsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSinglePage(requestOptions));
+    public PagedIterable<BinaryData> listGenerationJobs(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listGenerationJobsSinglePage(requestOptions));
     }
 
     /**
@@ -1541,9 +1543,10 @@ public final class EvaluatorGenerationJobsImpl {
      * from source materials along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelGenerationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancel(this.client.getEndpoint(), jobId,
+        return FluxUtil.withContext(context -> service.cancelGenerationJob(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1663,10 +1666,10 @@ public final class EvaluatorGenerationJobsImpl {
      * from source materials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelSync(this.client.getEndpoint(), jobId, this.client.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+        return service.cancelGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1692,8 +1695,8 @@ public final class EvaluatorGenerationJobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), jobId,
+    public Mono<Response<Void>> deleteGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteGenerationJob(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
@@ -1720,9 +1723,9 @@ public final class EvaluatorGenerationJobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getEndpoint(), jobId, this.client.getServiceVersion().getVersion(),
-            requestOptions, Context.NONE);
+    public Response<Void> deleteGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return service.deleteGenerationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

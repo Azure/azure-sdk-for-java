@@ -259,8 +259,8 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData job, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(job, requestOptions);
+    public Mono<Response<BinaryData>> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+        return this.serviceClient.createGenerationJobWithResponseAsync(job, requestOptions);
     }
 
     /**
@@ -382,8 +382,8 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(jobId, requestOptions);
+    public Mono<Response<BinaryData>> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getGenerationJobWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -521,8 +521,8 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listGenerationJobs(RequestOptions requestOptions) {
+        return this.serviceClient.listGenerationJobsAsync(requestOptions);
     }
 
     /**
@@ -642,8 +642,8 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelWithResponseAsync(jobId, requestOptions);
+    public Mono<Response<BinaryData>> cancelGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelGenerationJobWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -670,8 +670,8 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(jobId, requestOptions);
+    public Mono<Response<Void>> deleteGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGenerationJobWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -696,9 +696,9 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> create(EvaluatorGenerationJob job, FoundryFeaturesOptInKeys foundryFeatures,
-        String operationId) {
-        // Generated convenience method for createWithResponse
+    public Mono<EvaluatorGenerationJob> createGenerationJob(EvaluatorGenerationJob job,
+        FoundryFeaturesOptInKeys foundryFeatures, String operationId) {
+        // Generated convenience method for createGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -706,7 +706,7 @@ public final class EvaluatorGenerationJobsAsyncClient {
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return createWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono)
+        return createGenerationJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -728,10 +728,10 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> create(EvaluatorGenerationJob job) {
-        // Generated convenience method for createWithResponse
+    public Mono<EvaluatorGenerationJob> createGenerationJob(EvaluatorGenerationJob job) {
+        // Generated convenience method for createGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono)
+        return createGenerationJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -755,13 +755,13 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> get(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getWithResponse
+    public Mono<EvaluatorGenerationJob> getGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return getGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -783,10 +783,10 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> get(String jobId) {
-        // Generated convenience method for getWithResponse
+    public Mono<EvaluatorGenerationJob> getGenerationJob(String jobId) {
+        // Generated convenience method for getGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return getGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -816,9 +816,9 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorGenerationJob> list(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+    public PagedFlux<EvaluatorGenerationJob> listGenerationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
         PageOrder order, String after, String before, EvaluatorCategory category) {
-        // Generated convenience method for list
+        // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -838,7 +838,7 @@ public final class EvaluatorGenerationJobsAsyncClient {
         if (category != null) {
             requestOptions.addQueryParam("category", category.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listGenerationJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -866,10 +866,10 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EvaluatorGenerationJob> list() {
-        // Generated convenience method for list
+    public PagedFlux<EvaluatorGenerationJob> listGenerationJobs() {
+        // Generated convenience method for listGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listGenerationJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -904,13 +904,13 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> cancel(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for cancelWithResponse
+    public Mono<EvaluatorGenerationJob> cancelGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for cancelGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return cancelWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -931,10 +931,10 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluatorGenerationJob> cancel(String jobId) {
-        // Generated convenience method for cancelWithResponse
+    public Mono<EvaluatorGenerationJob> cancelGenerationJob(String jobId) {
+        // Generated convenience method for cancelGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluatorGenerationJob.class));
     }
 
@@ -955,13 +955,13 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteGenerationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return deleteWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -979,9 +979,9 @@ public final class EvaluatorGenerationJobsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String jobId) {
-        // Generated convenience method for deleteWithResponse
+    public Mono<Void> deleteGenerationJob(String jobId) {
+        // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 }
