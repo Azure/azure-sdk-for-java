@@ -420,6 +420,11 @@ public final class SkillsAsyncClient {
     /**
      * Downloads a skill package.
      *
+     * <p>Returns a ZIP archive containing {@code SKILL.md}. For skills created via
+     * {@link #createSkillFromPackage(BinaryData)}, the original uploaded archive is returned. For skills created via
+     * {@link #createSkill(String, String, String, Map)} (JSON-created), a ZIP is materialized from the stored
+     * instructions.
+     *
      * @param skillName The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -427,7 +432,7 @@ public final class SkillsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the skill package as a ZIP archive in {@link BinaryData} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
