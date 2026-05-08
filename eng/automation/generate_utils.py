@@ -237,12 +237,19 @@ def compare_with_maven_package(
             "[Changelog] Compare stable version {0} with current version {1}".format(previous_version, current_version)
         )
 
+        headers = {}
+        token = os.environ.get("SYSTEM_ACCESSTOKEN")
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+
         r = requests.get(
             MAVEN_URL.format(
                 group_id=group_id.replace(".", "/"),
                 artifact_id=module,
                 version=previous_version,
-            )
+            ),
+            headers=headers,
+            timeout=30,
         )
         if r.status_code == 404:
             logging.warning(

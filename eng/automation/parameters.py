@@ -12,7 +12,7 @@ ARTIFACT_FORMAT = None
 OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
-MAVEN_HOST = "https://repo1.maven.org/maven2"
+MAVEN_HOST = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
 MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
 
 SDK_ROOT = "../../"  # related to file dir

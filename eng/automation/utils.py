@@ -405,7 +405,12 @@ def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> 
 
     group_path = group_id.replace(".", "/")
 
-    response = requests.get(f"{MAVEN_HOST}/{group_path}/{module}")
+    headers = {}
+    token = os.environ.get("SYSTEM_ACCESSTOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    response = requests.get(f"{MAVEN_HOST}/{group_path}/{module}", headers=headers, timeout=30)
 
     response.raise_for_status()
 
