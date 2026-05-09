@@ -8,11 +8,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.SummaryLogsInner;
-import com.azure.resourcemanager.loganalytics.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.StatusCodeEnum;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogs;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsProvisioningState;
 import com.azure.resourcemanager.loganalytics.models.SummaryLogsRetryBin;
 
 public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definition, SummaryLogs.Update {
@@ -56,7 +56,7 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
         return this.innerModel().statusCode();
     }
 
-    public ProvisioningStateEnum provisioningState() {
+    public SummaryLogsProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

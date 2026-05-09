@@ -10,10 +10,10 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.loganalytics.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.StatusCodeEnum;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsProvisioningState;
 import java.io.IOException;
 
 /**
@@ -194,7 +194,7 @@ public final class SummaryLogsInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningStateEnum provisioningState() {
+    public SummaryLogsProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

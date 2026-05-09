@@ -83,7 +83,7 @@ public interface SummaryLogs {
      * 
      * @return the provisioningState value.
      */
-    ProvisioningStateEnum provisioningState();
+    SummaryLogsProvisioningState provisioningState();
 
     /**
      * Gets the ruleDefinition property: Rule definition parameters.

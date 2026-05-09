@@ -34,16 +34,6 @@ public final class ProvisioningStateEnum extends ExpandableStringEnum<Provisioni
     public static final ProvisioningStateEnum DELETING = fromString("Deleting");
 
     /**
-     * Table state is failed.
-     */
-    public static final ProvisioningStateEnum FAILED = fromString("Failed");
-
-    /**
-     * Table state is canceled.
-     */
-    public static final ProvisioningStateEnum CANCELED = fromString("Canceled");
-
-    /**
      * Creates a new instance of ProvisioningStateEnum value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
