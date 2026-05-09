@@ -84,8 +84,7 @@ import java.util.Arrays;
  */
 public final class CalculateExchangePostSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/CalculateExchange.json
+     * x-ms-original-file: 2022-11-01/CalculateExchange.json
      */
     /**
      * Sample code: CalculateExchange.
@@ -139,8 +138,7 @@ import com.azure.resourcemanager.reservations.models.ReservationToReturn;
  */
 public final class CalculateRefundPostSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/CalculateRefund.json
+     * x-ms-original-file: 2022-11-01/CalculateRefund.json
      */
     /**
      * Sample code: CalculateRefund.
@@ -171,8 +169,7 @@ import com.azure.resourcemanager.reservations.models.ExchangeRequestProperties;
  */
 public final class ExchangePostSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Exchange.json
+     * x-ms-original-file: 2022-11-01/Exchange.json
      */
     /**
      * Sample code: Exchange.
@@ -197,8 +194,7 @@ public final class ExchangePostSamples {
  */
 public final class OperationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetOperations.json
+     * x-ms-original-file: 2022-11-01/GetOperations.json
      */
     /**
      * Sample code: GetOperations.
@@ -223,8 +219,7 @@ import com.azure.resourcemanager.reservations.models.ResourceType;
  */
 public final class QuotaCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * putMachineLearningServicesQuotaRequestDedicated.json
+     * x-ms-original-file: 2020-10-25/putMachineLearningServicesQuotaRequestDedicated.json
      */
     /**
      * Sample code: Quotas_Request_PutForMachineLearningServices_DedicatedResource.
@@ -244,8 +239,7 @@ public final class QuotaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * putMachineLearningServicesQuotaRequestLowPriority.json
+     * x-ms-original-file: 2020-10-25/putMachineLearningServicesQuotaRequestLowPriority.json
      */
     /**
      * Sample code: Quotas_Request_PutForMachineLearningServices_LowPriorityResource.
@@ -265,8 +259,7 @@ public final class QuotaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * putComputeOneSkuQuotaRequest.json
+     * x-ms-original-file: 2020-10-25/putComputeOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PutForCompute.
@@ -293,9 +286,7 @@ public final class QuotaCreateOrUpdateSamples {
  */
 public final class QuotaGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getComputeOneSkuUsages.
-     * json
+     * x-ms-original-file: 2020-10-25/getComputeOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_Request_ForCompute.
@@ -318,8 +309,7 @@ public final class QuotaGetSamples {
  */
 public final class QuotaListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getComputeUsages.json
+     * x-ms-original-file: 2020-10-25/getComputeUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForCompute.
@@ -333,8 +323,7 @@ public final class QuotaListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * getMachineLearningServicesUsages.json
+     * x-ms-original-file: 2020-10-25/getMachineLearningServicesUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesMachineLearningServices.
@@ -362,8 +351,7 @@ import com.azure.resourcemanager.reservations.models.ResourceName;
  */
 public final class QuotaUpdateSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * patchComputeQuotaRequest.json
+     * x-ms-original-file: 2020-10-25/patchComputeQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForCompute.
@@ -393,8 +381,7 @@ public final class QuotaUpdateSamples {
  */
 public final class QuotaRequestStatusGetSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * getQuotaRequestStatusFailed.json
+     * x-ms-original-file: 2020-10-25/getQuotaRequestStatusFailed.json
      */
     /**
      * Sample code: QuotaRequestFailed.
@@ -408,8 +395,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * getQuotaRequestStatusById.json
+     * x-ms-original-file: 2020-10-25/getQuotaRequestStatusById.json
      */
     /**
      * Sample code: QuotaRequestStatus.
@@ -423,8 +409,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/
-     * getQuotaRequestStatusInProgress.json
+     * x-ms-original-file: 2020-10-25/getQuotaRequestStatusInProgress.json
      */
     /**
      * Sample code: QuotaRequestInProgress.
@@ -447,9 +432,7 @@ public final class QuotaRequestStatusGetSamples {
  */
 public final class QuotaRequestStatusListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestsHistory
-     * .json
+     * x-ms-original-file: 2020-10-25/getQuotaRequestsHistory.json
      */
     /**
      * Sample code: QuotaRequestHistory.
@@ -472,8 +455,7 @@ public final class QuotaRequestStatusListSamples {
  */
 public final class ReservationArchiveSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Archive.json
+     * x-ms-original-file: 2022-11-01/Archive.json
      */
     /**
      * Sample code: Archive.
@@ -500,8 +482,7 @@ import java.util.Arrays;
  */
 public final class ReservationAvailableScopesSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetAvailableScope.json
+     * x-ms-original-file: 2022-11-01/GetAvailableScope.json
      */
     /**
      * Sample code: AvailableScopes.
@@ -526,9 +507,7 @@ public final class ReservationAvailableScopesSamples {
  */
 public final class ReservationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservationDetails.
-     * json
+     * x-ms-original-file: 2022-11-01/GetReservationDetails.json
      */
     /**
      * Sample code: GetReservation.
@@ -551,8 +530,7 @@ public final class ReservationGetSamples {
  */
 public final class ReservationListSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * GetReservationsFromOrder.json
+     * x-ms-original-file: 2022-11-01/GetReservationsFromOrder.json
      */
     /**
      * Sample code: ReservationList.
@@ -573,8 +551,7 @@ public final class ReservationListSamples {
  */
 public final class ReservationListAllSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservations.json
+     * x-ms-original-file: 2022-11-01/GetReservations.json
      */
     /**
      * Sample code: ReservationListAll.
@@ -597,9 +574,7 @@ public final class ReservationListAllSamples {
  */
 public final class ReservationListRevisionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservationRevisions
-     * .json
+     * x-ms-original-file: 2022-11-01/GetReservationRevisions.json
      */
     /**
      * Sample code: ReservationRevisions.
@@ -625,8 +600,7 @@ import java.util.Arrays;
  */
 public final class ReservationMergeSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/MergeReservations.json
+     * x-ms-original-file: 2022-11-01/MergeReservations.json
      */
     /**
      * Sample code: Merge.
@@ -654,8 +628,7 @@ import java.util.Arrays;
  */
 public final class ReservationSplitSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/SplitReservation.json
+     * x-ms-original-file: 2022-11-01/SplitReservation.json
      */
     /**
      * Sample code: Split.
@@ -680,8 +653,7 @@ public final class ReservationSplitSamples {
  */
 public final class ReservationUnarchiveSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Unarchive.json
+     * x-ms-original-file: 2022-11-01/Unarchive.json
      */
     /**
      * Sample code: Unarchive.
@@ -708,8 +680,7 @@ import com.azure.resourcemanager.reservations.models.PatchModel;
  */
 public final class ReservationUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/UpdateReservation.json
+     * x-ms-original-file: 2022-11-01/UpdateReservation.json
      */
     /**
      * Sample code: PatchReservation.
@@ -743,8 +714,7 @@ import com.azure.resourcemanager.reservations.models.SkuName;
  */
 public final class ReservationOrderCalculateSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * CalculateReservationOrder.json
+     * x-ms-original-file: 2022-11-01/CalculateReservationOrder.json
      */
     /**
      * Sample code: CalculatePrice.
@@ -779,8 +749,7 @@ import com.azure.resourcemanager.reservations.models.ChangeDirectoryRequest;
  */
 public final class ReservationOrderChangeDirectorySamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * ChangeDirectoryReservationOrder.json
+     * x-ms-original-file: 2022-11-01/ChangeDirectoryReservationOrder.json
      */
     /**
      * Sample code: ChangeDirectory.
@@ -804,8 +773,7 @@ public final class ReservationOrderChangeDirectorySamples {
  */
 public final class ReservationOrderGetSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * GetReservationOrderDetailsWithExpandPlanInformation.json
+     * x-ms-original-file: 2022-11-01/GetReservationOrderDetailsWithExpandPlanInformation.json
      */
     /**
      * Sample code: GetReservationWithExpandPayments.
@@ -819,8 +787,7 @@ public final class ReservationOrderGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * GetReservationOrderDetails.json
+     * x-ms-original-file: 2022-11-01/GetReservationOrderDetails.json
      */
     /**
      * Sample code: GetReservationOrder.
@@ -842,9 +809,7 @@ public final class ReservationOrderGetSamples {
  */
 public final class ReservationOrderListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetReservationOrders.
-     * json
+     * x-ms-original-file: 2022-11-01/GetReservationOrders.json
      */
     /**
      * Sample code: ReservationOrderList.
@@ -874,8 +839,7 @@ import com.azure.resourcemanager.reservations.models.SkuName;
  */
 public final class ReservationOrderPurchaseSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/
-     * PurchaseReservationOrder.json
+     * x-ms-original-file: 2022-11-01/PurchaseReservationOrder.json
      */
     /**
      * Sample code: Purchase.
@@ -910,9 +874,7 @@ public final class ReservationOrderPurchaseSamples {
  */
 public final class ResourceProviderGetAppliedReservationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetAppliedReservations.
-     * json
+     * x-ms-original-file: 2022-11-01/GetAppliedReservations.json
      */
     /**
      * Sample code: AppliedReservationList.
@@ -935,8 +897,7 @@ public final class ResourceProviderGetAppliedReservationListSamples {
  */
 public final class ResourceProviderListSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/GetCatalog.json
+     * x-ms-original-file: 2022-11-01/GetCatalog.json
      */
     /**
      * Sample code: Catalog.
@@ -963,8 +924,7 @@ import com.azure.resourcemanager.reservations.models.ReservationToReturn;
  */
 public final class ReturnPostSamples {
     /*
-     * x-ms-original-file:
-     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Return.json
+     * x-ms-original-file: 2022-11-01/Return.json
      */
     /**
      * Sample code: Return a reservation.
