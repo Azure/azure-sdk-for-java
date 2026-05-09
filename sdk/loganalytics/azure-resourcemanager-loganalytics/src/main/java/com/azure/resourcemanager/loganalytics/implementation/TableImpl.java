@@ -8,7 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.TableInner;
-import com.azure.resourcemanager.loganalytics.models.OperationalInsightsTableProvisioningState;
+import com.azure.resourcemanager.loganalytics.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.loganalytics.models.RestoredLogs;
 import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 import com.azure.resourcemanager.loganalytics.models.Schema;
@@ -73,7 +73,7 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
         return this.innerModel().schema();
     }
 
-    public OperationalInsightsTableProvisioningState provisioningState() {
+    public ProvisioningStateEnum provisioningState() {
         return this.innerModel().provisioningState();
     }
 

@@ -68,7 +68,7 @@ public final class SearchMetadata implements JsonSerializable<SearchMetadata> {
     /*
      * The ETag of the search results.
      */
-    private String eTag;
+    private String etag;
 
     /*
      * How the results are sorted.
@@ -193,12 +193,12 @@ public final class SearchMetadata implements JsonSerializable<SearchMetadata> {
     }
 
     /**
-     * Get the eTag property: The ETag of the search results.
+     * Get the etag property: The ETag of the search results.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -281,7 +281,7 @@ public final class SearchMetadata implements JsonSerializable<SearchMetadata> {
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("lastUpdated",
             this.lastUpdated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdated));
-        jsonWriter.writeStringField("eTag", this.eTag);
+        jsonWriter.writeStringField("eTag", this.etag);
         jsonWriter.writeArrayField("sort", this.sort, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("requestTime", this.requestTime);
         jsonWriter.writeStringField("aggregatedValueField", this.aggregatedValueField);
@@ -329,7 +329,7 @@ public final class SearchMetadata implements JsonSerializable<SearchMetadata> {
                     deserializedSearchMetadata.lastUpdated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("eTag".equals(fieldName)) {
-                    deserializedSearchMetadata.eTag = reader.getString();
+                    deserializedSearchMetadata.etag = reader.getString();
                 } else if ("sort".equals(fieldName)) {
                     List<SearchSort> sort = reader.readArray(reader1 -> SearchSort.fromJson(reader1));
                     deserializedSearchMetadata.sort = sort;

@@ -68,9 +68,9 @@
 
 #### `models.ManagedServiceIdentity` was modified
 
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 * `validate()` was removed
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.UserIdentityProperties` was modified
 
@@ -88,20 +88,20 @@
 #### `models.AccessRuleProperties` was modified
 
 * `AccessRuleProperties()` was changed to private access
-* `withSubscriptions(java.util.List)` was removed
-* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withAddressPrefixes(java.util.List)` was removed
 * `withEmailAddresses(java.util.List)` was removed
 * `withNetworkSecurityPerimeters(java.util.List)` was removed
-* `validate()` was removed
-* `withPhoneNumbers(java.util.List)` was removed
 * `withDirection(models.AccessRuleDirection)` was removed
-* `withAddressPrefixes(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withPhoneNumbers(java.util.List)` was removed
+* `validate()` was removed
+* `withSubscriptions(java.util.List)` was removed
 
 #### `models.PrivateLinkScopedResource` was modified
 
 * `PrivateLinkScopedResource()` was changed to private access
-* `validate()` was removed
 * `withResourceId(java.lang.String)` was removed
+* `validate()` was removed
 * `withScopeId(java.lang.String)` was removed
 
 #### `models.ClusterReplicationProperties` was modified
@@ -140,9 +140,9 @@
 * `NetworkSecurityPerimeter()` was changed to private access
 * `withLocation(java.lang.String)` was removed
 * `withPerimeterGuid(java.util.UUID)` was removed
-* `withId(java.lang.String)` was removed
 * `validate()` was removed
 * `java.util.UUID perimeterGuid()` -> `java.lang.String perimeterGuid()`
+* `withId(java.lang.String)` was removed
 
 #### `models.CapacityReservationProperties` was modified
 
@@ -163,9 +163,9 @@
 #### `models.MetricName` was modified
 
 * `MetricName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
 * `validate()` was removed
 * `withValue(java.lang.String)` was removed
-* `withLocalizedValue(java.lang.String)` was removed
 
 #### `models.WorkspacePatch` was modified
 
@@ -178,9 +178,9 @@
 #### `models.ResourceAssociation` was modified
 
 * `ResourceAssociation()` was changed to private access
+* `withName(java.lang.String)` was removed
 * `validate()` was removed
 * `withAccessMode(models.ResourceAssociationAccessMode)` was removed
-* `withName(java.lang.String)` was removed
 
 #### `models.RestoredLogs` was modified
 
@@ -193,9 +193,9 @@
 #### `models.ResultStatistics` was modified
 
 * `ResultStatistics()` was changed to private access
-* `java.lang.Float scannedGb()` -> `java.lang.Double scannedGb()`
-* `java.lang.Float progress()` -> `java.lang.Double progress()`
 * `validate()` was removed
+* `java.lang.Float progress()` -> `java.lang.Double progress()`
+* `java.lang.Float scannedGb()` -> `java.lang.Double scannedGb()`
 
 #### `models.WorkspaceCapping` was modified
 
@@ -204,34 +204,34 @@
 #### `models.CoreSummary` was modified
 
 * `CoreSummary()` was changed to private access
-* `validate()` was removed
 * `withNumberOfDocuments(long)` was removed
 * `withStatus(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.LinkedServices` was modified
 
-* `models.LinkedService deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
-* `models.LinkedService delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.LinkedService deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
 * `models.LinkedService delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+* `models.LinkedService delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.LinkedService deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
 
 #### `models.NetworkSecurityProfile` was modified
 
 * `NetworkSecurityProfile()` was changed to private access
+* `withDiagnosticSettingsVersion(java.lang.Integer)` was removed
 * `validate()` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
 * `withAccessRules(java.util.List)` was removed
 * `withAccessRulesVersion(java.lang.Integer)` was removed
-* `withDiagnosticSettingsVersion(java.lang.Integer)` was removed
-* `withEnabledLogCategories(java.util.List)` was removed
 * `withName(java.lang.String)` was removed
 
 #### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
 
 * `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
-* `validate()` was removed
-* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
-* `withResourceAssociation(models.ResourceAssociation)` was removed
 * `withProfile(models.NetworkSecurityProfile)` was removed
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `validate()` was removed
+* `withResourceAssociation(models.ResourceAssociation)` was removed
 
 #### `models.SummaryLogsRetryBin` was modified
 
@@ -240,9 +240,9 @@
 #### `models.SearchMetadataSchema` was modified
 
 * `SearchMetadataSchema()` was changed to private access
+* `withVersion(java.lang.Integer)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
-* `withVersion(java.lang.Integer)` was removed
 
 #### `models.KeyVaultProperties` was modified
 
@@ -250,9 +250,9 @@
 
 #### `models.UserAssignedIdentity` was modified
 
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `validate()` was removed
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.WorkspaceSku` was modified
 
@@ -265,11 +265,11 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withProvider(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `validate()` was removed
-* `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 
 #### `models.ProvisioningIssueProperties` was modified
 
@@ -278,12 +278,8 @@
 
 #### `models.AssociatedWorkspace` was modified
 
-* `java.util.UUID workspaceId()` -> `java.lang.String workspaceId()`
 * `validate()` was removed
-
-#### `models.Table` was modified
-
-* `models.ProvisioningStateEnum provisioningState()` -> `models.OperationalInsightsTableProvisioningState provisioningState()`
+* `java.util.UUID workspaceId()` -> `java.lang.String workspaceId()`
 
 #### `models.TagsResource` was modified
 
@@ -292,37 +288,36 @@
 #### `models.SearchSchemaValue` was modified
 
 * `SearchSchemaValue()` was changed to private access
-* `withFacet(boolean)` was removed
 * `withOwnerType(java.util.List)` was removed
+* `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `withIndexed(boolean)` was removed
+* `withFacet(boolean)` was removed
 * `withStored(boolean)` was removed
 * `withDisplayName(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
-* `withIndexed(boolean)` was removed
-* `validate()` was removed
 * `withName(java.lang.String)` was removed
 
 #### `models.SearchMetadata` was modified
 
 * `SearchMetadata()` was changed to private access
-* `withResultType(java.lang.String)` was removed
-* `etag()` was removed
-* `withTop(java.lang.Long)` was removed
-* `withSum(java.lang.Long)` was removed
-* `withId(java.lang.String)` was removed
-* `withLastUpdated(java.time.OffsetDateTime)` was removed
-* `withTotal(java.lang.Long)` was removed
-* `withSchema(models.SearchMetadataSchema)` was removed
 * `withSort(java.util.List)` was removed
-* `withMax(java.lang.Long)` was removed
-* `withRequestTime(java.lang.Long)` was removed
-* `withStatus(java.lang.String)` was removed
-* `validate()` was removed
-* `withSearchId(java.lang.String)` was removed
-* `withStartTime(java.time.OffsetDateTime)` was removed
 * `withAggregatedGroupingFields(java.lang.String)` was removed
-* `withCoreSummaries(java.util.List)` was removed
+* `withSchema(models.SearchMetadataSchema)` was removed
+* `withLastUpdated(java.time.OffsetDateTime)` was removed
+* `withResultType(java.lang.String)` was removed
+* `withRequestTime(java.lang.Long)` was removed
+* `withTop(java.lang.Long)` was removed
+* `withId(java.lang.String)` was removed
+* `withSum(java.lang.Long)` was removed
 * `withEtag(java.lang.String)` was removed
+* `withCoreSummaries(java.util.List)` was removed
+* `withStartTime(java.time.OffsetDateTime)` was removed
 * `withAggregatedValueField(java.lang.String)` was removed
+* `withSearchId(java.lang.String)` was removed
+* `withTotal(java.lang.Long)` was removed
+* `validate()` was removed
+* `withMax(java.lang.Long)` was removed
+* `withStatus(java.lang.String)` was removed
 
 #### `models.SummaryLogsRetryBinProperties` was modified
 
@@ -330,19 +325,20 @@
 
 #### `models.ProvisioningStateEnum` was modified
 
-* `IN_PROGRESS` was removed
+* `ProvisioningStateEnum()` was removed
+* `java.util.Collection values()` -> `models.ProvisioningStateEnum[] values()`
 
 #### `models.WorkspacePurgesPurgeHeaders` was modified
 
-* `withXMsStatusLocation(java.lang.String)` was removed
 * `validate()` was removed
+* `withXMsStatusLocation(java.lang.String)` was removed
 
 #### `models.StorageInsightStatus` was modified
 
 * `StorageInsightStatus()` was changed to private access
+* `withState(models.StorageInsightState)` was removed
 * `validate()` was removed
 * `withDescription(java.lang.String)` was removed
-* `withState(models.StorageInsightState)` was removed
 
 #### `models.WorkspacePurgeBody` was modified
 
@@ -355,17 +351,15 @@
 #### `models.SearchSort` was modified
 
 * `SearchSort()` was changed to private access
+* `withOrder(models.SearchSortEnum)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
-* `withOrder(models.SearchSortEnum)` was removed
 
 #### `models.ClusterSku` was modified
 
 * `validate()` was removed
 
 ### Features Added
-
-* `models.OperationalInsightsTableProvisioningState` was added
 
 #### `models.StorageInsight$Definition` was modified
 
@@ -410,15 +404,13 @@
 
 #### `models.Workspace` was modified
 
-* `failback()` was added
 * `failback(com.azure.core.util.Context)` was added
-
-#### `models.SearchMetadata` was modified
-
-* `eTag()` was added
+* `failback()` was added
 
 #### `models.ProvisioningStateEnum` was modified
 
+* `toString()` was added
+* `valueOf(java.lang.String)` was added
 * `FAILED` was added
 * `CANCELED` was added
 

@@ -4,65 +4,73 @@
 
 package com.azure.resourcemanager.loganalytics.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
- * forbidding any update to the table until the ongoing operation is concluded.
+ * Defines values for ProvisioningStateEnum.
  */
-public final class ProvisioningStateEnum extends ExpandableStringEnum<ProvisioningStateEnum> {
+public enum ProvisioningStateEnum {
     /**
-     * Table schema is still being built and updated, table is currently locked for any changes till the procedure is
-     * done.
+     * Enum value Updating.
      */
-    public static final ProvisioningStateEnum UPDATING = fromString("Updating");
+    UPDATING("Updating"),
 
     /**
-     * Table state is stable and without changes, table is unlocked and open for new updates.
+     * Enum value InProgress.
      */
-    public static final ProvisioningStateEnum SUCCEEDED = fromString("Succeeded");
+    IN_PROGRESS("InProgress"),
 
     /**
-     * Table state is deleting.
+     * Enum value Succeeded.
      */
-    public static final ProvisioningStateEnum DELETING = fromString("Deleting");
+    SUCCEEDED("Succeeded"),
 
     /**
-     * Table state is failed.
+     * Enum value Deleting.
      */
-    public static final ProvisioningStateEnum FAILED = fromString("Failed");
+    DELETING("Deleting"),
 
     /**
-     * Table state is canceled.
+     * Enum value Failed.
      */
-    public static final ProvisioningStateEnum CANCELED = fromString("Canceled");
+    FAILED("Failed"),
 
     /**
-     * Creates a new instance of ProvisioningStateEnum value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * Enum value Canceled.
      */
-    @Deprecated
-    public ProvisioningStateEnum() {
+    CANCELED("Canceled");
+
+    /**
+     * The actual serialized value for a ProvisioningStateEnum instance.
+     */
+    private final String value;
+
+    ProvisioningStateEnum(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a ProvisioningStateEnum from its string representation.
+     * Parses a serialized value to a ProvisioningStateEnum instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding ProvisioningStateEnum.
+     * @param value the serialized value to parse.
+     * @return the parsed ProvisioningStateEnum object, or null if unable to parse.
      */
-    public static ProvisioningStateEnum fromString(String name) {
-        return fromString(name, ProvisioningStateEnum.class);
+    public static ProvisioningStateEnum fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        ProvisioningStateEnum[] items = ProvisioningStateEnum.values();
+        for (ProvisioningStateEnum item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known ProvisioningStateEnum values.
-     * 
-     * @return known ProvisioningStateEnum values.
+     * {@inheritDoc}
      */
-    public static Collection<ProvisioningStateEnum> values() {
-        return values(ProvisioningStateEnum.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

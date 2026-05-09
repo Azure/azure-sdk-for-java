@@ -115,7 +115,7 @@ public interface Table {
      * 
      * @return the provisioningState value.
      */
-    OperationalInsightsTableProvisioningState provisioningState();
+    ProvisioningStateEnum provisioningState();
 
     /**
      * Gets the retentionInDaysAsDefault property: True - Value originates from workspace retention in days, False -

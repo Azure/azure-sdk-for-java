@@ -26,7 +26,7 @@ public final class SearchGetSchemaResponseInnerTests {
         Assertions.assertEquals("tnrzvuljra", model.metadata().status());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T18:00:04Z"), model.metadata().startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T23:57:30Z"), model.metadata().lastUpdated());
-        Assertions.assertEquals("kqg", model.metadata().eTag());
+        Assertions.assertEquals("kqg", model.metadata().etag());
         Assertions.assertEquals("qnvb", model.metadata().sort().get(0).name());
         Assertions.assertEquals(SearchSortEnum.DESC, model.metadata().sort().get(0).order());
         Assertions.assertEquals(370105828993790153L, model.metadata().requestTime());

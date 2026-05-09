@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.loganalytics.models.OperationalInsightsTableProvisioningState;
+import com.azure.resourcemanager.loganalytics.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.loganalytics.models.RestoredLogs;
 import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 import com.azure.resourcemanager.loganalytics.models.Schema;
@@ -281,7 +281,7 @@ public final class TableInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
-    public OperationalInsightsTableProvisioningState provisioningState() {
+    public ProvisioningStateEnum provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

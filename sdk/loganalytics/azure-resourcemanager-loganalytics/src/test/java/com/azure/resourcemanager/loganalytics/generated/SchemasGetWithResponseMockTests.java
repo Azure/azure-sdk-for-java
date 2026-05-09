@@ -45,7 +45,7 @@ public final class SchemasGetWithResponseMockTests {
         Assertions.assertEquals("cvk", response.metadata().status());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T06:08Z"), response.metadata().startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T01:10:09Z"), response.metadata().lastUpdated());
-        Assertions.assertEquals("lgjyyxpvels", response.metadata().eTag());
+        Assertions.assertEquals("lgjyyxpvels", response.metadata().etag());
         Assertions.assertEquals("zevxoqein", response.metadata().sort().get(0).name());
         Assertions.assertEquals(SearchSortEnum.DESC, response.metadata().sort().get(0).order());
         Assertions.assertEquals(3843017627663831527L, response.metadata().requestTime());

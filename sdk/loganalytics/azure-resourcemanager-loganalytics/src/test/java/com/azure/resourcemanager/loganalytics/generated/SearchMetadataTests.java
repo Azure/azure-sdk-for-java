@@ -26,7 +26,7 @@ public final class SearchMetadataTests {
         Assertions.assertEquals("mzznrtffyaqitmhh", model.status());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T18:13:10Z"), model.startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T20:49:04Z"), model.lastUpdated());
-        Assertions.assertEquals("hvseufuqyrx", model.eTag());
+        Assertions.assertEquals("hvseufuqyrx", model.etag());
         Assertions.assertEquals("gql", model.sort().get(0).name());
         Assertions.assertEquals(SearchSortEnum.DESC, model.sort().get(0).order());
         Assertions.assertEquals(8420679751963722456L, model.requestTime());

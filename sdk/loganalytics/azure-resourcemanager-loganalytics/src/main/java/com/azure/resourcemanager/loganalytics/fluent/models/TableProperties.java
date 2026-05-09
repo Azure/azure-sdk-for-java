@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.loganalytics.models.OperationalInsightsTableProvisioningState;
+import com.azure.resourcemanager.loganalytics.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.loganalytics.models.RestoredLogs;
 import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 import com.azure.resourcemanager.loganalytics.models.Schema;
@@ -73,7 +73,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
      * Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
      * forbidding any update to the table until the ongoing operation is concluded.
      */
-    private OperationalInsightsTableProvisioningState provisioningState;
+    private ProvisioningStateEnum provisioningState;
 
     /*
      * True - Value originates from workspace retention in days, False - Customer specific.
@@ -252,7 +252,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
      * 
      * @return the provisioningState value.
      */
-    public OperationalInsightsTableProvisioningState provisioningState() {
+    public ProvisioningStateEnum provisioningState() {
         return this.provisioningState;
     }
 
@@ -326,7 +326,7 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
                     deserializedTableProperties.schema = Schema.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedTableProperties.provisioningState
-                        = OperationalInsightsTableProvisioningState.fromString(reader.getString());
+                        = ProvisioningStateEnum.fromString(reader.getString());
                 } else if ("retentionInDaysAsDefault".equals(fieldName)) {
                     deserializedTableProperties.retentionInDaysAsDefault = reader.getNullable(JsonReader::getBoolean);
                 } else if ("totalRetentionInDaysAsDefault".equals(fieldName)) {
