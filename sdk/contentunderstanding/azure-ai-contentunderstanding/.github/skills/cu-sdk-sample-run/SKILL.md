@@ -385,7 +385,7 @@ The repo ships labeled receipt training data at `src/samples/resources/receipt_l
 > **must** ask the user the questions below and act on the answer:
 >
 > 1. "Do you want to **train with labeled data** (recommended), or **create the analyzer without training data** (demo mode)?"
->    - If **demo mode**: confirm explicitly — "I will run Sample16 *without* training data. The output will say `Knowledge srcs: 0` and you will see a `DEMO MODE` banner. The labeled-data API path will **not** be exercised. OK to proceed?" Only continue after the user says yes; leave both Option A and Option B env vars empty/unset.
+>    - If **demo mode**: confirm explicitly — "I will run Sample16 *without* training data. The output will say `Knowledge sources: 0` and you will see a `DEMO MODE` banner. The labeled-data API path will **not** be exercised. OK to proceed?" Only continue after the user says yes; leave both Option A and Option B env vars empty/unset.
 >    - If **with training data**: continue with one of the next two questions.
 > 2. "Will you use **Option A (pre-generated SAS URL)** or **Option B (auto-upload via `DefaultAzureCredential`)**?"
 >    - **Option A**: ask for the SAS URL and (optionally) prefix; walk through the manual-upload steps above if not yet done.

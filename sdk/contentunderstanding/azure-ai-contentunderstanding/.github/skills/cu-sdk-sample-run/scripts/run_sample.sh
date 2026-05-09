@@ -226,7 +226,7 @@ if [[ "$SAMPLE_NAME" == Sample16* ]]; then
     if [[ -z "${CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT:-}" \
           || -z "${CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER:-}" ]]; then
       print_warning "⚠ DEMO MODE: no training data configured for $SAMPLE_NAME."
-      echo "  The analyzer will be created without labeled data ('Knowledge srcs: 0')."
+      echo "  The analyzer will be created without labeled data ('Knowledge sources: 0')."
       echo "  To exercise the labeled-data API path, configure ONE of:"
       echo "    Option A: CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL=<container SAS URL>"
       echo "    Option B: CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT=<account>"

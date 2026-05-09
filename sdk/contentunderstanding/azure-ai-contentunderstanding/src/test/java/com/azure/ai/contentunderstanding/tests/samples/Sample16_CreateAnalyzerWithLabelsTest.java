@@ -209,7 +209,7 @@ public class Sample16_CreateAnalyzerWithLabelsTest extends ContentUnderstandingC
             System.out.println("  Description: " + result.getDescription());
             System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
             System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
-            System.out.println("  Knowledge srcs: "
+            System.out.println("  Knowledge sources: "
                 + (result.getKnowledgeSources() == null ? 0 : result.getKnowledgeSources().size()));
             // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabels
 
