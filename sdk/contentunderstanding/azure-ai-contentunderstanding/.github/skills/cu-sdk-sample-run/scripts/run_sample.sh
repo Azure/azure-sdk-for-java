@@ -217,6 +217,26 @@ if [[ -z "${CONTENTUNDERSTANDING_ENDPOINT:-}" ]]; then
   echo ""
 fi
 
+# Sample16 demo-mode banner: warn if the user is about to run the labeled-data
+# sample without configuring either Option A (SAS URL) or Option B (storage
+# account + container) — the sample will still run but skip the labeled-data
+# code path.
+if [[ "$SAMPLE_NAME" == Sample16* ]]; then
+  if [[ -z "${CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL:-}" ]]; then
+    if [[ -z "${CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT:-}" \
+          || -z "${CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER:-}" ]]; then
+      print_warning "⚠ DEMO MODE: no training data configured for $SAMPLE_NAME."
+      echo "  The analyzer will be created without labeled data ('Knowledge srcs: 0')."
+      echo "  To exercise the labeled-data API path, configure ONE of:"
+      echo "    Option A: CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL=<container SAS URL>"
+      echo "    Option B: CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT=<account>"
+      echo "              CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER=<container>"
+      echo "  then re-run: set -a && source .env && set +a"
+      echo ""
+    fi
+  fi
+fi
+
 # Build command. Sample classes live under src/samples/java and are compiled
 # as test sources, so we must run test-compile before exec:java; otherwise on
 # a clean checkout the sample class will not exist on the classpath.

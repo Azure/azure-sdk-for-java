@@ -276,8 +276,11 @@ Most samples only need the base environment variables from Step 3. The following
 | `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`    | Sample15_GrantCopyAuth            | Target ARM resource ID for cross-resource copy                                                               |
 | `CONTENTUNDERSTANDING_TARGET_REGION`         | Sample15_GrantCopyAuth            | Region of the target Foundry resource (e.g., `eastus`)                                                       |
 | `CONTENTUNDERSTANDING_TARGET_KEY`            | Sample15_GrantCopyAuth (optional) | API key for the target resource. If empty, `DefaultAzureCredential` is used                                  |
-| `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` | Sample16_CreateAnalyzerWithLabels | Optional SAS URL for the Azure Blob container with labeled training data. If unset, the analyzer is created **without** training data |
-| `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX`  | Sample16_CreateAnalyzerWithLabels | Optional path prefix within the container (e.g., `receipt_labels/`). Omit if files are at the container root |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` | Sample16 (Option A) | Pre-generated container-level SAS URL pointing at your labeled training data. If set, the sample uses it directly and skips Option B. |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX`  | Sample16 (optional) | Optional prefix (e.g., `receipt_labels` or `receipt_labels/`) that scopes the labeled data within the container. Both forms work — the SDK normalises the trailing slash. |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT` | Sample16 (Option B) | Storage account name (e.g., `mystorageacct`). Used by Option B (auto-upload) to upload the bundled `src/samples/resources/receipt_labels/` files via `DefaultAzureCredential` and mint a User Delegation SAS URL. |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER` | Sample16 (Option B) | Container name (e.g., `cu-training-data`). Created on demand by Option B. |
+| `CONTENTUNDERSTANDING_TRAINING_DATA_LOCAL_DIR` | Sample16 (Option B, optional) | Override the local folder of label files to upload. Defaults to `src/samples/resources/receipt_labels`. |
 
 #### Have you run `Sample00_UpdateDefaults`?
 
@@ -328,11 +331,12 @@ Then reload your shell: `set -a && source .env && set +a`.
 
 #### Setting up Sample16_CreateAnalyzerWithLabels training data
 
-The `Sample16_CreateAnalyzerWithLabels` sample creates an analyzer with **labeled training data** loaded from Azure Blob Storage via a SAS URL.
+The `Sample16_CreateAnalyzerWithLabels` sample creates an analyzer backed by **labeled training data** loaded from Azure Blob Storage via a SAS URL. You can configure training data in two ways:
 
-> **Note (Java vs. Python parity):** The Java sample only supports providing a pre-uploaded SAS URL ("Option A"). Unlike the Python equivalent (`sample_create_analyzer_with_labels.py`), the Java sample does **not** auto-upload local files using `DefaultAzureCredential`. You must upload the labeled receipts manually before running.
+- **Option A — Manual upload**: you upload the labeled triplets (image + `.labels.json` + `.result.json`) yourself and provide a container SAS URL via `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL`.
+- **Option B — Auto-upload via `DefaultAzureCredential`**: the sample uses your `az login` identity to upload the bundled receipt files from `src/samples/resources/receipt_labels/` into your storage account and mint a short-lived User Delegation SAS — set `CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT` and `CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER`. The signed-in identity must have **Storage Blob Data Contributor** on the container.
 
-> **Note:** If `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` is **not set**, the sample still runs but creates an analyzer **without** training data. To exercise the labeled-data path, follow the steps below.
+> **Note:** If neither option is configured, the sample runs in **demo mode**: it still creates the analyzer (without labeled data) so you can see the API surface. To fully exercise the labeled-data path you must pick Option A or Option B.
 
 The repo ships labeled receipt training data at `src/samples/resources/receipt_labels/`. Two labeled receipts are included; each receipt has three associated files:
 
@@ -345,9 +349,7 @@ The repo ships labeled receipt training data at `src/samples/resources/receipt_l
 29d60394-3da1-4714-abdc-ff0993009872.jpg.result.json
 ```
 
-Upload these into an Azure Blob container and provide a SAS URL.
-
-> **Manual upload steps:**
+> **Option A — manual upload steps:**
 > 1. Create an Azure Blob Storage container (or use an existing one).
 > 2. Upload **all** files from `src/samples/resources/receipt_labels/` (the `.jpg`, `.jpg.labels.json`, and optional `.jpg.result.json` files listed above) into the container. You may upload them at the container root or inside a subfolder (e.g., `receipt_labels/`).
 > 3. In Azure Portal: open the storage account, then either navigate Storage account → Containers → your container → **Shared access tokens**, or use the Portal search bar to find "Shared access tokens" (the exact UI path varies by Portal version). Set an expiry, grant at least **List** and **Read** permissions, then generate the SAS URL.
@@ -355,22 +357,50 @@ Upload these into an Azure Blob container and provide a SAS URL.
 >    ```
 >    CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL=https://<account>.blob.core.windows.net/<container>?sv=...&se=...
 >    # Only if you uploaded into a subfolder:
->    CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX=receipt_labels/
+>    CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX=receipt_labels
 >    ```
 >    *(Both `receipt_labels` and `receipt_labels/` work as prefix values — the SDK handles the trailing slash either way.)*
 > 5. Reload your shell: `set -a && source .env && set +a`.
 
-> **[ASK USER] Sample16 training data (Sample16_CreateAnalyzerWithLabels only):**
-> If the user chose `Sample16_CreateAnalyzerWithLabels`, ask:
-> 1. "Do you want to **train with labeled data** (recommended) or **create the analyzer without training data**?"
->    - If **without training data**: **Leave `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` empty or unset in `.env`** (this is the implicit switch). Skip the next questions and proceed to Step 6 — the sample will still run.
->    - If **with training data**: Continue.
-> 2. "Have you uploaded the contents of `src/samples/resources/receipt_labels/` to an Azure Blob container and generated a SAS URL?" — If no, walk them through the manual upload steps above.
+> **Option B — auto-upload via `DefaultAzureCredential`:**
+> 1. Ensure `az login` has been completed and your account has **Storage Blob Data Contributor** on the target container (or the parent storage account).
+> 2. Add to your `.env`:
+>    ```
+>    CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT=mystorageacct
+>    CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER=cu-training-data
+>    # Leave CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL empty/unset to trigger Option B.
+>    # Optional: override the local folder uploaded (defaults to src/samples/resources/receipt_labels).
+>    # CONTENTUNDERSTANDING_TRAINING_DATA_LOCAL_DIR=/path/to/your/labels
+>    # Optional: upload into a sub-folder (e.g., receipt_labels) instead of the container root.
+>    # CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX=receipt_labels
+>    ```
+> 3. Reload your shell: `set -a && source .env && set +a`.
+> 4. The sample will create the container if it does not exist, upload the bundled files, mint a 1-hour User Delegation SAS, and use it to create the analyzer.
+
+> **[REQUIRED GATE] Sample16 training data (Sample16_CreateAnalyzerWithLabels only):**
+> Sample16 silently falls back to "create analyzer without labeled data" when no training-data
+> source is configured. That fall-back path completes end-to-end and prints `✓ Sample completed`
+> even though the labeled-data API surface is **not** actually exercised. Before invoking
+> `mvn exec:java` (or `run_sample.sh Sample16_CreateAnalyzerWithLabels --run`), the agent
+> **must** ask the user the questions below and act on the answer:
+>
+> 1. "Do you want to **train with labeled data** (recommended), or **create the analyzer without training data** (demo mode)?"
+>    - If **demo mode**: confirm explicitly — "I will run Sample16 *without* training data. The output will say `Knowledge srcs: 0` and you will see a `DEMO MODE` banner. The labeled-data API path will **not** be exercised. OK to proceed?" Only continue after the user says yes; leave both Option A and Option B env vars empty/unset.
+>    - If **with training data**: continue with one of the next two questions.
+> 2. "Will you use **Option A (pre-generated SAS URL)** or **Option B (auto-upload via `DefaultAzureCredential`)**?"
+>    - **Option A**: ask for the SAS URL and (optionally) prefix; walk through the manual-upload steps above if not yet done.
+>    - **Option B**: ask for the storage account name and container name; remind them about the **Storage Blob Data Contributor** role and `az login`.
 > 3. "Did you upload the files at the **container root** or inside a **subfolder**?"
 >    - If root: leave `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX` unset.
 >    - If subfolder: ask for the prefix path (e.g., `receipt_labels/`).
-> 4. "Please provide the **SAS URL**."
-> 5. Confirm: "The SAS token must have at least **List** and **Read** permissions and must **not be expired**."
+> 4. Confirm: "For Option A, the SAS token must have at least **List** and **Read** permissions and must **not be expired**. For Option B, the signed-in identity must have **Storage Blob Data Contributor** on the container."
+>
+> **Belt-and-suspenders**: `run_sample.sh` itself emits a loud `DEMO MODE` banner before the
+> `mvn exec:java` step when none of the four training-data env vars
+> (`CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL`, `..._STORAGE_ACCOUNT`, `..._CONTAINER`,
+> `..._LOCAL_DIR`) are set, so the fall-back is unmissable in the captured run output. Treat
+> that banner as a signal that validation is **incomplete** unless the user explicitly opted
+> into demo mode in step 1.
 
 ### Step 6: Run the Sample
 
@@ -511,7 +541,7 @@ Wraps `mvn exec:java` with sample name resolution, validation, and optional `.en
 | `Permission denied` when running scripts | Make scripts executable: `chmod +x .github/skills/cu-sdk-sample-run/scripts/*.sh` |
 | Sample16: `AuthenticationFailed` / `403` reading training data | The SAS URL is invalid, expired, or missing required permissions. Regenerate the SAS with at least **List** and **Read** and a fresh expiry, then re-source `.env` |
 | Sample16: `BlobNotFound` or empty training set | The `CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX` does not match where you uploaded the files. Either upload files at the container root and unset the prefix, or set the prefix to the actual subfolder (e.g., `receipt_labels/`) |
-| Sample16: created analyzer has no training data | `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` was empty when the sample ran. Set it in `.env`, re-run `set -a && source .env && set +a`, then re-run the sample |
+| Sample16: created analyzer has no training data | Neither Option A nor Option B was configured. Set `CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL` (Option A), or set `CONTENTUNDERSTANDING_TRAINING_DATA_STORAGE_ACCOUNT` + `CONTENTUNDERSTANDING_TRAINING_DATA_CONTAINER` (Option B), then re-run `set -a && source .env && set +a` and re-run the sample. |
 
 ## Related Skills
 

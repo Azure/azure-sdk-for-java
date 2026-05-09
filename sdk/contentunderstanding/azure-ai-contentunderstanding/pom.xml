@@ -68,6 +68,18 @@
       <artifactId>azure-identity</artifactId>
       <version>1.18.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
+    <!--
+      azure-storage-blob is used by Sample16_CreateAnalyzerWithLabels (Option B) to upload
+      labeled training data and generate a User Delegation SAS URL via DefaultAzureCredential.
+      It is needed at sample compile time and at test time, so it is declared in the default
+      (compile) scope. The dependency is intentionally optional for end users who only consume
+      the published library: the upload helper only runs when the user explicitly opts in.
+    -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.33.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+    </dependency>
   </dependencies>
 
 </project>
