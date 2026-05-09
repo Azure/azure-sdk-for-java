@@ -1,14 +1,135 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-05-09)
 
-### Features Added
+- Azure Resource Manager ResourceGraph client library for Java. This package contains Microsoft Azure SDK for ResourceGraph Management SDK. Azure Resource Graph API Reference. Package api-version ResourceChanges: 2020-09-01-preview, ResourceGraphApi: 2024-04-01, ResourceHistory: 2021-06-01-preview, GraphQueryApi: 2024-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.GraphQueryUpdateParameters` was removed
 
-### Other Changes
+#### `models.GraphQueryResource` was removed
+
+#### `models.Operation` was removed
+
+#### `models.GraphQueryResource$Definition` was removed
+
+#### `models.GraphQueryResource$DefinitionStages` was removed
+
+#### `models.Operations` was removed
+
+#### `models.GraphQueryListResult` was removed
+
+#### `models.GraphQueryResource$UpdateStages` was removed
+
+#### `models.ResultKind` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.GraphQueryResource$Update` was removed
+
+#### `models.GraphQueries` was removed
+
+#### `models.OperationDisplay` was removed
+
+#### `models.FacetError` was modified
+
+* `FacetError()` was changed to private access
+* `validate()` was removed
+* `withExpression(java.lang.String)` was removed
+* `withErrors(java.util.List)` was removed
+
+#### `models.FacetResult` was modified
+
+* `FacetResult()` was changed to private access
+* `withCount(int)` was removed
+* `withExpression(java.lang.String)` was removed
+* `withTotalRecords(long)` was removed
+* `validate()` was removed
+* `withData(java.lang.Object)` was removed
+
+#### `ResourceGraphManager` was modified
+
+* `fluent.ResourceGraphClient serviceClient()` -> `fluent.ResourceGraphManagementClient serviceClient()`
+* `graphQueries()` was removed
+* `operations()` was removed
+
+#### `models.FacetRequestOptions` was modified
+
+* `validate()` was removed
+
+#### `models.Facet` was modified
+
+* `validate()` was removed
+* `models.Facet withExpression(java.lang.String)` -> `models.Facet withExpression(java.lang.String)`
+
+#### `models.ErrorDetails` was modified
+
+* `ErrorDetails()` was changed to private access
+* `withAdditionalProperties(java.util.Map)` was removed
+* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+
+#### `models.FacetRequest` was modified
+
+* `validate()` was removed
+
+#### `models.QueryRequestOptions` was modified
+
+* `validate()` was removed
+
+#### `models.QueryRequest` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ResourcesHistoryRequest` was added
+
+* `models.ResourceSnapshotData` was added
+
+* `models.DateTimeInterval` was added
+
+* `models.ChangeCategory` was added
+
+* `models.ResourceChangeDetailsRequestParameters` was added
+
+* `models.ResourceChangeData` was added
+
+* `models.ResourceChangesRequestParameters` was added
+
+* `models.ChangeType` was added
+
+* `models.ResourceChangesRequestParametersInterval` was added
+
+* `models.ResourceChangeDataBeforeSnapshot` was added
+
+* `models.ResourcesHistoryRequestOptions` was added
+
+* `models.ResourceChangeDataAfterSnapshot` was added
+
+* `models.ResourcePropertyChange` was added
+
+* `models.AuthorizationScopeFilter` was added
+
+* `models.PropertyChangeType` was added
+
+* `models.ResourceChangeList` was added
+
+#### `models.ResourceProviders` was modified
+
+* `resourceChangesWithResponse(models.ResourceChangesRequestParameters,com.azure.core.util.Context)` was added
+* `resourcesHistoryWithResponse(models.ResourcesHistoryRequest,com.azure.core.util.Context)` was added
+* `resourceChangeDetails(models.ResourceChangeDetailsRequestParameters)` was added
+* `resourceChangeDetailsWithResponse(models.ResourceChangeDetailsRequestParameters,com.azure.core.util.Context)` was added
+* `resourceChanges(models.ResourceChangesRequestParameters)` was added
+* `resourcesHistory(models.ResourcesHistoryRequest)` was added
+
+#### `models.QueryRequestOptions` was modified
+
+* `withAuthorizationScopeFilter(models.AuthorizationScopeFilter)` was added
+* `authorizationScopeFilter()` was added
 
 ## 1.1.0 (2024-12-06)
 
