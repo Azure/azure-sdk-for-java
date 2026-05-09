@@ -82,10 +82,14 @@ public class Sample_Advanced_ContentSourceAsync {
                 // Part 2: DocumentSource.parse() and ContentSource.parseAll() round-trip
                 contentSourceParseRoundTrip(documentContent);
             })
+            .doOnError(error -> System.err.println("Analysis failed: " + error))
             .doFinally(signal -> latch.countDown())
             .subscribe();
 
-        latch.await(5, TimeUnit.MINUTES);
+        // Surface timeouts as failures so the sample doesn't exit silently.
+        if (!latch.await(5, TimeUnit.MINUTES)) {
+            throw new RuntimeException("Sample timed out waiting for analysis to complete.");
+        }
     }
 
     /**
