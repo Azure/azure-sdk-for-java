@@ -108,15 +108,21 @@ public class Sample_Advanced_ContentSourceAsync {
                         DocumentSource docSource = (DocumentSource) source;
                         System.out.println("  Source: page " + docSource.getPageNumber());
 
+                        // Polygon may be null for page-only D(page) wire-format sources.
                         List<PointF> polygon = docSource.getPolygon();
-                        String coords = polygon.stream()
-                            .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
-                            .collect(Collectors.joining(", "));
-                        System.out.println("  Polygon: [" + coords + "]");
+                        if (polygon != null) {
+                            String coords = polygon.stream()
+                                .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
+                                .collect(Collectors.joining(", "));
+                            System.out.println("  Polygon: [" + coords + "]");
+                        }
 
+                        // BoundingBox is null when Polygon is null.
                         RectangleF bbox = docSource.getBoundingBox();
-                        System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
-                            bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+                        if (bbox != null) {
+                            System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n",
+                                bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+                        }
                     }
                 }
             }

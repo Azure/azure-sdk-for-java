@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -62,6 +63,7 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
         assertNotNull(documentContent.getFields(), "Document should have fields");
 
         boolean hasDocumentSource = false;
+        boolean hasPolygonSource = false;
         for (Map.Entry<String, ContentField> entry : documentContent.getFields().entrySet()) {
             String fieldName = entry.getKey();
             ContentField field = entry.getValue();
@@ -80,24 +82,32 @@ public class Sample_Advanced_ContentSourceAsyncTest extends ContentUnderstanding
                     assertTrue(docSource.getPageNumber() >= 1,
                         "Page number should be >= 1, got " + docSource.getPageNumber());
 
+                    // DocumentSource supports both polygon (D(page,x1,y1,...)) and page-only
+                    // (D(page)) wire formats. When Polygon is present, BoundingBox must also be
+                    // computed; when Polygon is null, BoundingBox is null too.
                     List<PointF> polygon = docSource.getPolygon();
-                    assertNotNull(polygon, "Polygon should not be null for document sources with coordinates");
-                    assertTrue(polygon.size() >= 3, "Polygon should have at least 3 points, got " + polygon.size());
-                    String coords = polygon.stream()
-                        .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
-                        .collect(Collectors.joining(", "));
-                    System.out.println("  Polygon: [" + coords + "]");
-
                     RectangleF bbox = docSource.getBoundingBox();
-                    assertNotNull(bbox, "BoundingBox should be computed from polygon");
-                    assertTrue(bbox.getWidth() > 0, "BoundingBox width should be > 0");
-                    assertTrue(bbox.getHeight() > 0, "BoundingBox height should be > 0");
-                    System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n", bbox.getX(), bbox.getY(),
-                        bbox.getWidth(), bbox.getHeight());
+                    if (polygon != null) {
+                        assertTrue(polygon.size() >= 3, "Polygon should have at least 3 points, got " + polygon.size());
+                        String coords = polygon.stream()
+                            .map(p -> String.format("(%.4f,%.4f)", p.getX(), p.getY()))
+                            .collect(Collectors.joining(", "));
+                        System.out.println("  Polygon: [" + coords + "]");
+
+                        assertNotNull(bbox, "BoundingBox should be computed when Polygon is present");
+                        assertTrue(bbox.getWidth() > 0, "BoundingBox width should be > 0");
+                        assertTrue(bbox.getHeight() > 0, "BoundingBox height should be > 0");
+                        System.out.printf("  BoundingBox: x=%.4f, y=%.4f, w=%.4f, h=%.4f%n", bbox.getX(), bbox.getY(),
+                            bbox.getWidth(), bbox.getHeight());
+                        hasPolygonSource = true;
+                    } else {
+                        assertNull(bbox, "BoundingBox should be null when Polygon is null");
+                    }
                 }
             }
         }
         assertTrue(hasDocumentSource, "At least one field should have DocumentSource grounding");
+        assertTrue(hasPolygonSource, "At least one DocumentSource should have polygon coordinates");
     }
 
     @Test
