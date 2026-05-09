@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public final class VirtualMachineScaleSetVMExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Create.json
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Create.json
      */
     /**
      * Sample code: Create VirtualMachineScaleSet VM extension.

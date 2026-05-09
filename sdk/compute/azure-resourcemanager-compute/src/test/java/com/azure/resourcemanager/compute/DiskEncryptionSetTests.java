@@ -15,6 +15,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -51,6 +52,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         }
     }
 
+    @Disabled("Temporarily disabled, due to change of query order in authorization lib")
     @Test
     public void canCRUDDiskEncryptionSet() {
         Region region = Region.US_EAST;

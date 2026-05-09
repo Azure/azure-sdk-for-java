@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
-import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAIToolchainOperatorProfile;
@@ -24,7 +23,6 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterHealthMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
@@ -44,7 +42,6 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsPr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
-import com.azure.resourcemanager.containerservice.models.SchedulerProfile;
 import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import java.io.IOException;
@@ -291,31 +288,6 @@ public final class ManagedClusterInner extends Resource {
      */
     public PowerState powerState() {
         return this.innerProperties() == null ? null : this.innerProperties().powerState();
-    }
-
-    /**
-     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
-     * created/upgraded using a snapshot.
-     * 
-     * @return the creationData value.
-     */
-    public CreationData creationData() {
-        return this.innerProperties() == null ? null : this.innerProperties().creationData();
-    }
-
-    /**
-     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the cluster will be
-     * created/upgraded using a snapshot.
-     * 
-     * @param creationData the creationData value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withCreationData(CreationData creationData) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withCreationData(creationData);
-        return this;
     }
 
     /**
@@ -716,35 +688,6 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withSupportPlan(supportPlan);
-        return this;
-    }
-
-    /**
-     * Get the enableNamespaceResources property: Enable namespace as Azure resource. The default value is false. It can
-     * be enabled/disabled on creation and updating of the managed cluster. See
-     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
-     * Resource.
-     * 
-     * @return the enableNamespaceResources value.
-     */
-    public Boolean enableNamespaceResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableNamespaceResources();
-    }
-
-    /**
-     * Set the enableNamespaceResources property: Enable namespace as Azure resource. The default value is false. It can
-     * be enabled/disabled on creation and updating of the managed cluster. See
-     * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM
-     * Resource.
-     * 
-     * @param enableNamespaceResources the enableNamespaceResources value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withEnableNamespaceResources(Boolean enableNamespaceResources) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withEnableNamespaceResources(enableNamespaceResources);
         return this;
     }
 
@@ -1286,29 +1229,6 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the schedulerProfile property: Profile of the pod scheduler configuration.
-     * 
-     * @return the schedulerProfile value.
-     */
-    public SchedulerProfile schedulerProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().schedulerProfile();
-    }
-
-    /**
-     * Set the schedulerProfile property: Profile of the pod scheduler configuration.
-     * 
-     * @param schedulerProfile the schedulerProfile value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withSchedulerProfile(SchedulerProfile schedulerProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withSchedulerProfile(schedulerProfile);
-        return this;
-    }
-
-    /**
      * Get the hostedSystemProfile property: Settings for hosted system addons. For more information, see
      * https://aka.ms/aks/automatic/systemcomponents.
      * 
@@ -1330,29 +1250,6 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withHostedSystemProfile(hostedSystemProfile);
-        return this;
-    }
-
-    /**
-     * Get the healthMonitorProfile property: Health monitor profile for the managed cluster.
-     * 
-     * @return the healthMonitorProfile value.
-     */
-    public ManagedClusterHealthMonitorProfile healthMonitorProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().healthMonitorProfile();
-    }
-
-    /**
-     * Set the healthMonitorProfile property: Health monitor profile for the managed cluster.
-     * 
-     * @param healthMonitorProfile the healthMonitorProfile value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withHealthMonitorProfile(ManagedClusterHealthMonitorProfile healthMonitorProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withHealthMonitorProfile(healthMonitorProfile);
         return this;
     }
 

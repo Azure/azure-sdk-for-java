@@ -47,16 +47,21 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     /** The interval at which configuration should be refreshed from the store. */
     private final Duration refreshInterval;
 
+    /** The timeout duration for retry attempts during startup. */
+    private final Duration startupTimeout;
+
     /**
      * Constructs a new AzureAppConfigDataResource with the specified configuration store settings.
      * 
+     * @param appConfigEnabled true if Azure App Configuration is globally enabled
      * @param configStore the configuration store settings containing endpoint, selectors, and other options
      * @param profiles the Spring Boot profiles for conditional configuration loading
      * @param startup true if this is a startup load operation, false if it is a refresh operation
      * @param refreshInterval the interval at which configuration should be refreshed
+     * @param startupTimeout the timeout duration for retry attempts during startup
      */
     AzureAppConfigDataResource(boolean appConfigEnabled, ConfigStore configStore, Profiles profiles, boolean startup,
-        Duration refreshInterval) {
+        Duration refreshInterval, Duration startupTimeout) {
         this.configStoreEnabled = appConfigEnabled && configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
@@ -66,6 +71,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.profiles = profiles;
         this.isRefresh = !startup;
         this.refreshInterval = refreshInterval;
+        this.startupTimeout = startupTimeout;
     }
 
     /**
@@ -147,5 +153,14 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
+    }
+
+    /**
+     * Gets the timeout duration for retry attempts during startup.
+     * 
+     * @return the startup timeout duration
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
     }
 }

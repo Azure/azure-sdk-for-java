@@ -20,6 +20,7 @@ import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
+import com.azure.resourcemanager.mongocluster.models.NetworkBypassMode;
 import com.azure.resourcemanager.mongocluster.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
 import com.azure.resourcemanager.mongocluster.models.StorageProperties;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -54,7 +55,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -73,7 +74,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchCMK.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchCMK.json
      */
     /**
      * Sample code: Updates the customer managed encryption key on a mongo cluster resource.
@@ -101,7 +102,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDisableNativeAuth.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchDisableNativeAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to remove Native authentication.
@@ -120,7 +121,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -138,7 +139,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -156,7 +157,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchSSDv2.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchSSDv2.json
      */
     /**
      * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
@@ -175,7 +176,27 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDataApi.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchNetworkBypassMode.json
+     */
+    /**
+     * Sample code: Enables network bypass mode on a Mongo Cluster resource to allow Azure Cosmos DB service to bypass
+     * network restrictions.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        enablesNetworkBypassModeOnAMongoClusterResourceToAllowAzureCosmosDBServiceToBypassNetworkRestrictions(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withNetworkBypassMode(NetworkBypassMode.AZURE_COSMOS_DB))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_PatchDataApi.json
      */
     /**
      * Sample code: Enables data API on a mongo cluster resource.
@@ -194,7 +215,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_Update.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.

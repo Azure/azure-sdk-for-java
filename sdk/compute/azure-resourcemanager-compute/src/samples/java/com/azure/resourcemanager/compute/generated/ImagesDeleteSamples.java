@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class ImagesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Images_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Images_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Image_Delete_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class ImagesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/imageExamples/Images_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/imageExamples/Images_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Image_Delete_MaximumSet_Gen.

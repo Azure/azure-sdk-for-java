@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSource;
@@ -15,6 +16,7 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrating how to analyze invoices using Content Understanding service.
@@ -66,6 +69,36 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
         assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeInvoice
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceUsage
+        // Get usage details from the operation status
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+        // END:ContentUnderstandingAnalyzeInvoiceUsage
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
+        assertNotNull(usage, "Usage details should not be null");
+        assertNotNull(usage.getDocumentPagesStandard(), "Document pages (standard) should not be null");
+        assertTrue(usage.getDocumentPagesStandard() > 0, "Document pages (standard) should be positive");
+        assertNotNull(usage.getTokens(), "Tokens should not be null");
+        assertTrue(!usage.getTokens().isEmpty(), "Tokens should not be empty");
+        System.out.println("Usage details validated successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
 
         // BEGIN:ContentUnderstandingExtractInvoiceFields
         // Get the document content (invoices are documents)
@@ -213,5 +246,22 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
                 + (content != null ? content.getClass().getSimpleName() : "null"));
         }
         // END:Assertion_ContentUnderstandingExtractInvoiceFields
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInput
+        // The fields above can also be packaged into a single LLM-ready text block.
+        // toLlmInput renders all extracted fields as YAML front matter followed by
+        // the markdown body, so an LLM can consume both structured data and document text
+        // in one shot. For advanced options, see Sample_Advanced_ToLlmInput.
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInput
+
+        // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInput
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("fields:"));
+        System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingInvoiceToLlmInput
     }
 }

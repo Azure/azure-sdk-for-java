@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class UpdateSummariesOperationPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutUpdateSummaries.json
+     * x-ms-original-file: 2026-04-01-preview/PutUpdateSummaries.json
      */
     /**
      * Sample code: Put Update summaries under cluster resource.

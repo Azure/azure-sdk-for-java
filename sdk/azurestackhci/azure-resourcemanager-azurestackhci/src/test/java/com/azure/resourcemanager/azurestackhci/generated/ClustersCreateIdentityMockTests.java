@@ -20,7 +20,7 @@ public final class ClustersCreateIdentityMockTests {
     @Test
     public void testCreateIdentity() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aadClientId\":\"ayscseydzje\",\"aadTenantId\":\"xm\",\"aadServicePrincipalObjectId\":\"kvmuwrxlniwmcp\",\"aadApplicationObjectId\":\"rdlhvdvmiphbe\"}}";
+            = "{\"properties\":{\"aadClientId\":\"jxejpdcliqwzut\",\"aadTenantId\":\"el\",\"aadServicePrincipalObjectId\":\"hhjtvh\",\"aadApplicationObjectId\":\"z\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ClustersCreateIdentityMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterIdentityResponse response
-            = manager.clusters().createIdentity("ngu", "aby", com.azure.core.util.Context.NONE);
+            = manager.clusters().createIdentity("zlaihsujtg", "ybsz", com.azure.core.util.Context.NONE);
 
     }
 }

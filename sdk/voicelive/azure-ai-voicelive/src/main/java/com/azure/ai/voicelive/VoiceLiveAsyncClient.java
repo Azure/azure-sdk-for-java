@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import com.azure.ai.voicelive.implementation.VoiceLiveTracer;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
 import com.azure.core.annotation.ServiceClient;
@@ -35,14 +36,6 @@ public final class VoiceLiveAsyncClient {
     private final String apiVersion;
     private final HttpHeaders additionalHeaders;
 
-    /**
-     * Creates a VoiceLiveAsyncClient with API key authentication.
-     *
-     * @param endpoint The service endpoint.
-     * @param keyCredential The API key credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     */
     VoiceLiveAsyncClient(URI endpoint, KeyCredential keyCredential, String apiVersion, HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
@@ -51,14 +44,6 @@ public final class VoiceLiveAsyncClient {
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
     }
 
-    /**
-     * Creates a VoiceLiveAsyncClient with token authentication.
-     *
-     * @param endpoint The service endpoint.
-     * @param tokenCredential The token credential.
-     * @param apiVersion The API version.
-     * @param additionalHeaders Additional headers to include in requests.
-     */
     VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
         HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
@@ -79,12 +64,7 @@ public final class VoiceLiveAsyncClient {
         Objects.requireNonNull(model, "'model' cannot be null");
 
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, model)).flatMap(wsEndpoint -> {
-            VoiceLiveSessionAsyncClient session;
-            if (keyCredential != null) {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-            } else {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-            }
+            VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, model, null);
             return session.connect(additionalHeaders).thenReturn(session);
         });
     }
@@ -97,12 +77,7 @@ public final class VoiceLiveAsyncClient {
      */
     public Mono<VoiceLiveSessionAsyncClient> startSession() {
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null)).flatMap(wsEndpoint -> {
-            VoiceLiveSessionAsyncClient session;
-            if (keyCredential != null) {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-            } else {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-            }
+            VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, null);
             return session.connect(additionalHeaders).thenReturn(session);
         });
     }
@@ -122,12 +97,7 @@ public final class VoiceLiveAsyncClient {
         return Mono
             .fromCallable(() -> convertToWebSocketEndpoint(endpoint, model, requestOptions.getCustomQueryParameters()))
             .flatMap(wsEndpoint -> {
-                VoiceLiveSessionAsyncClient session;
-                if (keyCredential != null) {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-                } else {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-                }
+                VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, model, null);
                 // Merge additional headers with custom headers from requestOptions
                 HttpHeaders mergedHeaders = mergeHeaders(additionalHeaders, requestOptions.getCustomHeaders());
                 return session.connect(mergedHeaders).thenReturn(session);
@@ -148,12 +118,7 @@ public final class VoiceLiveAsyncClient {
         return Mono
             .fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, requestOptions.getCustomQueryParameters()))
             .flatMap(wsEndpoint -> {
-                VoiceLiveSessionAsyncClient session;
-                if (keyCredential != null) {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-                } else {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-                }
+                VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, null);
                 // Merge additional headers with custom headers from requestOptions
                 HttpHeaders mergedHeaders = mergeHeaders(additionalHeaders, requestOptions.getCustomHeaders());
                 return session.connect(mergedHeaders).thenReturn(session);
@@ -176,12 +141,7 @@ public final class VoiceLiveAsyncClient {
 
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, agentConfig.toQueryParameters()))
             .flatMap(wsEndpoint -> {
-                VoiceLiveSessionAsyncClient session;
-                if (keyCredential != null) {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-                } else {
-                    session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-                }
+                VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, agentConfig);
                 return session.connect(additionalHeaders).thenReturn(session);
             });
     }
@@ -211,16 +171,29 @@ public final class VoiceLiveAsyncClient {
         }
 
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, mergedParams)).flatMap(wsEndpoint -> {
-            VoiceLiveSessionAsyncClient session;
-            if (keyCredential != null) {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential);
-            } else {
-                session = new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential);
-            }
+            VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, agentConfig);
             // Merge additional headers with custom headers from requestOptions
             HttpHeaders mergedHeaders = mergeHeaders(additionalHeaders, requestOptions.getCustomHeaders());
             return session.connect(mergedHeaders).thenReturn(session);
         });
+    }
+
+    /**
+     * Creates a VoiceLiveSessionAsyncClient with the appropriate credentials and optional tracing.
+     *
+     * @param wsEndpoint The WebSocket endpoint URI.
+     * @param model The model name, used for tracing span names.
+     * @param agentSessionConfig The agent session configuration, or null.
+     * @return A new VoiceLiveSessionAsyncClient instance.
+     */
+    private VoiceLiveSessionAsyncClient createSessionClient(URI wsEndpoint, String model,
+        AgentSessionConfig agentSessionConfig) {
+        VoiceLiveTracer voiceLiveTracer = VoiceLiveTracer.create(wsEndpoint, model, null);
+        if (keyCredential != null) {
+            return new VoiceLiveSessionAsyncClient(wsEndpoint, keyCredential, voiceLiveTracer, agentSessionConfig);
+        } else {
+            return new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential, voiceLiveTracer, agentSessionConfig);
+        }
     }
 
     /**

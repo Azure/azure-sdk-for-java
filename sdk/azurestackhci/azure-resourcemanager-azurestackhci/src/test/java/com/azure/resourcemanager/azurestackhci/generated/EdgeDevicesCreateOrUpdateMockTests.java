@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class EdgeDevicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"kind\":\"EdgeDevice\",\"id\":\"spi\",\"name\":\"leimixlmdbgicehf\",\"type\":\"sm\"}";
+        String responseStr = "{\"kind\":\"EdgeDevice\",\"id\":\"fyixe\",\"name\":\"masjnfgngxa\",\"type\":\"jeeyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class EdgeDevicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeDevice response = manager.edgeDevices()
-            .createOrUpdate("fhsdpzouhkt", "rxqwqnjxrd", new EdgeDeviceInner(), com.azure.core.util.Context.NONE);
+            .createOrUpdate("dyvtu", "virlunsskydi", new EdgeDeviceInner(), com.azure.core.util.Context.NONE);
 
     }
 }

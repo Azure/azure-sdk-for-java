@@ -220,7 +220,7 @@ public class UserPrincipalManager {
                         LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
                     } else {
                         throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
-                            + "does not match neither client-id nor AppIdUri.");
+                            + " does not match either the client-id or AppIdUri.");
                     }
                 }
             }

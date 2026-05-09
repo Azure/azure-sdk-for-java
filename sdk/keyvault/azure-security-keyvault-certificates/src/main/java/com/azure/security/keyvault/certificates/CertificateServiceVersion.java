@@ -39,10 +39,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      */
     V7_6("7.6"),
     /**
-     * Service version {@code 2025-06-01-preview}.
-     */
-    V2025_06_01_PREVIEW("2025-06-01-preview"),
-    /**
      * Service version {@code 2025-07-01}.
      */
     V2025_07_01("2025-07-01");
@@ -67,6 +63,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      * @return The latest {@link CertificateServiceVersion}.
      */
     public static CertificateServiceVersion getLatest() {
-        return V7_6;
+        return V2025_07_01;
     }
 }

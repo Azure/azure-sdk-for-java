@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_GenerateCredentials.json
+     * x-ms-original-file: 2026-01-01/Buckets_GenerateCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateCredentials.

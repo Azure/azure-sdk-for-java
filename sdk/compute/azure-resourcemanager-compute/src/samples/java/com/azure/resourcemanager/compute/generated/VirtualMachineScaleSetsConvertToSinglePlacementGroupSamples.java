@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlaceme
 public final class VirtualMachineScaleSetsConvertToSinglePlacementGroupSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.
      * json
      */
     /**
@@ -32,7 +32,7 @@ public final class VirtualMachineScaleSetsConvertToSinglePlacementGroupSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.
      * json
      */
     /**

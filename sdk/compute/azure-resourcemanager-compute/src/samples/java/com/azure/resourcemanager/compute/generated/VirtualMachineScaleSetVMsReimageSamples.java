@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageP
 public final class VirtualMachineScaleSetVMsReimageSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.
@@ -31,7 +31,7 @@ public final class VirtualMachineScaleSetVMsReimageSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
+     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.

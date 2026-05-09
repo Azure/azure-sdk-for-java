@@ -48,7 +48,7 @@ function ConvertToPatchInfo([ArtifactInfo]$ArInfo) {
 # Get version info for all the maven artifacts under the groupId = 'com.azure'
 function GetVersionInfoForAllMavenArtifacts([string]$GroupId = "com.azure") {
     $artifactInfos = @{}
-    $azComArtifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $GroupId
+    $azComArtifactIds = GetAllAzComClientArtifactIds -GroupId $GroupId
 
     foreach ($artifactId in $azComArtifactIds) {
         $artifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $GroupId
@@ -72,8 +72,14 @@ function UpdateDependencies($ArtifactInfos) {
         $deps = @{}
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
-        $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
-        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+        # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+        # Maven Central endpoint is blocked on the build agent network.
+        $pomFileUri = "$PackageRepositoryUri/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
+        $headers = @{}
+        if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+          $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+        }
+        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers $headers
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
         $ArtifactInfos[$artifactId].Dependencies = $deps
@@ -101,13 +107,78 @@ function UpdateCIInformation($ArtifactInfos) {
     }
 }
 
+<#
+.SYNOPSIS
+Adds a missing Azure dependency's latest GA/patch version to the patch comparison map.
+
+.DESCRIPTION
+Returns $true when $LatestVersions[$DependencyId] is available after this function runs:
+either it was already present, or it was resolved from Maven and added to $LatestVersions.
+
+Returns $false when the dependency should not participate in patch-version comparison:
+it is already known to be unresolved, is not an Azure artifact, has no usable GA/patch
+version on Maven, or returns 404 from Maven metadata lookup. Other Maven/feed errors are
+re-thrown because they can make patch analysis unreliable.
+#>
+function TryAddLatestDependencyVersionFromMaven($DependencyId, [hashtable]$LatestVersions, [hashtable]$UnresolvedDependencies) {
+    # Dependency versions already in the patch graph take precedence. This includes
+    # artifacts from patch_release_client.txt and artifacts already selected for a
+    # patch in the current fixed-point pass.
+    if ($LatestVersions.ContainsKey($DependencyId)) {
+        return $true
+    }
+
+    # Cache missing dependencies so repeated references from multiple artifacts do
+    # not repeatedly call the Maven feed during each fixed-point pass.
+    if ($UnresolvedDependencies.ContainsKey($DependencyId)) {
+        return $false
+    }
+
+    # Keep the original behavior for third-party packages: only Azure artifacts can
+    # cause automated patch releases.
+    if ($DependencyId -notlike "azure-*") {
+        $UnresolvedDependencies[$DependencyId] = $true
+        return $false
+    }
+
+    try {
+        # Some common Azure dependencies (for example azure-core and azure-identity)
+        # are not listed in patch_release_client.txt. Resolve their latest GA/patch
+        # version from the Maven feed so dependents can still be detected.
+        $dependencyInfo = GetVersionInfoForMavenArtifact -ArtifactId $DependencyId -GroupId "com.azure"
+        if ($dependencyInfo -and -not [String]::IsNullOrWhiteSpace($dependencyInfo.LatestGAOrPatchVersion)) {
+            $LatestVersions[$DependencyId] = $dependencyInfo.LatestGAOrPatchVersion
+            return $true
+        }
+
+        $UnresolvedDependencies[$DependencyId] = $true
+        return $false
+    } catch {
+        $statusCode = $null
+        if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+            $statusCode = [int]$_.Exception.Response.StatusCode
+        }
+
+        # A 404 means the dependency is not published as a com.azure Maven artifact,
+        # so it should be treated like an ignored external dependency.
+        if ($statusCode -eq 404) {
+            Write-Verbose "Could not find Maven metadata for dependency '$DependencyId' in group 'com.azure'."
+            $UnresolvedDependencies[$DependencyId] = $true
+            return $false
+        }
+
+        throw
+    }
+}
+
 # Find all the artifacts that will need to be patched based on dependency analysis.
 # Iterates until no more patches are found (fixed-point), so the result is correct
 # regardless of artifact ordering in patch_release_client.txt.
-# Only dependencies that are themselves in the patch list are checked — external
-# dependencies (reactor-core, jackson, etc.) are ignored.
+# Dependencies in the patch list are checked directly; missing Azure dependencies
+# are resolved from Maven. External dependencies (reactor-core, jackson, etc.) are ignored.
 function FindArtifactsThatNeedPatching($ArtifactInfos) {
     $latestVersions = @{}
+    $unresolvedDependencies = @{}
     foreach ($arId in $ArtifactInfos.Keys) {
         $latestVersions[$arId] = $ArtifactInfos[$arId].LatestGAOrPatchVersion
     }
@@ -118,7 +189,11 @@ function FindArtifactsThatNeedPatching($ArtifactInfos) {
             $arInfo = $ArtifactInfos[$arId]
             if ($arInfo.FutureReleasePatchVersion) { continue }
             foreach ($depId in $arInfo.Dependencies.Keys) {
-                if (-not $latestVersions.ContainsKey($depId)) { continue }
+                if (-not $latestVersions.ContainsKey($depId) -and
+                    -not (TryAddLatestDependencyVersionFromMaven -DependencyId $depId -LatestVersions $latestVersions -UnresolvedDependencies $unresolvedDependencies)) {
+                    continue
+                }
+
                 if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
                     $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
                     $arInfo.FutureReleasePatchVersion = $patchVersion
