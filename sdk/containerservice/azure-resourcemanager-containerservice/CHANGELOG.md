@@ -1,14 +1,18 @@
 # Release History
 
-## 2.60.0-beta.1 (Unreleased)
+## 2.60.0 (2026-05-09)
 
 ### Features Added
 
-### Breaking Changes
+* `models.AgentPoolArtifactStreamingProfile` was added
 
-### Bugs Fixed
+#### `models.OSSku` was modified
 
-### Other Changes
+* `AZURE_CONTAINER_LINUX` was added
+
+#### `models.ManagedClusterAgentPoolProfile` was modified
+
+* `withArtifactStreamingProfile(models.AgentPoolArtifactStreamingProfile)` was added
 
 ## 2.59.1 (2026-05-05)
 
