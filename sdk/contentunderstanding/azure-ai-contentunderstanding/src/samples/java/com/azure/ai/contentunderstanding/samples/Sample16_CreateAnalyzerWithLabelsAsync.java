@@ -445,8 +445,11 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
             .credential(credential)
             .buildClient();
 
-        OffsetDateTime startsOn = OffsetDateTime.now();
-        OffsetDateTime expiresOn = startsOn.plusHours(1);
+        // Start the SAS 5 minutes in the past to tolerate clock skew between the local machine
+        // and the storage service. Without this buffer, SAS generation can intermittently fail
+        // with AuthenticationFailed ("SAS not valid yet").
+        OffsetDateTime startsOn = OffsetDateTime.now().minusMinutes(5);
+        OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
         UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(startsOn, expiresOn);
 
