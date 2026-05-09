@@ -1,14 +1,236 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2026-05-09)
 
-### Features Added
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Azure Application Insights client for saved items. Package api-version AnalyticsItems: 2015-05-01, ComponentAPIs: 2015-05-01, ComponentLinkedStorageAccountApi: 2020-03-01-preview, Components: 2020-02-02, DeletedWorkbookApi: 2024-02-01-preview, Favorites: 2015-05-01, LiveTokenApi: 2021-10-14, WebTestLocation: 2015-05-01, WebTestsApi: 2022-06-15, WorkBookOperations: 2021-03-08, WorkbooksApi: 2023-06-01, WorkbookTemplatesApi: 2020-11-20. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.WorkbooksListResult` was removed
 
-### Other Changes
+#### `models.ApplicationInsightsWebTestLocationsListResult` was removed
+
+#### `models.WorkbookResource` was removed
+
+#### `models.ApplicationInsightsComponentListResult` was removed
+
+#### `models.AnnotationsListResult` was removed
+
+#### `models.DeletedWorkbooksListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WebTestListResult` was removed
+
+#### `models.ApplicationInsightsComponentApiKeyListResult` was removed
+
+#### `models.WorkItemConfigurationsListResult` was removed
+
+#### `models.WorkbookTemplatesListResult` was removed
+
+#### `models.WorkbookTemplateResource` was removed
+
+#### `models.WorkbookUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.WorkbookTemplateLocalizedGallery` was modified
+
+* `validate()` was removed
+
+#### `models.DeletedWorkbookResource` was modified
+
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `models.DeletedWorkbookResource withKind(models.WorkbookSharedTypeKind)` -> `models.DeletedWorkbookResource withKind(models.WorkbookSharedTypeKind)`
+* `models.DeletedWorkbookResource withEtag(java.lang.String)` -> `models.DeletedWorkbookResource withEtag(java.lang.String)`
+
+#### `models.ApplicationInsightsComponentFeature` was modified
+
+* `ApplicationInsightsComponentFeature()` was changed to private access
+* `validate()` was removed
+
+#### `models.WebTestPropertiesConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.WorkbookTemplateUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationInsightsComponentAnalyticsItemProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AnnotationError` was modified
+
+* `AnnotationError()` was changed to private access
+* `validate()` was removed
+
+#### `models.InnerError` was modified
+
+* `InnerError()` was changed to private access
+* `withTime(java.time.OffsetDateTime)` was removed
+* `withDiagnosticcontext(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.WorkbookInnerErrorTrace` was modified
+
+* `WorkbookInnerErrorTrace()` was changed to private access
+* `validate()` was removed
+
+#### `models.WorkbookErrorDefinition` was modified
+
+* `WorkbookErrorDefinition()` was changed to private access
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.ApplicationInsightsComponentDataVolumeCap` was modified
+
+* `validate()` was removed
+
+#### `models.WorkbookResourceIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ApplicationInsightsComponentExportRequest` was modified
+
+* `validate()` was removed
+
+#### `models.WebTestPropertiesRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+
+#### `models.WebTestPropertiesValidationRules` was modified
+
+* `validate()` was removed
+
+#### `models.HeaderField` was modified
+
+* `validate()` was removed
+
+#### `models.WebtestsResource` was modified
+
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+
+#### `models.ComponentsResource` was modified
+
+* `validate()` was removed
+* `withTags(java.util.Map)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.WebTestGeolocation` was modified
+
+* `validate()` was removed
+
+#### `models.ComponentLinkedStorageAccountsPatch` was modified
+
+* `validate()` was removed
+
+#### `models.WorkItemCreateConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.ApplicationInsightsComponentFeatureCapability` was modified
+
+* `ApplicationInsightsComponentFeatureCapability()` was changed to private access
+* `validate()` was removed
+
+#### `models.ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions` was modified
+
+* `validate()` was removed
+
+#### `models.WebTestPropertiesValidationRulesContentValidation` was modified
+
+* `validate()` was removed
+
+#### `models.WorkItemConfigurationError` was modified
+
+* `WorkItemConfigurationError()` was changed to private access
+* `validate()` was removed
+
+#### `models.ComponentPurgeBody` was modified
+
+* `validate()` was removed
+
+#### `models.DeletedWorkbookInnerErrorTrace` was modified
+
+* `DeletedWorkbookInnerErrorTrace()` was changed to private access
+* `validate()` was removed
+
+#### `models.WorkbookTemplateGallery` was modified
+
+* `validate()` was removed
+
+#### `models.ComponentPurgeBodyFilters` was modified
+
+* `validate()` was removed
+
+#### `models.ApiKeyRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DeletedWorkbookErrorDefinition` was modified
+
+* `DeletedWorkbookErrorDefinition()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrivateLinkScopedResource` was modified
+
+* `PrivateLinkScopedResource()` was changed to private access
+* `withScopeId(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.TagsResource` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.TrackedResource` was added
+
+#### `models.ComponentLinkedStorageAccounts` was modified
+
+* `systemData()` was added
+
+#### `models.WebtestsResource` was modified
+
+* `tags()` was added
+* `location()` was added
+
+#### `models.ComponentsResource` was modified
+
+* `tags()` was added
+* `location()` was added
+
+#### `models.WorkbookTemplate` was modified
+
+* `systemData()` was added
 
 ## 1.2.0-beta.1 (2025-02-18)
 

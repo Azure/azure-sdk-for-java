@@ -35,13 +35,6 @@
 
 - [Get](#componentfeaturecapabilities_get)
 
-## ComponentLinkedStorageAccountsOperation
-
-- [CreateAndUpdate](#componentlinkedstorageaccountsoperation_createandupdate)
-- [Delete](#componentlinkedstorageaccountsoperation_delete)
-- [Get](#componentlinkedstorageaccountsoperation_get)
-- [Update](#componentlinkedstorageaccountsoperation_update)
-
 ## ComponentQuotaStatus
 
 - [Get](#componentquotastatus_get)
@@ -56,10 +49,6 @@
 - [ListByResourceGroup](#components_listbyresourcegroup)
 - [Purge](#components_purge)
 - [UpdateTags](#components_updatetags)
-
-## DeletedWorkbooks
-
-- [List](#deletedworkbooks_list)
 
 ## ExportConfigurations
 
@@ -77,10 +66,6 @@
 - [List](#favorites_list)
 - [Update](#favorites_update)
 
-## LiveToken
-
-- [Get](#livetoken_get)
-
 ## ProactiveDetectionConfigurations
 
 - [Get](#proactivedetectionconfigurations_get)
@@ -91,16 +76,6 @@
 
 - [List](#webtestlocations_list)
 
-## WebTests
-
-- [CreateOrUpdate](#webtests_createorupdate)
-- [Delete](#webtests_delete)
-- [GetByResourceGroup](#webtests_getbyresourcegroup)
-- [List](#webtests_list)
-- [ListByComponent](#webtests_listbycomponent)
-- [ListByResourceGroup](#webtests_listbyresourcegroup)
-- [UpdateTags](#webtests_updatetags)
-
 ## WorkItemConfigurations
 
 - [Create](#workitemconfigurations_create)
@@ -109,25 +84,6 @@
 - [GetItem](#workitemconfigurations_getitem)
 - [List](#workitemconfigurations_list)
 - [UpdateItem](#workitemconfigurations_updateitem)
-
-## WorkbookTemplates
-
-- [CreateOrUpdate](#workbooktemplates_createorupdate)
-- [Delete](#workbooktemplates_delete)
-- [GetByResourceGroup](#workbooktemplates_getbyresourcegroup)
-- [ListByResourceGroup](#workbooktemplates_listbyresourcegroup)
-- [Update](#workbooktemplates_update)
-
-## Workbooks
-
-- [CreateOrUpdate](#workbooks_createorupdate)
-- [Delete](#workbooks_delete)
-- [GetByResourceGroup](#workbooks_getbyresourcegroup)
-- [List](#workbooks_list)
-- [ListByResourceGroup](#workbooks_listbyresourcegroup)
-- [RevisionGet](#workbooks_revisionget)
-- [RevisionsList](#workbooks_revisionslist)
-- [Update](#workbooks_update)
 ### AnalyticsItems_Delete
 
 ```java
@@ -138,9 +94,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnalyticsItemDelete.json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemDelete.json
      */
     /**
      * Sample code: AnalyticsItemDelete.
@@ -166,9 +120,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemGet
-     * .json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemGet.json
      */
     /**
      * Sample code: AnalyticsItemGet.
@@ -194,9 +146,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
  */
 public final class AnalyticsItemsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnalyticsItemList.json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemList.json
      */
     /**
      * Sample code: AnalyticsItemList.
@@ -225,9 +175,7 @@ import com.azure.resourcemanager.applicationinsights.models.ItemType;
  */
 public final class AnalyticsItemsPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnalyticsItemPut
-     * .json
+     * x-ms-original-file: 2015-05-01/AnalyticsItemPut.json
      */
     /**
      * Sample code: AnalyticsItemPut.
@@ -259,9 +207,7 @@ import java.time.OffsetDateTime;
  */
 public final class AnnotationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnnotationsCreate.json
+     * x-ms-original-file: 2015-05-01/AnnotationsCreate.json
      */
     /**
      * Sample code: AnnotationsCreate.
@@ -290,9 +236,7 @@ public final class AnnotationsCreateSamples {
  */
 public final class AnnotationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AnnotationsDelete.json
+     * x-ms-original-file: 2015-05-01/AnnotationsDelete.json
      */
     /**
      * Sample code: AnnotationsDelete.
@@ -316,9 +260,7 @@ public final class AnnotationsDeleteSamples {
  */
 public final class AnnotationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsGet.
-     * json
+     * x-ms-original-file: 2015-05-01/AnnotationsGet.json
      */
     /**
      * Sample code: AnnotationsGet.
@@ -342,9 +284,7 @@ public final class AnnotationsGetSamples {
  */
 public final class AnnotationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/AnnotationsList.
-     * json
+     * x-ms-original-file: 2015-05-01/AnnotationsList.json
      */
     /**
      * Sample code: AnnotationsList.
@@ -371,9 +311,7 @@ import java.util.Arrays;
  */
 public final class ApiKeysCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysCreate.
-     * json
+     * x-ms-original-file: 2015-05-01/APIKeysCreate.json
      */
     /**
      * Sample code: APIKeyCreate.
@@ -401,9 +339,7 @@ public final class ApiKeysCreateSamples {
  */
 public final class ApiKeysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysDelete.
-     * json
+     * x-ms-original-file: 2015-05-01/APIKeysDelete.json
      */
     /**
      * Sample code: APIKeyDelete.
@@ -426,8 +362,7 @@ public final class ApiKeysDeleteSamples {
  */
 public final class ApiKeysGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysGet.json
+     * x-ms-original-file: 2015-05-01/APIKeysGet.json
      */
     /**
      * Sample code: APIKeysGet.
@@ -450,8 +385,7 @@ public final class ApiKeysGetSamples {
  */
 public final class ApiKeysListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/APIKeysList.json
+     * x-ms-original-file: 2015-05-01/APIKeysList.json
      */
     /**
      * Sample code: APIKeysList.
@@ -472,9 +406,7 @@ public final class ApiKeysListSamples {
  */
 public final class ComponentAvailableFeaturesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * AvailableBillingFeaturesGet.json
+     * x-ms-original-file: 2015-05-01/AvailableBillingFeaturesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -497,9 +429,7 @@ public final class ComponentAvailableFeaturesGetSamples {
  */
 public final class ComponentCurrentBillingFeaturesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * CurrentBillingFeaturesGet.json
+     * x-ms-original-file: 2015-05-01/CurrentBillingFeaturesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -526,9 +456,7 @@ import java.util.Arrays;
  */
 public final class ComponentCurrentBillingFeaturesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * CurrentBillingFeaturesUpdate.json
+     * x-ms-original-file: 2015-05-01/CurrentBillingFeaturesUpdate.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesUpdate.
@@ -556,9 +484,7 @@ public final class ComponentCurrentBillingFeaturesUpdateSamples {
  */
 public final class ComponentFeatureCapabilitiesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * FeatureCapabilitiesGet.json
+     * x-ms-original-file: 2015-05-01/FeatureCapabilitiesGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -573,127 +499,6 @@ public final class ComponentFeatureCapabilitiesGetSamples {
 }
 ```
 
-### ComponentLinkedStorageAccountsOperation_CreateAndUpdate
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.StorageType;
-
-/**
- * Samples for ComponentLinkedStorageAccountsOperation CreateAndUpdate.
- */
-public final class ComponentLinkedStorageAccountsOperationCreateAndUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsCreateAndUpdate.json
-     */
-    /**
-     * Sample code: ComponentLinkedStorageAccountsCreateAndUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void componentLinkedStorageAccountsCreateAndUpdate(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.componentLinkedStorageAccountsOperations()
-            .define(StorageType.SERVICE_PROFILER)
-            .withExistingComponent("someResourceGroupName", "myComponent")
-            .withLinkedStorageAccount(
-                "/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname")
-            .create();
-    }
-}
-```
-
-### ComponentLinkedStorageAccountsOperation_Delete
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.StorageType;
-
-/**
- * Samples for ComponentLinkedStorageAccountsOperation Delete.
- */
-public final class ComponentLinkedStorageAccountsOperationDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsDelete.json
-     */
-    /**
-     * Sample code: ComponentLinkedStorageAccountsDelete.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void componentLinkedStorageAccountsDelete(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.componentLinkedStorageAccountsOperations()
-            .deleteWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ComponentLinkedStorageAccountsOperation_Get
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.StorageType;
-
-/**
- * Samples for ComponentLinkedStorageAccountsOperation Get.
- */
-public final class ComponentLinkedStorageAccountsOperationGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsGet.json
-     */
-    /**
-     * Sample code: ComponentLinkedStorageAccountsGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void componentLinkedStorageAccountsGet(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.componentLinkedStorageAccountsOperations()
-            .getWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ComponentLinkedStorageAccountsOperation_Update
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccounts;
-import com.azure.resourcemanager.applicationinsights.models.StorageType;
-
-/**
- * Samples for ComponentLinkedStorageAccountsOperation Update.
- */
-public final class ComponentLinkedStorageAccountsOperationUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
-     * ComponentLinkedStorageAccountsUpdate.json
-     */
-    /**
-     * Sample code: ComponentLinkedStorageAccountsUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void componentLinkedStorageAccountsUpdate(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        ComponentLinkedStorageAccounts resource = manager.componentLinkedStorageAccountsOperations()
-            .getWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withLinkedStorageAccount(
-                "/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname")
-            .apply();
-    }
-}
-```
-
 ### ComponentQuotaStatus_Get
 
 ```java
@@ -702,9 +507,7 @@ public final class ComponentLinkedStorageAccountsOperationUpdateSamples {
  */
 public final class ComponentQuotaStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/QuotaStatusGet.
-     * json
+     * x-ms-original-file: 2015-05-01/QuotaStatusGet.json
      */
     /**
      * Sample code: ComponentCurrentBillingFeaturesGet.
@@ -733,9 +536,7 @@ import java.util.Map;
  */
 public final class ComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsCreate
-     * .json
+     * x-ms-original-file: 2020-02-02/ComponentsCreate.json
      */
     /**
      * Sample code: ComponentCreate.
@@ -758,9 +559,7 @@ public final class ComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsUpdate
-     * .json
+     * x-ms-original-file: 2020-02-02/ComponentsUpdate.json
      */
     /**
      * Sample code: ComponentUpdate.
@@ -800,9 +599,7 @@ public final class ComponentsCreateOrUpdateSamples {
  */
 public final class ComponentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsDelete
-     * .json
+     * x-ms-original-file: 2020-02-02/ComponentsDelete.json
      */
     /**
      * Sample code: ComponentsDelete.
@@ -825,9 +622,7 @@ public final class ComponentsDeleteSamples {
  */
 public final class ComponentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.
-     * json
+     * x-ms-original-file: 2020-02-02/ComponentsGet.json
      */
     /**
      * Sample code: ComponentGet.
@@ -849,9 +644,7 @@ public final class ComponentsGetByResourceGroupSamples {
  */
 public final class ComponentsGetPurgeStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsPurgeStatus.json
+     * x-ms-original-file: 2020-02-02/ComponentsPurgeStatus.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -875,9 +668,7 @@ public final class ComponentsGetPurgeStatusSamples {
  */
 public final class ComponentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsList.
-     * json
+     * x-ms-original-file: 2020-02-02/ComponentsList.json
      */
     /**
      * Sample code: ComponentsList.json.
@@ -899,9 +690,7 @@ public final class ComponentsListSamples {
  */
 public final class ComponentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsListByResourceGroup.json
+     * x-ms-original-file: 2020-02-02/ComponentsListByResourceGroup.json
      */
     /**
      * Sample code: ComponentListByResourceGroup.
@@ -927,9 +716,7 @@ import java.util.Arrays;
  */
 public final class ComponentsPurgeSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsPurge.
-     * json
+     * x-ms-original-file: 2020-02-02/ComponentsPurge.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -961,9 +748,7 @@ import java.util.Map;
  */
 public final class ComponentsUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/
-     * ComponentsUpdateTagsOnly.json
+     * x-ms-original-file: 2020-02-02/ComponentsUpdateTagsOnly.json
      */
     /**
      * Sample code: ComponentUpdateTagsOnly.
@@ -995,31 +780,6 @@ public final class ComponentsUpdateTagsSamples {
 }
 ```
 
-### DeletedWorkbooks_List
-
-```java
-
-/**
- * Samples for DeletedWorkbooks List.
- */
-public final class DeletedWorkbooksListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2024-02-01-preview/examples/
-     * DeletedWorkbooksList.json
-     */
-    /**
-     * Sample code: WorkbooksListSub.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksListSub(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.deletedWorkbooks().list(null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### ExportConfigurations_Create
 
 ```java
@@ -1030,9 +790,7 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
  */
 public final class ExportConfigurationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationsPost.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationsPost.json
      */
     /**
      * Sample code: ExportConfigurationPost.
@@ -1068,9 +826,7 @@ public final class ExportConfigurationsCreateSamples {
  */
 public final class ExportConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationDelete.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationDelete.json
      */
     /**
      * Sample code: ExportConfigurationDelete.
@@ -1094,9 +850,7 @@ public final class ExportConfigurationsDeleteSamples {
  */
 public final class ExportConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationGet.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationGet.json
      */
     /**
      * Sample code: ExportConfigurationGet.
@@ -1120,9 +874,7 @@ public final class ExportConfigurationsGetSamples {
  */
 public final class ExportConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationsList.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationsList.json
      */
     /**
      * Sample code: ExportConfigurationsList.
@@ -1147,9 +899,7 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
  */
 public final class ExportConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ExportConfigurationUpdate.json
+     * x-ms-original-file: 2015-05-01/ExportConfigurationUpdate.json
      */
     /**
      * Sample code: ExportConfigurationUpdate.
@@ -1189,8 +939,7 @@ import java.util.Arrays;
  */
 public final class FavoritesAddSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteAdd.json
+     * x-ms-original-file: 2015-05-01/FavoriteAdd.json
      */
     /**
      * Sample code: FavoriteAdd.
@@ -1220,9 +969,7 @@ public final class FavoritesAddSamples {
  */
 public final class FavoritesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteDelete.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoriteDelete.json
      */
     /**
      * Sample code: FavoriteList.
@@ -1245,8 +992,7 @@ public final class FavoritesDeleteSamples {
  */
 public final class FavoritesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteGet.json
+     * x-ms-original-file: 2015-05-01/FavoriteGet.json
      */
     /**
      * Sample code: FavoriteGet.
@@ -1270,9 +1016,7 @@ public final class FavoritesGetSamples {
  */
 public final class FavoritesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoritesList.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoritesList.json
      */
     /**
      * Sample code: FavoritesList.
@@ -1299,9 +1043,7 @@ import java.util.Arrays;
  */
 public final class FavoritesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/FavoriteUpdate.
-     * json
+     * x-ms-original-file: 2015-05-01/FavoriteUpdate.json
      */
     /**
      * Sample code: FavoriteList.
@@ -1323,33 +1065,6 @@ public final class FavoritesUpdateSamples {
 }
 ```
 
-### LiveToken_Get
-
-```java
-/**
- * Samples for LiveToken Get.
- */
-public final class LiveTokenGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-10-14/examples/LiveTokenGet.
-     * json
-     */
-    /**
-     * Sample code: Get live token for resource.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        getLiveTokenForResource(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.liveTokens()
-            .getWithResponse(
-                "subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/FabrikamFiberApp/providers/microsoft.insights/components/CustomAvailabilityTest/providers/microsoft.insights/generatelivetoken",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### ProactiveDetectionConfigurations_Get
 
 ```java
@@ -1358,9 +1073,7 @@ public final class LiveTokenGetSamples {
  */
 public final class ProactiveDetectionConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationGet.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationGet.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationGet.
@@ -1383,9 +1096,7 @@ public final class ProactiveDetectionConfigurationsGetSamples {
  */
 public final class ProactiveDetectionConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationsList.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationsList.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationsList.
@@ -1412,9 +1123,7 @@ import java.util.Arrays;
  */
 public final class ProactiveDetectionConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * ProactiveDetectionConfigurationUpdate.json
+     * x-ms-original-file: 2015-05-01/ProactiveDetectionConfigurationUpdate.json
      */
     /**
      * Sample code: ProactiveDetectionConfigurationUpdate.
@@ -1453,9 +1162,7 @@ public final class ProactiveDetectionConfigurationsUpdateSamples {
  */
 public final class WebTestLocationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WebTestLocationsList.json
+     * x-ms-original-file: 2015-05-01/WebTestLocationsList.json
      */
     /**
      * Sample code: WebTestLocationsList.
@@ -1465,284 +1172,6 @@ public final class WebTestLocationsListSamples {
     public static void
         webTestLocationsList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager.webTestLocations().list("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.HeaderField;
-import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
-import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
-import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
-import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesRequest;
-import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
-import java.util.Arrays;
-
-/**
- * Samples for WebTests CreateOrUpdate.
- */
-public final class WebTestsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestCreate.
-     * json
-     */
-    /**
-     * Sample code: webTestCreate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void webTestCreate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests()
-            .define("my-webtest-my-component")
-            .withRegion("South Central US")
-            .withExistingResourceGroup("my-resource-group")
-            .withKind(WebTestKind.PING)
-            .withSyntheticMonitorId("my-webtest-my-component")
-            .withWebTestName("my-webtest-my-component")
-            .withDescription("Ping web test alert for mytestwebapp")
-            .withEnabled(true)
-            .withFrequency(900)
-            .withTimeout(120)
-            .withWebTestKind(WebTestKind.PING)
-            .withRetryEnabled(true)
-            .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge")))
-            .withConfiguration(new WebTestPropertiesConfiguration().withWebTest(
-                "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"120\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\" ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\" Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\" Timeout=\"120\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestCreateStandard.json
-     */
-    /**
-     * Sample code: webTestCreateStandard.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        webTestCreateStandard(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests()
-            .define("my-webtest-my-component")
-            .withRegion("South Central US")
-            .withExistingResourceGroup("my-resource-group")
-            .withSyntheticMonitorId("my-webtest-my-component")
-            .withWebTestName("my-webtest-my-component")
-            .withDescription("Ping web test alert for mytestwebapp")
-            .withEnabled(true)
-            .withFrequency(900)
-            .withTimeout(120)
-            .withWebTestKind(WebTestKind.STANDARD)
-            .withRetryEnabled(true)
-            .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge")))
-            .withRequest(new WebTestPropertiesRequest().withRequestUrl("https://bing.com")
-                .withHeaders(Arrays.asList(
-                    new HeaderField().withHeaderFieldName("fakeTokenPlaceholder").withHeaderFieldValue("de-DE"),
-                    new HeaderField().withHeaderFieldName("fakeTokenPlaceholder").withHeaderFieldValue("de-DE")))
-                .withHttpVerb("POST")
-                .withRequestBody("SGVsbG8gd29ybGQ="))
-            .withValidationRules(
-                new WebTestPropertiesValidationRules().withSslCheck(true).withSslCertRemainingLifetimeCheck(100))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestUpdate.
-     * json
-     */
-    /**
-     * Sample code: webTestUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void webTestUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests()
-            .define("my-webtest-my-component")
-            .withRegion("South Central US")
-            .withExistingResourceGroup("my-resource-group")
-            .withKind(WebTestKind.PING)
-            .withSyntheticMonitorId("my-webtest-my-component")
-            .withWebTestName("my-webtest-my-component")
-            .withFrequency(600)
-            .withTimeout(30)
-            .withWebTestKind(WebTestKind.PING)
-            .withLocations(Arrays.asList(new WebTestGeolocation().withLocation("us-fl-mia-edge"),
-                new WebTestGeolocation().withLocation("apac-hk-hkn-azr")))
-            .withConfiguration(new WebTestPropertiesConfiguration().withWebTest(
-                "<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"30\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\" ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\" Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\" Timeout=\"30\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"))
-            .create();
-    }
-}
-```
-
-### WebTests_Delete
-
-```java
-/**
- * Samples for WebTests Delete.
- */
-public final class WebTestsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestDelete.
-     * json
-     */
-    /**
-     * Sample code: webTestDelete.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void webTestDelete(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests()
-            .deleteByResourceGroupWithResponse("my-resource-group", "my-webtest-01-mywebservice",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_GetByResourceGroup
-
-```java
-/**
- * Samples for WebTests GetByResourceGroup.
- */
-public final class WebTestsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestGet.json
-     */
-    /**
-     * Sample code: webTestGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void webTestGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests()
-            .getByResourceGroupWithResponse("my-resource-group", "my-webtest-01-mywebservice",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_List
-
-```java
-/**
- * Samples for WebTests List.
- */
-public final class WebTestsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/WebTestList.json
-     */
-    /**
-     * Sample code: webTestList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void webTestList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_ListByComponent
-
-```java
-/**
- * Samples for WebTests ListByComponent.
- */
-public final class WebTestsListByComponentSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestListByComponent.json
-     */
-    /**
-     * Sample code: webTestListByComponent.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        webTestListByComponent(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests().listByComponent("my-component", "my-resource-group", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_ListByResourceGroup
-
-```java
-/**
- * Samples for WebTests ListByResourceGroup.
- */
-public final class WebTestsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestListByResourceGroup.json
-     */
-    /**
-     * Sample code: webTestListByResourceGroup.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        webTestListByResourceGroup(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests().listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WebTests_UpdateTags
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.WebTest;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for WebTests UpdateTags.
- */
-public final class WebTestsUpdateTagsSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
-     * WebTestUpdateTagsOnly.json
-     */
-    /**
-     * Sample code: webTestUpdateTags.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        webTestUpdateTags(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        WebTest resource = manager.webTests()
-            .getByResourceGroupWithResponse("my-resource-group", "my-webtest-my-component",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("Color", "AzureBlue", "CustomField-01", "This is a random value", "SystemType", "A08",
-                "hidden-link:/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component",
-                "Resource"))
-            .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
 ```
@@ -1759,9 +1188,7 @@ import java.util.Map;
  */
 public final class WorkItemConfigurationsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigCreate.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigCreate.json
      */
     /**
      * Sample code: WorkItemConfigurationsCreate.
@@ -1776,7 +1203,8 @@ public final class WorkItemConfigurationsCreateSamples {
                 .withConnectorDataConfiguration(
                     "{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}")
                 .withValidateOnly(true)
-                .withWorkItemProperties(mapOf()), com.azure.core.util.Context.NONE);
+                .withWorkItemProperties(mapOf("name", "Title", "value", "Validate Only Title")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -1801,9 +1229,7 @@ public final class WorkItemConfigurationsCreateSamples {
  */
 public final class WorkItemConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigDelete.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigDelete.json
      */
     /**
      * Sample code: WorkItemConfigurationDelete.
@@ -1827,9 +1253,7 @@ public final class WorkItemConfigurationsDeleteSamples {
  */
 public final class WorkItemConfigurationsGetDefaultSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigDefaultGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigDefaultGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsGetDefault.
@@ -1852,9 +1276,7 @@ public final class WorkItemConfigurationsGetDefaultSamples {
  */
 public final class WorkItemConfigurationsGetItemSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsGetDefault.
@@ -1878,9 +1300,7 @@ public final class WorkItemConfigurationsGetItemSamples {
  */
 public final class WorkItemConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigsGet.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigsGet.json
      */
     /**
      * Sample code: WorkItemConfigurationsList.
@@ -1906,9 +1326,7 @@ import java.util.Map;
  */
 public final class WorkItemConfigurationsUpdateItemSamples {
     /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/
-     * WorkItemConfigUpdate.json
+     * x-ms-original-file: 2015-05-01/WorkItemConfigUpdate.json
      */
     /**
      * Sample code: WorkItemConfigurationsCreate.
@@ -1923,7 +1341,7 @@ public final class WorkItemConfigurationsUpdateItemSamples {
                     .withConnectorDataConfiguration(
                         "{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}")
                     .withValidateOnly(true)
-                    .withWorkItemProperties(mapOf()),
+                    .withWorkItemProperties(mapOf("name", "Title", "value", "Validate Only Title")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1937,520 +1355,6 @@ public final class WorkItemConfigurationsUpdateItemSamples {
             map.put(key, value);
         }
         return map;
-    }
-}
-```
-
-### WorkbookTemplates_CreateOrUpdate
-
-```java
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateGallery;
-import java.io.IOException;
-import java.util.Arrays;
-
-/**
- * Samples for WorkbookTemplates CreateOrUpdate.
- */
-public final class WorkbookTemplatesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateAdd.json
-     */
-    /**
-     * Sample code: WorkbookTemplateAdd.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookTemplateAdd(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) throws IOException {
-        manager.workbookTemplates()
-            .define("testtemplate2")
-            .withRegion("west us")
-            .withExistingResourceGroup("my-resource-group")
-            .withPriority(1)
-            .withAuthor("Contoso")
-            .withTemplateData(SerializerFactory.createDefaultManagementSerializerAdapter()
-                .deserialize(
-                    "{\"$schema\":\"https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json\",\"items\":[{\"name\":\"text - 2\",\"type\":1,\"content\":{\"json\":\"## New workbook\\n---\\n\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\n\\n\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}},{\"name\":\"query - 2\",\"type\":3,\"content\":{\"exportToExcelOptions\":\"visible\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"queryType\":0,\"resourceType\":\"microsoft.operationalinsights/workspaces\",\"size\":1,\"version\":\"KqlItem/1.0\"}}],\"styleSettings\":{},\"version\":\"Notebook/1.0\"}",
-                    Object.class, SerializerEncoding.JSON))
-            .withGalleries(Arrays.asList(new WorkbookTemplateGallery().withName("Simple Template")
-                .withCategory("Failures")
-                .withType("tsg")
-                .withOrder(100)
-                .withResourceType("microsoft.insights/components")))
-            .create();
-    }
-}
-```
-
-### WorkbookTemplates_Delete
-
-```java
-/**
- * Samples for WorkbookTemplates Delete.
- */
-public final class WorkbookTemplatesDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateDelete.json
-     */
-    /**
-     * Sample code: WorkbookTemplateDelete.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookTemplateDelete(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbookTemplates()
-            .deleteByResourceGroupWithResponse("my-resource-group", "my-template-resource",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkbookTemplates_GetByResourceGroup
-
-```java
-/**
- * Samples for WorkbookTemplates GetByResourceGroup.
- */
-public final class WorkbookTemplatesGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateGet.json
-     */
-    /**
-     * Sample code: WorkbookTemplateGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookTemplateGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbookTemplates()
-            .getByResourceGroupWithResponse("my-resource-group", "my-resource-name", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkbookTemplates_ListByResourceGroup
-
-```java
-/**
- * Samples for WorkbookTemplates ListByResourceGroup.
- */
-public final class WorkbookTemplatesListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplatesList.json
-     */
-    /**
-     * Sample code: WorkbookTemplatesList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookTemplatesList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbookTemplates().listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkbookTemplates_Update
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
-
-/**
- * Samples for WorkbookTemplates Update.
- */
-public final class WorkbookTemplatesUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-11-20/examples/
-     * WorkbookTemplateUpdate.json
-     */
-    /**
-     * Sample code: WorkbookTemplateUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookTemplateUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        WorkbookTemplate resource = manager.workbookTemplates()
-            .getByResourceGroupWithResponse("my-resource-group", "my-template-resource",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### Workbooks_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.applicationinsights.models.UserAssignedIdentity;
-import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
-import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for Workbooks CreateOrUpdate.
- */
-public final class WorkbooksCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedAdd.json
-     */
-    /**
-     * Sample code: WorkbookManagedAdd.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookManagedAdd(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .define("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2")
-            .withRegion("westus")
-            .withExistingResourceGroup("my-resource-group")
-            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid",
-                    new UserAssignedIdentity())))
-            .withKind(WorkbookSharedTypeKind.SHARED)
-            .withDisplayName("Sample workbook")
-            .withSerializedData(
-                "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text - 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/my-resource-group\"]}")
-            .withVersion("Notebook/1.0")
-            .withCategory("workbook")
-            .withStorageUri(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer")
-            .withDescription("Sample workbook")
-            .withSourceIdParameter(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookAdd.json
-     */
-    /**
-     * Sample code: WorkbookAdd.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookAdd(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .define("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2")
-            .withRegion("westus")
-            .withExistingResourceGroup("my-resource-group")
-            .withTags(mapOf("TagSample01", "sample01", "TagSample02", "sample02"))
-            .withKind(WorkbookSharedTypeKind.SHARED)
-            .withDisplayName("Sample workbook")
-            .withSerializedData(
-                "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}")
-            .withCategory("workbook")
-            .withDescription("Sample workbook")
-            .withSourceIdParameter(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### Workbooks_Delete
-
-```java
-/**
- * Samples for Workbooks Delete.
- */
-public final class WorkbooksDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookDelete.
-     * json
-     */
-    /**
-     * Sample code: WorkbookDelete.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookDelete(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .deleteByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_GetByResourceGroup
-
-```java
-/**
- * Samples for Workbooks GetByResourceGroup.
- */
-public final class WorkbooksGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet1.
-     * json
-     */
-    /**
-     * Sample code: WorkbookGet1.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookGet1(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedGet.json
-     */
-    /**
-     * Sample code: WorkbookManagedGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookManagedGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet.json
-     */
-    /**
-     * Sample code: WorkbookGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_List
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.CategoryType;
-
-/**
- * Samples for Workbooks List.
- */
-public final class WorkbooksListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksListSub
-     * .json
-     */
-    /**
-     * Sample code: WorkbooksListSub.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksListSub(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList2.
-     * json
-     */
-    /**
-     * Sample code: WorkbooksList2.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksList2(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_ListByResourceGroup
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.CategoryType;
-
-/**
- * Samples for Workbooks ListByResourceGroup.
- */
-public final class WorkbooksListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbooksManagedList.json
-     */
-    /**
-     * Sample code: WorkbooksManagedList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksManagedList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null,
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
-                null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList.
-     * json
-     */
-    /**
-     * Sample code: WorkbooksList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbooksList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null,
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
-                null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_RevisionGet
-
-```java
-/**
- * Samples for Workbooks RevisionGet.
- */
-public final class WorkbooksRevisionGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookRevisionGet.json
-     */
-    /**
-     * Sample code: WorkbookRevisionGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookRevisionGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .revisionGetWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                "1e2f8435b98248febee70c64ac22e1ab", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_RevisionsList
-
-```java
-/**
- * Samples for Workbooks RevisionsList.
- */
-public final class WorkbooksRevisionsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookRevisionsList.json
-     */
-    /**
-     * Sample code: WorkbookRevisionsList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookRevisionsList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks()
-            .revisionsList("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workbooks_Update
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.Workbook;
-
-/**
- * Samples for Workbooks Update.
- */
-public final class WorkbooksUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookUpdate.
-     * json
-     */
-    /**
-     * Sample code: WorkbookUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        Workbook resource = manager.workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null,
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withSourceId(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp")
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
-     * WorkbookManagedUpdate.json
-     */
-    /**
-     * Sample code: WorkbookManagedUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookManagedUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        Workbook resource = manager.workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null,
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withSourceId("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
-            .apply();
     }
 }
 ```

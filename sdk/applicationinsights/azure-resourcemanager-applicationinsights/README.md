@@ -2,7 +2,7 @@
 
 Azure Resource Manager ApplicationInsights client library for Java.
 
-This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2024-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Azure Application Insights client for saved items. Package api-version AnalyticsItems: 2015-05-01, ComponentAPIs: 2015-05-01, ComponentLinkedStorageAccountApi: 2020-03-01-preview, Components: 2020-02-02, DeletedWorkbookApi: 2024-02-01-preview, Favorites: 2015-05-01, LiveTokenApi: 2021-10-14, WebTestLocation: 2015-05-01, WebTestsApi: 2022-06-15, WorkBookOperations: 2021-03-08, WorkbooksApi: 2023-06-01, WorkbookTemplatesApi: 2020-11-20. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
