@@ -214,10 +214,10 @@
 
 #### `models.VirtualClusterUpdate` was modified
 
-* `family()` was removed
-* `withMaintenanceConfigurationId(java.lang.String)` was removed
 * `withFamily(java.lang.String)` was removed
+* `withMaintenanceConfigurationId(java.lang.String)` was removed
 * `maintenanceConfigurationId()` was removed
+* `family()` was removed
 
 #### `models.PrivateEndpointConnectionRequestStatus` was modified
 
@@ -263,6 +263,12 @@
 
 * `ServerPrivateEndpointConnection()` was changed to private access
 
+#### `models.DataMaskingFunction` was modified
+
+* `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+
 #### `models.ManagedInstanceVcoresCapability` was modified
 
 * `ManagedInstanceVcoresCapability()` was changed to private access
@@ -285,6 +291,12 @@
 #### `models.EndpointDetail` was modified
 
 * `EndpointDetail()` was changed to private access
+
+#### `models.DataMaskingRuleState` was modified
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
 
 #### `models.SecurityEventSqlInjectionAdditionalProperties` was modified
 
@@ -323,10 +335,10 @@
 #### `models.UpsertManagedServerOperationParameters` was modified
 
 * `UpsertManagedServerOperationParameters()` was changed to private access
-* `withFamily(java.lang.String)` was removed
-* `withTier(java.lang.String)` was removed
 * `withStorageSizeInGB(java.lang.Integer)` was removed
 * `withVCores(java.lang.Integer)` was removed
+* `withTier(java.lang.String)` was removed
+* `withFamily(java.lang.String)` was removed
 
 #### `models.RecommendedActionImpactRecord` was modified
 
@@ -372,8 +384,8 @@
 #### `models.Name` was modified
 
 * `Name()` was changed to private access
-* `withLocalizedValue(java.lang.String)` was removed
 * `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
 
 #### `models.ServerVersionCapability` was modified
 
@@ -397,11 +409,11 @@
 #### `models.UpsertManagedServerOperationStepWithEstimatesAndDuration` was modified
 
 * `UpsertManagedServerOperationStepWithEstimatesAndDuration()` was changed to private access
-* `withStepEndTime(java.time.OffsetDateTime)` was removed
-* `withStatus(models.Status)` was removed
-* `withTimeElapsed(java.lang.String)` was removed
-* `withStepStartTime(java.time.OffsetDateTime)` was removed
 * `withName(java.lang.String)` was removed
+* `withStepEndTime(java.time.OffsetDateTime)` was removed
+* `withTimeElapsed(java.lang.String)` was removed
+* `withStatus(models.Status)` was removed
+* `withStepStartTime(java.time.OffsetDateTime)` was removed
 * `withOrder(java.lang.Integer)` was removed
 
 #### `models.OperationDisplay` was modified
@@ -525,7 +537,11 @@
 
 * `models.ManagedDatabaseRestoreDetailsUnrestorableFileProperties` was added
 
+* `models.DataSyncParticipantUserAssignedIdentity` was added
+
 * `models.ManagedLedgerDigestUploadsState` was added
+
+* `models.DataSyncParticipantIdentityType` was added
 
 * `models.SqlVulnerabilityAssessmentScanError` was added
 
@@ -564,6 +580,8 @@
 * `models.MaxLimitRangeCapability` was added
 
 * `models.SqlVulnerabilityAssessmentName` was added
+
+* `models.DataSyncParticipantIdentity` was added
 
 * `models.ManagedInstanceDtcTransactionManagerCommunicationSettings` was added
 
@@ -645,8 +663,8 @@
 
 #### `models.VirtualClusterUpdate` was modified
 
-* `version()` was added
 * `withVersion(java.lang.String)` was added
+* `version()` was added
 
 #### `models.ManagedInstanceFamilyCapability` was modified
 
@@ -654,17 +672,17 @@
 
 #### `models.JobAgentUpdate` was modified
 
+* `sku()` was added
+* `withSku(models.Sku)` was added
 * `withIdentity(models.JobAgentIdentity)` was added
 * `identity()` was added
-* `withSku(models.Sku)` was added
-* `sku()` was added
 
 #### `models.FailoverGroupUpdate` was modified
 
-* `withPartnerServers(java.util.List)` was added
-* `withSecondaryType(models.FailoverGroupDatabasesSecondaryType)` was added
 * `partnerServers()` was added
 * `secondaryType()` was added
+* `withSecondaryType(models.FailoverGroupDatabasesSecondaryType)` was added
+* `withPartnerServers(java.util.List)` was added
 
 #### `models.RecommendedSensitivityLabelUpdate` was modified
 
@@ -676,28 +694,28 @@
 
 #### `models.ManagedInstanceUpdate` was modified
 
-* `withPricingModel(models.PricingModel)` was added
-* `authenticationMetadata()` was added
-* `hybridSecondaryUsageDetected()` was added
-* `withAuthenticationMetadata(models.AuthMetadataLookupModes)` was added
-* `withHybridSecondaryUsage(models.HybridSecondaryUsage)` was added
-* `isGeneralPurposeV2()` was added
-* `createTime()` was added
-* `memorySizeInGB()` was added
-* `withStorageThroughputMBps(java.lang.Integer)` was added
-* `databaseFormat()` was added
-* `virtualClusterId()` was added
-* `requestedLogicalAvailabilityZone()` was added
-* `withRequestedLogicalAvailabilityZone(models.AvailabilityZoneType)` was added
-* `hybridSecondaryUsage()` was added
-* `storageIOps()` was added
-* `withIsGeneralPurposeV2(java.lang.Boolean)` was added
-* `pricingModel()` was added
-* `storageThroughputMBps()` was added
 * `externalGovernanceStatus()` was added
 * `withMemorySizeInGB(java.lang.Integer)` was added
-* `withStorageIOps(java.lang.Integer)` was added
+* `authenticationMetadata()` was added
+* `storageThroughputMBps()` was added
+* `requestedLogicalAvailabilityZone()` was added
 * `withDatabaseFormat(models.ManagedInstanceDatabaseFormat)` was added
+* `databaseFormat()` was added
+* `withIsGeneralPurposeV2(java.lang.Boolean)` was added
+* `withStorageThroughputMBps(java.lang.Integer)` was added
+* `withStorageIOps(java.lang.Integer)` was added
+* `hybridSecondaryUsageDetected()` was added
+* `isGeneralPurposeV2()` was added
+* `createTime()` was added
+* `hybridSecondaryUsage()` was added
+* `storageIOps()` was added
+* `withRequestedLogicalAvailabilityZone(models.AvailabilityZoneType)` was added
+* `withAuthenticationMetadata(models.AuthMetadataLookupModes)` was added
+* `virtualClusterId()` was added
+* `pricingModel()` was added
+* `memorySizeInGB()` was added
+* `withPricingModel(models.PricingModel)` was added
+* `withHybridSecondaryUsage(models.HybridSecondaryUsage)` was added
 
 #### `models.FailoverGroupReadOnlyEndpoint` was modified
 
@@ -707,56 +725,65 @@
 #### `models.ElasticPoolUpdate` was modified
 
 * `withAutoPauseDelay(java.lang.Integer)` was added
-* `availabilityZone()` was added
-* `withAvailabilityZone(models.AvailabilityZoneType)` was added
-* `autoPauseDelay()` was added
-* `withPreferredEnclaveType(models.AlwaysEncryptedEnclaveType)` was added
 * `preferredEnclaveType()` was added
+* `withPreferredEnclaveType(models.AlwaysEncryptedEnclaveType)` was added
+* `autoPauseDelay()` was added
+* `currentSku()` was added
+* `withAvailabilityZone(models.AvailabilityZoneType)` was added
+* `availabilityZone()` was added
+
+#### `models.DataMaskingFunction` was modified
+
+* `DataMaskingFunction()` was added
 
 #### `models.ManagedDatabaseUpdate` was modified
 
-* `crossSubscriptionRestorableDroppedDatabaseId()` was added
-* `withCrossSubscriptionSourceDatabaseId(java.lang.String)` was added
-* `isLedgerOn()` was added
-* `crossSubscriptionTargetManagedInstanceId()` was added
-* `withCrossSubscriptionTargetManagedInstanceId(java.lang.String)` was added
-* `crossSubscriptionSourceDatabaseId()` was added
 * `extendedAccessibilityInfo()` was added
 * `storageContainerIdentity()` was added
+* `crossSubscriptionTargetManagedInstanceId()` was added
 * `withIsLedgerOn(java.lang.Boolean)` was added
-* `withStorageContainerIdentity(java.lang.String)` was added
 * `withCrossSubscriptionRestorableDroppedDatabaseId(java.lang.String)` was added
+* `crossSubscriptionRestorableDroppedDatabaseId()` was added
+* `crossSubscriptionSourceDatabaseId()` was added
+* `withCrossSubscriptionSourceDatabaseId(java.lang.String)` was added
+* `withCrossSubscriptionTargetManagedInstanceId(java.lang.String)` was added
+* `withStorageContainerIdentity(java.lang.String)` was added
+* `isLedgerOn()` was added
 
 #### `models.ManagedInstanceVcoresCapability` was modified
 
-* `supportedStorageThroughputMBps()` was added
-* `iopsIncludedValueOverrideFactorPerSelectedStorageGB()` was added
-* `includedStorageThroughputMBps()` was added
-* `throughputMBpsMinValueOverrideFactorPerSelectedStorageGB()` was added
-* `iopsMinValueOverrideFactorPerSelectedStorageGB()` was added
-* `supportedMemorySizesInGB()` was added
-* `throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB()` was added
-* `supportedStorageIOps()` was added
 * `supportedMemoryLimitsMB()` was added
 * `includedStorageIOps()` was added
+* `includedStorageThroughputMBps()` was added
+* `throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB()` was added
+* `supportedMemorySizesInGB()` was added
+* `supportedStorageThroughputMBps()` was added
+* `throughputMBpsMinValueOverrideFactorPerSelectedStorageGB()` was added
+* `iopsMinValueOverrideFactorPerSelectedStorageGB()` was added
+* `iopsIncludedValueOverrideFactorPerSelectedStorageGB()` was added
+* `supportedStorageIOps()` was added
 
 #### `models.InstancePoolUpdate` was modified
 
-* `withMaintenanceConfigurationId(java.lang.String)` was added
 * `licenseType()` was added
-* `sku()` was added
+* `vCores()` was added
+* `withLicenseType(models.InstancePoolLicenseType)` was added
+* `dnsZone()` was added
 * `withSubnetId(java.lang.String)` was added
 * `withVCores(java.lang.Integer)` was added
-* `maintenanceConfigurationId()` was added
+* `withMaintenanceConfigurationId(java.lang.String)` was added
+* `sku()` was added
 * `withSku(models.Sku)` was added
-* `dnsZone()` was added
-* `vCores()` was added
 * `subnetId()` was added
-* `withLicenseType(models.InstancePoolLicenseType)` was added
+* `maintenanceConfigurationId()` was added
 
 #### `models.TdeCertificate` was modified
 
 * `systemData()` was added
+
+#### `models.DataMaskingRuleState` was modified
+
+* `DataMaskingRuleState()` was added
 
 #### `models.ElasticPoolPerDatabaseSettings` was modified
 
@@ -773,19 +800,19 @@
 
 #### `models.ServiceObjectiveCapability` was modified
 
-* `zonePinning()` was added
-* `supportedFreeLimitExhaustionBehaviors()` was added
 * `supportedZones()` was added
+* `supportedFreeLimitExhaustionBehaviors()` was added
+* `zonePinning()` was added
 
 #### `models.DiffBackupIntervalInHours` was modified
 
-* `fromValue(java.lang.Integer)` was added
-* `toString()` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-* `getValue()` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `equals(java.lang.Object)` was added
 * `hashCode()` was added
+* `getValue()` was added
+* `toString()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromValue(java.lang.Integer)` was added
 
 #### `models.StorageKeyType` was modified
 
@@ -801,22 +828,23 @@
 
 #### `models.DatabaseUpdate` was modified
 
-* `withFreeLimitExhaustionBehavior(models.FreeLimitExhaustionBehavior)` was added
-* `manualCutover()` was added
-* `freeLimitExhaustionBehavior()` was added
-* `withPreferredEnclaveType(models.AlwaysEncryptedEnclaveType)` was added
-* `withUseFreeLimit(java.lang.Boolean)` was added
-* `withEncryptionProtectorAutoRotation(java.lang.Boolean)` was added
-* `encryptionProtectorAutoRotation()` was added
-* `performCutover()` was added
-* `withManualCutover(java.lang.Boolean)` was added
-* `useFreeLimit()` was added
-* `withPerformCutover(java.lang.Boolean)` was added
-* `encryptionProtector()` was added
-* `preferredEnclaveType()` was added
-* `withKeys(java.util.Map)` was added
-* `withEncryptionProtector(java.lang.String)` was added
 * `keys()` was added
+* `withManualCutover(java.lang.Boolean)` was added
+* `encryptionProtector()` was added
+* `freeLimitExhaustionBehavior()` was added
+* `withEncryptionProtectorAutoRotation(java.lang.Boolean)` was added
+* `withUseFreeLimit(java.lang.Boolean)` was added
+* `withEncryptionProtector(java.lang.String)` was added
+* `withKeys(java.util.Map)` was added
+* `withPreferredEnclaveType(models.AlwaysEncryptedEnclaveType)` was added
+* `withPerformCutover(java.lang.Boolean)` was added
+* `useFreeLimit()` was added
+* `performCutover()` was added
+* `preferredEnclaveType()` was added
+* `withFreeLimitExhaustionBehavior(models.FreeLimitExhaustionBehavior)` was added
+* `provisioningState()` was added
+* `encryptionProtectorAutoRotation()` was added
+* `manualCutover()` was added
 
 #### `models.ManagedInstanceEditionCapability` was modified
 
@@ -828,11 +856,11 @@
 
 #### `models.ServerUpdate` was modified
 
-* `withRetentionDays(java.lang.Integer)` was added
-* `withCreateMode(models.ServerCreateMode)` was added
 * `retentionDays()` was added
-* `externalGovernanceStatus()` was added
+* `withCreateMode(models.ServerCreateMode)` was added
 * `createMode()` was added
+* `withRetentionDays(java.lang.Integer)` was added
+* `externalGovernanceStatus()` was added
 * `withIsIPv6Enabled(models.ServerNetworkAccessFlag)` was added
 * `isIPv6Enabled()` was added
 

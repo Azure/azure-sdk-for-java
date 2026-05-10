@@ -9,7 +9,22 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ListVCoreDatabasesEnclaveTypeByServer.json
+     * x-ms-original-file: 2025-02-01-preview/ListVCoreDatabasesByServerWithOdata.json
+     */
+    /**
+     * Sample code: Gets a list of databases with OData filtering.
+     * 
+     * @param manager Entry point to SqlServerManager.
+     */
+    public static void getsAListOfDatabasesWithODataFiltering(com.azure.resourcemanager.sql.SqlServerManager manager) {
+        manager.serviceClient()
+            .getDatabases()
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-02-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
      */
     /**
      * Sample code: Gets a list of databases configured with enclave type.
@@ -20,11 +35,12 @@ public final class DatabasesListByServerSamples {
         getsAListOfDatabasesConfiguredWithEnclaveType(com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getDatabases()
-            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, com.azure.core.util.Context.NONE);
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/ListVCoreDatabasesByServer.json
+     * x-ms-original-file: 2025-02-01-preview/ListVCoreDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of databases.
@@ -34,6 +50,7 @@ public final class DatabasesListByServerSamples {
     public static void getsAListOfDatabases(com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getDatabases()
-            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, com.azure.core.util.Context.NONE);
+            .listByServer("Default-SQL-SouthEastAsia", "testsvr", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

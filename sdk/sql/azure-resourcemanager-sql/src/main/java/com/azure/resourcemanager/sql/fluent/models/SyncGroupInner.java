@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.DataSyncParticipantIdentity;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
@@ -31,6 +32,11 @@ public final class SyncGroupInner extends ProxyResource {
      * The name and capacity of the SKU.
      */
     private Sku sku;
+
+    /*
+     * Sync group authentication information.
+     */
+    private DataSyncParticipantIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -84,6 +90,26 @@ public final class SyncGroupInner extends ProxyResource {
      */
     public SyncGroupInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Sync group authentication information.
+     * 
+     * @return the identity value.
+     */
+    public DataSyncParticipantIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Sync group authentication information.
+     * 
+     * @param identity the identity value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withIdentity(DataSyncParticipantIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -373,6 +399,9 @@ public final class SyncGroupInner extends ProxyResource {
         if (sku() != null) {
             sku().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -383,6 +412,7 @@ public final class SyncGroupInner extends ProxyResource {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -412,6 +442,8 @@ public final class SyncGroupInner extends ProxyResource {
                     deserializedSyncGroupInner.innerProperties = SyncGroupProperties.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
                     deserializedSyncGroupInner.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSyncGroupInner.identity = DataSyncParticipantIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSyncGroupInner.systemData = SystemData.fromJson(reader);
                 } else {

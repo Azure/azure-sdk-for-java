@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ManagedServerSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ManagedServerSecurityAlertCreateMin.json
+     * x-ms-original-file: 2025-02-01-preview/ManagedServerSecurityAlertCreateMin.json
      */
     /**
      * Sample code: Update a managed server's threat detection policy with minimal parameters.
@@ -31,7 +31,7 @@ public final class ManagedServerSecurityAlertPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/ManagedServerSecurityAlertCreateMax.json
+     * x-ms-original-file: 2025-02-01-preview/ManagedServerSecurityAlertCreateMax.json
      */
     /**
      * Sample code: Update a managed server's threat detection policy with all parameters.

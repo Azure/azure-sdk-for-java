@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/DatabaseSecurityAlertCreateMax.json
+     * x-ms-original-file: 2025-02-01-preview/DatabaseSecurityAlertCreateMax.json
      */
     /**
      * Sample code: Update a database's threat detection policy with all parameters.
@@ -38,7 +38,7 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/DatabaseSecurityAlertCreateMin.json
+     * x-ms-original-file: 2025-02-01-preview/DatabaseSecurityAlertCreateMin.json
      */
     /**
      * Sample code: Update a database's threat detection policy with minimal parameters.

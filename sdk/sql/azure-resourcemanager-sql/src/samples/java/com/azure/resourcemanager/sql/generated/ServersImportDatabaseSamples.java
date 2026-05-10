@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
  */
 public final class ServersImportDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ImportNewDatabaseWithNetworkIsolation.json
+     * x-ms-original-file: 2025-02-01-preview/ImportNewDatabaseWithNetworkIsolation.json
      */
     /**
      * Sample code: Imports to a new database, using private link for the SQL server and storage account.
@@ -40,7 +40,7 @@ public final class ServersImportDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/ImportNewDatabase.json
+     * x-ms-original-file: 2025-02-01-preview/ImportNewDatabase.json
      */
     /**
      * Sample code: Imports to a new database.
@@ -62,7 +62,7 @@ public final class ServersImportDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/ImportNewDatabaseWithManagedIdentity.json
+     * x-ms-original-file: 2025-02-01-preview/ImportNewDatabaseWithManagedIdentity.json
      */
     /**
      * Sample code: Imports to a new database, using Managed Identity for the SQL server and storage account.

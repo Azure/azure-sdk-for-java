@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
  */
 public final class EncryptionProtectorsGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/EncryptionProtectorGetWithVersionlessKey.json
+     * x-ms-original-file: 2025-02-01-preview/EncryptionProtectorGetWithVersionlessKey.json
      */
     /**
      * Sample code: Get the encryption protector with versionless key.
@@ -27,7 +27,7 @@ public final class EncryptionProtectorsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/EncryptionProtectorGet.json
+     * x-ms-original-file: 2025-02-01-preview/EncryptionProtectorGet.json
      */
     /**
      * Sample code: Get the encryption protector.
