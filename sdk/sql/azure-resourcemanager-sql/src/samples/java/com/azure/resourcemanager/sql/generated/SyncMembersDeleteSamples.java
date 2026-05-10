@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncMemberDelete.json
+     * x-ms-original-file: 2025-01-01/SyncMemberDelete.json
      */
     /**
      * Sample code: Delete a sync member.

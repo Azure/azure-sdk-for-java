@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class MaintenanceWindowOptionsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetMaintenanceWindowOptions.json
+     * x-ms-original-file: 2025-01-01/GetMaintenanceWindowOptions.json
      */
     /**
      * Sample code: Gets a list of available maintenance windows for a selected database.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.CompleteDatabaseRestoreDefinition;
  */
 public final class ManagedDatabasesCompleteRestoreSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCompleteExternalRestore.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCompleteExternalRestore.json
      */
     /**
      * Sample code: Completes a managed database external backup restore.

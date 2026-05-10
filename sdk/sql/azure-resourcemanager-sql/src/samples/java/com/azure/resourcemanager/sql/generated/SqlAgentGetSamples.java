@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SqlAgentGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SqlAgentConfigurationGet.json
+     * x-ms-original-file: 2025-01-01/SqlAgentConfigurationGet.json
      */
     /**
      * Sample code: Gets current instance sql agent configuration.

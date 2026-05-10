@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
  */
 public final class GeoBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GeoBackupPoliciesCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/GeoBackupPoliciesCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a database default Geo backup policy.

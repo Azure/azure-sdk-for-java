@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.CurrentSensitivityLabelSource;
  */
 public final class ManagedDatabaseSensitivityLabelsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelDelete.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseColumnSensitivityLabelDelete.json
      */
     /**
      * Sample code: Deletes the sensitivity label of a given column in a managed database.

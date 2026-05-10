@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class InstancePoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateInstancePoolMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateInstancePoolMax.json
      */
     /**
      * Sample code: Create an instance pool with all properties.
@@ -38,7 +38,7 @@ public final class InstancePoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateInstancePoolMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateInstancePoolMin.json
      */
     /**
      * Sample code: Create an instance pool with min properties.

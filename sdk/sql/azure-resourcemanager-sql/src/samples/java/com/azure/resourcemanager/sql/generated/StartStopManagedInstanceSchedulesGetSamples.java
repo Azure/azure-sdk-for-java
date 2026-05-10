@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.StartStopScheduleName;
  */
 public final class StartStopManagedInstanceSchedulesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/StartStopManagedInstanceScheduleGet.json
+     * x-ms-original-file: 2025-01-01/StartStopManagedInstanceScheduleGet.json
      */
     /**
      * Sample code: Gets the managed instance's Start/Stop schedule.

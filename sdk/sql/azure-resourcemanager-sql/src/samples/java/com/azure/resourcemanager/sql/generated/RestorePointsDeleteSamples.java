@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RestorePointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseRestorePointsDelete.json
+     * x-ms-original-file: 2025-01-01/DatabaseRestorePointsDelete.json
      */
     /**
      * Sample code: Deletes a restore point.

@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class JobTargetGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobTargetGroupMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobTargetGroupMin.json
      */
     /**
      * Sample code: Create or update a target group with minimal properties.
@@ -31,7 +31,7 @@ public final class JobTargetGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobTargetGroupMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobTargetGroupMax.json
      */
     /**
      * Sample code: Create or update a target group with all properties.

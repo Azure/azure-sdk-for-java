@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class VirtualNetworkRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/VirtualNetworkRulesDelete.json
+     * x-ms-original-file: 2025-01-01/VirtualNetworkRulesDelete.json
      */
     /**
      * Sample code: Delete a virtual network rule.

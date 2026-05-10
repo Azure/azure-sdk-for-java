@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerConfigurationOptionsListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerConfigurationOptionList.json
+     * x-ms-original-file: 2025-01-01/ServerConfigurationOptionList.json
      */
     /**
      * Sample code: Gets a list of managed instance server configuration options.

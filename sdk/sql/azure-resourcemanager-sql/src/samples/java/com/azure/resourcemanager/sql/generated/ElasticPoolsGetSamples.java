@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ElasticPoolsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/HyperscaleElasticPoolGet.json
+     * x-ms-original-file: 2025-01-01/HyperscaleElasticPoolGet.json
      */
     /**
      * Sample code: Get a Hyperscale elastic pool.
@@ -24,7 +24,7 @@ public final class ElasticPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolGet.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolGet.json
      */
     /**
      * Sample code: Get an elastic pool.
@@ -39,7 +39,7 @@ public final class ElasticPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolGetWithPreferredEnclaveType.json
      */
     /**
      * Sample code: Get an elastic pool with preferred enclave type parameter.
@@ -55,7 +55,7 @@ public final class ElasticPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetElasticPoolWithAvailabilityZone.json
+     * x-ms-original-file: 2025-01-01/GetElasticPoolWithAvailabilityZone.json
      */
     /**
      * Sample code: Get an elastic pool with Availability Zone.
@@ -70,7 +70,7 @@ public final class ElasticPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetElasticPoolWithServerlessProperties.json
+     * x-ms-original-file: 2025-01-01/GetElasticPoolWithServerlessProperties.json
      */
     /**
      * Sample code: Get an elastic pool with serverless properties.

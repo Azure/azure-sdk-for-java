@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolsListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListInstancePoolsBySubscriptionId.json
+     * x-ms-original-file: 2025-01-01/ListInstancePoolsBySubscriptionId.json
      */
     /**
      * Sample code: List instance pools in the subscription.

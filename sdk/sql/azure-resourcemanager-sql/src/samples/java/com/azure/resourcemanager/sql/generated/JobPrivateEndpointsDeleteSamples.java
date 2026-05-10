@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeleteJobPrivateEndpoint.json
+     * x-ms-original-file: 2025-01-01/DeleteJobPrivateEndpoint.json
      */
     /**
      * Sample code: Delete a private endpoint.

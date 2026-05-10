@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseRecommendedActionsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseRecommendedActionGet.json
+     * x-ms-original-file: 2025-01-01/DatabaseRecommendedActionGet.json
      */
     /**
      * Sample code: Get database recommended action.

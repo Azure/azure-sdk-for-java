@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ElasticPoolsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolListByServer.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolListByServer.json
      */
     /**
      * Sample code: Get all elastic pools in a server.

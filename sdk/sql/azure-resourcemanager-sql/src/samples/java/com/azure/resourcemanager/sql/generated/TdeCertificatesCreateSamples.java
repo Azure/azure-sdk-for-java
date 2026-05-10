@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.TdeCertificate;
  */
 public final class TdeCertificatesCreateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SqlTdeCertificateCreate.json
+     * x-ms-original-file: 2025-01-01/SqlTdeCertificateCreate.json
      */
     /**
      * Sample code: Upload a TDE certificate.

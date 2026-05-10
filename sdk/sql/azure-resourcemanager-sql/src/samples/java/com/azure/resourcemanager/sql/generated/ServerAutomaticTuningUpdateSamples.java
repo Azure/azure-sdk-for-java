@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ServerAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerAutomaticTuningUpdateMax.json
+     * x-ms-original-file: 2025-01-01/ServerAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with all properties.
@@ -39,7 +39,7 @@ public final class ServerAutomaticTuningUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerAutomaticTuningUpdateMin.json
+     * x-ms-original-file: 2025-01-01/ServerAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates server automatic tuning settings with minimal properties.

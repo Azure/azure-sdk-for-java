@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedLedgerDigestUploadsOperationListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedLedgerDigestUploadsList.json
+     * x-ms-original-file: 2025-01-01/ManagedLedgerDigestUploadsList.json
      */
     /**
      * Sample code: Gets list of ledger digest upload settings on a database.

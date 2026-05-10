@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobStepsGetByVersionSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetJobStepByVersion.json
+     * x-ms-original-file: 2025-01-01/GetJobStepByVersion.json
      */
     /**
      * Sample code: Get the specified version of a job step.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceAdministratorsListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdministratorListByInstance.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorListByInstance.json
      */
     /**
      * Sample code: List administrators of managed instance.

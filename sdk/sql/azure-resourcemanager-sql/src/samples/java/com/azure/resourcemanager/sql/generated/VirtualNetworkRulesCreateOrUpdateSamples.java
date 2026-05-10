@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.VirtualNetworkRuleInner;
  */
 public final class VirtualNetworkRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/VirtualNetworkRulesCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/VirtualNetworkRulesCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a virtual network rule.

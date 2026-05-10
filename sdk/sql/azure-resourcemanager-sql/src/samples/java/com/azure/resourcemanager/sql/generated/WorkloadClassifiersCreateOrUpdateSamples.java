@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.WorkloadClassifierInner;
  */
 public final class WorkloadClassifiersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateWorkloadClassifierMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateWorkloadClassifierMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
@@ -28,7 +28,7 @@ public final class WorkloadClassifiersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateWorkloadClassifierMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateWorkloadClassifierMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.

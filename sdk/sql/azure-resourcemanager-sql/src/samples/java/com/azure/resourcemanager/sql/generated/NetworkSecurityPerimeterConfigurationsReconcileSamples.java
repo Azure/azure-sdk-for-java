@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/NetworkSecurityPerimeterConfigurationsReconcile.json
+     * x-ms-original-file: 2025-01-01/NetworkSecurityPerimeterConfigurationsReconcile.json
      */
     /**
      * Sample code: Reconcile NSP Config.

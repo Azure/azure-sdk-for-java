@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class OutboundFirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/OutboundFirewallRuleDelete.json
+     * x-ms-original-file: 2025-01-01/OutboundFirewallRuleDelete.json
      */
     /**
      * Sample code: Deletes a outbound firewall rule with a given name.

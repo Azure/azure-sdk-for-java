@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class MaintenanceWindowsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateMaintenanceWindows.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateMaintenanceWindows.json
      */
     /**
      * Sample code: Sets maintenance window settings for a selected database.

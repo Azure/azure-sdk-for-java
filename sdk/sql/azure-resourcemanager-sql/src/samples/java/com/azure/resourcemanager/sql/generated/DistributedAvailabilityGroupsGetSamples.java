@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DistributedAvailabilityGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsGet.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsGet.json
      */
     /**
      * Sample code: Gets the distributed availability group info.

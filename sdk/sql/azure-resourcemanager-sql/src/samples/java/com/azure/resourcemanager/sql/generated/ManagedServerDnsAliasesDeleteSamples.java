@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedServerDnsAliasesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedServerDnsAliasDelete.json
+     * x-ms-original-file: 2025-01-01/ManagedServerDnsAliasDelete.json
      */
     /**
      * Sample code: Delete managed server DNS alias.

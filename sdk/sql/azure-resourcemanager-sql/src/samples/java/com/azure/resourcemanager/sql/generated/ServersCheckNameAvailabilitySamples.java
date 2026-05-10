@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
  */
 public final class ServersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CheckNameAvailabilityServerAvailable.json
+     * x-ms-original-file: 2025-01-01/CheckNameAvailabilityServerAvailable.json
      */
     /**
      * Sample code: Check for a server name that is available.
@@ -26,7 +26,7 @@ public final class ServersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CheckNameAvailabilityServerAlreadyExists.json
+     * x-ms-original-file: 2025-01-01/CheckNameAvailabilityServerAlreadyExists.json
      */
     /**
      * Sample code: Check for a server name that already exists.
@@ -41,7 +41,7 @@ public final class ServersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CheckNameAvailabilityServerInvalid.json
+     * x-ms-original-file: 2025-01-01/CheckNameAvailabilityServerInvalid.json
      */
     /**
      * Sample code: Check for a server name that is invalid.

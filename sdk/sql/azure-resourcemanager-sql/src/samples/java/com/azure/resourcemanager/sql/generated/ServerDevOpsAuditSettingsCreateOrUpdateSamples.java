@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerDevOpsAuditCreateMin.json
+     * x-ms-original-file: 2025-01-01/ServerDevOpsAuditCreateMin.json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with minimal input.
@@ -33,7 +33,7 @@ public final class ServerDevOpsAuditSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerDevOpsAuditCreateMax.json
+     * x-ms-original-file: 2025-01-01/ServerDevOpsAuditCreateMax.json
      */
     /**
      * Sample code: Update a server's DevOps audit settings with all params.

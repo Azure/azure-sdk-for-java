@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseSecurityEventsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseSecurityEventsGetMin.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseSecurityEventsGetMin.json
      */
     /**
      * Sample code: Get the managed database's security events with minimal parameters.
@@ -24,7 +24,7 @@ public final class ManagedDatabaseSecurityEventsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseSecurityEventsGetMax.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseSecurityEventsGetMax.json
      */
     /**
      * Sample code: Get the managed database's security events with maximal parameters.

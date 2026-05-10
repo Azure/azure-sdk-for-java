@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ReplicationMode;
  */
 public final class DistributedAvailabilityGroupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsUpdate.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsUpdate.json
      */
     /**
      * Sample code: Update the distributed availability group replication mode before deleting it.

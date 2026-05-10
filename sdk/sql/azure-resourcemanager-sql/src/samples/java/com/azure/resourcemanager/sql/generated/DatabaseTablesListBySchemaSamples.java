@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseTablesListBySchemaSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseTableListBySchema.json
+     * x-ms-original-file: 2025-01-01/DatabaseTableListBySchema.json
      */
     /**
      * Sample code: List database tables.

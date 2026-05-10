@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedDatabasesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseUpdateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseUpdateMax.json
      */
     /**
      * Sample code: Updates a managed database with maximal properties.
@@ -30,7 +30,7 @@ public final class ManagedDatabasesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseUpdateMin.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseUpdateMin.json
      */
     /**
      * Sample code: Updates a managed database with minimal properties.

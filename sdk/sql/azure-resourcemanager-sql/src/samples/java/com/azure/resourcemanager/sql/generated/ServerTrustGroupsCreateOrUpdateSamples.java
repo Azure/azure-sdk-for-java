@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ServerTrustGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerTrustGroupCreate.json
+     * x-ms-original-file: 2025-01-01/ServerTrustGroupCreate.json
      */
     /**
      * Sample code: Create server trust group.

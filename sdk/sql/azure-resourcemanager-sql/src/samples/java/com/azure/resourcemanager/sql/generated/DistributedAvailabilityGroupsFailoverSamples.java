@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.FailoverType;
  */
 public final class DistributedAvailabilityGroupsFailoverSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsFailover.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsFailover.json
      */
     /**
      * Sample code: Failover a distributed availability group.

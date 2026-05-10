@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceLongTermRetentionPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyListByDatabase.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionPolicyListByDatabase.json
      */
     /**
      * Sample code: Get the long term retention policies for the managed database.

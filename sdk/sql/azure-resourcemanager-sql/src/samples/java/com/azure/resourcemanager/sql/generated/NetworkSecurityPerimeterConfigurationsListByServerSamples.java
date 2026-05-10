@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/NetworkSecurityPerimeterConfigurationsListByServer.json
+     * x-ms-original-file: 2025-01-01/NetworkSecurityPerimeterConfigurationsListByServer.json
      */
     /**
      * Sample code: List NSP configs by server.

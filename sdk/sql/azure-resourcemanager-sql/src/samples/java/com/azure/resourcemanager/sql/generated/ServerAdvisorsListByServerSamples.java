@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerAdvisorsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerAdvisorList.json
+     * x-ms-original-file: 2025-01-01/ServerAdvisorList.json
      */
     /**
      * Sample code: List of server advisors.
@@ -23,7 +23,7 @@ public final class ServerAdvisorsListByServerSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerRecommendedActionListExpand.json
+     * x-ms-original-file: 2025-01-01/ServerRecommendedActionListExpand.json
      */
     /**
      * Sample code: List of server recommended actions for all advisors.

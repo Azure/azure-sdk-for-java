@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class IPv6FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/IPv6FirewallRuleDelete.json
+     * x-ms-original-file: 2025-01-01/IPv6FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete an IPv6 firewall rule.

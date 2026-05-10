@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.IPv6FirewallRuleInner;
  */
 public final class IPv6FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/IPv6FirewallRuleUpdate.json
+     * x-ms-original-file: 2025-01-01/IPv6FirewallRuleUpdate.json
      */
     /**
      * Sample code: Update an IPv6 firewall rule max/min.
@@ -29,7 +29,7 @@ public final class IPv6FirewallRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/IPv6FirewallRuleCreate.json
+     * x-ms-original-file: 2025-01-01/IPv6FirewallRuleCreate.json
      */
     /**
      * Sample code: Create an IPv6 firewall rule max/min.

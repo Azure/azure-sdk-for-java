@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
  */
 public final class ManagedDatabaseQueriesListByQuerySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceQueryStatisticsListMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceQueryStatisticsListMax.json
      */
     /**
      * Sample code: Obtain query execution statistics. Example with all request parameters.
@@ -27,7 +27,7 @@ public final class ManagedDatabaseQueriesListByQuerySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceQueryStatisticsList.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceQueryStatisticsList.json
      */
     /**
      * Sample code: Obtain query execution statistics.
@@ -42,7 +42,7 @@ public final class ManagedDatabaseQueriesListByQuerySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceQueryStatisticsListMin.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceQueryStatisticsListMin.json
      */
     /**
      * Sample code: Obtain query execution statistics. Minimal example with only mandatory request parameters.

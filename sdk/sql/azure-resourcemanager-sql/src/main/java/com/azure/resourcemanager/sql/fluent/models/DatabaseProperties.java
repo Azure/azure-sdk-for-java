@@ -352,11 +352,6 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
      */
     private Boolean encryptionProtectorAutoRotation;
 
-    /*
-     * Specifies the provisioning state for this resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of DatabaseProperties class.
      */
@@ -1357,15 +1352,6 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
     }
 
     /**
-     * Get the provisioningState property: Specifies the provisioning state for this resource.
-     * 
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1566,8 +1552,6 @@ public final class DatabaseProperties implements JsonSerializable<DatabaseProper
                 } else if ("encryptionProtectorAutoRotation".equals(fieldName)) {
                     deserializedDatabaseProperties.encryptionProtectorAutoRotation
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedDatabaseProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

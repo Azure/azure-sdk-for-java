@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.ShortTermRetentionPolicyName;
  */
 public final class BackupShortTermRetentionPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateShortTermRetentionPolicy.json
+     * x-ms-original-file: 2025-01-01/UpdateShortTermRetentionPolicy.json
      */
     /**
      * Sample code: Update the short term retention policy for the database.

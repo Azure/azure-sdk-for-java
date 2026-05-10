@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.CreateDatabaseRestorePointDefinition
  */
 public final class RestorePointsCreateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseRestorePointsPost.json
+     * x-ms-original-file: 2025-01-01/DatabaseRestorePointsPost.json
      */
     /**
      * Sample code: Creates datawarehouse database restore point.

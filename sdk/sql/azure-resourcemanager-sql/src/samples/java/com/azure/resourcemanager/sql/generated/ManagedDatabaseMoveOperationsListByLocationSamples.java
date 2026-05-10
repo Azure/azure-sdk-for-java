@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseMoveOperationsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseMoveOperationResultList.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseMoveOperationResultList.json
      */
     /**
      * Sample code: Gets all managed database move operations for specified subscription, resource group and location.
@@ -24,7 +24,7 @@ public final class ManagedDatabaseMoveOperationsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseMoveOperationResultListLastOperations.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseMoveOperationResultListLastOperations.json
      */
     /**
      * Sample code: Gets the latest managed database move operations for each database under specified subscription,
@@ -41,7 +41,7 @@ public final class ManagedDatabaseMoveOperationsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseMoveOperationResultListMax.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseMoveOperationResultListMax.json
      */
     /**
      * Sample code: Gets the latest managed database move operations for each database under specified subscription,

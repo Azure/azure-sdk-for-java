@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdministratorCreate.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorCreate.json
      */
     /**
      * Sample code: Create administrator of managed instance.
@@ -34,7 +34,7 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdministratorUpdate.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorUpdate.json
      */
     /**
      * Sample code: Update administrator of managed instance.

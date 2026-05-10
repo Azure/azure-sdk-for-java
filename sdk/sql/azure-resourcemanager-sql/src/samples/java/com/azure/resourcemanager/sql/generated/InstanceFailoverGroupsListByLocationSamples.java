@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstanceFailoverGroupsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/InstanceFailoverGroupList.json
+     * x-ms-original-file: 2025-01-01/InstanceFailoverGroupList.json
      */
     /**
      * Sample code: List failover group.

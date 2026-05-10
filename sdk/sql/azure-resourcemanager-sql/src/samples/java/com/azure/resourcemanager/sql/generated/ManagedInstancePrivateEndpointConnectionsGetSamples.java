@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancePrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstancePrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.

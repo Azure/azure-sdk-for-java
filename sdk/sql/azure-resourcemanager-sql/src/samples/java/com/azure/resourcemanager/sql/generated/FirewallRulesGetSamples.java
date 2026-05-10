@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FirewallRuleGet.json
+     * x-ms-original-file: 2025-01-01/FirewallRuleGet.json
      */
     /**
      * Sample code: Get Firewall Rule.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncAgentsListLinkedDatabasesSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncAgentGetLinkedDatabases.json
+     * x-ms-original-file: 2025-01-01/SyncAgentGetLinkedDatabases.json
      */
     /**
      * Sample code: Get sync agent linked databases.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerUpdate;
  */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerUpdate.json
+     * x-ms-original-file: 2025-01-01/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.

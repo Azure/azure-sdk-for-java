@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerConnectionPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerConnectionPoliciesList.json
+     * x-ms-original-file: 2025-01-01/ServerConnectionPoliciesList.json
      */
     /**
      * Sample code: Lists a servers connection policies.

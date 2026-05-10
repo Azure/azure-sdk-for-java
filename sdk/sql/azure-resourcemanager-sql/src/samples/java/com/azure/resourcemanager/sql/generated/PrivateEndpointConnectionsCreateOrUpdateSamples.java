@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.PrivateLinkServiceConnectionStateSta
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: 2025-01-01/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.

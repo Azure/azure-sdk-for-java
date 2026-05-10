@@ -178,31 +178,6 @@ public final class ManagedInstanceDtcInner extends ProxyResource {
     }
 
     /**
-     * Get the fqdnEnabled property: Status of FQDN of managed instance DTC. Toggling this setting might trigger a
-     * restart of the managed instance.
-     * 
-     * @return the fqdnEnabled value.
-     */
-    public Boolean fqdnEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().fqdnEnabled();
-    }
-
-    /**
-     * Set the fqdnEnabled property: Status of FQDN of managed instance DTC. Toggling this setting might trigger a
-     * restart of the managed instance.
-     * 
-     * @param fqdnEnabled the fqdnEnabled value to set.
-     * @return the ManagedInstanceDtcInner object itself.
-     */
-    public ManagedInstanceDtcInner withFqdnEnabled(Boolean fqdnEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedInstanceDtcProperties();
-        }
-        this.innerProperties().withFqdnEnabled(fqdnEnabled);
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning state of managed instance DTC.
      * 
      * @return the provisioningState value.

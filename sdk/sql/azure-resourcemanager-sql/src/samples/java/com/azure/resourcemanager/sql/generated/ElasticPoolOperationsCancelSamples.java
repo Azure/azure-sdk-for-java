@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class ElasticPoolOperationsCancelSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CancelElasticPoolOperation.json
+     * x-ms-original-file: 2025-01-01/CancelElasticPoolOperation.json
      */
     /**
      * Sample code: Cancel the elastic pool management operation.

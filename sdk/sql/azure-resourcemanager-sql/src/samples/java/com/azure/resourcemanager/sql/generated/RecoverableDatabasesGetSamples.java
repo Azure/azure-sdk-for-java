@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RecoverableDatabasesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/RecoverableDatabaseGet.json
+     * x-ms-original-file: 2025-01-01/RecoverableDatabaseGet.json
      */
     /**
      * Sample code: Get a recoverable database.
@@ -24,7 +24,7 @@ public final class RecoverableDatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/RecoverableDatabaseGetWithExpandEqualsKeys.json
+     * x-ms-original-file: 2025-01-01/RecoverableDatabaseGetWithExpandEqualsKeys.json
      */
     /**
      * Sample code: Gets a recoverable database with expand equals keys.

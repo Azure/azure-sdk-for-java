@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerOperationsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListServerOperations.json
+     * x-ms-original-file: 2025-01-01/ListServerOperations.json
      */
     /**
      * Sample code: List the server management operations.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerTrustCertificatesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerTrustCertificatesGet.json
+     * x-ms-original-file: 2025-01-01/ServerTrustCertificatesGet.json
      */
     /**
      * Sample code: Gets server trust certificate.

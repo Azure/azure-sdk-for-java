@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class VirtualClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/VirtualClusterListByResourceGroup.json
+     * x-ms-original-file: 2025-01-01/VirtualClusterListByResourceGroup.json
      */
     /**
      * Sample code: List virtual clusters by resource group.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancePrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2025-01-01/ManagedInstancePrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.

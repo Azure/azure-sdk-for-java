@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsListHubSchemasSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupGetHubSchema.json
+     * x-ms-original-file: 2025-01-01/SyncGroupGetHubSchema.json
      */
     /**
      * Sample code: Get a hub database schema.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseColumnsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseColumnGet.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseColumnGet.json
      */
     /**
      * Sample code: Get managed database column.
