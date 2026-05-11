@@ -34,7 +34,6 @@ public class PartitionScopedRegionLevelProgress {
 
     public final static String GLOBAL_PROGRESS_KEY = "global";
 
-
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
         this.normalizedRegionLookupMap = new ConcurrentHashMap<>();

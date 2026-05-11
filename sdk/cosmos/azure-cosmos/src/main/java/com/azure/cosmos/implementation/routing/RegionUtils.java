@@ -199,7 +199,17 @@ public final class RegionUtils {
     }
 
     public static int getRegionId(String regionName) {
-        return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
+        if (StringUtils.isEmpty(regionName)) {
+            return -1;
+        }
+        // Fast path: try raw key first (avoids string allocation for already-normalized input)
+        int id = NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
+        if (id != -1) {
+            return id;
+        }
+        // Slow path: normalize and retry
+        String normalized = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(normalized, -1);
     }
 
     /**

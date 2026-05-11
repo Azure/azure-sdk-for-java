@@ -833,9 +833,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         while (readableLocationsIterator.hasNext()) {
             DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
 
-            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
-
-            if (RegionUtils.getRegionId(normalizedReadableRegion) == -1) {
+            if (RegionUtils.getRegionId(readableLocation.getName()) == -1) {
                 return false;
             }
         }
