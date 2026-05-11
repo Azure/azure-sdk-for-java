@@ -497,17 +497,21 @@ public final class ConnectionPolicy {
         // Store the customer-supplied list as-is for public API and diagnostics.
         this.preferredRegions = new ArrayList<>(preferredRegions);
 
-        // Pre-normalize for internal consumers (LocationCache, GlobalEndpointManager, etc.)
-        // so normalization happens once at entry, not scattered across consumers.
+        // Pre-canonicalize for internal consumers (LocationCache, GlobalEndpointManager, etc.)
+        // so canonicalization happens once at entry, not scattered across consumers.
+        // Canonical = official display form, e.g., "West US 3" (not normalized "westus3").
         this.canonicalPreferredRegions = RegionUtils.canonicalizeRegionNames(preferredRegions);
         return this;
     }
 
     /**
-     * Gets the pre-normalized preferred regions (canonical CosmosDB form).
+     * Gets the pre-canonicalized preferred regions (official CosmosDB display form).
      * Internal only — used by LocationCache, GlobalEndpointManager, and other routing components.
+     * <p>
+     * Canonical form examples: "West US 3", "East US", "North Europe".
+     * For unknown regions, the customer-passed string is returned as-is.
      *
-     * @return the normalized list of preferred regions.
+     * @return the canonical list of preferred regions.
      */
     public List<String> getCanonicalPreferredRegions() {
         return this.canonicalPreferredRegions != null ? this.canonicalPreferredRegions : Collections.emptyList();

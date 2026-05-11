@@ -45,7 +45,7 @@ public class LocationHelper {
     }
 
     private static String dataCenterToUriPostfix(String dataCenter) {
-        // Use RegionUtils for consistent normalized representation (lowercase, no spaces).
+        // Convert to normalized form (lowercase, no spaces) for use as URL suffix.
         // DNS is case-insensitive, so casing doesn't affect resolution.
         return RegionUtils.getNormalizedRegionName(dataCenter);
     }

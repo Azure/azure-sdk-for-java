@@ -344,7 +344,8 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
-        // Normalize user-configured exclude regions using cache to avoid per-request allocation.
+        // Canonicalize user-configured exclude regions using cache to avoid per-request string allocation.
+        // Canonical = official display form (e.g., "westus3" → "West US 3").
         List<String> canonicalUserExcludeRegions = this.getCanonicalExcludeRegions(userConfiguredExcludeRegions);
 
         // exclude those regions which are user excluded first
@@ -524,13 +525,15 @@ public class LocationCache {
         if (excludeRegions == null || excludeRegions.isEmpty()) {
             return Collections.emptyList();
         }
-        List<String> normalized = new ArrayList<>(excludeRegions.size());
+        // Convert each exclude region to canonical form via cache.
+        // Cache key = raw customer string, value = canonical name from RegionUtils.
+        List<String> canonicalized = new ArrayList<>(excludeRegions.size());
         for (String region : excludeRegions) {
             if (region != null) {
-                normalized.add(this.canonicalRegionNameCache.computeIfAbsent(region, RegionUtils::getCosmosDBRegionName));
+                canonicalized.add(this.canonicalRegionNameCache.computeIfAbsent(region, RegionUtils::getCanonicalRegionName));
             }
         }
-        return normalized;
+        return canonicalized;
     }
 
     public RegionalRoutingContext resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
@@ -1081,6 +1084,8 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
+        // Input preferredLocations are already in canonical form (from ConnectionPolicy.getCanonicalPreferredRegions()).
+            // Lowercase for CaseInsensitiveMap key matching against server-returned names.
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
