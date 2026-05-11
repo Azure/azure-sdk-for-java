@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,8 +31,10 @@ import org.mockito.quality.Strictness;
 import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
@@ -368,6 +372,41 @@ public class AppConfigurationReplicaClientBuilderTest {
         assertEquals(TEST_ENDPOINT, clients.get(0).getEndpoint());
         assertEquals(TEST_ENDPOINT_GEO, clients.get(1).getEndpoint());
         assertEquals("https://third.test.config.io", clients.get(2).getEndpoint());
+    }
+
+    @Test
+    public void buildClientsFromMultipleEndpointsReplicaCountTest() {
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+
+        configStore.setEndpoints(endpoints);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, true);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
+
+        assertEquals(2, clients.size());
+
+        // Capture the policy passed to addPolicy and verify it contains the correct replica count
+        ArgumentCaptor<HttpPipelinePolicy> policyCaptor = ArgumentCaptor.forClass(HttpPipelinePolicy.class);
+        verify(builderMock, atLeastOnce()).addPolicy(policyCaptor.capture());
+
+        List<HttpPipelinePolicy> policies = policyCaptor.getAllValues();
+        // All captured policies should be BaseAppConfigurationPolicy instances
+        for (HttpPipelinePolicy policy : policies) {
+            assertTrue(policy instanceof BaseAppConfigurationPolicy,
+                "Expected BaseAppConfigurationPolicy but got " + policy.getClass().getSimpleName());
+        }
     }
 
 }

@@ -135,12 +135,12 @@ public class AppConfigurationProperties {
             if (!store.getEndpoints().isEmpty()) {
                 for (String endpoint : store.getEndpoints()) {
                     if (!existingEndpoints.add(endpoint)) {
-                        throw new IllegalArgumentException("Duplicate store name exists.");
+                        throw new IllegalArgumentException("Duplicate endpoint exists: " + endpoint);
                     }
                 }
             } else if (StringUtils.hasText(store.getEndpoint())) {
                 if (!existingEndpoints.add(store.getEndpoint())) {
-                    throw new IllegalArgumentException("Duplicate store name exists.");
+                    throw new IllegalArgumentException("Duplicate endpoint exists: " + store.getEndpoint());
                 }
             }
         }

@@ -181,7 +181,7 @@ public class AppConfigurationReplicaClientsBuilder {
             return buildClientFromConnectionString(configStore.getConnectionStrings().get(0), failoverEndpoint,
                 configStore.getEndpoint());
         } else {
-            return buildClientFromEndpoint(failoverEndpoint, configStore.getEndpoint(), null);
+            return buildClientFromEndpoint(failoverEndpoint, configStore.getEndpoint(), null, 0);
         }
     }
 
@@ -207,14 +207,15 @@ public class AppConfigurationReplicaClientsBuilder {
         // shared DefaultAzureCredential to avoid the cost of building one per endpoint.
         DefaultAzureCredential defaultAzureCredential = credentialConfigured ? null
             : new DefaultAzureCredentialBuilder().build();
+        int replicaCount = endpoints.size() - 1;
         for (String endpoint : endpoints) {
-            clients.add(buildClientFromEndpoint(endpoint, originEndpoint, defaultAzureCredential));
+            clients.add(buildClientFromEndpoint(endpoint, originEndpoint, defaultAzureCredential, replicaCount));
         }
         return clients;
     }
 
     private AppConfigurationReplicaClient buildClientFromEndpoint(String endpoint, String originEndpoint,
-        DefaultAzureCredential sharedCredential) {
+        DefaultAzureCredential sharedCredential, int replicaCount) {
         ConfigurationClientBuilder builder = createBuilderInstance();
         // When credentialConfigured is false, no credential was provided via Spring Cloud Azure
         // auto-config, so we fall back to DefaultAzureCredential. Prefer the shared instance
@@ -224,7 +225,7 @@ public class AppConfigurationReplicaClientsBuilder {
                 : new DefaultAzureCredentialBuilder().build());
         }
         builder.endpoint(endpoint);
-        return modifyAndBuildClient(builder, endpoint, originEndpoint, 0);
+        return modifyAndBuildClient(builder, endpoint, originEndpoint, replicaCount);
     }
 
     /**
