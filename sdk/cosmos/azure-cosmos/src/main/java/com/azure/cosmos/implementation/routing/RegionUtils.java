@@ -164,30 +164,41 @@ public final class RegionUtils {
         }
     });
 
+    // ========================================================================
+    // Derived maps — built from REGION_NAME_TO_REGION_ID_MAPPINGS.
+    //
+    // Naming convention:
+    //   "normalized"  = lowercase, no spaces (e.g., "westus3")
+    //   "canonical"   = official display form (e.g., "West US 3")
+    // ========================================================================
+
+    /** Maps region ID → normalized name (e.g., 77 → "westus3"). */
     public static final Map<Integer, String> REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS;
 
+    /** Maps normalized name → region ID (e.g., "westus3" → 77). */
     public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS;
 
-    // Static map: lowercase-no-spaces key → canonical display name
+    /** Maps normalized name → canonical display name (e.g., "westus3" → "West US 3"). */
     private static final Map<String, String> NORMALIZED_TO_CANONICAL;
 
     static {
-        // Derive all maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS
+        // Derive all maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS.
+        // Keys in the source map are canonical names (e.g., "West US 3").
         Map<Integer, String> idToNormalized = new HashMap<>();
         Map<String, Integer> normalizedToId = new HashMap<>();
         Map<String, String> normalizedToCanonical = new HashMap<>();
 
         for (Map.Entry<String, Integer> entry : REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
-            String canonicalName = entry.getKey();
-            String normalized = canonicalName.toLowerCase(Locale.ROOT).replace(" ", "");
+            String canonicalName = entry.getKey();                                   // e.g., "West US 3"
+            String normalizedName = canonicalName.toLowerCase(Locale.ROOT).replace(" ", ""); // e.g., "westus3"
 
-            if (normalizedToId.put(normalized, entry.getValue()) != null) {
-                throw new IllegalStateException("Duplicate normalized region name '" + normalized + "' in REGION_NAME_TO_REGION_ID_MAPPINGS");
+            if (normalizedToId.put(normalizedName, entry.getValue()) != null) {
+                throw new IllegalStateException("Duplicate normalized region name '" + normalizedName + "' in REGION_NAME_TO_REGION_ID_MAPPINGS");
             }
-            if (idToNormalized.put(entry.getValue(), normalized) != null) {
+            if (idToNormalized.put(entry.getValue(), normalizedName) != null) {
                 throw new IllegalStateException("Duplicate region ID " + entry.getValue() + " in REGION_NAME_TO_REGION_ID_MAPPINGS");
             }
-            normalizedToCanonical.putIfAbsent(normalized, canonicalName);
+            normalizedToCanonical.putIfAbsent(normalizedName, canonicalName);
         }
 
         NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(normalizedToId);
@@ -198,47 +209,64 @@ public final class RegionUtils {
     private RegionUtils() {
     }
 
+    /**
+     * Returns the normalized name for a region ID.
+     *
+     * @param regionId the numeric region ID
+     * @return the normalized name (e.g., "westus3"), or empty string if unknown
+     */
     public static String getRegionName(int regionId) {
         return REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS.getOrDefault(regionId, StringUtils.EMPTY);
     }
 
+    /**
+     * Returns the region ID for a region name (any format accepted).
+     * <p>
+     * Fast path: tries the raw key first (zero allocations for already-normalized input).
+     * Slow path: normalizes (lowercase + strip spaces) and retries.
+     *
+     * @param regionName the region name in any format (canonical, normalized, or raw)
+     * @return the region ID, or -1 if not found
+     */
     public static int getRegionId(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
             return -1;
         }
-        // Fast path: try raw key first (avoids string allocation for already-normalized input)
+        // Fast path: input is already in normalized form (e.g., "westus3")
         int id = NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
         if (id != -1) {
             return id;
         }
-        // Slow path: normalize and retry
-        String normalized = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
-        return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(normalized, -1);
+        // Slow path: normalize input to lowercase-no-spaces and retry
+        String normalizedName = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(normalizedName, -1);
     }
 
     /**
-     * Normalizes a region name to the canonical CosmosDB format.
+     * Returns the canonical CosmosDB region name for any input variant.
      * <p>
-     * Strips spaces, lowercases, and looks up in the static known-region map.
-     * If recognized, returns the canonical form (e.g., "West US 3").
-     * If not recognized, returns the customer-passed string as-is
-     * for forward compatibility — downstream consumers in LocationCache
-     * apply toLowerCase() or equalsIgnoreCase() as needed.
+     * Converts input to normalized form (lowercase, no spaces), then looks up
+     * the canonical display name in the static map.
+     * <ul>
+     *   <li>Known region: returns canonical form (e.g., "westus3" → "West US 3")</li>
+     *   <li>Unknown region: returns customer-passed string as-is</li>
+     * </ul>
      *
-     * @param regionName the region name to normalize (any casing/spacing variant)
-     * @return the canonical CosmosDB region name, or the customer-passed
-     *         string as-is if unrecognized
+     * @param regionName the region name in any format (e.g., "westus3", "WEST US 3", "West US 3")
+     * @return the canonical region name (e.g., "West US 3"), or the input as-is if unrecognized
      */
     public static String getCanonicalRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
             return regionName;
         }
 
-        String normalized = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        // Normalize to lowercase-no-spaces for map lookup
+        String normalizedName = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
 
-        String canonical = NORMALIZED_TO_CANONICAL.get(normalized);
-        if (canonical != null) {
-            return canonical;
+        // Look up canonical display name
+        String canonicalName = NORMALIZED_TO_CANONICAL.get(normalizedName);
+        if (canonicalName != null) {
+            return canonicalName;
         }
 
         // Unknown region — return customer-passed string as-is.
@@ -249,12 +277,17 @@ public final class RegionUtils {
     /**
      * Returns the normalized form of a region name: lowercase, no spaces.
      * <p>
-     * For known regions, this is the lowercase-no-spaces key (e.g., {@code "westus3"}).
-     * For unknown regions, this is the input lowercased with spaces stripped.
-     * Used for constructing regional endpoint URLs (DNS is case-insensitive).
+     * Examples:
+     * <ul>
+     *   <li>"West US 3" → "westus3"</li>
+     *   <li>"EAST US" → "eastus"</li>
+     *   <li>"Future Region" → "futureregion"</li>
+     * </ul>
+     * Used by {@code LocationHelper} for constructing regional endpoint URLs.
+     * DNS is case-insensitive, so casing doesn't affect resolution.
      *
-     * @param regionName the region name to normalize
-     * @return the lowercase, space-stripped form
+     * @param regionName the region name in any format
+     * @return the normalized form (lowercase, no spaces)
      */
     public static String getNormalizedRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
@@ -264,40 +297,47 @@ public final class RegionUtils {
     }
 
     /**
-     * Normalizes a list of region names to canonical CosmosDB format.
-     * Unknown regions not in the static map are passed through as-is.
+     * Converts a list of region names to their canonical CosmosDB form.
+     * <p>
+     * Known regions are mapped to canonical names (e.g., "westus3" → "West US 3").
+     * Unknown regions are passed through as-is. Null elements are dropped.
      *
-     * @param regionNames the list of region names to normalize
-     * @return a new list with each region normalized
+     * @param regionNames the list of region names in any format
+     * @return a new list with each region in canonical form
      */
     public static List<String> canonicalizeRegionNames(List<String> regionNames) {
         if (regionNames == null || regionNames.isEmpty()) {
             return Collections.emptyList();
         }
-        List<String> normalized = new ArrayList<>(regionNames.size());
+        List<String> canonicalized = new ArrayList<>(regionNames.size());
         for (String region : regionNames) {
             if (region != null) {
-                normalized.add(getCanonicalRegionName(region));
+                canonicalized.add(getCanonicalRegionName(region));
             }
         }
-        return normalized;
+        return canonicalized;
     }
 
     /**
      * Checks whether a list of region names contains the target region,
      * using canonical normalization + case-insensitive comparison.
+     * <p>
+     * Both the list elements and the target are first canonicalized via
+     * {@link #getCanonicalRegionName(String)}, then compared with
+     * {@code equalsIgnoreCase}. This handles all format variants:
+     * "westus3", "West US 3", "WEST US 3" all match each other.
      *
-     * @param regions the list of region names to search
-     * @param target the target region name to find
-     * @return true if any region in the list matches the target after normalization
+     * @param regions the list of region names to search (any format)
+     * @param target the target region name to find (any format)
+     * @return true if any region in the list matches the target after canonicalization
      */
     public static boolean containsRegionIgnoreCase(List<String> regions, String target) {
         if (regions == null || regions.isEmpty()) {
             return false;
         }
-        String normalizedTarget = getCanonicalRegionName(target);
+        String canonicalTarget = getCanonicalRegionName(target);
         for (String region : regions) {
-            if (region != null && getCanonicalRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+            if (region != null && getCanonicalRegionName(region).equalsIgnoreCase(canonicalTarget)) {
                 return true;
             }
         }
