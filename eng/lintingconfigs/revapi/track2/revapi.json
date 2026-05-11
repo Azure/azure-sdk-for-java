@@ -302,7 +302,7 @@
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
-          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client|ClientBuilder)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
         },
         {
