@@ -42,7 +42,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private List<String> normalizedPreferredRegions;
+    private List<String> canonicalPreferredRegions;
     private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
@@ -490,7 +490,7 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
         if (preferredRegions == null || preferredRegions.isEmpty()) {
             this.preferredRegions = preferredRegions;
-            this.normalizedPreferredRegions = preferredRegions;
+            this.canonicalPreferredRegions = preferredRegions;
             return this;
         }
 
@@ -499,7 +499,7 @@ public final class ConnectionPolicy {
 
         // Pre-normalize for internal consumers (LocationCache, GlobalEndpointManager, etc.)
         // so normalization happens once at entry, not scattered across consumers.
-        this.normalizedPreferredRegions = RegionUtils.normalizeRegionNames(preferredRegions);
+        this.canonicalPreferredRegions = RegionUtils.canonicalizeRegionNames(preferredRegions);
         return this;
     }
 
@@ -509,8 +509,8 @@ public final class ConnectionPolicy {
      *
      * @return the normalized list of preferred regions.
      */
-    public List<String> getNormalizedPreferredRegions() {
-        return this.normalizedPreferredRegions != null ? this.normalizedPreferredRegions : Collections.emptyList();
+    public List<String> getCanonicalPreferredRegions() {
+        return this.canonicalPreferredRegions != null ? this.canonicalPreferredRegions : Collections.emptyList();
     }
 
     public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {

@@ -79,35 +79,35 @@ public class RegionUtilsNormalizationTest {
 
     @Test(groups = "unit", dataProvider = "regionNameVariants")
     public void shouldNormalizeRegionNameVariants(String input, String expectedCanonical) {
-        String result = RegionUtils.getCosmosDBRegionName(input);
+        String result = RegionUtils.getCanonicalRegionName(input);
         assertThat(result).isEqualTo(expectedCanonical);
     }
 
     @Test(groups = "unit")
     public void shouldNormalizeUnknownRegions() {
         // Unknown regions should be returned as-is (customer input preserved)
-        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
-        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
+        assertThat(RegionUtils.getCanonicalRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
+        assertThat(RegionUtils.getCanonicalRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
     }
 
     @Test(groups = "unit")
     public void shouldHandleNullAndEmpty() {
-        assertThat(RegionUtils.getCosmosDBRegionName(null)).isNull();
-        assertThat(RegionUtils.getCosmosDBRegionName("")).isEqualTo("");
+        assertThat(RegionUtils.getCanonicalRegionName(null)).isNull();
+        assertThat(RegionUtils.getCanonicalRegionName("")).isEqualTo("");
     }
 
     @Test(groups = "unit")
     public void shouldHandleBlankString() {
         // Blank strings (only spaces) are returned as-is — nonsensical input, no match expected
-        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("   ");
+        assertThat(RegionUtils.getCanonicalRegionName("   ")).isEqualTo("   ");
     }
 
     @Test(groups = "unit")
     public void unknownRegionVariantsShouldBeReturnedAsIs() {
         // Unknown regions: returned as customer-passed string (no transformation)
-        assertThat(RegionUtils.getCosmosDBRegionName("futureregion99")).isEqualTo("futureregion99");
-        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
-        assertThat(RegionUtils.getCosmosDBRegionName("FUTURE REGION 99")).isEqualTo("FUTURE REGION 99");
+        assertThat(RegionUtils.getCanonicalRegionName("futureregion99")).isEqualTo("futureregion99");
+        assertThat(RegionUtils.getCanonicalRegionName("Future Region 99")).isEqualTo("Future Region 99");
+        assertThat(RegionUtils.getCanonicalRegionName("FUTURE REGION 99")).isEqualTo("FUTURE REGION 99");
     }
 
     // ========================================================================
@@ -116,19 +116,19 @@ public class RegionUtilsNormalizationTest {
 
     @Test(groups = "unit")
     public void normalizeRegionNames_shouldNormalizeList() {
-        assertThat(RegionUtils.normalizeRegionNames(Arrays.asList("westus3", "east us")))
+        assertThat(RegionUtils.canonicalizeRegionNames(Arrays.asList("westus3", "east us")))
             .containsExactly("West US 3", "East US");
     }
 
     @Test(groups = "unit")
     public void normalizeRegionNames_shouldHandleNullAndEmpty() {
-        assertThat(RegionUtils.normalizeRegionNames(null)).isEmpty();
-        assertThat(RegionUtils.normalizeRegionNames(Collections.emptyList())).isEmpty();
+        assertThat(RegionUtils.canonicalizeRegionNames(null)).isEmpty();
+        assertThat(RegionUtils.canonicalizeRegionNames(Collections.emptyList())).isEmpty();
     }
 
     @Test(groups = "unit")
     public void normalizeRegionNames_shouldDropNullElements() {
-        assertThat(RegionUtils.normalizeRegionNames(Arrays.asList("East US", null, "westus3")))
+        assertThat(RegionUtils.canonicalizeRegionNames(Arrays.asList("East US", null, "westus3")))
             .containsExactly("East US", "West US 3");
     }
 

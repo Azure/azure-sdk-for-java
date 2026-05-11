@@ -51,7 +51,7 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<RegionalRoutingContext, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
-    private final ConcurrentHashMap<String, String> normalizedRegionNameCache;
+    private final ConcurrentHashMap<String, String> canonicalRegionNameCache;
     private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
@@ -64,7 +64,7 @@ public class LocationCache {
             URI defaultEndpoint,
             Configs configs) {
 
-        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getNormalizedPreferredRegions());
+        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getCanonicalPreferredRegions());
 
         this.defaultRoutingContext = new RegionalRoutingContext(defaultEndpoint);
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, this.defaultRoutingContext);
@@ -74,7 +74,7 @@ public class LocationCache {
         this.lockObject = new Object();
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
-        this.normalizedRegionNameCache = new ConcurrentHashMap<>();
+        this.canonicalRegionNameCache = new ConcurrentHashMap<>();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
@@ -345,13 +345,13 @@ public class LocationCache {
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
         // Normalize user-configured exclude regions using cache to avoid per-request allocation.
-        List<String> normalizedUserExcludeRegions = this.getNormalizedExcludeRegions(userConfiguredExcludeRegions);
+        List<String> canonicalUserExcludeRegions = this.getCanonicalExcludeRegions(userConfiguredExcludeRegions);
 
         // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)) {
-                if (!normalizedUserExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                if (!canonicalUserExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
                     applicableEndpoints.add(endpoint);
                 }
             }
@@ -394,7 +394,7 @@ public class LocationCache {
             new UnmodifiableList<>(applicableEndpoints),
             regionNameByRegionalRoutingContext,
             regionalRoutingContextByRegionName,
-            normalizedUserExcludeRegions,
+            canonicalUserExcludeRegions,
             endpointsRemovedByInternalExcludeRegions,
             internalExcludeRegions,
             regionalRoutingContexts,
@@ -520,14 +520,14 @@ public class LocationCache {
         return isExcludedRegionsConfiguredOnRequest || isExcludedRegionsConfiguredOnClient;
     }
 
-    private List<String> getNormalizedExcludeRegions(List<String> excludeRegions) {
+    private List<String> getCanonicalExcludeRegions(List<String> excludeRegions) {
         if (excludeRegions == null || excludeRegions.isEmpty()) {
             return Collections.emptyList();
         }
         List<String> normalized = new ArrayList<>(excludeRegions.size());
         for (String region : excludeRegions) {
             if (region != null) {
-                normalized.add(this.normalizedRegionNameCache.computeIfAbsent(region, RegionUtils::getCosmosDBRegionName));
+                normalized.add(this.canonicalRegionNameCache.computeIfAbsent(region, RegionUtils::getCosmosDBRegionName));
             }
         }
         return normalized;

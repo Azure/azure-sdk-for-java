@@ -229,7 +229,7 @@ public final class RegionUtils {
      * @return the canonical CosmosDB region name, or the customer-passed
      *         string as-is if unrecognized
      */
-    public static String getCosmosDBRegionName(String regionName) {
+    public static String getCanonicalRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
             return regionName;
         }
@@ -270,14 +270,14 @@ public final class RegionUtils {
      * @param regionNames the list of region names to normalize
      * @return a new list with each region normalized
      */
-    public static List<String> normalizeRegionNames(List<String> regionNames) {
+    public static List<String> canonicalizeRegionNames(List<String> regionNames) {
         if (regionNames == null || regionNames.isEmpty()) {
             return Collections.emptyList();
         }
         List<String> normalized = new ArrayList<>(regionNames.size());
         for (String region : regionNames) {
             if (region != null) {
-                normalized.add(getCosmosDBRegionName(region));
+                normalized.add(getCanonicalRegionName(region));
             }
         }
         return normalized;
@@ -295,9 +295,9 @@ public final class RegionUtils {
         if (regions == null || regions.isEmpty()) {
             return false;
         }
-        String normalizedTarget = getCosmosDBRegionName(target);
+        String normalizedTarget = getCanonicalRegionName(target);
         for (String region : regions) {
-            if (region != null && getCosmosDBRegionName(region).equalsIgnoreCase(normalizedTarget)) {
+            if (region != null && getCanonicalRegionName(region).equalsIgnoreCase(normalizedTarget)) {
                 return true;
             }
         }
