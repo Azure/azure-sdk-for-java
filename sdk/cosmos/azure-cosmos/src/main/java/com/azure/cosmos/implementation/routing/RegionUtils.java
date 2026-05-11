@@ -181,8 +181,12 @@ public final class RegionUtils {
             String canonicalName = entry.getKey();
             String normalized = canonicalName.toLowerCase(Locale.ROOT).replace(" ", "");
 
-            normalizedToId.put(normalized, entry.getValue());
-            idToNormalized.putIfAbsent(entry.getValue(), normalized);
+            if (normalizedToId.put(normalized, entry.getValue()) != null) {
+                throw new IllegalStateException("Duplicate normalized region name '" + normalized + "' in REGION_NAME_TO_REGION_ID_MAPPINGS");
+            }
+            if (idToNormalized.put(entry.getValue(), normalized) != null) {
+                throw new IllegalStateException("Duplicate region ID " + entry.getValue() + " in REGION_NAME_TO_REGION_ID_MAPPINGS");
+            }
             normalizedToCanonical.putIfAbsent(normalized, canonicalName);
         }
 
