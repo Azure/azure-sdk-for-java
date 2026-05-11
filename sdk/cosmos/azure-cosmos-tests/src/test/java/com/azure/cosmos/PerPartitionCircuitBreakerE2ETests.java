@@ -5275,11 +5275,22 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             throw new SkipException("Test requires multi-region account");
         }
 
-        // Build space-stripped preferred regions: "West US 3" → "westus3"
+        // Build non-canonical preferred regions: "West US 3" → "westus3", "East US" → "eastus"
         List<String> nonCanonicalRegions = new ArrayList<>();
         for (String region : this.writeRegions) {
             nonCanonicalRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
         }
+
+        String firstRegionCanonicalLower = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
+        String secondRegionCanonicalLower = this.writeRegions.get(1).toLowerCase(Locale.ROOT);
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 5,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
 
         CosmosClientBuilder clientBuilder = getClientBuilder()
             .multipleWriteRegionsEnabled(true)
@@ -5303,35 +5314,62 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 .getDatabase(this.sharedAsyncDatabaseId)
                 .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
 
-            // Create an item and read it back — verify routing via diagnostics
+            // Bootstrap: create a test item
             TestObject testObject = TestObject.create();
-            CosmosItemResponse<TestObject> createResponse = container
-                .createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions())
-                .block();
+            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
 
-            assertThat(createResponse).isNotNull();
-            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+            // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
+            FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(this.writeRegions.get(0))
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build();
 
-            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
-            readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+            FaultInjectionServerErrorResult serverError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .build();
 
-            CosmosItemResponse<TestObject> readResponse = container
-                .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
-                .block();
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder("ppcb-non-canonical-region-test-" + UUID.randomUUID())
+                .condition(faultCondition)
+                .result(serverError)
+                .hitLimit(15)
+                .build();
 
-            assertThat(readResponse).isNotNull();
-            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
 
-            CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotEmpty();
+            // Step 2: Issue reads until circuit breaker trips — expect failover to second region
+            boolean circuitBreakerTripped = false;
 
-            // The contacted region should match the first preferred region (in lowercased canonical form)
-            String expectedFirstRegion = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
-            assertThat(diagnosticsContext.getContactedRegionNames())
-                .contains(expectedFirstRegion);
+            for (int i = 0; i < 20; i++) {
+                CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+                readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+
+                CosmosItemResponse<TestObject> readResponse = container
+                    .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
+                    .block();
+
+                assertThat(readResponse).isNotNull();
+                assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext ctx = readResponse.getDiagnostics().getDiagnosticsContext();
+
+                // Once we see only the second region contacted, the circuit breaker has tripped
+                if (ctx.getContactedRegionNames().contains(secondRegionCanonicalLower)
+                    && !ctx.getContactedRegionNames().contains(firstRegionCanonicalLower)) {
+                    circuitBreakerTripped = true;
+                    logger.info("Circuit breaker tripped at iteration {}, routing to second region: {}", i, secondRegionCanonicalLower);
+                    break;
+                }
+            }
+
+            assertThat(circuitBreakerTripped)
+                .as("PPCB should have tripped and routed reads to the second preferred region (%s) "
+                    + "even though preferred regions were passed in non-canonical form (%s)",
+                    secondRegionCanonicalLower, nonCanonicalRegions)
+                .isTrue();
 
         } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             if (asyncClient != null) {
                 asyncClient.close();
             }

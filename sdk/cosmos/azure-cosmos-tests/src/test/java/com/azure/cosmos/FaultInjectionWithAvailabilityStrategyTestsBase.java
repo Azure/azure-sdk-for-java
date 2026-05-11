@@ -352,7 +352,8 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     @Test(groups = {"fi-multi-master"})
     public void readAfterCreation_nonCanonicalPreferredRegions_shouldRouteCorrectly() {
         // Verify that a client built with space-stripped preferred regions (e.g., "westus3")
-        // routes correctly to the first preferred region via availability strategy
+        // routes correctly with availability strategy — fault injection in first region
+        // should cause failover to second region via hedging
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
             new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
@@ -386,6 +387,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             assertThat(createResponse).isNotNull();
             assertThat(createResponse.getStatusCode()).isEqualTo(201);
 
+            // Step 1: Read without fault injection — should contact first preferred region
             CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
             readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
@@ -398,10 +400,47 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
             CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
             assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(0);
-            // The first contacted region should match the first writeable region (lowercased canonical)
-            assertThat(diagnosticsContext.getContactedRegionNames().iterator().next())
-                .isEqualTo(FIRST_REGION_NAME);
+            assertThat(diagnosticsContext.getContactedRegionNames())
+                .as("Without faults, should contact first preferred region")
+                .contains(FIRST_REGION_NAME);
+
+            // Step 2: Inject 503 into first region — availability strategy should hedge to second region
+            String ruleName = "nonCanonical-503-" + UUID.randomUUID();
+            FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .delay(Duration.ofMillis(5))
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder(ruleName)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .connectionType(FaultInjectionConnectionType.DIRECT)
+                        .region(this.writeableRegions.get(0))
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build())
+                .result(serviceUnavailableResult)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            try {
+                CosmosItemResponse<ObjectNode> readWithFaultResponse = container
+                    .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                    .block();
+
+                assertThat(readWithFaultResponse).isNotNull();
+                assertThat(readWithFaultResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext faultDiagnostics = readWithFaultResponse.getDiagnostics().getDiagnosticsContext();
+                assertThat(faultDiagnostics).isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames())
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .contains(SECOND_REGION_NAME);
+            } finally {
+                faultRule.disable();
+            }
         } finally {
             safeClose(clientWithNonCanonicalRegions);
         }
