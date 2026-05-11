@@ -20,6 +20,7 @@ import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Cal
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
@@ -28,8 +29,10 @@ import reactor.util.function.Tuples;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -45,6 +48,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
     private static final int BLOCK_SIZE = 4 * Constants.MB;
+
+    private File createRandomFile(Path tempDir, int size) throws IOException {
+        File file = Files.createTempFile(tempDir, "blob-cv-source", ".bin").toFile();
+
+        if (size > Constants.MB) {
+            try (OutputStream outputStream = Files.newOutputStream(file.toPath())) {
+                byte[] data = getRandomByteArray(Constants.MB);
+                int mbChunks = size / Constants.MB;
+                int remaining = size % Constants.MB;
+                for (int i = 0; i < mbChunks; i++) {
+                    outputStream.write(data);
+                }
+                if (remaining > 0) {
+                    outputStream.write(data, 0, remaining);
+                }
+            }
+        } else {
+            Files.write(file.toPath(), getRandomByteArray(size));
+        }
+
+        return file;
+    }
 
     /**
      * downloadStreamWithResponse with CRC64 content validation.
@@ -97,35 +122,27 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             16 * 1024 * 1024, // medium file in several chunks
             8 * 1026 * 1024 + 10, // medium file not aligned to block
         })
-    public void downloadToFileWithResponseContentValidation(int fileSize) throws IOException {
-        File file = getRandomFile(fileSize);
-        file.deleteOnExit();
-        File outFile = Files.createTempFile("blob-cv-download-async", ".bin").toFile();
-        outFile.deleteOnExit();
+    public void downloadToFileWithResponseContentValidation(int fileSize, @TempDir Path tempDir) throws IOException {
+        File file = createRandomFile(tempDir, fileSize);
+        File outFile = tempDir.resolve("download.bin").toFile();
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.uploadFromFile(file.toPath().toString(), true).block();
 
-        try {
-            List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
-            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
-            blobClient.uploadFromFile(file.toPath().toString(), true).block();
+        Files.deleteIfExists(outFile.toPath());
 
-            Files.deleteIfExists(outFile.toPath());
+        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
+        BlobDownloadToFileOptions options
+            = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-            ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
-            BlobDownloadToFileOptions options
-                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
+            assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+            assertNotNull(r.getValue());
+        }).verifyComplete();
 
-            StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
-                assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
-                assertNotNull(r.getValue());
-            }).verifyComplete();
-
-            assertTrue(compareFiles(file, outFile, 0, fileSize));
-            assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
-        } finally {
-            deleteFileIfExists(file);
-            deleteFileIfExists(outFile);
-        }
+        assertTrue(compareFiles(file, outFile, 0, fileSize));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -138,35 +155,28 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             50 * Constants.MB, //large file requiring multiple requests
             50 * Constants.MB + 22 // large file not on MB boundary
         })
-    public void downloadToFileLargeWithResponseContentValidation(int fileSize) throws IOException {
-        File file = getRandomFile(fileSize);
-        file.deleteOnExit();
-        File outFile = Files.createTempFile("blob-cv-large-download-async", ".bin").toFile();
-        outFile.deleteOnExit();
+    public void downloadToFileLargeWithResponseContentValidation(int fileSize, @TempDir Path tempDir)
+        throws IOException {
+        File file = createRandomFile(tempDir, fileSize);
+        File outFile = tempDir.resolve("download.bin").toFile();
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.uploadFromFile(file.toPath().toString(), true).block();
 
-        try {
-            List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
-            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
-            blobClient.uploadFromFile(file.toPath().toString(), true).block();
+        Files.deleteIfExists(outFile.toPath());
 
-            Files.deleteIfExists(outFile.toPath());
+        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
+        BlobDownloadToFileOptions options
+            = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-            ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
-            BlobDownloadToFileOptions options
-                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
+            assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+            assertNotNull(r.getValue());
+        }).verifyComplete();
 
-            StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
-                assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
-                assertNotNull(r.getValue());
-            }).verifyComplete();
-
-            assertTrue(compareFiles(file, outFile, 0, fileSize));
-            assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
-        } finally {
-            deleteFileIfExists(file);
-            deleteFileIfExists(outFile);
-        }
+        assertTrue(compareFiles(file, outFile, 0, fileSize));
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
     /**
@@ -432,12 +442,6 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
-    }
-
-    private static void deleteFileIfExists(File file) {
-        if (file.exists() && !file.delete()) {
-            file.deleteOnExit();
-        }
     }
 
 }
