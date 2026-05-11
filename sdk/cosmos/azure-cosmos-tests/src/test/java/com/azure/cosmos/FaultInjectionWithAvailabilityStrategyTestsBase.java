@@ -402,7 +402,10 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             assertThat(diagnosticsContext).isNotNull();
             assertThat(diagnosticsContext.getContactedRegionNames())
                 .as("Without faults, should contact first preferred region")
-                .contains(FIRST_REGION_NAME);
+                .isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames().contains(FIRST_REGION_NAME))
+                .as("Without faults, should contact first preferred region")
+                .isTrue();
 
             // Step 2: Inject 503 into first region — availability strategy should hedge to second region
             String ruleName = "nonCanonical-503-" + UUID.randomUUID();
@@ -437,7 +440,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                     .as("With 503 in first region + eager availability strategy, "
                         + "should hedge to second region even with non-canonical preferred regions (%s)",
                         this.nonCanonicalWriteableRegions)
-                    .contains(SECOND_REGION_NAME);
+                    .isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isTrue();
             } finally {
                 faultRule.disable();
             }
