@@ -537,8 +537,7 @@ public class StructuredMessageDecoderTests {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(originalData.length, segmentLength, flags);
         Flux<ByteBuffer> flux = encoder.encode(ByteBuffer.wrap(originalData));
 
-        return ByteBuffer.wrap(Objects.requireNonNull(
-            FluxUtil.collectBytesInByteBufferStream(flux).block()));
+        return ByteBuffer.wrap(Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(flux).block()));
     }
 
     // For tests that need random access/mutation/splitting of encoded bytes.
