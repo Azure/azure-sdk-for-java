@@ -12,7 +12,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
-import com.azure.cosmos.models.CosmosGlobalSecondaryIndex;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -22,7 +21,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,8 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for container CRUD operations with GlobalSecondaryIndex definitions.
  *
  * <p>These tests verify that containers with a {@link CosmosGlobalSecondaryIndexDefinition} can be
- * created, read, and deleted against the Cosmos DB emulator. They also verify that the source
- * container exposes the derived GSI containers via {@link CosmosContainerProperties#getGlobalSecondaryIndexes()}.
+ * created, read, and deleted against the Cosmos DB emulator.
  */
 public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
@@ -147,56 +144,6 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
             assertThat(deleteResponse).isNotNull();
             assertThat(deleteResponse.getProperties()).isNull();
-
-            // Verify the source container no longer lists the deleted GSI view
-            CosmosContainerResponse sourceReadResponse = database.getContainer(sourceContainerId).read().block();
-            List<CosmosGlobalSecondaryIndex> views = sourceReadResponse.getProperties().getGlobalSecondaryIndexes();
-            boolean gsiStillPresent = views.stream().anyMatch(v -> v.getId().equals(gsiContainerId));
-            assertThat(gsiStillPresent).isFalse();
-        } finally {
-            safeDeleteAllCollections(database);
-        }
-    }
-
-    // ------------------------------------------------------------------
-    // Read source container to verify GSI views
-    // ------------------------------------------------------------------
-
-    @Test(groups = {"gsi"}, timeOut = TIMEOUT)
-    public void readSourceContainerShowsGsiViews() {
-        // Create source container
-        String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
-        database.createContainer(sourceContainerDef).block();
-
-        // Create two GSI containers derived from the same source
-        String gsiContainerId1 = "gsi-view1-" + UUID.randomUUID();
-        CosmosContainerProperties gsiDef1 = new CosmosContainerProperties(gsiContainerId1, "/customerId");
-        gsiDef1.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, "SELECT c.customerId FROM c"));
-        database.createContainer(gsiDef1).block();
-
-        String gsiContainerId2 = "gsi-view2-" + UUID.randomUUID();
-        CosmosContainerProperties gsiDef2 = new CosmosContainerProperties(gsiContainerId2, "/customerId");
-        gsiDef2.setCosmosGlobalSecondaryIndexDefinition(
-            new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, "SELECT c.customerId, c.emailAddress FROM c"));
-        database.createContainer(gsiDef2).block();
-
-        try {
-            // Read the source container and verify it lists both GSI containers
-            CosmosContainerResponse sourceResponse = database.getContainer(sourceContainerId).read().block();
-
-            assertThat(sourceResponse).isNotNull();
-            List<CosmosGlobalSecondaryIndex> gsiList = sourceResponse.getProperties().getGlobalSecondaryIndexes();
-            assertThat(gsiList).isNotNull();
-            assertThat(gsiList).hasSize(2);
-
-            List<String> gsiIds = new ArrayList<>();
-            for (CosmosGlobalSecondaryIndex gsi : gsiList) {
-                gsiIds.add(gsi.getId());
-                assertThat(gsi.getResourceId()).isNotNull().isNotEmpty();
-            }
-            assertThat(gsiIds).containsExactlyInAnyOrder(gsiContainerId1, gsiContainerId2);
         } finally {
             safeDeleteAllCollections(database);
         }
@@ -349,7 +296,6 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
-            assertThat(readResponse.getProperties().getGlobalSecondaryIndexes()).isNotNull().isEmpty();
         } finally {
             safeDeleteAllCollections(database);
         }
@@ -454,7 +400,6 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getProperties().getId()).isEqualTo(containerId);
             assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
-            assertThat(readResponse.getProperties().getGlobalSecondaryIndexes()).isNotNull().isEmpty();
         } finally {
             safeDeleteAllCollections(database);
         }

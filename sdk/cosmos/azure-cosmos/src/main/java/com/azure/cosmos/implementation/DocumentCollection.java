@@ -9,7 +9,6 @@ import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
-import com.azure.cosmos.models.CosmosGlobalSecondaryIndex;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -22,7 +21,6 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -501,25 +499,6 @@ public final class DocumentCollection extends Resource {
         // Write under both property names so the service can accept either
         this.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION, value);
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
-    }
-
-    /**
-     * Gets the read-only list of global secondary indexes derived from this container.
-     * This property is populated only when reading a container response from the Azure Cosmos DB service.
-     *
-     * @return the list of {@link CosmosGlobalSecondaryIndex}, or an empty list if none are present.
-     */
-    public List<CosmosGlobalSecondaryIndex> getGlobalSecondaryIndexes() {
-        // Accept both the new wire format property name and the legacy one
-        List<CosmosGlobalSecondaryIndex> results =
-            super.getList(Constants.Properties.GLOBAL_SECONDARY_INDEXES, CosmosGlobalSecondaryIndex.class);
-        if (results == null) {
-            results = super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndex.class);
-        }
-        if (results == null) {
-            return Collections.emptyList();
-        }
-        return Collections.unmodifiableList(results);
     }
 
     public void populatePropertyBag() {

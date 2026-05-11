@@ -6,15 +6,12 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.CosmosGlobalSecondaryIndex;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -275,93 +272,6 @@ public class GlobalSecondaryIndexTest {
         assertThat(gsiDefNode.get("sourceCollectionRid").asText()).isEqualTo("TughAMEOdUI=");
     }
 
-
-    // -------------------------------------------------------------------------
-    // getGlobalSecondaryIndexes – read-only list from server response
-    // -------------------------------------------------------------------------
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getGlobalSecondaryIndexes_returnsEmptyListWhenAbsent() {
-        CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties("testContainer", "/pk");
-
-        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
-        assertThat(gsiList).isNotNull();
-        assertThat(gsiList).isEmpty();
-    }
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getGlobalSecondaryIndexes_deserializesFromServerResponse() {
-        String json = "{"
-            + "\"id\":\"src-container\","
-            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
-            + "\"materializedViews\":["
-            + "{\"id\":\"gsi_testcontainer1\",\"_rid\":\"TughAMEOdUI=\"},"
-            + "{\"id\":\"gsi_testcontainer2\",\"_rid\":\"AbcdEFGhIJk=\"}"
-            + "]"
-            + "}";
-
-        CosmosContainerProperties containerProperties = fromJson(json);
-
-        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
-        assertThat(gsiList).isNotNull();
-        assertThat(gsiList).hasSize(2);
-
-        assertThat(gsiList.get(0).getId()).isEqualTo("gsi_testcontainer1");
-        assertThat(gsiList.get(0).getResourceId()).isEqualTo("TughAMEOdUI=");
-
-        assertThat(gsiList.get(1).getId()).isEqualTo("gsi_testcontainer2");
-        assertThat(gsiList.get(1).getResourceId()).isEqualTo("AbcdEFGhIJk=");
-    }
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getGlobalSecondaryIndexes_deserializesFromNewWireFormat() {
-        String json = "{"
-            + "\"id\":\"src-container\","
-            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
-            + "\"globalSecondaryIndexes\":["
-            + "{\"id\":\"gsi_container1\",\"_rid\":\"XyzAbCdEfG=\"},"
-            + "{\"id\":\"gsi_container2\",\"_rid\":\"HiJkLmNoPq=\"}"
-            + "]"
-            + "}";
-
-        CosmosContainerProperties containerProperties = fromJson(json);
-
-        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
-        assertThat(gsiList).isNotNull();
-        assertThat(gsiList).hasSize(2);
-
-        assertThat(gsiList.get(0).getId()).isEqualTo("gsi_container1");
-        assertThat(gsiList.get(0).getResourceId()).isEqualTo("XyzAbCdEfG=");
-
-        assertThat(gsiList.get(1).getId()).isEqualTo("gsi_container2");
-        assertThat(gsiList.get(1).getResourceId()).isEqualTo("HiJkLmNoPq=");
-    }
-
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void getGlobalSecondaryIndexes_newWireFormatTakesPrecedenceOverLegacy() {
-        // When both property names are present, the new wire format should take precedence
-        String json = "{"
-            + "\"id\":\"src-container\","
-            + "\"partitionKey\":{\"paths\":[\"/pk\"],\"kind\":\"Hash\"},"
-            + "\"globalSecondaryIndexes\":["
-            + "{\"id\":\"new_gsi\",\"_rid\":\"NewRid=\"}"
-            + "],"
-            + "\"materializedViews\":["
-            + "{\"id\":\"legacy_gsi\",\"_rid\":\"LegacyRid=\"}"
-            + "]"
-            + "}";
-
-        CosmosContainerProperties containerProperties = fromJson(json);
-
-        List<CosmosGlobalSecondaryIndex> gsiList = containerProperties.getGlobalSecondaryIndexes();
-        assertThat(gsiList).isNotNull();
-        assertThat(gsiList).hasSize(1);
-        assertThat(gsiList.get(0).getId())
-            .as("New wire format should take precedence when both are present")
-            .isEqualTo("new_gsi");
-        assertThat(gsiList.get(0).getResourceId()).isEqualTo("NewRid=");
-    }
 
     // -------------------------------------------------------------------------
     // GSI definition with null sourceContainerId – non-GSI path fallthrough

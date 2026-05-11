@@ -420,21 +420,6 @@ public final class CosmosContainerProperties {
         return this;
     }
 
-    /**
-     * Gets the read-only list of global secondary indexes derived from this container.
-     * This property is populated only when reading a container response from the Azure Cosmos DB service.
-     * <p>
-     * Example JSON representation in the response:
-     * <pre>{@code
-     * "globalSecondaryIndexes": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
-     * }</pre>
-     *
-     * @return the list of {@link CosmosGlobalSecondaryIndex}, or an empty list if none are present.
-     */
-    public List<CosmosGlobalSecondaryIndex> getGlobalSecondaryIndexes() {
-        return this.documentCollection.getGlobalSecondaryIndexes();
-    }
-
     Resource getResource() {
         return this.documentCollection;
     }
