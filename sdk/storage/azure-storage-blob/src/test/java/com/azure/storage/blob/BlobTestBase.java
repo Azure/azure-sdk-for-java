@@ -1399,7 +1399,8 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static boolean hasStructuredMessageDownloadResponseHeaders(HttpHeaders headers) {
         return validateBasicHeaders(headers)
             && StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE
-                .equalsIgnoreCase(headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
+                .equalsIgnoreCase(headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME))
+            && hasValidStructuredContentLengthHeader(headers);
     }
 
     protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
@@ -1569,5 +1570,18 @@ public class BlobTestBase extends TestProxyTestBase {
             remaining -= chunk;
         }
         return sum;
+    }
+
+    private static boolean hasValidStructuredContentLengthHeader(HttpHeaders headers) {
+        String structuredContentLength = headers.getValue("x-ms-structured-content-length");
+        if (CoreUtils.isNullOrEmpty(structuredContentLength)
+            || CoreUtils.isNullOrEmpty(structuredContentLength.trim())) {
+            return false;
+        }
+        try {
+            return Long.parseLong(structuredContentLength.trim()) >= 0;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 }

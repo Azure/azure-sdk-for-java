@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
@@ -212,6 +213,26 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
                 assertNotNull(result);
                 assertEquals(data.length, result.length);
             }).verifyComplete();
+        assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationRange() {
+        data = getRandomByteArray(4 * Constants.KB);
+        initializeBlobClient();
+        downloadClient.upload(BinaryData.fromBytes(data)).block();
+
+        BlobDownloadStreamOptions options =
+            new BlobDownloadStreamOptions().setRange(new BlobRange(0, 512L));
+
+        StepVerifier.create(downloadClient.downloadStreamWithResponse(options)
+                .flatMap(r -> {
+                    assertFalse(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+                    return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+                }))
+            .assertNext(result -> assertEquals(512, result.length))
+            .verifyComplete();
+
         assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
 
