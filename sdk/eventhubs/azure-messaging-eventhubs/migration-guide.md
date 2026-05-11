@@ -476,9 +476,7 @@ BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
         .buildAsyncClient();
 
 EventProcessorClient processor = new EventProcessorClientBuilder()
-        .credential("<event-hubs-namespace>.servicebus.windows.net",
-                new DefaultAzureCredentialBuilder().build())
-        .eventHubName("<event-hub-name>")
+        .connectionString("connection-string-for-an-event-hub")
         .consumerGroup("my-consumer-group")
         .checkpointStore(new BlobCheckpointStore(blobClient))
         .processEvent(eventContext -> { /* process event */ })
