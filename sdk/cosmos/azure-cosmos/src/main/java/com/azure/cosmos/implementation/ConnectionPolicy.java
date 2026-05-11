@@ -13,7 +13,6 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -485,15 +484,7 @@ public final class ConnectionPolicy {
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
-        if (preferredRegions == null || preferredRegions.isEmpty()) {
-            this.preferredRegions = preferredRegions;
-            return this;
-        }
-
-        // Store the customer-supplied list as-is.
-        // Public API (getPreferredRegions) and CosmosDiagnostics reflect customer input.
-        // Canonicalization to official CosmosDB form happens internally in LocationCache.
-        this.preferredRegions = new ArrayList<>(preferredRegions);
+        this.preferredRegions = preferredRegions;
         return this;
     }
 
