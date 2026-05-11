@@ -409,6 +409,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(recordedResponseHeaders));
     }
 
     /**
@@ -442,6 +443,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+        assertTrue(hasStructuredMessageDownloadResponseHeaders(recordedResponseHeaders));
     }
 
 }
