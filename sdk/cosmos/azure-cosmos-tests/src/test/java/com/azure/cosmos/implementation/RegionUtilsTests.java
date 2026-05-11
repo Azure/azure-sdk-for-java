@@ -21,7 +21,7 @@ public class RegionUtilsTests {
     @Test(groups = {"unit"})
     public void regionIdToRegionNameConsistency() {
 
-        for (Map.Entry<String, Integer> sourceEntry : RegionUtils.REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
+        for (Map.Entry<String, Integer> sourceEntry : RegionUtils.CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
             String normalizedRegionNameFromSource = sourceEntry.getKey().toLowerCase(Locale.ROOT).replace(" ", "").trim();
             Integer regionIdFromSource = sourceEntry.getValue();
 

@@ -35,7 +35,7 @@ public final class RegionUtils {
     // This is a SUBSET of all known regions — only regions with assigned IDs.
     // ========================================================================
 
-    public static final Map<String, Integer> REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(new HashMap<String, Integer>() {
+    public static final Map<String, Integer> CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(new HashMap<String, Integer>() {
         {
             put("East US", 1);
             put("East US 2", 2);
@@ -165,7 +165,7 @@ public final class RegionUtils {
     });
 
     // ========================================================================
-    // Derived maps — built from REGION_NAME_TO_REGION_ID_MAPPINGS.
+    // Derived maps — built from CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS.
     //
     // Naming convention:
     //   "normalized"  = lowercase, no spaces (e.g., "westus3")
@@ -182,21 +182,21 @@ public final class RegionUtils {
     private static final Map<String, String> NORMALIZED_TO_CANONICAL;
 
     static {
-        // Derive all maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS.
+        // Derive all maps programmatically from CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS.
         // Keys in the source map are canonical names (e.g., "West US 3").
         Map<Integer, String> idToNormalized = new HashMap<>();
         Map<String, Integer> normalizedToId = new HashMap<>();
         Map<String, String> normalizedToCanonical = new HashMap<>();
 
-        for (Map.Entry<String, Integer> entry : REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
+        for (Map.Entry<String, Integer> entry : CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
             String canonicalName = entry.getKey();                                   // e.g., "West US 3"
             String normalizedName = canonicalName.toLowerCase(Locale.ROOT).replace(" ", ""); // e.g., "westus3"
 
             if (normalizedToId.put(normalizedName, entry.getValue()) != null) {
-                throw new IllegalStateException("Duplicate normalized region name '" + normalizedName + "' in REGION_NAME_TO_REGION_ID_MAPPINGS");
+                throw new IllegalStateException("Duplicate normalized region name '" + normalizedName + "' in CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS");
             }
             if (idToNormalized.put(entry.getValue(), normalizedName) != null) {
-                throw new IllegalStateException("Duplicate region ID " + entry.getValue() + " in REGION_NAME_TO_REGION_ID_MAPPINGS");
+                throw new IllegalStateException("Duplicate region ID " + entry.getValue() + " in CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS");
             }
             normalizedToCanonical.putIfAbsent(normalizedName, canonicalName);
         }
