@@ -118,6 +118,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
 | `SharepointPreviewTool` | SharePoint grounding |
 | `WebSearchPreviewTool` | Web search |
+| `WorkIQPreviewTool` | Work IQ |
 
 ### Experimental features and opt-in flags
 
