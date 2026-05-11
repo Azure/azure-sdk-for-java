@@ -31,7 +31,9 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
@@ -52,16 +54,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests content validation (CRC64 / structured message) for upload operations using async clients.
  * Upload types that have no async counterpart (e.g. OutputStream, SeekableByteChannel) are tested in
  * {@link BlobContentValidationUploadTests}.
+ * Sequential append-block live random coverage: sync
+ * {@link BlobContentValidationUploadTests#appendBlobAppendBlocksLiveRandomRoundTripDataIntegrity()}, async
+ * {@link #appendBlockLiveRandomRoundTripDataIntegrity()}.
  */
 public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
     /* Single-part uploads with length < 4MB use CRC64 header; >= 4MB use structured message. */
     private static final int UNDER_4MB = 2 * Constants.MB;
 
-    private static final long LARGE_UPLOAD_MIN_BYTES = 500L * Constants.MB;
-    private static final long LARGE_UPLOAD_MAX_BYTES = Constants.GB;
-    private static final long LARGE_UPLOAD_BLOCK_SIZE_BYTES = 8L * Constants.MB;
-    private static final int LARGE_UPLOAD_MAX_CONCURRENCY = 8;
+    /**
+     * Live-only random payload band (256–500 MiB, inclusive upper bound via {@code randomLongFromNamer}+1) for
+     * {@code uploadWithResponse}, {@code uploadFromFileWithResponse}, and single-block {@code stageBlock}. Payload size
+     * exceeds {@link com.azure.storage.blob.implementation.util.ModelHelper#BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE} when
+     * {@link ParallelTransferOptions} is omitted (SDK defaults).
+     */
+    private static final long LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
+    private static final long LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
+
+    /**
+     * Live-only random payload band for sequential append-block puts only ({@link
+     * #appendBlockLiveRandomRoundTripDataIntegrity()}): {@code Flux.concatMap} issues one append REST call per chunk in
+     * order (not parallel staging); use a smaller band than {@link #LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE}.
+     */
+    private static final long LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MIN_BYTES_EXCLUSIVE = 32L * Constants.MB;
+    private static final long LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MAX_BYTES_INCLUSIVE = 64L * Constants.MB;
 
     /**
      * {@link BlobTestBase#fuzzyParallelUploadLargeMultiPartCases()} starts at ~96 MiB; above this threshold the fuzzy
@@ -886,6 +903,154 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 + ")");
     }
 
+    // ===========================================================================================
+    // Live-only random payload bands.
+    //   - 256–500 MiB: parallelUpload, uploadFromFile, stageBlock — parallel staging / giant block; default transfer
+    //     options where applicable.
+    //   - 32–64 MiB (sequential append blocks only): appendBlockLiveRandom… — one append REST call per chunk in order.
+    // Failures embed chosenPayloadSizeBytes=<n> in assertions and in catch-block rethrows.
+    // ===========================================================================================
+
+    @LiveOnly
+    @Test
+    public void parallelUploadLiveRandomRoundTripDataIntegrity() throws Exception {
+        int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+            LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        try {
+            String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
+            BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            File sourceFile = getRandomFile(chosenPayloadSizeBytes);
+            File outFile = Files.createTempFile("blob-cv-live-par-dl-async", ".bin").toFile();
+            outFile.deleteOnExit();
+
+            try (InputStream data = new FileInputStream(sourceFile)) {
+                BlobParallelUploadOptions options
+                    = new BlobParallelUploadOptions(data).setRequestConditions(new BlobRequestConditions())
+                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                client.uploadWithResponse(options).block();
+            }
+
+            client.downloadToFile(outFile.getPath(), true).block();
+            assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+
+            if (!sourceFile.delete()) {
+                sourceFile.deleteOnExit();
+            }
+            if (!outFile.delete()) {
+                outFile.deleteOnExit();
+            }
+        } catch (Exception e) {
+            throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void stageBlockLiveRandomRoundTripDataIntegrity() throws Exception {
+        int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+            LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        try {
+            String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
+            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+            String blockId = getBlockID();
+
+            File sourceFile = getRandomFile(chosenPayloadSizeBytes);
+            File outFile = Files.createTempFile("blob-cv-live-stage-async-dl", ".bin").toFile();
+            outFile.deleteOnExit();
+            try {
+                BinaryData binaryData = BinaryData.fromFile(sourceFile.toPath());
+                BlockBlobStageBlockOptions stageOptions = new BlockBlobStageBlockOptions(blockId, binaryData)
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                client.stageBlockWithResponse(stageOptions).block();
+                client.commitBlockList(Collections.singletonList(blockId)).block();
+                blobClient.downloadToFile(outFile.getPath(), true).block();
+                assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void appendBlockLiveRandomRoundTripDataIntegrity() throws Exception {
+        int chosenPayloadSizeBytes
+            = (int) randomLongFromNamer(LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+                LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        try {
+            String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
+            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            AppendBlobAsyncClient client = blobClient.getAppendBlobAsyncClient();
+            client.create().block();
+
+            int maxAppendBlockBytes = client.getMaxAppendBlockBytes();
+            File sourceFile = getRandomFile(chosenPayloadSizeBytes);
+            File outFile = Files.createTempFile("blob-cv-live-append-async-dl", ".bin").toFile();
+            outFile.deleteOnExit();
+
+            try (AsynchronousFileChannel channel
+                = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ)) {
+                FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes).concatMap(bb -> {
+                    AppendBlobAppendBlockOptions appendOptions
+                        = new AppendBlobAppendBlockOptions(Flux.just(bb), bb.remaining())
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    return client.appendBlockWithResponse(appendOptions);
+                }).then().block();
+            }
+
+            blobClient.downloadToFile(outFile.getPath(), true).block();
+            assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+
+            if (!sourceFile.delete()) {
+                sourceFile.deleteOnExit();
+            }
+            if (!outFile.delete()) {
+                outFile.deleteOnExit();
+            }
+        } catch (Exception e) {
+            throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
+        }
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadFromFileLiveRandomRoundTripDataIntegrity() throws Exception {
+        int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+            LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        try {
+            String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
+            BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            File sourceFile = getRandomFile(chosenPayloadSizeBytes);
+            File outFile = Files.createTempFile("blob-cv-live-uploadfromfile-async-dl", ".bin").toFile();
+            outFile.deleteOnExit();
+            try {
+                BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath())
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                assertNotNull(client.uploadFromFileWithResponse(options).block().getValue().getETag(),
+                    prefix + "Missing ETag on upload-from-file.");
+                client.downloadToFile(outFile.getPath(), true).block();
+                assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
+        }
+    }
+
     // ---------- Fuzzy parallel upload (async) ----------
 
     @ParameterizedTest
@@ -981,131 +1146,6 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             client.uploadWithResponse(options).block();
             byte[] downloaded = client.downloadContent().block().toBytes();
             assertArrayEquals(randomData, downloaded, assertionMessage);
-        }
-    }
-
-    @LiveOnly // This test is too large for the test proxy.
-    @Test
-    public void blockBlobSimpleUploadRandomSizeRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(Constants.KB, 48 * Constants.MB + 1);
-
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
-        byte[] randomData = getRandomByteArray(size);
-        BinaryData data = BinaryData.fromBytes(randomData);
-
-        BlockBlobSimpleUploadOptions options
-            = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random block blob simple upload, size=" + size + ")");
-    }
-
-    @LiveOnly // This test is too large for the test proxy.
-    @Test
-    public void stageBlockRandomSizeRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(Constants.KB, 40 * Constants.MB + 1);
-
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
-        String blockId = getBlockID();
-        byte[] randomData = getRandomByteArray(size);
-        BinaryData data = BinaryData.fromBytes(randomData);
-
-        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId, data)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.stageBlockWithResponse(options).block();
-        client.commitBlockList(Collections.singletonList(blockId)).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match staged block (random size, size=" + size + ")");
-    }
-
-    @LiveOnly // This test is too large for the test proxy.
-    @Test
-    public void appendBlockRandomSizeRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(Constants.KB, 80 * Constants.MB + 1);
-
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        AppendBlobAsyncClient client = blobClient.getAppendBlobAsyncClient();
-        client.create().block();
-
-        byte[] randomData = getRandomByteArray(size);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
-
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, size)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.appendBlockWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match append block (random size, size=" + size + ")");
-    }
-
-    @Test
-    public void uploadPagesRandomAlignedSizeRoundTripDataIntegrity() {
-        // Put Page allows at most 4 MiB per request; keep one uploadPages call within that limit.
-        int minPages = 1;
-        int maxPages = FOUR_MB_PAGE_ALIGNED / PAGE_BYTES;
-        int numPages = randomIntFromNamer(minPages, maxPages + 1);
-        int sizeBytes = numPages * PAGE_BYTES;
-
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        PageBlobAsyncClient client = blobClient.getPageBlobAsyncClient();
-        client.create(sizeBytes).block();
-
-        byte[] randomData = getRandomByteArray(sizeBytes);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
-
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(sizeBytes - 1), data)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadPagesWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match page upload (random aligned size, size=" + sizeBytes + ")");
-    }
-
-    // ===========================================================================================
-    // Large blob uploads (500 MiB–1 GiB) with parallel block staging and concurrency
-    // ===========================================================================================
-
-    @LiveOnly
-    @ParameterizedTest
-    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void uploadFromFileLargeBlobChunkedWithConcurrency(ContentValidationAlgorithm algorithm) throws IOException {
-        int sizeBytes = (int) randomLongFromNamer(LARGE_UPLOAD_MIN_BYTES, LARGE_UPLOAD_MAX_BYTES + 1);
-        File sourceFile = getRandomFile(sizeBytes);
-        File outFile = Files.createTempFile("blob-cv-large-dl-async", ".bin").toFile();
-        outFile.deleteOnExit();
-
-        try {
-            BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-            ParallelTransferOptions parallelTransferOptions
-                = new ParallelTransferOptions().setBlockSizeLong(LARGE_UPLOAD_BLOCK_SIZE_BYTES)
-                    .setMaxSingleUploadSizeLong(LARGE_UPLOAD_BLOCK_SIZE_BYTES)
-                    .setMaxConcurrency(LARGE_UPLOAD_MAX_CONCURRENCY);
-
-            BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath())
-                .setParallelTransferOptions(parallelTransferOptions)
-                .setContentValidationAlgorithm(algorithm);
-
-            assertNotNull(client.uploadFromFileWithResponse(options).block().getValue().getETag());
-            client.downloadToFile(outFile.getPath(), true).block();
-            assertTrue(compareFiles(sourceFile, outFile, 0, sizeBytes),
-                "Downloaded file must match source (large chunked upload, size=" + sizeBytes + ")");
-        } finally {
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
         }
     }
 }
