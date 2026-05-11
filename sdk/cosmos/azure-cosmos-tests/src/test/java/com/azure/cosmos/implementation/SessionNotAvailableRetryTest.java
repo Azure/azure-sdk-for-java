@@ -191,9 +191,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 String previousContactedRegion = StringUtils.EMPTY;
                 ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(ex.getDiagnostics());
                 for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : clientSideRequestStatistics.getResponseStatisticsList()) {
-                    if (!storeResponseStatistics.getNormalizedRegionName().equalsIgnoreCase(previousContactedRegion)) {
-                        contactedRegions.add(storeResponseStatistics.getNormalizedRegionName().toLowerCase(Locale.ROOT));
-                        previousContactedRegion = storeResponseStatistics.getNormalizedRegionName().toLowerCase(Locale.ROOT);
+                    if (!storeResponseStatistics.getRegionName().equalsIgnoreCase(previousContactedRegion)) {
+                        contactedRegions.add(storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT));
+                        previousContactedRegion = storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT);
                     }
                 }
                 List<String> expectedContactedRegions = new ArrayList<>();
@@ -297,9 +297,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                     String previousContactedRegion = StringUtils.EMPTY;
                     ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(ex.getDiagnostics());
                     for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : clientSideRequestStatistics.getResponseStatisticsList()) {
-                        if (!storeResponseStatistics.getNormalizedRegionName().equalsIgnoreCase(previousContactedRegion)) {
-                            contactedRegions.add(storeResponseStatistics.getNormalizedRegionName().toLowerCase(Locale.ROOT));
-                            previousContactedRegion = storeResponseStatistics.getNormalizedRegionName().toLowerCase(Locale.ROOT);
+                        if (!storeResponseStatistics.getRegionName().equalsIgnoreCase(previousContactedRegion)) {
+                            contactedRegions.add(storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT));
+                            previousContactedRegion = storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT);
                         }
                     }
 

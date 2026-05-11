@@ -1804,7 +1804,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                             firstRequestStart = currentStoreResponse.getRequestStartTimeUTC();
                         }
 
-                        if (currentStoreResponse.getNormalizedRegionName().equals(SECOND_REGION_NAME) &&
+                        if (currentStoreResponse.getRegionName().equals(SECOND_REGION_NAME) &&
                             currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStartInSecondRegion)) {
 
                             firstRequestStartInSecondRegion = currentStoreResponse.getRequestStartTimeUTC();
@@ -1867,7 +1867,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                             firstRequestStart = currentStoreResponse.getRequestStartTimeUTC();
                         }
 
-                        if (currentStoreResponse.getNormalizedRegionName().equals(SECOND_REGION_NAME) &&
+                        if (currentStoreResponse.getRegionName().equals(SECOND_REGION_NAME) &&
                             currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStartInSecondRegion)) {
 
                             firstRequestStartInSecondRegion = currentStoreResponse.getRequestStartTimeUTC();

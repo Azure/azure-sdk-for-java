@@ -1964,7 +1964,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             attributes.put("rntbd.url", storeResultDiagnostics.getStorePhysicalAddressAsString());
             attributes.put("rntbd.resource_type", responseStatistics.getRequestResourceType().toString());
             attributes.put("rntbd.operation_type", responseStatistics.getRequestOperationType().toString());
-            attributes.put("rntbd.region", responseStatistics.getNormalizedRegionName());
+            attributes.put("rntbd.region", responseStatistics.getRegionName());
 
             if (storeResultDiagnostics.getLsn() > 0) {
                 attributes.put("rntbd.lsn", Long.toString(storeResultDiagnostics.getLsn()));

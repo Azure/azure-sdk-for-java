@@ -62,22 +62,22 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
         this.globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
 
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Read))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Read))
             .thenReturn(LocationEastUsEndpointToLocationPair.getRight());
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Create))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Create))
             .thenReturn(LocationEastUsEndpointToLocationPair.getRight());
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Read))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Read))
             .thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Create))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Create))
             .thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Read))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Read))
             .thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
         Mockito
-            .when(this.globalEndpointManagerMock.getNormalizedRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Create))
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Create))
             .thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
     }
 

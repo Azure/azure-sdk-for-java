@@ -384,7 +384,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
 
         for (int i = 0; i < numCollections; i++) {
             String collectionResourceId =
@@ -448,7 +448,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(endpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(endpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
@@ -515,7 +515,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Create, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
@@ -576,7 +576,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest collectionCreateRequest = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(), OperationType.Create, ResourceType.DocumentCollection);
@@ -608,7 +608,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -654,7 +654,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -702,7 +702,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -746,7 +746,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -795,7 +795,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -840,7 +840,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -883,7 +883,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         request1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -929,7 +929,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
         documentCollectionCreateRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -992,7 +992,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
         documentCollectionCreateRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -1056,7 +1056,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest documentCollectionCreateRequest = createRequestEntity(OperationType.Create, ResourceType.DocumentCollection, LocationEastUsEndpointToLocationPair.getLeft());
         documentCollectionCreateRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -1115,7 +1115,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
@@ -1157,7 +1157,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName1 + "/docs/doc1", ResourceType.Document, new HashMap<>());
@@ -1204,7 +1204,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
@@ -1258,7 +1258,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document);
@@ -1326,7 +1326,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
@@ -1374,7 +1374,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read,
             collectionFullName + "/docs/doc1", ResourceType.Document, new HashMap<>());
@@ -1421,7 +1421,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         RxDocumentServiceRequest docReadRequest1 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         docReadRequest1.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointContacted);
@@ -1517,7 +1517,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         // Set token for the parent
         String parentPKRangeId = "0";
@@ -1569,7 +1569,7 @@ public class RegionScopedSessionContainerTest {
                 new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
 
         // Set token for the parent
         // Set tokens for the parents
@@ -1697,10 +1697,10 @@ public class RegionScopedSessionContainerTest {
                 .when(globalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any()))
                 .thenReturn(true);
 
-            Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationEastUsEndpointToLocationPair.getRight());
-            Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationEastUs2EndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
-            Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationCentralUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
-            Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(LocationWestUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationWestUsEndpointToLocationPair.getRight());
+            Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationEastUsEndpointToLocationPair.getRight());
+            Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUs2EndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
+            Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationCentralUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
+            Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationWestUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(LocationWestUsEndpointToLocationPair.getRight());
 
             sessionContainer = new RegionScopedSessionContainer(hostName, disableSessionCapturing, globalEndpointManagerMock);
 

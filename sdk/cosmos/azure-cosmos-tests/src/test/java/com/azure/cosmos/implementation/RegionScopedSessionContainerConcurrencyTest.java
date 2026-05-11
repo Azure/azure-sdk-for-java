@@ -257,11 +257,11 @@ public class RegionScopedSessionContainerConcurrencyTest {
             new UnmodifiableList<>(endpointBuilder.build());
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(EAST_US), Mockito.any()))
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(EAST_US), Mockito.any()))
             .thenReturn(REGION_EAST_US);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(EAST_US2), Mockito.any()))
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(EAST_US2), Mockito.any()))
             .thenReturn(REGION_EAST_US2);
-        Mockito.when(globalEndpointManagerMock.getNormalizedRegionName(Mockito.eq(CENTRAL_US), Mockito.any()))
+        Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(CENTRAL_US), Mockito.any()))
             .thenReturn(REGION_CENTRAL_US);
         Mockito.when(globalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any())).thenReturn(true);
 
