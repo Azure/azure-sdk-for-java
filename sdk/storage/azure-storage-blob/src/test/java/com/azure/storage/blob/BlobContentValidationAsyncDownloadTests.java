@@ -222,16 +222,12 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         initializeBlobClient();
         downloadClient.upload(BinaryData.fromBytes(data)).block();
 
-        BlobDownloadStreamOptions options =
-            new BlobDownloadStreamOptions().setRange(new BlobRange(0, 512L));
+        BlobDownloadStreamOptions options = new BlobDownloadStreamOptions().setRange(new BlobRange(0, 512L));
 
-        StepVerifier.create(downloadClient.downloadStreamWithResponse(options)
-                .flatMap(r -> {
-                    assertFalse(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
-                    return FluxUtil.collectBytesInByteBufferStream(r.getValue());
-                }))
-            .assertNext(result -> assertEquals(512, result.length))
-            .verifyComplete();
+        StepVerifier.create(downloadClient.downloadStreamWithResponse(options).flatMap(r -> {
+            assertFalse(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+            return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+        })).assertNext(result -> assertEquals(512, result.length)).verifyComplete();
 
         assertFalse(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
     }
