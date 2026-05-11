@@ -12,8 +12,6 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
-import com.azure.cosmos.implementation.routing.RegionUtils;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +40,6 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private List<String> canonicalPreferredRegions;
     private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
@@ -490,31 +487,14 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
         if (preferredRegions == null || preferredRegions.isEmpty()) {
             this.preferredRegions = preferredRegions;
-            this.canonicalPreferredRegions = preferredRegions;
             return this;
         }
 
-        // Store the customer-supplied list as-is for public API and diagnostics.
+        // Store the customer-supplied list as-is.
+        // Public API (getPreferredRegions) and CosmosDiagnostics reflect customer input.
+        // Canonicalization to official CosmosDB form happens internally in LocationCache.
         this.preferredRegions = new ArrayList<>(preferredRegions);
-
-        // Pre-canonicalize for internal consumers (LocationCache, GlobalEndpointManager, etc.)
-        // so canonicalization happens once at entry, not scattered across consumers.
-        // Canonical = official display form, e.g., "West US 3" (not normalized "westus3").
-        this.canonicalPreferredRegions = RegionUtils.canonicalizeRegionNames(preferredRegions);
         return this;
-    }
-
-    /**
-     * Gets the pre-canonicalized preferred regions (official CosmosDB display form).
-     * Internal only — used by LocationCache, GlobalEndpointManager, and other routing components.
-     * <p>
-     * Canonical form examples: "West US 3", "East US", "North Europe".
-     * For unknown regions, the customer-passed string is returned as-is.
-     *
-     * @return the canonical list of preferred regions.
-     */
-    public List<String> getCanonicalPreferredRegions() {
-        return this.canonicalPreferredRegions != null ? this.canonicalPreferredRegions : Collections.emptyList();
     }
 
     public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
