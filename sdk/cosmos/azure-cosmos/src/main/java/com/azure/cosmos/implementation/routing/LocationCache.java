@@ -51,6 +51,7 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<RegionalRoutingContext, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
+    private final ConcurrentHashMap<String, String> normalizedRegionNameCache;
     private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
@@ -76,6 +77,7 @@ public class LocationCache {
         this.lockObject = new Object();
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
+        this.normalizedRegionNameCache = new ConcurrentHashMap<>();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
@@ -345,9 +347,8 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
-        // Normalize user-configured exclude regions to canonical form for consistent comparison.
-        // Unknown regions not in the static map are passed through as-is.
-        List<String> normalizedUserExcludeRegions = RegionUtils.normalizeRegionNames(userConfiguredExcludeRegions);
+        // Normalize user-configured exclude regions using cache to avoid per-request allocation.
+        List<String> normalizedUserExcludeRegions = this.getNormalizedExcludeRegions(userConfiguredExcludeRegions);
 
         // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
@@ -520,6 +521,19 @@ public class LocationCache {
         boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());
 
         return isExcludedRegionsConfiguredOnRequest || isExcludedRegionsConfiguredOnClient;
+    }
+
+    private List<String> getNormalizedExcludeRegions(List<String> excludeRegions) {
+        if (excludeRegions == null || excludeRegions.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<String> normalized = new ArrayList<>(excludeRegions.size());
+        for (String region : excludeRegions) {
+            if (region != null) {
+                normalized.add(this.normalizedRegionNameCache.computeIfAbsent(region, RegionUtils::getCosmosDBRegionName));
+            }
+        }
+        return normalized;
     }
 
     public RegionalRoutingContext resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
