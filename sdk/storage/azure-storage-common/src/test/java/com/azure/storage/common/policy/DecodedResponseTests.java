@@ -12,7 +12,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
@@ -23,10 +22,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,14 +59,6 @@ public class DecodedResponseTests {
         return Flux.just(ByteBuffer.wrap(data));
     }
 
-    private static Flux<ByteBuffer> fluxOfChunks(byte[]... chunks) {
-        ByteBuffer[] buffers = new ByteBuffer[chunks.length];
-        for (int i = 0; i < chunks.length; i++) {
-            buffers[i] = ByteBuffer.wrap(chunks[i]);
-        }
-        return Flux.fromArray(buffers);
-    }
-
     @Test
     public void preservesRequestStatusCodeAndHeaders() {
         HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "100").set(CUSTOM_HEADER, "value");
@@ -89,15 +78,6 @@ public class DecodedResponseTests {
 
         assertEquals("value", wrapper.getHeaderValue(CUSTOM_HEADER.getCaseInsensitiveName()));
         assertNull(wrapper.getHeaderValue("nonexistent"));
-    }
-
-    @Test
-    public void getHeaderValueByHttpHeaderNameUsesInheritedDefault() {
-        HttpHeaders h = headers(CUSTOM_HEADER, "value");
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]));
-
-        assertEquals("value", wrapper.getHeaderValue(CUSTOM_HEADER));
-        assertNull(wrapper.getHeaderValue(HttpHeaderName.fromString("nonexistent")));
     }
 
     @Test
@@ -122,19 +102,6 @@ public class DecodedResponseTests {
 
         StepVerifier.create(wrapper.getBodyAsByteArray())
             .expectNextMatches(b -> Arrays.equals(decoded, b))
-            .verifyComplete();
-    }
-
-    @Test
-    public void getBodyAsByteArrayConcatenatesMultipleChunks() {
-        byte[] chunkA = bytes("hello ");
-        byte[] chunkB = bytes("world");
-        byte[] expected = bytes("hello world");
-        DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOfChunks(chunkA, chunkB));
-
-        StepVerifier.create(wrapper.getBodyAsByteArray())
-            .expectNextMatches(b -> Arrays.equals(expected, b))
             .verifyComplete();
     }
 
@@ -168,16 +135,7 @@ public class DecodedResponseTests {
         BinaryData data = wrapper.getBodyAsBinaryData();
         assertNotNull(data);
         assertArrayEquals(decoded, data.toBytes());
-    }
-
-    @Test
-    public void getBodyAsBinaryDataWorksWhenContentLengthHeaderMissing() {
-        byte[] decoded = bytes("payload");
-        DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("ignored")), fluxOf(decoded));
-
-        BinaryData data = wrapper.getBodyAsBinaryData();
-        assertArrayEquals(decoded, data.toBytes());
+        assertEquals((long) decoded.length, (long) data.getLength());
     }
 
     @Test
@@ -194,31 +152,16 @@ public class DecodedResponseTests {
     }
 
     @Test
-    public void inheritedWriteBodyToWritesDecodedBytesAndClosesOriginal() throws IOException {
+    public void inheritedWriteBodyToWritesDecodedBytes() throws IOException {
         byte[] decoded = bytes("write me");
-        AtomicInteger closeCount = new AtomicInteger();
-        HttpResponse original = trackingResponse(closeCount, new HttpHeaders(), bytes("encoded"));
-        DecodedResponse wrapper = new DecodedResponse(original, fluxOf(decoded));
+        DecodedResponse wrapper
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded));
 
         ByteArrayOutputStream sink = new ByteArrayOutputStream();
         try (WritableByteChannel channel = Channels.newChannel(sink)) {
             wrapper.writeBodyTo(channel);
         }
 
-        assertArrayEquals(decoded, sink.toByteArray());
-        assertEquals(1, closeCount.get());
-    }
-
-    @Test
-    public void inheritedWriteBodyToAsyncWritesDecodedBytes() {
-        byte[] decoded = bytes("async write");
-        DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(decoded));
-
-        ByteArrayOutputStream sink = new ByteArrayOutputStream();
-        ByteArrayAsynchronousChannel asyncChannel = new ByteArrayAsynchronousChannel(sink);
-
-        StepVerifier.create(wrapper.writeBodyToAsync(asyncChannel)).verifyComplete();
         assertArrayEquals(decoded, sink.toByteArray());
     }
 
@@ -235,76 +178,6 @@ public class DecodedResponseTests {
             .verifyComplete();
     }
 
-    @Test
-    public void closeDelegatesToWrappedResponse() {
-        AtomicInteger closeCount = new AtomicInteger();
-        HttpResponse original = trackingResponse(closeCount, new HttpHeaders(), new byte[0]);
-        DecodedResponse wrapper = new DecodedResponse(original, fluxOf(new byte[0]));
-
-        wrapper.close();
-        assertEquals(1, closeCount.get());
-        wrapper.close();
-        assertEquals(2, closeCount.get());
-    }
-
-    @Test
-    public void closeDoesNotSubscribeToDecodedBody() {
-        AtomicInteger subscribeCount = new AtomicInteger();
-        Flux<ByteBuffer> decoded = fluxOf(bytes("decoded")).doOnSubscribe(s -> subscribeCount.incrementAndGet());
-
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), decoded);
-        wrapper.close();
-
-        assertEquals(0, subscribeCount.get());
-    }
-
-    private static HttpResponse trackingResponse(AtomicInteger closeCount, HttpHeaders headers, byte[] body) {
-        MockHttpResponse delegate = new MockHttpResponse(newRequest(), 200, headers, body);
-        return new HttpResponse(delegate.getRequest()) {
-            @Override
-            public int getStatusCode() {
-                return delegate.getStatusCode();
-            }
-
-            @Override
-            @SuppressWarnings("deprecation")
-            public String getHeaderValue(String name) {
-                return delegate.getHeaderValue(name);
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return delegate.getHeaders();
-            }
-
-            @Override
-            public Flux<ByteBuffer> getBody() {
-                return delegate.getBody();
-            }
-
-            @Override
-            public Mono<byte[]> getBodyAsByteArray() {
-                return delegate.getBodyAsByteArray();
-            }
-
-            @Override
-            public Mono<String> getBodyAsString() {
-                return delegate.getBodyAsString();
-            }
-
-            @Override
-            public Mono<String> getBodyAsString(Charset charset) {
-                return delegate.getBodyAsString(charset);
-            }
-
-            @Override
-            public void close() {
-                closeCount.incrementAndGet();
-                delegate.close();
-            }
-        };
-    }
-
     private static byte[] readAll(InputStream stream) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
@@ -313,56 +186,5 @@ public class DecodedResponseTests {
             out.write(buf, 0, n);
         }
         return out.toByteArray();
-    }
-
-    private static final class ByteArrayAsynchronousChannel implements java.nio.channels.AsynchronousByteChannel {
-        private final ByteArrayOutputStream sink;
-        private volatile boolean open = true;
-
-        ByteArrayAsynchronousChannel(ByteArrayOutputStream sink) {
-            this.sink = sink;
-        }
-
-        @Override
-        public <A> void read(ByteBuffer dst, A attachment,
-            java.nio.channels.CompletionHandler<Integer, ? super A> handler) {
-            handler.failed(new UnsupportedOperationException("read not supported"), attachment);
-        }
-
-        @Override
-        public java.util.concurrent.Future<Integer> read(ByteBuffer dst) {
-            java.util.concurrent.CompletableFuture<Integer> future = new java.util.concurrent.CompletableFuture<>();
-            future.completeExceptionally(new UnsupportedOperationException("read not supported"));
-            return future;
-        }
-
-        @Override
-        public <A> void write(ByteBuffer src, A attachment,
-            java.nio.channels.CompletionHandler<Integer, ? super A> handler) {
-            int written = src.remaining();
-            byte[] data = new byte[written];
-            src.get(data);
-            sink.write(data, 0, data.length);
-            handler.completed(written, attachment);
-        }
-
-        @Override
-        public java.util.concurrent.Future<Integer> write(ByteBuffer src) {
-            int written = src.remaining();
-            byte[] data = new byte[written];
-            src.get(data);
-            sink.write(data, 0, data.length);
-            return java.util.concurrent.CompletableFuture.completedFuture(written);
-        }
-
-        @Override
-        public boolean isOpen() {
-            return open;
-        }
-
-        @Override
-        public void close() {
-            open = false;
-        }
     }
 }

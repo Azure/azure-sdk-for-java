@@ -69,7 +69,7 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, StandardCharsets.UTF_8));
+        return getBodyAsString(StandardCharsets.UTF_8);
     }
 
     @Override
@@ -80,10 +80,5 @@ class DecodedResponse extends HttpResponse {
     @Override
     public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromFlux(decodedBody, null, false).block();
-    }
-
-    @Override
-    public void close() {
-        originalResponse.close();
     }
 }
