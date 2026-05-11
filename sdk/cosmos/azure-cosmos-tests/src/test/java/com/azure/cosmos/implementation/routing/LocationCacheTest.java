@@ -1095,4 +1095,131 @@ public class LocationCacheTest {
             .doesNotContain(EastUSEndpoint);
         assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(WestUS3Endpoint);
     }
+
+    // ========================================================================
+    // Unknown region tests — simulates a new Azure region rolled out server-side
+    // that is NOT yet in the SDK's static REGION_NAME_TO_REGION_ID_MAPPINGS map.
+    // Customer passes the canonically correct name; routing should still work.
+    // ========================================================================
+
+    private static final URI PlutoCentralEndpoint = createUrl("https://plutocentral.documents.azure.com");
+    private static final URI MarsSouthEndpoint = createUrl("https://marssouth.documents.azure.com");
+
+    private static DatabaseAccount createDatabaseAccountWithUnknownRegions() {
+        return ModelBridgeUtils.createDatabaseAccount(
+            // Server returns canonical names for new regions not in SDK's static map
+            ImmutableList.of(
+                createDatabaseAccountLocation("Pluto Central", PlutoCentralEndpoint.toString()),
+                createDatabaseAccountLocation("Mars South", MarsSouthEndpoint.toString()),
+                createDatabaseAccountLocation("East US", EastUSEndpoint.toString())),
+            ImmutableList.of(
+                createDatabaseAccountLocation("Pluto Central", PlutoCentralEndpoint.toString()),
+                createDatabaseAccountLocation("Mars South", MarsSouthEndpoint.toString()),
+                createDatabaseAccountLocation("East US", EastUSEndpoint.toString())),
+            true);
+    }
+
+    private LocationCache createCacheWithUnknownRegions(List<String> preferredRegions) {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(preferredRegions);
+
+        LocationCache locationCache = new LocationCache(
+            connectionPolicy,
+            DefaultEndpoint,
+            configs);
+
+        locationCache.onDatabaseAccountRead(createDatabaseAccountWithUnknownRegions());
+        return locationCache;
+    }
+
+    @Test(groups = "unit")
+    public void unknownRegion_canonicalNameShouldRouteCorrectly() {
+        // Customer passes the exact canonical name for a new region not in the static map.
+        // Server also returns the same canonical name. Routing should work via toLowerCase match.
+        LocationCache locationCache = createCacheWithUnknownRegions(
+            Arrays.asList("Pluto Central", "Mars South", "East US"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(PlutoCentralEndpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(MarsSouthEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void unknownRegion_lowercaseShouldRouteCorrectly() {
+        // Customer passes lowercase for a new region not in the static map.
+        // Should match via CaseInsensitiveMap after toLowerCase.
+        LocationCache locationCache = createCacheWithUnknownRegions(
+            Arrays.asList("pluto central", "mars south", "east us"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(PlutoCentralEndpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(MarsSouthEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void unknownRegion_uppercaseShouldRouteCorrectly() {
+        // Customer passes UPPERCASE for a new region not in the static map.
+        LocationCache locationCache = createCacheWithUnknownRegions(
+            Arrays.asList("PLUTO CENTRAL", "MARS SOUTH", "EAST US"));
+
+        UnmodifiableList<RegionalRoutingContext> readEndpoints = locationCache.getReadEndpoints();
+        assertThat(readEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(PlutoCentralEndpoint);
+        assertThat(readEndpoints.get(1).getGatewayRegionalEndpoint()).isEqualTo(MarsSouthEndpoint);
+        assertThat(readEndpoints.get(2).getGatewayRegionalEndpoint()).isEqualTo(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void unknownRegion_excludeWithCanonicalNameShouldWork() {
+        // Exclude an unknown region using its canonical name — should still be excluded
+        LocationCache locationCache = createCacheWithUnknownRegions(
+            Arrays.asList("Pluto Central", "Mars South", "East US"));
+
+        AtomicReference<CosmosExcludedRegions> excludedRef = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("Pluto Central"))));
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(locationCache);
+        connectionPolicy.setExcludedRegionsSupplier(excludedRef::get);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        List<RegionalRoutingContext> applicableEndpoints =
+            locationCache.getApplicableReadRegionRoutingContexts(request);
+
+        // "Pluto Central" should be excluded — first endpoint should be Mars South
+        assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(MarsSouthEndpoint);
+        assertThat(applicableEndpoints.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(PlutoCentralEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void unknownRegion_excludeWithDifferentCasingShouldWork() {
+        // Exclude an unknown region using different casing — equalsIgnoreCase should handle it
+        LocationCache locationCache = createCacheWithUnknownRegions(
+            Arrays.asList("Pluto Central", "Mars South", "East US"));
+
+        AtomicReference<CosmosExcludedRegions> excludedRef = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("PLUTO CENTRAL"))));
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(locationCache);
+        connectionPolicy.setExcludedRegionsSupplier(excludedRef::get);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+
+        List<RegionalRoutingContext> applicableEndpoints =
+            locationCache.getApplicableReadRegionRoutingContexts(request);
+
+        assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint()).isEqualTo(MarsSouthEndpoint);
+        assertThat(applicableEndpoints.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(PlutoCentralEndpoint);
+    }
 }
