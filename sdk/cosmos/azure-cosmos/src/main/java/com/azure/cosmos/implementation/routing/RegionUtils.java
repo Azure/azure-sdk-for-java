@@ -25,7 +25,7 @@ import java.util.Map;
  *       returned as-is.</li>
  * </ol>
  */
-public class RegionUtils {
+public final class RegionUtils {
 
     // ========================================================================
     // Region ID mappings — used only for session token region-level progress
@@ -168,17 +168,30 @@ public class RegionUtils {
 
     public static final Map<String, Integer> NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS;
 
+    // Static map: lowercase-no-spaces key → canonical display name
+    private static final Map<String, String> NORMALIZED_TO_CANONICAL;
+
     static {
-        // Derive both maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS
+        // Derive all maps programmatically from REGION_NAME_TO_REGION_ID_MAPPINGS
         Map<Integer, String> idToNormalized = new HashMap<>();
         Map<String, Integer> normalizedToId = new HashMap<>();
+        Map<String, String> normalizedToCanonical = new HashMap<>();
+
         for (Map.Entry<String, Integer> entry : REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
-            String normalized = entry.getKey().toLowerCase(Locale.ROOT).replace(" ", "");
+            String canonicalName = entry.getKey();
+            String normalized = canonicalName.toLowerCase(Locale.ROOT).replace(" ", "");
+
             normalizedToId.put(normalized, entry.getValue());
             idToNormalized.putIfAbsent(entry.getValue(), normalized);
+            normalizedToCanonical.putIfAbsent(normalized, canonicalName);
         }
+
         NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS = Collections.unmodifiableMap(normalizedToId);
         REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS = Collections.unmodifiableMap(idToNormalized);
+        NORMALIZED_TO_CANONICAL = Collections.unmodifiableMap(normalizedToCanonical);
+    }
+
+    private RegionUtils() {
     }
 
     public static String getRegionName(int regionId) {
@@ -189,41 +202,18 @@ public class RegionUtils {
         return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(regionName, -1);
     }
 
-    // ========================================================================
-    // Region name normalization — canonical names derived from the ID map
-    // (sourced from Settings.xml regionToIdMapping). Used for normalizing
-    // user-supplied preferred regions and excluded regions to the canonical
-    // CosmosDB format. Unknown regions not in this map are passed through as-is.
-    // ========================================================================
-
-    // Static map: lowercase-no-spaces key → canonical display name
-    private static final Map<String, String> NORMALIZED_TO_CANONICAL;
-
-    static {
-        Map<String, String> map = new HashMap<>();
-
-        // Seed from the ID map — Settings.xml is the authoritative source for all
-        // canonical region names. Every region with an assigned ID is automatically
-        // included in the normalization map.
-        for (String canonicalName : REGION_NAME_TO_REGION_ID_MAPPINGS.keySet()) {
-            addCanonicalMapping(map, canonicalName);
-        }
-
-        NORMALIZED_TO_CANONICAL = Collections.unmodifiableMap(map);
-    }
-
     /**
      * Normalizes a region name to the canonical CosmosDB format.
      * <p>
      * Strips spaces, lowercases, and looks up in the static known-region map.
      * If recognized, returns the canonical form (e.g., "West US 3").
-     * If not recognized, returns the normalized form (lowercase, no spaces)
-     * for forward compatibility — this ensures unknown regions still match
-     * after LocationCache applies toLowerCase() to server-returned names.
+     * If not recognized, returns the customer-passed string as-is
+     * for forward compatibility — downstream consumers in LocationCache
+     * apply toLowerCase() or equalsIgnoreCase() as needed.
      *
      * @param regionName the region name to normalize (any casing/spacing variant)
-     * @return the canonical CosmosDB region name, or the lowercase space-stripped
-     *         form if unrecognized
+     * @return the canonical CosmosDB region name, or the customer-passed
+     *         string as-is if unrecognized
      */
     public static String getCosmosDBRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
@@ -237,7 +227,9 @@ public class RegionUtils {
             return canonical;
         }
 
-        return normalized;
+        // Unknown region — return customer-passed string as-is.
+        // Downstream consumers apply toLowerCase() or equalsIgnoreCase() as needed.
+        return regionName;
     }
 
     /**
@@ -279,10 +271,5 @@ public class RegionUtils {
             }
         }
         return false;
-    }
-
-    private static void addCanonicalMapping(Map<String, String> map, String canonicalName) {
-        String key = canonicalName.toLowerCase(Locale.ROOT).replace(" ", "");
-        map.putIfAbsent(key, canonicalName);
     }
 }

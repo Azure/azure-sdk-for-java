@@ -85,9 +85,9 @@ public class RegionUtilsNormalizationTest {
 
     @Test(groups = "unit")
     public void shouldNormalizeUnknownRegions() {
-        // Unknown regions should be returned in normalized form (lowercase, no spaces)
-        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("mycustomregion");
-        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("futureregion42");
+        // Unknown regions should be returned as-is (customer input preserved)
+        assertThat(RegionUtils.getCosmosDBRegionName("MyCustomRegion")).isEqualTo("MyCustomRegion");
+        assertThat(RegionUtils.getCosmosDBRegionName("FutureRegion42")).isEqualTo("FutureRegion42");
     }
 
     @Test(groups = "unit")
@@ -103,11 +103,11 @@ public class RegionUtilsNormalizationTest {
     }
 
     @Test(groups = "unit")
-    public void unknownRegionVariantsShouldCollapse() {
-        // Unknown regions: different variants should collapse to the same normalized form
+    public void unknownRegionVariantsShouldBeReturnedAsIs() {
+        // Unknown regions: returned as customer-passed string (no transformation)
         assertThat(RegionUtils.getCosmosDBRegionName("futureregion99")).isEqualTo("futureregion99");
-        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("futureregion99");
-        assertThat(RegionUtils.getCosmosDBRegionName("FUTURE REGION 99")).isEqualTo("futureregion99");
+        assertThat(RegionUtils.getCosmosDBRegionName("Future Region 99")).isEqualTo("Future Region 99");
+        assertThat(RegionUtils.getCosmosDBRegionName("FUTURE REGION 99")).isEqualTo("FUTURE REGION 99");
     }
 
     // ========================================================================

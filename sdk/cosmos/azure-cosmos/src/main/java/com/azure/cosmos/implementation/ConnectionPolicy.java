@@ -492,15 +492,10 @@ public final class ConnectionPolicy {
             return this;
         }
 
-        // Normalize each region to canonical CosmosDB form (e.g., "westus3" → "West US 3").
-        // Unknown regions not in the static map are passed through as-is.
-        List<String> normalized = new ArrayList<>(preferredRegions.size());
-        for (String region : preferredRegions) {
-            if (region != null) {
-                normalized.add(RegionUtils.getCosmosDBRegionName(region));
-            }
-        }
-        this.preferredRegions = normalized;
+        // Store the customer-supplied list as-is.
+        // Public API (getPreferredRegions) and CosmosDiagnostics should reflect customer input.
+        // Normalization to canonical CosmosDB form happens internally in LocationCache.
+        this.preferredRegions = new ArrayList<>(preferredRegions);
         return this;
     }
 
