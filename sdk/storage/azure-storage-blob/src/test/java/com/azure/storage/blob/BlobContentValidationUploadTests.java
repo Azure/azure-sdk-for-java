@@ -58,8 +58,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests content validation (CRC64 / structured message) for upload operations using sync clients.
  * Upload types that have no async counterpart (OutputStream, SeekableByteChannel) are tested only here.
  * Async counterparts of the same operations are in {@link BlobContentValidationAsyncUploadTests}.
- * Sequential append-block live random coverage: {@link #appendBlobAppendBlocksLiveRandomRoundTripDataIntegrity()},
- * async {@link BlobContentValidationAsyncUploadTests#appendBlockLiveRandomRoundTripDataIntegrity()}.
  */
 public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
@@ -67,36 +65,22 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int UNDER_4MB = 2 * Constants.MB;
 
     /**
-     * Live-only random payload band (256–500 MiB, inclusive upper bound via {@code randomLongFromNamer}+1) for paths
-     * that use parallel block staging or one-shot giant blocks: {@code uploadWithResponse}, {@code uploadFromFile},
-     * single-block {@code stageBlock}, block-blob {@link com.azure.storage.blob.specialized.BlobOutputStream}, and
-     * {@link java.nio.channels.SeekableByteChannel} writes. Payload size exceeds
-     * {@link com.azure.storage.blob.implementation.util.ModelHelper#BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE} where default
-     * parallel-transfer options apply.
+     * Live-only random payload band (256–500 MiB, inclusive upper bound via {@code randomLongFromNamer}+1) for
+     * {@code uploadWithResponse}, {@code uploadFromFileWithResponse}, and single-block {@code stageBlock}.
      */
     private static final long LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
     private static final long LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
 
     /**
      * Live-only random payload band for sequential append-block puts only ({@link
-     * #appendBlobAppendBlocksLiveRandomRoundTripDataIntegrity()}). Each append is one REST call in order (not parallel
-     * staging); use a smaller band than {@link #LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE}.
+     * #appendBlockLiveRandomRoundTripDataIntegrity()}): {@code Flux.concatMap} issues one append REST call per chunk in
+     * order (not parallel staging); use a smaller band than {@link #LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE}.
      */
     private static final long LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MIN_BYTES_EXCLUSIVE = 32L * Constants.MB;
     private static final long LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MAX_BYTES_INCLUSIVE = 64L * Constants.MB;
 
-    /**
-     * {@link BlobTestBase#fuzzyParallelUploadLargeMultiPartCases()} starts at ~96 MiB; above this threshold the fuzzy
-     * parallel upload helpers use temp files and streaming download/compare to avoid holding the full payload twice in
-     * heap (upload buffer + {@code downloadContent().toBytes()}).
-     */
-    private static final int FUZZY_PARALLEL_UPLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
-
     private static final String MD5_AND_CRC64_EXCLUSIVE_MESSAGE
         = "Only one form of transactional content validation may be used.";
-
-    private static final String UPLOAD_FROM_FILE_MD5_NOT_SUPPORTED_MESSAGE
-        = "ContentValidationAlgorithm.MD5 is not supported for uploadFromFile. Use CRC64 or AUTO instead.";
 
     // ===========================================================================================
     // BlobClient.uploadWithResponse
@@ -1164,10 +1148,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     //   - 256–500 MiB: parallelUpload, uploadFromFile, stageBlock, block BlobOutputStream, SeekableByteChannel —
     //     parallel staging or single giant block / default transfer options as applicable.
     //   - 32–64 MiB (sequential append blocks only): appendBlobAppendBlocksLiveRandom… — one append REST call per
-    //     chunk in order (matches async appendBlockLiveRandom band).
+    //     chunk in order.
     // ===========================================================================================
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void parallelUploadLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
@@ -1197,7 +1181,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void stageBlockLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
@@ -1233,7 +1217,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void appendBlobAppendBlocksLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes
@@ -1286,7 +1270,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void uploadFromFileLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
@@ -1316,7 +1300,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void blockBlobOutputStreamLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
@@ -1357,7 +1341,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly
+    @LiveOnly // This test is too large for the test proxy.
     @Test
     public void seekableByteChannelWriteLiveRandomRoundTripDataIntegrity() throws Exception {
         int chosenPayloadSizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
@@ -1452,7 +1436,9 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         String assertionMessage = "Fuzzy parallel upload [" + caseKind + "] payloadBytes=" + payloadBytes
             + ", segmentBytes=" + segmentBytes + ", maxConcurrency=" + maxConcurrency;
 
-        if (payloadBytes >= FUZZY_PARALLEL_UPLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
+        // above this threshold the fuzzy parallel upload helpers stream from a temp source file
+        // to avoid materializing the full payload twice in heap.
+        if (payloadBytes >= 96 * Constants.MB) {
             File sourceFile = getRandomFile(payloadBytes);
             File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl", ".bin").toFile();
             outFile.deleteOnExit();
