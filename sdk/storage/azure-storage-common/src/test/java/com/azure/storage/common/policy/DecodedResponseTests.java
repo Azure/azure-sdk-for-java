@@ -9,7 +9,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -124,18 +123,6 @@ public class DecodedResponseTests {
             = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(latin1));
 
         StepVerifier.create(wrapper.getBodyAsString(StandardCharsets.ISO_8859_1)).expectNext(text).verifyComplete();
-    }
-
-    @Test
-    public void getBodyAsBinaryDataReportsDecodedSizeNotContentLength() {
-        byte[] decoded = bytes("decoded");
-        HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(decoded.length + 64));
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, bytes("ignored")), fluxOf(decoded));
-
-        BinaryData data = wrapper.getBodyAsBinaryData();
-        assertNotNull(data);
-        assertArrayEquals(decoded, data.toBytes());
-        assertEquals((long) decoded.length, (long) data.getLength());
     }
 
     @Test

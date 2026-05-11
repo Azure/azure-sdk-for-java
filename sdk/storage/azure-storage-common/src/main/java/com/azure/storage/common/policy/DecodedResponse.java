@@ -5,7 +5,6 @@ package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,10 +74,5 @@ class DecodedResponse extends HttpResponse {
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, charset));
-    }
-
-    @Override
-    public BinaryData getBodyAsBinaryData() {
-        return BinaryData.fromFlux(decodedBody, null, false).block();
     }
 }
