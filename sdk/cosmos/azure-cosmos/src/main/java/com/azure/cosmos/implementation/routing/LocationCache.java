@@ -64,10 +64,7 @@ public class LocationCache {
             URI defaultEndpoint,
             Configs configs) {
 
-        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
-            connectionPolicy.getPreferredRegions() :
-            Collections.emptyList()
-        );
+        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getNormalizedPreferredRegions());
 
         this.defaultRoutingContext = new RegionalRoutingContext(defaultEndpoint);
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, this.defaultRoutingContext);
@@ -1084,7 +1081,7 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> RegionUtils.getCosmosDBRegionName(loc).toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
                 = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());

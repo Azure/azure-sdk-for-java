@@ -42,6 +42,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
+    private List<String> normalizedPreferredRegions;
     private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
@@ -489,14 +490,27 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
         if (preferredRegions == null || preferredRegions.isEmpty()) {
             this.preferredRegions = preferredRegions;
+            this.normalizedPreferredRegions = preferredRegions;
             return this;
         }
 
-        // Store the customer-supplied list as-is.
-        // Public API (getPreferredRegions) and CosmosDiagnostics should reflect customer input.
-        // Normalization to canonical CosmosDB form happens internally in LocationCache.
+        // Store the customer-supplied list as-is for public API and diagnostics.
         this.preferredRegions = new ArrayList<>(preferredRegions);
+
+        // Pre-normalize for internal consumers (LocationCache, GlobalEndpointManager, etc.)
+        // so normalization happens once at entry, not scattered across consumers.
+        this.normalizedPreferredRegions = RegionUtils.normalizeRegionNames(preferredRegions);
         return this;
+    }
+
+    /**
+     * Gets the pre-normalized preferred regions (canonical CosmosDB form).
+     * Internal only — used by LocationCache, GlobalEndpointManager, and other routing components.
+     *
+     * @return the normalized list of preferred regions.
+     */
+    public List<String> getNormalizedPreferredRegions() {
+        return this.normalizedPreferredRegions != null ? this.normalizedPreferredRegions : Collections.emptyList();
     }
 
     public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {

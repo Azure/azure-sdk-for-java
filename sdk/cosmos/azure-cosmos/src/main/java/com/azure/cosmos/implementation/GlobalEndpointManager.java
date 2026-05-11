@@ -440,8 +440,8 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     private List<String> getEffectivePreferredRegions() {
 
-        if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
-            return this.connectionPolicy.getPreferredRegions();
+        if (this.connectionPolicy.getNormalizedPreferredRegions() != null && !this.connectionPolicy.getNormalizedPreferredRegions().isEmpty()) {
+            return this.connectionPolicy.getNormalizedPreferredRegions();
         }
 
         // when latestDatabaseAccount is initialized
