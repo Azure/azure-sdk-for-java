@@ -15,19 +15,19 @@ public final class TargetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetInner model = BinaryData.fromString(
-            "{\"properties\":{\"podepoo\":\"\\\"datanmayhuybb\\\"\"},\"location\":\"nuvamiheogna\",\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"}")
+            "{\"properties\":{\"i\":\"\\\"datafpdvhpfxxypi\\\"\",\"inuvamiheogn\":\"\\\"datamayhuybbkpodepoo\\\"\"},\"location\":\"xzxtheo\",\"id\":\"si\",\"name\":\"yevc\",\"type\":\"iqihn\"}")
             .toObject(TargetInner.class);
-        Assertions.assertEquals("nuvamiheogna", model.location());
+        Assertions.assertEquals("xzxtheo", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetInner model = new TargetInner()
-            .withProperties(
-                mapOf("podepoo", BinaryData.fromBytes("\"datanmayhuybb\"".getBytes(StandardCharsets.UTF_8))))
-            .withLocation("nuvamiheogna");
+            .withProperties(mapOf("i", BinaryData.fromBytes("\"datafpdvhpfxxypi\"".getBytes(StandardCharsets.UTF_8)),
+                "inuvamiheogn", BinaryData.fromBytes("\"datamayhuybbkpodepoo\"".getBytes(StandardCharsets.UTF_8))))
+            .withLocation("xzxtheo");
         model = BinaryData.fromObject(model).toObject(TargetInner.class);
-        Assertions.assertEquals("nuvamiheogna", model.location());
+        Assertions.assertEquals("xzxtheo", model.location());
     }
 
     // Use "Map.of" if available

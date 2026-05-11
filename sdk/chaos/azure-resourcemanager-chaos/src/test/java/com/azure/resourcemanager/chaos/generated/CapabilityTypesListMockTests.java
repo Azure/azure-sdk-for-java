@@ -21,7 +21,7 @@ public final class CapabilityTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publisher\":\"ofel\",\"targetType\":\"grqmqhldvrii\",\"displayName\":\"jnalghf\",\"description\":\"tvsexsowuel\",\"parametersSchema\":\"hhahhxvrhmzkwpjg\",\"urn\":\"spughftqsxhq\",\"kind\":\"j\",\"azureRbacActions\":[\"ndxdigrjguufzdm\",\"yqtfihwh\",\"otzi\"],\"azureRbacDataActions\":[\"mvpp\",\"o\",\"zqzudph\",\"amvdkfwynwcvtbv\"],\"requiredAzureRoleDefinitionIds\":[\"hmtnvy\",\"iatkzwpcnp\",\"zcjaesgvvsccy\"],\"runtimeProperties\":{\"kind\":\"uq\"}},\"id\":\"wygzlvdnkfxusem\",\"name\":\"wzrmuh\",\"type\":\"pfcqdp\"}]}";
+            = "{\"value\":[{\"properties\":{\"publisher\":\"qepvufhbzeh\",\"targetType\":\"hoqhnl\",\"displayName\":\"nbldxeaclgschori\",\"description\":\"rsrrmoucsofldp\",\"parametersSchema\":\"iyfc\",\"urn\":\"beolh\",\"kind\":\"lvbmxuqibsxtkcu\",\"azureRbacActions\":[\"sfar\"],\"azureRbacDataActions\":[\"owlkjxnqpv\"],\"requiredAzureRoleDefinitionIds\":[\"stmhqykizmd\",\"saoafcluqvox\",\"ycjimryvwgcwwpbm\",\"gwe\"],\"runtimeProperties\":{\"kind\":\"sxwef\"}},\"id\":\"ecb\",\"name\":\"opwndyqleallk\",\"type\":\"mtkhlowkxxpvbr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class CapabilityTypesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CapabilityType> response
-            = manager.capabilityTypes().list("h", "lsj", "dhszfjv", com.azure.core.util.Context.NONE);
+            = manager.capabilityTypes().list("fppdbwnu", "gahxkumasjcaa", "fdmmcpug", com.azure.core.util.Context.NONE);
 
     }
 }
