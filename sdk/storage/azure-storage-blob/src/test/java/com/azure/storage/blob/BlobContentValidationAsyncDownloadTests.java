@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -47,58 +46,20 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
     private static final int BLOCK_SIZE = 4 * Constants.MB;
 
-    private final List<File> createdFiles = new ArrayList<>();
-
-    private byte[] data;
-    private List<HttpHeaders> recordedRequestHeaders;
-    private HttpHeaders recordedResponseHeaders;
-    private BlobAsyncClient blobClient;
-    private BlobAsyncClient downloadClient;
-    private File file;
-    private File outFile;
-
-    @Override
-    public void beforeTest() {
-        super.beforeTest();
-        data = null;
-        recordedRequestHeaders = new CopyOnWriteArrayList<>();
-        recordedResponseHeaders = new HttpHeaders();
-        blobClient = null;
-        downloadClient = null;
-    }
-
-    @Override
-    protected void afterTest() {
-        createdFiles.forEach(File::delete);
-        createdFiles.clear();
-        data = null;
-        recordedRequestHeaders = new CopyOnWriteArrayList<>();
-        recordedResponseHeaders = new HttpHeaders();
-        blobClient = null;
-        downloadClient = null;
-        file = null;
-        outFile = null;
-        super.afterTest();
-    }
-
-    private void initializeBlobClient() {
-        blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
-        downloadClient = blobClient;
-    }
-
     /**
      * downloadStreamWithResponse with CRC64 content validation.
      */
     @Test
     public void downloadStreamWithResponseContentValidation() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
         BlobDownloadStreamOptions options
             = new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        StepVerifier.create(downloadClient.downloadStreamWithResponse(options).flatMap(r -> {
+        StepVerifier.create(blobClient.downloadStreamWithResponse(options).flatMap(r -> {
             assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
             return FluxUtil.collectBytesInByteBufferStream(r.getValue());
         })).assertNext(result -> TestUtils.assertArraysEqual(data, result)).verifyComplete();
@@ -110,14 +71,15 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithResponseContentValidation() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
         BlobDownloadContentOptions options
             = new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        StepVerifier.create(downloadClient.downloadContentWithResponse(options)).assertNext(r -> {
+        StepVerifier.create(blobClient.downloadContentWithResponse(options)).assertNext(r -> {
             assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
             TestUtils.assertArraysEqual(data, r.getValue().toBytes());
         }).verifyComplete();
@@ -136,30 +98,34 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             8 * 1026 * 1024 + 10, // medium file not aligned to block
         })
     public void downloadToFileWithResponseContentValidation(int fileSize) throws IOException {
-        file = getRandomFile(fileSize);
+        File file = getRandomFile(fileSize);
         file.deleteOnExit();
-        createdFiles.add(file);
-
-        initializeBlobClient();
-        downloadClient.uploadFromFile(file.toPath().toString(), true).block();
-
-        outFile = new File(prefix + ".txt");
-        createdFiles.add(outFile);
+        File outFile = Files.createTempFile("blob-cv-download-async", ".bin").toFile();
         outFile.deleteOnExit();
-        Files.deleteIfExists(outFile.toPath());
 
-        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
-        BlobDownloadToFileOptions options
-            = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        try {
+            List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+            blobClient.uploadFromFile(file.toPath().toString(), true).block();
 
-        StepVerifier.create(downloadClient.downloadToFileWithResponse(options)).assertNext(r -> {
-            assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
-            assertNotNull(r.getValue());
-        }).verifyComplete();
+            Files.deleteIfExists(outFile.toPath());
 
-        assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+            ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
+            BlobDownloadToFileOptions options
+                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+            StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
+                assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+                assertNotNull(r.getValue());
+            }).verifyComplete();
+
+            assertTrue(compareFiles(file, outFile, 0, fileSize));
+            assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+        } finally {
+            deleteFileIfExists(file);
+            deleteFileIfExists(outFile);
+        }
     }
 
     /**
@@ -173,30 +139,34 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             50 * Constants.MB + 22 // large file not on MB boundary
         })
     public void downloadToFileLargeWithResponseContentValidation(int fileSize) throws IOException {
-        file = getRandomFile(fileSize);
+        File file = getRandomFile(fileSize);
         file.deleteOnExit();
-        createdFiles.add(file);
-
-        initializeBlobClient();
-        downloadClient.uploadFromFile(file.toPath().toString(), true).block();
-
-        outFile = new File(prefix + ".txt");
-        createdFiles.add(outFile);
+        File outFile = Files.createTempFile("blob-cv-large-download-async", ".bin").toFile();
         outFile.deleteOnExit();
-        Files.deleteIfExists(outFile.toPath());
 
-        ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
-        BlobDownloadToFileOptions options
-            = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        try {
+            List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+            BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+            blobClient.uploadFromFile(file.toPath().toString(), true).block();
 
-        StepVerifier.create(downloadClient.downloadToFileWithResponse(options)).assertNext(r -> {
-            assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
-            assertNotNull(r.getValue());
-        }).verifyComplete();
+            Files.deleteIfExists(outFile.toPath());
 
-        assertTrue(compareFiles(file, outFile, 0, fileSize));
-        assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+            ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong((long) BLOCK_SIZE);
+            BlobDownloadToFileOptions options
+                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+            StepVerifier.create(blobClient.downloadToFileWithResponse(options)).assertNext(r -> {
+                assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
+                assertNotNull(r.getValue());
+            }).verifyComplete();
+
+            assertTrue(compareFiles(file, outFile, 0, fileSize));
+            assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+        } finally {
+            deleteFileIfExists(file);
+            deleteFileIfExists(outFile);
+        }
     }
 
     /**
@@ -204,11 +174,12 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamDefaultAlgorithmIsNone() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        StepVerifier.create(downloadClient.downloadStreamWithResponse(new BlobDownloadStreamOptions())
+        StepVerifier.create(blobClient.downloadStreamWithResponse(new BlobDownloadStreamOptions())
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
                 assertNotNull(result);
                 assertEquals(data.length, result.length);
@@ -218,13 +189,14 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
     @Test
     public void downloadStreamWithResponseContentValidationRange() {
-        data = getRandomByteArray(4 * Constants.KB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(4 * Constants.KB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
         BlobDownloadStreamOptions options = new BlobDownloadStreamOptions().setRange(new BlobRange(0, 512L));
 
-        StepVerifier.create(downloadClient.downloadStreamWithResponse(options).flatMap(r -> {
+        StepVerifier.create(blobClient.downloadStreamWithResponse(options).flatMap(r -> {
             assertFalse(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
             return FluxUtil.collectBytesInByteBufferStream(r.getValue());
         })).assertNext(result -> assertEquals(512, result.length)).verifyComplete();
@@ -237,11 +209,12 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamWithAuto() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
-        StepVerifier.create(downloadClient
+        StepVerifier.create(blobClient
             .downloadStreamWithResponse(
                 new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO))
             .flatMap(r -> {
@@ -256,12 +229,13 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithNone() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
         StepVerifier
-            .create(downloadClient.downloadContentWithResponse(
+            .create(blobClient.downloadContentWithResponse(
                 new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE)))
             .assertNext(r -> TestUtils.assertArraysEqual(data, r.getValue().toBytes()))
             .verifyComplete();
@@ -273,12 +247,13 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithAuto() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
         StepVerifier
-            .create(downloadClient.downloadContentWithResponse(
+            .create(blobClient.downloadContentWithResponse(
                 new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.AUTO)))
             .assertNext(r -> {
                 assertTrue(hasStructuredMessageDownloadResponseHeaders(r.getHeaders()));
@@ -294,8 +269,10 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     @Test
     public void interruptAndVerifyProperRewind() {
         final int segmentSize = Constants.KB;
-        data = getRandomByteArray(2 * segmentSize);
-        initializeBlobClient();
+        byte[] data = getRandomByteArray(2 * segmentSize);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        HttpHeaders recordedResponseHeaders = new HttpHeaders();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
         int interruptPos = segmentSize + (2 * (segmentSize / 4)) + 10;
         MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1, interruptPos, blobClient.getBlobUrl());
@@ -304,8 +281,8 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), blobClient.getBlobUrl(),
-            sniffPolicy, mockPolicy);
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), sniffPolicy, mockPolicy);
 
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
 
@@ -333,8 +310,10 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     public void interruptAndVerifyProperDecode(boolean multipleInterrupts) {
         final int segmentSize = 128 * Constants.KB;
         final int dataSize = 4 * Constants.KB;
-        data = getRandomByteArray(dataSize);
-        initializeBlobClient();
+        byte[] data = getRandomByteArray(dataSize);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        HttpHeaders recordedResponseHeaders = new HttpHeaders();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
         int interruptPos = segmentSize + (3 * (8 * Constants.KB)) + 10;
         MockPartialResponsePolicy mockPolicy
@@ -344,8 +323,8 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), blobClient.getBlobUrl(),
-            sniffPolicy, mockPolicy);
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), sniffPolicy, mockPolicy);
 
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(10);
 
@@ -368,14 +347,15 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void structuredMessageVerifiesDecodedCrc64DownloadStreaming() {
-        data = getRandomByteArray(TEN_MB);
-        initializeBlobClient();
-        downloadClient.upload(BinaryData.fromBytes(data)).block();
+        byte[] data = getRandomByteArray(TEN_MB);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
+        blobClient.upload(BinaryData.fromBytes(data)).block();
 
         long expectedCrc = StorageCrc64Calculator.compute(data, 0);
 
         StepVerifier
-            .create(downloadClient
+            .create(blobClient
                 .downloadStreamWithResponse(
                     new BlobDownloadStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()).map(bytes -> Tuples.of(r, bytes))))
@@ -394,8 +374,10 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     @Test
     public void interruptWithDataIntact() {
         final int segmentSize = Constants.KB;
-        data = getRandomByteArray(4 * segmentSize);
-        initializeBlobClient();
+        byte[] data = getRandomByteArray(4 * segmentSize);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        HttpHeaders recordedResponseHeaders = new HttpHeaders();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
         int interruptPos = segmentSize + (3 * 128) + 10;
         MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1, interruptPos, blobClient.getBlobUrl());
@@ -404,8 +386,8 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), blobClient.getBlobUrl(),
-            sniffPolicy, mockPolicy);
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), sniffPolicy, mockPolicy);
 
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
 
@@ -425,8 +407,10 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     @Test
     public void interruptMultipleTimesWithDataIntact() {
         final int segmentSize = Constants.KB;
-        data = getRandomByteArray(4 * segmentSize);
-        initializeBlobClient();
+        byte[] data = getRandomByteArray(4 * segmentSize);
+        List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
+        HttpHeaders recordedResponseHeaders = new HttpHeaders();
+        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
         int interruptPos = segmentSize + (3 * 128) + 10;
         MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(3, interruptPos, blobClient.getBlobUrl());
@@ -435,8 +419,8 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         blobClient.upload(Flux.just(ByteBuffer.wrap(data)), null, true).block();
 
-        downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), blobClient.getBlobUrl(),
-            sniffPolicy, mockPolicy);
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), sniffPolicy, mockPolicy);
 
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(10);
 
@@ -448,6 +432,12 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             .assertNext(result -> TestUtils.assertArraysEqual(data, result))
             .verifyComplete();
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, false));
+    }
+
+    private static void deleteFileIfExists(File file) {
+        if (file.exists() && !file.delete()) {
+            file.deleteOnExit();
+        }
     }
 
 }
