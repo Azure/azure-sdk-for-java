@@ -5369,7 +5369,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 .isTrue();
 
         } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             if (asyncClient != null) {
                 asyncClient.close();
             }
