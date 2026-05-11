@@ -354,7 +354,7 @@ public class PartitionScopedRegionLevelProgress {
                 for (Map.Entry<Integer, Long> localLsnByRegionEntry : localLsnByRegion.v.entrySet()) {
 
                     int regionId = localLsnByRegionEntry.getKey();
-                    String normalizedRegionName = RegionUtils.getRegionName(regionId);
+                    String normalizedRegionName = RegionUtils.getNormalizedRegionName(regionId);
 
                     // the regionId to normalizedRegionName does not exist
                     if (normalizedRegionName.equals(StringUtils.EMPTY)) {
