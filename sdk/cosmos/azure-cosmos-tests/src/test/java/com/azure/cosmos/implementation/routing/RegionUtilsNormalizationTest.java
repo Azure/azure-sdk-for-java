@@ -98,8 +98,8 @@ public class RegionUtilsNormalizationTest {
 
     @Test(groups = "unit")
     public void shouldHandleBlankString() {
-        // Blank strings (only spaces) → stripped to "" → normalized to ""
-        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("");
+        // Blank strings (only spaces) are returned as-is — nonsensical input, no match expected
+        assertThat(RegionUtils.getCosmosDBRegionName("   ")).isEqualTo("   ");
     }
 
     @Test(groups = "unit")
