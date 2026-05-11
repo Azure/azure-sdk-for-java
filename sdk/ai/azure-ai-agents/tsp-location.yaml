@@ -1,5 +1,5 @@
 directory: specification/ai-foundry/data-plane/Foundry/src/sdk-agents
-commit: e419f19a4f47a1b824f0e86ec3445ba03822ebaf
+commit: 3771134b88dd41dc2e189e82eb51fdcae0a252d3
 repo: Azure/azure-rest-api-specs
 additionalDirectories:
   - specification/ai-foundry/data-plane/Foundry/src/agents

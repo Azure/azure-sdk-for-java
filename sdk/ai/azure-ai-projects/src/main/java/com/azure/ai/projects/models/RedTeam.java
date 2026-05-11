@@ -84,17 +84,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      * Target configuration for the red-team run.
      */
     @Generated
-    private final TargetConfig target;
-
-    /**
-     * Creates an instance of RedTeam class.
-     *
-     * @param target the target value to set.
-     */
-    @Generated
-    public RedTeam(TargetConfig target) {
-        this.target = target;
-    }
+    private final RedTeamTargetConfig target;
 
     /**
      * Get the name property: Identifier of the red team run.
@@ -304,7 +294,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      * @return the target value.
      */
     @Generated
-    public TargetConfig getTarget() {
+    public RedTeamTargetConfig getTarget() {
         return this.target;
     }
 
@@ -342,7 +332,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     public static RedTeam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            TargetConfig target = null;
+            RedTeamTargetConfig target = null;
             String displayName = null;
             Integer numTurns = null;
             List<AttackStrategy> attackStrategies = null;
@@ -358,7 +348,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
                 if ("id".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("target".equals(fieldName)) {
-                    target = TargetConfig.fromJson(reader);
+                    target = RedTeamTargetConfig.fromJson(reader);
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("numTurns".equals(fieldName)) {
@@ -394,5 +384,15 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
             deserializedRedTeam.status = status;
             return deserializedRedTeam;
         });
+    }
+
+    /**
+     * Creates an instance of RedTeam class.
+     *
+     * @param target the target value to set.
+     */
+    @Generated
+    public RedTeam(RedTeamTargetConfig target) {
+        this.target = target;
     }
 }

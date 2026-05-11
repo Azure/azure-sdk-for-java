@@ -114,7 +114,7 @@ public final class SkillsClient {
      * }
      * </pre>
      *
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -124,8 +124,8 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createSkillFromPackageWithResponse(body, requestOptions);
+    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData content, RequestOptions requestOptions) {
+        return this.serviceClient.createSkillFromPackageWithResponse(content, requestOptions);
     }
 
     /**
@@ -368,7 +368,7 @@ public final class SkillsClient {
     /**
      * Creates a skill from a zip package.
      *
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -379,10 +379,10 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkillDetails createSkillFromPackage(BinaryData body) {
+    public SkillDetails createSkillFromPackage(BinaryData content) {
         // Generated convenience method for createSkillFromPackageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillFromPackageWithResponse(body, requestOptions).getValue().toObject(SkillDetails.class);
+        return createSkillFromPackageWithResponse(content, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**

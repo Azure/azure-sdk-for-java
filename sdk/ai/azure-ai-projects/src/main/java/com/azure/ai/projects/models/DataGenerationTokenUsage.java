@@ -21,19 +21,19 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
      * The number of prompt tokens used.
      */
     @Generated
-    private Long promptTokens;
+    private long promptTokens;
 
     /*
      * The number of completion tokens generated.
      */
     @Generated
-    private Long completionTokens;
+    private long completionTokens;
 
     /*
      * Total number of tokens used.
      */
     @Generated
-    private Long totalTokens;
+    private long totalTokens;
 
     /**
      * Creates an instance of DataGenerationTokenUsage class.
@@ -48,7 +48,7 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
      * @return the promptTokens value.
      */
     @Generated
-    public Long getPromptTokens() {
+    public long getPromptTokens() {
         return this.promptTokens;
     }
 
@@ -58,7 +58,7 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
      * @return the completionTokens value.
      */
     @Generated
-    public Long getCompletionTokens() {
+    public long getCompletionTokens() {
         return this.completionTokens;
     }
 
@@ -68,7 +68,7 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
      * @return the totalTokens value.
      */
     @Generated
-    public Long getTotalTokens() {
+    public long getTotalTokens() {
         return this.totalTokens;
     }
 
@@ -88,6 +88,7 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataGenerationTokenUsage if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataGenerationTokenUsage.
      */
     @Generated
@@ -98,11 +99,11 @@ public final class DataGenerationTokenUsage implements JsonSerializable<DataGene
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("prompt_tokens".equals(fieldName)) {
-                    deserializedDataGenerationTokenUsage.promptTokens = reader.getNullable(JsonReader::getLong);
+                    deserializedDataGenerationTokenUsage.promptTokens = reader.getLong();
                 } else if ("completion_tokens".equals(fieldName)) {
-                    deserializedDataGenerationTokenUsage.completionTokens = reader.getNullable(JsonReader::getLong);
+                    deserializedDataGenerationTokenUsage.completionTokens = reader.getLong();
                 } else if ("total_tokens".equals(fieldName)) {
-                    deserializedDataGenerationTokenUsage.totalTokens = reader.getNullable(JsonReader::getLong);
+                    deserializedDataGenerationTokenUsage.totalTokens = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }

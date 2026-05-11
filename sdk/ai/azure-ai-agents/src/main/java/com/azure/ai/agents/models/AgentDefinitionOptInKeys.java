@@ -26,7 +26,12 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value AgentEndpoints=V1Preview.
      */
-    AGENT_ENDPOINT_V1_PREVIEW("AgentEndpoints=V1Preview");
+    AGENT_ENDPOINT_V1_PREVIEW("AgentEndpoints=V1Preview"),
+
+    /**
+     * Enum value CodeAgents=V1Preview.
+     */
+    CODE_AGENTS_V1_PREVIEW("CodeAgents=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

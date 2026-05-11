@@ -96,9 +96,9 @@ public final class DataGenerationJobsAsyncClient {
      *         ]
      *         generated_samples: int (Required)
      *         token_usage (Optional): {
-     *             prompt_tokens: Long (Optional)
-     *             completion_tokens: Long (Optional)
-     *             total_tokens: Long (Optional)
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
@@ -210,9 +210,9 @@ public final class DataGenerationJobsAsyncClient {
      *         ]
      *         generated_samples: int (Required)
      *         token_usage (Optional): {
-     *             prompt_tokens: Long (Optional)
-     *             completion_tokens: Long (Optional)
-     *             total_tokens: Long (Optional)
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
@@ -296,9 +296,9 @@ public final class DataGenerationJobsAsyncClient {
      *         ]
      *         generated_samples: int (Required)
      *         token_usage (Optional): {
-     *             prompt_tokens: Long (Optional)
-     *             completion_tokens: Long (Optional)
-     *             total_tokens: Long (Optional)
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
@@ -355,9 +355,9 @@ public final class DataGenerationJobsAsyncClient {
      *         ]
      *         generated_samples: int (Required)
      *         token_usage (Optional): {
-     *             prompt_tokens: Long (Optional)
-     *             completion_tokens: Long (Optional)
-     *             total_tokens: Long (Optional)
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
@@ -442,9 +442,9 @@ public final class DataGenerationJobsAsyncClient {
      *         ]
      *         generated_samples: int (Required)
      *         token_usage (Optional): {
-     *             prompt_tokens: Long (Optional)
-     *             completion_tokens: Long (Optional)
-     *             total_tokens: Long (Optional)
+     *             prompt_tokens: long (Required)
+     *             completion_tokens: long (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)

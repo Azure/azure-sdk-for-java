@@ -121,7 +121,7 @@ public final class SkillsAsyncClient {
      * }
      * </pre>
      *
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -131,9 +131,9 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillFromPackageWithResponse(BinaryData body,
+    public Mono<Response<BinaryData>> createSkillFromPackageWithResponse(BinaryData content,
         RequestOptions requestOptions) {
-        return this.serviceClient.createSkillFromPackageWithResponseAsync(body, requestOptions);
+        return this.serviceClient.createSkillFromPackageWithResponseAsync(content, requestOptions);
     }
 
     /**
@@ -378,7 +378,7 @@ public final class SkillsAsyncClient {
     /**
      * Creates a skill from a zip package.
      *
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -389,10 +389,10 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> createSkillFromPackage(BinaryData body) {
+    public Mono<SkillDetails> createSkillFromPackage(BinaryData content) {
         // Generated convenience method for createSkillFromPackageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillFromPackageWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
+        return createSkillFromPackageWithResponse(content, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 

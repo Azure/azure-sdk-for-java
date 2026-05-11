@@ -111,7 +111,7 @@ public final class SkillsImpl {
         Mono<Response<BinaryData>> createSkillFromPackage(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/zip") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/zip") BinaryData content, RequestOptions requestOptions, Context context);
 
         @Post("/skills:import")
         @ExpectedResponses({ 201 })
@@ -122,7 +122,7 @@ public final class SkillsImpl {
         Response<BinaryData> createSkillFromPackageSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/zip") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/zip") BinaryData content, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -358,7 +358,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -367,13 +367,13 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillFromPackageWithResponseAsync(BinaryData body,
+    public Mono<Response<BinaryData>> createSkillFromPackageWithResponseAsync(BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/zip";
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillFromPackage(this.client.getEndpoint(), contentType,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
     /**
@@ -402,7 +402,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -411,12 +411,12 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/zip";
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return service.createSkillFromPackageSync(this.client.getEndpoint(), contentType, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
     /**

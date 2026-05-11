@@ -14,7 +14,7 @@ import java.io.IOException;
  * Azure OpenAI model configuration. The API version would be selected by the service for querying the model.
  */
 @Immutable
-public final class AzureOpenAIModelConfiguration extends TargetConfig {
+public final class AzureOpenAIModelConfiguration extends RedTeamTargetConfig {
 
     /*
      * Type of the model configuration.
