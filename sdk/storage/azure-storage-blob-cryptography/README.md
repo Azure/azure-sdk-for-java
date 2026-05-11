@@ -264,4 +264,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples
 [error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md

@@ -26,6 +26,7 @@ class AadWebApplicationConfigurationTests {
     void useDefaultSecurityFilterChain() {
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=web_application",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
@@ -45,6 +46,7 @@ class AadWebApplicationConfigurationTests {
                 AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=web_application",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
