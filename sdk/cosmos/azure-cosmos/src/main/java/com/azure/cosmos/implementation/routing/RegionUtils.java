@@ -247,6 +247,23 @@ public final class RegionUtils {
     }
 
     /**
+     * Returns the normalized form of a region name: lowercase, no spaces.
+     * <p>
+     * For known regions, this is the lowercase-no-spaces key (e.g., {@code "westus3"}).
+     * For unknown regions, this is the input lowercased with spaces stripped.
+     * Used for constructing regional endpoint URLs (DNS is case-insensitive).
+     *
+     * @param regionName the region name to normalize
+     * @return the lowercase, space-stripped form
+     */
+    public static String getNormalizedRegionName(String regionName) {
+        if (StringUtils.isEmpty(regionName)) {
+            return regionName;
+        }
+        return regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+    }
+
+    /**
      * Normalizes a list of region names to canonical CosmosDB format.
      * Unknown regions not in the static map are passed through as-is.
      *
