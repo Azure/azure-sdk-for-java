@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosExperimentActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosExperimentAction model = BinaryData.fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"fkts\"}")
-            .toObject(ChaosExperimentAction.class);
-        Assertions.assertEquals("fkts", model.name());
+        ChaosExperimentAction model
+            = BinaryData.fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"frzpwvlqdqgb\"}")
+                .toObject(ChaosExperimentAction.class);
+        Assertions.assertEquals("frzpwvlqdqgb", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosExperimentAction model = new ChaosExperimentAction().withName("fkts");
+        ChaosExperimentAction model = new ChaosExperimentAction().withName("frzpwvlqdqgb");
         model = BinaryData.fromObject(model).toObject(ChaosExperimentAction.class);
-        Assertions.assertEquals("fkts", model.name());
+        Assertions.assertEquals("frzpwvlqdqgb", model.name());
     }
 }
