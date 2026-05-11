@@ -171,9 +171,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
      * HTTP-date</td></tr>
@@ -262,9 +262,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
      * HTTP-date</td></tr>
@@ -359,9 +359,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -416,9 +416,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -478,9 +478,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -543,9 +543,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -606,9 +606,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -669,9 +669,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -719,9 +719,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -772,9 +772,9 @@ public final class InsightsImpl {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Skills=V1Preview", "Evaluations=V1Preview",
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Toolboxes=V1Preview".</td></tr>
+     * "Toolboxes=V1Preview", "Skills=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
