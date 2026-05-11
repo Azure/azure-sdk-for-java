@@ -215,7 +215,7 @@ public final class RegionUtils {
      * @param regionId the numeric region ID
      * @return the normalized name (e.g., "westus3"), or empty string if unknown
      */
-    public static String getRegionName(int regionId) {
+    public static String getNormalizedRegionName(int regionId) {
         return REGION_ID_TO_NORMALIZED_REGION_NAME_MAPPINGS.getOrDefault(regionId, StringUtils.EMPTY);
     }
 
