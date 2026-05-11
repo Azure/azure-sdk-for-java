@@ -470,12 +470,15 @@ In v5, using `BlobCheckpointStore`:
 
 ```java
 BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
-        .connectionString("storage-connection-string")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .endpoint("https://<storage-account-name>.blob.core.windows.net")
         .containerName("storage-container-name")
         .buildAsyncClient();
 
 EventProcessorClient processor = new EventProcessorClientBuilder()
-        .connectionString("connection-string-for-an-event-hub")
+        .credential("<event-hubs-namespace>.servicebus.windows.net",
+                new DefaultAzureCredentialBuilder().build())
+        .eventHubName("<event-hub-name>")
         .consumerGroup("my-consumer-group")
         .checkpointStore(new BlobCheckpointStore(blobClient))
         .processEvent(eventContext -> { /* process event */ })
