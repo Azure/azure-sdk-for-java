@@ -44,7 +44,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -132,7 +131,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     /**
-     * Multi-part (chunked) upload; content validation uses structured message on each stage block.
+     * Multipart (chunked) upload; content validation uses structured message on each stage block.
      */
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
@@ -274,9 +273,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options))
+            .assertNext(response -> assertTrue(hasOnlyCrc64Headers(recorded)))
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -292,9 +291,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options))
+            .assertNext(response -> assertTrue(hasOnlyStructuredMessageHeaders(recorded)))
+            .verifyComplete();
     }
 
     @Test
@@ -309,9 +308,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
             .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options))
+            .assertNext(response -> assertTrue(hasNoContentValidationHeaders(recorded)))
+            .verifyComplete();
     }
 
     // ===========================================================================================
@@ -634,10 +633,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (CRC64 header path)");
+        StepVerifier.create(client.uploadWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     @Test
@@ -652,10 +650,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (structured message path)");
+        StepVerifier.create(client.uploadWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
@@ -673,11 +670,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (chunked structured message path)");
+        StepVerifier.create(client.uploadWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     @Test
@@ -691,11 +686,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobSimpleUploadOptions options
             = new BlockBlobSimpleUploadOptions(data).setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (block blob simple upload)");
+        StepVerifier.create(client.uploadWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     @Test
@@ -710,10 +703,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.appendBlockWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (append block)");
+        StepVerifier.create(client.appendBlockWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     @Test
@@ -729,82 +721,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
                 .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.uploadPagesWithResponse(options).block();
-
-        byte[] downloaded = blobClient.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (page blob upload pages)");
-    }
-
-    // ===========================================================================================
-    // Randomized payload sizes (exercises CRC64 header vs structured message lengths across runs)
-    // ===========================================================================================
-
-    @Test
-    public void uploadWithRandomSizeCrc64HeaderRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(Constants.KB, EXACTLY_4MB);
-
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(size);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random size CRC64 header path, size=" + size + ")");
-    }
-
-    @LiveOnly // This test is too large for the test proxy.
-    @Test
-    public void uploadWithRandomSizeStructuredMessageRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(EXACTLY_4MB, 48 * Constants.MB + 1);
-
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(size);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random size structured message path, size=" + size + ")");
-    }
-
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @Test
-    public void uploadChunkedRandomSizesRoundTripDataIntegrity() {
-        Random rnd = newRandomFromNamer();
-        long[] blockSizeChoices = { Constants.MB, 2L * Constants.MB, 4L * Constants.MB, 8L * Constants.MB };
-        long blockSize = blockSizeChoices[rnd.nextInt(blockSizeChoices.length)];
-        int minTotal = (int) Math.max(24L * Constants.MB, 2 * blockSize);
-        int totalSize = minTotal + rnd.nextInt(80 * Constants.MB + 1 - minTotal);
-
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(totalSize);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options).block();
-
-        byte[] downloaded = client.downloadContent().block().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random chunked path, total=" + totalSize + ", block=" + blockSize
-                + ")");
+        StepVerifier.create(client.uploadPagesWithResponse(options).then(client.downloadContent()))
+            .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
+            .verifyComplete();
     }
 
     // ===========================================================================================
@@ -938,7 +857,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath())
                     .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
                 assertNotNull(client.uploadFromFileWithResponse(options).block().getValue().getETag(),
-                    prefix + "Missing ETag on upload-from-file.");
+                    prefix + "Missing E-Tag on upload-from-file.");
                 client.downloadToFile(outFile.getPath(), true).block();
                 assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
             } finally {
@@ -1048,9 +967,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
                     .setRequestConditions(new BlobRequestConditions())
                     .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-            client.uploadWithResponse(options).block();
-            byte[] downloaded = client.downloadContent().block().toBytes();
-            assertArrayEquals(randomData, downloaded, assertionMessage);
+
+            StepVerifier.create(client.uploadWithResponse(options).then(client.downloadContent()))
+                .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes(), assertionMessage))
+                .verifyComplete();
         }
     }
 

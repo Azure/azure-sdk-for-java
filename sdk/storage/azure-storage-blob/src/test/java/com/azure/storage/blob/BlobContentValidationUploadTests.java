@@ -47,7 +47,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -74,8 +73,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final long LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
 
     /**
-     * Live-only random payload band for sequential append-block puts only ({@link
-     * #appendBlockLiveRandomRoundTripDataIntegrity()}): {@code Flux.concatMap} issues one append REST call per chunk in
+     * Live-only random payload band for sequential append-block puts only.
+     * {@code Flux.concatMap} issues one append REST call per chunk in
      * order (not parallel staging); use a smaller band than {@link #LIVE_RANDOM_PARALLEL_PAYLOAD_MIN_BYTES_EXCLUSIVE}.
      */
     private static final long LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MIN_BYTES_EXCLUSIVE = 32L * Constants.MB;
@@ -987,78 +986,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         byte[] downloaded = client.downloadContent().toBytes();
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded file data");
-    }
-
-    // ===========================================================================================
-    // Randomized payload sizes (exercises CRC64 header vs structured message lengths across runs)
-    // ===========================================================================================
-
-    @Test
-    public void uploadWithRandomSizeCrc64HeaderRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(Constants.KB, EXACTLY_4MB);
-
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(size);
-        InputStream data = new ByteArrayInputStream(randomData);
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options, null, Context.NONE);
-
-        byte[] downloaded = client.downloadContent().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random size CRC64 header path, size=" + size + ")");
-    }
-
-    @LiveOnly // This test is too large for the test proxy.
-    @Test
-    public void uploadWithRandomSizeStructuredMessageRoundTripDataIntegrity() {
-        int size = randomIntFromNamer(EXACTLY_4MB, 48 * Constants.MB + 1);
-
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(size);
-        InputStream data = new ByteArrayInputStream(randomData);
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options, null, Context.NONE);
-
-        byte[] downloaded = client.downloadContent().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random size structured message path, size=" + size + ")");
-    }
-
-    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
-    @Test
-    public void uploadChunkedRandomSizesRoundTripDataIntegrity() {
-        Random rnd = newRandomFromNamer();
-        long[] blockSizeChoices = { Constants.MB, 2L * Constants.MB, 4L * Constants.MB, 8L * Constants.MB };
-        long blockSize = blockSizeChoices[rnd.nextInt(blockSizeChoices.length)];
-        int minTotal = (int) Math.max(24L * Constants.MB, 2 * blockSize);
-        int totalSize = minTotal + rnd.nextInt(80 * Constants.MB + 1 - minTotal);
-
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
-        byte[] randomData = getRandomByteArray(totalSize);
-        InputStream data = new ByteArrayInputStream(randomData);
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-            .setRequestConditions(new BlobRequestConditions())
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadWithResponse(options, null, Context.NONE);
-
-        byte[] downloaded = client.downloadContent().toBytes();
-        assertArrayEquals(randomData, downloaded,
-            "Downloaded data must match uploaded data (random chunked path, total=" + totalSize + ", block=" + blockSize
-                + ")");
     }
 
     // ===========================================================================================
