@@ -1553,7 +1553,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-     * payloadBytes > segmentBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling field),so the blob
+     * payloadBytes > segmentBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling field), so the blob
      * stays strictly under the 4 MiB transactional CRC64-header path while uploads remain
      * chunked—live-only because of Put Block identity churn.
      * <p>

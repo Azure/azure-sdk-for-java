@@ -745,21 +745,23 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             File outFile = Files.createTempFile("blob-cv-live-par-dl-async", ".bin").toFile();
             outFile.deleteOnExit();
 
-            try (InputStream data = new FileInputStream(sourceFile)) {
-                BlobParallelUploadOptions options
-                    = new BlobParallelUploadOptions(data).setRequestConditions(new BlobRequestConditions())
-                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                client.uploadWithResponse(options).block();
-            }
+            try {
+                try (InputStream data = new FileInputStream(sourceFile)) {
+                    BlobParallelUploadOptions options
+                        = new BlobParallelUploadOptions(data).setRequestConditions(new BlobRequestConditions())
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    client.uploadWithResponse(options).block();
+                }
 
-            client.downloadToFile(outFile.getPath(), true).block();
-            assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
-
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
-            if (!outFile.delete()) {
-                outFile.deleteOnExit();
+                client.downloadToFile(outFile.getPath(), true).block();
+                assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
             }
         } catch (Exception e) {
             throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
@@ -818,24 +820,26 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             File outFile = Files.createTempFile("blob-cv-live-append-async-dl", ".bin").toFile();
             outFile.deleteOnExit();
 
-            try (AsynchronousFileChannel channel
-                = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ)) {
-                FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes).concatMap(bb -> {
-                    AppendBlobAppendBlockOptions appendOptions
-                        = new AppendBlobAppendBlockOptions(Flux.just(bb), bb.remaining())
-                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                    return client.appendBlockWithResponse(appendOptions);
-                }).then().block();
-            }
+            try {
+                try (AsynchronousFileChannel channel
+                    = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ)) {
+                    FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes).concatMap(bb -> {
+                        AppendBlobAppendBlockOptions appendOptions
+                            = new AppendBlobAppendBlockOptions(Flux.just(bb), bb.remaining())
+                                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                        return client.appendBlockWithResponse(appendOptions);
+                    }).then().block();
+                }
 
-            blobClient.downloadToFile(outFile.getPath(), true).block();
-            assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
-
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
-            if (!outFile.delete()) {
-                outFile.deleteOnExit();
+                blobClient.downloadToFile(outFile.getPath(), true).block();
+                assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
             }
         } catch (Exception e) {
             throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
@@ -943,22 +947,25 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             AsynchronousFileChannel channel
                 = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ);
             try {
-                Flux<ByteBuffer> data = FluxUtil.readFile(channel, readChunkSize, 0, payloadBytes);
-                BlobParallelUploadOptions options
-                    = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
-                        .setRequestConditions(new BlobRequestConditions())
-                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                client.uploadWithResponse(options).block();
+                try {
+                    Flux<ByteBuffer> data = FluxUtil.readFile(channel, readChunkSize, 0, payloadBytes);
+                    BlobParallelUploadOptions options
+                        = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
+                            .setRequestConditions(new BlobRequestConditions())
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    client.uploadWithResponse(options).block();
+                } finally {
+                    channel.close();
+                }
+                client.downloadToFile(outFile.getPath(), true).block();
+                assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
             } finally {
-                channel.close();
-            }
-            client.downloadToFile(outFile.getPath(), true).block();
-            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
-            if (!outFile.delete()) {
-                outFile.deleteOnExit();
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
             }
         } else {
             byte[] randomData = getRandomByteArray(payloadBytes);

@@ -1007,19 +1007,22 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             File sourceFile = getRandomFile(chosenPayloadSizeBytes);
             File outFile = Files.createTempFile("blob-cv-live-par-dl", ".bin").toFile();
             outFile.deleteOnExit();
-            try (InputStream data = new FileInputStream(sourceFile)) {
-                BlobParallelUploadOptions options
-                    = new BlobParallelUploadOptions(data).setRequestConditions(new BlobRequestConditions())
-                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                client.uploadWithResponse(options, null, Context.NONE);
-            }
-            client.downloadToFile(outFile.getPath(), true);
-            assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
-            if (!outFile.delete()) {
-                outFile.deleteOnExit();
+            try {
+                try (InputStream data = new FileInputStream(sourceFile)) {
+                    BlobParallelUploadOptions options
+                        = new BlobParallelUploadOptions(data).setRequestConditions(new BlobRequestConditions())
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    client.uploadWithResponse(options, null, Context.NONE);
+                }
+                client.downloadToFile(outFile.getPath(), true);
+                assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
             }
         } catch (Exception e) {
             throw new Exception("chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". " + e.getMessage(), e);
@@ -1287,20 +1290,23 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             File sourceFile = getRandomFile(payloadBytes);
             File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl", ".bin").toFile();
             outFile.deleteOnExit();
-            try (InputStream data = new FileInputStream(sourceFile)) {
-                BlobParallelUploadOptions options
-                    = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
-                        .setRequestConditions(new BlobRequestConditions())
-                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                client.uploadWithResponse(options, null, Context.NONE);
-            }
-            client.downloadToFile(outFile.getPath(), true);
-            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
-            if (!sourceFile.delete()) {
-                sourceFile.deleteOnExit();
-            }
-            if (!outFile.delete()) {
-                outFile.deleteOnExit();
+            try {
+                try (InputStream data = new FileInputStream(sourceFile)) {
+                    BlobParallelUploadOptions options
+                        = new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelOptions)
+                            .setRequestConditions(new BlobRequestConditions())
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    client.uploadWithResponse(options, null, Context.NONE);
+                }
+                client.downloadToFile(outFile.getPath(), true);
+                assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
+            } finally {
+                if (!sourceFile.delete()) {
+                    sourceFile.deleteOnExit();
+                }
+                if (!outFile.delete()) {
+                    outFile.deleteOnExit();
+                }
             }
         } else {
             byte[] randomData = getRandomByteArray(payloadBytes);
