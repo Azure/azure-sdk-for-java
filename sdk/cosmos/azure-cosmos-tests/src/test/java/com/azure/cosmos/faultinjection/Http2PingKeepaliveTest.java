@@ -42,6 +42,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     private static final Logger logger = LoggerFactory.getLogger(Http2PingKeepaliveTest.class);
     private static final long TEST_TIMEOUT = 120_000; // 2 minutes
 
+    // sudo prefix: empty when running as root (Docker), "sudo " on CI VMs
+    private static final String SUDO = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
+
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private TestObject seedItem;
@@ -199,9 +202,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
             // Blackhole all traffic to gateway — prevents PING ACKs from arriving
             String iptablesRule = String.format(
-                "iptables -A OUTPUT -p tcp --dport %d -d %s -j DROP", gatewayPort, gatewayHost);
+                "%siptables -A OUTPUT -p tcp --dport %d -d %s -j DROP", SUDO, gatewayPort, gatewayHost);
             logger.info("Installing iptables DROP rule: {}", iptablesRule);
-            Runtime.getRuntime().exec(new String[]{"bash", "-c", iptablesRule}).waitFor();
+            execCommand(iptablesRule);
 
             // Wait for PING timeout with consecutive failure threshold=2 (test override):
             // Round 1: 1s interval + 2s timeout = 3s (failure #1)
@@ -212,9 +215,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
             // Remove iptables rule BEFORE attempting recovery read
             String iptablesRemove = String.format(
-                "iptables -D OUTPUT -p tcp --dport %d -d %s -j DROP", gatewayPort, gatewayHost);
+                "%siptables -D OUTPUT -p tcp --dport %d -d %s -j DROP", SUDO, gatewayPort, gatewayHost);
             logger.info("Removing iptables DROP rule: {}", iptablesRemove);
-            Runtime.getRuntime().exec(new String[]{"bash", "-c", iptablesRemove}).waitFor();
+            execCommand(iptablesRemove);
 
             // Small wait for network to stabilize
             Thread.sleep(1_000);
@@ -240,8 +243,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             try {
                 String gatewayHost = extractHostFromEndpoint(TestConfigurations.HOST);
                 String cleanup = String.format(
-                    "iptables -D OUTPUT -p tcp --dport 443 -d %s -j DROP 2>/dev/null", gatewayHost);
-                Runtime.getRuntime().exec(new String[]{"bash", "-c", cleanup}).waitFor();
+                    "%siptables -D OUTPUT -p tcp --dport 443 -d %s -j DROP 2>/dev/null", SUDO, gatewayHost);
+                execCommand(cleanup);
             } catch (Exception ignored) {}
 
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
@@ -289,6 +292,15 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             return uri.getHost();
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse endpoint: " + endpoint, e);
+        }
+    }
+
+    private static void execCommand(String command) throws Exception {
+        Process p = Runtime.getRuntime().exec(new String[]{"bash", "-c", command});
+        int exit = p.waitFor();
+        if (exit != 0) {
+            String err = new String(p.getErrorStream().readAllBytes()).trim();
+            logger.warn("Command '{}' exited with code {}: {}", command, exit, err);
         }
     }
 }
