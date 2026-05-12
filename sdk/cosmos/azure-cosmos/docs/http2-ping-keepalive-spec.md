@@ -217,8 +217,6 @@ t=3s    check → PING outstanding 2s ≥ 2s → CLOSE (if no ACK)
 | 5. Assert `pingsSent > 0` | PING transmission works |
 | 6. Assert `pingAcksReceived > 0` | Server acknowledges PINGs |
 
-**Helper:** `Http2PingFrameCounterHandler` — independent inbound handler that counts PING ACK frames for cross-validation.
-
 ## 10. Rust SDK Alignment
 
 | Dimension | Java | Rust |

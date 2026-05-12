@@ -69,6 +69,36 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_Http2NetworkFault'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_http2_network_fault
+              Path: sdk/cosmos/live-http2-network-fault-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+          TimeoutInMinutes: 30
+          MaxParallel: 1
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.HTTP2_PING_HEALTH_ENABLED=true -DCOSMOS.HTTP2_PING_INTERVAL_IN_SECONDS=1 -DCOSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS=2'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Cosmos_Live_Test_ThinClient'
           CloudConfig:
             Public:
