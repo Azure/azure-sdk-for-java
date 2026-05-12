@@ -9,6 +9,8 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated `log4j-api`, `log4j-core` and `log4j-slf4j-impl` test dependencies to `2.25.3` to address [CVE-2025-68161](https://github.com/advisories/GHSA-pgxp-9w8h-vfh4) (Apache Log4j: information disclosure via missing TLS hostname verification).
+* Picked up patched versions of `jackson-core` (`2.18.6`) and `netty-codec-http`/`netty-codec-http2` (`4.1.132.Final`) transitively via `azure-cosmos` `4.81.0-beta.1`, addressing [GHSA-72hv-8253-57qq](https://github.com/advisories/GHSA-72hv-8253-57qq), [CVE-2026-33870](https://nvd.nist.gov/vuln/detail/CVE-2026-33870), [CVE-2025-67735](https://nvd.nist.gov/vuln/detail/CVE-2025-67735) and [CVE-2026-33871](https://nvd.nist.gov/vuln/detail/CVE-2026-33871).
 
 ### 2.10.0 (2026-05-01)
 
