@@ -57,6 +57,7 @@ IndexesClient indexesClient = builder.buildIndexesClient();
 InsightsClient insightsClient = builder.buildInsightsClient();
 RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
+SkillsClient skillsClient = builder.buildSkillsClient();
 ```
 
 In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
@@ -93,10 +94,11 @@ Several operation groups in the AI Projects client library are in **preview** an
 | `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `RedTeamsClient` | `RedTeams=V1Preview` |
 | `SchedulesClient` | `Schedules=V1Preview` |
+| `SkillsClient` | `Skills=V1Preview` |
 
 The `EvaluationRulesClient` and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling their methods (e.g., `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
 
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`.
 
 ## Examples
 
