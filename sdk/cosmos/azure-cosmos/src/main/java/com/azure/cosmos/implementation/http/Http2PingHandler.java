@@ -57,19 +57,23 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
+    private final int failureThreshold;
     private long lastActivityNanos;
     private long pingOutstandingSinceNanos; // nanoTime when PING was sent; 0 = no outstanding PING
+    private int consecutiveFailures;        // incremented on timeout, reset on ACK
     private ScheduledFuture<?> pingTask;
     private final AtomicInteger pingsSent = new AtomicInteger(0);
     private final AtomicInteger pingAcksReceived = new AtomicInteger(0);
 
     /**
-     * @param pingIntervalSeconds interval in seconds; when idle longer than this, a PING is sent
-     * @param pingTimeoutSeconds  timeout in seconds; if no ACK within this, the connection is closed
+     * @param pingIntervalSeconds  interval in seconds; when idle longer than this, a PING is sent
+     * @param pingTimeoutSeconds   timeout in seconds per PING attempt
+     * @param failureThreshold     consecutive timeouts before closing the connection
      */
-    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds) {
+    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
         this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(pingIntervalSeconds);
         this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(pingTimeoutSeconds);
+        this.failureThreshold = Math.max(1, failureThreshold);
         this.lastActivityNanos = System.nanoTime();
     }
 
@@ -111,6 +115,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             pingAcksReceived.incrementAndGet();
             globalPingAcksReceived.incrementAndGet();
             pingOutstandingSinceNanos = 0;
+            consecutiveFailures = 0;
             // Connection proved responsive — clear degraded flag if it was set
             if (ctx.channel().hasAttr(PING_HEALTH_DEGRADED)) {
                 ctx.channel().attr(PING_HEALTH_DEGRADED).set(null);
@@ -139,14 +144,20 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         if (pingOutstandingSinceNanos != 0) {
             long waitingNanos = System.nanoTime() - pingOutstandingSinceNanos;
             if (waitingNanos >= pingTimeoutNanos) {
-                // ACK not received within timeout — connection is broken.
-                // Mark degraded and close (aligned with Rust SDK's hyper behavior).
-                ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
-                logger.warn("PING ACK not received within {}s on channel {} — closing connection",
-                    TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
-                    ctx.channel().id().asShortText());
-                cancelPingTask();
-                ctx.close();
+                consecutiveFailures++;
+                pingOutstandingSinceNanos = 0; // unblock next PING attempt
+
+                if (consecutiveFailures >= failureThreshold) {
+                    // Threshold reached — connection is broken.
+                    ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
+                    logger.warn("PING ACK not received for {} consecutive attempts on channel {} — closing connection",
+                        consecutiveFailures, ctx.channel().id().asShortText());
+                    cancelPingTask();
+                    ctx.close();
+                } else {
+                    logger.warn("PING ACK timeout on channel {} (attempt {}/{}) — will retry",
+                        ctx.channel().id().asShortText(), consecutiveFailures, failureThreshold);
+                }
             }
             // Don't send another PING while one is outstanding
             return;
@@ -232,15 +243,16 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param channel the channel from doOnConnected (may be stream or parent)
      * @param pingIntervalSeconds PING interval in seconds
      * @param pingTimeoutSeconds  PING ACK timeout in seconds
+     * @param failureThreshold    consecutive timeouts before closing
      */
-    public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds) {
+    public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
         // When called from the first doOnConnected, channel IS the parent H2 channel.
         // When called from a stream doOnConnected, channel.parent() is the parent.
         Channel parent = channel.parent() != null ? channel.parent() : channel;
         if (!parent.hasAttr(PING_HANDLER_INSTALLED)) {
             parent.attr(PING_HANDLER_INSTALLED).set(Boolean.TRUE);
             try {
-                parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds));
+                parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold));
             } catch (IllegalArgumentException ignored) {
                 // Duplicate — race between concurrent streams, benign
             }
