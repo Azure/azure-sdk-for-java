@@ -69,7 +69,8 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(b -> CoreUtils.bomAwareToString(b, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+        return getBodyAsByteArray()
+            .map(b -> CoreUtils.bomAwareToString(b, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
