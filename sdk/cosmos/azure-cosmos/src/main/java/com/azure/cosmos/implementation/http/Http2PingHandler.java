@@ -146,12 +146,12 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                 if (consecutiveFailures >= failureThreshold) {
                     // Threshold reached — connection is broken.
                     ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
-                    logger.warn("PING ACK not received for {} consecutive attempts on channel {} — closing connection",
+                    logger.info("PING ACK not received for {} consecutive attempts on channel {} \u2014 closing connection",
                         consecutiveFailures, ctx.channel().id().asShortText());
                     cancelPingTask();
                     ctx.close();
                 } else {
-                    logger.info("PING ACK timeout on channel {} (attempt {}/{}) \u2014 will retry",
+                    logger.debug("PING ACK timeout on channel {} (attempt {}/{}) \u2014 will retry",
                         ctx.channel().id().asShortText(), consecutiveFailures, failureThreshold);
                 }
             }
@@ -180,7 +180,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                         logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
                     } else {
                         pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
-                        logger.info("PING #{} send failed on channel {}: {}",
+                        logger.debug("PING #{} send failed on channel {}: {}",
                             count, ctx.channel().id().asShortText(),
                             f.cause() != null ? f.cause().getMessage() : "unknown");
                     }
