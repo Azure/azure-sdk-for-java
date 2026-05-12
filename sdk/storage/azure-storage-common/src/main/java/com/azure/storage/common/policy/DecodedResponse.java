@@ -3,15 +3,16 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * {@link HttpResponse} wrapper that exposes a decoded body stream while preserving the request, status code, and
@@ -68,7 +69,12 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsString(StandardCharsets.UTF_8);
+        // Match the base HttpResponse contract (and BufferedHttpResponse's idiom): inspect the response for a BOM
+        // and the Content-Type header's charset parameter, falling back to UTF-8 when neither is present. Pinning
+        // UTF-8 unconditionally would drop the auto-detection behavior that callers viewing this as a generic
+        // HttpResponse expect.
+        return getBodyAsByteArray().map(
+            bytes -> CoreUtils.bomAwareToString(bytes, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
