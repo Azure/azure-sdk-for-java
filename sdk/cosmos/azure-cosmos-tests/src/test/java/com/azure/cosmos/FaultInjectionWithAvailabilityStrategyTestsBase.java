@@ -417,7 +417,6 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             FaultInjectionRule faultRule = new FaultInjectionRuleBuilder(ruleName)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .connectionType(FaultInjectionConnectionType.DIRECT)
                         .region(this.writeableRegions.get(0))
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build())
