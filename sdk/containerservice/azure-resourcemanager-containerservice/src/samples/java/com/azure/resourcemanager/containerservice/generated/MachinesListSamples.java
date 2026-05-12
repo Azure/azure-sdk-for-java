@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MachinesListSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MachineList.json
+     * x-ms-original-file: 2026-02-01/MachineList.json
      */
     /**
      * Sample code: List Machines in an Agentpool by Managed Cluster.

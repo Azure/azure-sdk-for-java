@@ -14,18 +14,20 @@ public final class BackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicy model = BinaryData.fromString(
-            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"lmfmtdaay\"}],\"datasourceTypes\":[\"v\",\"vgpiohgwxrt\"]}")
+            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"ewzsyyceuzsoib\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"ud\"}],\"datasourceTypes\":[\"rx\",\"rthzvaytdwkqbrqu\",\"paxh\",\"xiilivpdtiirqt\"]}")
             .toObject(BackupPolicy.class);
-        Assertions.assertEquals("v", model.datasourceTypes().get(0));
-        Assertions.assertEquals("lmfmtdaay", model.policyRules().get(0).name());
+        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
+        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicy model = new BackupPolicy().withDatasourceTypes(Arrays.asList("v", "vgpiohgwxrt"))
-            .withPolicyRules(Arrays.asList(new BasePolicyRule().withName("lmfmtdaay")));
+        BackupPolicy model = new BackupPolicy()
+            .withDatasourceTypes(Arrays.asList("rx", "rthzvaytdwkqbrqu", "paxh", "xiilivpdtiirqt"))
+            .withPolicyRules(
+                Arrays.asList(new BasePolicyRule().withName("ewzsyyceuzsoib"), new BasePolicyRule().withName("ud")));
         model = BinaryData.fromObject(model).toObject(BackupPolicy.class);
-        Assertions.assertEquals("v", model.datasourceTypes().get(0));
-        Assertions.assertEquals("lmfmtdaay", model.policyRules().get(0).name());
+        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
+        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
     }
 }

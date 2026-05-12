@@ -128,25 +128,21 @@ public final class AudioPlaybackSample {
         final SourceDataLine[] speakerRef = new SourceDataLine[1];
 
         // Start session
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("✓ Session started");
 
-                // Subscribe to receive events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event, audioQueue),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
                 return session.sendEvent(updateEvent)
                     .doOnSuccess(v -> {
-                        System.out.println("✓ Session configured");
+                        System.out.println("\u2713 Session configured");
                         // Start audio playback system
                         startPlayback(audioQueue, isPlaying, speakerRef);
                     })
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event, audioQueue))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
                     .then(Mono.delay(Duration.ofMillis(500))) // Wait for session to be fully ready
                     .flatMap(v -> {
                         // Send a user message to trigger an audio response

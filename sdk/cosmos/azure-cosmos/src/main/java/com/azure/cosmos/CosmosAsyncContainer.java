@@ -60,6 +60,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -126,6 +127,10 @@ public class CosmosAsyncContainer {
         return ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
     }
 
+    private static ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.CosmosReadManyByPartitionKeysRequestOptionsAccessor readManyByPkOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosReadManyByPartitionKeysRequestOptionsHelper.getCosmosReadManyByPartitionKeysRequestOptionsAccessor();
+    }
+
     private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
         return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     }
@@ -148,6 +153,12 @@ public class CosmosAsyncContainer {
 
     private final static Logger logger = LoggerFactory.getLogger(CosmosAsyncContainer.class);
 
+    // Sentinel values for CosmosQueryRequestOptions.maxDegreeOfParallelism used when no
+    // caller-supplied value is present: 0 == "uninitialized / SDK-chooses",
+    // -1 == "unbounded" (the value RxDocumentClientImpl interprets as no concurrency cap).
+    private static final int DEFAULT_MAX_DEGREE_OF_PARALLELISM = 0;
+    private static final int UNBOUNDED_MAX_DEGREE_OF_PARALLELISM = -1;
+
     private final CosmosAsyncDatabase database;
     private final String id;
     private final String link;
@@ -165,6 +176,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String readManyItemsSpanName;
+    private final String readManyByPartitionKeysSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -198,6 +210,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.readManyItemsSpanName = "readManyItems." + this.id;
+        this.readManyByPartitionKeysSpanName = "readManyByPartitionKeys." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1602,6 +1615,238 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, null, null, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values.
+     * Unlike {@link #readMany(List, Class)} this method does not require item ids - it queries
+     * all documents matching the provided partition key values. Uses {@code SELECT * FROM c}
+     * as the base query. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching, so repeated keys do not duplicate the results.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, null, requestOptions, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is supported for single-path partition key containers only.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        Class<T> classType) {
+
+        return this.readManyByPartitionKeys(partitionKeys, customQuery, null, classType);
+    }
+
+    /**
+     * Reads many documents matching the provided partition key values with a custom query.
+     * The custom query can be used to apply projections (e.g. {@code SELECT c.name, c.age FROM c})
+     * and/or additional filters (e.g. {@code SELECT * FROM c WHERE c.status = 'active'}).
+     * The SDK will automatically append partition key filtering to the custom query.
+     * <p>
+     * The custom query must be a simple streamable query - aggregates, ORDER BY, DISTINCT,
+     * GROUP BY, DCOUNT, vector search, and full-text search are not supported and will be
+     * rejected.
+     * <p>
+     * Partial hierarchical partition keys are supported and will fan out to multiple
+     * physical partitions. Duplicate partition key inputs are normalized with set-based semantics
+     * before batching.
+     * <p>
+     * {@link PartitionKey#NONE} is allowed for single-path partition key containers — it
+     * queries documents where the partition key path is absent (generates
+     * {@code NOT IS_DEFINED(...)}). For hierarchical (multi-path) partition key containers,
+     * {@link PartitionKey#NONE} is rejected because {@code addNoneValue()} is not supported
+     * with multiple paths.
+     *
+     * @param <T> the type parameter
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query for projections/additional filters (null means SELECT * FROM c)
+     *  - should not contain WHERE clause filters for PK
+     * @param requestOptions the optional request options
+     * @param classType   class type
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
+     */
+    public <T> CosmosPagedFlux<T> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        checkNotNull(partitionKeys, "Argument 'partitionKeys' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        if (partitionKeys.isEmpty()) {
+            throw new IllegalArgumentException("Argument 'partitionKeys' must not be empty.");
+        }
+
+        for (PartitionKey pk : partitionKeys) {
+            if (pk == null) {
+                throw new IllegalArgumentException(
+                    "Argument 'partitionKeys' must not contain null elements.");
+            }
+        }
+
+        List<PartitionKey> partitionKeysSnapshot = new ArrayList<>(partitionKeys);
+
+        return UtilBridgeInternal.createCosmosPagedFlux(
+            readManyByPartitionKeysInternalFunc(partitionKeysSnapshot, customQuery, requestOptions, classType));
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> readManyByPartitionKeysInternalFunc(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        CosmosReadManyByPartitionKeysRequestOptions requestOptions,
+        Class<T> classType) {
+
+        CosmosAsyncClient client = this.getDatabase().getClient();
+
+        // Extract continuation token before entering the reactive chain.
+        // It will be set on the cloned CosmosQueryRequestOptions so that
+        // QueryFeedOperationState picks it up automatically.
+        String requestContinuation = requestOptions != null
+            ? readManyByPkOptionsAccessor().getContinuationToken(requestOptions)
+            : null;
+
+        // Resolve the max-concurrent-batch-prefetch knob. Unlike queryItems (which fans out
+        // many small reads across partitions), readManyByPartitionKeys typically returns large
+        // result sets per partition, so a conservative default avoids overwhelming individual
+        // partitions with parallel requests and spiking RU consumption.
+        Integer prefetchOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxConcurrentBatchPrefetch(requestOptions)
+            : null;
+        int maxConcurrentBatchPrefetch = prefetchOverride != null
+            ? prefetchOverride
+            : Math.max(1, Math.min(Configs.getCPUCnt(), 8));
+
+        // Resolve the max-batch-size (PKs per batch per physical partition).
+        // Per-request setting takes precedence over the global system property default.
+        Integer batchSizeOverride = requestOptions != null
+            ? readManyByPkOptionsAccessor().getMaxBatchSize(requestOptions)
+            : null;
+        int maxBatchSize = batchSizeOverride != null
+            ? batchSizeOverride
+            : Configs.getReadManyByPkMaxBatchSize();
+
+        return (pagedFluxOptions -> {
+            CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
+                ? new CosmosQueryRequestOptions()
+                : queryOptionsAccessor().clone(readManyByPkOptionsAccessor().getImpl(requestOptions));
+            // CosmosQueryRequestOptionsBase initializes MaxDegreeOfParallelism to 0 (the
+            // "uninitialized / SDK-chooses" sentinel); -1 is the "unbounded" sentinel that
+            // RxDocumentClientImpl recognizes for query parallelism. Honor any caller-provided
+            // value but default the uninitialized case to unbounded for readManyByPartitionKeys.
+            // CosmosReadManyRequestOptions does not currently expose MDOP, so this only matters
+            // if it is plumbed through in the future.
+            // When cloning from CosmosReadManyByPartitionKeysRequestOptionsImpl (which does not
+            // define maxDegreeOfParallelism), the cloned CosmosQueryRequestOptions may have a
+            // null backing Integer. Guard against NPE from auto-unboxing by checking for null.
+            Integer mdop = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxDegreeOfParallelism();
+            if (mdop == null || mdop == DEFAULT_MAX_DEGREE_OF_PARALLELISM) {
+                queryRequestOptions.setMaxDegreeOfParallelism(UNBOUNDED_MAX_DEGREE_OF_PARALLELISM);
+            }
+
+            // maxItemCount lives in CosmosQueryRequestOptionsImpl but is not copied by the
+            // clone path through CosmosQueryRequestOptionsBase, so propagate it explicitly.
+            Integer maxItems = queryOptionsAccessor().getImpl(queryRequestOptions).getMaxItemCount();
+            if (maxItems == null && requestOptions != null) {
+                Integer userMaxItems = readManyByPkOptionsAccessor().getImpl(requestOptions).getMaxItemCount();
+                if (userMaxItems != null) {
+                    ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(queryRequestOptions, userMaxItems);
+                }
+            }
+
+            queryRequestOptions.setQueryName("readManyByPartitionKeys");
+
+            // Set the composite continuation token on the cloned query options so that
+            // QueryFeedOperationState carries it through to RxDocumentClientImpl.
+            if (requestContinuation != null) {
+                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                    queryRequestOptions, requestContinuation);
+            }
+
+            CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor().getImpl(queryRequestOptions);
+            applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyByPartitionKeysSpanName);
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                client,
+                this.readManyByPartitionKeysSpanName,
+                database.getId(),
+                this.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                queryOptionsAccessor().getQueryNameOrDefault(queryRequestOptions, this.readManyByPartitionKeysSpanName),
+                queryRequestOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return CosmosBridgeInternal
+                .getAsyncDocumentClient(this.getDatabase())
+                .readManyByPartitionKeys(
+                    partitionKeys,
+                    customQuery,
+                    BridgeInternal.getLink(this),
+                    state,
+                    maxConcurrentBatchPrefetch,
+                    maxBatchSize,
+                    classType)
+                .map(response -> prepareFeedResponse(response, false));
+        });
+    }
+
+    /**
      * Reads all the items of a logical partition
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllItems -->
      * <pre>
@@ -2389,7 +2634,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions,
                 true)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(
-                response, itemType, requestOptions.getEffectiveItemSerializer()))
+                response, itemType, effectiveOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();

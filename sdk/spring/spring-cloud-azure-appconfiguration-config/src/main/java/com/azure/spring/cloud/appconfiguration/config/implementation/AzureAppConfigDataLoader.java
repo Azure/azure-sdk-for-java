@@ -431,7 +431,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     settingSelector.setTagsFilter(selectedKeys.getTagsFilter());
                 }
 
-                WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector,
+                WatchedConfigurationSettings watchedConfigurationSettings = client.listSettingsByPage(settingSelector,
                     requestContext);
                 watchedConfigurationSettingsList.add(watchedConfigurationSettings);
             }

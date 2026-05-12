@@ -37,7 +37,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      * `interpreting`, and `failed`.
      */
     @Generated
-    private final ItemResourceCodeInterpreterToolCallStatus status;
+    private final InputItemCodeInterpreterToolCallStatus status;
 
     /*
      * The ID of the container used to run the code.
@@ -85,7 +85,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceCodeInterpreterToolCallStatus getStatus() {
+    public InputItemCodeInterpreterToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -154,7 +154,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
     public static InputItemCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ItemResourceCodeInterpreterToolCallStatus status = null;
+            InputItemCodeInterpreterToolCallStatus status = null;
             String containerId = null;
             String code = null;
             List<BinaryData> outputs = null;
@@ -165,7 +165,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceCodeInterpreterToolCallStatus.fromString(reader.getString());
+                    status = InputItemCodeInterpreterToolCallStatus.fromString(reader.getString());
                 } else if ("container_id".equals(fieldName)) {
                     containerId = reader.getString();
                 } else if ("code".equals(fieldName)) {
@@ -196,7 +196,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      * @param outputs the outputs value to set.
      */
     @Generated
-    public InputItemCodeInterpreterToolCall(String id, ItemResourceCodeInterpreterToolCallStatus status,
+    public InputItemCodeInterpreterToolCall(String id, InputItemCodeInterpreterToolCallStatus status,
         String containerId, String code, List<BinaryData> outputs) {
         this.id = id;
         this.status = status;

@@ -21,7 +21,7 @@ public final class ConfigurationStoresRegenerateKeyWithResponseMockTests {
     @Test
     public void testRegenerateKeyWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"mcqibycnojv\",\"name\":\"mefqsgzvahapjyzh\",\"value\":\"gqzcjr\",\"connectionString\":\"djzlmwlx\",\"lastModified\":\"2021-09-02T14:47:49Z\",\"readOnly\":true}";
+            = "{\"id\":\"zrmuhapfcqdps\",\"name\":\"qvpsvuoymg\",\"value\":\"elvezrypq\",\"connectionString\":\"feo\",\"lastModified\":\"2021-08-09T08:39:34Z\",\"readOnly\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class ConfigurationStoresRegenerateKeyWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApiKey response = manager.configurationStores()
-            .regenerateKeyWithResponse("pwxqp", "rknftguvriuhprwm",
-                new RegenerateKeyParameters().withId("vxqtayriwwroyqbe"), com.azure.core.util.Context.NONE)
+            .regenerateKeyWithResponse("sgvvsccyajguq", "hwyg", new RegenerateKeyParameters().withId("vdnkfxusem"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }
