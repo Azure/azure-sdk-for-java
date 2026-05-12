@@ -43,6 +43,118 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.createRsaKey(httpClient, serviceVersion);
     }
 
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.createKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.createKeyWithMultipleTenants(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.updateKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.updateDisabledKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKeySpecificVersion(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.deleteKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getDeletedKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.recoverDeletedKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listKeys(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listKeyVersions(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listDeletedKeys(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.backupKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.restoreKey(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientAndEncryptDecrypt(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getCryptographyAsyncClientAndEncryptDecrypt(httpClient, serviceVersion);
+    }
+
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKeyRotationPolicyWithNoPolicySet(httpClient, serviceVersion);
+    }
+
     /**
      * Tests that an RSA key with a public exponent can be created in the key vault.
      */
