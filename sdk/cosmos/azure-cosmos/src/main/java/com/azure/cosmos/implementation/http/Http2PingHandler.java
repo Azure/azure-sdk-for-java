@@ -155,7 +155,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                     cancelPingTask();
                     ctx.close();
                 } else {
-                    logger.warn("PING ACK timeout on channel {} (attempt {}/{}) — will retry",
+                    logger.info("PING ACK timeout on channel {} (attempt {}/{}) \u2014 will retry",
                         ctx.channel().id().asShortText(), consecutiveFailures, failureThreshold);
                 }
             }
@@ -186,7 +186,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                         }
                     } else {
                         pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
-                        logger.warn("PING #{} failed on channel {}: {}",
+                        logger.info("PING #{} send failed on channel {}: {}",
                             count, ctx.channel().id().asShortText(),
                             f.cause() != null ? f.cause().getMessage() : "unknown");
                     }
