@@ -1076,16 +1076,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
             .withHttp2ConnectionConfig(this.connectionPolicy.getHttp2ConnectionConfig());
 
-        com.azure.cosmos.implementation.interceptor.IHttpClientInterceptor interceptor = this.connectionPolicy.getHttpClientInterceptor();
-        if (interceptor != null) {
-            if (interceptor.getAddressResolverGroup() != null) {
-                httpClientConfig.withAddressResolverGroup(interceptor.getAddressResolverGroup());
-            }
-            if (interceptor.getDoOnConnectedCallback() != null) {
-                httpClientConfig.withDoOnConnectedCallback(interceptor.getDoOnConnectedCallback());
-            }
-        }
-
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
         } else {

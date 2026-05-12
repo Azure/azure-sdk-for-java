@@ -13,9 +13,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import io.netty.channel.Channel;
-import io.netty.handler.codec.http2.Http2MultiplexHandler;
-import io.netty.resolver.AddressResolverGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -26,7 +23,6 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -91,8 +87,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
 
-        AtomicReference<Http2PingHandler> pingHandlerRef = new AtomicReference<>();
-
         try {
             safeClose(this.client);
 
@@ -102,23 +96,10 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .gatewayMode();
 
-            // Inject a doOnConnected callback that installs a PING handler for testing
-            com.azure.cosmos.test.implementation.interceptor.CosmosInterceptorHelper
-                .registerHttpClientInterceptor(builder, (AddressResolverGroup<?>) null, connection -> {
-                    Channel ch = connection.channel();
-                    if (ch.pipeline().get(Http2MultiplexHandler.class) != null
-                        && ch.pipeline().get("testPingHandler") == null) {
-                        Http2PingHandler handler = new Http2PingHandler(3);
-                        ch.pipeline().addLast("testPingHandler", handler);
-                        pingHandlerRef.compareAndSet(null, handler);
-                        logger.info("Test installed Http2PingHandler on H2 parent channel {}", ch.id().asShortText());
-                    }
-                });
-
             this.client = builder.buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Establish H2 connection with a warm-up read
+            // Establish H2 connection with a warm-up read — this triggers PING handler installation
             String initialParentChannelId = readAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialParentChannelId);
 
@@ -129,17 +110,13 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             // Recovery read — proves connection is still alive
             String recoveryParentChannelId = readAndGetParentChannelId();
 
-            Http2PingHandler handler = pingHandlerRef.get();
-            int sentCount = handler != null ? handler.getPingsSent() : -1;
-            int ackCount = handler != null ? handler.getPingAcksReceived() : -1;
+            // Get PING counters from the auto-installed handler
+            int sentCount = Http2PingHandler.getGlobalPingsSent();
+            int ackCount = Http2PingHandler.getGlobalPingAcksReceived();
 
             logger.info("RESULT: initial={}, recovery={}, SAME_CONNECTION={}, pingsSent={}, pingAcksReceived={}",
                 initialParentChannelId, recoveryParentChannelId,
                 initialParentChannelId.equals(recoveryParentChannelId), sentCount, ackCount);
-
-            assertThat(handler)
-                .as("Http2PingHandler should be installed on the parent H2 channel")
-                .isNotNull();
 
             assertThat(sentCount)
                 .as("PINGs sent should be > 0 — proves the manual PING handler is actively sending frames")

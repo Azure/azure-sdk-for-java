@@ -159,12 +159,6 @@ public class ReactorNettyClient implements HttpClient {
                     Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds);
                 }
             }
-
-            // Test hook: allows injection of custom handlers (e.g., PING frame counter)
-            java.util.function.Consumer<Connection> doOnConnectedCb = ReactorNettyClient.this.httpClientConfig.getDoOnConnectedCallback();
-            if (doOnConnectedCb != null) {
-                doOnConnectedCb.accept(connection);
-            }
         });
 
         if (isH2Enabled) {

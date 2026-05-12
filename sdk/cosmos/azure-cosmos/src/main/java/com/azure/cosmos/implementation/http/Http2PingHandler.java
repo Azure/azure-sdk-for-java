@@ -8,6 +8,7 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
+import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2PingFrame;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
@@ -24,9 +25,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * preventing L7 middleboxes (NAT gateways, firewalls, load balancers) from silently
  * reaping the connection. Modeled after Go SDK's {@code ReadIdleTimeout} approach.
  * <p>
- * This handler does NOT close the connection on missed ACKs — connection eviction is
- * handled by the eviction predicate in {@link HttpClient#createFixed}. The handler's
- * sole purpose is keepalive traffic to reset middlebox idle timers.
+ * When a PING ACK is not received before the next PING is due, the handler marks the
+ * connection as unhealthy via the {@link #PING_HEALTH_DEGRADED} channel attribute.
+ * The handler does NOT close the connection — eviction is left to the connection pool
+ * or any component that checks the attribute.
  * <p>
  * Why manual instead of reactor-netty native {@code pingAckTimeout}? Native PING requires
  * built-in {@code maxIdleTime} handling, which is bypassed when a custom
@@ -41,8 +43,21 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     static final AttributeKey<Boolean> PING_HANDLER_INSTALLED =
         AttributeKey.valueOf("cosmos.conn.pingHandlerInstalled");
 
+    /**
+     * Channel attribute set to {@code true} when a PING ACK is not received before the
+     * next PING would be due. Cleared when a successful ACK arrives. External components
+     * (eviction predicates, health checks) can read this attribute to detect broken connections.
+     */
+    public static final AttributeKey<Boolean> PING_HEALTH_DEGRADED =
+        AttributeKey.valueOf("cosmos.conn.pingHealthDegraded");
+
+    // Global (process-wide) counters across all handler instances — used by tests
+    private static final AtomicInteger globalPingsSent = new AtomicInteger(0);
+    private static final AtomicInteger globalPingAcksReceived = new AtomicInteger(0);
+
     private final long pingIntervalNanos;
     private long lastActivityNanos;
+    private long pingOutstandingSinceNanos; // nanoTime when PING was sent; 0 = no outstanding PING
     private ScheduledFuture<?> pingTask;
     private final AtomicInteger pingsSent = new AtomicInteger(0);
     private final AtomicInteger pingAcksReceived = new AtomicInteger(0);
@@ -89,6 +104,16 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         lastActivityNanos = System.nanoTime();
         if (msg instanceof Http2PingFrame && ((Http2PingFrame) msg).ack()) {
             pingAcksReceived.incrementAndGet();
+            globalPingAcksReceived.incrementAndGet();
+            pingOutstandingSinceNanos = 0;
+            // Connection proved responsive — clear degraded flag if it was set
+            if (ctx.channel().hasAttr(PING_HEALTH_DEGRADED)) {
+                ctx.channel().attr(PING_HEALTH_DEGRADED).set(null);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("PING ACK received, connection {} marked healthy",
+                        ctx.channel().id().asShortText());
+                }
+            }
         }
         super.channelRead(ctx, msg);
     }
@@ -105,9 +130,35 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
+        // If a previous PING is still outstanding, check whether it's been too long
+        if (pingOutstandingSinceNanos != 0) {
+            long waitingNanos = System.nanoTime() - pingOutstandingSinceNanos;
+            if (waitingNanos >= pingIntervalNanos) {
+                // ACK not received within one full interval — mark connection unhealthy
+                ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
+                logger.warn("PING ACK not received within {}s on channel {} — connection marked unhealthy",
+                    TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
+                    ctx.channel().id().asShortText());
+            }
+            // Don't send another PING while one is outstanding
+            return;
+        }
+
+        // Don't send if there are active streams — request/response traffic is already
+        // keeping the connection alive, so a PING would be pure noise-neighbour overhead.
+        Http2FrameCodec codec = ctx.pipeline().get(Http2FrameCodec.class);
+        if (codec != null && codec.connection().numActiveStreams() > 0) {
+            // Active streams reset the idle baseline so the first idle check after
+            // all streams close measures from *now*, not from the last frame.
+            lastActivityNanos = System.nanoTime();
+            return;
+        }
+
         long idleNanos = System.nanoTime() - lastActivityNanos;
         if (idleNanos >= pingIntervalNanos) {
             int count = pingsSent.incrementAndGet();
+            globalPingsSent.incrementAndGet();
+            pingOutstandingSinceNanos = System.nanoTime();
             ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
                 .addListener(f -> {
                     if (f.isSuccess()) {
@@ -115,6 +166,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                             logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
                         }
                     } else {
+                        pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
                         logger.warn("PING #{} failed on channel {}: {}",
                             count, ctx.channel().id().asShortText(),
                             f.cause() != null ? f.cause().getMessage() : "unknown");
@@ -138,6 +190,31 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     public int getPingAcksReceived() {
         return pingAcksReceived.get();
+    }
+
+    /**
+     * Returns the total number of PINGs sent across all handler instances (process-wide).
+     */
+    public static int getGlobalPingsSent() {
+        return globalPingsSent.get();
+    }
+
+    /**
+     * Returns the total number of PING ACKs received across all handler instances (process-wide).
+     */
+    public static int getGlobalPingAcksReceived() {
+        return globalPingAcksReceived.get();
+    }
+
+    /**
+     * Returns {@code true} if the given channel (or its parent) has been marked as
+     * unhealthy due to a missed PING ACK.
+     */
+    public static boolean isConnectionHealthDegraded(Channel channel) {
+        Channel parent = channel.parent() != null ? channel.parent() : channel;
+        return Boolean.TRUE.equals(parent.hasAttr(PING_HEALTH_DEGRADED)
+            ? parent.attr(PING_HEALTH_DEGRADED).get()
+            : null);
     }
 
     /**
