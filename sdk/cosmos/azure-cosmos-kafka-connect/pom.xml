@@ -307,6 +307,9 @@ Licensed under the MIT License.
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
                 <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-api:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-api;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-core:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-core;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.25.3]</include> <!-- {x-include-update;cosmos_org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
