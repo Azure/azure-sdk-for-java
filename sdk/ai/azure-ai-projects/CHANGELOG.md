@@ -11,8 +11,6 @@
 - Added new feature-flag values to `FoundryFeaturesOptInKeys`: `SKILLS_V1_PREVIEW` (`Skills=V1Preview`) and `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`).
 - Added new samples `SkillsSample` and `SkillsAsyncSample` demonstrating end-to-end use of the Skills sub-client.
 
-### Breaking Changes
-
 ### Other Changes
 
 - Regenerated client from the updated TypeSpec specification.
