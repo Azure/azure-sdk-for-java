@@ -5320,7 +5320,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
             FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
-                .connectionType(FaultInjectionConnectionType.DIRECT)
                 .region(this.writeRegions.get(0))
                 .operationType(FaultInjectionOperationType.READ_ITEM)
                 .build();
