@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
+import com.azure.cosmos.implementation.inference.InferenceService;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -108,6 +110,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel desiredConsistencyLevel;
     private final ReadConsistencyStrategy readConsistencyStrategy;
     private final AzureKeyCredential credential;
+    private final TokenCredential tokenCredential;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
@@ -119,6 +122,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
+    private final AtomicReference<InferenceService> inferenceService = new AtomicReference<>();
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -131,7 +135,7 @@ public final class CosmosAsyncClient implements Closeable {
         List<CosmosPermissionProperties> permissions = builder.getPermissions();
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.credential = builder.getCredential();
-        TokenCredential tokenCredential = builder.getTokenCredential();
+        tokenCredential = builder.getTokenCredential();
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
@@ -290,6 +294,40 @@ public final class CosmosAsyncClient implements Closeable {
      */
     AzureKeyCredential credential() {
         return credential;
+    }
+
+    /**
+     * Gets the token credential.
+     *
+     * @return token credential.
+     */
+    TokenCredential tokenCredential() {
+        return this.tokenCredential;
+    }
+
+    /**
+     * Returns the shared InferenceService instance for this client, creating it lazily on first use.
+     * The instance is tied to this client's lifecycle and will be shut down in {@link #close()}.
+     *
+     * @throws IllegalStateException if the client was built with key-based auth instead of AAD.
+     */
+    InferenceService getOrCreateInferenceService() {
+        if (this.tokenCredential == null) {
+            throw new IllegalStateException(
+                "Semantic reranking requires AAD authentication. "
+                    + "The CosmosClient was built with key-based auth (master key or AzureKeyCredential), "
+                    + "which is not supported for this operation. "
+                    + "Rebuild the client using .credential(TokenCredential) with a DefaultAzureCredential "
+                    + "or another TokenCredential implementation.");
+        }
+        if (this.inferenceService.get() == null) {
+            InferenceService newSvc = new InferenceService(this.tokenCredential);
+            if (!this.inferenceService.compareAndSet(null, newSvc)) {
+                // Another thread already set the instance; close the losing one to prevent resource leak
+                newSvc.close();
+            }
+        }
+        return this.inferenceService.get();
     }
 
     /***
@@ -562,6 +600,10 @@ public final class CosmosAsyncClient implements Closeable {
     public void close() {
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
+        }
+        InferenceService svc = this.inferenceService.get();
+        if (svc != null) {
+            svc.close();
         }
         asyncDocumentClient.close();
     }
