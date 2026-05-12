@@ -51,13 +51,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     public static final AttributeKey<Boolean> PING_HEALTH_DEGRADED =
         AttributeKey.valueOf("cosmos.conn.pingHealthDegraded");
 
-    /**
-     * Channel attribute holding the handler instance reference.
-     * Allows retrieval of per-connection PING counters without global state.
-     */
-    static final AttributeKey<Http2PingHandler> PING_HANDLER_REF =
-        AttributeKey.valueOf("cosmos.conn.pingHandlerRef");
-
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
     private final int failureThreshold;
@@ -96,8 +89,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
             TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
             checkIntervalMs);
-
-        ctx.channel().attr(PING_HANDLER_REF).set(this);
     }
 
     @Override
@@ -206,15 +197,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     public int getPingAcksReceived() {
         return pingAcksReceived.get();
-    }
-
-    /**
-     * Retrieves the handler instance from the given channel (or its parent).
-     * Returns null if no handler is installed.
-     */
-    public static Http2PingHandler getFrom(Channel channel) {
-        Channel parent = channel.parent() != null ? channel.parent() : channel;
-        return parent.hasAttr(PING_HANDLER_REF) ? parent.attr(PING_HANDLER_REF).get() : null;
     }
 
     /**
