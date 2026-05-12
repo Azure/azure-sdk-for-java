@@ -470,8 +470,7 @@ In v5, using `BlobCheckpointStore`:
 
 ```java
 BlobContainerAsyncClient blobClient = new BlobContainerClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .endpoint("https://<storage-account-name>.blob.core.windows.net")
+        .connectionString("connection-string-for-the-storage-account")
         .containerName("storage-container-name")
         .buildAsyncClient();
 
