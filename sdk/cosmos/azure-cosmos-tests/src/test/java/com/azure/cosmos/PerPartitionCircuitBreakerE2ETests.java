@@ -5288,7 +5288,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
             "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
                 + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                + "\"consecutiveExceptionCountToleratedForReads\": 5,"
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
                 + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
                 + "}");
 
@@ -5368,6 +5368,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 .isTrue();
 
         } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             if (asyncClient != null) {
                 asyncClient.close();
             }

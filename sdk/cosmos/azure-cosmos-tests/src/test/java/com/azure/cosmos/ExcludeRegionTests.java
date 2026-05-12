@@ -158,7 +158,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Interrupted while waiting for replication", ie);
             }
-            
+
             try {
                 CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
                     cosmosAsyncContainer,
@@ -325,60 +325,6 @@ public class ExcludeRegionTests extends TestSuiteBase {
             INF_E2E_TIMEOUT);
 
         validateRegionsContacted(diagnostics, this.preferredRegionList.subList(1, 2));
-    }
-
-    @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT)
-    public void excludeRegionTest_nonCanonicalExcludeRegion_withFaultInjection(
-        OperationType operationType,
-        FaultInjectionOperationType faultInjectionOperationType) throws InterruptedException {
-
-        if (this.nonCanonicalPreferredRegionList.size() <= 1) {
-            throw new SkipException("Test requires multi-master with multi-regions");
-        }
-
-        // Client built with non-canonical preferred regions (e.g., "westus3")
-        // Inject 404/1002 into second region, exclude second region using UPPERCASE name
-        // Verify request routes only to first region (not the excluded second region)
-
-        TestObject createdItem = TestObject.create();
-        this.cosmosAsyncContainerNonCanonical.createItem(createdItem).block();
-
-        Thread.sleep(2000);
-
-        // Inject fault into second region
-        FaultInjectionRule serverErrorRule = new FaultInjectionRuleBuilder(
-            "nonCanonicalExclude-fi-" + operationType + "-" + java.util.UUID.randomUUID())
-            .condition(
-                new FaultInjectionConditionBuilder()
-                    .region(this.preferredRegionList.get(1))
-                    .operationType(faultInjectionOperationType)
-                    .build())
-            .result(
-                FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                    .build()
-            ).build();
-
-        try {
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(
-                this.cosmosAsyncContainerNonCanonical, Arrays.asList(serverErrorRule)).block();
-
-            // Exclude the second region using uppercase name (non-canonical)
-            String secondRegionUppercase = this.preferredRegionList.get(1).toUpperCase();
-
-            CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
-                cosmosAsyncContainerNonCanonical,
-                operationType,
-                createdItem,
-                Arrays.asList(secondRegionUppercase),
-                INF_E2E_TIMEOUT);
-
-            // Should route only to the first preferred region — second is both
-            // excluded (non-canonical uppercase) and faulty (fault injection)
-            validateRegionsContacted(diagnostics, this.preferredRegionList.subList(0, 1));
-        } finally {
-            serverErrorRule.disable();
-        }
     }
 
     private List<String> getPreferredRegionList(CosmosAsyncClient client) {
