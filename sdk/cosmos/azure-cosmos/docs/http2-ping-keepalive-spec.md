@@ -2,7 +2,6 @@
 
 **Status:** Draft  
 **PR:** [#49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)  
-**Split from:** [#48420](https://github.com/Azure/azure-sdk-for-java/pull/48420)  
 **Date:** 2026-05-12
 
 ---
@@ -15,12 +14,16 @@ The SDK's existing connection pool eviction (`evictionPredicate`) handles *local
 
 ## 2. Goal
 
-Send periodic HTTP/2 PING frames on idle parent (TCP) channels to keep middlebox connection tracking entries alive, preventing silent connection reaping.
+Send periodic HTTP/2 PING frames on idle parent (TCP) channels to:
+1. **Keep middlebox connection tracking entries alive**, preventing silent connection reaping.
+2. **Detect broken connections** — if no PING ACK within the configured timeout, close the connection so the pool creates a fresh replacement.
+
+This is aligned with the Rust SDK’s approach where hyper’s built-in PING kills connections on timeout and the shard health sweep replaces them.
 
 **Non-goals:**
-- Closing connections directly on missed ACKs — the handler marks connections as unhealthy via a channel attribute; actual eviction is left to the connection pool.
-- Replacing reactor-netty's native `maxIdleTime` — the SDK uses a custom `evictionPredicate` that bypasses reactor-netty's built-in idle handling.
+- Replacing reactor-netty’s native `maxIdleTime` — the SDK uses a custom `evictionPredicate` that bypasses reactor-netty’s built-in idle handling.
 - Application-layer keepalive (e.g., Cosmos heartbeat RPCs).
+- Sharding — Rust requires per-endpoint sharding because hyper opens only 1 H2 connection per client. Reactor-netty natively pools multiple H2 connections, so sharding is unnecessary.
 
 ## 3. Design
 
@@ -33,6 +36,7 @@ A Netty `ChannelDuplexHandler` installed on the **parent (TCP) channel** of an H
 | Field | Type | Description |
 |---|---|---|
 | `pingIntervalNanos` | `long` | Configured idle threshold (immutable) |
+| `pingTimeoutNanos` | `long` | ACK timeout — close connection if exceeded (immutable) |
 | `lastActivityNanos` | `long` | `System.nanoTime()` of last read/write (event-loop-local, no sync) |
 | `pingTask` | `ScheduledFuture<?>` | Periodic check handle, cancelled on removal |
 | `pingOutstandingSinceNanos` | `long` | `nanoTime()` when PING was sent; 0 = no outstanding PING |
@@ -44,7 +48,7 @@ A Netty `ChannelDuplexHandler` installed on the **parent (TCP) channel** of an H
 
 ```
 handlerAdded()
-  └─ schedule periodic check (interval = max(1s, pingInterval/2))
+  └─ schedule periodic check (interval = max(500ms, pingInterval/2))
 
 channelRead(frame)
   ├─ update lastActivityNanos
@@ -61,7 +65,7 @@ maybeSendPing()            ← periodic task
   ├─ if channel inactive → cancel + return
   ├─ if feature disabled → cancel + return
   ├─ if pingOutstandingSinceNanos != 0:
-  │     if waited ≥ pingInterval → set PING_HEALTH_DEGRADED on channel (WARN log)
+  │     if waited ≥ pingTimeout → set PING_HEALTH_DEGRADED, cancel task, ctx.close()
   │     return (at most 1 in-flight PING)
   ├─ if numActiveStreams > 0 → reset lastActivityNanos + return
   │     (active request traffic is keepalive; PING would be noise)
@@ -79,7 +83,13 @@ handlerRemoved() / channelInactive()
 
 **At-most-one outstanding PING.** `pingOutstandingSinceNanos` records when the PING was sent (0 = none outstanding). If a PING is already in flight, `maybeSendPing()` returns immediately — this prevents unbounded queuing if ACKs are delayed.
 
-**Broken connection detection.** When the periodic check finds that `pingOutstandingSinceNanos` is non-zero and the elapsed wait exceeds `pingIntervalNanos`, it sets the `PING_HEALTH_DEGRADED` channel attribute to `true` and logs a WARN. The handler does **not** close the connection — external components (eviction predicates, health checks, or request-path code) can read `Http2PingHandler.isConnectionHealthDegraded(channel)` and decide how to react. When an ACK finally arrives, the flag is cleared and a DEBUG log confirms recovery.
+**Broken connection detection.** When the periodic check finds that `pingOutstandingSinceNanos` is non-zero and the elapsed wait exceeds `pingTimeoutNanos`, the handler:
+1. Sets the `PING_HEALTH_DEGRADED` channel attribute to `true`
+2. Logs a WARN
+3. Cancels the periodic task
+4. Closes the connection via `ctx.close()`
+
+This is aligned with the Rust SDK where hyper kills connections on PING timeout. The connection pool will create a fresh replacement on the next request. The `PING_HEALTH_DEGRADED` attribute remains set for observability — external components can read `Http2PingHandler.isConnectionHealthDegraded(channel)` for diagnostic purposes.
 
 **Suppressed during active streams.** Before checking idle time, the handler queries `Http2FrameCodec.connection().numActiveStreams()`. If any streams are open (i.e., customer requests are in flight), the PING is skipped entirely — the request/response frames already keep the middlebox entry alive. The idle baseline is reset to `now` so that the full interval is measured from when all streams close, not from the last frame on a previous stream.
 
@@ -90,24 +100,25 @@ Together these two guards ensure:
 
 #### Idle detection
 
-Any inbound frame (`channelRead`) or outbound write (`write`) resets the idle timer. The periodic check runs at `max(1 second, pingInterval / 2)` — this bounds the worst-case send delay to 1.5× the configured interval while avoiding excessive scheduling overhead.
+Any inbound frame (`channelRead`) or outbound write (`write`) resets the idle timer. The periodic check runs at `max(500ms, pingInterval / 2)` — this bounds the worst-case send delay to 1.5× the configured interval while avoiding excessive scheduling overhead.
 
 #### PING frame details
 
 - **Outbound:** `DefaultHttp2PingFrame(count)` where `count` = `pingsSent` counter (auto-increment). The 8-byte payload carries the sequence number for optional correlation.
 - **Inbound ACK:** `Http2PingFrame` with `ack() == true`, counted and propagated.
-- **No connection closure:** Missed ACKs are not tracked or acted upon. The handler is purely keepalive, not health-check.
+- **No connection closure:** Missed ACKs cause the connection to be **closed** after the configured timeout. The handler sets `PING_HEALTH_DEGRADED` and calls `ctx.close()`.
 
 ### 3.2 Installation
 
-Installed via `Http2PingHandler.installIfAbsent(Channel, int)`:
+Installed via `Http2PingHandler.installIfAbsent(Channel, int, int)`:
 
 ```
 doOnConnected(connection)
   ├─ Is HTTP/2?  → check pipeline for Http2MultiplexHandler
   ├─ Is enabled? → Configs.isHttp2PingHealthEnabled()
   ├─ Interval > 0? → Configs.getHttp2PingIntervalInSeconds()
-  └─ installIfAbsent(channel, interval)
+  ├─ Timeout    → Configs.getHttp2PingTimeoutInSeconds()
+  └─ installIfAbsent(channel, interval, timeout)
        ├─ resolve parent channel (channel.parent() ?? channel)
        ├─ idempotency check via PING_HANDLER_INSTALLED attribute
        └─ parent.pipeline().addLast("cosmos.http2PingHandler", handler)
@@ -123,17 +134,17 @@ doOnConnected(connection)
 
 ### 3.4 Test hook
 
-`HttpClientConfig.doOnConnectedCallback` provides a `Consumer<Connection>` hook that fires after the PING handler installation. Tests use this to:
-1. Capture a reference to the installed `Http2PingHandler` instance
-2. Install additional handlers (e.g., `Http2PingFrameCounterHandler`)
-3. Assert on `getPingsSent()` / `getPingAcksReceived()` after an idle period
+The test (`Http2PingKeepaliveTest`) relies on the auto-installed handler and reads aggregate PING statistics via `Http2PingHandler.getGlobalPingsSent()` and `getGlobalPingAcksReceived()`. No interceptor or callback injection is required.
 
 ## 4. Configuration
 
 | System Property | Default | Description |
 |---|---|---|
 | `COSMOS.HTTP2_PING_HEALTH_ENABLED` | `true` | Master switch. Set to `false` to disable PING keepalive. |
-| `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10` | Idle threshold before sending a PING frame. |
+| `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `1` | Idle threshold before sending a PING frame. Aligned with Rust SDK (1s). |
+| `COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS` | `2` | ACK timeout. If no ACK within this, the connection is closed. Aligned with Rust SDK (2s). |
+
+**Aligned with Rust SDK:** Both SDKs use interval=1s, timeout=2s by default. Dead connection detected within ~3s worst-case.
 
 **No client builder API.** Configuration is JVM-wide via system properties, consistent with the existing `COSMOS.HTTP2_ENABLED` pattern.
 
@@ -150,27 +161,30 @@ doOnConnected(connection)
 
 | Parameter | Value (defaults) |
 |---|---|
-| PING interval | 10 seconds |
-| Check frequency | 5 seconds (interval / 2) |
-| Worst-case PING delay | ~15 seconds (idle just after a check) |
-| Minimum check frequency | 1 second (clamped) |
+| PING interval | 1 second |
+| PING ACK timeout | 2 seconds |
+| Check frequency | 500 milliseconds (interval / 2) |
+| Worst-case detection | ~3 seconds (idle just after a check + full timeout) |
+| Minimum check frequency | 500 milliseconds (clamped) |
 
 For a default-configured idle connection:
 ```
-t=0s   last activity
-t=5s   check → idle 5s < 10s → skip
-t=10s  check → idle 10s ≥ 10s → PING sent, idle reset
-t=15s  check → idle 5s < 10s → skip
-t=20s  check → idle 10s ≥ 10s → PING sent
-...
+t=0s    last activity
+t=0.5s  check → idle 0.5s < 1s → skip
+t=1s    check → idle 1s ≥ 1s → PING sent, idle reset
+t=1.5s  check → PING outstanding 0.5s < 2s → wait
+t=2s    check → PING outstanding 1s < 2s → wait
+t=2.5s  check → PING outstanding 1.5s < 2s → wait
+t=3s    check → PING outstanding 2s ≥ 2s → CLOSE (if no ACK)
+…or at t=1.1s  ACK arrives → pingOutstanding=0, PING_HEALTH_DEGRADED cleared
 ```
 
 ## 7. Failure Modes
 
 | Scenario | Behavior |
 |---|---|
-| PING ACK not received | `PING_HEALTH_DEGRADED` attribute set on channel after one interval. Connection NOT closed. `pingOutstandingSinceNanos` stays set, blocking further PINGs. |
-| PING ACK arrives late | `PING_HEALTH_DEGRADED` cleared, `pingOutstandingSinceNanos` reset. Connection resumes normal keepalive. |
+| PING ACK not received | After timeout: `PING_HEALTH_DEGRADED` set, task cancelled, connection **closed** via `ctx.close()`. Pool creates replacement on next request. |
+| PING ACK arrives late | Before timeout: `PING_HEALTH_DEGRADED` cleared, `pingOutstandingSinceNanos` reset. Connection resumes normal keepalive. |
 | Connection has active streams | PING suppressed — request traffic is keepalive. Idle baseline reset. |
 | Channel becomes inactive | Periodic task cancelled in `channelInactive()`. |
 | Feature disabled at runtime | Task self-cancels on next check. |
@@ -186,7 +200,7 @@ t=20s  check → idle 10s ≥ 10s → PING sent
 | DEBUG | PING frame sent successfully (sequence #, channel ID) |
 | DEBUG | PING ACK received, degraded flag cleared (channel ID) |
 | WARN | PING frame send failure (sequence #, channel ID, exception) |
-| WARN | PING ACK not received within interval — connection marked unhealthy (channel ID) |
+| WARN | PING ACK not received within timeout — connection closed (channel ID) |
 
 ## 9. Test Coverage
 
@@ -205,11 +219,27 @@ t=20s  check → idle 10s ≥ 10s → PING sent
 
 **Helper:** `Http2PingFrameCounterHandler` — independent inbound handler that counts PING ACK frames for cross-validation.
 
-## 10. Future Considerations
+## 10. Rust SDK Alignment
 
-- **Health-check mode:** Track PING ACK latency and close connections that exceed a timeout. This would replace the current approach where `evictionPredicate` handles stale connections.
-- **Metrics integration:** Expose `pingsSent` / `pingAcksReceived` counters in `CosmosDiagnostics` for observability.
-- **Eviction predicate integration:** Wire `Http2PingHandler.isConnectionHealthDegraded()` into the connection pool's eviction predicate to automatically remove connections that fail PING health checks.
-- **Missed-ACK escalation:** If `PING_HEALTH_DEGRADED` stays set across N intervals, escalate to connection close.
-- **Client builder API:** Expose `http2PingIntervalInSeconds()` on `CosmosClientBuilder` for per-client configuration instead of JVM-wide system properties.
-- **Adaptive interval:** Adjust PING interval based on observed middlebox behavior (e.g., back off if ACKs are always received).
+| Dimension | Java | Rust |
+|---|---|---|
+| Mechanism | Custom Netty `ChannelDuplexHandler` | hyper’s built-in `http2_keep_alive_*` |
+| PING interval | 1s (configurable) | 1s (configurable) |
+| ACK timeout | 2s (configurable) | 2s (configurable) |
+| On missed ACK | Close connection | hyper kills connection → shard eviction |
+| PING while idle | Yes (suppressed when activeStreams > 0) | Yes (`http2_keep_alive_while_idle = true`) |
+| In-flight limit | 1 (explicit gate) | hyper manages internally |
+| Sharding | Not needed — reactor-netty pools multiple H2 connections per endpoint | Per-endpoint shard pools (needed because hyper opens only 1 H2 connection per client) |
+| TCP keepalive | Not explicitly disabled alongside H2 PING | Mutually exclusive with H2 PING |
+
+**Deliberate differences:**
+
+- **Active-stream suppression** (Java-only) avoids sending PING frames during request bursts. Rust’s hyper handles this internally.
+- **No sharding needed** — Rust requires per-endpoint sharding because hyper's HTTP/2 client opens only 1 connection per `reqwest::Client`. Java's reactor-netty natively supports pooling multiple H2 connections per endpoint via `Http2AllocationStrategy` (configurable `minConnections`/`maxConnections`/`maxConcurrentStreams`), so the PING handler is simply installed per-connection with no shard layer.
+
+## 11. Future Considerations
+
+- **Metrics integration:** Expose `pingsSent` / `pingAcksReceived` / `PING_HEALTH_DEGRADED` in `CosmosDiagnostics` for observability.
+- **Client builder API:** Expose `http2PingIntervalInSeconds()` and `http2PingTimeoutInSeconds()` on `CosmosClientBuilder` for per-client configuration.
+- **TCP keepalive mutual exclusion:** Explicitly disable TCP keepalive when HTTP/2 PING is active (aligned with Rust).
+- **Adaptive interval:** Adjust PING interval based on observed middlebox behavior.

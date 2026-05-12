@@ -23,12 +23,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>
  * Sends PING frames when the connection is idle for longer than the configured interval,
  * preventing L7 middleboxes (NAT gateways, firewalls, load balancers) from silently
- * reaping the connection. Modeled after Go SDK's {@code ReadIdleTimeout} approach.
+ * reaping the connection. Modeled after Rust SDK's hyper-based HTTP/2 PING approach.
  * <p>
- * When a PING ACK is not received before the next PING is due, the handler marks the
- * connection as unhealthy via the {@link #PING_HEALTH_DEGRADED} channel attribute.
- * The handler does NOT close the connection — eviction is left to the connection pool
- * or any component that checks the attribute.
+ * When a PING ACK is not received within the configured timeout, the handler closes
+ * the connection. The connection pool will then create a fresh replacement. This is
+ * aligned with the Rust SDK where hyper kills connections on PING timeout and the
+ * shard health sweep replaces them.
  * <p>
  * Why manual instead of reactor-netty native {@code pingAckTimeout}? Native PING requires
  * built-in {@code maxIdleTime} handling, which is bypassed when a custom
@@ -56,6 +56,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private static final AtomicInteger globalPingAcksReceived = new AtomicInteger(0);
 
     private final long pingIntervalNanos;
+    private final long pingTimeoutNanos;
     private long lastActivityNanos;
     private long pingOutstandingSinceNanos; // nanoTime when PING was sent; 0 = no outstanding PING
     private ScheduledFuture<?> pingTask;
@@ -64,16 +65,19 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     /**
      * @param pingIntervalSeconds interval in seconds; when idle longer than this, a PING is sent
+     * @param pingTimeoutSeconds  timeout in seconds; if no ACK within this, the connection is closed
      */
-    public Http2PingHandler(int pingIntervalSeconds) {
+    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds) {
         this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(pingIntervalSeconds);
+        this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(pingTimeoutSeconds);
         this.lastActivityNanos = System.nanoTime();
     }
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         // Schedule periodic check — runs on the channel's event loop (single-threaded, no sync needed)
-        long checkIntervalMs = Math.max(1000, TimeUnit.NANOSECONDS.toMillis(pingIntervalNanos) / 2);
+        // Check at interval/2 (min 500ms) to bound worst-case PING send delay to ~1.5× interval.
+        long checkIntervalMs = Math.max(500, TimeUnit.NANOSECONDS.toMillis(pingIntervalNanos) / 2);
         this.pingTask = ctx.executor().scheduleAtFixedRate(
             () -> maybeSendPing(ctx),
             checkIntervalMs,
@@ -81,9 +85,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             TimeUnit.MILLISECONDS);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Http2PingHandler installed on channel {}, interval={}s, checkEvery={}ms",
+            logger.debug("Http2PingHandler installed on channel {}, interval={}s, timeout={}s, checkEvery={}ms",
                 ctx.channel().id().asShortText(),
                 TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
+                TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
                 checkIntervalMs);
         }
     }
@@ -130,15 +135,18 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
-        // If a previous PING is still outstanding, check whether it's been too long
+        // If a previous PING is still outstanding, check whether it has timed out
         if (pingOutstandingSinceNanos != 0) {
             long waitingNanos = System.nanoTime() - pingOutstandingSinceNanos;
-            if (waitingNanos >= pingIntervalNanos) {
-                // ACK not received within one full interval — mark connection unhealthy
+            if (waitingNanos >= pingTimeoutNanos) {
+                // ACK not received within timeout — connection is broken.
+                // Mark degraded and close (aligned with Rust SDK's hyper behavior).
                 ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
-                logger.warn("PING ACK not received within {}s on channel {} — connection marked unhealthy",
-                    TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
+                logger.warn("PING ACK not received within {}s on channel {} — closing connection",
+                    TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
                     ctx.channel().id().asShortText());
+                cancelPingTask();
+                ctx.close();
             }
             // Don't send another PING while one is outstanding
             return;
@@ -223,15 +231,16 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      *
      * @param channel the channel from doOnConnected (may be stream or parent)
      * @param pingIntervalSeconds PING interval in seconds
+     * @param pingTimeoutSeconds  PING ACK timeout in seconds
      */
-    public static void installIfAbsent(Channel channel, int pingIntervalSeconds) {
+    public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds) {
         // When called from the first doOnConnected, channel IS the parent H2 channel.
         // When called from a stream doOnConnected, channel.parent() is the parent.
         Channel parent = channel.parent() != null ? channel.parent() : channel;
         if (!parent.hasAttr(PING_HANDLER_INSTALLED)) {
             parent.attr(PING_HANDLER_INSTALLED).set(Boolean.TRUE);
             try {
-                parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds));
+                parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds));
             } catch (IllegalArgumentException ignored) {
                 // Duplicate — race between concurrent streams, benign
             }

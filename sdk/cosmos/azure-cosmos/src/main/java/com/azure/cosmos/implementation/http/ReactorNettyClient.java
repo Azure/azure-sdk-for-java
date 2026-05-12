@@ -155,8 +155,9 @@ public class ReactorNettyClient implements HttpClient {
             if (Configs.isHttp2PingHealthEnabled()
                 && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
                 int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
                 if (pingIntervalSeconds > 0) {
-                    Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds);
+                    Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds, pingTimeoutSeconds);
                 }
             }
         });

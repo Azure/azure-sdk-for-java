@@ -148,13 +148,16 @@ public class Configs {
 
     // HTTP/2 PING keepalive — keeps connections alive for sparse workloads by preventing
     // intermediate infrastructure (NAT gateways, firewalls, load balancers) from silently
-    // reaping idle connections. PING is NOT used for eviction — degraded connections are
-    // handled by the response timeout retry path.
+    // reaping idle connections. On PING timeout (no ACK within the configured timeout),
+    // the connection is closed — similar to Rust SDK's hyper-based PING behavior.
     // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
     private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
     private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
-    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 10;
+    // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. Dead connection detected within 3s.
+    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 1;
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS = 2;
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
 
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -763,6 +766,12 @@ public class Configs {
         return getJVMConfigAsInt(
             HTTP2_PING_INTERVAL_IN_SECONDS,
             DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
+    }
+
+    public static int getHttp2PingTimeoutInSeconds() {
+        return getJVMConfigAsInt(
+            HTTP2_PING_TIMEOUT_IN_SECONDS,
+            DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS);
     }
 
     public static Integer getPendingAcquireMaxCount() {
