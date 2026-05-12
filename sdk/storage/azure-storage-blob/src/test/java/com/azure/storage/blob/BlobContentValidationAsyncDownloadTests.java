@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -472,25 +473,25 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             = new BlobDownloadToFileOptions(outFileWithoutContentVal.getAbsolutePath())
                 .setParallelTransferOptions(parallelOptionsWithoutContentVal);
 
-        StepVerifier
-            .create(client.upload(BinaryData.fromBytes(data))
-                .then(client.downloadToFileWithResponse(optionsWithContentVal))
-                .then(client.downloadToFileWithResponse(optionsWithoutContentVal)))
-            .assertNext(ignored -> assertEquals(mockListenerWithContentVal.getReportedByteCount(),
-                mockListenerWithoutContentVal.getReportedByteCount()))
-            .verifyComplete();
+        StepVerifier.create(client.upload(BinaryData.fromBytes(data))
+            .then(client.downloadToFileWithResponse(optionsWithContentVal))
+            .then(client.downloadToFileWithResponse(optionsWithoutContentVal))).assertNext(ignored -> {
+                long expectedBytes = data.length;
+                assertEquals(expectedBytes, mockListenerWithContentVal.getReportedByteCount());
+                assertEquals(expectedBytes, mockListenerWithoutContentVal.getReportedByteCount());
+            }).verifyComplete();
     }
 
     private static final class MockProgressListener implements ProgressListener {
-        private long reportedByteCount;
+        private final AtomicLong reportedByteCount = new AtomicLong(0L);
 
         @Override
         public void handleProgress(long bytesTransferred) {
-            this.reportedByteCount = bytesTransferred;
+            this.reportedByteCount.updateAndGet(current -> Math.max(current, bytesTransferred));
         }
 
         long getReportedByteCount() {
-            return this.reportedByteCount;
+            return this.reportedByteCount.get();
         }
     }
 }

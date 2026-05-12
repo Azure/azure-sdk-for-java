@@ -38,6 +38,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.BlobSeekableByteChannelTests.copy;
@@ -428,7 +429,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     }
 
     @Test
-    public void verifyProgressListenerIsCompatibleWithContentValidation() {
+    public void verifyProgressListenerIsCompatibleWithContentValidation() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
 
         BlobClient client = cc.getBlobClient(generateBlobName());
@@ -449,6 +450,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         createdFiles.add(outFileWithoutContentVal);
         outFileWithoutContentVal.deleteOnExit();
 
+        Files.deleteIfExists(outFileWithContentVal.toPath());
+        Files.deleteIfExists(outFileWithoutContentVal.toPath());
+
         BlobDownloadToFileOptions optionsWithContentVal
             = new BlobDownloadToFileOptions(outFileWithContentVal.getAbsolutePath())
                 .setParallelTransferOptions(parallelOptionsWithContentVal)
@@ -460,20 +464,21 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         client.downloadToFileWithResponse(optionsWithContentVal, null, Context.NONE);
         client.downloadToFileWithResponse(optionsWithoutContentVal, null, Context.NONE);
 
-        assertEquals(mockListenerWithContentVal.getReportedByteCount(),
-            mockListenerWithoutContentVal.getReportedByteCount());
+        long expectedBytes = data.length;
+        assertEquals(expectedBytes, mockListenerWithContentVal.getReportedByteCount());
+        assertEquals(expectedBytes, mockListenerWithoutContentVal.getReportedByteCount());
     }
 
     private static final class MockProgressListener implements ProgressListener {
-        private long reportedByteCount;
+        private final AtomicLong reportedByteCount = new AtomicLong(0L);
 
         @Override
         public void handleProgress(long bytesTransferred) {
-            this.reportedByteCount = bytesTransferred;
+            this.reportedByteCount.updateAndGet(current -> Math.max(current, bytesTransferred));
         }
 
         long getReportedByteCount() {
-            return this.reportedByteCount;
+            return this.reportedByteCount.get();
         }
     }
 
