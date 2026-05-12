@@ -111,7 +111,7 @@ public final class SkillsImpl {
         Mono<Response<BinaryData>> createSkillFromPackage(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/zip") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/zip") BinaryData content, RequestOptions requestOptions, Context context);
 
         @Post("/skills:import")
         @ExpectedResponses({ 201 })
@@ -122,51 +122,47 @@ public final class SkillsImpl {
         Response<BinaryData> createSkillFromPackageSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Foundry-Features") String foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/zip") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/zip") BinaryData content, RequestOptions requestOptions, Context context);
 
-        @Get("/skills/{skill_name}")
+        @Get("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkill(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> getSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/skills/{skill_name}")
+        @Get("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillSync(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> getSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/skills/{skill_name}:download")
+        @Get("/skills/{name}:download")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> downloadSkill(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> downloadSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/skills/{skill_name}:download")
+        @Get("/skills/{name}:download")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> downloadSkillSync(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> downloadSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skills")
         @ExpectedResponses({ 200 })
@@ -188,51 +184,49 @@ public final class SkillsImpl {
             @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/skills/{skill_name}")
+        @Post("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateSkill(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateSkillRequest,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> updateSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateSkillRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Post("/skills/{skill_name}")
+        @Post("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateSkillSync(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateSkillRequest,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> updateSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateSkillRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Delete("/skills/{skill_name}")
+        @Delete("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteSkill(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> deleteSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/skills/{skill_name}")
+        @Delete("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteSkillSync(@HostParam("endpoint") String endpoint,
-            @PathParam("skill_name") String skillName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> deleteSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -364,7 +358,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -373,13 +367,13 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillFromPackageWithResponseAsync(BinaryData body,
+    public Mono<Response<BinaryData>> createSkillFromPackageWithResponseAsync(BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/zip";
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillFromPackage(this.client.getEndpoint(), contentType,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
     /**
@@ -408,7 +402,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param body The zip package used to create the skill.
+     * @param content The zip package used to create the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -417,12 +411,12 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createSkillFromPackageWithResponse(BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/zip";
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return service.createSkillFromPackageSync(this.client.getEndpoint(), contentType, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, body, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -443,7 +437,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -452,10 +446,10 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSkillWithResponseAsync(String skillName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSkillWithResponseAsync(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSkill(this.client.getEndpoint(), skillName, foundryFeatures,
+        return FluxUtil.withContext(context -> service.getSkill(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -477,7 +471,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -486,10 +480,10 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSkillWithResponse(String skillName, RequestOptions requestOptions) {
+    public Response<BinaryData> getSkillWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.getSkillSync(this.client.getEndpoint(), skillName, foundryFeatures,
+        return service.getSkillSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -505,7 +499,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -514,11 +508,11 @@ public final class SkillsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSkillWithResponseAsync(String skillName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> downloadSkillWithResponseAsync(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
-        return FluxUtil.withContext(context -> service.downloadSkill(this.client.getEndpoint(), skillName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.downloadSkill(this.client.getEndpoint(), name, foundryFeatures,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -533,7 +527,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -542,10 +536,10 @@ public final class SkillsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadSkillWithResponse(String skillName, RequestOptions requestOptions) {
+    public Response<BinaryData> downloadSkillWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
-        return service.downloadSkillSync(this.client.getEndpoint(), skillName, foundryFeatures,
+        return service.downloadSkillSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -793,7 +787,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param updateSkillRequest The updateSkillRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -803,14 +797,14 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateSkillWithResponseAsync(String skillName, BinaryData updateSkillRequest,
+    public Mono<Response<BinaryData>> updateSkillWithResponseAsync(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateSkill(this.client.getEndpoint(), skillName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateSkillRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateSkill(this.client.getEndpoint(), name, foundryFeatures,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateSkillRequest, requestOptions,
+            context));
     }
 
     /**
@@ -845,7 +839,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param updateSkillRequest The updateSkillRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -855,12 +849,12 @@ public final class SkillsImpl {
      * @return a skill object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateSkillWithResponse(String skillName, BinaryData updateSkillRequest,
+    public Response<BinaryData> updateSkillWithResponse(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSkillSync(this.client.getEndpoint(), skillName, foundryFeatures,
+        return service.updateSkillSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateSkillRequest, requestOptions,
             Context.NONE);
     }
@@ -878,7 +872,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -887,11 +881,11 @@ public final class SkillsImpl {
      * @return a deleted skill Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillWithResponseAsync(String skillName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteSkillWithResponseAsync(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSkill(this.client.getEndpoint(), skillName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteSkill(this.client.getEndpoint(), name, foundryFeatures,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -907,7 +901,7 @@ public final class SkillsImpl {
      * }
      * </pre>
      * 
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -916,10 +910,10 @@ public final class SkillsImpl {
      * @return a deleted skill Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillWithResponse(String skillName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.deleteSkillSync(this.client.getEndpoint(), skillName, foundryFeatures,
+        return service.deleteSkillSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

@@ -232,7 +232,7 @@ public final class DatasetsClient {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -252,7 +252,7 @@ public final class DatasetsClient {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>

@@ -174,6 +174,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
         jsonWriter.writeArrayField("protocol_versions", this.protocolVersions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("code_configuration", this.codeConfiguration);
+        jsonWriter.writeJsonField("telemetry_config", this.telemetryConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -200,6 +201,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             ContainerConfiguration containerConfiguration = null;
             List<ProtocolVersionRecord> protocolVersions = null;
             CodeConfiguration codeConfiguration = null;
+            TelemetryConfig telemetryConfig = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -225,6 +227,8 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     protocolVersions = reader.readArray(reader1 -> ProtocolVersionRecord.fromJson(reader1));
                 } else if ("code_configuration".equals(fieldName)) {
                     codeConfiguration = CodeConfiguration.fromJson(reader);
+                } else if ("telemetry_config".equals(fieldName)) {
+                    telemetryConfig = TelemetryConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -239,6 +243,7 @@ public final class HostedAgentDefinition extends AgentDefinition {
             deserializedHostedAgentDefinition.containerConfiguration = containerConfiguration;
             deserializedHostedAgentDefinition.protocolVersions = protocolVersions;
             deserializedHostedAgentDefinition.codeConfiguration = codeConfiguration;
+            deserializedHostedAgentDefinition.telemetryConfig = telemetryConfig;
             return deserializedHostedAgentDefinition;
         });
     }
@@ -397,5 +402,35 @@ public final class HostedAgentDefinition extends AgentDefinition {
         this.containerProtocolVersions = containerProtocolVersions;
         this.cpu = cpu;
         this.memory = memory;
+    }
+
+    /*
+     * Optional customer-supplied telemetry configuration for exporting container logs, traces, and metrics.
+     */
+    @Generated
+    private TelemetryConfig telemetryConfig;
+
+    /**
+     * Get the telemetryConfig property: Optional customer-supplied telemetry configuration for exporting container
+     * logs, traces, and metrics.
+     *
+     * @return the telemetryConfig value.
+     */
+    @Generated
+    public TelemetryConfig getTelemetryConfig() {
+        return this.telemetryConfig;
+    }
+
+    /**
+     * Set the telemetryConfig property: Optional customer-supplied telemetry configuration for exporting container
+     * logs, traces, and metrics.
+     *
+     * @param telemetryConfig the telemetryConfig value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setTelemetryConfig(TelemetryConfig telemetryConfig) {
+        this.telemetryConfig = telemetryConfig;
+        return this;
     }
 }

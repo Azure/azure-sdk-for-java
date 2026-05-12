@@ -8,6 +8,7 @@ import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.EmbeddingConfiguration;
 import com.azure.ai.projects.models.FieldMapping;
+import com.azure.ai.projects.models.UpdateModelVersionRequest;
 import java.util.Map;
 
 /**
@@ -103,5 +104,22 @@ public class JsonMergePatchHelper {
 
     public static EmbeddingConfigurationAccessor getEmbeddingConfigurationAccessor() {
         return embeddingConfigurationAccessor;
+    }
+
+    private static UpdateModelVersionRequestAccessor updateModelVersionRequestAccessor;
+
+    public interface UpdateModelVersionRequestAccessor {
+        UpdateModelVersionRequest prepareModelForJsonMergePatch(UpdateModelVersionRequest updateModelVersionRequest,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateModelVersionRequest updateModelVersionRequest);
+    }
+
+    public static void setUpdateModelVersionRequestAccessor(UpdateModelVersionRequestAccessor accessor) {
+        updateModelVersionRequestAccessor = accessor;
+    }
+
+    public static UpdateModelVersionRequestAccessor getUpdateModelVersionRequestAccessor() {
+        return updateModelVersionRequestAccessor;
     }
 }

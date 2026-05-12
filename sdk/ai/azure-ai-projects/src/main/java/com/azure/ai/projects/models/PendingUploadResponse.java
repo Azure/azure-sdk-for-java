@@ -36,10 +36,10 @@ public final class PendingUploadResponse implements JsonSerializable<PendingUplo
     private String version;
 
     /*
-     * BlobReference is the only supported type
+     * TemporaryBlobReference is the only supported type
      */
     @Generated
-    private final PendingUploadType pendingUploadType = PendingUploadType.BLOB_REFERENCE;
+    private final PendingUploadType pendingUploadType = PendingUploadType.TEMPORARY_BLOB_REFERENCE;
 
     /**
      * Creates an instance of PendingUploadResponse class.
@@ -85,7 +85,7 @@ public final class PendingUploadResponse implements JsonSerializable<PendingUplo
     }
 
     /**
-     * Get the pendingUploadType property: BlobReference is the only supported type.
+     * Get the pendingUploadType property: TemporaryBlobReference is the only supported type.
      *
      * @return the pendingUploadType value.
      */
