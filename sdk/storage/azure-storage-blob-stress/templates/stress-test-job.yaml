@@ -63,6 +63,7 @@ spec:
             {{ ternary "--sync" "" .Stress.sync }} \
             {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
             {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
+            {{ with .Stress.contentValidationAlgorithm }}--contentValidationAlgorithm {{ . }}{{ end }} \
             --warmup 0 \
             2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log";
           code=$?;
