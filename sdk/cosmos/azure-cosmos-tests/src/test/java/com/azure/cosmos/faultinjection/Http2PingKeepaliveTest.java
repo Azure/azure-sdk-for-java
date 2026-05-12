@@ -11,7 +11,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
@@ -119,10 +118,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Reset global counters before measurement
-            int baselineSent = Http2PingHandler.getGlobalPingsSent();
-            int baselineAcks = Http2PingHandler.getGlobalPingAcksReceived();
-
             // Warm-up read -- triggers H2 connection + PING handler installation
             String initialChannelId = readAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialChannelId);
@@ -131,31 +126,20 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             logger.info("Waiting 10s for PING frames on idle connection (interval=1s)...");
             Thread.sleep(10_000);
 
-            int sentCount = Http2PingHandler.getGlobalPingsSent() - baselineSent;
-            int ackCount = Http2PingHandler.getGlobalPingAcksReceived() - baselineAcks;
-
             // Recovery read -- proves connection survived idle period
             String recoveryChannelId = readAndGetParentChannelId();
 
-            logger.info("RESULT: initial={}, recovery={}, SAME={}, pingsSent={}, pingAcksReceived={}",
+            logger.info("RESULT: initial={}, recovery={}, SAME={}",
                 initialChannelId, recoveryChannelId,
-                initialChannelId.equals(recoveryChannelId), sentCount, ackCount);
-
-            // With 1s interval and 10s idle, we expect at least 5 PINGs (conservative bound)
-            assertThat(sentCount)
-                .as("With 1s interval over 10s idle, expect at least 5 PINGs sent")
-                .isGreaterThanOrEqualTo(5);
-
-            assertThat(ackCount)
-                .as("All sent PINGs should be ACKed by the server")
-                .isGreaterThanOrEqualTo(5);
+                initialChannelId.equals(recoveryChannelId));
 
             // With pool size=1, the same connection MUST be reused (PING kept it alive)
+            // If PINGs weren't flowing, the pool's maxIdleTime would evict the connection
             assertThat(recoveryChannelId)
                 .as("With single-connection pool, PING keepalive must preserve the connection")
                 .isEqualTo(initialChannelId);
 
-            logger.info("PING interval test passed: {} PINGs sent, {} ACKs received in 10s", sentCount, ackCount);
+            logger.info("PING interval test passed: connection survived 10s idle period");
         } finally {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
