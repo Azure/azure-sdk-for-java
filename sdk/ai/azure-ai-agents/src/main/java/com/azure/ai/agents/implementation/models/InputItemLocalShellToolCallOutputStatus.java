@@ -5,18 +5,13 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceWebSearchToolCallStatus.
+ * Defines values for InputItemLocalShellToolCallOutputStatus.
  */
-public enum ItemResourceWebSearchToolCallStatus {
+public enum InputItemLocalShellToolCallOutputStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
-
-    /**
-     * Enum value searching.
-     */
-    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -24,31 +19,31 @@ public enum ItemResourceWebSearchToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value failed.
+     * Enum value incomplete.
      */
-    FAILED("failed");
+    INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a ItemResourceWebSearchToolCallStatus instance.
+     * The actual serialized value for a InputItemLocalShellToolCallOutputStatus instance.
      */
     private final String value;
 
-    ItemResourceWebSearchToolCallStatus(String value) {
+    InputItemLocalShellToolCallOutputStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceWebSearchToolCallStatus instance.
+     * Parses a serialized value to a InputItemLocalShellToolCallOutputStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceWebSearchToolCallStatus object, or null if unable to parse.
+     * @return the parsed InputItemLocalShellToolCallOutputStatus object, or null if unable to parse.
      */
-    public static ItemResourceWebSearchToolCallStatus fromString(String value) {
+    public static InputItemLocalShellToolCallOutputStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceWebSearchToolCallStatus[] items = ItemResourceWebSearchToolCallStatus.values();
-        for (ItemResourceWebSearchToolCallStatus item : items) {
+        InputItemLocalShellToolCallOutputStatus[] items = InputItemLocalShellToolCallOutputStatus.values();
+        for (InputItemLocalShellToolCallOutputStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

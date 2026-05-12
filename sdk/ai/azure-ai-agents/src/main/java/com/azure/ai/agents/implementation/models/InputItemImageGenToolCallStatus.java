@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for OutputItemReasoningItemStatus.
+ * Defines values for InputItemImageGenToolCallStatus.
  */
-public enum OutputItemReasoningItemStatus {
+public enum InputItemImageGenToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -19,31 +19,36 @@ public enum OutputItemReasoningItemStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value incomplete.
+     * Enum value generating.
      */
-    INCOMPLETE("incomplete");
+    GENERATING("generating"),
 
     /**
-     * The actual serialized value for a OutputItemReasoningItemStatus instance.
+     * Enum value failed.
+     */
+    FAILED("failed");
+
+    /**
+     * The actual serialized value for a InputItemImageGenToolCallStatus instance.
      */
     private final String value;
 
-    OutputItemReasoningItemStatus(String value) {
+    InputItemImageGenToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemReasoningItemStatus instance.
+     * Parses a serialized value to a InputItemImageGenToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemReasoningItemStatus object, or null if unable to parse.
+     * @return the parsed InputItemImageGenToolCallStatus object, or null if unable to parse.
      */
-    public static OutputItemReasoningItemStatus fromString(String value) {
+    public static InputItemImageGenToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemReasoningItemStatus[] items = OutputItemReasoningItemStatus.values();
-        for (OutputItemReasoningItemStatus item : items) {
+        InputItemImageGenToolCallStatus[] items = InputItemImageGenToolCallStatus.values();
+        for (InputItemImageGenToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceFunctionToolCallResourceStatus.
+ * Defines values for InputItemComputerToolCallStatus.
  */
-public enum ItemResourceFunctionToolCallResourceStatus {
+public enum InputItemComputerToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -24,26 +24,26 @@ public enum ItemResourceFunctionToolCallResourceStatus {
     INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a ItemResourceFunctionToolCallResourceStatus instance.
+     * The actual serialized value for a InputItemComputerToolCallStatus instance.
      */
     private final String value;
 
-    ItemResourceFunctionToolCallResourceStatus(String value) {
+    InputItemComputerToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceFunctionToolCallResourceStatus instance.
+     * Parses a serialized value to a InputItemComputerToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceFunctionToolCallResourceStatus object, or null if unable to parse.
+     * @return the parsed InputItemComputerToolCallStatus object, or null if unable to parse.
      */
-    public static ItemResourceFunctionToolCallResourceStatus fromString(String value) {
+    public static InputItemComputerToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceFunctionToolCallResourceStatus[] items = ItemResourceFunctionToolCallResourceStatus.values();
-        for (ItemResourceFunctionToolCallResourceStatus item : items) {
+        InputItemComputerToolCallStatus[] items = InputItemComputerToolCallStatus.values();
+        for (InputItemComputerToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

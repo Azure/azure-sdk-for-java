@@ -5,13 +5,18 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceImageGenToolCallStatus.
+ * Defines values for InputItemWebSearchToolCallStatus.
  */
-public enum ItemResourceImageGenToolCallStatus {
+public enum InputItemWebSearchToolCallStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
+
+    /**
+     * Enum value searching.
+     */
+    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -19,36 +24,31 @@ public enum ItemResourceImageGenToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value generating.
-     */
-    GENERATING("generating"),
-
-    /**
      * Enum value failed.
      */
     FAILED("failed");
 
     /**
-     * The actual serialized value for a ItemResourceImageGenToolCallStatus instance.
+     * The actual serialized value for a InputItemWebSearchToolCallStatus instance.
      */
     private final String value;
 
-    ItemResourceImageGenToolCallStatus(String value) {
+    InputItemWebSearchToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceImageGenToolCallStatus instance.
+     * Parses a serialized value to a InputItemWebSearchToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceImageGenToolCallStatus object, or null if unable to parse.
+     * @return the parsed InputItemWebSearchToolCallStatus object, or null if unable to parse.
      */
-    public static ItemResourceImageGenToolCallStatus fromString(String value) {
+    public static InputItemWebSearchToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceImageGenToolCallStatus[] items = ItemResourceImageGenToolCallStatus.values();
-        for (ItemResourceImageGenToolCallStatus item : items) {
+        InputItemWebSearchToolCallStatus[] items = InputItemWebSearchToolCallStatus.values();
+        for (InputItemWebSearchToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

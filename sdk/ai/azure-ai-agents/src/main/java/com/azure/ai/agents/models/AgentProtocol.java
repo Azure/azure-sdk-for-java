@@ -54,4 +54,10 @@ public final class AgentProtocol extends ExpandableStringEnum<AgentProtocol> {
     public static Collection<AgentProtocol> values() {
         return values(AgentProtocol.class);
     }
+
+    /**
+     * Static value invocations for AgentProtocol.
+     */
+    @Generated
+    public static final AgentProtocol INVOCATIONS = fromString("invocations");
 }
