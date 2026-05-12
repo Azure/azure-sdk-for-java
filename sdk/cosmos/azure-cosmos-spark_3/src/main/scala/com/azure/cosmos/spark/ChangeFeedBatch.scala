@@ -186,15 +186,16 @@ private class ChangeFeedBatch
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset
       // For batch mode instead we need to reset it so that the change feed will get fully drained
       val parsedInitialOffset = SparkBridgeImplementationInternal.parseChangeFeedState(initialOffsetJson)
-      val inputPartitions = latestOffset
-        .inputPartitions
-        .get
-        .map(partition => partition
-          .withContinuationState(
-            SparkBridgeImplementationInternal
-              .extractChangeFeedStateForRange(parsedInitialOffset, partition.feedRange),
-            clearEndLsn = !hasBatchCheckpointLocation))
-        .map(_.asInstanceOf[InputPartition])
+      val partitions = latestOffset.inputPartitions.get
+      val continuationStates = SparkBridgeImplementationInternal
+        .extractChangeFeedStateForRanges(parsedInitialOffset, partitions.map(_.feedRange))
+      val inputPartitions = partitions
+        .zip(continuationStates)
+        .map { case (partition, continuationState) =>
+          partition
+            .withContinuationState(continuationState, clearEndLsn = !hasBatchCheckpointLocation)
+            .asInstanceOf[InputPartition]
+        }
 
       log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
       inputPartitions

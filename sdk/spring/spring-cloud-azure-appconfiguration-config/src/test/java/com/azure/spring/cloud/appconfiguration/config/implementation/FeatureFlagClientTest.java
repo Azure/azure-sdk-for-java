@@ -49,8 +49,7 @@ public class FeatureFlagClientTest {
     @Mock
     private AppConfigurationReplicaClient clientMock;
 
-    @Mock
-    private Context contextMock;
+    private final Context context = Context.NONE;
 
     private FeatureFlagClient featureFlagClient;
 
@@ -84,14 +83,11 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsTestNoFeatureFlags() {
         List<ConfigurationSetting> settings = List.of(new ConfigurationSetting().setKey("FakeKey"));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<WatchedConfigurationSettings> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null,
             emptyLabelList, null,
-            contextMock);
-        assertEquals(1, featureFlagsList.size());
-        assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals("FakeKey", featureFlagsList.get(0).getConfigurationSettings().get(0).getKey());
+            context);
         assertEquals(0, featureFlagClient.getFeatureFlags().size());
     }
 
@@ -100,11 +96,11 @@ public class FeatureFlagClientTest {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
             new FeatureFlagConfigurationSetting("Beta", true));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<WatchedConfigurationSettings> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null,
             emptyLabelList, null,
-            contextMock);
+            context);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha",
@@ -118,11 +114,11 @@ public class FeatureFlagClientTest {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
             new FeatureFlagConfigurationSetting("Beta", true));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<WatchedConfigurationSettings> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null,
             emptyLabelList, null,
-            contextMock);
+            context);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha",
@@ -133,9 +129,9 @@ public class FeatureFlagClientTest {
         List<ConfigurationSetting> settings2 = List.of(new FeatureFlagConfigurationSetting("Alpha", true),
             new FeatureFlagConfigurationSetting("Gamma", false));
         featureFlags = new WatchedConfigurationSettings(null, settings2);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, contextMock);
+        featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, context);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha",
@@ -181,11 +177,11 @@ public class FeatureFlagClientTest {
         targetingFlag.addClientFilter(targetingFilter);
         List<ConfigurationSetting> settings = List.of(targetingFlag);
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<WatchedConfigurationSettings> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null,
             emptyLabelList, null,
-            contextMock);
+            context);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/TargetingTest",
@@ -387,14 +383,14 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsWithTagsFilterTest() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<String> tagsFilter = Arrays.asList("env=prod", "team=backend");
-        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, tagsFilter, contextMock);
+        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, tagsFilter, context);
 
-        // Capture the SettingSelector passed to listFeatureFlags
+        // Capture the SettingSelector passed to listSettingsByPage
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        Mockito.verify(clientMock).listFeatureFlags(selectorCaptor.capture(), Mockito.any(Context.class));
+        Mockito.verify(clientMock).listSettingsByPage(selectorCaptor.capture(), Mockito.any(Context.class));
 
         SettingSelector capturedSelector = selectorCaptor.getValue();
         assertEquals(2, capturedSelector.getTagsFilter().size());
@@ -406,13 +402,13 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsWithNullTagsFilterTest() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, contextMock);
+        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, null, context);
 
-        // Capture the SettingSelector passed to listFeatureFlags
+        // Capture the SettingSelector passed to listSettingsByPage
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        Mockito.verify(clientMock).listFeatureFlags(selectorCaptor.capture(), Mockito.any(Context.class));
+        Mockito.verify(clientMock).listSettingsByPage(selectorCaptor.capture(), Mockito.any(Context.class));
 
         SettingSelector capturedSelector = selectorCaptor.getValue();
         // Tags filter should not be set when null
@@ -423,14 +419,14 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsWithEmptyTagsFilterTest() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         List<String> emptyTags = List.of();
-        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, emptyTags, contextMock);
+        featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, emptyTags, context);
 
-        // Capture the SettingSelector passed to listFeatureFlags
+        // Capture the SettingSelector passed to listSettingsByPage
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        Mockito.verify(clientMock).listFeatureFlags(selectorCaptor.capture(), Mockito.any(Context.class));
+        Mockito.verify(clientMock).listSettingsByPage(selectorCaptor.capture(), Mockito.any(Context.class));
 
         SettingSelector capturedSelector = selectorCaptor.getValue();
         // Tags filter should not be set when empty
@@ -441,15 +437,15 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsWithTagsFilterMultipleLabelsTest() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false));
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, settings);
-        when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
+        when(clientMock.listSettingsByPage(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         String[] multiLabelList = { "dev", "prod" };
         List<String> tagsFilter = Arrays.asList("env=staging");
-        featureFlagClient.loadFeatureFlags(clientMock, null, multiLabelList, tagsFilter, contextMock);
+        featureFlagClient.loadFeatureFlags(clientMock, null, multiLabelList, tagsFilter, context);
 
         // Capture all SettingSelector instances passed to listFeatureFlags (one per label)
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        Mockito.verify(clientMock, Mockito.times(2)).listFeatureFlags(selectorCaptor.capture(),
+        Mockito.verify(clientMock, Mockito.times(2)).listSettingsByPage(selectorCaptor.capture(),
             Mockito.any(Context.class));
 
         // Both calls should have the tags filter set

@@ -116,6 +116,8 @@ public final class FileSearchTool extends Tool {
             jsonWriter.writeFieldName("filters");
             this.filters.writeTo(jsonWriter);
         }
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,6 +138,8 @@ public final class FileSearchTool extends Tool {
             Long maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
+            String name = null;
+            String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -149,6 +153,10 @@ public final class FileSearchTool extends Tool {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
                     filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -158,6 +166,8 @@ public final class FileSearchTool extends Tool {
             deserializedFileSearchTool.maxResults = maxResults;
             deserializedFileSearchTool.rankingOptions = rankingOptions;
             deserializedFileSearchTool.filters = filters;
+            deserializedFileSearchTool.name = name;
+            deserializedFileSearchTool.description = description;
             return deserializedFileSearchTool;
         });
     }
@@ -241,6 +251,62 @@ public final class FileSearchTool extends Tool {
     public FileSearchTool setCompoundFilter(CompoundFilter filter) {
         // AI Tooling: openai-java de-dup
         this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

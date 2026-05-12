@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.4.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,322 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0-beta.2 (2026-05-08)
+
+- Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.IotHubQuotaMetricInfoListResult` was removed
+
+#### `models.EndpointHealthDataListResult` was removed
+
+#### `models.JobResponseListResult` was removed
+
+#### `models.IotHubDescriptionListResult` was removed
+
+#### `models.EventHubConsumerGroupsListResult` was removed
+
+#### `models.IotHubSkuDescriptionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SharedAccessSignatureAuthorizationRuleListResult` was removed
+
+#### `models.EncryptionPropertiesDescription` was modified
+
+* `validate()` was removed
+
+#### `models.FeedbackProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MatchedRoute` was modified
+
+* `MatchedRoute()` was changed to private access
+* `validate()` was removed
+* `withProperties(models.RouteProperties)` was removed
+
+#### `models.GroupIdInformationProperties` was modified
+
+* `GroupIdInformationProperties()` was changed to private access
+* `withRequiredMembers(java.util.List)` was removed
+* `validate()` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+
+#### `models.ArmIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceRegistry` was modified
+
+* `validate()` was removed
+
+#### `models.OperationInputs` was modified
+
+* `validate()` was removed
+
+#### `models.TestRouteInput` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingMessage` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubCapacity` was modified
+
+* `IotHubCapacity()` was changed to private access
+* `validate()` was removed
+
+#### `models.RouteCompilationError` was modified
+
+* `RouteCompilationError()` was changed to private access
+* `withLocation(models.RouteErrorRange)` was removed
+* `withSeverity(models.RouteErrorSeverity)` was removed
+* `validate()` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.KeyVaultKeyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UserSubscriptionQuota` was modified
+
+* `UserSubscriptionQuota()` was changed to private access
+* `withLimit(java.lang.Integer)` was removed
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withType(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withCurrentValue(java.lang.Integer)` was removed
+* `withName(models.Name)` was removed
+
+#### `models.EventHubConsumerGroupName` was modified
+
+* `validate()` was removed
+
+#### `models.IpFilterRule` was modified
+
+* `validate()` was removed
+
+#### `models.EventHubConsumerGroupBodyDescription` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubLocationDescription` was modified
+
+* `IotHubLocationDescription()` was changed to private access
+* `validate()` was removed
+* `withRole(models.IotHubReplicaRoleType)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.IotHubResources` was modified
+
+* `models.IotHubDescription deleteById(java.lang.String)` -> `void deleteById(java.lang.String)`
+* `models.IotHubDescription delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.IotHubDescription deleteByResourceGroup(java.lang.String,java.lang.String)` -> `void deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `models.IotHubDescription deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.RoutingProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Name` was modified
+
+* `Name()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.FallbackRouteProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CertificatePropertiesWithNonce` was modified
+
+* `CertificatePropertiesWithNonce()` was changed to private access
+* `withPolicyResourceId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.RoutingServiceBusQueueEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingStorageContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingTwinProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EnrichmentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RouteProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FailoverInput` was modified
+
+* `validate()` was removed
+
+#### `models.ExportDevicesRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TagsResource` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkRuleSetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RouteErrorRange` was modified
+
+* `RouteErrorRange()` was changed to private access
+* `withStart(models.RouteErrorPosition)` was removed
+* `validate()` was removed
+* `withEnd(models.RouteErrorPosition)` was removed
+
+#### `models.RoutingCosmosDBSqlApiProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `models.PrivateEndpointConnection delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.PrivateEndpointConnection delete(java.lang.String,java.lang.String,java.lang.String)` -> `void delete(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.EventHubProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ImportDevicesRequest` was modified
+
+* `validate()` was removed
+
+#### `models.StorageEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RootCertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RouteErrorPosition` was modified
+
+* `RouteErrorPosition()` was changed to private access
+* `validate()` was removed
+* `withColumn(java.lang.Integer)` was removed
+* `withLine(java.lang.Integer)` was removed
+
+#### `models.TestAllRoutesInput` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingEndpoints` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubPropertiesDeviceStreams` was modified
+
+* `validate()` was removed
+
+#### `models.TestRouteResultDetails` was modified
+
+* `TestRouteResultDetails()` was changed to private access
+* `validate()` was removed
+* `withCompilationErrors(java.util.List)` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ErrorDetails` was modified
+
+* `ErrorDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.CloudToDeviceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MessagingEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.ArmUserIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateVerificationDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubSkuInfo` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingEventHubProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingTwin` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkRuleSetIpRule` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingServiceBusTopicEndpointProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+#### `models.EventHubConsumerGroupInfo` was modified
+
+* `systemData()` was added
+
+#### `models.CertificateDescription` was modified
+
+* `systemData()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
 
 ## 1.4.0-beta.1 (2025-11-17)
 

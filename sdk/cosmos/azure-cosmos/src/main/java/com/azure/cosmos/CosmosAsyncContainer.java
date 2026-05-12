@@ -2634,7 +2634,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions,
                 true)
             .map(response -> itemResponseAccessor().createCosmosItemResponse(
-                response, itemType, requestOptions.getEffectiveItemSerializer()))
+                response, itemType, effectiveOptions.getEffectiveItemSerializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();

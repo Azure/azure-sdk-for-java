@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class ThreatSeverity extends ExpandableStringEnum<ThreatSeverity> {
     /**
-     * Static value Critical for ThreatSeverity.
+     * Critical severity level.
      */
     public static final ThreatSeverity CRITICAL = fromString("Critical");
 
     /**
-     * Static value High for ThreatSeverity.
+     * High severity level.
      */
     public static final ThreatSeverity HIGH = fromString("High");
 
     /**
-     * Static value Warning for ThreatSeverity.
+     * Warning severity level.
      */
     public static final ThreatSeverity WARNING = fromString("Warning");
 
     /**
-     * Static value Informational for ThreatSeverity.
+     * Informational severity level.
      */
     public static final ThreatSeverity INFORMATIONAL = fromString("Informational");
 

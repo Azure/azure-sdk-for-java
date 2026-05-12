@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ConfigurationStoresUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
      */
     /**
      * Sample code: ConfigurationStores_Update_Disable_Local_Auth.
@@ -33,7 +33,7 @@ public final class ConfigurationStoresUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdate.json
      */
     /**
      * Sample code: ConfigurationStores_Update.
@@ -49,7 +49,7 @@ public final class ConfigurationStoresUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdateWithIdentity.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdateWithIdentity.json
      */
     /**
      * Sample code: ConfigurationStores_Update_With_Identity.

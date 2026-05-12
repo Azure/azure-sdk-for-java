@@ -24,7 +24,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"duhavhqlkt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"qolbgyc\",\"actionsRequired\":\"Recreate\"}},\"id\":\"r\",\"name\":\"gccymvaolpssl\",\"type\":\"lfmmdnbbglzpswi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"wct\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jl\",\"actionsRequired\":\"Recreate\"}},\"id\":\"dlwggytsbwtovv\",\"name\":\"gseinq\",\"type\":\"iufxqknpir\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,16 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("vwpm")
-            .withExistingConfigurationStore("t", "tpvjzbexilzznfqq")
-            .withPrivateEndpoint(new PrivateEndpoint().withId("ujmkcjhwqy"))
+            .define("ttpkiwkkbnujrywv")
+            .withExistingConfigurationStore("lmcuvhixb", "xyfwnylrcool")
+            .withPrivateEndpoint(new PrivateEndpoint().withId("ncu"))
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.PENDING).withDescription("bnw"))
+                new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.REJECTED)
+                    .withDescription("wiithtywub"))
             .create();
 
-        Assertions.assertEquals("duhavhqlkt", response.privateEndpoint().id());
-        Assertions.assertEquals(ConnectionStatus.DISCONNECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("qolbgyc", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wct", response.privateEndpoint().id());
+        Assertions.assertEquals(ConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jl", response.privateLinkServiceConnectionState().description());
     }
 }

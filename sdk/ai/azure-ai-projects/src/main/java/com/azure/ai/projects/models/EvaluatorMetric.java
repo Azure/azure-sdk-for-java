@@ -160,6 +160,7 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
             this.desirableDirection == null ? null : this.desirableDirection.toString());
         jsonWriter.writeNumberField("min_value", this.minValue);
         jsonWriter.writeNumberField("max_value", this.maxValue);
+        jsonWriter.writeNumberField("threshold", this.threshold);
         jsonWriter.writeBooleanField("is_primary", this.primary);
         return jsonWriter.writeEndObject();
     }
@@ -188,6 +189,8 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
                     deserializedEvaluatorMetric.minValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_value".equals(fieldName)) {
                     deserializedEvaluatorMetric.maxValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedEvaluatorMetric.threshold = reader.getNullable(JsonReader::getDouble);
                 } else if ("is_primary".equals(fieldName)) {
                     deserializedEvaluatorMetric.primary = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -213,6 +216,34 @@ public final class EvaluatorMetric implements JsonSerializable<EvaluatorMetric> 
     @Generated
     public EvaluatorMetric setPrimary(Boolean primary) {
         this.primary = primary;
+        return this;
+    }
+
+    /*
+     * Default pass/fail threshold for this metric.
+     */
+    @Generated
+    private Double threshold;
+
+    /**
+     * Get the threshold property: Default pass/fail threshold for this metric.
+     *
+     * @return the threshold value.
+     */
+    @Generated
+    public Double getThreshold() {
+        return this.threshold;
+    }
+
+    /**
+     * Set the threshold property: Default pass/fail threshold for this metric.
+     *
+     * @param threshold the threshold value to set.
+     * @return the EvaluatorMetric object itself.
+     */
+    @Generated
+    public EvaluatorMetric setThreshold(Double threshold) {
+        this.threshold = threshold;
         return this;
     }
 }

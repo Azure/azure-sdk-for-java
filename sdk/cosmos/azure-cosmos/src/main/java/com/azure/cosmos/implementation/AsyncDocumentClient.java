@@ -116,6 +116,7 @@ public interface AsyncDocumentClient {
         private boolean isRegionScopedSessionCapturingEnabled;
         private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
+        private Map<String, String> additionalHeaders;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -288,6 +289,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withAdditionalHeaders(Map<String, String> additionalHeaders) {
+            this.additionalHeaders = additionalHeaders;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -328,7 +334,8 @@ public interface AsyncDocumentClient {
                     defaultCustomSerializer,
                     isRegionScopedSessionCapturingEnabled,
                     operationPolicies,
-                    isPerPartitionAutomaticFailoverEnabled);
+                    isPerPartitionAutomaticFailoverEnabled,
+                    additionalHeaders);
 
             client.init(state, null);
 

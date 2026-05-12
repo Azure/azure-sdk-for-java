@@ -9,10 +9,9 @@ import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
@@ -23,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -34,8 +34,6 @@ import java.util.function.Function;
 public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
 
-    private static final CosmosDaemonThreadFactory theadFactory = new CosmosDaemonThreadFactory("cosmos-global-endpoint-mgr");
-
     private final int backgroundRefreshLocationTimeIntervalInMS;
     private final int backgroundRefreshJitterMaxInSeconds;
     private final LocationCache locationCache;
@@ -45,7 +43,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final DatabaseAccountManagerInternal owner;
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
-    private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
+    private final AtomicReference<Disposable> backgroundRefreshDisposable = new AtomicReference<>();
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
@@ -194,7 +192,10 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void close() {
         this.isClosed = true;
         this.perPartitionAutomaticFailoverConfigModifier = null;
-        this.scheduler.dispose();
+        Disposable disposable = this.backgroundRefreshDisposable.getAndSet(null);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -322,7 +323,11 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private void startRefreshLocationTimerAsync() {
-        startRefreshLocationTimerAsync(false).subscribe();
+        Disposable newDisposable = startRefreshLocationTimerAsync(false).subscribe();
+        Disposable oldDisposable = this.backgroundRefreshDisposable.getAndSet(newDisposable);
+        if (oldDisposable != null && !oldDisposable.isDisposed()) {
+            oldDisposable.dispose();
+        }
     }
 
     private Mono<Void> startRefreshLocationTimerAsync(boolean initialization) {
@@ -371,7 +376,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     this.startRefreshLocationTimerAsync();
                     return Mono.empty();
-                }).subscribeOn(scheduler);
+                }).subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC);
     }
 
     public boolean hasThinClientReadLocations() {
