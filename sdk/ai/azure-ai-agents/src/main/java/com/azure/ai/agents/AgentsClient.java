@@ -5,7 +5,6 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.SessionLogServerSentEvents;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -21,9 +20,9 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PatchAgentObjectPatchRequest;
-import com.azure.ai.agents.models.SessionLogEvent;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -39,11 +38,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
-import java.nio.ByteBuffer;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 
 /**
  * Initializes a new instance of the synchronous AgentsClient type.
@@ -57,7 +53,7 @@ public final class AgentsClient {
     /**
      * Retrieves the agent.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -160,7 +156,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -180,9 +176,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -304,7 +300,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -449,7 +445,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -505,9 +501,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -611,7 +607,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -631,9 +627,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -764,7 +760,7 @@ public final class AgentsClient {
     /**
      * Creates an agent from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -780,9 +776,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -878,7 +874,7 @@ public final class AgentsClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -893,9 +889,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -992,7 +988,7 @@ public final class AgentsClient {
     /**
      * Create a new agent version from a manifest.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1007,9 +1003,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1226,7 +1222,7 @@ public final class AgentsClient {
     /**
      * Retrieves a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1412,7 +1408,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1567,7 +1563,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1714,7 +1710,7 @@ public final class AgentsClient {
     /**
      * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1742,7 +1738,7 @@ public final class AgentsClient {
     /**
      * Deletes a specific version of an agent.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1771,155 +1767,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> patchAgentObjectWithResponse(String agentName, BinaryData patchAgentObjectRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.patchAgentObjectWithResponse(agentName, patchAgentObjectRequest, requestOptions);
-    }
-
-    /**
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
@@ -1933,7 +1780,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1944,9 +1791,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1994,7 +1841,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2090,7 +1937,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2235,70 +2082,6 @@ public final class AgentsClient {
         }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
             .toObject(AgentVersionDetails.class);
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails patchAgentObject(String agentName, PatchAgentObjectPatchRequest patchAgentObjectRequest,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for patchAgentObjectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return patchAgentObjectWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails patchAgentObject(String agentName, PatchAgentObjectPatchRequest patchAgentObjectRequest) {
-        // Generated convenience method for patchAgentObjectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getPatchAgentObjectPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return patchAgentObjectWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
-            .toObject(AgentDetails.class);
     }
 
     /**
@@ -2572,7 +2355,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2603,37 +2386,230 @@ public final class AgentsClient {
     }
 
     /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
+     * Updates an agent endpoint.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocols (Optional): [
+     *             String(activity/responses/a2a/invocations) (Optional)
+     *         ]
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *             }
+     *         ]
+     *     }
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *             instance_identity (Optional): {
+     *                 principal_id: String (Required)
+     *                 client_id: String (Required)
+     *             }
+     *             blueprint (Optional): (recursive schema, see blueprint above)
+     *             blueprint_reference (Optional): {
+     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
+     *             }
+     *             agent_guid: String (Optional)
+     *         }
+     *     }
+     *     agent_endpoint (Optional): {
+     *         version_selector (Optional): {
+     *             version_selection_rules (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     type: String(FixedRatio) (Required)
+     *                     agent_version: String (Optional, Required on create)
+     *                 }
+     *             ]
+     *         }
+     *         protocols (Optional): [
+     *             String(activity/responses/a2a/invocations) (Optional)
+     *         ]
+     *         authorization_schemes (Optional): [
+     *              (Optional){
+     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *             }
+     *         ]
+     *     }
+     *     instance_identity (Optional): (recursive schema, see instance_identity above)
+     *     blueprint (Optional): (recursive schema, see blueprint above)
+     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
+     *     agent_card (Optional): {
+     *         version: String (Optional, Required on create)
+     *         description: String (Optional)
+     *         skills (Optional, Required on create): [
+     *              (Optional, Required on create){
+     *                 id: String (Optional, Required on create)
+     *                 name: String (Optional, Required on create)
+     *                 description: String (Optional)
+     *                 tags (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
      *
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
+     * @param agentName The name of the agent to retrieve.
+     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateAgentDetailsWithResponse(String agentName, BinaryData patchAgentObjectRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentDetailsWithResponse(agentName, patchAgentObjectRequest, requestOptions);
+    }
+
+    /**
+     * Create a new agent version.
      *
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
      *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest createAgentVersionRequestObj
+            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Create a new agent version.
      *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param createAgentVersionInput The request body for creating an agent version, which includes the agent
+     * definition and optional metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
+        CreateAgentVersionInput createAgentVersionInput) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Updates an agent endpoint.
      *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     *
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param agentName The name of the agent to retrieve.
+     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2642,65 +2618,54 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an {@link IterableStream} of {@link SessionLogEvent} parsed from the SSE stream.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentDetails updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest,
         AgentDefinitionOptInKeys foundryFeatures) {
+        // Generated convenience method for updateAgentDetailsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        Flux<ByteBuffer> sseStream
-            = getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue()
-                .toFluxByteBuffer();
-        SessionLogServerSentEvents processor = new SessionLogServerSentEvents(sseStream);
-        return new IterableStream<>(processor.getEvents());
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
+        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        patchAgentObjectRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
+            .toObject(AgentDetails.class);
     }
 
     /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
+     * Updates an agent endpoint.
      *
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
-     *
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     *
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param agentName The name of the agent to retrieve.
+     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an {@link IterableStream} of {@link SessionLogEvent} parsed from the SSE stream.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion,
-        String sessionId) {
-        return getSessionLogStream(agentName, agentVersion, sessionId, null);
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentDetails updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest) {
+        // Generated convenience method for updateAgentDetailsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
+        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        patchAgentObjectRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions).getValue()
+            .toObject(AgentDetails.class);
     }
 }

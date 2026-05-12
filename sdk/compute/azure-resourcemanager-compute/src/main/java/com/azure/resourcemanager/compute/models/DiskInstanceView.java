@@ -32,6 +32,11 @@ public final class DiskInstanceView implements JsonSerializable<DiskInstanceView
      */
     private List<InstanceViewStatus> statuses;
 
+    /*
+     * Specifies the storage alignment status for the disk.
+     */
+    private StorageAlignmentStatus storageAlignmentStatus;
+
     /**
      * Creates an instance of DiskInstanceView class.
      */
@@ -101,6 +106,26 @@ public final class DiskInstanceView implements JsonSerializable<DiskInstanceView
     }
 
     /**
+     * Get the storageAlignmentStatus property: Specifies the storage alignment status for the disk.
+     * 
+     * @return the storageAlignmentStatus value.
+     */
+    public StorageAlignmentStatus storageAlignmentStatus() {
+        return this.storageAlignmentStatus;
+    }
+
+    /**
+     * Set the storageAlignmentStatus property: Specifies the storage alignment status for the disk.
+     * 
+     * @param storageAlignmentStatus the storageAlignmentStatus value to set.
+     * @return the DiskInstanceView object itself.
+     */
+    public DiskInstanceView withStorageAlignmentStatus(StorageAlignmentStatus storageAlignmentStatus) {
+        this.storageAlignmentStatus = storageAlignmentStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -124,6 +149,8 @@ public final class DiskInstanceView implements JsonSerializable<DiskInstanceView
         jsonWriter.writeArrayField("encryptionSettings", this.encryptionSettings,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("storageAlignmentStatus",
+            this.storageAlignmentStatus == null ? null : this.storageAlignmentStatus.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +179,9 @@ public final class DiskInstanceView implements JsonSerializable<DiskInstanceView
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
                     deserializedDiskInstanceView.statuses = statuses;
+                } else if ("storageAlignmentStatus".equals(fieldName)) {
+                    deserializedDiskInstanceView.storageAlignmentStatus
+                        = StorageAlignmentStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

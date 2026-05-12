@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
  */
 public final class SecuritySettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutSecuritySettings.json
+     * x-ms-original-file: 2026-04-01-preview/PutSecuritySettings.json
      */
     /**
      * Sample code: Create Security Settings.

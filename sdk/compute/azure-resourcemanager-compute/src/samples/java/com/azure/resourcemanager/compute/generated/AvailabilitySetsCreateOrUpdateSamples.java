@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
  */
 public final class AvailabilitySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
+     * x-ms-original-file: 2025-11-01/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
      */
     /**
      * Sample code: Create an availability set with Scheduled Event Policy.
@@ -30,7 +30,7 @@ public final class AvailabilitySetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/availabilitySetExamples/AvailabilitySet_Create.json
+     * x-ms-original-file: 2025-11-01/availabilitySetExamples/AvailabilitySet_Create.json
      */
     /**
      * Sample code: Create an availability set.

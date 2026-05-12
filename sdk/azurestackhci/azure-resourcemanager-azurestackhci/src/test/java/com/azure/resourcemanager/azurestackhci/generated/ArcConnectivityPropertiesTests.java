@@ -15,22 +15,24 @@ public final class ArcConnectivityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcConnectivityProperties model = BinaryData.fromString(
-            "{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":3740091618502324159},{\"serviceName\":\"WAC\",\"port\":4533506116683097889}]}")
+            "{\"enabled\":false,\"serviceConfigurations\":[{\"serviceName\":\"WAC\",\"port\":6578204295231408017},{\"serviceName\":\"WAC\",\"port\":3719013093827062278},{\"serviceName\":\"WAC\",\"port\":2245881351334058994},{\"serviceName\":\"WAC\",\"port\":3205247320582775463}]}")
             .toObject(ArcConnectivityProperties.class);
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ServiceName.WAC, model.serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(3740091618502324159L, model.serviceConfigurations().get(0).port());
+        Assertions.assertEquals(6578204295231408017L, model.serviceConfigurations().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcConnectivityProperties model = new ArcConnectivityProperties().withEnabled(false)
             .withServiceConfigurations(Arrays.asList(
-                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3740091618502324159L),
-                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(4533506116683097889L)));
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(6578204295231408017L),
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3719013093827062278L),
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(2245881351334058994L),
+                new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(3205247320582775463L)));
         model = BinaryData.fromObject(model).toObject(ArcConnectivityProperties.class);
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ServiceName.WAC, model.serviceConfigurations().get(0).serviceName());
-        Assertions.assertEquals(3740091618502324159L, model.serviceConfigurations().get(0).port());
+        Assertions.assertEquals(6578204295231408017L, model.serviceConfigurations().get(0).port());
     }
 }

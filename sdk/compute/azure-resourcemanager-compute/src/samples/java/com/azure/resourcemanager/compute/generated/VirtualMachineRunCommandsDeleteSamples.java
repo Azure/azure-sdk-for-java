@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineRunCommandsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
+     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
      */
     /**
      * Sample code: Delete a run command.

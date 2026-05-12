@@ -9,7 +9,7 @@ import com.azure.ai.agents.models.AgentCardSkill;
 import com.azure.ai.agents.models.AgentEndpoint;
 import com.azure.ai.agents.models.AgentEndpointAuthorizationScheme;
 import com.azure.ai.agents.models.IsolationKeySource;
-import com.azure.ai.agents.models.PatchAgentObjectPatchRequest;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -134,20 +134,20 @@ public class JsonMergePatchHelper {
         return agentCardSkillAccessor;
     }
 
-    private static PatchAgentObjectPatchRequestAccessor patchAgentObjectPatchRequestAccessor;
+    private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
 
-    public interface PatchAgentObjectPatchRequestAccessor {
-        PatchAgentObjectPatchRequest prepareModelForJsonMergePatch(
-            PatchAgentObjectPatchRequest patchAgentObjectPatchRequest, boolean jsonMergePatchEnabled);
+    public interface UpdateAgentDetailsOptionsAccessor {
+        UpdateAgentDetailsOptions prepareModelForJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(PatchAgentObjectPatchRequest patchAgentObjectPatchRequest);
+        boolean isJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions);
     }
 
-    public static void setPatchAgentObjectPatchRequestAccessor(PatchAgentObjectPatchRequestAccessor accessor) {
-        patchAgentObjectPatchRequestAccessor = accessor;
+    public static void setUpdateAgentDetailsOptionsAccessor(UpdateAgentDetailsOptionsAccessor accessor) {
+        updateAgentDetailsOptionsAccessor = accessor;
     }
 
-    public static PatchAgentObjectPatchRequestAccessor getPatchAgentObjectPatchRequestAccessor() {
-        return patchAgentObjectPatchRequestAccessor;
+    public static UpdateAgentDetailsOptionsAccessor getUpdateAgentDetailsOptionsAccessor() {
+        return updateAgentDetailsOptionsAccessor;
     }
 }

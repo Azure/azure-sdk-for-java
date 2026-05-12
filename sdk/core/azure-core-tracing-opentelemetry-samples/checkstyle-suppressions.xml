@@ -4,8 +4,5 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.CreateConfigurationSettingLoggingExporterSample.java" />
-  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.ListKeyVaultSecretsAutoConfigurationSample.java" />
-  <suppress checks="IllegalImport" files="com.azure.core.tracing.opentelemetry.samples.TracingJavaDocCodeSnippets.java" />
 
 </suppressions>

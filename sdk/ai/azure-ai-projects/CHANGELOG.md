@@ -4,11 +4,25 @@
 
 ### Features Added
 
+- Added new `SkillsClient` and `SkillsAsyncClient` sub-clients (preview, opt-in via `FoundryFeaturesOptInKeys.SKILLS_V1_PREVIEW`) with operations to `createSkill`, `createSkillFromPackage`, `getSkill`, `downloadSkill`, `listSkills`, `updateSkill`, and `deleteSkill`. New `buildSkillsClient()` and `buildSkillsAsyncClient()` methods on `AIProjectClientBuilder`. New `SkillDetails` model.
+- Added `buildAgentScopedOpenAIClient(String agentName)` and `buildAgentScopedOpenAIAsyncClient(String agentName)` to `AIProjectClientBuilder` for constructing OpenAI clients targeting a specific agent's endpoint (base URL `{endpoint}/agents/{agentName}/endpoint/protocols/openai`). The default `buildOpenAIClient()` / `buildOpenAIAsyncClient()` continue to target `{endpoint}/openai/v1`.
+- Added `threshold` property (`Double`) to `EvaluatorMetric` with `getThreshold()` and `setThreshold(Double)`.
+- Added `entryPoint`, `imageTag`, and `blobUrl` properties to `CodeBasedEvaluatorDefinition` with corresponding getters and setters; added a no-argument constructor and `setCodeText(String)` setter.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `SKILLS_V1_PREVIEW` (`Skills=V1Preview`) and `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`).
+- Added new samples `SkillsSample` and `SkillsAsyncSample` demonstrating end-to-end use of the Skills sub-client.
+
 ### Breaking Changes
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- `module-info.java` now opens `com.azure.ai.projects.implementation.models` to `com.azure.core` to support serialization of new internal request types (e.g., `CreateSkillRequest`, `UpdateSkillRequest`).
+
+## 2.0.1 (2026-04-16)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed streaming APIs to properly stream response data instead of eagerly buffering the entire response body in memory, and moved async completions off I/O threads to prevent blocking.
 
 ## 2.0.0 (2026-03-27)
 

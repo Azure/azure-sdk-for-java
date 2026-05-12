@@ -12,8 +12,8 @@ public final class EdgeDeviceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"b\",\"name\":\"fdb\",\"type\":\"jbzten\"},{\"kind\":\"EdgeDevice\",\"id\":\"kzykjtjk\",\"name\":\"sxfwushcdp\",\"type\":\"upnqrmgjfb\"},{\"kind\":\"EdgeDevice\",\"id\":\"uwxeoiojfizf\",\"name\":\"vkjzwfbcyaykm\",\"type\":\"fz\"},{\"kind\":\"EdgeDevice\",\"id\":\"fwxrzxmdew\",\"name\":\"rsxkr\",\"type\":\"lbjazejww\"}],\"nextLink\":\"yoyp\"}")
+            "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"yojbfqzdkf\",\"name\":\"jyixhaf\",\"type\":\"atqxmbjroumzzn\"},{\"kind\":\"EdgeDevice\",\"id\":\"l\",\"name\":\"jrhuzgf\",\"type\":\"on\"},{\"kind\":\"EdgeDevice\",\"id\":\"pusllywpv\",\"name\":\"iotzbpdbollgryfq\",\"type\":\"uasigr\"},{\"kind\":\"EdgeDevice\",\"id\":\"socnequygdjboq\",\"name\":\"rmtqjkqevadr\",\"type\":\"mwiuawvcm\"}],\"nextLink\":\"kxiidisczskoswo\"}")
             .toObject(EdgeDeviceListResult.class);
-        Assertions.assertEquals("yoyp", model.nextLink());
+        Assertions.assertEquals("kxiidisczskoswo", model.nextLink());
     }
 }

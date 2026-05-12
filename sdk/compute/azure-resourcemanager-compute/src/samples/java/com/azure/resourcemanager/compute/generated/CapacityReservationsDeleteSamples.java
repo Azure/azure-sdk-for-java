@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CapacityReservationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservation_Delete_MaximumSet_Gen.
@@ -24,7 +24,7 @@ public final class CapacityReservationsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservation_Delete_MinimumSet_Gen.

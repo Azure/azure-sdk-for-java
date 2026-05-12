@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceConfigurationsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
+     * x-ms-original-file: 2026-02-01/MaintenanceConfigurationsList_MaintenanceWindow.json
      */
     /**
      * Sample code: List maintenance configurations configured with maintenance window by Managed Cluster.

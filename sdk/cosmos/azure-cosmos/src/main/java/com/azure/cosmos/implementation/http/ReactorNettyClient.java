@@ -43,6 +43,10 @@ import java.util.function.BiFunction;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    }
+
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
@@ -136,10 +140,8 @@ public class ReactorNettyClient implements HttpClient {
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                                            .validateHeaders(true));
 
-        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
-            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
+        if (httpCfgAccessor().isEffectivelyEnabled(http2Cfg)) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -151,7 +153,7 @@ public class ReactorNettyClient implements HttpClient {
                 .http2Settings(settings -> settings
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(64 * 1024)        // 64KB max frame size
-                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
+                    .maxConcurrentStreams(httpCfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
@@ -163,6 +165,24 @@ public class ReactorNettyClient implements HttpClient {
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
+                    }
+
+                    // Install exception handler at the tail of the HTTP/2 parent (TCP)
+                    // channel pipeline. This pipeline has no ChannelOperationsHandler
+                    // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate
+                    // to Netty's TailContext. This handler consumes them with
+                    // connection-state-based log levels: DEBUG when idle, WARN when
+                    // active streams exist.
+                    if (channelPipeline.get(Http2ParentChannelExceptionHandler.HANDLER_NAME) == null) {
+                        try {
+                            channelPipeline.addLast(
+                                Http2ParentChannelExceptionHandler.HANDLER_NAME,
+                                Http2ParentChannelExceptionHandler.INSTANCE);
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addLast(),
+                            // a concurrent doOnConnected may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
                     }
                 }));
         }

@@ -5,12 +5,12 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
-import com.azure.ai.agents.implementation.models.UpdateToolboxRequest1;
+import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
-import com.azure.ai.agents.models.ToolboxObject;
+import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
-import com.azure.ai.agents.models.ToolboxVersionObject;
+import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -322,7 +322,7 @@ public final class ToolboxesClient {
      * </pre>
      *
      * @param toolboxName The name of the toolbox to update.
-     * @param updateToolboxRequest1 The updateToolboxRequest1 parameter.
+     * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -332,9 +332,9 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest1,
+    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateToolboxWithResponse(toolboxName, updateToolboxRequest1, requestOptions);
+        return this.serviceClient.updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions);
     }
 
     /**
@@ -391,7 +391,7 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionObject createToolboxVersion(String toolboxName, List<Tool> tools, String description,
+    public ToolboxVersionDetails createToolboxVersion(String toolboxName, List<Tool> tools, String description,
         Map<String, String> metadata, ToolboxPolicies policies) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -401,7 +401,7 @@ public final class ToolboxesClient {
                 .setPolicies(policies);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions).getValue()
-            .toObject(ToolboxVersionObject.class);
+            .toObject(ToolboxVersionDetails.class);
     }
 
     /**
@@ -419,13 +419,13 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionObject createToolboxVersion(String toolboxName, List<Tool> tools) {
+    public ToolboxVersionDetails createToolboxVersion(String toolboxName, List<Tool> tools) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions).getValue()
-            .toObject(ToolboxVersionObject.class);
+            .toObject(ToolboxVersionDetails.class);
     }
 
     /**
@@ -442,10 +442,10 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxObject getToolbox(String toolboxName) {
+    public ToolboxDetails getToolbox(String toolboxName) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getToolboxWithResponse(toolboxName, requestOptions).getValue().toObject(ToolboxObject.class);
+        return getToolboxWithResponse(toolboxName, requestOptions).getValue().toObject(ToolboxDetails.class);
     }
 
     /**
@@ -471,7 +471,7 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxObject> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -487,7 +487,7 @@ public final class ToolboxesClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listToolboxes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
 
     /**
@@ -502,11 +502,11 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxObject> listToolboxes() {
+    public PagedIterable<ToolboxDetails> listToolboxes() {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listToolboxes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionObject> listToolboxVersions(String toolboxName, Integer limit, PageOrder order,
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String toolboxName, Integer limit, PageOrder order,
         String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
@@ -550,7 +550,7 @@ public final class ToolboxesClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return serviceClient.listToolboxVersions(toolboxName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -567,11 +567,11 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionObject> listToolboxVersions(String toolboxName) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String toolboxName) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listToolboxVersions(toolboxName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionObject.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -589,11 +589,11 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionObject getToolboxVersion(String toolboxName, String version) {
+    public ToolboxVersionDetails getToolboxVersion(String toolboxName, String version) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getToolboxVersionWithResponse(toolboxName, version, requestOptions).getValue()
-            .toObject(ToolboxVersionObject.class);
+            .toObject(ToolboxVersionDetails.class);
     }
 
     /**
@@ -612,13 +612,13 @@ public final class ToolboxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxObject updateToolbox(String toolboxName, String defaultVersion) {
+    public ToolboxDetails updateToolbox(String toolboxName, String defaultVersion) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateToolboxRequest1 updateToolboxRequest1Obj = new UpdateToolboxRequest1(defaultVersion);
-        BinaryData updateToolboxRequest1 = BinaryData.fromObject(updateToolboxRequest1Obj);
-        return updateToolboxWithResponse(toolboxName, updateToolboxRequest1, requestOptions).getValue()
-            .toObject(ToolboxObject.class);
+        UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
+        BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
+        return updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions).getValue()
+            .toObject(ToolboxDetails.class);
     }
 
     /**

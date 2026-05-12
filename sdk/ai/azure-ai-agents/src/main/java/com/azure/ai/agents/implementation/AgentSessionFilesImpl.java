@@ -124,7 +124,7 @@ public final class AgentSessionFilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSessionFiles(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSessionFiles(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -135,7 +135,7 @@ public final class AgentSessionFilesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSessionFilesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSessionFilesSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -383,10 +383,10 @@ public final class AgentSessionFilesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listSessionFilesWithResponseAsync(String agentName, String sessionId, String path,
+    public Mono<Response<BinaryData>> getSessionFilesWithResponseAsync(String agentName, String sessionId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, sessionId,
+        return FluxUtil.withContext(context -> service.getSessionFiles(this.client.getEndpoint(), agentName, sessionId,
             path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -431,10 +431,10 @@ public final class AgentSessionFilesImpl {
      * @return response from listing a directory in a session sandbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listSessionFilesWithResponse(String agentName, String sessionId, String path,
+    public Response<BinaryData> getSessionFilesWithResponse(String agentName, String sessionId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listSessionFilesSync(this.client.getEndpoint(), agentName, sessionId, path,
+        return service.getSessionFilesSync(this.client.getEndpoint(), agentName, sessionId, path,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

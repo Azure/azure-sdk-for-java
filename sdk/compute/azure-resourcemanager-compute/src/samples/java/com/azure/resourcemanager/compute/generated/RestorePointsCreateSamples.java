@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RestorePointsCreateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
      */
     /**
      * Sample code: Copy a restore point to a different region.
@@ -30,7 +30,7 @@ public final class RestorePointsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePoint_Create.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePoint_Create.json
      */
     /**
      * Sample code: Create a restore point.

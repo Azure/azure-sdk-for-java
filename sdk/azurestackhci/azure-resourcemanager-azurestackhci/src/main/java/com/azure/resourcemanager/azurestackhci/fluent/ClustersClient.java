@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
+import com.azure.resourcemanager.azurestackhci.models.ChangeRingRequest;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
 import com.azure.resourcemanager.azurestackhci.models.LogCollectionRequest;
 import com.azure.resourcemanager.azurestackhci.models.RemoteSupportRequest;
@@ -450,6 +451,67 @@ public interface ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterInner extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginChangeRing(String resourceGroupName, String clusterName,
+        ChangeRingRequest changeRingRequest);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginChangeRing(String resourceGroupName, String clusterName,
+        ChangeRingRequest changeRingRequest, Context context);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest);
+
+    /**
+     * Changes ring of a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param changeRingRequest Change ring request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest,
+        Context context);
 
     /**
      * Trigger Log Collection on a cluster.

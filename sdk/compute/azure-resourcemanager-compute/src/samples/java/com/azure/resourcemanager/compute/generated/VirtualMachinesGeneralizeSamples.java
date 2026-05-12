@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesGeneralizeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Generalize.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Generalize.json
      */
     /**
      * Sample code: Generalize a Virtual Machine.

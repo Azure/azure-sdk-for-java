@@ -385,4 +385,17 @@ public final class HostedAgentDefinition extends AgentDefinition {
         this.codeConfiguration = codeConfiguration;
         return this;
     }
+
+    /**
+     * Creates an instance of HostedAgentDefinition class.
+     *
+     * @param containerProtocolVersions the containerProtocolVersions value to set.
+     * @param cpu the cpu value to set.
+     * @param memory the memory value to set.
+     */
+    public HostedAgentDefinition(List<ProtocolVersionRecord> containerProtocolVersions, String cpu, String memory) {
+        this.containerProtocolVersions = containerProtocolVersions;
+        this.cpu = cpu;
+        this.memory = memory;
+    }
 }

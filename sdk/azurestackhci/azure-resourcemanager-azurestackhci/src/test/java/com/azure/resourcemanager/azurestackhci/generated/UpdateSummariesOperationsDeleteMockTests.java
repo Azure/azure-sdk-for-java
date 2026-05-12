@@ -27,7 +27,7 @@ public final class UpdateSummariesOperationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.updateSummariesOperations().delete("qcrbkompnbnfgywe", "jbepgcmah", com.azure.core.util.Context.NONE);
+        manager.updateSummariesOperations().delete("yplgq", "qgrbrhhv", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CustomDomainValidationResult;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
 import com.azure.resourcemanager.cdn.models.Usage;
 import com.azure.resourcemanager.cdn.models.Route;
 import com.azure.resourcemanager.cdn.models.ValidateCustomDomainInput;
@@ -50,11 +49,6 @@ class AfdEndpointImpl extends ExternalChildResourceImpl<AfdEndpoint, AfdEndpoint
     @Override
     public EnabledState enabledState() {
         return this.innerModel().enabledState();
-    }
-
-    @Override
-    public EnforceMtlsEnabledState enforceMtls() {
-        return this.innerModel().enforceMtls();
     }
 
     @Override
@@ -153,8 +147,7 @@ class AfdEndpointImpl extends ExternalChildResourceImpl<AfdEndpoint, AfdEndpoint
     public Mono<AfdEndpoint> updateResourceAsync() {
         final AfdEndpointImpl self = this;
         AfdEndpointUpdateParameters parameters = new AfdEndpointUpdateParameters().withTags(this.innerModel().tags())
-            .withEnabledState(this.innerModel().enabledState())
-            .withEnforceMtls(this.innerModel().enforceMtls());
+            .withEnabledState(this.innerModel().enabledState());
         return this.parent()
             .manager()
             .serviceClient()
@@ -198,12 +191,6 @@ class AfdEndpointImpl extends ExternalChildResourceImpl<AfdEndpoint, AfdEndpoint
     @Override
     public AfdEndpointImpl withEnabledState(EnabledState enabledState) {
         this.innerModel().withEnabledState(enabledState);
-        return this;
-    }
-
-    @Override
-    public AfdEndpointImpl withEnforceMtls(EnforceMtlsEnabledState enforceMtls) {
-        this.innerModel().withEnforceMtls(enforceMtls);
         return this;
     }
 
