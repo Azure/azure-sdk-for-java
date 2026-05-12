@@ -22,7 +22,7 @@ import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.UpdateAgentDetailsPatchRequest;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -2661,73 +2661,6 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName,
-        UpdateAgentDetailsPatchRequest patchAgentObjectRequest, AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for updateAgentDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName,
-        UpdateAgentDetailsPatchRequest patchAgentObjectRequest) {
-        // Generated convenience method for updateAgentDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsPatchRequestAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
      * Create a new agent version.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -2798,5 +2731,71 @@ public final class AgentsAsyncClient {
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Updates an agent endpoint.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest,
+        AgentDefinitionOptInKeys foundryFeatures) {
+        // Generated convenience method for updateAgentDetailsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
+        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        patchAgentObjectRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Updates an agent endpoint.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest) {
+        // Generated convenience method for updateAgentDetailsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
+        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        patchAgentObjectRequestInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
+            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
+        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 }

@@ -15,10 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The UpdateAgentDetailsPatchRequest model.
+ * The UpdateAgentDetailsOptions model.
  */
 @Fluent
-public final class UpdateAgentDetailsPatchRequest implements JsonSerializable<UpdateAgentDetailsPatchRequest> {
+public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateAgentDetailsOptions> {
 
     /*
      * The endpoint configuration for the agent
@@ -47,28 +47,28 @@ public final class UpdateAgentDetailsPatchRequest implements JsonSerializable<Up
     }
 
     static {
-        JsonMergePatchHelper.setUpdateAgentDetailsPatchRequestAccessor(
-            new JsonMergePatchHelper.UpdateAgentDetailsPatchRequestAccessor() {
+        JsonMergePatchHelper
+            .setUpdateAgentDetailsOptionsAccessor(new JsonMergePatchHelper.UpdateAgentDetailsOptionsAccessor() {
 
                 @Override
-                public UpdateAgentDetailsPatchRequest
-                    prepareModelForJsonMergePatch(UpdateAgentDetailsPatchRequest model, boolean jsonMergePatchEnabled) {
+                public UpdateAgentDetailsOptions prepareModelForJsonMergePatch(UpdateAgentDetailsOptions model,
+                    boolean jsonMergePatchEnabled) {
                     model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                     return model;
                 }
 
                 @Override
-                public boolean isJsonMergePatch(UpdateAgentDetailsPatchRequest model) {
+                public boolean isJsonMergePatch(UpdateAgentDetailsOptions model) {
                     return model.jsonMergePatch;
                 }
             });
     }
 
     /**
-     * Creates an instance of UpdateAgentDetailsPatchRequest class.
+     * Creates an instance of UpdateAgentDetailsOptions class.
      */
     @Generated
-    public UpdateAgentDetailsPatchRequest() {
+    public UpdateAgentDetailsOptions() {
     }
 
     /**
@@ -85,10 +85,10 @@ public final class UpdateAgentDetailsPatchRequest implements JsonSerializable<Up
      * Set the agentEndpoint property: The endpoint configuration for the agent.
      *
      * @param agentEndpoint the agentEndpoint value to set.
-     * @return the UpdateAgentDetailsPatchRequest object itself.
+     * @return the UpdateAgentDetailsOptions object itself.
      */
     @Generated
-    public UpdateAgentDetailsPatchRequest setAgentEndpoint(AgentEndpoint agentEndpoint) {
+    public UpdateAgentDetailsOptions setAgentEndpoint(AgentEndpoint agentEndpoint) {
         this.agentEndpoint = agentEndpoint;
         this.updatedProperties.add("agentEndpoint");
         return this;
@@ -108,10 +108,10 @@ public final class UpdateAgentDetailsPatchRequest implements JsonSerializable<Up
      * Set the agentCard property: Optional agent card for the agent.
      *
      * @param agentCard the agentCard value to set.
-     * @return the UpdateAgentDetailsPatchRequest object itself.
+     * @return the UpdateAgentDetailsOptions object itself.
      */
     @Generated
-    public UpdateAgentDetailsPatchRequest setAgentCard(AgentCard agentCard) {
+    public UpdateAgentDetailsOptions setAgentCard(AgentCard agentCard) {
         this.agentCard = agentCard;
         this.updatedProperties.add("agentCard");
         return this;
@@ -159,30 +159,29 @@ public final class UpdateAgentDetailsPatchRequest implements JsonSerializable<Up
     }
 
     /**
-     * Reads an instance of UpdateAgentDetailsPatchRequest from the JsonReader.
+     * Reads an instance of UpdateAgentDetailsOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateAgentDetailsPatchRequest if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UpdateAgentDetailsPatchRequest.
+     * @return An instance of UpdateAgentDetailsOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateAgentDetailsOptions.
      */
     @Generated
-    public static UpdateAgentDetailsPatchRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateAgentDetailsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UpdateAgentDetailsPatchRequest deserializedUpdateAgentDetailsPatchRequest
-                = new UpdateAgentDetailsPatchRequest();
+            UpdateAgentDetailsOptions deserializedUpdateAgentDetailsOptions = new UpdateAgentDetailsOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("agent_endpoint".equals(fieldName)) {
-                    deserializedUpdateAgentDetailsPatchRequest.agentEndpoint = AgentEndpoint.fromJson(reader);
+                    deserializedUpdateAgentDetailsOptions.agentEndpoint = AgentEndpoint.fromJson(reader);
                 } else if ("agent_card".equals(fieldName)) {
-                    deserializedUpdateAgentDetailsPatchRequest.agentCard = AgentCard.fromJson(reader);
+                    deserializedUpdateAgentDetailsOptions.agentCard = AgentCard.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedUpdateAgentDetailsPatchRequest;
+            return deserializedUpdateAgentDetailsOptions;
         });
     }
 }

@@ -9,7 +9,7 @@ import com.azure.ai.agents.models.AgentCardSkill;
 import com.azure.ai.agents.models.AgentEndpoint;
 import com.azure.ai.agents.models.AgentEndpointAuthorizationScheme;
 import com.azure.ai.agents.models.IsolationKeySource;
-import com.azure.ai.agents.models.UpdateAgentDetailsPatchRequest;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -134,20 +134,20 @@ public class JsonMergePatchHelper {
         return agentCardSkillAccessor;
     }
 
-    private static UpdateAgentDetailsPatchRequestAccessor updateAgentDetailsPatchRequestAccessor;
+    private static UpdateAgentDetailsOptionsAccessor updateAgentDetailsOptionsAccessor;
 
-    public interface UpdateAgentDetailsPatchRequestAccessor {
-        UpdateAgentDetailsPatchRequest prepareModelForJsonMergePatch(
-            UpdateAgentDetailsPatchRequest updateAgentDetailsPatchRequest, boolean jsonMergePatchEnabled);
+    public interface UpdateAgentDetailsOptionsAccessor {
+        UpdateAgentDetailsOptions prepareModelForJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(UpdateAgentDetailsPatchRequest updateAgentDetailsPatchRequest);
+        boolean isJsonMergePatch(UpdateAgentDetailsOptions updateAgentDetailsOptions);
     }
 
-    public static void setUpdateAgentDetailsPatchRequestAccessor(UpdateAgentDetailsPatchRequestAccessor accessor) {
-        updateAgentDetailsPatchRequestAccessor = accessor;
+    public static void setUpdateAgentDetailsOptionsAccessor(UpdateAgentDetailsOptionsAccessor accessor) {
+        updateAgentDetailsOptionsAccessor = accessor;
     }
 
-    public static UpdateAgentDetailsPatchRequestAccessor getUpdateAgentDetailsPatchRequestAccessor() {
-        return updateAgentDetailsPatchRequestAccessor;
+    public static UpdateAgentDetailsOptionsAccessor getUpdateAgentDetailsOptionsAccessor() {
+        return updateAgentDetailsOptionsAccessor;
     }
 }
