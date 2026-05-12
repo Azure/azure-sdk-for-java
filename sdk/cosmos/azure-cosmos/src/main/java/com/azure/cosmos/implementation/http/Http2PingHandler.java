@@ -88,13 +88,11 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             checkIntervalMs,
             TimeUnit.MILLISECONDS);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Http2PingHandler installed on channel {}, interval={}s, timeout={}s, checkEvery={}ms",
-                ctx.channel().id().asShortText(),
-                TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
-                TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
-                checkIntervalMs);
-        }
+        logger.debug("Http2PingHandler installed on channel {}, interval={}s, timeout={}s, checkEvery={}ms",
+            ctx.channel().id().asShortText(),
+            TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
+            TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
+            checkIntervalMs);
     }
 
     @Override
@@ -119,10 +117,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             // Connection proved responsive — clear degraded flag if it was set
             if (ctx.channel().hasAttr(PING_HEALTH_DEGRADED)) {
                 ctx.channel().attr(PING_HEALTH_DEGRADED).set(null);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("PING ACK received, connection {} marked healthy",
-                        ctx.channel().id().asShortText());
-                }
+                logger.debug("PING ACK received, connection {} marked healthy",
+                    ctx.channel().id().asShortText());
             }
         }
         super.channelRead(ctx, msg);
@@ -181,9 +177,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
                 .addListener(f -> {
                     if (f.isSuccess()) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
-                        }
+                        logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
                     } else {
                         pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
                         logger.info("PING #{} send failed on channel {}: {}",
