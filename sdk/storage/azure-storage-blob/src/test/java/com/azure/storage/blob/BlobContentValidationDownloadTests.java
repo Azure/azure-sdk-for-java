@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -424,6 +425,56 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         // and: "expected data downloaded"
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
         assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
+    }
+
+    @Test
+    public void verifyProgressListenerIsCompatibleWithContentValidation() {
+        byte[] data = getRandomByteArray(10 * Constants.MB);
+
+        BlobClient client = cc.getBlobClient(generateBlobName());
+        client.upload(BinaryData.fromBytes(data));
+
+        MockProgressListener mockListenerWithContentVal = new MockProgressListener();
+        MockProgressListener mockListenerWithoutContentVal = new MockProgressListener();
+
+        ParallelTransferOptions parallelOptionsWithContentVal
+            = new ParallelTransferOptions().setProgressListener(mockListenerWithContentVal);
+        ParallelTransferOptions parallelOptionsWithoutContentVal
+            = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
+
+        File outFileWithContentVal = new File(prefix + "_withcontentval.txt");
+        createdFiles.add(outFileWithContentVal);
+        outFileWithContentVal.deleteOnExit();
+        File outFileWithoutContentVal = new File(prefix + "_withoutcontentval.txt");
+        createdFiles.add(outFileWithoutContentVal);
+        outFileWithoutContentVal.deleteOnExit();
+
+        BlobDownloadToFileOptions optionsWithContentVal
+            = new BlobDownloadToFileOptions(outFileWithContentVal.getAbsolutePath())
+                .setParallelTransferOptions(parallelOptionsWithContentVal)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        BlobDownloadToFileOptions optionsWithoutContentVal
+            = new BlobDownloadToFileOptions(outFileWithoutContentVal.getAbsolutePath())
+                .setParallelTransferOptions(parallelOptionsWithoutContentVal);
+
+        client.downloadToFileWithResponse(optionsWithContentVal, null, Context.NONE);
+        client.downloadToFileWithResponse(optionsWithoutContentVal, null, Context.NONE);
+
+        assertEquals(mockListenerWithContentVal.getReportedByteCount(),
+            mockListenerWithoutContentVal.getReportedByteCount());
+    }
+
+    private static final class MockProgressListener implements ProgressListener {
+        private long reportedByteCount;
+
+        @Override
+        public void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred;
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount;
+        }
     }
 
     static Stream<Arguments> channelReadDataSupplier() {

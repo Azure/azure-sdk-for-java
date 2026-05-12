@@ -152,22 +152,6 @@ public final class ContentValidationModeResolver {
     }
 
     /**
-     * Validates that parallel transfer progress reporting is not combined with CRC64/AUTO content validation.
-     *
-     * @param parallelTransferOptions May be {@code null}.
-     * @param contentValidationAlgorithm Transfer validation algorithm from options.
-     * @throws IllegalArgumentException if a progress listener is set and {@link #isContentValidationAlgorithmPresent} is true.
-     */
-    public static void validateProgressWithContentValidation(ParallelTransferOptions parallelTransferOptions,
-        ContentValidationAlgorithm contentValidationAlgorithm) {
-        if (parallelTransferOptions == null) {
-            return;
-        }
-        validateProgressWithContentValidation(parallelTransferOptions.getProgressListener(),
-            contentValidationAlgorithm);
-    }
-
-    /**
      * Validates that progress reporting is not combined with CRC64/AUTO content validation.
      *
      * @param progressListener Progress listener from {@link ParallelTransferOptions} or equivalent; may be null.
