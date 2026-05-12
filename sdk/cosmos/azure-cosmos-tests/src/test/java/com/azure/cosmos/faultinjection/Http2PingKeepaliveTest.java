@@ -171,6 +171,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
         System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
+        // Override threshold to 2 for faster test (default=5 aligned with Rust SDK)
+        System.setProperty("COSMOS.HTTP2_PING_FAILURE_THRESHOLD", "2");
         // Force single-connection pool so channel ID assertion is deterministic
         System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "1");
         System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "1");
@@ -201,9 +203,12 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             logger.info("Installing iptables DROP rule: {}", iptablesRule);
             Runtime.getRuntime().exec(new String[]{"bash", "-c", iptablesRule}).waitFor();
 
-            // Wait for PING timeout: 1s interval + 2s timeout + buffer = 5s
-            logger.info("Waiting 5s for PING timeout to close the connection...");
-            Thread.sleep(5_000);
+            // Wait for PING timeout with consecutive failure threshold=2 (test override):
+            // Round 1: 1s interval + 2s timeout = 3s (failure #1)
+            // Round 2: ~1s interval + 2s timeout = 3s (failure #2 ≥ threshold → close)
+            // Total ~6s + buffer = 10s
+            logger.info("Waiting 10s for consecutive PING timeouts to close the connection...");
+            Thread.sleep(10_000);
 
             // Remove iptables rule BEFORE attempting recovery read
             String iptablesRemove = String.format(

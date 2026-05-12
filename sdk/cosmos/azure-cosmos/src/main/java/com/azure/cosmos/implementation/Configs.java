@@ -159,9 +159,9 @@ public class Configs {
     private static final int DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS = 2;
     private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
     // Consecutive PING failures (timeout without ACK) before closing the connection.
-    // Default 2: tolerates 1 transient miss, closes on 2nd consecutive failure.
-    // With interval=1s and timeout=2s, worst-case detection = 2*(1+2) = ~6s.
-    private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 2;
+    // Aligned with Rust SDK's http2_consecutive_failure_threshold = 5.
+    // With interval=1s and timeout=2s, worst-case detection = 5*(1+2) = ~15s.
+    private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 5;
     private static final String HTTP2_PING_FAILURE_THRESHOLD = "COSMOS.HTTP2_PING_FAILURE_THRESHOLD";
 
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
