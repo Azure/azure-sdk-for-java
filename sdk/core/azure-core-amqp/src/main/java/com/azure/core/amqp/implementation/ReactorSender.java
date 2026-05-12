@@ -420,9 +420,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 return Mono.defer(() -> Mono.just(maxBatchSize));
             }
 
-            return RetryUtil
-                .withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), retryOptions,
-                    activeTimeoutMessage)
+            // Don't wrap in RetryUtil.withRetry: getEndpointStates() is a cache(1) Flux, so once it
+            // reaches a terminal state (ACTIVE, COMPLETE, or error), every subscription replays that
+            // cached signal. Retrying on error would just replay the same error after the backoff
+            // delay without producing new network activity.
+            return getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE)
                 .then(Mono.fromCallable(() -> {
                     final Map<Symbol, Object> remoteProperties = sender.getRemoteProperties();
                     if (remoteProperties != null
