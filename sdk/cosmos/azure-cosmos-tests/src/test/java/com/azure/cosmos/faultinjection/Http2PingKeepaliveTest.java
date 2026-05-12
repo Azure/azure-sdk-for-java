@@ -27,11 +27,15 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Standalone test for HTTP/2 PING keepalive handler.
- * Proves that the Http2PingHandler sends PING frames on idle connections
- * and that the connection survives the idle period.
- *
+ * HTTP/2 PING keepalive handler tests.
+ * <p>
+ * Test 1: Verifies PINGs are sent at the configured interval on idle connections.
+ * Test 2: Uses iptables DROP to blackhole PING ACKs, verifying the handler closes
+ *         the broken connection and a subsequent request uses a new connection.
+ * <p>
  * Run in Docker with --cap-add=NET_ADMIN (group: manual-http-network-fault).
+ * Requires: HTTP/2 capable Cosmos DB account.
+ * Does NOT require thin client — only COSMOS.HTTP2_ENABLED=true.
  */
 public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
@@ -52,9 +56,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = 120_000)
     public void beforeClass() {
-        // Enable HTTP/2 for this test
+        // Enable HTTP/2 — thin client is NOT required for PING tests
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
@@ -69,7 +72,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     public void afterClass() {
         safeClose(this.client);
         System.clearProperty("COSMOS.HTTP2_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
     }
 
     @BeforeMethod(groups = {"manual-http-network-fault"})
@@ -82,56 +84,155 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         logger.info("=== END: {} ===", method.getName());
     }
 
+    /**
+     * Test 1: Verifies PING frames are sent at the configured interval on idle connections
+     * and that PING ACKs are received from the server.
+     * <p>
+     * With interval=1s, a 10s idle period should produce ~10 PINGs.
+     */
     @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
-    public void pingFramesSentAndAcknowledgedOnIdleConnection() throws Exception {
-        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
+    public void pingFramesSentAtConfiguredInterval() throws Exception {
+        // Use default interval=1s, timeout=2s (aligned with Rust SDK)
+        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
+        System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
 
         try {
             safeClose(this.client);
 
-            CosmosClientBuilder builder = new CosmosClientBuilder()
+            this.client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(ConsistencyLevel.SESSION)
-                .gatewayMode();
-
-            this.client = builder.buildAsyncClient();
+                .gatewayMode()
+                .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Establish H2 connection with a warm-up read — this triggers PING handler installation
-            String initialParentChannelId = readAndGetParentChannelId();
-            logger.info("Initial parentChannelId: {}", initialParentChannelId);
+            // Reset global counters before measurement
+            int baselineSent = Http2PingHandler.getGlobalPingsSent();
+            int baselineAcks = Http2PingHandler.getGlobalPingAcksReceived();
 
-            // Let the connection go idle — PINGs should fire every 3s
-            logger.info("Waiting 20s for PING frames to be sent on idle connection...");
-            Thread.sleep(20_000);
+            // Warm-up read — triggers H2 connection + PING handler installation
+            String initialChannelId = readAndGetParentChannelId();
+            logger.info("Initial parentChannelId: {}", initialChannelId);
 
-            // Recovery read — proves connection is still alive
-            String recoveryParentChannelId = readAndGetParentChannelId();
+            // Let the connection go idle for 10s — with 1s interval, expect ~10 PINGs
+            logger.info("Waiting 10s for PING frames on idle connection (interval=1s)...");
+            Thread.sleep(10_000);
 
-            // Get PING counters from the auto-installed handler
-            int sentCount = Http2PingHandler.getGlobalPingsSent();
-            int ackCount = Http2PingHandler.getGlobalPingAcksReceived();
+            int sentCount = Http2PingHandler.getGlobalPingsSent() - baselineSent;
+            int ackCount = Http2PingHandler.getGlobalPingAcksReceived() - baselineAcks;
 
-            logger.info("RESULT: initial={}, recovery={}, SAME_CONNECTION={}, pingsSent={}, pingAcksReceived={}",
-                initialParentChannelId, recoveryParentChannelId,
-                initialParentChannelId.equals(recoveryParentChannelId), sentCount, ackCount);
+            // Recovery read — proves connection survived idle period
+            String recoveryChannelId = readAndGetParentChannelId();
 
+            logger.info("RESULT: initial={}, recovery={}, SAME={}, pingsSent={}, pingAcksReceived={}",
+                initialChannelId, recoveryChannelId,
+                initialChannelId.equals(recoveryChannelId), sentCount, ackCount);
+
+            // With 1s interval and 10s idle, we expect at least 5 PINGs (conservative bound)
             assertThat(sentCount)
-                .as("PINGs sent should be > 0 — proves the manual PING handler is actively sending frames")
-                .isGreaterThan(0);
+                .as("With 1s interval over 10s idle, expect at least 5 PINGs sent")
+                .isGreaterThanOrEqualTo(5);
 
             assertThat(ackCount)
-                .as("PING ACKs received should be > 0 — proves server acknowledged PINGs")
-                .isGreaterThan(0);
+                .as("All sent PINGs should be ACKed by the server")
+                .isGreaterThanOrEqualTo(5);
 
-            // NOTE: We don't assert same connection because pool eviction behavior varies
-            // across account types (thin client vs standard). The core assertion is that
-            // PINGs are sent and ACKed — keepalive traffic is flowing.
-            logger.info("PING keepalive verified: {} PINGs sent, {} ACKs received", sentCount, ackCount);
+            // Connection should be reused (PINGs kept it alive)
+            assertThat(recoveryChannelId)
+                .as("Connection should survive idle period — PING keepalive prevents eviction")
+                .isEqualTo(initialChannelId);
+
+            logger.info("PING interval test passed: {} PINGs sent, {} ACKs received in 10s", sentCount, ackCount);
         } finally {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
+        }
+    }
+
+    /**
+     * Test 2: Uses iptables to blackhole all traffic to the Cosmos DB gateway port,
+     * preventing PING ACKs from arriving. Verifies the handler closes the broken
+     * connection and a subsequent request (after removing the iptables rule) uses
+     * a new/different connection.
+     * <p>
+     * Requires Docker with --cap-add=NET_ADMIN.
+     */
+    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
+    public void connectionClosedOnPingTimeout() throws Exception {
+        // Short interval + timeout for fast detection
+        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
+        System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
+        System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
+
+        try {
+            safeClose(this.client);
+
+            this.client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .gatewayMode()
+                .buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            // Warm-up read — establish H2 connection
+            String initialChannelId = readAndGetParentChannelId();
+            logger.info("Initial parentChannelId: {}", initialChannelId);
+
+            // Extract gateway host + port for iptables rule
+            String gatewayHost = extractHostFromEndpoint(TestConfigurations.HOST);
+            int gatewayPort = 443;
+            logger.info("Gateway host: {}, port: {}", gatewayHost, gatewayPort);
+
+            // Blackhole all traffic to gateway — prevents PING ACKs from arriving
+            String iptablesRule = String.format(
+                "iptables -A OUTPUT -p tcp --dport %d -d %s -j DROP", gatewayPort, gatewayHost);
+            logger.info("Installing iptables DROP rule: {}", iptablesRule);
+            Runtime.getRuntime().exec(new String[]{"bash", "-c", iptablesRule}).waitFor();
+
+            // Wait for PING timeout: 1s interval + 2s timeout + buffer = 5s
+            logger.info("Waiting 5s for PING timeout to close the connection...");
+            Thread.sleep(5_000);
+
+            // Remove iptables rule BEFORE attempting recovery read
+            String iptablesRemove = String.format(
+                "iptables -D OUTPUT -p tcp --dport %d -d %s -j DROP", gatewayPort, gatewayHost);
+            logger.info("Removing iptables DROP rule: {}", iptablesRemove);
+            Runtime.getRuntime().exec(new String[]{"bash", "-c", iptablesRemove}).waitFor();
+
+            // Small wait for network to stabilize
+            Thread.sleep(1_000);
+
+            // Recovery read — should succeed on a NEW connection
+            String recoveryChannelId = readAndGetParentChannelId();
+            logger.info("Recovery parentChannelId: {}", recoveryChannelId);
+
+            logger.info("RESULT: initial={}, recovery={}, DIFFERENT_CONNECTION={}",
+                initialChannelId, recoveryChannelId,
+                !initialChannelId.equals(recoveryChannelId));
+
+            // The connection MUST be different — the old one was closed by PING timeout
+            assertThat(recoveryChannelId)
+                .as("After PING timeout, the handler should have closed the connection. "
+                    + "The recovery request must use a new connection.")
+                .isNotEqualTo(initialChannelId);
+
+            logger.info("PING timeout test passed: connection {} was closed, new connection {} established",
+                initialChannelId, recoveryChannelId);
+        } finally {
+            // Safety: remove any leftover iptables rules
+            try {
+                String gatewayHost = extractHostFromEndpoint(TestConfigurations.HOST);
+                String cleanup = String.format(
+                    "iptables -D OUTPUT -p tcp --dport 443 -d %s -j DROP 2>/dev/null", gatewayHost);
+                Runtime.getRuntime().exec(new String[]{"bash", "-c", cleanup}).waitFor();
+            } catch (Exception ignored) {}
+
+            System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
         }
     }
@@ -163,6 +264,16 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         } catch (Exception e) {
             logger.warn("Error extracting parentChannelId", e);
             return "error-" + UUID.randomUUID().toString().substring(0, 8);
+        }
+    }
+
+    private static String extractHostFromEndpoint(String endpoint) {
+        // Extract hostname from "https://foo.documents.azure.com:443/"
+        try {
+            java.net.URI uri = new java.net.URI(endpoint);
+            return uri.getHost();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse endpoint: " + endpoint, e);
         }
     }
 }

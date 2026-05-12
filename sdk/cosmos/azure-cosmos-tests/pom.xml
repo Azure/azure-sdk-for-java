@@ -874,7 +874,6 @@ Licensed under the MIT License.
               </suiteXmlFiles>
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
-                <COSMOS.THINCLIENT_ENABLED>true</COSMOS.THINCLIENT_ENABLED>
               </systemPropertyVariables>
             </configuration>
           </plugin>
