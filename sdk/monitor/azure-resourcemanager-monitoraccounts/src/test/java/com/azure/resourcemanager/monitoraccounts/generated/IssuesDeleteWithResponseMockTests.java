@@ -28,7 +28,7 @@ public final class IssuesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.issues()
-            .deleteWithResponse("beyvpnqicvinvkjj", "dxrbuukzcle", "yhmlwpaztzp", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("itvgbmhrixkwm", "ijejvegrhbpn", "ixexcc", com.azure.core.util.Context.NONE);
 
     }
 }

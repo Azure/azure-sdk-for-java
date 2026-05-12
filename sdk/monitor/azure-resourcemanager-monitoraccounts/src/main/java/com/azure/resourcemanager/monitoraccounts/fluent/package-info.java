@@ -4,6 +4,5 @@
 
 /**
  * Package containing the service clients for MonitorAccounts.
- * Monitor Management Client.
  */
 package com.azure.resourcemanager.monitoraccounts.fluent;

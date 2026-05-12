@@ -16,4 +16,12 @@ public final class AzureMonitorWorkspaceMetricsTests {
             .toObject(AzureMonitorWorkspaceMetrics.class);
         Assertions.assertTrue(model.enableAccessUsingResourcePermissions());
     }
+
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureMonitorWorkspaceMetrics model
+            = new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true);
+        model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceMetrics.class);
+        Assertions.assertTrue(model.enableAccessUsingResourcePermissions());
+    }
 }

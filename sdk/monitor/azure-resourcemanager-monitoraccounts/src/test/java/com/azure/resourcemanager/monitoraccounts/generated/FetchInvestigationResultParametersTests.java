@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class FetchInvestigationResultParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FetchInvestigationResultParameters model = BinaryData.fromString("{\"investigationId\":\"xuutkncwscwsv\"}")
+        FetchInvestigationResultParameters model = BinaryData.fromString("{\"investigationId\":\"quxvypomgkop\"}")
             .toObject(FetchInvestigationResultParameters.class);
-        Assertions.assertEquals("xuutkncwscwsv", model.investigationId());
+        Assertions.assertEquals("quxvypomgkop", model.investigationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchInvestigationResultParameters model
-            = new FetchInvestigationResultParameters().withInvestigationId("xuutkncwscwsv");
+            = new FetchInvestigationResultParameters().withInvestigationId("quxvypomgkop");
         model = BinaryData.fromObject(model).toObject(FetchInvestigationResultParameters.class);
-        Assertions.assertEquals("xuutkncwscwsv", model.investigationId());
+        Assertions.assertEquals("quxvypomgkop", model.investigationId());
     }
 }

@@ -23,7 +23,7 @@ public final class IssuesListAlertsWithResponseMockTests {
     @Test
     public void testListAlertsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"wpusdsttwvogv\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"ejdcngqqmoakuf\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-02-19T04:41:04Z\",\"lastModifiedAt\":\"2021-04-18T15:55:11Z\"},{\"id\":\"rwr\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"rtwaenuuzko\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-27T02:00:49Z\",\"lastModifiedAt\":\"2021-07-21T07:24:26Z\"},{\"id\":\"nrfdw\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"uhhziuiefozbhdm\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-02-14T10:35:20Z\",\"lastModifiedAt\":\"2021-09-30T12:20:31Z\"},{\"id\":\"zqhof\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"maequiahxicslfa\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-11-28T10:16:40Z\",\"lastModifiedAt\":\"2021-04-27T14:59:29Z\"}],\"nextLink\":\"yylhalnswhccsp\"}";
+            = "{\"value\":[{\"id\":\"gg\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"sb\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-09-27T02:19:57Z\",\"lastModifiedAt\":\"2021-04-09T09:47:22Z\"},{\"id\":\"vtgsei\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"fiufx\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-10-13T18:52:56Z\",\"lastModifiedAt\":\"2021-03-09T23:26:19Z\"},{\"id\":\"irgne\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"twqmsniffcdmqnr\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-11-21T07:55:27Z\",\"lastModifiedAt\":\"2021-01-11T17:56:17Z\"},{\"id\":\"ijnkrxfrdd\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"ratiz\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-06-27T16:40:41Z\",\"lastModifiedAt\":\"2021-10-20T07:10:22Z\"}],\"nextLink\":\"sxiftozq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class IssuesListAlertsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedRelatedAlert response = manager.issues()
-            .listAlertsWithResponse("kby", "utwpfhp", "gmhrskdsnfdsdoak", new ListParameter().withFilter("dlmkkzevdl"),
-                com.azure.core.util.Context.NONE)
+            .listAlertsWithResponse("wiithtywub", "cbihwqk", "fdntwjchrdgoih",
+                new ListParameter().withFilter("mwctondzjluudfd"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wpusdsttwvogv", response.value().get(0).id());
+        Assertions.assertEquals("gg", response.value().get(0).id());
         Assertions.assertEquals(Relevance.NONE, response.value().get(0).relevance());
-        Assertions.assertEquals("yylhalnswhccsp", response.nextLink());
+        Assertions.assertEquals("sxiftozq", response.nextLink());
     }
 }

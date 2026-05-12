@@ -12,9 +12,9 @@ public final class MetricsContainerResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsContainerResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"wxosowzxcug\"},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"},{\"properties\":{\"provisioningState\":\"Failed\",\"version\":\"uecivyhz\"},\"id\":\"uojgj\",\"name\":\"wjue\",\"type\":\"otwmcdyt\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"xnrj\"},\"id\":\"gqwgxhniskxfbkp\",\"name\":\"cg\",\"type\":\"lwn\"}],\"nextLink\":\"hjdauwhvylwz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"hxbld\"},\"id\":\"wwrlkdmtncv\",\"name\":\"kotl\",\"type\":\"xdy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"cogjltdtbn\"},\"id\":\"adoocrkvc\",\"name\":\"khnvpam\",\"type\":\"gxqquezik\"}],\"nextLink\":\"ggxkallatmelwuip\"}")
             .toObject(MetricsContainerResourceListResult.class);
-        Assertions.assertEquals("wxosowzxcug", model.value().get(0).properties().version());
-        Assertions.assertEquals("hjdauwhvylwz", model.nextLink());
+        Assertions.assertEquals("hxbld", model.value().get(0).properties().version());
+        Assertions.assertEquals("ggxkallatmelwuip", model.nextLink());
     }
 }

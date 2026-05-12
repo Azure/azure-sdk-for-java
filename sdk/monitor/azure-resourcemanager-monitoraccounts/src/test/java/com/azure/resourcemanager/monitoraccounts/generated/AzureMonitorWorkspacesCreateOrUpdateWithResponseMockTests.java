@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.monitoraccounts.MonitorAccountsManager;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResource;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentityType;
@@ -28,7 +29,7 @@ public final class AzureMonitorWorkspacesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountId\":\"npkukghimdblx\",\"metrics\":{\"prometheusQueryEndpoint\":\"mfnjh\",\"internalId\":\"xw\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Failed\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"qreyfkzi\",\"dataCollectionEndpointResourceId\":\"jawneaiv\",\"dataCollectionRuleImmutableId\":\"czelpcirel\",\"ingestionEndpoints\":{\"metrics\":\"aenwabf\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"xbjhwuaanozjosph\",\"oulpjrv\",\"ag\",\"rvimjwosytxitcsk\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"umiekkezzi\",\"name\":\"hlyfjhdgqgg\",\"type\":\"bdunygaeqid\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"pxllrx\",\"tenantId\":\"jmoadsuv\",\"type\":\"None\",\"userAssignedIdentities\":{\"kgymareqnajxqug\":{\"principalId\":\"dmjsjqb\",\"clientId\":\"hyxxrwlycoduhpk\"},\"mzqa\":{\"principalId\":\"ky\",\"clientId\":\"beddgssofw\"},\"udfnbyxba\":{\"principalId\":\"rmnjijpx\",\"clientId\":\"q\"}}},\"location\":\"bjyvay\",\"tags\":{\"zrtuzq\":\"m\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"}";
+            = "{\"properties\":{\"accountId\":\"y\",\"metrics\":{\"prometheusQueryEndpoint\":\"wlmdjrkv\",\"internalId\":\"bvfvpdbod\",\"enableAccessUsingResourcePermissions\":true},\"provisioningState\":\"Succeeded\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"lhkrribdeibqipqk\",\"dataCollectionEndpointResourceId\":\"vxndz\",\"dataCollectionRuleImmutableId\":\"krefajpjo\",\"ingestionEndpoints\":{\"metrics\":\"qnyhgb\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"fxzsjabibsyst\",\"wfsdjpvkvpbj\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"zkdvncja\",\"name\":\"udurgkakmokz\",\"type\":\"jjklff\"},{\"properties\":{\"groupIds\":[\"wqlgzrf\",\"eeyebi\",\"ikayuhqlbjbsybb\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"ldgmfpgvmpip\",\"name\":\"slthaq\",\"type\":\"x\"},{\"properties\":{\"groupIds\":[\"u\",\"wbdsr\",\"zpdrhneu\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"d\",\"name\":\"ytisibir\",\"type\":\"gpikpzimejza\"},{\"properties\":{\"groupIds\":[\"xi\",\"vrmbzono\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"q\",\"name\":\"irgzp\",\"type\":\"rlazszrnw\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"fpwpjylwbt\",\"tenantId\":\"flsjc\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"jnalghf\":{\"principalId\":\"jvfbgofelja\",\"clientId\":\"qmqhldvriii\"},\"wspughftqsxhqx\":{\"principalId\":\"tvsexsowuel\",\"clientId\":\"hhahhxvrhmzkwpjg\"},\"botzingamvppho\":{\"principalId\":\"xukndxdigr\",\"clientId\":\"uufzdmsyqtfihw\"}}},\"location\":\"qzudphq\",\"tags\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"id\":\"apfcqdpsq\",\"name\":\"qvpsvuoymg\",\"type\":\"celve\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,20 +39,22 @@ public final class AzureMonitorWorkspacesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureMonitorWorkspaceResource response = manager.azureMonitorWorkspaces()
-            .define("koymkcd")
-            .withRegion("cjzkzivgvvcna")
-            .withExistingResourceGroup("hykojoxafnndlpic")
-            .withTags(mapOf("rdvstkwqqtch", "yrnxxmueedn", "mtdaa", "alm"))
-            .withProperties(new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ncvokotllxdyhg", new UserAssignedIdentity(), "oocrkvcikhnv",
-                    new UserAssignedIdentity(), "ggxkallatmelwuip", new UserAssignedIdentity())))
+            .define("inrfdwoyu")
+            .withRegion("stwit")
+            .withExistingResourceGroup("zkopb")
+            .withTags(mapOf("md", "evxccedcp", "zxltjcvn", "odn"))
+            .withProperties(new AzureMonitorWorkspace()
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("rcdlbhshfwpr", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("bjyvay", response.location());
-        Assertions.assertEquals("m", response.tags().get("zrtuzq"));
+        Assertions.assertEquals("qzudphq", response.location());
+        Assertions.assertEquals("dkfw", response.tags().get("nwcvtbvkayhmtnv"));
+        Assertions.assertTrue(response.properties().metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

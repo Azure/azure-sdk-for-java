@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.monitoraccounts.generated;
 
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResource;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentityType;
@@ -32,8 +33,10 @@ public final class AzureMonitorWorkspacesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new AzureMonitorWorkspace()
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .apply();
     }
 

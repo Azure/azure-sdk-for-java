@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricsContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricsContainer model = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"version\":\"ourqhakau\"}")
-            .toObject(MetricsContainer.class);
-        Assertions.assertEquals("ourqhakau", model.version());
+        MetricsContainer model
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"version\":\"umnzgmwznmabik\"}")
+                .toObject(MetricsContainer.class);
+        Assertions.assertEquals("umnzgmwznmabik", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsContainer model = new MetricsContainer().withVersion("ourqhakau");
+        MetricsContainer model = new MetricsContainer().withVersion("umnzgmwznmabik");
         model = BinaryData.fromObject(model).toObject(MetricsContainer.class);
-        Assertions.assertEquals("ourqhakau", model.version());
+        Assertions.assertEquals("umnzgmwznmabik", model.version());
     }
 }

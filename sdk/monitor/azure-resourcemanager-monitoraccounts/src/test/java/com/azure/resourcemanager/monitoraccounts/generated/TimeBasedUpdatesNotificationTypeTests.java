@@ -12,16 +12,15 @@ public final class TimeBasedUpdatesNotificationTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TimeBasedUpdatesNotificationType model
-            = BinaryData.fromString("{\"updateType\":\"TimeBased\",\"updateInterval\":\"spnqzahmgkb\"}")
+            = BinaryData.fromString("{\"updateType\":\"TimeBased\",\"updateInterval\":\"ozuhkfp\"}")
                 .toObject(TimeBasedUpdatesNotificationType.class);
-        Assertions.assertEquals("spnqzahmgkb", model.updateInterval());
+        Assertions.assertEquals("ozuhkfp", model.updateInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeBasedUpdatesNotificationType model
-            = new TimeBasedUpdatesNotificationType().withUpdateInterval("spnqzahmgkb");
+        TimeBasedUpdatesNotificationType model = new TimeBasedUpdatesNotificationType().withUpdateInterval("ozuhkfp");
         model = BinaryData.fromObject(model).toObject(TimeBasedUpdatesNotificationType.class);
-        Assertions.assertEquals("spnqzahmgkb", model.updateInterval());
+        Assertions.assertEquals("ozuhkfp", model.updateInterval());
     }
 }

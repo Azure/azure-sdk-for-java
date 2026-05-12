@@ -16,7 +16,9 @@ import com.azure.resourcemanager.monitoraccounts.models.BackgroundVisualization;
 import com.azure.resourcemanager.monitoraccounts.models.FetchInvestigationResultParameters;
 import com.azure.resourcemanager.monitoraccounts.models.InvestigationResult;
 import com.azure.resourcemanager.monitoraccounts.models.IssueProperties;
+import com.azure.resourcemanager.monitoraccounts.models.IssuePropertiesUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.IssueResource;
+import com.azure.resourcemanager.monitoraccounts.models.IssueResourceUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.ListParameter;
 import com.azure.resourcemanager.monitoraccounts.models.PagedRelatedAlert;
 import com.azure.resourcemanager.monitoraccounts.models.PagedRelatedResource;
@@ -68,6 +70,8 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
 
     private String createRelated;
 
+    private IssueResourceUpdate updateProperties;
+
     public IssueResourceImpl withExistingAccount(String resourceGroupName, String azureMonitorWorkspaceName) {
         this.resourceGroupName = resourceGroupName;
         this.azureMonitorWorkspaceName = azureMonitorWorkspaceName;
@@ -100,14 +104,14 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResourceImpl update() {
+        this.updateProperties = new IssueResourceUpdate();
         return this;
     }
 
     public IssueResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getIssues()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, this.innerModel(),
-                Context.NONE)
+            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -115,7 +119,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     public IssueResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getIssues()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, updateProperties, context)
             .getValue();
         return this;
     }
@@ -233,6 +237,11 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
 
     public IssueResourceImpl withRelated(String related) {
         this.createRelated = related;
+        return this;
+    }
+
+    public IssueResourceImpl withProperties(IssuePropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

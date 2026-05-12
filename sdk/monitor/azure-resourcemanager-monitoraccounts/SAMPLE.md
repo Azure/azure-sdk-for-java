@@ -39,6 +39,7 @@
 
 ```java
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitoraccounts.models.PublicNetworkAccess;
@@ -65,7 +66,9 @@ public final class AzureMonitorWorkspacesCreateOrUpdateSamples {
             .withRegion("eastus")
             .withExistingResourceGroup("rgazuremonitorworkspace")
             .withTags(mapOf())
-            .withProperties(new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withProperties(new AzureMonitorWorkspace()
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
@@ -182,6 +185,7 @@ public final class AzureMonitorWorkspacesListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResource;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentityType;
@@ -209,8 +213,10 @@ public final class AzureMonitorWorkspacesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new AzureMonitorWorkspace()
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .apply();
     }
 
@@ -564,7 +570,7 @@ public final class IssueSetBackgroundVisualizationSamples {
 
 ```java
 import com.azure.resourcemanager.monitoraccounts.models.IssueCreationNotificationType;
-import com.azure.resourcemanager.monitoraccounts.models.IssueProperties;
+import com.azure.resourcemanager.monitoraccounts.models.IssuePropertiesUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.IssueResource;
 import com.azure.resourcemanager.monitoraccounts.models.Notifications;
 import com.azure.resourcemanager.monitoraccounts.models.OnChangeNotificationType;
@@ -590,7 +596,7 @@ public final class IssueUpdateSamples {
             .getWithResponse("rg1", "myWorkspace", "3f29e1b2b05f8371595dc761fed8e8b3", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new IssueProperties().withTitle("Alert fired on VM CPU")
+            .withProperties(new IssuePropertiesUpdate().withTitle("Alert fired on VM CPU")
                 .withStatus(Status.NEW)
                 .withSeverity("Sev2")
                 .withImpactTime(OffsetDateTime.parse("2024-12-13T02:45:33"))

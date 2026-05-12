@@ -29,8 +29,8 @@ public final class IssuesSetBackgroundVisualizationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.issues()
-            .setBackgroundVisualizationWithResponse("q", "irgzp", "rlazszrnw",
-                new BackgroundVisualizationInner().withVisualization("iin"), com.azure.core.util.Context.NONE);
+            .setBackgroundVisualizationWithResponse("tnovqfzgemjdftul", "ltducea", "tmczuomejwcwwqi",
+                new BackgroundVisualizationInner().withVisualization("knssxmojm"), com.azure.core.util.Context.NONE);
 
     }
 }

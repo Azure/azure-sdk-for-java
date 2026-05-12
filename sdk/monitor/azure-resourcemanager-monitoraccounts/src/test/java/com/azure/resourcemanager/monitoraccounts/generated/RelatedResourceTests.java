@@ -13,17 +13,17 @@ public final class RelatedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelatedResource model = BinaryData.fromString(
-            "{\"id\":\"afkuwb\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"nwbmeh\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-07-04T17:06:56Z\",\"lastModifiedAt\":\"2021-08-31T11:04:22Z\"}")
+            "{\"id\":\"rsndsytgadgvra\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"en\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-03-19T05:46:56Z\",\"lastModifiedAt\":\"2021-08-22T21:19:43Z\"}")
             .toObject(RelatedResource.class);
-        Assertions.assertEquals("afkuwb", model.id());
-        Assertions.assertEquals(Relevance.RELEVANT, model.relevance());
+        Assertions.assertEquals("rsndsytgadgvra", model.id());
+        Assertions.assertEquals(Relevance.NONE, model.relevance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelatedResource model = new RelatedResource().withId("afkuwb").withRelevance(Relevance.RELEVANT);
+        RelatedResource model = new RelatedResource().withId("rsndsytgadgvra").withRelevance(Relevance.NONE);
         model = BinaryData.fromObject(model).toObject(RelatedResource.class);
-        Assertions.assertEquals("afkuwb", model.id());
-        Assertions.assertEquals(Relevance.RELEVANT, model.relevance());
+        Assertions.assertEquals("rsndsytgadgvra", model.id());
+        Assertions.assertEquals(Relevance.NONE, model.relevance());
     }
 }

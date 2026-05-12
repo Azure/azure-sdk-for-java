@@ -20,45 +20,44 @@ public final class IssueResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"gidyjrrf\",\"status\":\"InProgress\",\"severity\":\"aos\",\"investigations\":[{\"id\":\"xc\",\"createdAt\":\"2021-04-17T17:42:02Z\"}],\"impactTime\":\"2021-04-15T11:53:36Z\",\"investigationsCount\":771742090,\"background\":{\"type\":\"hocohslkev\",\"text\":\"ggzfbu\",\"details\":[{\"name\":\"vfaxkffeiith\",\"value\":\"vmezy\"},{\"name\":\"shxmzsbbzoggigrx\",\"value\":\"burvjxxjnspy\"},{\"name\":\"ptkoenkoukn\",\"value\":\"udwtiukbl\"},{\"name\":\"ngkpocipazy\",\"value\":\"o\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"npiucgygevqznty\",\"mrbpizcdrqj\",\"dpydn\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Canceled\"},\"id\":\"oejzi\",\"name\":\"w\",\"type\":\"fsj\"}")
+            "{\"properties\":{\"title\":\"zka\",\"status\":\"Mitigated\",\"severity\":\"uwbc\",\"investigations\":[{\"id\":\"wbme\",\"createdAt\":\"2021-05-28T09:26:13Z\"},{\"id\":\"seyvj\",\"createdAt\":\"2021-01-05T18:56:58Z\"}],\"impactTime\":\"2021-09-13T12:12:28Z\",\"investigationsCount\":641597955,\"background\":{\"type\":\"hspkdeemao\",\"text\":\"xagkvtmelmqkrh\",\"details\":[{\"name\":\"ljuahaquhcdh\",\"value\":\"duala\"},{\"name\":\"xqpvfadmw\",\"value\":\"rcrgvx\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"lf\",\"isgwbnbbeldawkz\",\"ali\",\"urqhaka\"],\"excludeDefaultActionGroups\":true},\"provisioningState\":\"Canceled\"},\"id\":\"fwxosowzxcu\",\"name\":\"i\",\"type\":\"jooxdjebw\"}")
             .toObject(IssueResourceInner.class);
-        Assertions.assertEquals("gidyjrrf", model.properties().title());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.properties().status());
-        Assertions.assertEquals("aos", model.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T11:53:36Z"), model.properties().impactTime());
-        Assertions.assertEquals("hocohslkev", model.properties().background().type());
-        Assertions.assertEquals("ggzfbu", model.properties().background().text());
-        Assertions.assertEquals("vfaxkffeiith", model.properties().background().details().get(0).name());
-        Assertions.assertEquals("vmezy", model.properties().background().details().get(0).value());
-        Assertions.assertEquals("npiucgygevqznty", model.properties().notifications().actionGroupIds().get(0));
-        Assertions.assertFalse(model.properties().notifications().excludeDefaultActionGroups());
+        Assertions.assertEquals("zka", model.properties().title());
+        Assertions.assertEquals(Status.MITIGATED, model.properties().status());
+        Assertions.assertEquals("uwbc", model.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:12:28Z"), model.properties().impactTime());
+        Assertions.assertEquals("hspkdeemao", model.properties().background().type());
+        Assertions.assertEquals("xagkvtmelmqkrh", model.properties().background().text());
+        Assertions.assertEquals("ljuahaquhcdh", model.properties().background().details().get(0).name());
+        Assertions.assertEquals("duala", model.properties().background().details().get(0).value());
+        Assertions.assertEquals("lf", model.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertTrue(model.properties().notifications().excludeDefaultActionGroups());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueResourceInner model = new IssueResourceInner().withProperties(new IssueProperties().withTitle("gidyjrrf")
-            .withStatus(Status.IN_PROGRESS)
-            .withSeverity("aos")
-            .withImpactTime(OffsetDateTime.parse("2021-04-15T11:53:36Z"))
-            .withBackground(new Background().withType("hocohslkev")
-                .withText("ggzfbu")
-                .withDetails(Arrays.asList(new BackgroundDetails().withName("vfaxkffeiith").withValue("vmezy"),
-                    new BackgroundDetails().withName("shxmzsbbzoggigrx").withValue("burvjxxjnspy"),
-                    new BackgroundDetails().withName("ptkoenkoukn").withValue("udwtiukbl"),
-                    new BackgroundDetails().withName("ngkpocipazy").withValue("o"))))
-            .withNotifications(new Notifications().withUpdateTypes(Arrays.asList(new IssueNotificationType()))
-                .withActionGroupIds(Arrays.asList("npiucgygevqznty", "mrbpizcdrqj", "dpydn"))
-                .withExcludeDefaultActionGroups(false)));
+        IssueResourceInner model = new IssueResourceInner().withProperties(new IssueProperties().withTitle("zka")
+            .withStatus(Status.MITIGATED)
+            .withSeverity("uwbc")
+            .withImpactTime(OffsetDateTime.parse("2021-09-13T12:12:28Z"))
+            .withBackground(new Background().withType("hspkdeemao")
+                .withText("xagkvtmelmqkrh")
+                .withDetails(Arrays.asList(new BackgroundDetails().withName("ljuahaquhcdh").withValue("duala"),
+                    new BackgroundDetails().withName("xqpvfadmw").withValue("rcrgvx"))))
+            .withNotifications(new Notifications()
+                .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType()))
+                .withActionGroupIds(Arrays.asList("lf", "isgwbnbbeldawkz", "ali", "urqhaka"))
+                .withExcludeDefaultActionGroups(true)));
         model = BinaryData.fromObject(model).toObject(IssueResourceInner.class);
-        Assertions.assertEquals("gidyjrrf", model.properties().title());
-        Assertions.assertEquals(Status.IN_PROGRESS, model.properties().status());
-        Assertions.assertEquals("aos", model.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T11:53:36Z"), model.properties().impactTime());
-        Assertions.assertEquals("hocohslkev", model.properties().background().type());
-        Assertions.assertEquals("ggzfbu", model.properties().background().text());
-        Assertions.assertEquals("vfaxkffeiith", model.properties().background().details().get(0).name());
-        Assertions.assertEquals("vmezy", model.properties().background().details().get(0).value());
-        Assertions.assertEquals("npiucgygevqznty", model.properties().notifications().actionGroupIds().get(0));
-        Assertions.assertFalse(model.properties().notifications().excludeDefaultActionGroups());
+        Assertions.assertEquals("zka", model.properties().title());
+        Assertions.assertEquals(Status.MITIGATED, model.properties().status());
+        Assertions.assertEquals("uwbc", model.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:12:28Z"), model.properties().impactTime());
+        Assertions.assertEquals("hspkdeemao", model.properties().background().type());
+        Assertions.assertEquals("xagkvtmelmqkrh", model.properties().background().text());
+        Assertions.assertEquals("ljuahaquhcdh", model.properties().background().details().get(0).name());
+        Assertions.assertEquals("duala", model.properties().background().details().get(0).value());
+        Assertions.assertEquals("lf", model.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertTrue(model.properties().notifications().excludeDefaultActionGroups());
     }
 }

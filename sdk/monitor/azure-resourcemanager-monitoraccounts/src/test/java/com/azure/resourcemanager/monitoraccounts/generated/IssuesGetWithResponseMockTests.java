@@ -22,7 +22,7 @@ public final class IssuesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"wlwnwxuqlcv\",\"status\":\"New\",\"severity\":\"ypatdooaojkniod\",\"investigations\":[{\"id\":\"oebwnujhemms\",\"createdAt\":\"2020-12-30T11:27:59Z\"}],\"impactTime\":\"2021-07-03T07:44:33Z\",\"investigationsCount\":640428654,\"background\":{\"type\":\"odtji\",\"text\":\"wj\",\"details\":[{\"name\":\"tkacj\",\"value\":\"efkdlf\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"fpagaowpulp\",\"blylsyxkqjnsj\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Succeeded\"},\"id\":\"gxsds\",\"name\":\"uem\",\"type\":\"sbzkf\"}";
+            = "{\"properties\":{\"title\":\"ccsnjvcdwxlpq\",\"status\":\"InProgress\",\"severity\":\"ftnkhtj\",\"investigations\":[{\"id\":\"i\",\"createdAt\":\"2021-09-20T22:34:13Z\"}],\"impactTime\":\"2021-03-03T16:10:02Z\",\"investigationsCount\":291919724,\"background\":{\"type\":\"tmtdhtmdvypgik\",\"text\":\"szywkbirryu\",\"details\":[{\"name\":\"hkjoqr\",\"value\":\"qqaatjinrvgou\"},{\"name\":\"mfiibfggj\",\"value\":\"ool\"},{\"name\":\"rwxkvtkkgl\",\"value\":\"qwjygvja\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"vkzuhbxvvyhgso\",\"byrqufeg\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Failed\"},\"id\":\"bnhlmc\",\"name\":\"l\",\"type\":\"dn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,18 @@ public final class IssuesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueResource response = manager.issues()
-            .getWithResponse("xiilivpdtiirqt", "qoaxoruzfgs", "uyfxrxxleptramxj", com.azure.core.util.Context.NONE)
+            .getWithResponse("rypqlmfeo", "erqwkyhkobopg", "edkowepbqpcrfk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wlwnwxuqlcv", response.properties().title());
-        Assertions.assertEquals(Status.NEW, response.properties().status());
-        Assertions.assertEquals("ypatdooaojkniod", response.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T07:44:33Z"), response.properties().impactTime());
-        Assertions.assertEquals("odtji", response.properties().background().type());
-        Assertions.assertEquals("wj", response.properties().background().text());
-        Assertions.assertEquals("tkacj", response.properties().background().details().get(0).name());
-        Assertions.assertEquals("efkdlf", response.properties().background().details().get(0).value());
-        Assertions.assertEquals("fpagaowpulp", response.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertEquals("ccsnjvcdwxlpq", response.properties().title());
+        Assertions.assertEquals(Status.IN_PROGRESS, response.properties().status());
+        Assertions.assertEquals("ftnkhtj", response.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T16:10:02Z"), response.properties().impactTime());
+        Assertions.assertEquals("tmtdhtmdvypgik", response.properties().background().type());
+        Assertions.assertEquals("szywkbirryu", response.properties().background().text());
+        Assertions.assertEquals("hkjoqr", response.properties().background().details().get(0).name());
+        Assertions.assertEquals("qqaatjinrvgou", response.properties().background().details().get(0).value());
+        Assertions.assertEquals("vkzuhbxvvyhgso", response.properties().notifications().actionGroupIds().get(0));
         Assertions.assertFalse(response.properties().notifications().excludeDefaultActionGroups());
     }
 }

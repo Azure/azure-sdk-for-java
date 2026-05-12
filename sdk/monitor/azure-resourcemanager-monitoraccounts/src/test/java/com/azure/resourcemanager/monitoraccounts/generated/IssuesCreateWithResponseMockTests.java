@@ -28,7 +28,7 @@ public final class IssuesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"vdnkfxusem\",\"status\":\"Closed\",\"severity\":\"zrmuhapfcqdps\",\"investigations\":[{\"id\":\"qvpsvuoymg\",\"createdAt\":\"2021-02-09T02:46Z\"}],\"impactTime\":\"2021-10-29T23:35:36Z\",\"investigationsCount\":841424592,\"background\":{\"type\":\"zrypqlmfeokerqw\",\"text\":\"hkobopgxedk\",\"details\":[{\"name\":\"pbqpcrfkbwccsn\",\"value\":\"vcdwxlpqekftn\"},{\"name\":\"htjsying\",\"value\":\"fq\"},{\"name\":\"tmtdhtmdvypgik\",\"value\":\"gszywk\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"zh\",\"hkjoqr\",\"qqaatjinrvgou\"],\"excludeDefaultActionGroups\":true},\"provisioningState\":\"Failed\"},\"id\":\"fggjioolvr\",\"name\":\"x\",\"type\":\"v\"}";
+            = "{\"properties\":{\"title\":\"f\",\"status\":\"New\",\"severity\":\"mrqemvvhmx\",\"investigations\":[{\"id\":\"rjfut\",\"createdAt\":\"2021-09-25T19:58:32Z\"}],\"impactTime\":\"2021-07-23T18:17:28Z\",\"investigationsCount\":658775576,\"background\":{\"type\":\"vewzcj\",\"text\":\"m\",\"details\":[{\"name\":\"mguaadraufa\",\"value\":\"tkahzo\"},{\"name\":\"ajjziuxxpshne\",\"value\":\"kulfg\"},{\"name\":\"lqubkwdlen\",\"value\":\"d\"},{\"name\":\"utujba\",\"value\":\"pjuohminyfl\"}]},\"notifications\":{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"uvwpklvxwmyg\",\"xpgpq\",\"hiszepnnbjcrxgib\",\"daxconfozauorsuk\"],\"excludeDefaultActionGroups\":false},\"provisioningState\":\"Succeeded\"},\"id\":\"lhlv\",\"name\":\"uuepzlrphwzsoldw\",\"type\":\"yuqdu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,32 +38,35 @@ public final class IssuesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueResource response = manager.issues()
-            .define("ofel")
-            .withExistingAccount("flsjc", "hszfjvfb")
-            .withProperties(new IssueProperties().withTitle("grqmqhldvrii")
-                .withStatus(Status.CLOSED)
-                .withSeverity("jnalghf")
-                .withImpactTime(OffsetDateTime.parse("2021-06-04T22:03:42Z"))
-                .withBackground(new Background().withType("digrjguufzdmsyqt")
-                    .withText("hwhbotzingamv")
-                    .withDetails(Arrays.asList(new BackgroundDetails().withName("o").withValue("zqzudph"))))
+            .define("maehvbbxurip")
+            .withExistingAccount("wcfzqljyxgt", "zheydbsdshmk")
+            .withProperties(new IssueProperties().withTitle("fnhtbaxkgxyw")
+                .withStatus(Status.MITIGATED)
+                .withSeverity("kpyklyhp")
+                .withImpactTime(OffsetDateTime.parse("2021-05-23T09:43:31Z"))
+                .withBackground(new Background().withType("lzedqbcvhzlhplo")
+                    .withText("kdl")
+                    .withDetails(Arrays.asList(new BackgroundDetails().withName("fbumlkx").withValue("rqjfsmlm"),
+                        new BackgroundDetails().withName("txhwgfws").withValue("tawc"),
+                        new BackgroundDetails().withName("ezbrhubskh").withValue("dyg"),
+                        new BackgroundDetails().withName("ookk").withValue("fqjbvleo"))))
                 .withNotifications(new Notifications()
                     .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType(),
                         new IssueNotificationType(), new IssueNotificationType()))
-                    .withActionGroupIds(Arrays.asList("fwynwcvtbvkay", "mtnvyq"))
+                    .withActionGroupIds(Arrays.asList("qtqzfavyv", "qqybarye", "ayjkqa"))
                     .withExcludeDefaultActionGroups(true)))
-            .withRelated("hwyg")
+            .withRelated("ehwagoh")
             .create();
 
-        Assertions.assertEquals("vdnkfxusem", response.properties().title());
-        Assertions.assertEquals(Status.CLOSED, response.properties().status());
-        Assertions.assertEquals("zrmuhapfcqdps", response.properties().severity());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T23:35:36Z"), response.properties().impactTime());
-        Assertions.assertEquals("zrypqlmfeokerqw", response.properties().background().type());
-        Assertions.assertEquals("hkobopgxedk", response.properties().background().text());
-        Assertions.assertEquals("pbqpcrfkbwccsn", response.properties().background().details().get(0).name());
-        Assertions.assertEquals("vcdwxlpqekftn", response.properties().background().details().get(0).value());
-        Assertions.assertEquals("zh", response.properties().notifications().actionGroupIds().get(0));
-        Assertions.assertTrue(response.properties().notifications().excludeDefaultActionGroups());
+        Assertions.assertEquals("f", response.properties().title());
+        Assertions.assertEquals(Status.NEW, response.properties().status());
+        Assertions.assertEquals("mrqemvvhmx", response.properties().severity());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T18:17:28Z"), response.properties().impactTime());
+        Assertions.assertEquals("vewzcj", response.properties().background().type());
+        Assertions.assertEquals("m", response.properties().background().text());
+        Assertions.assertEquals("mguaadraufa", response.properties().background().details().get(0).name());
+        Assertions.assertEquals("tkahzo", response.properties().background().details().get(0).value());
+        Assertions.assertEquals("uvwpklvxwmyg", response.properties().notifications().actionGroupIds().get(0));
+        Assertions.assertFalse(response.properties().notifications().excludeDefaultActionGroups());
     }
 }

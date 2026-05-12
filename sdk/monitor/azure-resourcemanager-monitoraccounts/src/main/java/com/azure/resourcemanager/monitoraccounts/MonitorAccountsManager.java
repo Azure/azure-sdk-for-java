@@ -44,7 +44,6 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to MonitorAccountsManager.
- * Monitor Management Client.
  */
 public final class MonitorAccountsManager {
     private Operations operations;

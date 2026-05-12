@@ -15,21 +15,21 @@ public final class RelatedAlertsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelatedAlertsInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"rmclfplphoxu\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"rpabg\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-09-03T21:00:54Z\",\"lastModifiedAt\":\"2021-06-14T01:08:13Z\"},{\"id\":\"bjtazqugxywpmu\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"fjz\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-07-09T03:38:01Z\",\"lastModifiedAt\":\"2021-10-04T23:57:44Z\"},{\"id\":\"q\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"ids\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-10-17T10:57:44Z\",\"lastModifiedAt\":\"2021-08-06T06:20:20Z\"},{\"id\":\"obglaocqxtcc\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"yudxytlmoy\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-06-06T16:13:27Z\",\"lastModifiedAt\":\"2021-01-11T20:27:51Z\"}]}")
+            "{\"value\":[{\"id\":\"uszdtmhrkwof\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"voqacpiexpbt\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-02-24T02:11:36Z\",\"lastModifiedAt\":\"2021-10-01T22:37:54Z\"},{\"id\":\"wo\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"washr\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-08-01T13:56:15Z\",\"lastModifiedAt\":\"2021-03-25T05:20:51Z\"},{\"id\":\"cnqxwbpokulpi\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"waasip\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-10-02T17:21:38Z\",\"lastModifiedAt\":\"2021-10-14T07:05:12Z\"},{\"id\":\"byuqerpqlp\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"cciuqgbdbutau\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-03-08T12:51:31Z\",\"lastModifiedAt\":\"2021-02-05T19:32:33Z\"}]}")
             .toObject(RelatedAlertsInner.class);
-        Assertions.assertEquals("rmclfplphoxu", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.RELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("uszdtmhrkwof", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelatedAlertsInner model = new RelatedAlertsInner()
-            .withValue(Arrays.asList(new RelatedAlert().withId("rmclfplphoxu").withRelevance(Relevance.RELEVANT),
-                new RelatedAlert().withId("bjtazqugxywpmu").withRelevance(Relevance.NONE),
-                new RelatedAlert().withId("q").withRelevance(Relevance.IRRELEVANT),
-                new RelatedAlert().withId("obglaocqxtcc").withRelevance(Relevance.NONE)));
+            .withValue(Arrays.asList(new RelatedAlert().withId("uszdtmhrkwof").withRelevance(Relevance.IRRELEVANT),
+                new RelatedAlert().withId("wo").withRelevance(Relevance.IRRELEVANT),
+                new RelatedAlert().withId("cnqxwbpokulpi").withRelevance(Relevance.NONE),
+                new RelatedAlert().withId("byuqerpqlp").withRelevance(Relevance.IRRELEVANT)));
         model = BinaryData.fromObject(model).toObject(RelatedAlertsInner.class);
-        Assertions.assertEquals("rmclfplphoxu", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.RELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("uszdtmhrkwof", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
     }
 }

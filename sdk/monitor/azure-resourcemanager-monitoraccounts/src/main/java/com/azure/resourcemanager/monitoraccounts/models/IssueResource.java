@@ -188,7 +188,7 @@ public interface IssueResource {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(IssueProperties properties);
+            Update withProperties(IssuePropertiesUpdate properties);
         }
     }
 

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitoraccounts.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,13 +16,17 @@ public final class AzureMonitorWorkspaceTests {
         AzureMonitorWorkspace model = BinaryData.fromString(
             "{\"accountId\":\"cukjf\",\"metrics\":{\"prometheusQueryEndpoint\":\"awxklr\",\"internalId\":\"lwckbasyypnddhs\",\"enableAccessUsingResourcePermissions\":true},\"provisioningState\":\"Canceled\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"ejk\",\"dataCollectionEndpointResourceId\":\"ynqgoulzndlikwyq\",\"dataCollectionRuleImmutableId\":\"fgibmadgakeq\",\"ingestionEndpoints\":{\"metrics\":\"yb\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"ytb\",\"iqfouflmmnkz\"],\"privateEndpoint\":{\"id\":\"dmgloug\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"tmut\",\"actionsRequired\":\"qktapspwgcuert\"},\"provisioningState\":\"Creating\"},\"id\":\"o\",\"name\":\"vqwhbmdgbbjfd\",\"type\":\"gmbmbexppbh\"},{\"properties\":{\"groupIds\":[\"ol\",\"p\"],\"privateEndpoint\":{\"id\":\"algbquxigjyjg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"yfhrtxilnerkujy\",\"actionsRequired\":\"l\"},\"provisioningState\":\"Deleting\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"},{\"properties\":{\"groupIds\":[\"zdn\",\"uj\"],\"privateEndpoint\":{\"id\":\"hmuouqfprwzwbn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"nwui\",\"actionsRequired\":\"a\"},\"provisioningState\":\"Deleting\"},\"id\":\"izuckyfihrfidfvz\",\"name\":\"dzuhtymwi\",\"type\":\"dkfthwxmnt\"},{\"properties\":{\"groupIds\":[\"opvkmijcm\"],\"privateEndpoint\":{\"id\":\"cufufsrpymz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ezcxtbzsgfyccsne\",\"actionsRequired\":\"dwzjeiach\"},\"provisioningState\":\"Creating\"},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"}],\"publicNetworkAccess\":\"Enabled\"}")
             .toObject(AzureMonitorWorkspace.class);
+        Assertions.assertTrue(model.metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMonitorWorkspace model = new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        AzureMonitorWorkspace model = new AzureMonitorWorkspace()
+            .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(true))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspace.class);
+        Assertions.assertTrue(model.metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

@@ -13,16 +13,16 @@ public final class MetricsContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsContainerResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"xqpvfadmw\"},\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"version\":\"rmslyzrpzbchckqq\"},\"id\":\"ioxiysuiizyn\",\"name\":\"edyatrwyhqmibzyh\",\"type\":\"itsmypyyn\"}")
             .toObject(MetricsContainerResourceInner.class);
-        Assertions.assertEquals("xqpvfadmw", model.properties().version());
+        Assertions.assertEquals("rmslyzrpzbchckqq", model.properties().version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsContainerResourceInner model
-            = new MetricsContainerResourceInner().withProperties(new MetricsContainer().withVersion("xqpvfadmw"));
+        MetricsContainerResourceInner model = new MetricsContainerResourceInner()
+            .withProperties(new MetricsContainer().withVersion("rmslyzrpzbchckqq"));
         model = BinaryData.fromObject(model).toObject(MetricsContainerResourceInner.class);
-        Assertions.assertEquals("xqpvfadmw", model.properties().version());
+        Assertions.assertEquals("rmslyzrpzbchckqq", model.properties().version());
     }
 }

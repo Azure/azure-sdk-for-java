@@ -15,29 +15,29 @@ public final class InvestigationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InvestigationResultInner model = BinaryData.fromString(
-            "{\"id\":\"deoj\",\"origin\":{\"addedBy\":\"bckhsmtxpsi\",\"addedByType\":\"Automatic\"},\"createdAt\":\"2021-02-02T01:52:53Z\",\"lastModifiedAt\":\"2021-03-12T10:20:21Z\",\"result\":\"pesapskrdqmhjj\"}")
+            "{\"id\":\"vmwy\",\"origin\":{\"addedBy\":\"fouyf\",\"addedByType\":\"Manual\"},\"createdAt\":\"2021-05-16T02:46:56Z\",\"lastModifiedAt\":\"2021-01-23T06:54:12Z\",\"result\":\"wiyzvqtmnubexkp\"}")
             .toObject(InvestigationResultInner.class);
-        Assertions.assertEquals("deoj", model.id());
-        Assertions.assertEquals("bckhsmtxpsi", model.origin().addedBy());
-        Assertions.assertEquals(AddedByType.AUTOMATIC, model.origin().addedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T01:52:53Z"), model.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T10:20:21Z"), model.lastModifiedAt());
-        Assertions.assertEquals("pesapskrdqmhjj", model.result());
+        Assertions.assertEquals("vmwy", model.id());
+        Assertions.assertEquals("fouyf", model.origin().addedBy());
+        Assertions.assertEquals(AddedByType.MANUAL, model.origin().addedByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T02:46:56Z"), model.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-23T06:54:12Z"), model.lastModifiedAt());
+        Assertions.assertEquals("wiyzvqtmnubexkp", model.result());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InvestigationResultInner model = new InvestigationResultInner().withId("deoj")
-            .withOrigin(new Origin().withAddedBy("bckhsmtxpsi").withAddedByType(AddedByType.AUTOMATIC))
-            .withCreatedAt(OffsetDateTime.parse("2021-02-02T01:52:53Z"))
-            .withLastModifiedAt(OffsetDateTime.parse("2021-03-12T10:20:21Z"))
-            .withResult("pesapskrdqmhjj");
+        InvestigationResultInner model = new InvestigationResultInner().withId("vmwy")
+            .withOrigin(new Origin().withAddedBy("fouyf").withAddedByType(AddedByType.MANUAL))
+            .withCreatedAt(OffsetDateTime.parse("2021-05-16T02:46:56Z"))
+            .withLastModifiedAt(OffsetDateTime.parse("2021-01-23T06:54:12Z"))
+            .withResult("wiyzvqtmnubexkp");
         model = BinaryData.fromObject(model).toObject(InvestigationResultInner.class);
-        Assertions.assertEquals("deoj", model.id());
-        Assertions.assertEquals("bckhsmtxpsi", model.origin().addedBy());
-        Assertions.assertEquals(AddedByType.AUTOMATIC, model.origin().addedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T01:52:53Z"), model.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T10:20:21Z"), model.lastModifiedAt());
-        Assertions.assertEquals("pesapskrdqmhjj", model.result());
+        Assertions.assertEquals("vmwy", model.id());
+        Assertions.assertEquals("fouyf", model.origin().addedBy());
+        Assertions.assertEquals(AddedByType.MANUAL, model.origin().addedByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T02:46:56Z"), model.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-23T06:54:12Z"), model.lastModifiedAt());
+        Assertions.assertEquals("wiyzvqtmnubexkp", model.result());
     }
 }

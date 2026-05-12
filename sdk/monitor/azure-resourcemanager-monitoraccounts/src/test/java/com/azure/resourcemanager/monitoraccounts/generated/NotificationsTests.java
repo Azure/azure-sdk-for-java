@@ -14,10 +14,10 @@ public final class NotificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Notifications model = BinaryData.fromString(
-            "{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"bfqkkr\",\"mpukgriw\",\"lzlfbxzpuz\"],\"excludeDefaultActionGroups\":true}")
+            "{\"updateTypes\":[{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"},{\"updateType\":\"IssueNotificationType\"}],\"actionGroupIds\":[\"vzunluthnnprnxi\",\"eilpjzuaejxdu\",\"tskzbbtdzumveek\"],\"excludeDefaultActionGroups\":false}")
             .toObject(Notifications.class);
-        Assertions.assertEquals("bfqkkr", model.actionGroupIds().get(0));
-        Assertions.assertTrue(model.excludeDefaultActionGroups());
+        Assertions.assertEquals("vzunluthnnprnxi", model.actionGroupIds().get(0));
+        Assertions.assertFalse(model.excludeDefaultActionGroups());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,10 +25,10 @@ public final class NotificationsTests {
         Notifications model = new Notifications()
             .withUpdateTypes(Arrays.asList(new IssueNotificationType(), new IssueNotificationType(),
                 new IssueNotificationType(), new IssueNotificationType()))
-            .withActionGroupIds(Arrays.asList("bfqkkr", "mpukgriw", "lzlfbxzpuz"))
-            .withExcludeDefaultActionGroups(true);
+            .withActionGroupIds(Arrays.asList("vzunluthnnprnxi", "eilpjzuaejxdu", "tskzbbtdzumveek"))
+            .withExcludeDefaultActionGroups(false);
         model = BinaryData.fromObject(model).toObject(Notifications.class);
-        Assertions.assertEquals("bfqkkr", model.actionGroupIds().get(0));
-        Assertions.assertTrue(model.excludeDefaultActionGroups());
+        Assertions.assertEquals("vzunluthnnprnxi", model.actionGroupIds().get(0));
+        Assertions.assertFalse(model.excludeDefaultActionGroups());
     }
 }

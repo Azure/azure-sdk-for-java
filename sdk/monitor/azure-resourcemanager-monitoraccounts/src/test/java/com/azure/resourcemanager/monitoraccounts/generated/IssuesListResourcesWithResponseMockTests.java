@@ -23,7 +23,7 @@ public final class IssuesListResourcesWithResponseMockTests {
     @Test
     public void testListResourcesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"xnavvwxq\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"y\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-07-30T07:40:44Z\",\"lastModifiedAt\":\"2021-05-22T21:00:43Z\"},{\"id\":\"owx\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"mdjrkvfgbvfvp\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2020-12-26T00:48:27Z\",\"lastModifiedAt\":\"2021-04-01T22:20:34Z\"}],\"nextLink\":\"cizsjqlhkrribdei\"}";
+            = "{\"value\":[{\"id\":\"rbgyefry\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"gaojf\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-04-10T10:30:40Z\",\"lastModifiedAt\":\"2021-07-25T05:28:25Z\"}],\"nextLink\":\"tmr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class IssuesListResourcesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedRelatedResource response = manager.issues()
-            .listResourcesWithResponse("acstwityk", "evxccedcp", "md",
-                new ListParameter().withFilter("dnwzxltjcvnhltiu"), com.azure.core.util.Context.NONE)
+            .listResourcesWithResponse("cluyovwxnbkf", "zzxscyhwzdgiruj", "zbomvzzbtdcqvpni",
+                new ListParameter().withFilter("jviylwdshfs"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xnavvwxq", response.value().get(0).id());
+        Assertions.assertEquals("rbgyefry", response.value().get(0).id());
         Assertions.assertEquals(Relevance.NONE, response.value().get(0).relevance());
-        Assertions.assertEquals("cizsjqlhkrribdei", response.nextLink());
+        Assertions.assertEquals("tmr", response.nextLink());
     }
 }

@@ -4,6 +4,5 @@
 
 /**
  * Package containing the data models for MonitorAccounts.
- * Monitor Management Client.
  */
 package com.azure.resourcemanager.monitoraccounts.models;

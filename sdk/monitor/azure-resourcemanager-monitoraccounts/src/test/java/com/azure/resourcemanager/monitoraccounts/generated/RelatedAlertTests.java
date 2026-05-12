@@ -13,17 +13,17 @@ public final class RelatedAlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelatedAlert model = BinaryData.fromString(
-            "{\"id\":\"dhbt\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"phywpnvj\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-06-01T03:51:12Z\",\"lastModifiedAt\":\"2021-05-21T17:30:58Z\"}")
+            "{\"id\":\"dqrhzoymib\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"qyib\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-04-13T12:13:43Z\",\"lastModifiedAt\":\"2021-07-04T22:46:20Z\"}")
             .toObject(RelatedAlert.class);
-        Assertions.assertEquals("dhbt", model.id());
-        Assertions.assertEquals(Relevance.NONE, model.relevance());
+        Assertions.assertEquals("dqrhzoymib", model.id());
+        Assertions.assertEquals(Relevance.RELEVANT, model.relevance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelatedAlert model = new RelatedAlert().withId("dhbt").withRelevance(Relevance.NONE);
+        RelatedAlert model = new RelatedAlert().withId("dqrhzoymib").withRelevance(Relevance.RELEVANT);
         model = BinaryData.fromObject(model).toObject(RelatedAlert.class);
-        Assertions.assertEquals("dhbt", model.id());
-        Assertions.assertEquals(Relevance.NONE, model.relevance());
+        Assertions.assertEquals("dqrhzoymib", model.id());
+        Assertions.assertEquals(Relevance.RELEVANT, model.relevance());
     }
 }

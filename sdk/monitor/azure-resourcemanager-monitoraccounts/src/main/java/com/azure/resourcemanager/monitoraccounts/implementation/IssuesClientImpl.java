@@ -40,6 +40,7 @@ import com.azure.resourcemanager.monitoraccounts.fluent.models.RelatedAlertsInne
 import com.azure.resourcemanager.monitoraccounts.fluent.models.RelatedResourcesInner;
 import com.azure.resourcemanager.monitoraccounts.implementation.models.IssueResourceListResult;
 import com.azure.resourcemanager.monitoraccounts.models.FetchInvestigationResultParameters;
+import com.azure.resourcemanager.monitoraccounts.models.IssueResourceUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.ListParameter;
 import reactor.core.publisher.Mono;
 
@@ -104,7 +105,7 @@ public final class IssuesClientImpl implements IssuesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureMonitorWorkspaceName") String azureMonitorWorkspaceName,
             @PathParam("issueName") String issueName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") IssueResourceInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") IssueResourceUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}")
@@ -115,7 +116,7 @@ public final class IssuesClientImpl implements IssuesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureMonitorWorkspaceName") String azureMonitorWorkspaceName,
             @PathParam("issueName") String issueName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") IssueResourceInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") IssueResourceUpdate properties,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -469,7 +470,7 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IssueResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String azureMonitorWorkspaceName, String issueName, IssueResourceInner properties) {
+        String azureMonitorWorkspaceName, String issueName, IssueResourceUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -493,7 +494,7 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueResourceInner> updateAsync(String resourceGroupName, String azureMonitorWorkspaceName,
-        String issueName, IssueResourceInner properties) {
+        String issueName, IssueResourceUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, azureMonitorWorkspaceName, issueName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -513,7 +514,7 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssueResourceInner> updateWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
-        String issueName, IssueResourceInner properties, Context context) {
+        String issueName, IssueResourceUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -535,7 +536,7 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssueResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
-        IssueResourceInner properties) {
+        IssueResourceUpdate properties) {
         return updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, properties, Context.NONE)
             .getValue();
     }

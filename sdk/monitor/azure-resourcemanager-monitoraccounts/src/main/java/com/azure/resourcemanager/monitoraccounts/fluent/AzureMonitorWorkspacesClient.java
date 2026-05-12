@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitoraccounts.fluent.models.AzureMonitorWorkspaceResourceInner;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResourceUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in AzureMonitorWorkspacesClient.
@@ -90,7 +91,7 @@ public interface AzureMonitorWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureMonitorWorkspaceResourceInner> updateWithResponse(String resourceGroupName,
-        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceInner properties, Context context);
+        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceUpdate properties, Context context);
 
     /**
      * Updates part of an Azure Monitor Workspace.
@@ -105,7 +106,7 @@ public interface AzureMonitorWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureMonitorWorkspaceResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName,
-        AzureMonitorWorkspaceResourceInner properties);
+        AzureMonitorWorkspaceResourceUpdate properties);
 
     /**
      * Deletes an Azure Monitor Workspace.

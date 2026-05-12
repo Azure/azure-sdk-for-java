@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.monitoraccounts.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Properties related to the metrics container in the Azure Monitor Workspace.
  */
-@Immutable
+@Fluent
 public final class AzureMonitorWorkspaceMetrics implements JsonSerializable<AzureMonitorWorkspaceMetrics> {
     /*
      * The Prometheus query endpoint for the Azure Monitor Workspace
@@ -34,7 +34,7 @@ public final class AzureMonitorWorkspaceMetrics implements JsonSerializable<Azur
     /**
      * Creates an instance of AzureMonitorWorkspaceMetrics class.
      */
-    private AzureMonitorWorkspaceMetrics() {
+    public AzureMonitorWorkspaceMetrics() {
     }
 
     /**
@@ -63,6 +63,19 @@ public final class AzureMonitorWorkspaceMetrics implements JsonSerializable<Azur
      */
     public Boolean enableAccessUsingResourcePermissions() {
         return this.enableAccessUsingResourcePermissions;
+    }
+
+    /**
+     * Set the enableAccessUsingResourcePermissions property: Flag that indicates whether to enable access using
+     * resource permissions.
+     * 
+     * @param enableAccessUsingResourcePermissions the enableAccessUsingResourcePermissions value to set.
+     * @return the AzureMonitorWorkspaceMetrics object itself.
+     */
+    public AzureMonitorWorkspaceMetrics
+        withEnableAccessUsingResourcePermissions(Boolean enableAccessUsingResourcePermissions) {
+        this.enableAccessUsingResourcePermissions = enableAccessUsingResourcePermissions;
+        return this;
     }
 
     /**

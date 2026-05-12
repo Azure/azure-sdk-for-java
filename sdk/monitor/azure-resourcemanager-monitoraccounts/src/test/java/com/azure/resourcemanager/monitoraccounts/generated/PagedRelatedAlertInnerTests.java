@@ -13,10 +13,10 @@ public final class PagedRelatedAlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedRelatedAlertInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"nmic\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"vce\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-05-19T21:10:27Z\",\"lastModifiedAt\":\"2021-03-30T09:51:22Z\"}],\"nextLink\":\"ovnotyfjfcnjbkcn\"}")
+            "{\"value\":[{\"id\":\"fqvm\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"xozap\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-05-07T03:57:21Z\",\"lastModifiedAt\":\"2021-06-19T06:02:18Z\"},{\"id\":\"xprglyatddc\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"bcuejrjxgci\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-11-01T15:51:46Z\",\"lastModifiedAt\":\"2021-10-12T15:58:19Z\"}],\"nextLink\":\"osx\"}")
             .toObject(PagedRelatedAlertInner.class);
-        Assertions.assertEquals("nmic", model.value().get(0).id());
-        Assertions.assertEquals(Relevance.RELEVANT, model.value().get(0).relevance());
-        Assertions.assertEquals("ovnotyfjfcnjbkcn", model.nextLink());
+        Assertions.assertEquals("fqvm", model.value().get(0).id());
+        Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
+        Assertions.assertEquals("osx", model.nextLink());
     }
 }

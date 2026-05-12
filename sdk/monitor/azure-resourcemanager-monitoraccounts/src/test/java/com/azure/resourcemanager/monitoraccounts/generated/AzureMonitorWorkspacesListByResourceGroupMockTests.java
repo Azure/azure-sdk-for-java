@@ -24,7 +24,7 @@ public final class AzureMonitorWorkspacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountId\":\"doqmcbxvwvxys\",\"metrics\":{\"prometheusQueryEndpoint\":\"hsfxoblytkb\",\"internalId\":\"pe\",\"enableAccessUsingResourcePermissions\":true},\"provisioningState\":\"Failed\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"vrnsvshqjohxc\",\"dataCollectionEndpointResourceId\":\"bfovasrruvwbhsq\",\"dataCollectionRuleImmutableId\":\"ubcgjbirxb\",\"ingestionEndpoints\":{\"metrics\":\"srfbjfdtwss\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"jzbexilzznfq\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"mqtaruoujmkcjh\",\"name\":\"qytjrybnwjewgd\",\"type\":\"jervnaenqpehi\"},{\"properties\":{\"groupIds\":[\"gmifthnzd\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"nayqi\",\"name\":\"ynduha\",\"type\":\"hqlkthumaqo\"},{\"properties\":{\"groupIds\":[\"cdui\",\"r\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"mvaolps\",\"name\":\"lqlfm\",\"type\":\"dnbbglzps\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"cwyhzdxssa\",\"tenantId\":\"zmnvdfznudaod\",\"type\":\"None\",\"userAssignedIdentities\":{\"iwjmygtdssls\":{\"principalId\":\"cblylpstdbhhxsr\",\"clientId\":\"zucerscdntnev\"},\"hhszh\":{\"principalId\":\"mweriofzpy\",\"clientId\":\"emwabnet\"},\"pp\":{\"principalId\":\"plvwiwubmwmbes\",\"clientId\":\"nkww\"},\"mkqzeqqkdltfzxmh\":{\"principalId\":\"lcxog\",\"clientId\":\"konzmnsik\"}}},\"location\":\"hgure\",\"tags\":{\"xwak\":\"wobdagxtibqdx\",\"lbpodxunk\":\"ogqxndlkzgxhuri\",\"lrb\":\"ebxmubyynt\"},\"id\":\"tkoievseotgq\",\"name\":\"l\",\"type\":\"tmuwlauwzi\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountId\":\"axoruzfgsquy\",\"metrics\":{\"prometheusQueryEndpoint\":\"xxle\",\"internalId\":\"ramxjezwlwnw\",\"enableAccessUsingResourcePermissions\":false},\"provisioningState\":\"Failed\",\"defaultIngestionSettings\":{\"dataCollectionRuleResourceId\":\"dy\",\"dataCollectionEndpointResourceId\":\"tdooaoj\",\"dataCollectionRuleImmutableId\":\"iodkooebwnujhem\",\"ingestionEndpoints\":{\"metrics\":\"vdkcrodtj\"}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"fltkacjv\",\"f\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"akggkfpag\",\"name\":\"owpulpq\",\"type\":\"lyls\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"nsj\",\"tenantId\":\"vti\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nqicvinvkjjxdxrb\":{\"principalId\":\"sz\",\"clientId\":\"mpsbzkfzbeyv\"},\"ztzp\":{\"principalId\":\"kzclewyh\",\"clientId\":\"wp\"}}},\"location\":\"ncckw\",\"tags\":{\"ppriol\":\"qwhxxbuyqaxzfeqz\",\"altol\":\"or\",\"wcsdbnwdcfhucq\":\"ncwsob\",\"vxb\":\"pfuvglsbjjca\"},\"id\":\"t\",\"name\":\"udutnco\",\"type\":\"mr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,15 @@ public final class AzureMonitorWorkspacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AzureMonitorWorkspaceResource> response
-            = manager.azureMonitorWorkspaces().listByResourceGroup("ivetvtcq", com.azure.core.util.Context.NONE);
+            = manager.azureMonitorWorkspaces().listByResourceGroup("xiilivpdtiirqt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hgure", response.iterator().next().location());
-        Assertions.assertEquals("wobdagxtibqdx", response.iterator().next().tags().get("xwak"));
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
+        Assertions.assertEquals("ncckw", response.iterator().next().location());
+        Assertions.assertEquals("qwhxxbuyqaxzfeqz", response.iterator().next().tags().get("ppriol"));
+        Assertions
+            .assertFalse(response.iterator().next().properties().metrics().enableAccessUsingResourcePermissions());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
             response.iterator().next().properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

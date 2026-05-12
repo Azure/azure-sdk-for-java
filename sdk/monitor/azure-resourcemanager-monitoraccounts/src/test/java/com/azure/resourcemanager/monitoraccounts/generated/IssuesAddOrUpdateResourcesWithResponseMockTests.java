@@ -25,7 +25,7 @@ public final class IssuesAddOrUpdateResourcesWithResponseMockTests {
     @Test
     public void testAddOrUpdateResourcesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"wqlgzrf\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"eyebizikayuhql\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-03-25T05:44:29Z\",\"lastModifiedAt\":\"2021-09-25T08:08:37Z\"},{\"id\":\"ybbqwrv\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"dgmfpgvmpipasl\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-05-25T23:49:35Z\",\"lastModifiedAt\":\"2021-05-09T14:17:26Z\"},{\"id\":\"fxssm\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"twbdsrezpdrhn\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-09-27T12:02:20Z\",\"lastModifiedAt\":\"2020-12-25T00:27:30Z\"}]}";
+            = "{\"value\":[{\"id\":\"n\",\"relevance\":\"None\",\"origin\":{\"addedBy\":\"ypsxjvfoim\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-05-25T16:28:48Z\",\"lastModifiedAt\":\"2021-01-22T12:45:16Z\"},{\"id\":\"ircizjxvy\",\"relevance\":\"Relevant\",\"origin\":{\"addedBy\":\"ceacvlhvygdy\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-04-02T04:25:09Z\",\"lastModifiedAt\":\"2021-02-08T02:04:14Z\"},{\"id\":\"rtwnawjslbi\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"ojgcyzt\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-06-12T09:34:33Z\",\"lastModifiedAt\":\"2021-08-23T17:28:50Z\"},{\"id\":\"nbaeqphchqn\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"rpxeh\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-08-05T07:10:42Z\",\"lastModifiedAt\":\"2021-10-20T16:41:45Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,15 @@ public final class IssuesAddOrUpdateResourcesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RelatedResources response = manager.issues()
-            .addOrUpdateResourcesWithResponse("qipqkghvxndz", "mkrefajpjorwkq", "yhgbijtjivfx",
+            .addOrUpdateResourcesWithResponse("hirctymoxoftpipi", "yczuhxacpq", "lihhyuspskasdvlm",
                 new RelatedResourcesInner().withValue(
-                    Arrays.asList(new RelatedResource().withId("jabibsystawf").withRelevance(Relevance.IRRELEVANT),
-                        new RelatedResource().withId("abudurgk").withRelevance(Relevance.IRRELEVANT))),
+                    Arrays.asList(new RelatedResource().withId("dgzxulucvpamrsr").withRelevance(Relevance.RELEVANT),
+                        new RelatedResource().withId("qjzgxmrhublw").withRelevance(Relevance.NONE),
+                        new RelatedResource().withId("hej").withRelevance(Relevance.IRRELEVANT))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wqlgzrf", response.value().get(0).id());
-        Assertions.assertEquals(Relevance.IRRELEVANT, response.value().get(0).relevance());
+        Assertions.assertEquals("n", response.value().get(0).id());
+        Assertions.assertEquals(Relevance.NONE, response.value().get(0).relevance());
     }
 }

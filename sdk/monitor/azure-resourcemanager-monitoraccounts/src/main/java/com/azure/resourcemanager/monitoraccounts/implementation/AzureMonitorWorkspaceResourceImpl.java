@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitoraccounts.fluent.models.AzureMonitorWorkspaceResourceInner;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResource;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResourceUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
@@ -81,6 +82,8 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
 
     private String azureMonitorWorkspaceName;
 
+    private AzureMonitorWorkspaceResourceUpdate updateProperties;
+
     public AzureMonitorWorkspaceResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -110,13 +113,14 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
     }
 
     public AzureMonitorWorkspaceResourceImpl update() {
+        this.updateProperties = new AzureMonitorWorkspaceResourceUpdate();
         return this;
     }
 
     public AzureMonitorWorkspaceResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAzureMonitorWorkspaces()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -124,7 +128,7 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
     public AzureMonitorWorkspaceResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAzureMonitorWorkspaces()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, updateProperties, context)
             .getValue();
         return this;
     }
@@ -164,17 +168,36 @@ public final class AzureMonitorWorkspaceResourceImpl implements AzureMonitorWork
     }
 
     public AzureMonitorWorkspaceResourceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public AzureMonitorWorkspaceResourceImpl withProperties(AzureMonitorWorkspace properties) {
-        this.innerModel().withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProperties(properties);
+            return this;
+        } else {
+            this.updateProperties.withProperties(properties);
+            return this;
+        }
     }
 
     public AzureMonitorWorkspaceResourceImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

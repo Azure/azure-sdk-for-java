@@ -7,6 +7,7 @@ package com.azure.resourcemanager.monitoraccounts.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.monitoraccounts.fluent.models.AzureMonitorWorkspaceResourceInner;
 import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspace;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceMetrics;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.monitoraccounts.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitoraccounts.models.PublicNetworkAccess;
@@ -23,6 +24,7 @@ public final class AzureMonitorWorkspaceResourceInnerTests {
             .toObject(AzureMonitorWorkspaceResourceInner.class);
         Assertions.assertEquals("bdkvwrwjf", model.location());
         Assertions.assertEquals("nhutjeltmrldhugj", model.tags().get("zdatqxhocdg"));
+        Assertions.assertFalse(model.properties().metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
@@ -31,7 +33,9 @@ public final class AzureMonitorWorkspaceResourceInnerTests {
     public void testSerialize() throws Exception {
         AzureMonitorWorkspaceResourceInner model = new AzureMonitorWorkspaceResourceInner().withLocation("bdkvwrwjf")
             .withTags(mapOf("zdatqxhocdg", "nhutjeltmrldhugj"))
-            .withProperties(new AzureMonitorWorkspace().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .withProperties(new AzureMonitorWorkspace()
+                .withMetrics(new AzureMonitorWorkspaceMetrics().withEnableAccessUsingResourcePermissions(false))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf("zgcwrw", new UserAssignedIdentity(), "tnhxbn", new UserAssignedIdentity(), "fmppe",
@@ -39,6 +43,7 @@ public final class AzureMonitorWorkspaceResourceInnerTests {
         model = BinaryData.fromObject(model).toObject(AzureMonitorWorkspaceResourceInner.class);
         Assertions.assertEquals("bdkvwrwjf", model.location());
         Assertions.assertEquals("nhutjeltmrldhugj", model.tags().get("zdatqxhocdg"));
+        Assertions.assertFalse(model.properties().metrics().enableAccessUsingResourcePermissions());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }

@@ -22,7 +22,7 @@ public final class MetricsContainersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"version\":\"kkxwslol\"},\"id\":\"pvuzlmv\",\"name\":\"elfk\",\"type\":\"gplcrpwjxeznoigb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"upfgfbk\"},\"id\":\"bdyhgkfminsgowz\",\"name\":\"ttsttktlahbqact\",\"type\":\"tgzukxitmmqt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MetricsContainersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricsContainerResource response = manager.metricsContainers()
-            .define("mtg")
-            .withExistingAccount("jnhyjsvf", "cxzbfvoowvr")
-            .withProperties(new MetricsContainer().withVersion("ostronz"))
+            .define("gyavu")
+            .withExistingAccount("rwfscjfnynszquj", "zdvoqytibyowbb")
+            .withProperties(new MetricsContainer().withVersion("oxoismsksbpim"))
             .create();
 
-        Assertions.assertEquals("kkxwslol", response.properties().version());
+        Assertions.assertEquals("upfgfbk", response.properties().version());
     }
 }

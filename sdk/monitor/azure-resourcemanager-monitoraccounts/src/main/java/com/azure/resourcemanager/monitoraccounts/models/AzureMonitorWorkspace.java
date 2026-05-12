@@ -72,6 +72,17 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
     }
 
     /**
+     * Set the metrics property: Properties related to the metrics container in the Azure Monitor Workspace.
+     * 
+     * @param metrics the metrics value to set.
+     * @return the AzureMonitorWorkspace object itself.
+     */
+    public AzureMonitorWorkspace withMetrics(AzureMonitorWorkspaceMetrics metrics) {
+        this.metrics = metrics;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the Azure Monitor Workspace. Set to Succeeded if
      * everything is healthy.
      * 
@@ -127,6 +138,7 @@ public final class AzureMonitorWorkspace implements JsonSerializable<AzureMonito
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metrics", this.metrics);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();

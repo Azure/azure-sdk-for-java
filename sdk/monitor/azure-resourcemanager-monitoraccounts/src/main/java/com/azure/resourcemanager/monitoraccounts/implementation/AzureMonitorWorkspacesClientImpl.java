@@ -36,6 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitoraccounts.fluent.AzureMonitorWorkspacesClient;
 import com.azure.resourcemanager.monitoraccounts.fluent.models.AzureMonitorWorkspaceResourceInner;
 import com.azure.resourcemanager.monitoraccounts.implementation.models.AzureMonitorWorkspaceResourceListResult;
+import com.azure.resourcemanager.monitoraccounts.models.AzureMonitorWorkspaceResourceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureMonitorWorkspaceName") String azureMonitorWorkspaceName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") AzureMonitorWorkspaceResourceInner properties, Context context);
+            @BodyParam("application/json") AzureMonitorWorkspaceResourceUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}")
         @ExpectedResponses({ 200 })
@@ -130,7 +131,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureMonitorWorkspaceName") String azureMonitorWorkspaceName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") AzureMonitorWorkspaceResourceInner properties, Context context);
+            @BodyParam("application/json") AzureMonitorWorkspaceResourceUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}")
@@ -388,7 +389,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureMonitorWorkspaceResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceInner properties) {
+        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -411,7 +412,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureMonitorWorkspaceResourceInner> updateAsync(String resourceGroupName,
-        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceInner properties) {
+        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, azureMonitorWorkspaceName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -430,7 +431,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureMonitorWorkspaceResourceInner> updateWithResponse(String resourceGroupName,
-        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceInner properties, Context context) {
+        String azureMonitorWorkspaceName, AzureMonitorWorkspaceResourceUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -451,7 +452,7 @@ public final class AzureMonitorWorkspacesClientImpl implements AzureMonitorWorks
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureMonitorWorkspaceResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName,
-        AzureMonitorWorkspaceResourceInner properties) {
+        AzureMonitorWorkspaceResourceUpdate properties) {
         return updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, properties, Context.NONE).getValue();
     }
 

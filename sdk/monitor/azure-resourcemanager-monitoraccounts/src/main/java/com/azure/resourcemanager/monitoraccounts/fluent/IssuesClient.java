@@ -17,6 +17,7 @@ import com.azure.resourcemanager.monitoraccounts.fluent.models.PagedRelatedResou
 import com.azure.resourcemanager.monitoraccounts.fluent.models.RelatedAlertsInner;
 import com.azure.resourcemanager.monitoraccounts.fluent.models.RelatedResourcesInner;
 import com.azure.resourcemanager.monitoraccounts.models.FetchInvestigationResultParameters;
+import com.azure.resourcemanager.monitoraccounts.models.IssueResourceUpdate;
 import com.azure.resourcemanager.monitoraccounts.models.ListParameter;
 
 /**
@@ -73,7 +74,7 @@ public interface IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IssueResourceInner> updateWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
-        String issueName, IssueResourceInner properties, Context context);
+        String issueName, IssueResourceUpdate properties, Context context);
 
     /**
      * Update an issue.
@@ -89,7 +90,7 @@ public interface IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     IssueResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
-        IssueResourceInner properties);
+        IssueResourceUpdate properties);
 
     /**
      * Get issue properties.

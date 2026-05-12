@@ -22,7 +22,7 @@ public final class MetricsContainersListByAzureMonitorWorkspaceMockTests {
     @Test
     public void testListByAzureMonitorWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"version\":\"veg\"},\"id\":\"bpnaixexccbdre\",\"name\":\"xhcexdrrvqahq\",\"type\":\"ghtpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"version\":\"qvci\"},\"id\":\"ev\",\"name\":\"gmblrri\",\"type\":\"bywdxsmicc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class MetricsContainersListByAzureMonitorWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MetricsContainerResource> response = manager.metricsContainers()
-            .listByAzureMonitorWorkspace("dn", "itvgbmhrixkwm", com.azure.core.util.Context.NONE);
+            .listByAzureMonitorWorkspace("p", "ipwoqonmacjek", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("veg", response.iterator().next().properties().version());
+        Assertions.assertEquals("qvci", response.iterator().next().properties().version());
     }
 }

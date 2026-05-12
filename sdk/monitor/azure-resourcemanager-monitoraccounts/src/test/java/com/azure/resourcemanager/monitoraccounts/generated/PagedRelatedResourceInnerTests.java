@@ -13,10 +13,10 @@ public final class PagedRelatedResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PagedRelatedResourceInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"u\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"pz\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-05-21T05:23:51Z\",\"lastModifiedAt\":\"2021-08-24T16:23:13Z\"},{\"id\":\"dzhlrq\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"hckfrlhrx\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-04-13T09:17:59Z\",\"lastModifiedAt\":\"2021-07-06T05:58Z\"}],\"nextLink\":\"pycanuzbpz\"}")
+            "{\"value\":[{\"id\":\"uwhhmhykojoxafn\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"lpichk\",\"addedByType\":\"Manual\"},\"addedAt\":\"2021-11-18T02:48:52Z\",\"lastModifiedAt\":\"2021-07-02T22:41:48Z\"},{\"id\":\"cdyhbpkkpwdreqn\",\"relevance\":\"Irrelevant\",\"origin\":{\"addedBy\":\"vq\",\"addedByType\":\"Automatic\"},\"addedAt\":\"2021-03-26T11:46:42Z\",\"lastModifiedAt\":\"2021-11-23T10:35:07Z\"}],\"nextLink\":\"xywsuws\"}")
             .toObject(PagedRelatedResourceInner.class);
-        Assertions.assertEquals("u", model.value().get(0).id());
+        Assertions.assertEquals("uwhhmhykojoxafn", model.value().get(0).id());
         Assertions.assertEquals(Relevance.IRRELEVANT, model.value().get(0).relevance());
-        Assertions.assertEquals("pycanuzbpz", model.nextLink());
+        Assertions.assertEquals("xywsuws", model.nextLink());
     }
 }
