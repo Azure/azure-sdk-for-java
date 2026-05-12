@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (2026-05-12)
 
 ### Features Added
 
@@ -10,8 +10,6 @@
 - Added `entryPoint`, `imageTag`, and `blobUrl` properties to `CodeBasedEvaluatorDefinition` with corresponding getters and setters; added a no-argument constructor and `setCodeText(String)` setter.
 - Added new feature-flag values to `FoundryFeaturesOptInKeys`: `SKILLS_V1_PREVIEW` (`Skills=V1Preview`) and `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`).
 - Added new samples `SkillsSample` and `SkillsAsyncSample` demonstrating end-to-end use of the Skills sub-client.
-
-### Breaking Changes
 
 ### Other Changes
 
