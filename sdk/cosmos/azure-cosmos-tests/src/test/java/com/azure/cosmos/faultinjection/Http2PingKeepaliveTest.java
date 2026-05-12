@@ -306,8 +306,14 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         Process p = Runtime.getRuntime().exec(new String[]{"bash", "-c", command});
         int exit = p.waitFor();
         if (exit != 0) {
-            String err = new String(p.getErrorStream().readAllBytes()).trim();
-            logger.warn("Command '{}' exited with code {}: {}", command, exit, err);
+            java.io.BufferedReader reader = new java.io.BufferedReader(
+                new java.io.InputStreamReader(p.getErrorStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            logger.warn("Command '{}' exited with code {}: {}", command, exit, sb.toString().trim());
         }
     }
 }
