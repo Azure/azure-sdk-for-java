@@ -96,6 +96,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
         System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
+        // Force single-connection pool so we can assert same connection is reused
+        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "1");
+        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "1");
 
         try {
             safeClose(this.client);
@@ -139,9 +142,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .as("All sent PINGs should be ACKed by the server")
                 .isGreaterThanOrEqualTo(5);
 
-            // Connection should be reused (PINGs kept it alive)
+            // With pool size=1, the same connection MUST be reused (PING kept it alive)
             assertThat(recoveryChannelId)
-                .as("Connection should survive idle period — PING keepalive prevents eviction")
+                .as("With single-connection pool, PING keepalive must preserve the connection")
                 .isEqualTo(initialChannelId);
 
             logger.info("PING interval test passed: {} PINGs sent, {} ACKs received in 10s", sentCount, ackCount);
@@ -149,6 +152,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
+            System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
         }
     }
 
@@ -166,6 +171,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
         System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
+        // Force single-connection pool so channel ID assertion is deterministic
+        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "1");
+        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "1");
 
         try {
             safeClose(this.client);
@@ -234,6 +242,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
+            System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
         }
     }
 
