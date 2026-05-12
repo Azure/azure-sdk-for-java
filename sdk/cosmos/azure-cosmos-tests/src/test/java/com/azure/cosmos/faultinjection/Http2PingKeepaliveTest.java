@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.Http2PingHandler;
@@ -99,18 +101,22 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
         System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
-        // Force single-connection pool so we can assert same connection is reused
-        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "1");
-        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "1");
 
         try {
             safeClose(this.client);
+
+            // Single-connection pool via Http2ConnectionConfig API so we can assert same connection is reused
+            GatewayConnectionConfig gwConfig = new GatewayConnectionConfig();
+            gwConfig.getHttp2ConnectionConfig()
+                .setEnabled(true)
+                .setMaxConnectionPoolSize(1)
+                .setMinConnectionPoolSize(1);
 
             this.client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(ConsistencyLevel.SESSION)
-                .gatewayMode()
+                .gatewayMode(gwConfig)
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
@@ -155,8 +161,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
-            System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
-            System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
         }
     }
 
@@ -176,18 +180,22 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
         // Override threshold to 2 for faster test (default=5 aligned with Rust SDK)
         System.setProperty("COSMOS.HTTP2_PING_FAILURE_THRESHOLD", "2");
-        // Force single-connection pool so channel ID assertion is deterministic
-        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "1");
-        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "1");
 
         try {
             safeClose(this.client);
+
+            // Single-connection pool via Http2ConnectionConfig API
+            GatewayConnectionConfig gwConfig = new GatewayConnectionConfig();
+            gwConfig.getHttp2ConnectionConfig()
+                .setEnabled(true)
+                .setMaxConnectionPoolSize(1)
+                .setMinConnectionPoolSize(1);
 
             this.client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(ConsistencyLevel.SESSION)
-                .gatewayMode()
+                .gatewayMode(gwConfig)
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
@@ -250,8 +258,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
-            System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
-            System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
+            System.clearProperty("COSMOS.HTTP2_PING_FAILURE_THRESHOLD");
         }
     }
 

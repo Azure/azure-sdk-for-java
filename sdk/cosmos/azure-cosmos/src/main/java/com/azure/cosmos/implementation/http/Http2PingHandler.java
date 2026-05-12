@@ -51,7 +51,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     public static final AttributeKey<Boolean> PING_HEALTH_DEGRADED =
         AttributeKey.valueOf("cosmos.conn.pingHealthDegraded");
 
-    // Global (process-wide) counters across all handler instances — used by tests
+    // Global (process-wide) counters across all handler instances -- used by tests
     private static final AtomicInteger globalPingsSent = new AtomicInteger(0);
     private static final AtomicInteger globalPingAcksReceived = new AtomicInteger(0);
 
@@ -79,7 +79,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        // Schedule periodic check — runs on the channel's event loop (single-threaded, no sync needed)
+        // Schedule periodic check -- runs on the channel's event loop (single-threaded, no sync needed)
         // Check at interval/2 (min 500ms) to bound worst-case PING send delay to ~1.5× interval.
         long checkIntervalMs = Math.max(500, TimeUnit.NANOSECONDS.toMillis(pingIntervalNanos) / 2);
         this.pingTask = ctx.executor().scheduleAtFixedRate(
@@ -114,7 +114,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             globalPingAcksReceived.incrementAndGet();
             pingOutstandingSinceNanos = 0;
             consecutiveFailures = 0;
-            // Connection proved responsive — clear degraded flag if it was set
+            // Connection proved responsive -- clear degraded flag if it was set
             if (ctx.channel().hasAttr(PING_HEALTH_DEGRADED)) {
                 ctx.channel().attr(PING_HEALTH_DEGRADED).set(null);
                 logger.debug("PING ACK received, connection {} marked healthy",
@@ -144,14 +144,14 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                 pingOutstandingSinceNanos = 0; // unblock next PING attempt
 
                 if (consecutiveFailures >= failureThreshold) {
-                    // Threshold reached — connection is broken.
+                    // Threshold reached -- connection is broken.
                     ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
-                    logger.info("PING ACK not received for {} consecutive attempts on channel {} \u2014 closing connection",
+                    logger.info("PING ACK not received for {} consecutive attempts on channel {} -- closing connection",
                         consecutiveFailures, ctx.channel().id().asShortText());
                     cancelPingTask();
                     ctx.close();
                 } else {
-                    logger.debug("PING ACK timeout on channel {} (attempt {}/{}) \u2014 will retry",
+                    logger.debug("PING ACK timeout on channel {} (attempt {}/{}) -- will retry",
                         ctx.channel().id().asShortText(), consecutiveFailures, failureThreshold);
                 }
             }
@@ -159,7 +159,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
-        // Don't send if there are active streams — request/response traffic is already
+        // Don't send if there are active streams -- request/response traffic is already
         // keeping the connection alive, so a PING would be pure noise-neighbour overhead.
         Http2FrameCodec codec = ctx.pipeline().get(Http2FrameCodec.class);
         if (codec != null && codec.connection().numActiveStreams() > 0) {
@@ -248,7 +248,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             try {
                 parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold));
             } catch (IllegalArgumentException ignored) {
-                // Duplicate — race between concurrent streams, benign
+                // Duplicate -- race between concurrent streams, benign
             }
         }
     }
