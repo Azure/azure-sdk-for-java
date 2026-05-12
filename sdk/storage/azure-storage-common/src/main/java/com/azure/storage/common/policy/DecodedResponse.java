@@ -69,12 +69,7 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        // Match the base HttpResponse contract (and BufferedHttpResponse's idiom): inspect the response for a BOM
-        // and the Content-Type header's charset parameter, falling back to UTF-8 when neither is present. Pinning
-        // UTF-8 unconditionally would drop the auto-detection behavior that callers viewing this as a generic
-        // HttpResponse expect.
-        return getBodyAsByteArray().map(
-            bytes -> CoreUtils.bomAwareToString(bytes, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+        return getBodyAsByteArray().map(b -> CoreUtils.bomAwareToString(b, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
