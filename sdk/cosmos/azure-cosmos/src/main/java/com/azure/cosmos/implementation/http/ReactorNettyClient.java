@@ -147,11 +147,11 @@ public class ReactorNettyClient implements HttpClient {
 
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
         this.httpClient = this.httpClient.doOnConnected(connection -> {
-            // Manual HTTP/2 PING keepalive — sends PING frames when the connection is idle
+            // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
             // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
             // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
             // and the second fires for stream channels (parent()!=null).
-            // We install on the parent channel — detect it via Http2MultiplexHandler in the pipeline.
+            // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
             if (Configs.isHttp2PingHealthEnabled()
                 && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
                 int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
@@ -229,7 +229,7 @@ public class ReactorNettyClient implements HttpClient {
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
         // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
-        // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
+        // .option() returns a new config snapshot -- does NOT mutate the shared httpClient.
         // Thin client requests (isThinClientRequest=true): connect timeout is configured via
         // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
         // Standard gateway requests: 45s (default).

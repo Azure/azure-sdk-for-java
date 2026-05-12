@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.Http2PingHandler;
@@ -37,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <p>
  * Run in Docker with --cap-add=NET_ADMIN (group: manual-http-network-fault).
  * Requires: HTTP/2 capable Cosmos DB account.
- * Does NOT require thin client — only COSMOS.HTTP2_ENABLED=true.
+ * Does NOT require thin client -- only COSMOS.HTTP2_ENABLED=true.
  */
 public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
@@ -61,7 +60,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = 120_000)
     public void beforeClass() {
-        // Enable HTTP/2 — thin client is NOT required for PING tests
+        // Enable HTTP/2 -- thin client is NOT required for PING tests
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
@@ -124,18 +123,18 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             int baselineSent = Http2PingHandler.getGlobalPingsSent();
             int baselineAcks = Http2PingHandler.getGlobalPingAcksReceived();
 
-            // Warm-up read — triggers H2 connection + PING handler installation
+            // Warm-up read -- triggers H2 connection + PING handler installation
             String initialChannelId = readAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialChannelId);
 
-            // Let the connection go idle for 10s — with 1s interval, expect ~10 PINGs
+            // Let the connection go idle for 10s -- with 1s interval, expect ~10 PINGs
             logger.info("Waiting 10s for PING frames on idle connection (interval=1s)...");
             Thread.sleep(10_000);
 
             int sentCount = Http2PingHandler.getGlobalPingsSent() - baselineSent;
             int ackCount = Http2PingHandler.getGlobalPingAcksReceived() - baselineAcks;
 
-            // Recovery read — proves connection survived idle period
+            // Recovery read -- proves connection survived idle period
             String recoveryChannelId = readAndGetParentChannelId();
 
             logger.info("RESULT: initial={}, recovery={}, SAME={}, pingsSent={}, pingAcksReceived={}",
@@ -199,7 +198,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Warm-up read — establish H2 connection
+            // Warm-up read -- establish H2 connection
             String initialChannelId = readAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialChannelId);
 
@@ -208,7 +207,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             int gatewayPort = 443;
             logger.info("Gateway host: {}, port: {}", gatewayHost, gatewayPort);
 
-            // Blackhole all traffic to gateway — prevents PING ACKs from arriving
+            // Blackhole all traffic to gateway -- prevents PING ACKs from arriving
             String iptablesRule = String.format(
                 "%siptables -A OUTPUT -p tcp --dport %d -d %s -j DROP", SUDO, gatewayPort, gatewayHost);
             logger.info("Installing iptables DROP rule: {}", iptablesRule);
@@ -230,7 +229,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             // Small wait for network to stabilize
             Thread.sleep(1_000);
 
-            // Recovery read — should succeed on a NEW connection
+            // Recovery read -- should succeed on a NEW connection
             String recoveryChannelId = readAndGetParentChannelId();
             logger.info("Recovery parentChannelId: {}", recoveryChannelId);
 
@@ -238,7 +237,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 initialChannelId, recoveryChannelId,
                 !initialChannelId.equals(recoveryChannelId));
 
-            // The connection MUST be different — the old one was closed by PING timeout
+            // The connection MUST be different -- the old one was closed by PING timeout
             assertThat(recoveryChannelId)
                 .as("After PING timeout, the handler should have closed the connection. "
                     + "The recovery request must use a new connection.")
