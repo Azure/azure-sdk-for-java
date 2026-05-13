@@ -15,7 +15,7 @@
 ### Other Changes
 
 #### Dependency Updates
-- Upgraded `azure-storage-internal-avro` from `12.18.3` to version `12.19.0`..
+- Upgraded `azure-storage-internal-avro` from `12.18.3` to version `12.19.0`.
 - Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
 
 ## 12.33.4 (2026-05-05)
