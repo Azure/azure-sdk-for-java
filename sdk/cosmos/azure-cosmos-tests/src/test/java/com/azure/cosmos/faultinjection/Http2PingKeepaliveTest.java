@@ -88,74 +88,16 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     }
 
     /**
-     * Test 1: Verifies PING frames are sent at the configured interval on idle connections
-     * and that PING ACKs are received from the server.
+     * Uses iptables to silently discard all traffic to the Cosmos DB gateway port,
+     * preventing PING ACKs from arriving. Verifies the handler detects the broken
+     * connection after consecutive PING failures and closes it. A subsequent request
+     * (after removing the iptables rule) uses a new connection.
      * <p>
-     * With interval=1s, a 10s idle period should produce ~10 PINGs.
-     */
-    @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
-    public void pingFramesSentAtConfiguredInterval() throws Exception {
-        // Use default interval=1s, timeout=2s (aligned with Rust SDK)
-        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
-        System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
-        System.setProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED", "true");
-
-        try {
-            safeClose(this.client);
-
-            // Single-connection pool so we can assert same connection is reused.
-            // maxIdleTime defaults to 60s; 10s idle period is well under that threshold.
-            // PINGs keep middlebox entries alive (not tested here -- tested by test 2).
-            // This test validates PING frames are actively flowing on idle connections.
-            GatewayConnectionConfig gwConfig = new GatewayConnectionConfig();
-            gwConfig.getHttp2ConnectionConfig()
-                .setEnabled(true)
-                .setMaxConnectionPoolSize(1)
-                .setMinConnectionPoolSize(1);
-
-            this.client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .gatewayMode(gwConfig)
-                .buildAsyncClient();
-            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
-
-            // Warm-up read -- triggers H2 connection + PING handler installation
-            String initialChannelId = readAndGetParentChannelId();
-            logger.info("Initial parentChannelId: {}", initialChannelId);
-
-            // Let the connection go idle for 10s -- with 1s interval, expect ~10 PINGs
-            logger.info("Waiting 10s for PING frames on idle connection (interval=1s)...");
-            Thread.sleep(10_000);
-
-            // Recovery read -- proves connection survived idle period
-            String recoveryChannelId = readAndGetParentChannelId();
-
-            logger.info("RESULT: initial={}, recovery={}, SAME={}",
-                initialChannelId, recoveryChannelId,
-                initialChannelId.equals(recoveryChannelId));
-
-            // With pool size=1, same connection confirms it survived the idle period
-            assertThat(recoveryChannelId)
-                .as("Connection should be reused -- PING frames flowed during idle period")
-                .isEqualTo(initialChannelId);
-
-            logger.info("PING interval test passed: connection survived 10s idle period");
-        } finally {
-            System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
-            System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
-            System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
-        }
-    }
-
-    /**
-     * Test 2: Uses iptables to blackhole all traffic to the Cosmos DB gateway port,
-     * preventing PING ACKs from arriving. Verifies the handler closes the broken
-     * connection and a subsequent request (after removing the iptables rule) uses
-     * a new/different connection.
+     * This test proves PINGs are actively flowing on idle connections -- without PINGs,
+     * iptables DROP would go undetected (channel.isActive() stays true, no GOAWAY arrives)
+     * and the test would time out.
      * <p>
-     * Requires Docker with --cap-add=NET_ADMIN.
+     * Requires Docker with --cap-add=NET_ADMIN or Linux with sudo.
      */
     @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
     public void connectionClosedOnPingTimeout() throws Exception {
