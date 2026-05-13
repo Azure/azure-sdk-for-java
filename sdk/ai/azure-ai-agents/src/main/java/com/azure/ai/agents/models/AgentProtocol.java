@@ -60,4 +60,10 @@ public final class AgentProtocol extends ExpandableStringEnum<AgentProtocol> {
      */
     @Generated
     public static final AgentProtocol INVOCATIONS = fromString("invocations");
+
+    /**
+     * Static value mcp for AgentProtocol.
+     */
+    @Generated
+    public static final AgentProtocol MCP = fromString("mcp");
 }

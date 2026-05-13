@@ -102,7 +102,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -481,7 +481,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -557,7 +557,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -685,7 +685,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -835,7 +835,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -949,7 +949,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1469,7 +1469,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2224,7 +2224,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2300,7 +2300,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2547,7 +2547,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2663,7 +2663,7 @@ public final class AgentsClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
