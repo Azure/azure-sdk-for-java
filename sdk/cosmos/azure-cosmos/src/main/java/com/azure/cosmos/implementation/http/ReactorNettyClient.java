@@ -146,24 +146,25 @@ public class ReactorNettyClient implements HttpClient {
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
 
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
-        this.httpClient = this.httpClient.doOnConnected(connection -> {
-            // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
-            // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
-            // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
-            // and the second fires for stream channels (parent()!=null).
-            // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
-            if (Configs.isHttp2PingHealthEnabled()
-                && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
-                int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
-                int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
-                if (pingIntervalSeconds > 0) {
-                    Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds, pingTimeoutSeconds, pingFailureThreshold);
-                }
-            }
-        });
 
         if (isH2Enabled) {
+            this.httpClient = this.httpClient.doOnConnected(connection -> {
+                // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
+                // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
+                // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
+                // and the second fires for stream channels (parent()!=null).
+                // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
+                if (Configs.isHttp2PingHealthEnabled()
+                    && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
+                    int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                    int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
+                    int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
+                    if (pingIntervalSeconds > 0) {
+                        Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds, pingTimeoutSeconds, pingFailureThreshold);
+                    }
+                }
+            });
+
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(

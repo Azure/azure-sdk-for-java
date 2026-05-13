@@ -256,23 +256,17 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     }
 
     private String extractParentChannelId(CosmosDiagnostics diagnostics) {
-        try {
-            String diagStr = diagnostics.toString();
-            int idx = diagStr.indexOf("parentChannelId");
-            if (idx > 0) {
-                int start = diagStr.indexOf("\"", idx + 16) + 1;
-                int end = diagStr.indexOf("\"", start);
-                if (start > 0 && end > start) {
-                    return diagStr.substring(start, end);
-                }
+        String diagStr = diagnostics.toString();
+        int idx = diagStr.indexOf("parentChannelId");
+        if (idx > 0) {
+            int start = diagStr.indexOf("\"", idx + 16) + 1;
+            int end = diagStr.indexOf("\"", start);
+            if (start > 0 && end > start) {
+                return diagStr.substring(start, end);
             }
-
-            logger.warn("Could not extract parentChannelId from diagnostics");
-            return "unknown-" + UUID.randomUUID().toString().substring(0, 8);
-        } catch (Exception e) {
-            logger.warn("Error extracting parentChannelId", e);
-            return "error-" + UUID.randomUUID().toString().substring(0, 8);
         }
+
+        throw new AssertionError("Could not extract parentChannelId from diagnostics: " + diagStr);
     }
 
     private static String extractHostFromEndpoint(String endpoint) {

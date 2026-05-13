@@ -173,6 +173,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                     if (f.isSuccess()) {
                         logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
                     } else {
+                        // Listener runs on the same event loop as the scheduled task,
+                        // so mutating pingOutstandingSinceNanos is thread-safe.
                         pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
                         logger.debug("PING #{} send failed on channel {}: {}",
                             count, ctx.channel().id().asShortText(),
