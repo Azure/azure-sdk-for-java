@@ -259,6 +259,20 @@ public interface SqlServer
              * @return Next stage of the SQL Server definition
              */
             WithAdministratorPassword withAdministratorLogin(String administratorLogin);
+
+            /**
+             * Configures the SQL Server to use Microsoft Entra (Azure Active Directory) only authentication, with the
+             * specified user or group as the Active Directory administrator. The SQL authentication
+             * (login/password) administrator is not configured.
+             *
+             * <p>This method should be used when the target subscription/management group enforces a policy that
+             * requires Microsoft Entra-only authentication on Azure SQL Server creation.</p>
+             *
+             * @param userLogin the user or group login; it can be the name or the email address
+             * @param sid the user or group object ID
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid);
         }
 
         /** A SQL Server definition setting admin user password. */

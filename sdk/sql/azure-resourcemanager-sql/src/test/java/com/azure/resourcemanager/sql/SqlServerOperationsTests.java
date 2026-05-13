@@ -104,8 +104,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .define(sqlServerName)
             .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -172,10 +171,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -204,7 +202,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertTrue(sqlServerManager.sqlServers()
             .syncGroups()
-            .listSyncDatabaseIds(Region.US_EAST)
+            .listSyncDatabaseIds(Region.US_EAST2)
             .stream()
             .findAny()
             .isPresent());
@@ -224,16 +222,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String sqlSecondaryServerName = generateRandomResourceName("sqlsec", 22);
         final String epName = "epSample";
         final String dbName = "dbSample";
-        final String administratorLogin = "sqladmin";
-        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlPrimaryServerName)
             .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .defineElasticPool(epName)
             .withPremiumPool()
             .attach()
@@ -245,10 +240,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
             .define(sqlSecondaryServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
 
         SqlDatabase dbSample = sqlPrimaryServer.databases().get(dbName);
@@ -271,16 +265,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String failoverGroupName = generateRandomResourceName("fg", 22);
         final String failoverGroupName2 = generateRandomResourceName("fg2", 22);
         final String dbName = "dbSample";
-        final String administratorLogin = "sqladmin";
-        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlPrimaryServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -291,16 +282,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .define(sqlSecondaryServerName)
             .withRegion(Region.US_EAST2)
             .withExistingResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
 
         SqlServer sqlOtherServer = sqlServerManager.sqlServers()
             .define(sqlOtherServerName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withRegion(Region.EUROPE_NORTH)
             .withExistingResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
 
         SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups()
@@ -391,8 +380,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
-        String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
         String id = generateRandomUuid();
         String storageName = generateRandomResourceName(sqlServerName, 22);
@@ -400,10 +387,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(sqlServerAdminPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withBasicEdition()
@@ -469,16 +455,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCreateAndAquireServerDnsAlias() throws Exception {
         String sqlServerName1 = sqlServerName + "1";
         String sqlServerName2 = sqlServerName + "2";
-        String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = password();
 
         // Create
         SqlServer sqlServer1 = sqlServerManager.sqlServers()
             .define(sqlServerName1)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(sqlServerAdminPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
         Assertions.assertNotNull(sqlServer1);
 
@@ -497,10 +480,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer2 = sqlServerManager.sqlServers()
             .define(sqlServerName2)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(sqlServerAdminPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
         Assertions.assertNotNull(sqlServer2);
 
@@ -523,11 +505,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @DoNotRecord(skipInPlayback = true)
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
-        String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_WEST3);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions.assertTrue(
@@ -539,10 +519,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(sqlServerAdminPassword)
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .withSystemAssignedManagedServiceIdentity()
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
@@ -575,6 +554,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    @Disabled("Not supported in AAD-only tenants: SQL auth and ADPassword (ROPC) are blocked.")
     // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
     public void canCRUDSqlServerWithImportDatabase() throws Exception {
         // Create
@@ -648,28 +628,23 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
-        String sqlServerAdminName = "sqladmin";
-        String id = azureCliSignedInUser().id();
+        String id = adminSid();
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(password())
-            .withActiveDirectoryAdministrator("DSEng", id)
+            .withAdministratorAzureActiveDirectoryOnly("DSEng", id)
             .withoutAccessFromAzureServices()
             .defineFirewallRule("somefirewallrule1")
             .withIpAddress("0.0.0.1")
             .attach()
             .withTag("tag1", "value1")
             .create();
-        Assertions.assertEquals(sqlServerAdminName, sqlServer.administratorLogin());
         Assertions.assertEquals("v12.0", sqlServer.kind());
         Assertions.assertEquals("12.0", sqlServer.version());
 
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
-        Assertions.assertEquals(sqlServerAdminName, sqlServer.administratorLogin());
         Assertions.assertEquals("v12.0", sqlServer.kind());
         Assertions.assertEquals("12.0", sqlServer.version());
 
@@ -684,10 +659,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals("DSEngAll", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
-        sqlServer.removeActiveDirectoryAdministrator();
 
-        final SqlServer finalSqlServer = sqlServer;
-        validateResourceNotFound(() -> finalSqlServer.getActiveDirectoryAdministrator());
+        // Cannot remove AD admin when AzureADOnlyAuthentication is enabled.
+        // Verify it is still present instead.
+        sqlADAdmin = sqlServer.getActiveDirectoryAdministrator();
+        Assertions.assertNotNull(sqlADAdmin);
 
         SqlFirewallRule firewallRule
             = sqlServerManager.sqlServers().firewallRules().getBySqlServer(rgName, sqlServerName, "somefirewallrule1");
@@ -760,7 +736,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS.toString(),
             checkNameResult.unavailabilityReason());
 
-        sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
+        // Server is created with Microsoft Entra-only authentication, so SQL admin password update is not applicable.
+        // Exercise an update path using system-assigned managed identity instead.
+        sqlServer.update().withSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
+        Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         // List
         PagedIterable<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(rgName);
@@ -791,10 +771,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin("userName")
-            .withAdministratorPassword("Password~1")
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .withoutAccessFromAzureServices()
             .defineDatabase(SQL_DATABASE_NAME)
             .attach()
@@ -913,6 +892,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .define(storageAccountName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
         String accountKey = storageAccount.getKeys().get(0).value();
         String blobEntrypoint = storageAccount.endPoints().primary().blob();
@@ -1050,7 +1030,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+        // Wait for the link to leave SUSPENDED state after forceFailoverAllowDataLoss before delete;
+        // otherwise delete() fails with 409 GeoReplicationCannotBecomePrimaryDuringUndo.
+        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
 
         replicationLinksInDb2.get(0).delete();
         Assertions.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);
@@ -1449,10 +1431,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private SqlServer createSqlServer(String sqlServerName) {
         return sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin("userName")
-            .withAdministratorPassword("P@ssword~1")
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
     }
 
@@ -1474,7 +1455,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
         Assertions.assertEquals(rgName, sqlFirewallRule.resourceGroupName());
         Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
-        Assertions.assertEquals(Region.US_EAST, sqlFirewallRule.region());
+        Assertions.assertEquals(Region.US_WEST3, sqlFirewallRule.region());
     }
 
     private static void validateListSqlElasticPool(List<SqlElasticPool> sqlElasticPools) {
@@ -1517,7 +1498,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(rgName, sqlServer.resourceGroupName());
         Assertions.assertNotNull(sqlServer.fullyQualifiedDomainName());
         //        Assertions.assertEquals(ServerVersion.ONE_TWO_FULL_STOP_ZERO, sqlServer.version());
-        Assertions.assertEquals("userName", sqlServer.administratorLogin());
     }
 
     private void validateSqlDatabase(SqlDatabase sqlDatabase, String databaseName) {
@@ -1537,46 +1517,46 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @DoNotRecord(skipInPlayback = true)
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
-        // "M" series is not supported in this region
+        // "M" series is not supported in this region; "Fsv2" series has been deprecated
+        List<String> excludedFamilies = Arrays.asList("M", "Fsv2");
         List<CapabilityStatus> capabilityStatusList
             = Arrays.asList(CapabilityStatus.AVAILABLE, CapabilityStatus.DEFAULT);
         List<DatabaseSku> databaseSkus = DatabaseSku.getAll()
             .stream()
-            .filter(sku -> !"M".equals(sku.toSku().family()))
+            .filter(sku -> !excludedFamilies.contains(sku.toSku().family()))
             .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(databaseSkus);
         List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll()
             .stream()
-            .filter(sku -> !"M".equals(sku.toSku().family()))
+            .filter(sku -> !excludedFamilies.contains(sku.toSku().family()))
             .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_EAST)
+            .getCapabilitiesByRegion(Region.US_WEST3)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     edition.supportedServiceLevelObjectives()
                         .stream()
                         .filter(serviceObjective -> !capabilityStatusList.contains(serviceObjective.status())
-                            || "M".equals(serviceObjective.sku().family()))
+                            || excludedFamilies.contains(serviceObjective.sku().family()))
                         .forEach(serviceObjective -> databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku())));
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
                     edition.supportedElasticPoolPerformanceLevels()
                         .stream()
                         .filter(performance -> !capabilityStatusList.contains(performance.status())
-                            || "M".equals(performance.sku().family()))
+                            || excludedFamilies.contains(performance.sku().family()))
                         .forEach(performance -> elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku())));
                 });
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin("userName")
-            .withAdministratorPassword(password())
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .create();
 
         // Too many elastic pools defined will hit sql server DTU quota limits.
@@ -1603,7 +1583,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_EAST)
+            .getCapabilitiesByRegion(Region.US_WEST3)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
@@ -1640,7 +1620,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(),
             elasticPoolSku.getBytes(StandardCharsets.UTF_8));
 
-        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST).create(); // for deletion
+        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_WEST3).create(); // for deletion
     }
 
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
@@ -1691,10 +1671,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
-            .withAdministratorLogin("userName")
-            .withAdministratorPassword("P@ssword~1")
+            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
             .withoutAccessFromAzureServices()
             .disablePublicNetworkAccess()
             .create();

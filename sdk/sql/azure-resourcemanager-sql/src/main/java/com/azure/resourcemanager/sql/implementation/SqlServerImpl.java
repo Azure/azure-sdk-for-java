@@ -22,6 +22,7 @@ import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerMetric;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
@@ -355,6 +356,18 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public SqlServerImpl withAdministratorPassword(String administratorLoginPassword) {
         this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid) {
+        this.innerModel()
+            .withAdministrators(
+                new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                    .withLogin(userLogin)
+                    .withSid(UUID.fromString(sid))
+                    .withTenantId(UUID.fromString(this.manager().tenantId()))
+                    .withAzureADOnlyAuthentication(true));
         return this;
     }
 

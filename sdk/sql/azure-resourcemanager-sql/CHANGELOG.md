@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added a new method `withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid)` on `SqlServer.DefinitionStages.WithAdministratorLogin` to create a SQL Server with Microsoft Entra-only authentication enabled at creation time. This is required when the target subscription/management group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.
+
 ### Breaking Changes
 
 ### Bugs Fixed
