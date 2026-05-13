@@ -3,6 +3,14 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
@@ -16,20 +24,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
+import com.azure.data.appconfiguration.implementation.models.SnapshotStatus;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.SettingFields;
-import reactor.core.publisher.Mono;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import reactor.core.publisher.Mono;
 
 /**
  * App Configuration Utility methods, use internally.
@@ -54,9 +60,7 @@ public class Utility {
      * Translate public ConfigurationSetting to KeyValue autorest generated class.
      */
     public static KeyValue toKeyValue(ConfigurationSetting setting) {
-        return new KeyValue().setKey(setting.getKey())
-            .setValue(setting.getValue())
-            .setLabel(setting.getLabel())
+        return new KeyValue().setValue(setting.getValue())
             .setContentType(setting.getContentType())
             .setEtag(setting.getETag())
             .setLastModified(setting.getLastModified())
@@ -114,22 +118,44 @@ public class Utility {
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
         MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
-        Context context) {
+        String endpoint, Context context) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
 
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.updateSnapshotWithResponse(snapshotName, new SnapshotUpdateParameters().setStatus(status),
-                ifMatch, null, context);
+            = serviceClient.updateSnapshotWithResponse(endpoint, snapshotName,
+                new SnapshotUpdateParameters().setStatus(status), null, ifMatch, null, null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
+        String endpoint) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
         return serviceClient
-            .updateSnapshotWithResponseAsync(snapshotName, new SnapshotUpdateParameters().setStatus(status), ifMatch,
-                null)
+            .updateSnapshotWithResponseAsync(endpoint, snapshotName, new SnapshotUpdateParameters().setStatus(status),
+                null, ifMatch, null, null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
+    }
+
+    public static List<KeyValueFields> toKeyValueFields(List<SettingFields> settingFields) {
+        if (settingFields == null) {
+            return null;
+        }
+        return settingFields.stream().map(f -> KeyValueFields.fromString(f.toString())).collect(Collectors.toList());
+    }
+
+    public static List<SnapshotStatus> toSnapshotStatus(List<ConfigurationSnapshotStatus> statusList) {
+        if (statusList == null) {
+            return null;
+        }
+        return statusList.stream().map(s -> SnapshotStatus.fromString(s.toString())).collect(Collectors.toList());
+    }
+
+    public static List<LabelFields> toLabelFields(List<SettingLabelFields> labelFields) {
+        if (labelFields == null) {
+            return null;
+        }
+        return labelFields.stream().map(f -> LabelFields.fromString(f.toString())).collect(Collectors.toList());
     }
 
     // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"

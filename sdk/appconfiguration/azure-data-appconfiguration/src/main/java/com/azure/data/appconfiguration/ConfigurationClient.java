@@ -3,6 +3,10 @@
 
 package com.azure.data.appconfiguration;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -22,9 +26,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
+import static com.azure.data.appconfiguration.implementation.Utility.getETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFields;
+import static com.azure.data.appconfiguration.implementation.Utility.toLabelFields;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotStatus;
+import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
+import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
+import com.azure.data.appconfiguration.implementation.models.FeatureFlag;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
@@ -33,29 +51,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.data.appconfiguration.models.SettingLabelFields;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
-import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
-import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
-import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
-import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
  * <p>This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
@@ -299,6 +302,7 @@ public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
     private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
+    private final String endpoint;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
 
@@ -309,11 +313,13 @@ public final class ConfigurationClient {
      * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
+     * @param endpoint The service endpoint for the Azure App Configuration instance.
      */
-    ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy, String endpoint) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
-        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
+        this.endpoint = endpoint;
+        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient, endpoint);
     }
 
     /**
@@ -322,7 +328,7 @@ public final class ConfigurationClient {
      * @return the service endpoint for the Azure App Configuration instance.
      */
     public String getEndpoint() {
-        return serviceClient.getEndpoint();
+        return this.endpoint;
     }
 
     /**
@@ -433,8 +439,8 @@ public final class ConfigurationClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
-            setting.getKey(), setting.getLabel(), null, ETAG_ANY, toKeyValue(setting), context);
+        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(endpoint,
+            setting.getKey(), setting.getLabel(), null, null, ETAG_ANY, null, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -578,8 +584,9 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
-            setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), null, toKeyValue(setting), context);
+        final ResponseBase<PutKeyValueHeaders, KeyValue> response
+            = serviceClient.putKeyValueWithResponse(endpoint, setting.getKey(), setting.getLabel(), null,
+                getETag(ifUnchanged, setting), null, null, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -722,9 +729,10 @@ public final class ConfigurationClient {
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         validateSetting(setting);
         try {
-            final ResponseBase<GetKeyValueHeaders, KeyValue> response = serviceClient.getKeyValueWithResponse(
-                setting.getKey(), setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                getETag(ifChanged, setting), null, context);
+            final ResponseBase<GetKeyValueHeaders, KeyValue> response
+                = serviceClient.getKeyValueWithResponse(endpoint, setting.getKey(), setting.getLabel(), null, null,
+                    acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, setting), null,
+                    null, context);
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
@@ -848,8 +856,8 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response = serviceClient
-            .deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), context);
+        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response = serviceClient.deleteKeyValueWithResponse(
+            endpoint, setting.getKey(), setting.getLabel(), null, getETag(ifUnchanged, setting), null, context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -994,8 +1002,10 @@ public final class ConfigurationClient {
         final String label = setting.getLabel();
 
         return isReadOnly
-            ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
-            : toConfigurationSettingWithResponse(serviceClient.deleteLockWithResponse(key, label, null, null, context));
+            ? toConfigurationSettingWithResponse(
+                serviceClient.putLockWithResponse(endpoint, key, label, null, null, null, null, context))
+            : toConfigurationSettingWithResponse(
+                serviceClient.deleteLockWithResponse(endpoint, key, label, null, null, null, null, context));
     }
 
     /**
@@ -1062,8 +1072,9 @@ public final class ConfigurationClient {
         return new PagedIterable<>(() -> {
             PagedResponse<KeyValue> pagedResponse;
             try {
-                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
-                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context);
+                pagedResponse = serviceClient.getKeyValuesSinglePage(endpoint, keyFilter, labelFilter, null, null,
+                    acceptDateTime, toKeyValueFields(settingFields), null, null,
+                    getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context);
             } catch (HttpResponseException ex) {
                 return handleNotModifiedErrorToValidResponse(ex, LOGGER);
             }
@@ -1071,7 +1082,7 @@ public final class ConfigurationClient {
         }, nextLink -> {
             PagedResponse<KeyValue> pagedResponse;
             try {
-                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, endpoint, null, acceptDateTime, null,
                     getPageETag(matchConditionsList, pageETagIndex), context);
             } catch (HttpResponseException ex) {
                 return handleNotModifiedErrorToValidResponse(ex, LOGGER);
@@ -1137,12 +1148,12 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
         List<SettingFields> fields, Context context) {
         return new PagedIterable<>(() -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
-                fields, snapshotName, null, null, null, context);
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(endpoint, null, null,
+                null, null, null, toKeyValueFields(fields), snapshotName, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse
-                = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null, null, context);
+                = serviceClient.getKeyValuesNextSinglePage(nextLink, endpoint, null, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1214,14 +1225,15 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         return new PagedIterable<>(() -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
-                selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
-                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
-                selector == null ? null : selector.getTagsFilter(), context);
+            final PagedResponse<KeyValue> pagedResponse
+                = serviceClient.getRevisionsSinglePage(endpoint, selector == null ? null : selector.getKeyFilter(),
+                    selector == null ? null : selector.getLabelFilter(), null, null, acceptDateTime,
+                    selector == null ? null : toKeyValueFields(toSettingFieldsList(selector.getFields())),
+                    selector == null ? null : selector.getTagsFilter(), null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse
-                = serviceClient.getRevisionsNextSinglePage(nextLink, acceptDateTime, context);
+                = serviceClient.getRevisionsNextSinglePage(nextLink, endpoint, null, acceptDateTime, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1319,7 +1331,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSnapshot> getSnapshotWithResponse(String snapshotName, List<SnapshotFields> fields,
         Context context) {
         final ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.getSnapshotWithResponse(snapshotName, null, null, fields, context);
+            = serviceClient.getSnapshotWithResponse(endpoint, snapshotName, fields, null, null, null, null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
@@ -1342,8 +1354,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot archiveSnapshot(String snapshotName) {
-        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient, Context.NONE)
-            .getValue();
+        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient, endpoint,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1379,7 +1391,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSnapshot> archiveSnapshotWithResponse(String snapshotName,
         MatchConditions matchConditions, Context context) {
         return updateSnapshotSync(snapshotName, matchConditions, ConfigurationSnapshotStatus.ARCHIVED, serviceClient,
-            context);
+            endpoint, context);
     }
 
     /**
@@ -1401,8 +1413,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot recoverSnapshot(String snapshotName) {
-        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient, Context.NONE)
-            .getValue();
+        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient, endpoint,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1438,7 +1450,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSnapshot> recoverSnapshotWithResponse(String snapshotName,
         MatchConditions matchConditions, Context context) {
         return updateSnapshotSync(snapshotName, matchConditions, ConfigurationSnapshotStatus.READY, serviceClient,
-            context);
+            endpoint, context);
     }
 
     /**
@@ -1489,11 +1501,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> serviceClient.getSnapshotsSinglePage(selector == null ? null : selector.getNameFilter(), null,
-                selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
-                context),
-            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> serviceClient.getSnapshotsSinglePage(endpoint,
+            selector == null ? null : selector.getNameFilter(), null, selector == null ? null : selector.getFields(),
+            selector == null ? null : toSnapshotStatus(selector == null ? null : selector.getStatus()), null, context),
+            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, endpoint, null, context));
     }
 
     /**
@@ -1577,7 +1588,8 @@ public final class ConfigurationClient {
             ? null
             : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabels(labelNameFilter, null, acceptDatetime, labelFields, context);
+        return serviceClient.getLabels(endpoint, labelNameFilter, null, null, acceptDatetime,
+            toLabelFields(labelFields), null, null, context);
     }
 
     /**
@@ -1588,5 +1600,166 @@ public final class ConfigurationClient {
      */
     public void updateSyncToken(String token) {
         syncTokenPolicy.updateSyncToken(token);
+    }
+
+    /**
+     * Gets a feature flag by its name.
+     *
+     * @param name The name of the feature flag to retrieve.
+     * @return The {@link FeatureFlag} with the given name, or {@code null} if it does not exist.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureFlag getFeatureFlag(String name) {
+        return getFeatureFlagWithResponse(name, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a feature flag by its name with an optional label.
+     *
+     * @param name The name of the feature flag to retrieve.
+     * @param label The label of the feature flag to retrieve. If {@code null}, the feature flag with no label is
+     * retrieved.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the {@link FeatureFlag}.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureFlag> getFeatureFlagWithResponse(String name, String label, Context context) {
+        return serviceClient.getFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, null, null,
+            null, null, null, context);
+    }
+
+    /**
+     * Gets a list of all feature flags.
+     *
+     * @return A {@link PagedIterable} of {@link FeatureFlag feature flags}.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FeatureFlag> listFeatureFlags() {
+        return listFeatureFlags(null, null, Context.NONE);
+    }
+
+    /**
+     * Gets a list of feature flags matching the specified name and label filters.
+     *
+     * @param nameFilter A filter used to match feature flag names. Supports '*' wildcard.
+     * @param labelFilter A filter used to match labels. Supports '*' wildcard. If {@code null}, feature flags with
+     * no label are returned.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} of {@link FeatureFlag feature flags}.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FeatureFlag> listFeatureFlags(String nameFilter, String labelFilter, Context context) {
+        return serviceClient.getFeatureFlags(endpoint, nameFilter, labelFilter, null, null, null, null, null, null,
+            null, context);
+    }
+
+    /**
+     * Creates or updates a feature flag.
+     *
+     * @param name The name of the feature flag to create or update.
+     * @param featureFlag The feature flag to create or update.
+     * @return The {@link FeatureFlag} that was created or updated.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureFlag setFeatureFlag(String name, FeatureFlag featureFlag) {
+        return setFeatureFlagWithResponse(name, null, featureFlag, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a feature flag with an optional label and conditional update support.
+     *
+     * @param name The name of the feature flag to create or update.
+     * @param label The label of the feature flag. If {@code null}, the feature flag with no label is targeted.
+     * @param featureFlag The feature flag to create or update.
+     * @param onlyIfUnchanged If {@code true}, the operation is performed only if the feature flag's etag matches,
+     * preventing concurrent updates. Requires the {@code featureFlag} to have an etag set.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the {@link FeatureFlag} that was created or updated.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureFlag> setFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
+        boolean onlyIfUnchanged, Context context) {
+        String ifMatch = onlyIfUnchanged ? getETag(featureFlag.getEtag()) : null;
+        return serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null, null,
+            featureFlag, context);
+    }
+
+    /**
+     * Adds a feature flag if the flag does not already exist.
+     *
+     * @param name The name of the feature flag to add.
+     * @param featureFlag The feature flag to add.
+     * @return The {@link FeatureFlag} that was created.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceModifiedException If a feature flag with the same name already exists.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureFlag addFeatureFlag(String name, FeatureFlag featureFlag) {
+        return addFeatureFlagWithResponse(name, null, featureFlag, Context.NONE).getValue();
+    }
+
+    /**
+     * Adds a feature flag if the flag does not already exist, with an optional label.
+     *
+     * @param name The name of the feature flag to add.
+     * @param label The label of the feature flag. If {@code null}, the feature flag with no label is targeted.
+     * @param featureFlag The feature flag to add.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the {@link FeatureFlag} that was created.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceModifiedException If a feature flag with the same name and label already exists.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureFlag> addFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
+        Context context) {
+        return serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, ETAG_ANY,
+            null, featureFlag, context);
+    }
+
+    /**
+     * Deletes a feature flag.
+     *
+     * @param name The name of the feature flag to delete.
+     * @return The deleted {@link FeatureFlag}, or {@code null} if it did not exist.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureFlag deleteFeatureFlag(String name) {
+        return deleteFeatureFlagWithResponse(name, null, null, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a feature flag with an optional label and conditional delete support.
+     *
+     * @param name The name of the feature flag to delete.
+     * @param label The label of the feature flag to delete. If {@code null}, the feature flag with no label is
+     * targeted.
+     * @param featureFlag The feature flag to delete. Used for conditional delete when {@code onlyIfUnchanged} is
+     * {@code true}. Can be {@code null} when {@code onlyIfUnchanged} is {@code false}.
+     * @param onlyIfUnchanged If {@code true}, the operation is performed only if the feature flag's etag matches.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the deleted {@link FeatureFlag}.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureFlag> deleteFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
+        boolean onlyIfUnchanged, Context context) {
+        String ifMatch = onlyIfUnchanged && featureFlag != null ? getETag(featureFlag.getEtag()) : null;
+        return serviceClient.deleteFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null,
+            context);
     }
 }

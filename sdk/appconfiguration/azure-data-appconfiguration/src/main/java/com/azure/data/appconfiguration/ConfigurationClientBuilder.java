@@ -174,7 +174,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      */
     public ConfigurationClient buildClient() {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
+        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy, resolveEndpoint());
     }
 
     /**
@@ -195,7 +195,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
+        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy, resolveEndpoint());
     }
 
     /**
@@ -238,7 +238,14 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
             : pipeline;
 
-        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
+        return new AzureAppConfigurationImpl(buildPipeline, serviceVersion.getVersion());
+    }
+
+    private String resolveEndpoint() {
+        if (connectionString != null && !connectionString.isEmpty()) {
+            return new ConfigurationClientCredentials(connectionString).getBaseUri();
+        }
+        return endpoint;
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,

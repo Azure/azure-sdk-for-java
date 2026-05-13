@@ -8,10 +8,13 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.json.JsonProviders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
@@ -62,20 +65,37 @@ public class ConfigurationSettingDeserializerTest {
     @MethodSource("deserializeSupplier")
     public <T extends ConfigurationSetting> void deserialize(String json, T expectedGeo) {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
-            final KeyValue mockFeatureFlagSetting = new KeyValue().setKey(".appconfig.featureflag/hello")
-                .setValue(FEATURE_FLAG_VALUE_JSON)
-                .setContentType(FEATURE_FLAG_CONTENT_TYPE);
+            final KeyValue mockFeatureFlagSetting
+                = createKeyValue(".appconfig.featureflag/hello", FEATURE_FLAG_VALUE_JSON, FEATURE_FLAG_CONTENT_TYPE);
             assertFeatureFlagConfigurationSetting((FeatureFlagConfigurationSetting) expectedGeo,
                 (FeatureFlagConfigurationSetting) toConfigurationSetting(mockFeatureFlagSetting));
         } else if (expectedGeo instanceof SecretReferenceConfigurationSetting) {
-            final KeyValue mockSecretReferenceSetting = new KeyValue().setKey(KEY)
-                .setValue(SECRET_REFERENCE_VALUE_JSON)
-                .setContentType(SECRET_REFERENCE_CONTENT_TYPE);
+            final KeyValue mockSecretReferenceSetting
+                = createKeyValue(KEY, SECRET_REFERENCE_VALUE_JSON, SECRET_REFERENCE_CONTENT_TYPE);
             assertSecretReferenceConfigurationSetting((SecretReferenceConfigurationSetting) expectedGeo,
                 (SecretReferenceConfigurationSetting) toConfigurationSetting(mockSecretReferenceSetting));
         } else {
-            final KeyValue mockSetting = new KeyValue().setKey(KEY).setValue(SETTING_VALUE);
+            final KeyValue mockSetting = createKeyValue(KEY, SETTING_VALUE, null);
             assertConfigurationSetting(expectedGeo, toConfigurationSetting(mockSetting));
+        }
+    }
+
+    private static KeyValue createKeyValue(String key, String value, String contentType) {
+        StringBuilder jsonBuilder = new StringBuilder("{\"key\":\"").append(key).append("\",\"value\":");
+        // Value may be a JSON object itself, so write it raw if it starts with '{'
+        if (value != null && value.startsWith("{")) {
+            jsonBuilder.append(value);
+        } else {
+            jsonBuilder.append("\"").append(value != null ? value : "").append("\"");
+        }
+        if (contentType != null) {
+            jsonBuilder.append(",\"content_type\":\"").append(contentType).append("\"");
+        }
+        jsonBuilder.append("}");
+        try {
+            return KeyValue.fromJson(JsonProviders.createReader(jsonBuilder.toString()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

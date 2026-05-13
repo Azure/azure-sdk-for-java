@@ -3,10 +3,16 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import static com.azure.core.util.FluxUtil.monoError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollOperationDetails;
@@ -16,19 +22,13 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
-import com.azure.data.appconfiguration.implementation.models.State;
+import com.azure.data.appconfiguration.implementation.models.OperationState;
+import static com.azure.data.appconfiguration.implementation.models.OperationState.NOT_STARTED;
+import static com.azure.data.appconfiguration.implementation.models.OperationState.RUNNING;
+import static com.azure.data.appconfiguration.implementation.models.OperationState.SUCCEEDED;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.appconfiguration.implementation.models.State.NOT_STARTED;
-import static com.azure.data.appconfiguration.implementation.models.State.RUNNING;
-import static com.azure.data.appconfiguration.implementation.models.State.SUCCEEDED;
 
 /**
  * A helper util client for creating a snapshot.
@@ -38,25 +38,29 @@ public class CreateSnapshotUtilClient {
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     private final AzureAppConfigurationImpl service;
+    private final String endpoint;
 
-    public CreateSnapshotUtilClient(AzureAppConfigurationImpl service) {
+    public CreateSnapshotUtilClient(AzureAppConfigurationImpl service, String endpoint) {
         this.service = service;
+        this.endpoint = endpoint;
     }
 
     public PollerFlux<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(String name,
         ConfigurationSnapshot snapshot) {
         try {
             return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(
-                service.createSnapshotWithResponseAsync(name, snapshot, Context.NONE).map(response -> {
+                service.createSnapshotWithResponseAsync(endpoint, name, snapshot, null, Context.NONE).map(response -> {
                     final Map<String, String> pollResponse = new HashMap<>();
                     pollResponse.put("id", response.getDeserializedHeaders().getOperationLocation());
                     return BinaryData.fromObject(pollResponse).toObject(PollOperationDetails.class);
-                })), pollingOperation(operationId -> service.getOperationDetailsWithResponseAsync(name, Context.NONE)),
+                })),
+                pollingOperation(
+                    operationId -> service.getOperationDetailsWithResponseAsync(endpoint, name, null, Context.NONE)),
                 (pollingContext, activationResponse) -> Mono
                     .error(new RuntimeException("Cancellation is not supported.")),
-                fetchingOperation(
-                    operationId -> service.getSnapshotWithResponseAsync(name, null, null, null, Context.NONE)
-                        .flatMap(res -> Mono.justOrEmpty(res.getValue()))));
+                fetchingOperation(operationId -> service
+                    .getSnapshotWithResponseAsync(endpoint, name, null, null, null, null, null, Context.NONE)
+                    .flatMap(res -> Mono.justOrEmpty(res.getValue()))));
         } catch (Exception e) {
             return PollerFlux.error(e);
         }
@@ -69,11 +73,14 @@ public class CreateSnapshotUtilClient {
             return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(name, snapshot, finalContext).apply(cxt)),
-                pollingOperationSync(operationId -> service.getOperationDetailsWithResponse(name, finalContext)),
+                pollingOperationSync(
+                    operationId -> service.getOperationDetailsWithResponse(endpoint, name, null, finalContext)),
                 (pollingContext, activationResponse) -> {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported."));
-                }, fetchingOperationSync(
-                    operationId -> service.getSnapshotWithResponse(name, null, null, null, finalContext).getValue()));
+                },
+                fetchingOperationSync(operationId -> service
+                    .getSnapshotWithResponse(endpoint, name, null, null, null, null, null, finalContext)
+                    .getValue()));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -97,7 +104,7 @@ public class CreateSnapshotUtilClient {
             try {
                 final Context finalContext = getNotNullContext(context);
                 final ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot> snapshotWithResponse
-                    = service.createSnapshotWithResponse(name, snapshot, finalContext);
+                    = service.createSnapshotWithResponse(endpoint, name, snapshot, null, finalContext);
                 final Map<String, String> pollResponse = new HashMap<>();
                 pollResponse.put("id", snapshotWithResponse.getDeserializedHeaders().getOperationLocation());
                 return BinaryData.fromObject(pollResponse).toObject(PollOperationDetails.class);
@@ -162,7 +169,7 @@ public class CreateSnapshotUtilClient {
     private PollResponse<PollOperationDetails> processResponse(Response<OperationDetails> response,
         PollResponse<PollOperationDetails> operationResultPollResponse) {
         LongRunningOperationStatus status;
-        State state = response.getValue().getStatus();
+        OperationState state = response.getValue().getStatus();
         if (NOT_STARTED.equals(state) || RUNNING.equals(state)) {
             status = LongRunningOperationStatus.IN_PROGRESS;
         } else if (SUCCEEDED.equals(state)) {

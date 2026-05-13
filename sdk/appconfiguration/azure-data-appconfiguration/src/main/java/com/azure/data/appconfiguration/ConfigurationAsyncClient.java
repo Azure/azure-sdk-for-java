@@ -53,7 +53,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
+import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFields;
+import static com.azure.data.appconfiguration.implementation.Utility.toLabelFields;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotStatus;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
@@ -299,6 +302,7 @@ public final class ConfigurationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClient.class);
     private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
+    private final String endpoint;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
 
@@ -309,11 +313,14 @@ public final class ConfigurationAsyncClient {
      * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
+     * @param endpoint The service endpoint for the Azure App Configuration instance.
      */
-    ConfigurationAsyncClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationAsyncClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy,
+        String endpoint) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
-        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
+        this.endpoint = endpoint;
+        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient, endpoint);
     }
 
     /**
@@ -322,7 +329,7 @@ public final class ConfigurationAsyncClient {
      * @return the service endpoint for the Azure App Configuration instance.
      */
     public String getEndpoint() {
-        return serviceClient.getEndpoint();
+        return this.endpoint;
     }
 
     /**
@@ -430,8 +437,8 @@ public final class ConfigurationAsyncClient {
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
         return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(), null, ETAG_ANY,
-                toKeyValue(settingInternal), context)
+            .putKeyValueWithResponseAsync(endpoint, settingInternal.getKey(), settingInternal.getLabel(), null, null,
+                ETAG_ANY, null, toKeyValue(settingInternal), context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
@@ -572,8 +579,8 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
         return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
-                getETag(ifUnchanged, settingInternal), null, toKeyValue(settingInternal), context)
+            .putKeyValueWithResponseAsync(endpoint, settingInternal.getKey(), settingInternal.getLabel(), null,
+                getETag(ifUnchanged, settingInternal), null, null, toKeyValue(settingInternal), context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
@@ -716,9 +723,9 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged) {
         return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+            .getKeyValueWithResponseAsync(endpoint, settingInternal.getKey(), settingInternal.getLabel(), null, null,
                 acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, settingInternal),
-                null, context)
+                null, null, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
                     HttpResponseException e = (HttpResponseException) throwable;
@@ -849,8 +856,8 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
         return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .deleteKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
-                getETag(ifUnchanged, settingInternal), context)
+            .deleteKeyValueWithResponseAsync(endpoint, settingInternal.getKey(), settingInternal.getLabel(), null,
+                getETag(ifUnchanged, settingInternal), null, context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
@@ -999,8 +1006,8 @@ public final class ConfigurationAsyncClient {
             final String key = settingInternal.getKey();
             final String label = settingInternal.getLabel();
             return (isReadOnly
-                ? serviceClient.putLockWithResponseAsync(key, label, null, null, context)
-                : serviceClient.deleteLockWithResponseAsync(key, label, null, null, context))
+                ? serviceClient.putLockWithResponseAsync(endpoint, key, label, null, null, null, null, context)
+                : serviceClient.deleteLockWithResponseAsync(endpoint, key, label, null, null, null, null, context))
                     .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse);
         }));
     }
@@ -1037,13 +1044,14 @@ public final class ConfigurationAsyncClient {
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedFlux<>(() -> withContext(context -> serviceClient
-            .getKeyValuesSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            .getKeyValuesSinglePageAsync(endpoint, keyFilter, labelFilter, null, null, acceptDateTime,
+                toKeyValueFields(settingFields), null, null, getPageETag(matchConditionsList, pageETagIndex),
+                tagsFilter, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(context -> serviceClient
-                .getKeyValuesNextSinglePageAsync(nextLink, acceptDateTime, null,
+                .getKeyValuesNextSinglePageAsync(nextLink, endpoint, null, acceptDateTime, null,
                     getPageETag(matchConditionsList, pageETagIndex), context)
                 .onErrorResume(HttpResponseException.class,
                     (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
@@ -1107,11 +1115,12 @@ public final class ConfigurationAsyncClient {
         List<SettingFields> fields) {
         return new PagedFlux<>(
             () -> withContext(context -> serviceClient
-                .getKeyValuesSinglePageAsync(null, null, null, null, fields, snapshotName, null, null, null, context)
+                .getKeyValuesSinglePageAsync(endpoint, null, null, null, null, null, toKeyValueFields(fields),
+                    snapshotName, null, null, null, context)
                 .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
-            nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(nextLink, null, null, null, context)
-                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
+            nextLink -> withContext(context -> serviceClient
+                .getKeyValuesNextSinglePageAsync(nextLink, endpoint, null, null, null, null, context)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1149,11 +1158,12 @@ public final class ConfigurationAsyncClient {
         List<String> tags = selector == null ? null : selector.getTagsFilter();
         return new PagedFlux<>(
             () -> withContext(context -> serviceClient
-                .getRevisionsSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, tags, context)
+                .getRevisionsSinglePageAsync(endpoint, keyFilter, labelFilter, null, null, acceptDateTime,
+                    toKeyValueFields(settingFields), tags, null, context)
                 .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
-            nextLink -> withContext(
-                context -> serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime, context)
-                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
+            nextLink -> withContext(context -> serviceClient
+                .getRevisionsNextSinglePageAsync(nextLink, endpoint, null, acceptDateTime, null, context)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1249,7 +1259,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponse(String snapshotName,
         List<SnapshotFields> fields) {
-        return serviceClient.getSnapshotWithResponseAsync(snapshotName, null, null, fields, Context.NONE)
+        return serviceClient
+            .getSnapshotWithResponseAsync(endpoint, snapshotName, fields, null, null, null, null, Context.NONE)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -1275,7 +1286,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSnapshot> archiveSnapshot(String snapshotName) {
-        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient)
+        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient, endpoint)
             .map(Response::getValue);
     }
 
@@ -1312,7 +1323,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> archiveSnapshotWithResponse(String snapshotName,
         MatchConditions matchConditions) {
-        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.ARCHIVED, serviceClient);
+        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.ARCHIVED, serviceClient,
+            endpoint);
     }
 
     /**
@@ -1337,7 +1349,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSnapshot> recoverSnapshot(String snapshotName) {
-        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient)
+        return updateSnapshotAsync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient, endpoint)
             .map(Response::getValue);
     }
 
@@ -1373,7 +1385,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> recoverSnapshotWithResponse(String snapshotName,
         MatchConditions matchConditions) {
-        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.READY, serviceClient);
+        return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.READY, serviceClient,
+            endpoint);
     }
 
     /**
@@ -1399,11 +1412,13 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> serviceClient.getSnapshotsSinglePageAsync(
+                () -> withContext(context -> serviceClient.getSnapshotsSinglePageAsync(endpoint,
                     selector == null ? null : selector.getNameFilter(), null,
-                    selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
+                    selector == null ? null : selector.getFields(),
+                    selector == null ? null : toSnapshotStatus(selector == null ? null : selector.getStatus()), null,
                     context)),
-                nextLink -> withContext(context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, context)));
+                nextLink -> withContext(
+                    context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, endpoint, null, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
@@ -1461,7 +1476,8 @@ public final class ConfigurationAsyncClient {
             ? null
             : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabelsAsync(labelNameFilter, null, acceptDatetime, labelFields);
+        return serviceClient.getLabelsAsync(endpoint, labelNameFilter, null, null, acceptDatetime,
+            toLabelFields(labelFields), null, null);
     }
 
     /**
