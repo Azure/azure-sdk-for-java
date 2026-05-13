@@ -18,7 +18,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -50,8 +49,8 @@ public class StorageContentValidationDecoderPolicyTests {
      */
     @ParameterizedTest
     @MethodSource("segmentPayloadSizeAndTotalPayloadSizeSupplier")
-    public void decodesDynamicallySizedSegmentStructuredMessageThroughPipeline(int segmentPayloadSize, int totalPayloadSize)
-        throws IOException {
+    public void decodesDynamicallySizedSegmentStructuredMessageThroughPipeline(int segmentPayloadSize,
+        int totalPayloadSize) throws IOException {
         byte[] originalData = new byte[totalPayloadSize];
         ThreadLocalRandom.current().nextBytes(originalData);
 
