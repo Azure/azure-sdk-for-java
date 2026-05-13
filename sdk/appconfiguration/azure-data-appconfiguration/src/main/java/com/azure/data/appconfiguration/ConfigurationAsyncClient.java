@@ -30,6 +30,7 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.FeatureFlag;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -52,9 +53,11 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.toImplFeatureFlag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFields;
 import static com.azure.data.appconfiguration.implementation.Utility.toLabelFields;
+import static com.azure.data.appconfiguration.implementation.Utility.toPublicFeatureFlag;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotStatus;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1489,5 +1492,169 @@ public final class ConfigurationAsyncClient {
     public void updateSyncToken(String token) {
         Objects.requireNonNull(token, "'token' cannot be null.");
         syncTokenPolicy.updateSyncToken(token);
+    }
+
+    /**
+     * Gets a feature flag by its name.
+     *
+     * @param name The name of the feature flag to retrieve.
+     * @return A {@link Mono} containing the {@link FeatureFlag} with the given name.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FeatureFlag> getFeatureFlag(String name) {
+        return getFeatureFlagWithResponse(name, null)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Gets a feature flag by its name with an optional label.
+     *
+     * @param name The name of the feature flag to retrieve.
+     * @param label The label of the feature flag to retrieve. If {@code null}, the feature flag with no label is
+     * retrieved.
+     * @return A {@link Mono} containing a REST response with the {@link FeatureFlag}.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<FeatureFlag>> getFeatureFlagWithResponse(String name, String label) {
+        return serviceClient.getFeatureFlagNoCustomHeadersWithResponseAsync(endpoint, name, label, null, null, null,
+            null, null, null, null)
+            .map(response -> new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue())));
+    }
+
+    /**
+     * Gets a list of all feature flags.
+     *
+     * @return A {@link PagedFlux} of {@link FeatureFlag feature flags}.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FeatureFlag> listFeatureFlags() {
+        return listFeatureFlags(null, null);
+    }
+
+    /**
+     * Gets a list of feature flags matching the specified name and label filters.
+     *
+     * @param nameFilter A filter used to match feature flag names. Supports '*' wildcard.
+     * @param labelFilter A filter used to match labels. Supports '*' wildcard. If {@code null}, feature flags with
+     * no label are returned.
+     * @return A {@link PagedFlux} of {@link FeatureFlag feature flags}.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FeatureFlag> listFeatureFlags(String nameFilter, String labelFilter) {
+        return serviceClient.getFeatureFlagsAsync(endpoint, nameFilter, labelFilter, null, null, null, null, null,
+            null, null).mapPage(Utility::toPublicFeatureFlag);
+    }
+
+    /**
+     * Creates or updates a feature flag.
+     *
+     * @param name The name of the feature flag to create or update.
+     * @param featureFlag The feature flag to create or update.
+     * @return A {@link Mono} containing the {@link FeatureFlag} that was created or updated.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FeatureFlag> setFeatureFlag(String name, FeatureFlag featureFlag) {
+        return setFeatureFlagWithResponse(name, null, featureFlag, false)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Creates or updates a feature flag with an optional label and conditional update support.
+     *
+     * @param name The name of the feature flag to create or update.
+     * @param label The label of the feature flag. If {@code null}, the feature flag with no label is targeted.
+     * @param featureFlag The feature flag to create or update.
+     * @param onlyIfUnchanged If {@code true}, the operation is performed only if the feature flag's etag matches,
+     * preventing concurrent updates. Requires the {@code featureFlag} to have an etag set.
+     * @return A {@link Mono} containing a REST response with the {@link FeatureFlag} that was created or updated.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<FeatureFlag>> setFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
+        boolean onlyIfUnchanged) {
+        String ifMatch = onlyIfUnchanged ? getETag(featureFlag.getEtag()) : null;
+        return serviceClient.putFeatureFlagNoCustomHeadersWithResponseAsync(endpoint, name, label, null, ifMatch, null,
+            null, toImplFeatureFlag(featureFlag))
+            .map(response -> new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue())));
+    }
+
+    /**
+     * Adds a feature flag if the flag does not already exist.
+     *
+     * @param name The name of the feature flag to add.
+     * @param featureFlag The feature flag to add.
+     * @return A {@link Mono} containing the {@link FeatureFlag} that was created.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceModifiedException If a feature flag with the same name already exists.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FeatureFlag> addFeatureFlag(String name, FeatureFlag featureFlag) {
+        return addFeatureFlagWithResponse(name, null, featureFlag)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Adds a feature flag if the flag does not already exist, with an optional label.
+     *
+     * @param name The name of the feature flag to add.
+     * @param label The label of the feature flag. If {@code null}, the feature flag with no label is targeted.
+     * @param featureFlag The feature flag to add.
+     * @return A {@link Mono} containing a REST response with the {@link FeatureFlag} that was created.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceModifiedException If a feature flag with the same name and label already exists.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<FeatureFlag>> addFeatureFlagWithResponse(String name, String label,
+        FeatureFlag featureFlag) {
+        return serviceClient.putFeatureFlagNoCustomHeadersWithResponseAsync(endpoint, name, label, null, null,
+            ETAG_ANY, null, toImplFeatureFlag(featureFlag))
+            .map(response -> new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue())));
+    }
+
+    /**
+     * Deletes a feature flag.
+     *
+     * @param name The name of the feature flag to delete.
+     * @return A {@link Mono} containing the deleted {@link FeatureFlag}, or empty if it did not exist.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FeatureFlag> deleteFeatureFlag(String name) {
+        return deleteFeatureFlagWithResponse(name, null, null, false)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Deletes a feature flag with an optional label and conditional delete support.
+     *
+     * @param name The name of the feature flag to delete.
+     * @param label The label of the feature flag to delete. If {@code null}, the feature flag with no label is
+     * targeted.
+     * @param featureFlag The feature flag to delete. Used for conditional delete when {@code onlyIfUnchanged} is
+     * {@code true}. Can be {@code null} when {@code onlyIfUnchanged} is {@code false}.
+     * @param onlyIfUnchanged If {@code true}, the operation is performed only if the feature flag's etag matches.
+     * @return A {@link Mono} containing a REST response with the deleted {@link FeatureFlag}.
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws HttpResponseException If the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<FeatureFlag>> deleteFeatureFlagWithResponse(String name, String label,
+        FeatureFlag featureFlag, boolean onlyIfUnchanged) {
+        String ifMatch = onlyIfUnchanged && featureFlag != null ? getETag(featureFlag.getEtag()) : null;
+        return serviceClient.deleteFeatureFlagNoCustomHeadersWithResponseAsync(endpoint, name, label, null, ifMatch,
+            null)
+            .map(response -> new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue())));
     }
 }

@@ -4,13 +4,12 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.implementation.models.FeatureFlag;
-import com.azure.data.appconfiguration.implementation.models.FeatureFlagConditions;
-import com.azure.data.appconfiguration.implementation.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.FeatureFlag;
+import com.azure.data.appconfiguration.models.FeatureFlagConditions;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,10 +36,10 @@ public class FeatureFlagEvaluationSample {
 
         // 1. Create feature flags using the dedicated feature flag endpoints.
         FeatureFlagFilter percentageFilter = new FeatureFlagFilter("Microsoft.Percentage")
-            .setParameters(Collections.singletonMap("Value", "50"));
+            .addParameter("Value", "50");
 
         FeatureFlagFilter targetingFilter = new FeatureFlagFilter("Microsoft.Targeting")
-            .setParameters(Collections.singletonMap("Audience", "beta-users"));
+            .addParameter("Audience", "beta-users");
 
         FeatureFlag darkModeFlag = new FeatureFlag()
             .setEnabled(true)

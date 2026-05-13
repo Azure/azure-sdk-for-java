@@ -31,6 +31,17 @@ import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeade
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.FeatureFlag;
+import com.azure.data.appconfiguration.models.FeatureFlagAllocation;
+import com.azure.data.appconfiguration.models.FeatureFlagConditions;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.FeatureFlagGroupAllocation;
+import com.azure.data.appconfiguration.models.FeatureFlagPercentileAllocation;
+import com.azure.data.appconfiguration.models.FeatureFlagRequirementType;
+import com.azure.data.appconfiguration.models.FeatureFlagStatusOverride;
+import com.azure.data.appconfiguration.models.FeatureFlagTelemetry;
+import com.azure.data.appconfiguration.models.FeatureFlagUserAllocation;
+import com.azure.data.appconfiguration.models.FeatureFlagVariant;
 import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabelFields;
@@ -235,5 +246,208 @@ public class Utility {
             tagsFilters = null;
         }
         return tagsFilters;
+    }
+
+    /*
+     * Get the ETag value from a raw etag string, surrounded in quotation marks.
+     */
+    public static String getETag(String etag) {
+        return getETagValue(etag);
+    }
+
+    /*
+     * Convert public FeatureFlag model to impl FeatureFlag for sending to the service.
+     */
+    public static com.azure.data.appconfiguration.implementation.models.FeatureFlag toImplFeatureFlag(
+        FeatureFlag flag) {
+        if (flag == null) {
+            return null;
+        }
+        com.azure.data.appconfiguration.implementation.models.FeatureFlag impl
+            = new com.azure.data.appconfiguration.implementation.models.FeatureFlag()
+                .setEnabled(flag.isEnabled())
+                .setDescription(flag.getDescription())
+                .setTags(flag.getTags());
+
+        if (flag.getConditions() != null) {
+            impl.setConditions(toImplConditions(flag.getConditions()));
+        }
+        if (flag.getVariants() != null) {
+            impl.setVariants(flag.getVariants().stream().map(Utility::toImplVariant).collect(Collectors.toList()));
+        }
+        if (flag.getAllocation() != null) {
+            impl.setAllocation(toImplAllocation(flag.getAllocation()));
+        }
+        if (flag.getTelemetry() != null) {
+            com.azure.data.appconfiguration.implementation.models.FeatureFlagTelemetryConfiguration implTelemetry
+                = new com.azure.data.appconfiguration.implementation.models.FeatureFlagTelemetryConfiguration(
+                    flag.getTelemetry().isEnabled())
+                        .setMetadata(flag.getTelemetry().getMetadata());
+            impl.setTelemetry(implTelemetry);
+        }
+        return impl;
+    }
+
+    /*
+     * Convert impl FeatureFlag to public FeatureFlag model.
+     */
+    public static FeatureFlag toPublicFeatureFlag(
+        com.azure.data.appconfiguration.implementation.models.FeatureFlag impl) {
+        if (impl == null) {
+            return null;
+        }
+        FeatureFlag flag = new FeatureFlag()
+            .setEnabled(impl.isEnabled())
+            .setDescription(impl.getDescription())
+            .setTags(impl.getTags())
+            .setName(impl.getName())
+            .setLabel(impl.getLabel())
+            .setLastModified(impl.getLastModified())
+            .setEtag(impl.getEtag());
+
+        if (impl.getConditions() != null) {
+            flag.setConditions(toPublicConditions(impl.getConditions()));
+        }
+        if (impl.getVariants() != null) {
+            flag.setVariants(
+                impl.getVariants().stream().map(Utility::toPublicVariant).collect(Collectors.toList()));
+        }
+        if (impl.getAllocation() != null) {
+            flag.setAllocation(toPublicAllocation(impl.getAllocation()));
+        }
+        if (impl.getTelemetry() != null) {
+            FeatureFlagTelemetry telemetry = new FeatureFlagTelemetry(impl.getTelemetry().isEnabled())
+                .setMetadata(impl.getTelemetry().getMetadata());
+            flag.setTelemetry(telemetry);
+        }
+        return flag;
+    }
+
+    private static com.azure.data.appconfiguration.implementation.models.FeatureFlagConditions toImplConditions(
+        FeatureFlagConditions conditions) {
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagConditions impl
+            = new com.azure.data.appconfiguration.implementation.models.FeatureFlagConditions();
+        if (conditions.getRequirementType() != null) {
+            impl.setRequirementType(com.azure.data.appconfiguration.implementation.models.RequirementType
+                .fromString(conditions.getRequirementType().toString()));
+        }
+        if (conditions.getFilters() != null) {
+            impl.setFilters(conditions.getFilters().stream().map(Utility::toImplFilter).collect(Collectors.toList()));
+        }
+        return impl;
+    }
+
+    private static FeatureFlagConditions toPublicConditions(
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagConditions impl) {
+        FeatureFlagConditions conditions = new FeatureFlagConditions();
+        if (impl.getRequirementType() != null) {
+            conditions
+                .setRequirementType(FeatureFlagRequirementType.fromString(impl.getRequirementType().toString()));
+        }
+        if (impl.getFilters() != null) {
+            conditions.setFilters(
+                impl.getFilters().stream().map(Utility::toPublicFilter).collect(Collectors.toList()));
+        }
+        return conditions;
+    }
+
+    private static com.azure.data.appconfiguration.implementation.models.FeatureFlagFilter toImplFilter(
+        FeatureFlagFilter filter) {
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagFilter impl
+            = new com.azure.data.appconfiguration.implementation.models.FeatureFlagFilter(filter.getName());
+        if (filter.getParameters() != null) {
+            // Convert Map<String, Object> to Map<String, String>
+            Map<String, String> stringParams = filter.getParameters().entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> String.valueOf(e.getValue())));
+            impl.setParameters(stringParams);
+        }
+        return impl;
+    }
+
+    private static FeatureFlagFilter toPublicFilter(
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagFilter impl) {
+        FeatureFlagFilter filter = new FeatureFlagFilter(impl.getName());
+        if (impl.getParameters() != null) {
+            // Convert Map<String, String> to Map<String, Object>
+            impl.getParameters().forEach(filter::addParameter);
+        }
+        return filter;
+    }
+
+    private static com.azure.data.appconfiguration.implementation.models.FeatureFlagVariantDefinition toImplVariant(
+        FeatureFlagVariant variant) {
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagVariantDefinition impl
+            = new com.azure.data.appconfiguration.implementation.models.FeatureFlagVariantDefinition(
+                variant.getName())
+                    .setValue(variant.getValue())
+                    .setContentType(variant.getContentType());
+        if (variant.getStatusOverride() != null) {
+            impl.setStatusOverride(com.azure.data.appconfiguration.implementation.models.StatusOverride
+                .fromString(variant.getStatusOverride().toString()));
+        }
+        return impl;
+    }
+
+    private static FeatureFlagVariant toPublicVariant(
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagVariantDefinition impl) {
+        FeatureFlagVariant variant = new FeatureFlagVariant(impl.getName())
+            .setValue(impl.getValue())
+            .setContentType(impl.getContentType());
+        if (impl.getStatusOverride() != null) {
+            variant.setStatusOverride(FeatureFlagStatusOverride.fromString(impl.getStatusOverride().toString()));
+        }
+        return variant;
+    }
+
+    private static com.azure.data.appconfiguration.implementation.models.FeatureFlagAllocation toImplAllocation(
+        FeatureFlagAllocation alloc) {
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagAllocation impl
+            = new com.azure.data.appconfiguration.implementation.models.FeatureFlagAllocation()
+                .setDefaultWhenDisabled(alloc.getDefaultWhenDisabled())
+                .setDefaultWhenEnabled(alloc.getDefaultWhenEnabled())
+                .setSeed(alloc.getSeed());
+        if (alloc.getPercentile() != null) {
+            impl.setPercentile(alloc.getPercentile().stream()
+                .map(p -> new com.azure.data.appconfiguration.implementation.models.PercentileAllocation(
+                    p.getVariant(), p.getFrom(), p.getTo()))
+                .collect(Collectors.toList()));
+        }
+        if (alloc.getUser() != null) {
+            impl.setUser(alloc.getUser().stream()
+                .map(u -> new com.azure.data.appconfiguration.implementation.models.UserAllocation(u.getVariant(),
+                    u.getUsers()))
+                .collect(Collectors.toList()));
+        }
+        if (alloc.getGroup() != null) {
+            impl.setGroup(alloc.getGroup().stream()
+                .map(g -> new com.azure.data.appconfiguration.implementation.models.GroupAllocation(g.getVariant(),
+                    g.getGroups()))
+                .collect(Collectors.toList()));
+        }
+        return impl;
+    }
+
+    private static FeatureFlagAllocation toPublicAllocation(
+        com.azure.data.appconfiguration.implementation.models.FeatureFlagAllocation impl) {
+        FeatureFlagAllocation alloc = new FeatureFlagAllocation()
+            .setDefaultWhenDisabled(impl.getDefaultWhenDisabled())
+            .setDefaultWhenEnabled(impl.getDefaultWhenEnabled())
+            .setSeed(impl.getSeed());
+        if (impl.getPercentile() != null) {
+            alloc.setPercentile(impl.getPercentile().stream()
+                .map(p -> new FeatureFlagPercentileAllocation(p.getVariant(), p.getFrom(), p.getTo()))
+                .collect(Collectors.toList()));
+        }
+        if (impl.getUser() != null) {
+            alloc.setUser(impl.getUser().stream()
+                .map(u -> new FeatureFlagUserAllocation(u.getVariant(), u.getUsers()))
+                .collect(Collectors.toList()));
+        }
+        if (impl.getGroup() != null) {
+            alloc.setGroup(impl.getGroup().stream()
+                .map(g -> new FeatureFlagGroupAllocation(g.getVariant(), g.getGroups()))
+                .collect(Collectors.toList()));
+        }
+        return alloc;
     }
 }

@@ -34,15 +34,17 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
 import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
+import static com.azure.data.appconfiguration.implementation.Utility.toImplFeatureFlag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFields;
 import static com.azure.data.appconfiguration.implementation.Utility.toLabelFields;
+import static com.azure.data.appconfiguration.implementation.Utility.toPublicFeatureFlag;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.toSnapshotStatus;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
+import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.FeatureFlag;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
@@ -50,6 +52,7 @@ import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.FeatureFlag;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -1628,8 +1631,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureFlag> getFeatureFlagWithResponse(String name, String label, Context context) {
-        return serviceClient.getFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, null, null,
-            null, null, null, context);
+        Response<com.azure.data.appconfiguration.implementation.models.FeatureFlag> response
+            = serviceClient.getFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, null, null,
+                null, null, null, context);
+        return new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue()));
     }
 
     /**
@@ -1656,7 +1661,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureFlag> listFeatureFlags(String nameFilter, String labelFilter, Context context) {
         return serviceClient.getFeatureFlags(endpoint, nameFilter, labelFilter, null, null, null, null, null, null,
-            null, context);
+            null, context).mapPage(Utility::toPublicFeatureFlag);
     }
 
     /**
@@ -1690,8 +1695,10 @@ public final class ConfigurationClient {
     public Response<FeatureFlag> setFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
         boolean onlyIfUnchanged, Context context) {
         String ifMatch = onlyIfUnchanged ? getETag(featureFlag.getEtag()) : null;
-        return serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null, null,
-            featureFlag, context);
+        Response<com.azure.data.appconfiguration.implementation.models.FeatureFlag> response
+            = serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null, null,
+                toImplFeatureFlag(featureFlag), context);
+        return new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue()));
     }
 
     /**
@@ -1724,8 +1731,10 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureFlag> addFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
         Context context) {
-        return serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, ETAG_ANY,
-            null, featureFlag, context);
+        Response<com.azure.data.appconfiguration.implementation.models.FeatureFlag> response
+            = serviceClient.putFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, null, ETAG_ANY,
+                null, toImplFeatureFlag(featureFlag), context);
+        return new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue()));
     }
 
     /**
@@ -1759,7 +1768,9 @@ public final class ConfigurationClient {
     public Response<FeatureFlag> deleteFeatureFlagWithResponse(String name, String label, FeatureFlag featureFlag,
         boolean onlyIfUnchanged, Context context) {
         String ifMatch = onlyIfUnchanged && featureFlag != null ? getETag(featureFlag.getEtag()) : null;
-        return serviceClient.deleteFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null,
-            context);
+        Response<com.azure.data.appconfiguration.implementation.models.FeatureFlag> response
+            = serviceClient.deleteFeatureFlagNoCustomHeadersWithResponse(endpoint, name, label, null, ifMatch, null,
+                context);
+        return new SimpleResponse<>(response, toPublicFeatureFlag(response.getValue()));
     }
 }
