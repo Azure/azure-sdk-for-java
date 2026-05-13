@@ -3,12 +3,14 @@
 ## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for service version `2025-07-01`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Enabled Managed HSM tests in playback mode so they run as part of CI.
 
 ## 4.10.7 (2026-05-05)
 

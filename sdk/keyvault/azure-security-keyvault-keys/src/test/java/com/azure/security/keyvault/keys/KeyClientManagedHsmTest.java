@@ -61,6 +61,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         });
     }
 
+    /**
+     * Tests that a key can be created in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -68,6 +71,10 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.createKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -75,6 +82,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.createKeyWithMultipleTenants(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key is able to be updated when it exists.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -82,6 +92,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.updateKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key is not able to be updated when it is disabled. 403 error is expected.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -89,6 +102,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.updateDisabledKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that an existing key can be retrieved.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -96,6 +112,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.getKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a specific version of the key can be retrieved.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -103,6 +122,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.getKeySpecificVersion(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that an existing key can be deleted.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -110,6 +132,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.deleteKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -117,6 +142,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.getDeletedKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -124,6 +152,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.recoverDeletedKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that keys can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -131,6 +162,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.listKeys(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that key versions can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -138,6 +172,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.listKeyVersions(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that deleted keys can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -145,6 +182,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.listDeletedKeys(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -152,6 +192,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.backupKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -159,6 +202,11 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.restoreKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} can be created for a given
+     * key using a {@link KeyClient}. Also tests that cryptographic operations can be performed with said cryptography
+     * client.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -166,6 +214,9 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
         super.getCryptographyClientAndEncryptDecrypt(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")

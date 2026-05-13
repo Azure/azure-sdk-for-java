@@ -43,6 +43,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.createRsaKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be created in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -50,6 +53,10 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.createKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -57,6 +64,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.createKeyWithMultipleTenants(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key is able to be updated when it exists.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -64,6 +74,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.updateKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key is not able to be updated when it is disabled. 403 error is expected.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -71,6 +84,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.updateDisabledKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that an existing key can be retrieved.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -78,6 +94,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.getKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a specific version of the key can be retrieved.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -85,6 +104,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.getKeySpecificVersion(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that an existing key can be deleted.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -92,6 +114,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.deleteKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -99,6 +124,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.getDeletedKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -106,6 +134,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.recoverDeletedKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that keys can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -113,6 +144,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.listKeys(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that key versions can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -120,6 +154,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.listKeyVersions(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that deleted keys can be listed in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -127,6 +164,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.listDeletedKeys(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -134,6 +174,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.backupKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -141,6 +184,11 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.restoreKey(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that a {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} can be created for a given
+     * key using a {@link KeyClient}. Also tests that cryptographic operations can be performed with said cryptography
+     * client.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
@@ -148,6 +196,9 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
         super.getCryptographyAsyncClientAndEncryptDecrypt(httpClient, serviceVersion);
     }
 
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
