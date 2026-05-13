@@ -760,11 +760,7 @@ public class Configs {
     }
 
     public static boolean isHttp2PingHealthEnabled() {
-        String value = System.getProperty(HTTP2_PING_HEALTH_ENABLED);
-        if (value != null && !value.isEmpty()) {
-            return Boolean.parseBoolean(value);
-        }
-        return DEFAULT_HTTP2_PING_HEALTH_ENABLED;
+        return getJVMConfigAsBoolean(HTTP2_PING_HEALTH_ENABLED, DEFAULT_HTTP2_PING_HEALTH_ENABLED);
     }
 
     public static int getHttp2PingIntervalInSeconds() {

@@ -10,7 +10,6 @@ import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
 import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2PingFrame;
-import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,17 +38,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private static final Logger logger = LoggerFactory.getLogger(Http2PingHandler.class);
 
     private static final String HANDLER_NAME = "cosmos.http2PingHandler";
-
-    static final AttributeKey<Boolean> PING_HANDLER_INSTALLED =
-        AttributeKey.valueOf("cosmos.conn.pingHandlerInstalled");
-
-    /**
-     * Channel attribute set to {@code true} when a PING ACK is not received before the
-     * next PING would be due. Cleared when a successful ACK arrives. External components
-     * (eviction predicates, health checks) can read this attribute to detect broken connections.
-     */
-    public static final AttributeKey<Boolean> PING_HEALTH_DEGRADED =
-        AttributeKey.valueOf("cosmos.conn.pingHealthDegraded");
 
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
@@ -109,12 +97,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             pingAcksReceived.incrementAndGet();
             pingOutstandingSinceNanos = 0;
             consecutiveFailures = 0;
-            // Connection proved responsive -- clear degraded flag if it was set
-            if (ctx.channel().hasAttr(PING_HEALTH_DEGRADED)) {
-                ctx.channel().attr(PING_HEALTH_DEGRADED).set(null);
-                logger.debug("PING ACK received, connection {} marked healthy",
-                    ctx.channel().id().asShortText());
-            }
         }
         super.channelRead(ctx, msg);
     }
@@ -140,7 +122,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
                 if (consecutiveFailures >= failureThreshold) {
                     // Threshold reached -- connection is broken.
-                    ctx.channel().attr(PING_HEALTH_DEGRADED).set(Boolean.TRUE);
                     logger.info("PING ACK not received for {} consecutive attempts on channel {} -- closing connection",
                         consecutiveFailures, ctx.channel().id().asShortText());
                     cancelPingTask();
@@ -202,17 +183,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Returns {@code true} if the given channel (or its parent) has been marked as
-     * unhealthy due to a missed PING ACK.
-     */
-    public static boolean isConnectionHealthDegraded(Channel channel) {
-        Channel parent = channel.parent() != null ? channel.parent() : channel;
-        return Boolean.TRUE.equals(parent.hasAttr(PING_HEALTH_DEGRADED)
-            ? parent.attr(PING_HEALTH_DEGRADED).get()
-            : null);
-    }
-
-    /**
      * Installs the PING handler on the parent H2 channel if not already installed.
      * Safe to call from doOnConnected (which fires per-stream for H2).
      *
@@ -222,11 +192,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param failureThreshold    consecutive timeouts before closing
      */
     public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
-        // When called from the first doOnConnected, channel IS the parent H2 channel.
-        // When called from a stream doOnConnected, channel.parent() is the parent.
         Channel parent = channel.parent() != null ? channel.parent() : channel;
-        if (!parent.hasAttr(PING_HANDLER_INSTALLED)) {
-            parent.attr(PING_HANDLER_INSTALLED).set(Boolean.TRUE);
+        if (parent.pipeline().get(HANDLER_NAME) == null) {
             try {
                 parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold));
             } catch (IllegalArgumentException ignored) {

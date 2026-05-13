@@ -72,11 +72,9 @@ extends:
           TestName: 'Cosmos_Live_Test_Http2NetworkFault'
           PreSteps:
             - script: |
-                sudo apt-get update -qq && sudo apt-get install -y -qq iproute2 iptables
-                sudo modprobe sch_netem || true
-                echo "iptables $(sudo iptables --version 2>/dev/null || echo 'not found')"
-                echo "tc $(tc -Version 2>/dev/null || echo 'not found')"
-              displayName: 'Install iptables and tc for network fault injection'
+                sudo apt-get update -qq && sudo apt-get install -y -qq iptables
+                echo \"iptables $(sudo iptables --version 2>/dev/null || echo 'not found')\"
+              displayName: 'Install iptables for network fault injection'
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
