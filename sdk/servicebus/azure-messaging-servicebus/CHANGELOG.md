@@ -10,9 +10,22 @@
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
+  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
+  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
 - Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
 
 ### Other Changes
+
+## 7.17.18 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
 
 ## 7.17.17 (2026-01-29)
 

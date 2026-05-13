@@ -81,18 +81,6 @@ public final class CronTrigger extends Trigger {
     }
 
     /**
-     * Set the timeZone property: Time zone for the cron schedule.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the CronTrigger object itself.
-     */
-    @Generated
-    public CronTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
-    }
-
-    /**
      * Get the startTime property: Start time for the cron schedule in ISO 8601 format.
      *
      * @return the startTime value.
@@ -205,6 +193,18 @@ public final class CronTrigger extends Trigger {
     @Generated
     public CronTrigger setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
+        return this;
+    }
+
+    /**
+     * Set the timeZone property: Time zone for the cron schedule.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the CronTrigger object itself.
+     */
+    @Generated
+    public CronTrigger setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
         return this;
     }
 }
