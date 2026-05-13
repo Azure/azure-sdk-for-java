@@ -5,7 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.ServerSentEvents;
+import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -2472,10 +2472,9 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
         RequestOptions requestOptions) {
-        return ServerSentEvents
-            .fromEventAndData(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer()), SessionLogEvent.class)
-            .getEvents();
+        return SessionLogStreamHelper
+            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
     }
 
     /**

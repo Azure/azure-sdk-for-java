@@ -15,7 +15,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -52,19 +52,25 @@ public class SessionLogAsyncTest extends ClientTestBase {
         try {
             assertNotNull(session);
 
-            Mono<Void> closeStream = Mono.delay(Duration.ofSeconds(20)).then(deleteSessionAsync(client));
-            List<SessionLogEvent> events
-                = Flux
-                    .merge(client.getSessionLogStream(AGENT_NAME, AGENT_VERSION, SESSION_ID).take(3),
-                        closeStream.thenMany(Flux.empty()))
+            Disposable scheduledDelete = scheduleSessionDelete(client);
+            try {
+                List<SessionLogEvent> events = client.getSessionLogStream(AGENT_NAME, AGENT_VERSION, SESSION_ID)
+                    .take(3)
                     .timeout(Duration.ofSeconds(120))
                     .collectList()
                     .block();
 
-            assertSessionLogEvents(events);
+                assertSessionLogEvents(events);
+            } finally {
+                scheduledDelete.dispose();
+            }
         } finally {
             deleteSession(client);
         }
+    }
+
+    private static Disposable scheduleSessionDelete(AgentsAsyncClient client) {
+        return Mono.delay(Duration.ofSeconds(20)).then(deleteSessionAsync(client)).subscribe();
     }
 
     private static void deleteSession(AgentsAsyncClient client) {

@@ -5,7 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.ServerSentEvents;
+import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -2350,13 +2350,9 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
         RequestOptions requestOptions) {
-        return new IterableStream<>(
-            ServerSentEvents
-                .fromEventAndData(
-                    getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue()
-                        .toFluxByteBuffer(),
-                    SessionLogEvent.class)
-                .getEvents());
+        return new IterableStream<>(SessionLogStreamHelper
+            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue()
+                .toFluxByteBuffer()));
     }
 
     /**

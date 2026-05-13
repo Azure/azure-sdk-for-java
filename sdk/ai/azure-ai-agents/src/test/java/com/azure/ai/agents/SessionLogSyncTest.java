@@ -17,6 +17,7 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -28,6 +29,7 @@ import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 public class SessionLogSyncTest extends ClientTestBase {
     private static final String AGENT_NAME = "MySessionHostedAgent3";
@@ -57,13 +59,16 @@ public class SessionLogSyncTest extends ClientTestBase {
         try {
             assertNotNull(session);
 
-            List<SessionLogEvent> events = new ArrayList<>();
-            for (SessionLogEvent event : client.getSessionLogStream(AGENT_NAME, AGENT_VERSION, SESSION_ID)) {
-                events.add(event);
-                if (events.size() == 3) {
-                    break;
+            List<SessionLogEvent> events = assertTimeoutPreemptively(Duration.ofSeconds(120), () -> {
+                List<SessionLogEvent> sessionLogEvents = new ArrayList<>();
+                for (SessionLogEvent event : client.getSessionLogStream(AGENT_NAME, AGENT_VERSION, SESSION_ID)) {
+                    sessionLogEvents.add(event);
+                    if (sessionLogEvents.size() == 3) {
+                        break;
+                    }
                 }
-            }
+                return sessionLogEvents;
+            });
 
             assertSessionLogEvents(events);
         } finally {
