@@ -449,7 +449,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
     }
 
     @Test
-    public void verifyProgressListenerIsCompatibleWithContentValidation() throws IOException {
+    public void verifyProgressListenerIsCompatibleWithContentValidation(@TempDir Path tempDir) throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
 
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(generateBlobName());
@@ -462,12 +462,10 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptionsWithoutContentVal
             = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
 
-        File outFileWithContentVal = new File(prefix + "_withcontentval.txt");
-        createdFiles.add(outFileWithContentVal);
-        outFileWithContentVal.deleteOnExit();
-        File outFileWithoutContentVal = new File(prefix + "_withoutcontentval.txt");
-        createdFiles.add(outFileWithoutContentVal);
-        outFileWithoutContentVal.deleteOnExit();
+        File fileWithContentVal = createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithContentVal = tempDir.resolve("withcontentval.bin").toFile();
+        File fileWithoutContentVal = createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithoutContentVal = tempDir.resolve("withoutcontentval.bin").toFile();
 
         Files.deleteIfExists(outFileWithContentVal.toPath());
         Files.deleteIfExists(outFileWithoutContentVal.toPath());
