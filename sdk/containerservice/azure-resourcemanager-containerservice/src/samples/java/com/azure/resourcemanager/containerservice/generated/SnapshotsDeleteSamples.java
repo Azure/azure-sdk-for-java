@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/SnapshotsDelete.json
+     * x-ms-original-file: 2026-03-02-preview/SnapshotsDelete.json
      */
     /**
      * Sample code: Delete Snapshot.
