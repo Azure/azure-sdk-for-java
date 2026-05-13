@@ -142,8 +142,8 @@ public final class FabricIQPreviewTool extends Tool {
      *
      * @return the requireApproval value.
      */
-    @Generated
-    public BinaryData getRequireApproval() {
+    BinaryData getRequireApproval() {
+        // AI Tooling: union type
         return this.requireApproval;
     }
 
@@ -154,10 +154,64 @@ public final class FabricIQPreviewTool extends Tool {
      * @param requireApproval the requireApproval value to set.
      * @return the FabricIQPreviewTool object itself.
      */
-    @Generated
-    public FabricIQPreviewTool setRequireApproval(BinaryData requireApproval) {
+    FabricIQPreviewTool setRequireApproval(BinaryData requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;
+    }
+
+    /**
+     * Set the requireApproval property: (Optional) Whether the agent requires approval before executing actions.
+     * Default is always.
+     *
+     * @param requireApproval the approval setting string to set (e.g., "always" or "never").
+     * @return the FabricIQPreviewTool object itself.
+     */
+    public FabricIQPreviewTool setRequireApproval(String requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = BinaryData.fromString(requireApproval);
+        return this;
+    }
+
+    /**
+     * Set the requireApproval property: (Optional) Whether the agent requires approval before executing actions.
+     * Default is always.
+     *
+     * @param requireApproval the {@link McpToolRequireApproval} value to set.
+     * @return the FabricIQPreviewTool object itself.
+     */
+    public FabricIQPreviewTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property as a String: (Optional) Whether the agent requires approval before executing
+     * actions. Default is always.
+     *
+     * @return the requireApproval value as a String.
+     */
+    public String getRequireApprovalAsString() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        return this.requireApproval.toObject(String.class);
+    }
+
+    /**
+     * Get the requireApproval property as a {@link McpToolRequireApproval}: (Optional) Whether the agent requires
+     * approval before executing actions. Default is always.
+     *
+     * @return the requireApproval value as a {@link McpToolRequireApproval}.
+     */
+    public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        return this.requireApproval.toObject(McpToolRequireApproval.class);
     }
 
     /**
