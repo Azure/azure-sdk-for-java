@@ -134,6 +134,21 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
     }
 
     /**
+     * Creates an instance of ModelSamplingParams class.
+     *
+     * @param temperature the temperature value to set.
+     * @param topP the topP value to set.
+     * @param seed the seed value to set.
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     */
+    public ModelSamplingParams(double temperature, double topP, int seed, int maxCompletionTokens) {
+        this.temperature = temperature;
+        this.topP = topP;
+        this.seed = seed;
+        this.maxCompletionTokens = maxCompletionTokens;
+    }
+
+    /**
      * Set the temperature property: The temperature parameter for sampling. Defaults to 1.0.
      *
      * @param temperature the temperature value to set.
