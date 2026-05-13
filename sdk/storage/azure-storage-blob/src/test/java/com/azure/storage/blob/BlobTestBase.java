@@ -1544,6 +1544,65 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * payloadBytes > blockSizeBytes but totals stay in the hundreds of KiB, so downloads issue many small ranged
+     * GETs even though the blob itself is small. Live-only because chunked range GETs across many tiny requests
+     * produce per-block proxy churn similar to the upload-side staging cases.
+     * <p>
+     * One row pairs a ~200 KiB payload with a 64 KiB block size and moderate concurrency; the other uses a
+     * ~512 KiB payload with a 1 KiB block size to force many tiny range GETs (stress decoder framing and
+     * scheduling) without the cost of the large multi-part grids.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadSmallMultiPartCases() {
+        return Stream.of(Arguments.of(200 * Constants.KB, 64L * Constants.KB, 3),
+            Arguments.of(512 * Constants.KB - 31, 1L * Constants.KB, 1));
+    }
+
+    /**
+     * payloadBytes > blockSizeBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling field), so the blob
+     * stays strictly under the 4 MiB single-shot CRC64-header path while downloads remain chunked across
+     * multiple range GETs.
+     * <p>
+     * Values mix MiB/KiB block sizes with offsets (e.g. + 19, - 903) so part counts and last-block lengths are
+     * not powers of two; the last rows hug ceiling with awkward divisors in blockSizeBytes to stress remainder
+     * handling near the sub-4 MiB limit.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadSubFourMiBCases() {
+        final int ceiling = (4 * Constants.MB) - 1;
+        return Stream.of(Arguments.of(1 * Constants.MB + 1, 1L * Constants.MB, 1),
+            Arguments.of(1 * Constants.MB + 1, 2L * Constants.KB, 8),
+            Arguments.of((5 * Constants.MB) / 4 + 19, 256L * Constants.KB, 4),
+            Arguments.of(2 * Constants.MB - 903, 1L * Constants.MB, 2),
+            Arguments.of(2 * Constants.MB + 33, 1L * Constants.KB, 1),
+            Arguments.of(2 * Constants.MB + 33, 1L * Constants.MB, 8),
+            Arguments.of((11 * Constants.MB) / 4 - 17, 512L * Constants.KB, 6),
+            Arguments.of(3 * Constants.MB - 777, 2L * Constants.MB, 8),
+            Arguments.of(3 * Constants.MB - 1, 1L * Constants.MB, 1), Arguments.of(ceiling - 511, 1L * Constants.MB, 4),
+            Arguments.of(ceiling - 511, 1L * Constants.MB + 511, 2),
+            Arguments.of(ceiling, (long) (ceiling / 7 + 17), 3), Arguments.of(ceiling, (long) (ceiling / 2 + 1), 8));
+    }
+
+    /**
+     * Centers on 4 * Constants.MB - 1, exactly 4 * Constants.MB, and just above 4 MiB, with block sizes spanning
+     * KiB through multi-MiB - exercising the SDK/service boundary where single-shot vs chunked range GET and
+     * CRC64 header vs structured-message rules flip, while keeping deterministic single-GET coverage in the
+     * replayable supplier above.
+     * <p>
+     * Includes near-boundary payloads (e.g. -8192, +31, +8191 from 4 MiB) so neither total size nor last segment
+     * length aligns to typical buffer multiples.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadFourMiBBoundaryCases() {
+        final int minus = (4 * Constants.MB) - 1;
+        final int plus = (4 * Constants.MB) + 1;
+        return Stream.of(Arguments.of(minus, 1L * Constants.MB, 1), Arguments.of(minus, 512L * Constants.KB, 6),
+            Arguments.of(minus, 2L * Constants.MB, 8), Arguments.of((4 * Constants.MB) - 8192, 1L * Constants.KB, 4),
+            Arguments.of(4 * Constants.MB, (long) (4 * Constants.MB / 2), 8),
+            Arguments.of(4 * Constants.MB, 256L * Constants.KB, 2), Arguments.of(plus, 1L * Constants.MB, 1),
+            Arguments.of(plus, 2L * Constants.MB, 8), Arguments.of(plus, 1L * Constants.KB, 7),
+            Arguments.of((4 * Constants.MB) + 31, 511L * Constants.KB + 409, 4),
+            Arguments.of((4 * Constants.MB) + 8191, 3L * Constants.MB - 413, 6));
+    }
+
+    /**
      * payloadBytes > blockSizeBytes, so downloads always go through multiple ranged GETs (parallel download
      * fan-out) with totals roughly 6-80 MiB. Large enough to exercise the structured-message decoder over
      * multiple HTTP responses, but cheaper than {@link #fuzzyParallelDownloadLargeMultiPartCases}.

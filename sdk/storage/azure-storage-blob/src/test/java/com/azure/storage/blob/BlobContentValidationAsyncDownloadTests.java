@@ -458,6 +458,30 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         assertParallelDownloadFuzzyRoundTripAsync("replayable", payloadBytes, blockSizeBytes, maxConcurrency);
     }
 
+    @LiveOnly // payload > blockSize with tiny totals; many small range GETs not replayable under the proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadSmallMultiPartCases")
+    public void fuzzyParallelDownloadSmallMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("smallMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // sub-4 MiB chunked range GETs not replayable under the proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadSubFourMiBCases")
+    public void fuzzyParallelDownloadSubFourMiBRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("subFourMiB", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // 4 MiB boundary tuples that fan out into chunked range GETs.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadFourMiBBoundaryCases")
+    public void fuzzyParallelDownloadFourMiBBoundaryRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTripAsync("fourMiBBoundary", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
     @LiveOnly // payload > blockSize for every tuple; chunked range GETs across many requests.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadMediumMultiPartCases")
