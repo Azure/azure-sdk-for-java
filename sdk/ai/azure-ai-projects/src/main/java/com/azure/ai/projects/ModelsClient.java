@@ -5,11 +5,12 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
 import com.azure.ai.projects.implementation.ModelsImpl;
+import com.azure.ai.projects.models.CreateAsyncResponse;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.ModelCredentialRequest;
+import com.azure.ai.projects.models.ModelPendingUploadRequest;
+import com.azure.ai.projects.models.ModelPendingUploadResponse;
 import com.azure.ai.projects.models.ModelVersion;
-import com.azure.ai.projects.models.PendingUploadRequest;
-import com.azure.ai.projects.models.PendingUploadResponse;
 import com.azure.ai.projects.models.UpdateModelVersionRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -241,8 +242,8 @@ public final class ModelsClient {
     }
 
     /**
-     * Delete the specific version of the ModelVersion. The service returns 204 No Content if the ModelVersion was
-     * deleted successfully or if the ModelVersion does not exist.
+     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
+     * successfully or if the ModelVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -349,7 +350,7 @@ public final class ModelsClient {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -369,7 +370,7 @@ public final class ModelsClient {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -382,7 +383,7 @@ public final class ModelsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the response for a pending upload request along with {@link Response}.
+     * @return represents the response for a model pending upload request along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -500,8 +501,8 @@ public final class ModelsClient {
     }
 
     /**
-     * Delete the specific version of the ModelVersion. The service returns 204 No Content if the ModelVersion was
-     * deleted successfully or if the ModelVersion does not exist.
+     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
+     * successfully or if the ModelVersion does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -546,30 +547,6 @@ public final class ModelsClient {
         JsonMergePatchHelper.getUpdateModelVersionRequestAccessor().prepareModelForJsonMergePatch(body, false);
         return updateModelVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
             .toObject(ModelVersion.class);
-    }
-
-    /**
-     * Start or retrieve a pending upload for a model version.
-     *
-     * @param name Name of the model.
-     * @param version Version of the model.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response for a pending upload request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PendingUploadResponse startModelPendingUpload(String name, String version, PendingUploadRequest body) {
-        // Generated convenience method for startModelPendingUploadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(PendingUploadResponse.class);
     }
 
     /**
@@ -646,6 +623,17 @@ public final class ModelsClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     location: String (Optional)
+     *     operationResult: String (Optional)
+     * }
+     * }
+     * </pre>
      *
      * @param name Name of the model.
      * @param version Version of the model.
@@ -655,11 +643,11 @@ public final class ModelsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
+    public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
         RequestOptions requestOptions) {
         return this.serviceClient.createModelVersionAsyncWithResponse(name, version, body, requestOptions);
     }
@@ -677,12 +665,40 @@ public final class ModelsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createModelVersionAsync(String name, String version, ModelVersion body) {
+    public CreateAsyncResponse createModelVersionAsync(String name, String version, ModelVersion body) {
         // Generated convenience method for createModelVersionAsyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions).getValue();
+        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+            .getValue()
+            .toObject(CreateAsyncResponse.class);
+    }
+
+    /**
+     * Start or retrieve a pending upload for a model version.
+     *
+     * @param name Name of the model.
+     * @param version Version of the model.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response for a model pending upload request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelPendingUploadResponse startModelPendingUpload(String name, String version,
+        ModelPendingUploadRequest body) {
+        // Generated convenience method for startModelPendingUploadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+            .getValue()
+            .toObject(ModelPendingUploadResponse.class);
     }
 }

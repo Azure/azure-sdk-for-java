@@ -244,7 +244,7 @@ public final class DatasetsAsyncClient {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -264,7 +264,7 @@ public final class DatasetsAsyncClient {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/TemporaryBlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>

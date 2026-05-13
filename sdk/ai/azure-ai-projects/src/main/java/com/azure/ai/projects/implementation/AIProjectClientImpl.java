@@ -207,20 +207,6 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The EvaluatorGenerationJobsImpl object to access its operations.
-     */
-    private final EvaluatorGenerationJobsImpl evaluatorGenerationJobs;
-
-    /**
-     * Gets the EvaluatorGenerationJobsImpl object to access its operations.
-     * 
-     * @return the EvaluatorGenerationJobsImpl object.
-     */
-    public EvaluatorGenerationJobsImpl getEvaluatorGenerationJobs() {
-        return this.evaluatorGenerationJobs;
-    }
-
-    /**
      * The InsightsImpl object to access its operations.
      */
     private final InsightsImpl insights;
@@ -260,20 +246,6 @@ public final class AIProjectClientImpl {
      */
     public SkillsImpl getSkills() {
         return this.skills;
-    }
-
-    /**
-     * The DataGenerationJobsImpl object to access its operations.
-     */
-    private final DataGenerationJobsImpl dataGenerationJobs;
-
-    /**
-     * Gets the DataGenerationJobsImpl object to access its operations.
-     * 
-     * @return the DataGenerationJobsImpl object.
-     */
-    public DataGenerationJobsImpl getDataGenerationJobs() {
-        return this.dataGenerationJobs;
     }
 
     /**
@@ -333,10 +305,8 @@ public final class AIProjectClientImpl {
         this.evaluationRules = new EvaluationRulesImpl(this);
         this.evaluationTaxonomies = new EvaluationTaxonomiesImpl(this);
         this.evaluators = new EvaluatorsImpl(this);
-        this.evaluatorGenerationJobs = new EvaluatorGenerationJobsImpl(this);
         this.insights = new InsightsImpl(this);
         this.schedules = new SchedulesImpl(this);
         this.skills = new SkillsImpl(this);
-        this.dataGenerationJobs = new DataGenerationJobsImpl(this);
     }
 }

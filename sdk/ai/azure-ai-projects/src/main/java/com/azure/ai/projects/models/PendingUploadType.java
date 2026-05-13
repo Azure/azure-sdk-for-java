@@ -54,4 +54,10 @@ public final class PendingUploadType extends ExpandableStringEnum<PendingUploadT
      */
     @Generated
     public static final PendingUploadType TEMPORARY_BLOB_REFERENCE = fromString("TemporaryBlobReference");
+
+    /**
+     * Deprecated: the service never read this value and silently ignored it. Use TemporaryBlobReference instead.
+     */
+    @Generated
+    public static final PendingUploadType BLOB_REFERENCE = fromString("BlobReference");
 }
