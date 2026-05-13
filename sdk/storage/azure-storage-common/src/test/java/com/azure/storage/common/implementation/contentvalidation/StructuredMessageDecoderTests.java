@@ -5,6 +5,10 @@ package com.azure.storage.common.implementation.contentvalidation;
 
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -14,6 +18,7 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -529,6 +534,44 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(tampered.length);
         assertThrows(IllegalArgumentException.class, () -> decoder.decodeChunk(ByteBuffer.wrap(tampered)));
+    }
+
+    /**
+     * Multi-megabyte segment size with a short final segment exercises per-segment length from the wire header,
+     * not a fixed 4 MiB assumption.
+     */
+    @ParameterizedTest
+    @MethodSource("segmentPayloadSizeAndTotalPayloadSizeSupplier")
+    public void decodesMultiMegabyteSegmentsWithShortFinalSegment(int segmentPayloadSize, int totalPayloadSize)
+        throws IOException {
+        byte[] originalData = new byte[totalPayloadSize];
+        ThreadLocalRandom.current().nextBytes(originalData);
+
+        byte[] encodedBytes = encodeToBytes(originalData, segmentPayloadSize, StructuredMessageFlags.STORAGE_CRC64);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        int chunkSize = 64 * 1024;
+        for (int offset = 0; offset < encodedBytes.length; offset += chunkSize) {
+            int len = Math.min(chunkSize, encodedBytes.length - offset);
+            ByteBuffer decodedPayload = decoder.decodeChunk(ByteBuffer.wrap(encodedBytes, offset, len));
+            if (decodedPayload != null && decodedPayload.hasRemaining()) {
+                byte[] decodedBytes = new byte[decodedPayload.remaining()];
+                decodedPayload.get(decodedBytes);
+                output.write(decodedBytes, 0, decodedBytes.length);
+            }
+            if (decoder.isComplete()) {
+                break;
+            }
+        }
+
+        assertTrue(decoder.isComplete());
+        assertArrayEquals(originalData, output.toByteArray());
+    }
+
+    private static Stream<Arguments> segmentPayloadSizeAndTotalPayloadSizeSupplier() {
+        return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1),
+            Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 102));
     }
 
     // For tests that pass the whole encoded message to decodeChunk.

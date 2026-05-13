@@ -4,11 +4,13 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
@@ -16,7 +18,10 @@ import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
@@ -35,7 +40,9 @@ import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
@@ -51,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class BlobContentValidationDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
+    private static final long TWO_HUNDRED_GIB_BYTES = 200L * Constants.GB;
     private final List<File> createdFiles = new ArrayList<>();
 
     @AfterEach
@@ -425,6 +433,67 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
         assertTrue(hasOnlyStructuredMessageDownloadHeaders(recorded));
     }
+
+    // @LiveOnly
+    // @Test
+    // public void downloadStreamSingleGetVeryLargeRangeContentValidation() {
+    //     long requestedSpanBytes = 200L * Constants.GB;
+
+    //     List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+    //     HttpPipelinePolicy sniffPolicy = (context, next) -> {
+    //         recorded.add(context.getHttpRequest().getHeaders());
+    //         return next.process();
+    //     };
+    //     BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+    //         ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+    //     BlobClient client = serviceClient.getBlobContainerClient("largeblobholder").getBlobClient("largeblob");
+
+    //     BlobRange range = new BlobRange(0, requestedSpanBytes);
+    //     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    //     BlobDownloadStreamOptions options = new BlobDownloadStreamOptions().setRange(range)
+    //         .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+    //     BlobDownloadResponse response = client.downloadStreamWithResponse(outputStream, options, null, Context.NONE);
+
+    //     assertEquals(1, recorded.size(), "Expected one HTTP request (no client-side partitioning of the download).");
+    //     String rangeHeader = recorded.get(0).getValue(HttpHeaderName.fromString("x-ms-range"));
+    //     assertNotNull(rangeHeader);
+    //     assertEquals(String.format(Locale.ROOT, "bytes=0-%d", requestedSpanBytes - 1), rangeHeader,
+    //         "x-ms-range should request the full configured span in a single Get.");
+    // }
+
+    // @LiveOnly
+    // @Test
+    // public void streamTwoHundredGibToLargeBlobHolder() throws IOException {
+    //     final long twoHundredGibBytes = TWO_HUNDRED_GIB_BYTES;
+    //     // Larger writes reduce loop overhead; BlobOutputStream deep-copies each write, so keep this reasonable.
+    //     final int writeBufferBytes = 32 * Constants.MB;
+    //     byte[] chunk = new byte[writeBufferBytes];
+    //     Arrays.fill(chunk, (byte) 0x5A);
+
+    //     BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient("largeblobholder");
+    //     BlockBlobClient blockBlobClient = containerClient.getBlobClient("largeblob").getBlockBlobClient();
+
+    //     // Azure allows at most 50,000 blocks per blob. Use a large staged block size to cut Put Block round-trips.
+    //     // Raise maxConcurrency (default is 8) so more blocks upload in parallel; memory is roughly blockSize * concurrency.
+    //     final long stagedBlockBytes = 64L * Constants.MB;
+    //     com.azure.storage.blob.models.ParallelTransferOptions parallelTransferOptions
+    //         = new com.azure.storage.blob.models.ParallelTransferOptions().setBlockSizeLong(stagedBlockBytes)
+    //             .setMaxConcurrency(32);
+    //     BlockBlobOutputStreamOptions streamOptions
+    //         = new BlockBlobOutputStreamOptions().setParallelTransferOptions(parallelTransferOptions);
+
+    //     try (BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream(streamOptions, Context.NONE)) {
+    //         long remaining = twoHundredGibBytes;
+    //         while (remaining > 0) {
+    //             int n = (int) Math.min(chunk.length, remaining);
+    //             blobOutputStream.write(chunk, 0, n);
+    //             remaining -= n;
+    //         }
+    //     }
+
+    //     assertEquals(twoHundredGibBytes, blockBlobClient.getProperties().getBlobSize(),
+    //         "Blob size should match the number of streamed bytes.");
+    // }
 
     static Stream<Arguments> channelReadDataSupplier() {
         return Stream.of(Arguments.of(50, 40, Constants.KB), Arguments.of(Constants.KB + 50, 40, Constants.KB),
