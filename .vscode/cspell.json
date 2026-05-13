@@ -111,6 +111,7 @@
     "sdk/cosmos/azure-cosmos-spark_4-1_2-13/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
     "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_4-0_2-13/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
