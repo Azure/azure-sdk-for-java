@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnabledIf("shouldRunHsmTest")
 public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements KeyClientManagedHsmTestBase {
     public KeyAsyncClientManagedHsmTest() {
-    this.runManagedHsmTest = shouldRunHsmTest();
-    this.isHsmEnabled = this.runManagedHsmTest;
+        this.runManagedHsmTest = shouldRunHsmTest();
+        this.isHsmEnabled = this.runManagedHsmTest;
     }
 
     public static boolean shouldRunHsmTest() {
