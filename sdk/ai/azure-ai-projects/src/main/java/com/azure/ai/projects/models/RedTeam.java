@@ -84,7 +84,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      * Target configuration for the red-team run.
      */
     @Generated
-    private final RedTeamTargetConfig target;
+    private final TargetConfig target;
 
     /**
      * Get the name property: Identifier of the red team run.
@@ -294,7 +294,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      * @return the target value.
      */
     @Generated
-    public RedTeamTargetConfig getTarget() {
+    public TargetConfig getTarget() {
         return this.target;
     }
 
@@ -332,7 +332,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     public static RedTeam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            RedTeamTargetConfig target = null;
+            TargetConfig target = null;
             String displayName = null;
             Integer numTurns = null;
             List<AttackStrategy> attackStrategies = null;
@@ -348,7 +348,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
                 if ("id".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("target".equals(fieldName)) {
-                    target = RedTeamTargetConfig.fromJson(reader);
+                    target = TargetConfig.fromJson(reader);
                 } else if ("displayName".equals(fieldName)) {
                     displayName = reader.getString();
                 } else if ("numTurns".equals(fieldName)) {
@@ -392,7 +392,7 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      * @param target the target value to set.
      */
     @Generated
-    public RedTeam(RedTeamTargetConfig target) {
+    public RedTeam(TargetConfig target) {
         this.target = target;
     }
 }

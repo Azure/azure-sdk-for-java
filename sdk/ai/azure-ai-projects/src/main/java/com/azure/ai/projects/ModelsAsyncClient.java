@@ -349,75 +349,6 @@ public final class ModelsAsyncClient {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
-     *     blobUri: String (Required)
-     *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
-     *     baseModel: String (Optional)
-     *     source (Optional): {
-     *         sourceType: String(LocalUpload/TrainingJob) (Optional)
-     *         jobId: String (Optional)
-     *     }
-     *     loraConfig (Optional): {
-     *         rank: Integer (Optional)
-     *         alpha: Integer (Optional)
-     *         targetModules (Optional): [
-     *             String (Optional)
-     *         ]
-     *         dropout: Double (Optional)
-     *     }
-     *     artifactProfile (Optional): {
-     *         category: String(DataOnly/RuntimeDependent/Unknown) (Required)
-     *         signals (Optional): [
-     *             String(PickleDeserialization/CustomPythonCode/DynamicOps/NativeBinary/UnknownFormat) (Optional)
-     *         ]
-     *     }
-     *     warnings (Optional): [
-     *          (Optional){
-     *             code: String(RuntimeDependentArtifact/UnclassifiedArtifact) (Optional)
-     *             message: String (Optional)
-     *         }
-     *     ]
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name Name of the model.
-     * @param version Version of the model.
-     * @param body Model version to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createModelVersionAsyncWithResponseAsync(name, version, body, requestOptions);
-    }
-
-    /**
      * Start or retrieve a pending upload for a model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -652,30 +583,6 @@ public final class ModelsAsyncClient {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
-     *
-     * @param name Name of the model.
-     * @param version Version of the model.
-     * @param body Model version to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createModelVersionAsync(String name, String version, ModelVersion body) {
-        // Generated convenience method for createModelVersionAsyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Start or retrieve a pending upload for a model version.
      *
      * @param name Name of the model.
@@ -721,5 +628,98 @@ public final class ModelsAsyncClient {
         return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
+    }
+
+    /**
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
+     * for polling.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     systemData (Optional): {
+     *         createdAt: Long (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String (Optional)
+     *         lastModifiedAt: Long (Optional)
+     *     }
+     *     blobUri: String (Required)
+     *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
+     *     baseModel: String (Optional)
+     *     source (Optional): {
+     *         sourceType: String(LocalUpload/TrainingJob) (Optional)
+     *         jobId: String (Optional)
+     *     }
+     *     loraConfig (Optional): {
+     *         rank: Integer (Optional)
+     *         alpha: Integer (Optional)
+     *         targetModules (Optional): [
+     *             String (Optional)
+     *         ]
+     *         dropout: Double (Optional)
+     *     }
+     *     artifactProfile (Optional): {
+     *         category: String(DataOnly/RuntimeDependent/Unknown) (Required)
+     *         signals (Optional): [
+     *             String(PickleDeserialization/CustomPythonCode/DynamicOps/NativeBinary/UnknownFormat) (Optional)
+     *         ]
+     *     }
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String(RuntimeDependentArtifact/UnclassifiedArtifact) (Optional)
+     *             message: String (Optional)
+     *         }
+     *     ]
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name Name of the model.
+     * @param version Version of the model.
+     * @param body Model version to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createModelVersionAsyncWithResponseAsync(name, version, body, requestOptions);
+    }
+
+    /**
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
+     * for polling.
+     *
+     * @param name Name of the model.
+     * @param version Version of the model.
+     * @param body Model version to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createModelVersionAsync(String name, String version, ModelVersion body) {
+        // Generated convenience method for createModelVersionAsyncWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 }
