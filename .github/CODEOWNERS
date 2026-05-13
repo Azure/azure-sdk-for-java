@@ -145,6 +145,9 @@
 /sdk/spring-experimental/                                          @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
+/docs/spring/                                                      @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+
+# PRLabel: %azure-spring
 /sdk/spring/                                                       @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring

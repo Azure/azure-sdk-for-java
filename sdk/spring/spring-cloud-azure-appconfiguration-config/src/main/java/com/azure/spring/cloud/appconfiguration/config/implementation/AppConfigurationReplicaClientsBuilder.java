@@ -73,11 +73,11 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
-    private ConfigurationClientCustomizer clientCustomizer;
+    private final ConfigurationClientCustomizer clientCustomizer;
 
     private final ConfigurationClientBuilderFactory clientFactory;
 
-    private boolean isKeyVaultConfigured;
+    private final boolean isKeyVaultConfigured;
 
     private final boolean credentialConfigured;
 
@@ -119,59 +119,43 @@ public class AppConfigurationReplicaClientsBuilder {
      * @throws IllegalArgumentException when more than 1 connection method is given.
      */
     List<AppConfigurationReplicaClient> buildClients(ConfigStore configStore) {
-        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
-        // Single client or Multiple?
-        // If single call buildClient
-        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
-        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
-        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
+        // Defensive copies — ConfigStore supports both singular (connectionString/endpoint) and
+        // plural (connectionStrings/endpoints) properties. We normalize into these local lists.
+        List<String> connectionStrings = new ArrayList<>(configStore.getConnectionStrings());
+        List<String> endpoints = new ArrayList<>(configStore.getEndpoints());
 
-        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
+        boolean hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString());
+        boolean hasMultiEndpoints = !endpoints.isEmpty();
+        boolean hasMultiConnectionStrings = !connectionStrings.isEmpty();
+
+        boolean hasConnectionString = hasSingleConnectionString || hasMultiConnectionStrings;
+
+        // Connection strings include their own auth (Id + Secret), so they cannot be combined with
+        // endpoints or with credentialConfigured (which uses Entra ID via Spring Cloud Azure auto-config).
+        // Endpoints + credentialConfigured is valid — that's the intended Entra ID auth flow.
+        if ((hasConnectionString && hasMultiEndpoints)
+            || (hasSingleConnectionString && hasMultiConnectionStrings)
+            || (credentialConfigured && hasConnectionString)) {
             throw new IllegalArgumentException(
                 "More than 1 connection method was set for connecting to App Configuration.");
         }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-            || configStore.getConnectionStrings().size() > 0;
-
-        if (credentialConfigured && connectionStringIsPresent) {
-            throw new IllegalArgumentException(
-                "More than 1 connection method was set for connecting to App Configuration.");
-        }
-
-        List<String> connectionStrings = configStore.getConnectionStrings();
-        List<String> endpoints = configStore.getEndpoints();
-
-        if (connectionStrings.size() == 0 && StringUtils.hasText(configStore.getConnectionString())) {
+        if (hasSingleConnectionString) {
+            // Normalize singular properties into the lists.
             connectionStrings.add(configStore.getConnectionString());
-        }
-
-        if (endpoints.size() == 0 && StringUtils.hasText(configStore.getEndpoint())) {
+        } else if (endpoints.isEmpty() && StringUtils.hasText(configStore.getEndpoint())) {
+            // Single endpoint is the recommended Entra ID connection method. When the plural
+            // endpoints list is populated, validateAndInit already sets endpoint = endpoints[0],
+            // so we must not add it again.
             endpoints.add(configStore.getEndpoint());
         }
 
-        if (connectionStrings.size() > 0) {
-            for (String connectionString : connectionStrings) {
-                clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
-                String endpoint = getEndpointFromConnectionString(connectionString);
-                LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
-                ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
+        List<AppConfigurationReplicaClient> clients;
 
-                clients.add(
-                    modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), connectionStrings.size() - 1));
-            }
+        if (!connectionStrings.isEmpty()) {
+            clients = buildClientsFromConnectionStrings(connectionStrings, configStore.getEndpoint());
         } else {
-            DefaultAzureCredential defautAzureCredential = new DefaultAzureCredentialBuilder().build();
-            for (String endpoint : endpoints) {
-                ConfigurationClientBuilder builder = this.createBuilderInstance();
-                if (!credentialConfigured) {
-                    builder.credential(defautAzureCredential);
-                }
-
-                builder.endpoint(endpoint);
-
-                clients.add(modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), endpoints.size() - 1));
-            }
+            clients = buildClientsFromEndpoints(endpoints, configStore.getEndpoint());
         }
 
         if (configStore.isLoadBalancingEnabled()) {
@@ -181,28 +165,85 @@ public class AppConfigurationReplicaClientsBuilder {
         return clients;
     }
 
+    /**
+     * Builds a single client for an auto-failover endpoint discovered via DNS SRV.
+     * Reuses the auth method from the original ConfigStore but targets the failover endpoint.
+     *
+     * @param failoverEndpoint the failover endpoint to connect to
+     * @param configStore the config store providing auth credentials
+     * @return a replica client targeting the failover endpoint
+     */
     AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
-
         if (StringUtils.hasText(configStore.getConnectionString())) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
-            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
-        } else if (configStore.getConnectionStrings().size() > 0) {
-            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
-            connectionString.setUri(failoverEndpoint);
-            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
-            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
+            return buildClientFromConnectionString(configStore.getConnectionString(), failoverEndpoint,
+                configStore.getEndpoint());
+        } else if (!configStore.getConnectionStrings().isEmpty()) {
+            return buildClientFromConnectionString(configStore.getConnectionStrings().get(0), failoverEndpoint,
+                configStore.getEndpoint());
         } else {
-            ConfigurationClientBuilder builder = createBuilderInstance();
-            if (!credentialConfigured) {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
-            }
-            builder.endpoint(failoverEndpoint);
-            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
+            return buildClientFromEndpoint(failoverEndpoint, configStore.getEndpoint(), null, 0);
         }
     }
 
+    private List<AppConfigurationReplicaClient> buildClientsFromConnectionStrings(List<String> connectionStrings,
+        String originEndpoint) {
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        for (String connectionString : connectionStrings) {
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
+            String endpoint = getEndpointFromConnectionString(connectionString);
+            LOGGER.debug("Connecting to {} using Connection String.", endpoint);
+            ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
+            clients.add(
+                modifyAndBuildClient(builder, endpoint, originEndpoint, connectionStrings.size() - 1));
+        }
+        return clients;
+    }
+
+    private List<AppConfigurationReplicaClient> buildClientsFromEndpoints(List<String> endpoints,
+        String originEndpoint) {
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        // When credentialConfigured is true, the credential is already set on the builder via
+        // ConfigurationClientBuilderFactory (Spring Cloud Azure auto-config). Otherwise, create a
+        // shared DefaultAzureCredential to avoid the cost of building one per endpoint.
+        DefaultAzureCredential defaultAzureCredential = credentialConfigured ? null
+            : new DefaultAzureCredentialBuilder().build();
+        int replicaCount = endpoints.size() - 1;
+        for (String endpoint : endpoints) {
+            clients.add(buildClientFromEndpoint(endpoint, originEndpoint, defaultAzureCredential, replicaCount));
+        }
+        return clients;
+    }
+
+    private AppConfigurationReplicaClient buildClientFromEndpoint(String endpoint, String originEndpoint,
+        DefaultAzureCredential sharedCredential, int replicaCount) {
+        ConfigurationClientBuilder builder = createBuilderInstance();
+        // When credentialConfigured is false, no credential was provided via Spring Cloud Azure
+        // auto-config, so we fall back to DefaultAzureCredential. Prefer the shared instance
+        // when available; create a new one only for single-endpoint failover calls (null passed in).
+        if (!credentialConfigured) {
+            builder.credential(sharedCredential != null ? sharedCredential
+                : new DefaultAzureCredentialBuilder().build());
+        }
+        builder.endpoint(endpoint);
+        return modifyAndBuildClient(builder, endpoint, originEndpoint, replicaCount);
+    }
+
+    /**
+     * For failover: parses the original connection string, swaps the endpoint to the failover
+     * target, and rebuilds. This preserves the original Id/Secret credentials.
+     */
+    private AppConfigurationReplicaClient buildClientFromConnectionString(String connectionString,
+        String failoverEndpoint, String originEndpoint) {
+        ConnectionString connStr = new ConnectionString(connectionString);
+        connStr.setUri(failoverEndpoint);
+        ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connStr.toFullString());
+        return modifyAndBuildClient(builder, failoverEndpoint, originEndpoint, 0);
+    }
+
+    /**
+     * Final assembly: adds the tracing/telemetry HTTP policy, applies any user-provided customizer,
+     * then builds the ConfigurationClient and wraps it in a replica-aware client.
+     */
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
         String originEndpoint,
         Integer replicaCount) {
@@ -216,15 +257,20 @@ public class AppConfigurationReplicaClientsBuilder {
         return new AppConfigurationReplicaClient(endpoint, originEndpoint, builder.buildClient());
     }
 
+    /**
+     * Creates a ConfigurationClientBuilder with retry policy configured from system properties.
+     * Properties are checked at two levels: service-specific (spring.cloud.azure.appconfiguration)
+     * takes precedence over global (spring.cloud.azure). Defaults to exponential backoff.
+     */
     private ConfigurationClientBuilder createBuilderInstance() {
-        RetryStrategy retryStatagy = null;
+        RetryStrategy retryStrategy = null;
 
         String mode = System.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
         String modeService = System
             .getProperty(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
 
         if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
-            Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
+            Function<String, Integer> checkPropertyInt = Integer::parseInt;
             Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
 
             int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
@@ -235,18 +281,23 @@ public class AppConfigurationReplicaClientsBuilder {
             Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
                 " isn't a valid Duration, using default value.", checkPropertyDuration);
 
-            retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
+            retryStrategy = new ExponentialBackoff(retries, baseDelay, maxDelay);
         }
 
         ConfigurationClientBuilder builder = clientFactory.build();
 
-        if (retryStatagy != null) {
-            builder.retryPolicy(new RetryPolicy(retryStatagy));
+        if (retryStrategy != null) {
+            builder.retryPolicy(new RetryPolicy(retryStrategy));
         }
 
         return builder;
     }
 
+    /**
+     * Reads a retry-related property from system properties. Service-specific properties
+     * ({@code spring.cloud.azure.appconfiguration.{name}}) override global ones ({@code spring.cloud.azure.{name}}).
+     * Falls back to defaultValue if the property is missing or fails to parse.
+     */
     private <T> T checkProperty(String propertyName, T defaultValue, String errMsg, Function<String, T> fn) {
         String envValue = System.getProperty(AzureGlobalProperties.PREFIX + "." + propertyName);
         String envServiceValue = System.getProperty(AzureAppConfigurationProperties.PREFIX + "." + propertyName);
@@ -269,6 +320,11 @@ public class AppConfigurationReplicaClientsBuilder {
         return value;
     }
 
+    /**
+     * Adapter to provide a connection string to Spring Cloud Azure's auto-configured
+     * client builders, enabling other Spring Cloud Azure integrations (e.g., Key Vault
+     * secret resolution) to authenticate to App Configuration.
+     */
     private static class ConnectionStringConnector
         implements ServiceConnectionStringProvider<AzureServiceType.AppConfiguration> {
 
@@ -289,7 +345,13 @@ public class AppConfigurationReplicaClientsBuilder {
         }
     }
 
-    private static class ConnectionString {
+    /**
+     * Parses an App Configuration connection string into its components (Endpoint, Id, Secret).
+     * Used for auto-failover: {@link #setUri(String)} swaps the endpoint while preserving the original
+     * credentials, and {@link #toFullString()} reassembles the connection string for the SDK.
+     * {@link #toString()} always redacts the secret for safe logging.
+     */
+    static class ConnectionString {
         private static final String ENDPOINT = "Endpoint=";
 
         private static final String ID = "Id=";
@@ -310,48 +372,56 @@ public class AppConfigurationReplicaClientsBuilder {
             if (args.length < 3) {
                 throw new IllegalArgumentException("invalid connection string segment count");
             }
-            URL baseUri = null;
-            String id = null;
-            String secret = null;
+            URL parsedUri = null;
+            String parsedId = null;
+            String parsedSecret = null;
             for (String arg : args) {
                 String segment = arg.trim();
                 if (ENDPOINT.regionMatches(true, 0, segment, 0, ENDPOINT.length())) {
                     try {
-                        baseUri = new URI(segment.substring(ENDPOINT.length())).toURL();
-                    } catch (MalformedURLException ex) {
-                        throw new IllegalArgumentException(ex);
-                    } catch (URISyntaxException ex) {
+                        parsedUri = new URI(segment.substring(ENDPOINT.length())).toURL();
+                    } catch (MalformedURLException | URISyntaxException ex) {
                         throw new IllegalArgumentException(ex);
                     }
                 } else if (ID.regionMatches(true, 0, segment, 0, ID.length())) {
-                    id = segment.substring(ID.length());
+                    parsedId = segment.substring(ID.length());
                 } else if (SECRET_PREFIX.regionMatches(true, 0, segment, 0, SECRET_PREFIX.length())) {
-                    secret = segment.substring(SECRET_PREFIX.length());
+                    parsedSecret = segment.substring(SECRET_PREFIX.length());
                 }
             }
-            this.baseUri = baseUri;
-            this.id = id;
-            this.secret = secret;
+            this.baseUri = parsedUri;
+            this.id = parsedId;
+            this.secret = parsedSecret;
             if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id)
                 || this.secret == null || this.secret.length() == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
-                    + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
+                    + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'.");
             }
         }
 
         protected ConnectionString setUri(String uri) {
             try {
                 this.baseUri = new URI(uri).toURL();
-            } catch (MalformedURLException ex) {
-                throw new IllegalArgumentException(ex);
-            } catch (URISyntaxException ex) {
+            } catch (MalformedURLException | URISyntaxException ex) {
                 throw new IllegalArgumentException(ex);
             }
             return this;
         }
 
-        public String toString() {
+        /**
+         * Returns the full connection string including the secret. Use only when passing
+         * to the SDK's {@link ConfigurationClientBuilder#connectionString(String)}.
+         */
+        String toFullString() {
             return String.format("%s%s;%s%s;%s%s", ENDPOINT, baseUri, ID, id, SECRET_PREFIX, secret);
+        }
+
+        /**
+         * Returns the connection string with the secret redacted. Safe for logging and error messages.
+         */
+        @Override
+        public String toString() {
+            return String.format("%s%s;%s%s;%s<REDACTED>", ENDPOINT, baseUri, ID, id, SECRET_PREFIX);
         }
     }
 }
