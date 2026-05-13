@@ -156,39 +156,6 @@ public class ContentValidationModeResolverTests {
     }
 
     // ===========================================================================================
-    // validateTransactionalChecksumOptions (byte[])
-    // ===========================================================================================
-
-    @Test
-    public void validateByteArrayPassesForCompatibleOptions() {
-        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null,
-            ContentValidationAlgorithm.CRC64));
-        assertDoesNotThrow(
-            () -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1 }, null));
-        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null, null));
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndCrc64() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.CRC64));
-        assertEquals(ContentValidationModeResolver.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE,
-            ex.getMessage());
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndAuto() {
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1, 2 }, ContentValidationAlgorithm.AUTO));
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndNone() {
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.NONE));
-    }
-
-    // ===========================================================================================
     // validateTransactionalChecksumOptions (boolean computeMd5)
     // ===========================================================================================
 

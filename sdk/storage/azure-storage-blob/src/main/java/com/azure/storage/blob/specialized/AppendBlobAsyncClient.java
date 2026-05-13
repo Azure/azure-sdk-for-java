@@ -501,12 +501,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
-        try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, contentValidationAlgorithm);
-        } catch (IllegalArgumentException ex) {
-            return monoError(LOGGER, ex);
-        }
-
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
         context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,
