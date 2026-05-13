@@ -27,6 +27,7 @@
     <module>azure-cosmos-kafka-connect</module>
     <module>azure-cosmos-spark-account-data-resolver-sample</module>
     <module>fabric-cosmos-spark-auth_3</module>
+    <module>fabric-cosmos-spark-auth_4-0_2-13</module>
     <module>azure-resourcemanager-cosmos</module>
   </modules>
 </project>

@@ -11,12 +11,21 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+<<<<<<<< HEAD:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/LocalShellToolParameter.java
+ * Local shell tool
+ *
+ * A tool that allows the model to execute shell commands in a local environment.
+ */
+@Immutable
+public final class LocalShellToolParameter extends Tool {
+========
  * Apply patch tool
  *
  * Allows the assistant to create, delete, or update files using unified diffs.
  */
 @Immutable
 public final class ApplyPatchToolParameter extends Tool {
+>>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/ApplyPatchToolParameter.java
 
     /*
      * The type property.
@@ -25,10 +34,17 @@ public final class ApplyPatchToolParameter extends Tool {
     private ToolType type = ToolType.APPLY_PATCH;
 
     /**
+<<<<<<<< HEAD:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/LocalShellToolParameter.java
+     * Creates an instance of LocalShellToolParameter class.
+     */
+    @Generated
+    public LocalShellToolParameter() {
+========
      * Creates an instance of ApplyPatchToolParameter class.
      */
     @Generated
     public ApplyPatchToolParameter() {
+>>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/ApplyPatchToolParameter.java
     }
 
     /**
@@ -54,6 +70,19 @@ public final class ApplyPatchToolParameter extends Tool {
     }
 
     /**
+<<<<<<<< HEAD:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/LocalShellToolParameter.java
+     * Reads an instance of LocalShellToolParameter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalShellToolParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocalShellToolParameter.
+     */
+    @Generated
+    public static LocalShellToolParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalShellToolParameter deserializedLocalShellToolParameter = new LocalShellToolParameter();
+========
      * Reads an instance of ApplyPatchToolParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -65,16 +94,25 @@ public final class ApplyPatchToolParameter extends Tool {
     public static ApplyPatchToolParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApplyPatchToolParameter deserializedApplyPatchToolParameter = new ApplyPatchToolParameter();
+>>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/ApplyPatchToolParameter.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
+<<<<<<<< HEAD:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/LocalShellToolParameter.java
+                    deserializedLocalShellToolParameter.type = ToolType.fromString(reader.getString());
+========
                     deserializedApplyPatchToolParameter.type = ToolType.fromString(reader.getString());
+>>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/ApplyPatchToolParameter.java
                 } else {
                     reader.skipChildren();
                 }
             }
+<<<<<<<< HEAD:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/LocalShellToolParameter.java
+            return deserializedLocalShellToolParameter;
+========
             return deserializedApplyPatchToolParameter;
+>>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/ApplyPatchToolParameter.java
         });
     }
 }

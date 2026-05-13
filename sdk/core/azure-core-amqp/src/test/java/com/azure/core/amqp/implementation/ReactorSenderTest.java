@@ -186,6 +186,135 @@ public class ReactorSenderTest {
         verify(sender).getRemoteMaxMessageSize();
     }
 
+    /**
+     * Verifies that getMaxBatchSize reads the vendor property com.microsoft:max-message-batch-size from the link's
+     * remote properties and returns its value.
+     */
+    @Test
+    public void testMaxBatchSizeReadsVendorProperty() {
+        // Arrange — vendor property present with UnsignedLong value (typical AMQP encoding)
+        final int expectedBatchSize = 1048576; // 1 MB
+        final java.util.Map<Symbol, Object> remoteProperties = new java.util.HashMap<>();
+        remoteProperties.put(AmqpConstants.MAX_MESSAGE_BATCH_SIZE, UnsignedLong.valueOf(expectedBatchSize));
+        when(sender.getRemoteProperties()).thenReturn(remoteProperties);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — vendor property value is used
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(expectedBatchSize)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Second call returns cached value
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(expectedBatchSize)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // getRemoteProperties called only once (value was cached)
+        verify(sender, times(1)).getRemoteProperties();
+    }
+
+    /**
+     * Verifies that getMaxBatchSize falls back to max-message-size when the vendor property is absent.
+     */
+    @Test
+    public void testMaxBatchSizeFallsBackToMaxMessageSize() {
+        // Arrange — no vendor property, but max-message-size is available (set in @BeforeEach to 1000)
+        when(sender.getRemoteProperties()).thenReturn(null);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — falls back to getRemoteMaxMessageSize (1000, set in setup)
+        StepVerifier.create(reactorSender.getMaxBatchSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMaxBatchSize falls back to max-message-size when the vendor property contains a
+     * non-numeric value.
+     */
+    @Test
+    public void testMaxBatchSizeFallsBackWhenPropertyIsNotNumber() {
+        // Arrange — vendor property present but with a String value
+        final java.util.Map<Symbol, Object> remoteProperties = new java.util.HashMap<>();
+        remoteProperties.put(AmqpConstants.MAX_MESSAGE_BATCH_SIZE, "not-a-number");
+        when(sender.getRemoteProperties()).thenReturn(remoteProperties);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — falls back to getRemoteMaxMessageSize (1000)
+        StepVerifier.create(reactorSender.getMaxBatchSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMaxBatchSize returns a different value from getLinkSize when the vendor property
+     * differs from max-message-size (the Premium large-message scenario).
+     */
+    @Test
+    public void testMaxBatchSizeDiffersFromLinkSize() {
+        // Arrange — link max-message-size = 100 MB, vendor batch property = 1 MB
+        final int maxMessageSize = 100 * 1024 * 1024; // 100 MB
+        final int maxBatchSize = 1024 * 1024; // 1 MB
+        when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(maxMessageSize));
+
+        final java.util.Map<Symbol, Object> remoteProperties = new java.util.HashMap<>();
+        remoteProperties.put(AmqpConstants.MAX_MESSAGE_BATCH_SIZE, UnsignedLong.valueOf(maxBatchSize));
+        when(sender.getRemoteProperties()).thenReturn(remoteProperties);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — getLinkSize returns 100 MB, getMaxBatchSize returns 1 MB
+        StepVerifier.create(reactorSender.getLinkSize())
+            .expectNext(maxMessageSize)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(maxBatchSize)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMaxBatchSize returns 0 when both the vendor property and max-message-size are absent.
+     * The caller (ServiceBusSenderAsyncClient) handles this with DEFAULT_MAX_BATCH_SIZE_BYTES.
+     */
+    @Test
+    public void testMaxBatchSizeReturnsZeroWhenBothAbsent() {
+        // Arrange — no vendor property and no max-message-size
+        when(sender.getRemoteProperties()).thenReturn(null);
+        when(sender.getRemoteMaxMessageSize()).thenReturn(null);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — returns 0, caller must handle
+        StepVerifier.create(reactorSender.getMaxBatchSize()).expectNext(0).expectComplete().verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMaxBatchSize falls back to max-message-size when the vendor property is present
+     * but has value 0 (UnsignedLong.valueOf(0)).
+     */
+    @Test
+    public void testMaxBatchSizeFallsBackWhenPropertyIsZero() {
+        // Arrange — vendor property present but value is 0
+        final java.util.Map<Symbol, Object> remoteProperties = new java.util.HashMap<>();
+        remoteProperties.put(AmqpConstants.MAX_MESSAGE_BATCH_SIZE, UnsignedLong.valueOf(0));
+        when(sender.getRemoteProperties()).thenReturn(remoteProperties);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert — falls back to getRemoteMaxMessageSize (1000, set in @BeforeEach)
+        StepVerifier.create(reactorSender.getMaxBatchSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
+    }
+
     @Test
     public void testSendWithTransactionFailed() {
         // Arrange

@@ -100,6 +100,10 @@ Describe "FindArtifactsThatNeedPatching" {
     It "External dependency version difference is ignored (no false positive)" {
         # azure-core uses reactor-core 3.5.0, azure-identity uses 3.6.0.
         # reactor-core is NOT in the patch list → should NOT trigger patching.
+        Mock GetVersionInfoForMavenArtifact {
+            throw "External dependencies should not be queried from Maven."
+        }
+
         $infos = [ordered]@{
             "azure-core" = (New-TestArtifactInfo -ArtifactId "azure-core" -LatestGAOrPatchVersion "1.41.0" -Dependencies @{
                 "reactor-core" = "3.5.0"
@@ -112,6 +116,84 @@ Describe "FindArtifactsThatNeedPatching" {
         FindArtifactsThatNeedPatching -ArtifactInfos $infos
         $infos["azure-core"].FutureReleasePatchVersion | Should -BeNullOrEmpty
         $infos["azure-identity"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+    }
+
+    It "Released azure-core missing from patch list triggers dependent patch" {
+        $script:mavenLookupCalls = 0
+        Mock GetVersionInfoForMavenArtifact {
+            param($ArtifactId, $GroupId)
+            $script:mavenLookupCalls++
+            return [ArtifactInfo]::new($ArtifactId, $GroupId, "1.41.0")
+        } -ParameterFilter { $ArtifactId -eq "azure-core" -and $GroupId -eq "com.azure" }
+
+        $infos = [ordered]@{
+            "azure-storage-blob" = (New-TestArtifactInfo -ArtifactId "azure-storage-blob" -LatestGAOrPatchVersion "12.33.2" -Dependencies @{
+                "azure-core" = "1.40.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos
+
+        $infos["azure-storage-blob"].FutureReleasePatchVersion | Should -Be "12.33.3"
+        $script:mavenLookupCalls | Should -Be 1
+    }
+
+    It "Released azure-identity missing from patch list triggers dependent patch" {
+        Mock GetVersionInfoForMavenArtifact {
+            param($ArtifactId, $GroupId)
+            return [ArtifactInfo]::new($ArtifactId, $GroupId, "1.10.0")
+        } -ParameterFilter { $ArtifactId -eq "azure-identity" -and $GroupId -eq "com.azure" }
+
+        $infos = [ordered]@{
+            "azure-security-keyvault-secrets" = (New-TestArtifactInfo -ArtifactId "azure-security-keyvault-secrets" -LatestGAOrPatchVersion "4.9.0" -Dependencies @{
+                "azure-identity" = "1.9.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos
+
+        $infos["azure-security-keyvault-secrets"].FutureReleasePatchVersion | Should -Be "4.9.1"
+    }
+
+    It "Missing Azure dependency without Maven GA version is ignored" {
+        Mock GetVersionInfoForMavenArtifact {
+            param($ArtifactId, $GroupId)
+            return [ArtifactInfo]::new($ArtifactId, $GroupId, $null)
+        } -ParameterFilter { $ArtifactId -eq "azure-missing-dependency" -and $GroupId -eq "com.azure" }
+
+        $infos = [ordered]@{
+            "azure-storage-blob" = (New-TestArtifactInfo -ArtifactId "azure-storage-blob" -LatestGAOrPatchVersion "12.33.2" -Dependencies @{
+                "azure-missing-dependency" = "1.0.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos
+
+        $infos["azure-storage-blob"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+    }
+
+    It "Caches Maven lookup for missing dependency shared by multiple artifacts" {
+        $script:mavenLookupCalls = 0
+        Mock GetVersionInfoForMavenArtifact {
+            param($ArtifactId, $GroupId)
+            $script:mavenLookupCalls++
+            return [ArtifactInfo]::new($ArtifactId, $GroupId, "1.41.0")
+        } -ParameterFilter { $ArtifactId -eq "azure-core" -and $GroupId -eq "com.azure" }
+
+        $infos = [ordered]@{
+            "azure-storage-blob" = (New-TestArtifactInfo -ArtifactId "azure-storage-blob" -LatestGAOrPatchVersion "12.33.2" -Dependencies @{
+                "azure-core" = "1.40.0"
+            })
+            "azure-storage-queue" = (New-TestArtifactInfo -ArtifactId "azure-storage-queue" -LatestGAOrPatchVersion "12.26.0" -Dependencies @{
+                "azure-core" = "1.40.0"
+            })
+        }
+
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos
+
+        $infos["azure-storage-blob"].FutureReleasePatchVersion | Should -Be "12.33.3"
+        $infos["azure-storage-queue"].FutureReleasePatchVersion | Should -Be "12.26.1"
+        $script:mavenLookupCalls | Should -Be 1
     }
 
     It "Independent release of a dependency triggers dependent patch (seeding loop regression)" {

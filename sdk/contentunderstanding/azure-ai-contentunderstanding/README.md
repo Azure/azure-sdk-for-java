@@ -519,8 +519,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
 [azure_core_lro]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#long-running-operations-with-pollerfluxt
