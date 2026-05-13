@@ -55,7 +55,7 @@ public class KnowledgeRetrievalPreviewResponseExample {
                 .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels have free wifi?"));
 
             //send request
-            KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(KB_NAME, options);
+            KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(options);
 
             //parse result
 
