@@ -10,7 +10,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Enabled Managed HSM tests in playback mode so they run as part of CI.
 
 ## 4.10.7 (2026-05-05)
 
