@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Updated `log4j-api`, `log4j-core` and `log4j-slf4j-impl` test dependencies to `2.25.3` to address [CVE-2025-68161](https://logging.apache.org/security.html#CVE-2025-68161) (Apache Log4j: information disclosure via missing TLS hostname verification).
 
 ### 2.10.0 (2026-05-01)
 
