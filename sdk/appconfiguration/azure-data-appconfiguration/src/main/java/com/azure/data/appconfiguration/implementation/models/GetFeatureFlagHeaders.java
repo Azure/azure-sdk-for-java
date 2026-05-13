@@ -11,10 +11,10 @@ import com.azure.core.http.HttpHeaders;
 import java.util.UUID;
 
 /**
- * The GetKeyValueHeaders model.
+ * The GetFeatureFlagHeaders model.
  */
 @Fluent
-public final class GetKeyValueHeaders {
+public final class GetFeatureFlagHeaders {
     /*
      * The ETag property.
      */
@@ -37,11 +37,11 @@ public final class GetKeyValueHeaders {
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of GetKeyValueHeaders class.
+     * Creates an instance of GetFeatureFlagHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public GetKeyValueHeaders(HttpHeaders rawHeaders) {
+    public GetFeatureFlagHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
         String xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -66,10 +66,10 @@ public final class GetKeyValueHeaders {
      * Set the eTag property: The ETag property.
      * 
      * @param eTag the eTag value to set.
-     * @return the GetKeyValueHeaders object itself.
+     * @return the GetFeatureFlagHeaders object itself.
      */
     @Generated
-    public GetKeyValueHeaders setETag(String eTag) {
+    public GetFeatureFlagHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,10 +88,10 @@ public final class GetKeyValueHeaders {
      * Set the syncToken property: The Sync-Token property.
      * 
      * @param syncToken the syncToken value to set.
-     * @return the GetKeyValueHeaders object itself.
+     * @return the GetFeatureFlagHeaders object itself.
      */
     @Generated
-    public GetKeyValueHeaders setSyncToken(String syncToken) {
+    public GetFeatureFlagHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;
     }
@@ -110,10 +110,10 @@ public final class GetKeyValueHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      * 
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the GetKeyValueHeaders object itself.
+     * @return the GetFeatureFlagHeaders object itself.
      */
     @Generated
-    public GetKeyValueHeaders setXMsRequestId(UUID xMsRequestId) {
+    public GetFeatureFlagHeaders setXMsRequestId(UUID xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }

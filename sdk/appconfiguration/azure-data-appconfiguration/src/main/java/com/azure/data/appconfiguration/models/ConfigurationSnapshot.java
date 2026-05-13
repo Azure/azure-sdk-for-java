@@ -13,11 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The ConfigurationSnapshot model.
+ * A snapshot is a named, immutable subset of an App Configuration store's key-values.
  */
 @Fluent
 public final class ConfigurationSnapshot implements JsonSerializable<ConfigurationSnapshot> {
@@ -41,9 +42,10 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     private final List<ConfigurationSettingsFilter> filters;
 
     /*
-     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
-     * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
-     * no two key-values containing the same key and label.
+     * The composition type describes how the key-values within the snapshot are
+     * composed. The 'key' composition type ensures there are no two key-values
+     * containing the same key. The 'key_label' composition type ensures there are no
+     * two key-values containing the same key and label.
      */
     @Generated
     private SnapshotComposition snapshotComposition;
@@ -61,9 +63,10 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     private OffsetDateTime expiresAt;
 
     /*
-     * The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property
-     * is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value revisions
-     * will be used.
+     * The amount of time, in seconds, that a snapshot will remain in the archived
+     * state before expiring. This property is only writable during the creation of a
+     * snapshot. If not specified, the default lifetime of key-value revisions will be
+     * used.
      */
     @Generated
     private Long retentionPeriod;
@@ -134,8 +137,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
 
     /**
      * Get the snapshotComposition property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
-     * composition type ensures there are no two key-values containing the same key and label.
+     * composed. The 'key' composition type ensures there are no two key-values
+     * containing the same key. The 'key_label' composition type ensures there are no
+     * two key-values containing the same key and label.
      *
      * @return the snapshotComposition value.
      */
@@ -146,8 +150,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
 
     /**
      * Set the snapshotComposition property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
-     * composition type ensures there are no two key-values containing the same key and label.
+     * composed. The 'key' composition type ensures there are no two key-values
+     * containing the same key. The 'key_label' composition type ensures there are no
+     * two key-values containing the same key and label.
      *
      * @param snapshotComposition the snapshotComposition value to set.
      * @return the ConfigurationSnapshot object itself.
@@ -180,8 +185,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
 
     /**
      * Get the retentionPeriod property: The amount of time, in seconds, that a snapshot will remain in the archived
-     * state before expiring. This property is only writable during the creation of a snapshot. If not specified, the
-     * default lifetime of key-value revisions will be used.
+     * state before expiring. This property is only writable during the creation of a
+     * snapshot. If not specified, the default lifetime of key-value revisions will be
+     * used.
      *
      * @return the retentionPeriod value.
      */
@@ -192,8 +198,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
 
     /**
      * Set the retentionPeriod property: The amount of time, in seconds, that a snapshot will remain in the archived
-     * state before expiring. This property is only writable during the creation of a snapshot. If not specified, the
-     * default lifetime of key-value revisions will be used.
+     * state before expiring. This property is only writable during the creation of a
+     * snapshot. If not specified, the default lifetime of key-value revisions will be
+     * used.
      *
      * @param retentionPeriod the retentionPeriod value to set.
      * @return the ConfigurationSnapshot object itself.
@@ -283,9 +290,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     @Generated
     public static ConfigurationSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String name = null;
             boolean filtersFound = false;
             List<ConfigurationSettingsFilter> filters = null;
-            String name = null;
             ConfigurationSnapshotStatus status = null;
             SnapshotComposition snapshotComposition = null;
             OffsetDateTime createdAt = null;
@@ -298,11 +305,11 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("filters".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("filters".equals(fieldName)) {
                     filters = reader.readArray(reader1 -> ConfigurationSettingsFilter.fromJson(reader1));
                     filtersFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = ConfigurationSnapshotStatus.fromString(reader.getString());
                 } else if ("composition_type".equals(fieldName)) {
@@ -341,7 +348,12 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                 deserializedConfigurationSnapshot.eTag = eTag;
                 return deserializedConfigurationSnapshot;
             }
-            throw new IllegalStateException("Missing required property: filters");
+            List<String> missingProperties = new ArrayList<>();
+            if (!filtersFound) {
+                missingProperties.add("filters");
+            }
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
         });
     }
 }

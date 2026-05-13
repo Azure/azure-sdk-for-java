@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The Key model.
+ * Keys serve as identifiers for key-values and are used to store and retrieve corresponding values.
  */
 @Immutable
 public final class Key implements JsonSerializable<Key> {
@@ -56,6 +56,7 @@ public final class Key implements JsonSerializable<Key> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Key.
      */
     @Generated

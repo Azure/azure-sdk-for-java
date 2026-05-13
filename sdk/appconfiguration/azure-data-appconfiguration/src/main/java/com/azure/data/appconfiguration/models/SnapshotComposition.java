@@ -9,19 +9,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
- * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are no
- * two key-values containing the same key and label.
+ * Composition types.
  */
 public final class SnapshotComposition extends ExpandableStringEnum<SnapshotComposition> {
     /**
-     * Static value key for SnapshotComposition.
+     * The 'key' composition type.
      */
     @Generated
     public static final SnapshotComposition KEY = fromString("key");
 
     /**
-     * Static value key_label for SnapshotComposition.
+     * The 'key_label' composition type.
      */
     @Generated
     public static final SnapshotComposition KEY_LABEL = fromString("key_label");

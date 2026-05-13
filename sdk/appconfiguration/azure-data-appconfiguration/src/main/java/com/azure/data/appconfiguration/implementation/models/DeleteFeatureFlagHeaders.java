@@ -8,13 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import java.util.UUID;
 
 /**
- * The GetKeyValueHeaders model.
+ * The DeleteFeatureFlagHeaders model.
  */
 @Fluent
-public final class GetKeyValueHeaders {
+public final class DeleteFeatureFlagHeaders {
     /*
      * The ETag property.
      */
@@ -27,29 +26,17 @@ public final class GetKeyValueHeaders {
     @Generated
     private String syncToken;
 
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private UUID xMsRequestId;
-
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
 
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of GetKeyValueHeaders class.
+     * Creates an instance of DeleteFeatureFlagHeaders class.
      * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public GetKeyValueHeaders(HttpHeaders rawHeaders) {
+    public DeleteFeatureFlagHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
-        String xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        if (xMsRequestId != null) {
-            this.xMsRequestId = UUID.fromString(xMsRequestId);
-        } else {
-            this.xMsRequestId = null;
-        }
     }
 
     /**
@@ -66,10 +53,10 @@ public final class GetKeyValueHeaders {
      * Set the eTag property: The ETag property.
      * 
      * @param eTag the eTag value to set.
-     * @return the GetKeyValueHeaders object itself.
+     * @return the DeleteFeatureFlagHeaders object itself.
      */
     @Generated
-    public GetKeyValueHeaders setETag(String eTag) {
+    public DeleteFeatureFlagHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,33 +75,11 @@ public final class GetKeyValueHeaders {
      * Set the syncToken property: The Sync-Token property.
      * 
      * @param syncToken the syncToken value to set.
-     * @return the GetKeyValueHeaders object itself.
+     * @return the DeleteFeatureFlagHeaders object itself.
      */
     @Generated
-    public GetKeyValueHeaders setSyncToken(String syncToken) {
+    public DeleteFeatureFlagHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public UUID getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the GetKeyValueHeaders object itself.
-     */
-    @Generated
-    public GetKeyValueHeaders setXMsRequestId(UUID xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
         return this;
     }
 }

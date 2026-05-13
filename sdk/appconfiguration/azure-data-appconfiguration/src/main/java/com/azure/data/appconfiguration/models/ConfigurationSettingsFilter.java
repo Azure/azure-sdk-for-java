@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Enables filtering of key-values. Syntax reference: https://aka.ms/azconfig/docs/restapisnapshots.
+ * Enables filtering of key-values. Syntax reference:
+ * https://aka.ms/azconfig/docs/restapisnapshots.
  */
 @Fluent
 public final class ConfigurationSettingsFilter implements JsonSerializable<ConfigurationSettingsFilter> {

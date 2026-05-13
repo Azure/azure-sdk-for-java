@@ -30,7 +30,7 @@ autorest
 ```yaml
 namespace: com.azure.data.appconfiguration
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c1af3ab8e803da2f40fc90217a6d023bc13b677f/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-11-01/appconfiguration.json
+- C:\Users\mametcal\Projects\azure-rest-api-specs\specification\appconfiguration\data-plane\AppConfiguration\preview\2026-05-01-preview\appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,ConfigurationSnapshot,ConfigurationSnapshotStatus,SnapshotFields,SettingLabel,LabelFields,SettingLabelFields
@@ -54,9 +54,13 @@ default-http-exception-type: com.azure.core.exception.HttpResponseException
 ```yaml
 directive:
   - from: swagger-document
-    where: $.definitions.Snapshot.properties.composition_type
+    where: $.definitions.CompositionType
     transform: >
       $["x-ms-enum"].name = "SnapshotComposition";
+  - from: swagger-document
+    where: $.definitions.SnapshotStatus
+    transform: >
+      $["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Renames properties
@@ -71,11 +75,6 @@ directive:
       $["size"]["x-ms-client-name"] = "sizeInBytes";
       $["etag"]["x-ms-client-name"] = "eTag";
       $["composition_type"]["x-ms-client-name"] = "snapshotComposition";
-      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
-  - from: swagger-document
-    where: $.definitions.SnapshotUpdateParameters.properties
-    transform: >
-      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Renames
@@ -91,26 +90,22 @@ directive:
       from: Label
       to: SettingLabel
   - from: swagger-document
-    where: $.parameters.KeyValueFields
+    where: $.definitions.KeyValueFields
     transform: >
-      $.items["x-ms-enum"].name = "SettingFields";
+      $["x-ms-enum"].name = "SettingFields";
   - from: swagger-document
-    where: $.parameters.Status
+    where: $.definitions.LabelFields
     transform: >
-      $.items["x-ms-enum"].name = "ConfigurationSnapshotStatus"
-  - from: swagger-document
-    where: $.parameters.LabelFields
-    transform: >
-      $.items["x-ms-enum"].name = "SettingLabelFields";
+      $["x-ms-enum"].name = "SettingLabelFields";
 ```
 
 ### Modify SettingField enums
 ```yaml
 directive:
   - from: swagger-document
-    where: $.parameters.KeyValueFields
+    where: $.definitions.KeyValueFields
     transform: >
-      $.items["x-ms-enum"].values = [
+      $["x-ms-enum"].values = [
         {
           "value": "key",
           "name": "key",
@@ -158,9 +153,9 @@ directive:
 ```yaml
 directive:
   - from: swagger-document
-    where: $.parameters.SnapshotFields
+    where: $.definitions.SnapshotFields
     transform: >
-      $.items["x-ms-enum"].values = [
+      $["x-ms-enum"].values = [
         {
           "value": "name",
           "name": "name",

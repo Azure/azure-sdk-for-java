@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SnapshotFields.
+ * Snapshot fields.
  */
 public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     /**

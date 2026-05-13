@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * The KeyValue model.
+ * A key-value pair representing application settings.
  */
 @Fluent
 public final class KeyValue implements JsonSerializable<KeyValue> {
@@ -87,18 +87,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     }
 
     /**
-     * Set the key property: The key of the key-value.
-     * 
-     * @param key the key value to set.
-     * @return the KeyValue object itself.
-     */
-    @Generated
-    public KeyValue setKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
      * Get the label property: The label the key-value belongs to.
      * 
      * @return the label value.
@@ -106,18 +94,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     @Generated
     public String getLabel() {
         return this.label;
-    }
-
-    /**
-     * Set the label property: The label the key-value belongs to.
-     * 
-     * @param label the label value to set.
-     * @return the KeyValue object itself.
-     */
-    @Generated
-    public KeyValue setLabel(String label) {
-        this.label = label;
-        return this;
     }
 
     /**
@@ -259,8 +235,6 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("content_type", this.contentType);
         jsonWriter.writeStringField("value", this.value);
         jsonWriter.writeStringField("last_modified",
@@ -277,6 +251,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyValue if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyValue.
      */
     @Generated

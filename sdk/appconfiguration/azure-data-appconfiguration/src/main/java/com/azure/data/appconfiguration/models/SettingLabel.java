@@ -4,8 +4,8 @@
 
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,9 +13,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SettingLabel model.
+ * Labels are used to group key values or feature flags.
  */
-@Immutable
+@Fluent
 public final class SettingLabel implements JsonSerializable<SettingLabel> {
     /*
      * The name of the label.
@@ -41,12 +41,25 @@ public final class SettingLabel implements JsonSerializable<SettingLabel> {
     }
 
     /**
+     * Set the name property: The name of the label.
+     * 
+     * @param name the name value to set.
+     * @return the SettingLabel object itself.
+     */
+    @Generated
+    public SettingLabel setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 

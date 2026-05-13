@@ -4,6 +4,6 @@
 
 /**
  * Package containing the implementations for AzureAppConfiguration.
- * null.
+ * Azure App Configuration REST API.
  */
 package com.azure.data.appconfiguration.implementation;

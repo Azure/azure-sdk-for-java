@@ -9,11 +9,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SettingLabelFields.
+ * Label fields.
  */
 public final class SettingLabelFields extends ExpandableStringEnum<SettingLabelFields> {
     /**
-     * Static value name for SettingLabelFields.
+     * Name field.
      */
     @Generated
     public static final SettingLabelFields NAME = fromString("name");

@@ -29,13 +29,14 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * The current status of the operation
      */
     @Generated
-    private final State status;
+    private final OperationState status;
 
     /*
-     * An error, available when the status is `Failed`, describing why the operation failed.
+     * An error, available when the status is `Failed`, describing why the operation
+     * failed.
      */
     @Generated
-    private ErrorDetail error;
+    private AzureCoreFoundationsError error;
 
     /**
      * Creates an instance of OperationDetails class.
@@ -44,7 +45,7 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * @param status the status value to set.
      */
     @Generated
-    public OperationDetails(String id, State status) {
+    public OperationDetails(String id, OperationState status) {
         this.id = id;
         this.status = status;
     }
@@ -65,28 +66,30 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
      * @return the status value.
      */
     @Generated
-    public State getStatus() {
+    public OperationState getStatus() {
         return this.status;
     }
 
     /**
-     * Get the error property: An error, available when the status is `Failed`, describing why the operation failed.
+     * Get the error property: An error, available when the status is `Failed`, describing why the operation
+     * failed.
      * 
      * @return the error value.
      */
     @Generated
-    public ErrorDetail getError() {
+    public AzureCoreFoundationsError getError() {
         return this.error;
     }
 
     /**
-     * Set the error property: An error, available when the status is `Failed`, describing why the operation failed.
+     * Set the error property: An error, available when the status is `Failed`, describing why the operation
+     * failed.
      * 
      * @param error the error value to set.
      * @return the OperationDetails object itself.
      */
     @Generated
-    public OperationDetails setError(ErrorDetail error) {
+    public OperationDetails setError(AzureCoreFoundationsError error) {
         this.error = error;
         return this;
     }
@@ -119,8 +122,8 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
             boolean idFound = false;
             String id = null;
             boolean statusFound = false;
-            State status = null;
-            ErrorDetail error = null;
+            OperationState status = null;
+            AzureCoreFoundationsError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -129,10 +132,10 @@ public final class OperationDetails implements JsonSerializable<OperationDetails
                     id = reader.getString();
                     idFound = true;
                 } else if ("status".equals(fieldName)) {
-                    status = State.fromString(reader.getString());
+                    status = OperationState.fromString(reader.getString());
                     statusFound = true;
                 } else if ("error".equals(fieldName)) {
-                    error = ErrorDetail.fromJson(reader);
+                    error = AzureCoreFoundationsError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

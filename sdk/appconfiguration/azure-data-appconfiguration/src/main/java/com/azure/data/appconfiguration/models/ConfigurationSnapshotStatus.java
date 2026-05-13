@@ -9,29 +9,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The desired status of the snapshot.
+ * Snapshot status.
  */
 public final class ConfigurationSnapshotStatus extends ExpandableStringEnum<ConfigurationSnapshotStatus> {
     /**
-     * Static value provisioning for ConfigurationSnapshotStatus.
+     * Provisioning.
      */
     @Generated
     public static final ConfigurationSnapshotStatus PROVISIONING = fromString("provisioning");
 
     /**
-     * Static value ready for ConfigurationSnapshotStatus.
+     * Ready.
      */
     @Generated
     public static final ConfigurationSnapshotStatus READY = fromString("ready");
 
     /**
-     * Static value archived for ConfigurationSnapshotStatus.
+     * Archived.
      */
     @Generated
     public static final ConfigurationSnapshotStatus ARCHIVED = fromString("archived");
 
     /**
-     * Static value failed for ConfigurationSnapshotStatus.
+     * Failed.
      */
     @Generated
     public static final ConfigurationSnapshotStatus FAILED = fromString("failed");
