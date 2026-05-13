@@ -19,28 +19,10 @@ import java.util.Base64;
 @Fluent
 public final class BlobsCopyFromURLHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
-     * The x-ms-copy-id property.
-     */
-    @Generated
-    private String xMsCopyId;
-
-    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The x-ms-content-crc64 property.
-     */
-    @Generated
-    private byte[] xMsContentCrc64;
 
     /*
      * The Last-Modified property.
@@ -49,16 +31,10 @@ public final class BlobsCopyFromURLHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-version-id property.
+     * The x-ms-client-request-id property.
      */
     @Generated
-    private String xMsVersionId;
-
-    /*
-     * The x-ms-copy-status property.
-     */
-    @Generated
-    private String xMsCopyStatus = "success";
+    private String xMsClientRequestId;
 
     /*
      * The x-ms-request-id property.
@@ -67,10 +43,16 @@ public final class BlobsCopyFromURLHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-version property.
      */
     @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
+
+    /*
+     * The x-ms-version-id property.
+     */
+    @Generated
+    private String xMsVersionId;
 
     /*
      * The Date property.
@@ -79,10 +61,28 @@ public final class BlobsCopyFromURLHeaders {
     private DateTimeRfc1123 date;
 
     /*
+     * The x-ms-copy-id property.
+     */
+    @Generated
+    private String xMsCopyId;
+
+    /*
+     * The x-ms-copy-status property.
+     */
+    @Generated
+    private String xMsCopyStatus = "success";
+
+    /*
      * The Content-MD5 property.
      */
     @Generated
     private byte[] contentMD5;
+
+    /*
+     * The x-ms-content-crc64 property.
+     */
+    @Generated
+    private byte[] xMsContentCrc64;
 
     /*
      * The x-ms-encryption-scope property.
@@ -92,13 +92,13 @@ public final class BlobsCopyFromURLHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
-
-    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-
     private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
 
+    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
     private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+
+    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
     private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
 
@@ -109,82 +109,38 @@ public final class BlobsCopyFromURLHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsCopyFromURLHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
-        if (xMsContentCrc64 != null) {
-            this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
-        } else {
-            this.xMsContentCrc64 = null;
-        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
         }
-        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
-        this.xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
+        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
+        this.xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         } else {
             this.contentMD5 = null;
         }
+        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
+        if (xMsContentCrc64 != null) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        } else {
+            this.xMsContentCrc64 = null;
+        }
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the BlobsCopyFromURLHeaders object itself.
-     */
-    @Generated
-    public BlobsCopyFromURLHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsCopyId property: The x-ms-copy-id property.
-     * 
-     * @return the xMsCopyId value.
-     */
-    @Generated
-    public String getXMsCopyId() {
-        return this.xMsCopyId;
-    }
-
-    /**
-     * Set the xMsCopyId property: The x-ms-copy-id property.
-     * 
-     * @param xMsCopyId the xMsCopyId value to set.
-     * @return the BlobsCopyFromURLHeaders object itself.
-     */
-    @Generated
-    public BlobsCopyFromURLHeaders setXMsCopyId(String xMsCopyId) {
-        this.xMsCopyId = xMsCopyId;
-        return this;
     }
 
     /**
@@ -206,28 +162,6 @@ public final class BlobsCopyFromURLHeaders {
     @Generated
     public BlobsCopyFromURLHeaders setETag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
-     * @return the xMsContentCrc64 value.
-     */
-    @Generated
-    public byte[] getXMsContentCrc64() {
-        return CoreUtils.clone(this.xMsContentCrc64);
-    }
-
-    /**
-     * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
-     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
-     * @return the BlobsCopyFromURLHeaders object itself.
-     */
-    @Generated
-    public BlobsCopyFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
-        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 
@@ -261,46 +195,24 @@ public final class BlobsCopyFromURLHeaders {
     }
 
     /**
-     * Get the xMsVersionId property: The x-ms-version-id property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @return the xMsVersionId value.
+     * @return the xMsClientRequestId value.
      */
     @Generated
-    public String getXMsVersionId() {
-        return this.xMsVersionId;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsVersionId property: The x-ms-version-id property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @param xMsVersionId the xMsVersionId value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
     @Generated
-    public BlobsCopyFromURLHeaders setXMsVersionId(String xMsVersionId) {
-        this.xMsVersionId = xMsVersionId;
-        return this;
-    }
-
-    /**
-     * Get the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
-     * @return the xMsCopyStatus value.
-     */
-    @Generated
-    public String getXMsCopyStatus() {
-        return this.xMsCopyStatus;
-    }
-
-    /**
-     * Set the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
-     * @param xMsCopyStatus the xMsCopyStatus value to set.
-     * @return the BlobsCopyFromURLHeaders object itself.
-     */
-    @Generated
-    public BlobsCopyFromURLHeaders setXMsCopyStatus(String xMsCopyStatus) {
-        this.xMsCopyStatus = xMsCopyStatus;
+    public BlobsCopyFromURLHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -327,24 +239,46 @@ public final class BlobsCopyFromURLHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
     @Generated
-    public BlobsCopyFromURLHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public BlobsCopyFromURLHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersionId property: The x-ms-version-id property.
+     * 
+     * @return the xMsVersionId value.
+     */
+    @Generated
+    public String getXMsVersionId() {
+        return this.xMsVersionId;
+    }
+
+    /**
+     * Set the xMsVersionId property: The x-ms-version-id property.
+     * 
+     * @param xMsVersionId the xMsVersionId value to set.
+     * @return the BlobsCopyFromURLHeaders object itself.
+     */
+    @Generated
+    public BlobsCopyFromURLHeaders setXMsVersionId(String xMsVersionId) {
+        this.xMsVersionId = xMsVersionId;
         return this;
     }
 
@@ -378,6 +312,50 @@ public final class BlobsCopyFromURLHeaders {
     }
 
     /**
+     * Get the xMsCopyId property: The x-ms-copy-id property.
+     * 
+     * @return the xMsCopyId value.
+     */
+    @Generated
+    public String getXMsCopyId() {
+        return this.xMsCopyId;
+    }
+
+    /**
+     * Set the xMsCopyId property: The x-ms-copy-id property.
+     * 
+     * @param xMsCopyId the xMsCopyId value to set.
+     * @return the BlobsCopyFromURLHeaders object itself.
+     */
+    @Generated
+    public BlobsCopyFromURLHeaders setXMsCopyId(String xMsCopyId) {
+        this.xMsCopyId = xMsCopyId;
+        return this;
+    }
+
+    /**
+     * Get the xMsCopyStatus property: The x-ms-copy-status property.
+     * 
+     * @return the xMsCopyStatus value.
+     */
+    @Generated
+    public String getXMsCopyStatus() {
+        return this.xMsCopyStatus;
+    }
+
+    /**
+     * Set the xMsCopyStatus property: The x-ms-copy-status property.
+     * 
+     * @param xMsCopyStatus the xMsCopyStatus value to set.
+     * @return the BlobsCopyFromURLHeaders object itself.
+     */
+    @Generated
+    public BlobsCopyFromURLHeaders setXMsCopyStatus(String xMsCopyStatus) {
+        this.xMsCopyStatus = xMsCopyStatus;
+        return this;
+    }
+
+    /**
      * Get the contentMD5 property: The Content-MD5 property.
      * 
      * @return the contentMD5 value.
@@ -396,6 +374,28 @@ public final class BlobsCopyFromURLHeaders {
     @Generated
     public BlobsCopyFromURLHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @return the xMsContentCrc64 value.
+     */
+    @Generated
+    public byte[] getXMsContentCrc64() {
+        return CoreUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the BlobsCopyFromURLHeaders object itself.
+     */
+    @Generated
+    public BlobsCopyFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 

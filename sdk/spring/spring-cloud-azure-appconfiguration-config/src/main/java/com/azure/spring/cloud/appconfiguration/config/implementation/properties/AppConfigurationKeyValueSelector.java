@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
+import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
 
@@ -112,7 +113,7 @@ public final class AppConfigurationKeyValueSelector {
             // such as when obtained from Environment.getActiveProfiles(). See
             // https://github.com/Azure/azure-sdk-for-java/issues/32708 for details.
             Collections.reverse(mutableProfiles);
-            return mutableProfiles.toArray(new String[mutableProfiles.size()]);
+            return mutableProfiles.toArray(String[]::new);
         } 
         if (!StringUtils.hasText(labelFilter)) {
             return EMPTY_LABEL_ARRAY;
@@ -127,8 +128,7 @@ public final class AppConfigurationKeyValueSelector {
         }
 
         Collections.reverse(labels);
-        String[] t = new String[labels.size()];
-        return labels.toArray(t);
+        return labels.toArray(String[]::new);
     }
 
     /**

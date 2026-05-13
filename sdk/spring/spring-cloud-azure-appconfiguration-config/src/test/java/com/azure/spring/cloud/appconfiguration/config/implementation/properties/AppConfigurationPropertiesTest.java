@@ -98,7 +98,7 @@ public class AppConfigurationPropertiesTest {
         newStore.setConnectionString(TEST_CONN_STRING);
         
         java.lang.IllegalArgumentException e = assertThrows(java.lang.IllegalArgumentException.class, () -> properties.validateAndInit());
-        assertEquals("Duplicate store name exists.", e.getMessage());
+        assertEquals("Duplicate endpoint exists: https://fake.test.config.io", e.getMessage());
     }
 
     @Test
@@ -129,7 +129,54 @@ public class AppConfigurationPropertiesTest {
         endpoints.add(TEST_ENDPOINT);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> properties.validateAndInit());
-        assertEquals("Duplicate store name exists.", e.getMessage());
+        assertEquals("Duplicate endpoint exists: " + TEST_ENDPOINT, e.getMessage());
+    }
+
+    @Test
+    public void disabledStoreIsSkippedDuringValidation() {
+        AppConfigurationProperties properties = new AppConfigurationProperties();
+        List<ConfigStore> stores = new ArrayList<>();
+        
+        // Create a disabled store with no connection string (would normally fail validation)
+        ConfigStore disabledStore = new ConfigStore();
+        disabledStore.setEnabled(false);
+        stores.add(disabledStore);
+        
+        // Create an enabled store with valid connection string
+        ConfigStore enabledStore = new ConfigStore();
+        enabledStore.setConnectionString(TEST_CONN_STRING);
+        stores.add(enabledStore);
+        
+        properties.setStores(stores);
+        
+        // Should not throw exception even though disabled store has no connection string
+        properties.validateAndInit();
+        
+        assertEquals(2, properties.getStores().size());
+    }
+
+    @Test
+    public void disabledStoreWithDuplicateEndpointIsAllowed() {
+        AppConfigurationProperties properties = new AppConfigurationProperties();
+        List<ConfigStore> stores = new ArrayList<>();
+        
+        // Create an enabled store with endpoint
+        ConfigStore enabledStore = new ConfigStore();
+        enabledStore.setConnectionString(TEST_CONN_STRING);
+        stores.add(enabledStore);
+        
+        // Create a disabled store with same endpoint (would normally fail duplicate check)
+        ConfigStore disabledStore = new ConfigStore();
+        disabledStore.setEnabled(false);
+        disabledStore.setConnectionString(TEST_CONN_STRING);
+        stores.add(disabledStore);
+        
+        properties.setStores(stores);
+        
+        // Should not throw exception about duplicate endpoint because second store is disabled
+        properties.validateAndInit();
+        
+        assertEquals(2, properties.getStores().size());
     }
 
     @Test

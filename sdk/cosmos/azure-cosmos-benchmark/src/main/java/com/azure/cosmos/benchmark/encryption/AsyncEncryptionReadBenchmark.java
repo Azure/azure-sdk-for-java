@@ -10,14 +10,13 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 
 public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<PojoizedJson> {
 
-    public AsyncEncryptionReadBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
-        super(workloadCfg, scheduler);
+    public AsyncEncryptionReadBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
+        super(workloadCfg);
     }
 
     @Override
