@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for ItemResourceOutputMessageStatus.
+ * Defines values for InputItemOutputMessageStatus.
  */
-public enum ItemResourceOutputMessageStatus {
+public enum InputItemOutputMessageStatus {
     /**
      * Enum value in_progress.
      */
@@ -24,26 +24,26 @@ public enum ItemResourceOutputMessageStatus {
     INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a ItemResourceOutputMessageStatus instance.
+     * The actual serialized value for a InputItemOutputMessageStatus instance.
      */
     private final String value;
 
-    ItemResourceOutputMessageStatus(String value) {
+    InputItemOutputMessageStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceOutputMessageStatus instance.
+     * Parses a serialized value to a InputItemOutputMessageStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceOutputMessageStatus object, or null if unable to parse.
+     * @return the parsed InputItemOutputMessageStatus object, or null if unable to parse.
      */
-    public static ItemResourceOutputMessageStatus fromString(String value) {
+    public static InputItemOutputMessageStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceOutputMessageStatus[] items = ItemResourceOutputMessageStatus.values();
-        for (ItemResourceOutputMessageStatus item : items) {
+        InputItemOutputMessageStatus[] items = InputItemOutputMessageStatus.values();
+        for (InputItemOutputMessageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
