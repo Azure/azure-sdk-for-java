@@ -84,8 +84,8 @@ public class StorageContentValidationDecoderPolicyTests {
     }
 
     private static Stream<Arguments> segmentPayloadSizeAndTotalPayloadSizeSupplier() {
-        return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1), //larger than 4 Mib
-            Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), //smaller than 4 Mib, but not kb
+        return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1), // larger than 4 MiB
+            Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), // smaller than 4 MiB, but not KB
             Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 1024));
     }
 
