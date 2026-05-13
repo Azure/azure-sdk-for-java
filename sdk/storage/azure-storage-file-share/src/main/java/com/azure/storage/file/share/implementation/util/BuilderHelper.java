@@ -31,7 +31,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -206,9 +205,19 @@ public final class BuilderHelper {
             String[] pathPieces = path.split("/", 1);
             return (pathPieces.length == 1) ? pathPieces[0] : null;
         } else {
-            // URL is using a pattern of http://accountName.file.core.windows.net
+            // URL is using a pattern of http://accountName.blob.core.windows.net
             String host = url.getHost();
-            return StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.FILE_URI_SUBDOMAIN);
+
+            if (CoreUtils.isNullOrEmpty(host)) {
+                return null;
+            }
+
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                return host;
+            } else {
+                return host.substring(0, accountNameIndex);
+            }
         }
     }
 
@@ -260,8 +269,16 @@ public final class BuilderHelper {
             } else {
                 // URL is using a pattern of http://accountName.file.core.windows.net/shareName
                 String host = url.getHost();
-                String accountName
-                    = StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.FILE_URI_SUBDOMAIN);
+
+                String accountName = null;
+                if (!CoreUtils.isNullOrEmpty(host)) {
+                    int accountNameIndex = host.indexOf('.');
+                    if (accountNameIndex == -1) {
+                        accountName = host;
+                    } else {
+                        accountName = host.substring(0, accountNameIndex);
+                    }
+                }
 
                 parts.setAccountName(accountName);
 

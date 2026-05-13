@@ -124,7 +124,7 @@ public class TelemetryHelper {
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
         Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel);
+        GarbageCollector.registerObservers(otel, false); // false disables the capture of the GC cause
         OpenTelemetryAppender.install(otel);
         return otel;
     }
@@ -142,9 +142,7 @@ public class TelemetryHelper {
             oneRun.run(ctx);
             trackSuccess(start, span);
         } catch (Throwable e) {
-            String message = e.getMessage();
-            if (e instanceof InterruptedException || e instanceof TimeoutException
-                || (message != null && message.contains("Timeout on blocking read"))) {
+            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
                 trackCancellation(start, span);
             } else {
                 trackFailure(start, e, span);
@@ -203,12 +201,10 @@ public class TelemetryHelper {
         // already a NativeIoException/TimeoutException
         if (unwrapped instanceof RuntimeException) {
             String message = unwrapped.getMessage();
-            if (message != null) {
-                if (message.contains("NativeIoException")) {
-                    unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
-                } else if (message.contains("TimeoutException")) {
-                    unwrapped = new TimeoutException(message);
-                }
+            if (message.contains("NativeIoException")) {
+                unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
+            } else if (message.contains("TimeoutException")) {
+                unwrapped = new TimeoutException(message);
             }
         }
 

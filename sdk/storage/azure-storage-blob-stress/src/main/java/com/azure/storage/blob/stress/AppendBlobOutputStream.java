@@ -70,7 +70,7 @@ public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOption
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.deleteIfExists()
+        return asyncNoFaultClient.delete()
             .then(super.cleanupAsync());
     }
 }

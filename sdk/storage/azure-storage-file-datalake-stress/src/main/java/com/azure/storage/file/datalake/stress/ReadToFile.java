@@ -72,7 +72,7 @@ public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
 
     private static void deleteFile(Path path) {
         try {
-            Files.deleteIfExists(path);
+            path.toFile().delete();
         } catch (Throwable e) {
             LOGGER.atError()
                 .addKeyValue("path", path)

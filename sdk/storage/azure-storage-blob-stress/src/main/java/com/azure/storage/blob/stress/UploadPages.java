@@ -69,9 +69,8 @@ public class UploadPages extends PageBlobScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.getPageBlobAsyncClient().deleteIfExists()
-            .onErrorResume(e -> Mono.empty())
-            .then(tempSetupPageBlobClient.deleteIfExists())
+        return asyncNoFaultClient.getPageBlobAsyncClient().delete()
+            .then(tempSetupPageBlobClient.delete())
             .then(super.cleanupAsync());
     }
 }

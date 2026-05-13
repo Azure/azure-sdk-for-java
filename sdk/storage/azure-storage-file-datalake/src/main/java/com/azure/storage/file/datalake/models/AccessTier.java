@@ -83,11 +83,6 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     public static final AccessTier ARCHIVE = fromString("Archive");
 
     /**
-     * Static value Smart for AccessTier.
-     */
-    public static final AccessTier SMART = fromString("Smart");
-
-    /**
      * Creates a new instance of {@link AccessTier} with no string value.
      *
      * @deprecated Please use {@link #fromString(String)} to create an instance of AccessTier.

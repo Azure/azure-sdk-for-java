@@ -93,9 +93,8 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.getPageBlobAsyncClient().deleteIfExists()
-            .onErrorResume(e -> Mono.empty())
-            .then(tempSetupPageBlobClient.deleteIfExists())
+        return asyncNoFaultClient.getPageBlobAsyncClient().delete()
+            .then(tempSetupPageBlobClient.delete())
             .then(super.cleanupAsync());
     }
 }

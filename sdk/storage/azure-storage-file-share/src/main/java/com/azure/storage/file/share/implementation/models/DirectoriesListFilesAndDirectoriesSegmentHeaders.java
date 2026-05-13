@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DirectoriesListFilesAndDirectoriesSegmentHeaders {
     /*
-     * The Content-Type property.
+     * The x-ms-version property.
      */
     @Generated
-    private String contentType;
+    private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
@@ -29,16 +29,16 @@ public final class DirectoriesListFilesAndDirectoriesSegmentHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
+
+    /*
+     * The Content-Type property.
+     */
+    @Generated
+    private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -49,36 +49,36 @@ public final class DirectoriesListFilesAndDirectoriesSegmentHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesListFilesAndDirectoriesSegmentHeaders(HttpHeaders rawHeaders) {
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
-     * Get the contentType property: The Content-Type property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the contentType value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getContentType() {
-        return this.contentType;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the contentType property: The Content-Type property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param contentType the contentType value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the DirectoriesListFilesAndDirectoriesSegmentHeaders object itself.
      */
     @Generated
-    public DirectoriesListFilesAndDirectoriesSegmentHeaders setContentType(String contentType) {
-        this.contentType = contentType;
+    public DirectoriesListFilesAndDirectoriesSegmentHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -101,28 +101,6 @@ public final class DirectoriesListFilesAndDirectoriesSegmentHeaders {
     @Generated
     public DirectoriesListFilesAndDirectoriesSegmentHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the DirectoriesListFilesAndDirectoriesSegmentHeaders object itself.
-     */
-    @Generated
-    public DirectoriesListFilesAndDirectoriesSegmentHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -152,6 +130,28 @@ public final class DirectoriesListFilesAndDirectoriesSegmentHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The Content-Type property.
+     * 
+     * @return the contentType value.
+     */
+    @Generated
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The Content-Type property.
+     * 
+     * @param contentType the contentType value to set.
+     * @return the DirectoriesListFilesAndDirectoriesSegmentHeaders object itself.
+     */
+    @Generated
+    public DirectoriesListFilesAndDirectoriesSegmentHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }
