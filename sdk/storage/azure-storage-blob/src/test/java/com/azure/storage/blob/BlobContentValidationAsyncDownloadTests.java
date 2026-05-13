@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobDownloadContentOptions;
@@ -35,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -446,4 +448,55 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         assertTrue(hasStructuredMessageDownloadResponseHeaders(recordedResponseHeaders));
     }
 
+    @Test
+    public void verifyProgressListenerIsCompatibleWithContentValidation(@TempDir Path tempDir) throws IOException {
+        byte[] data = getRandomByteArray(10 * Constants.MB);
+
+        BlobAsyncClient client = ccAsync.getBlobAsyncClient(generateBlobName());
+
+        MockProgressListener mockListenerWithContentVal = new MockProgressListener();
+        MockProgressListener mockListenerWithoutContentVal = new MockProgressListener();
+
+        ParallelTransferOptions parallelOptionsWithContentVal
+            = new ParallelTransferOptions().setProgressListener(mockListenerWithContentVal);
+        ParallelTransferOptions parallelOptionsWithoutContentVal
+            = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
+
+        File fileWithContentVal = createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithContentVal = tempDir.resolve("withcontentval.bin").toFile();
+        File fileWithoutContentVal = createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithoutContentVal = tempDir.resolve("withoutcontentval.bin").toFile();
+
+        Files.deleteIfExists(outFileWithContentVal.toPath());
+        Files.deleteIfExists(outFileWithoutContentVal.toPath());
+
+        BlobDownloadToFileOptions optionsWithContentVal
+            = new BlobDownloadToFileOptions(outFileWithContentVal.getAbsolutePath())
+                .setParallelTransferOptions(parallelOptionsWithContentVal)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        BlobDownloadToFileOptions optionsWithoutContentVal
+            = new BlobDownloadToFileOptions(outFileWithoutContentVal.getAbsolutePath())
+                .setParallelTransferOptions(parallelOptionsWithoutContentVal);
+
+        StepVerifier.create(client.upload(BinaryData.fromBytes(data))
+            .then(client.downloadToFileWithResponse(optionsWithContentVal))
+            .then(client.downloadToFileWithResponse(optionsWithoutContentVal))).assertNext(ignored -> {
+                long expectedBytes = data.length;
+                assertEquals(expectedBytes, mockListenerWithContentVal.getReportedByteCount());
+                assertEquals(expectedBytes, mockListenerWithoutContentVal.getReportedByteCount());
+            }).verifyComplete();
+    }
+
+    private static final class MockProgressListener implements ProgressListener {
+        private final AtomicLong reportedByteCount = new AtomicLong(0L);
+
+        @Override
+        public void handleProgress(long bytesTransferred) {
+            this.reportedByteCount.updateAndGet(current -> Math.max(current, bytesTransferred));
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount.get();
+        }
+    }
 }

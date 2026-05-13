@@ -1538,8 +1538,6 @@ public class BlobAsyncClientBase {
         BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
         final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
-        ContentValidationModeResolver.validateProgressWithContentValidation(finalParallelTransferOptions,
-            options.getContentValidationAlgorithm());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
