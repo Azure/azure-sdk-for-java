@@ -1414,8 +1414,6 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1426,8 +1424,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithResponseAsync(String collectionId, String itemId, String format,
-        String accept, BinaryData body, RequestOptions requestOptions) {
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(
             context -> service.cropGeoJson(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 collectionId, itemId, format, contentType, accept, body, requestOptions, context));
@@ -1524,8 +1524,6 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1536,8 +1534,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cropGeoJsonWithResponse(String collectionId, String itemId, String format,
-        String accept, BinaryData body, RequestOptions requestOptions) {
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.cropGeoJsonSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, format, contentType, accept, body, requestOptions, Context.NONE);
     }
@@ -1633,8 +1633,6 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1645,8 +1643,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithDimensionsWithResponseAsync(String collectionId, String itemId,
-        int width, int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int width, int height, String format, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(context -> service.cropGeoJsonWithDimensions(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, width, height, format, contentType,
             accept, body, requestOptions, context));
@@ -1743,8 +1743,6 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1755,8 +1753,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId, int width,
-        int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int height, String format, BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.cropGeoJsonWithDimensionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, width, height, format, contentType,
             accept, body, requestOptions, Context.NONE);
@@ -2448,8 +2448,6 @@ public final class DatasImpl {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2459,7 +2457,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithResponseAsync(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, String format, String accept, RequestOptions requestOptions) {
+        double miny, double maxx, double maxy, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(
             context -> service.getPart(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 collectionId, itemId, minx, miny, maxx, maxy, format, accept, requestOptions, context));
@@ -2542,8 +2542,6 @@ public final class DatasImpl {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2553,7 +2551,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPartWithResponse(String collectionId, String itemId, double minx, double miny,
-        double maxx, double maxy, String format, String accept, RequestOptions requestOptions) {
+        double maxx, double maxy, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getPartSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, minx, miny, maxx, maxy, format, accept, requestOptions, Context.NONE);
     }
@@ -2635,8 +2635,6 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2646,8 +2644,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithDimensionsWithResponseAsync(String collectionId, String itemId,
-        double minx, double miny, double maxx, double maxy, int width, int height, String format, String accept,
+        double minx, double miny, double maxx, double maxy, int width, int height, String format,
         RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(context -> service.getPartWithDimensions(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, minx, miny, maxx, maxy, width, height,
             format, accept, requestOptions, context));
@@ -2730,8 +2730,6 @@ public final class DatasImpl {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2741,8 +2739,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPartWithDimensionsWithResponse(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, int width, int height, String format, String accept,
-        RequestOptions requestOptions) {
+        double miny, double maxx, double maxy, int width, int height, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getPartWithDimensionsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, minx, miny, maxx, maxy, width, height,
             format, accept, requestOptions, Context.NONE);
@@ -2941,8 +2940,6 @@ public final class DatasImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2951,8 +2948,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPreviewWithResponseAsync(String collectionId, String itemId, String accept,
+    public Mono<Response<BinaryData>> getPreviewWithResponseAsync(String collectionId, String itemId,
         RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(context -> service.getPreview(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, accept, requestOptions, context));
     }
@@ -3029,8 +3028,6 @@ public final class DatasImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3039,8 +3036,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPreviewWithResponse(String collectionId, String itemId, String accept,
+    public Response<BinaryData> getPreviewWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getPreviewSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, accept, requestOptions, Context.NONE);
     }
@@ -3116,8 +3115,6 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3127,7 +3124,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPreviewWithFormatWithResponseAsync(String collectionId, String itemId,
-        String format, String accept, RequestOptions requestOptions) {
+        String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(context -> service.getPreviewWithFormat(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, format, accept, requestOptions,
             context));
@@ -3204,8 +3203,6 @@ public final class DatasImpl {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3215,7 +3212,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPreviewWithFormatWithResponse(String collectionId, String itemId, String format,
-        String accept, RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getPreviewWithFormatSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, format, accept, requestOptions, Context.NONE);
     }
@@ -3908,8 +3907,6 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3919,8 +3916,10 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTileWithResponseAsync(String collectionId, String itemId,
-        String tileMatrixSetId, double z, double x, double y, double scale, String format, String accept,
+        String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(
             context -> service.getTile(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, accept, requestOptions, context));
@@ -4007,8 +4006,6 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4018,7 +4015,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTileWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double z, double x, double y, double scale, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getTileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, accept, requestOptions, Context.NONE);
     }
@@ -5645,8 +5644,6 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5656,7 +5653,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMosaicsTileWithResponseAsync(String searchId, String tileMatrixSetId, double z,
-        double x, double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double x, double y, double scale, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(
             context -> service.getMosaicsTile(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 searchId, tileMatrixSetId, z, x, y, scale, format, accept, requestOptions, context));
@@ -5753,8 +5752,6 @@ public final class DatasImpl {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5764,7 +5761,9 @@ public final class DatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMosaicsTileWithResponse(String searchId, String tileMatrixSetId, double z, double x,
-        double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double y, double scale, String format, RequestOptions requestOptions) {
+        final String accept
+            = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return service.getMosaicsTileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             searchId, tileMatrixSetId, z, x, y, scale, format, accept, requestOptions, Context.NONE);
     }

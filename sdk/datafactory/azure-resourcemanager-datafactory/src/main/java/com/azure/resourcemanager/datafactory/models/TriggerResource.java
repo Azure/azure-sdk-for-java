@@ -233,7 +233,7 @@ public interface TriggerResource {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus subscribeToEvents();
 
@@ -244,7 +244,7 @@ public interface TriggerResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus subscribeToEvents(Context context);
 
@@ -273,7 +273,7 @@ public interface TriggerResource {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus unsubscribeFromEvents();
 
@@ -284,7 +284,7 @@ public interface TriggerResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus unsubscribeFromEvents(Context context);
 
