@@ -156,22 +156,10 @@ class ConnectionManager {
 
         List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
 
-        if (clients.size() == 1 && !configStore.isLoadBalancingEnabled()) {
-            if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
-                availableClients.add(clients.get(0));
-            }
-        } else if (!clients.isEmpty() && !configStore.isLoadBalancingEnabled()) {
-            for (AppConfigurationReplicaClient replicaClient : clients) {
-                if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
-                    LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
-                    availableClients.add(replicaClient);
-                }
-            }
-        } else if (configStore.isLoadBalancingEnabled()) {
-            for (AppConfigurationReplicaClient client : clients) {
-                if (client.getBackoffEndTime().isBefore(Instant.now())) {
-                    availableClients.add(client);
-                }
+        for (AppConfigurationReplicaClient client : clients) {
+            if (client.getBackoffEndTime().isBefore(Instant.now())) {
+                LOGGER.debug("Using Client: " + client.getEndpoint());
+                availableClients.add(client);
             }
         }
 
@@ -217,9 +205,12 @@ class ConnectionManager {
             }
         }
 
-        int failedAttempt = autoFailoverClients.get(endpoint).getFailedAttempts();
-        long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
-        autoFailoverClients.get(endpoint).updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+        AppConfigurationReplicaClient failoverClient = autoFailoverClients.get(endpoint);
+        if (failoverClient != null) {
+            int failedAttempt = failoverClient.getFailedAttempts();
+            long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
+            failoverClient.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+        }
     }
 
     /**

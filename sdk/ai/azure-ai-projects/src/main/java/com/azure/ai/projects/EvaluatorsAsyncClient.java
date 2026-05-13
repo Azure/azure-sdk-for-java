@@ -83,6 +83,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -154,6 +155,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -215,6 +217,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -299,6 +302,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -344,6 +348,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -407,6 +412,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
@@ -452,6 +458,7 @@ public final class EvaluatorsAsyncClient {
      *                 desirable_direction: String(increase/decrease/neutral) (Optional)
      *                 min_value: Double (Optional)
      *                 max_value: Double (Optional)
+     *                 threshold: Double (Optional)
      *                 is_primary: Boolean (Optional)
      *             }
      *         }

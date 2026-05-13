@@ -273,6 +273,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          */
         private Duration sessionIdleTimeout;
 
+        /**
+         * Maximum time to wait for in-flight message handlers to complete during processor shutdown.
+         */
+        private Duration drainTimeout;
+
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
         }
@@ -303,6 +308,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
             this.sessionIdleTimeout = sessionIdleTimeout;
+        }
+
+        public Duration getDrainTimeout() {
+            return drainTimeout;
+        }
+
+        public void setDrainTimeout(Duration drainTimeout) {
+            this.drainTimeout = drainTimeout;
         }
     }
 

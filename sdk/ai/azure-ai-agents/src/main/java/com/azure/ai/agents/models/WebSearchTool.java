@@ -175,6 +175,8 @@ public final class WebSearchTool extends Tool {
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
             this.searchContextSize == null ? null : this.searchContextSize.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("custom_search_configuration", this.customSearchConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -203,6 +205,10 @@ public final class WebSearchTool extends Tool {
                 } else if ("search_context_size".equals(fieldName)) {
                     deserializedWebSearchTool.searchContextSize
                         = WebSearchToolSearchContextSize.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebSearchTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebSearchTool.description = reader.getString();
                 } else if ("custom_search_configuration".equals(fieldName)) {
                     deserializedWebSearchTool.customSearchConfiguration = WebSearchConfiguration.fromJson(reader);
                 } else {
@@ -211,5 +217,61 @@ public final class WebSearchTool extends Tool {
             }
             return deserializedWebSearchTool;
         });
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the WebSearchTool object itself.
+     */
+    @Generated
+    public WebSearchTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the WebSearchTool object itself.
+     */
+    @Generated
+    public WebSearchTool setDescription(String description) {
+        this.description = description;
+        return this;
     }
 }

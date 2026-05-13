@@ -222,9 +222,15 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
-     * The default maximum allowable size, in bytes, for a batch to be sent.
+     * Fallback maximum message size (256 KB) used when the AMQP link does not report a size.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+    // Fallback batch size limit (1 MB) used when the service does not advertise the vendor property
+    // com.microsoft:max-message-batch-size on the AMQP sender link. When the property is present,
+    // its value is used directly. This fallback protects against older service deployments that
+    // do not advertise the property — without it, the SDK would use max-message-size (up to 100 MB
+    // on Premium large-message entities) for batch sizing, and the broker would reject.
+    static final int DEFAULT_MAX_BATCH_SIZE_BYTES = 1024 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
     private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS = new CreateMessageBatchOptions();
@@ -467,18 +473,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLinkAndSizeWithRetry("create-batch").flatMap(t -> {
+        return getSendLinkAndMaxBatchSizeWithRetry("create-batch").flatMap(t -> {
             final AmqpSendLink link = t.getT1();
-            final int size = t.getT2();
-            final int maximumLinkSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-            if (maxSize > maximumLinkSize) {
+            final int batchSizeFromLink = t.getT2();
+            // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
+            // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
+            // last-resort default to prevent oversized batches on broken links.
+            final int maximumBatchSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
+            if (maxSize > maximumBatchSize) {
                 return monoError(logger,
                     new IllegalArgumentException(String.format(Locale.US,
-                        "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
-                            + " (%s bytes).",
-                        maxSize, maximumLinkSize)));
+                        "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
+                            + " batch size (%s bytes).",
+                        maxSize, maximumBatchSize)));
             }
-            final int batchSize = maxSize > 0 ? maxSize : maximumLinkSize;
+            final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
             return Mono
                 .just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
         }).onErrorMap(this::mapError);
@@ -902,6 +911,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         // Flux on each retry attempt, which could duplicate side-effects or re-consume a hot
         // publisher. A getLinkSize() failure (link never ACTIVE, link disposed during negotiation)
         // now triggers the same tiered recovery as a getSendLink() failure.
+        //
+        // Uses getLinkSize() intentionally — this path is for single-message sends only (sendMessage()).
+        // Single messages should use the full link capacity (up to 100 MB on Premium large-message),
+        // not the batch-size cap. The batch path (sendMessages(Iterable), scheduleMessages(Iterable))
+        // goes through createMessageBatch() which calls getMaxBatchSize() for the vendor-property-based cap.
         final Mono<Tuple2<AmqpSendLink, Integer>> linkAndSize = getSendLinkAndSizeWithRetry("send-batches");
 
         final Mono<List<ServiceBusMessageBatch>> batchListMono = linkAndSize.flatMap(t -> {
@@ -965,6 +979,28 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             getSendLink(callSite).doOnNext(operationLink::set)
                 .flatMap(link -> link.getLinkSize().map(size -> Tuples.of(link, size)))
                 .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndSize-" + callSite, operationLink)
+                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
+            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+    }
+
+    /**
+     * Acquires a send link AND its negotiated maximum batch size inside a single retry+recovery
+     * boundary. Used by {@code createMessageBatch()} which caps batch size at the vendor-property
+     * limit (see {@link #DEFAULT_MAX_BATCH_SIZE_BYTES}) rather than full link capacity. A failure
+     * during {@code getMaxBatchSize()} (e.g., the link never reaches ACTIVE within the timeout, or
+     * the link becomes disposed mid-negotiation) triggers the same tiered recovery as a failure
+     * during {@code getSendLink()} — without it, transient size-negotiation faults would
+     * short-circuit the operation without LINK or CONNECTION recovery.
+     *
+     * @param callSite identifier used in recovery diagnostics.
+     * @return a Mono emitting (link, batchSize) on success, retried with recovery on transient failures.
+     */
+    private Mono<Tuple2<AmqpSendLink, Integer>> getSendLinkAndMaxBatchSizeWithRetry(String callSite) {
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+        return RetryUtil.withRetry(
+            getSendLink(callSite).doOnNext(operationLink::set)
+                .flatMap(link -> link.getMaxBatchSize().map(size -> Tuples.of(link, size)))
+                .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndMaxBatchSize-" + callSite, operationLink)
                     .then(Mono.error(RecoveryUtils.asRetriable(e)))),
             retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
     }

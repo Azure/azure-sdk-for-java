@@ -64,7 +64,7 @@ class FeatureFlagClient {
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
     
-    private FeatureFlagTracing tracing = new FeatureFlagTracing();
+    private final FeatureFlagTracing tracing = new FeatureFlagTracing();
 
     /**
      * <p>
@@ -88,8 +88,10 @@ class FeatureFlagClient {
             keyFilter = FEATURE_FLAG_PREFIX + customKeyFilter;
         }
 
-        List<String> labels = Arrays.asList(labelFilter);
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilter));
         Collections.reverse(labels);
+
+        Context featureFlagContext = context.addData("FeatureFlagTracing", tracing);
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
@@ -98,22 +100,25 @@ class FeatureFlagClient {
                 settingSelector.setTagsFilter(tagsFilter);
             }
 
-            context.addData("FeatureFlagTracing", tracing);
-
-            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
-            loadedFeatureFlags.add(proccessFeatureFlags(features, replicaClient.getOriginClient()));
+            WatchedConfigurationSettings features = replicaClient.listSettingsByPage(settingSelector, featureFlagContext);
+            loadedFeatureFlags.add(processFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    WatchedConfigurationSettings proccessFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
+    WatchedConfigurationSettings processFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
         // Reading In Features
         for (ConfigurationSetting setting : features.getConfigurationSettings()) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
                 updateTelemetry(featureFlag);
-                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
+                Feature feature = createFeature(featureFlag, endpoint);
+                if (feature != null) {
+                    properties.put(featureFlag.getKey(), feature);
+                } else {
+                    LOGGER.warn("Skipping invalid feature flag: {}", featureFlag.getKey());
+                }
             }
         }
         return features;
@@ -137,9 +142,7 @@ class FeatureFlagClient {
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
             if (telemetryNode != null && !telemetryNode.isEmpty()) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-                featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
+                featureTelemetry = CASE_INSENSITIVE_MAPPER.convertValue(telemetryNode, FeatureTelemetry.class);
             }
 
             feature = new Feature(item, requirementType, featureTelemetry);
@@ -168,7 +171,7 @@ class FeatureFlagClient {
                     final Map<String, String> originMetadata = telemetry.getMetadata();
                     originMetadata.put(E_TAG, item.getETag());
                     if (originEndpoint != null && !originEndpoint.isEmpty()) {
-                        final String labelPart = item.getLabel().isEmpty() ? ""
+                        final String labelPart = !StringUtils.hasText(item.getLabel()) ? ""
                             : String.format("?label=%s", item.getLabel());
                         originMetadata.put(FEATURE_FLAG_REFERENCE,
                             String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
@@ -272,9 +275,9 @@ class FeatureFlagClient {
                 }
             });
         }
-        if (variantsValue != null && !variantsValue.isEmpty()) {
+        if (!variantsValue.isEmpty()) {
             List<Map<String, Object>> sortedVariants = variantsValue.stream()
-                .filter(v -> allocatedVariants.contains(v.get("name")))
+                .filter(v -> allocatedVariants.contains((String) v.get("name")))
                 .sorted(Comparator.comparing(v -> (String) v.get("name")))
                 .collect(Collectors.toList());
 
