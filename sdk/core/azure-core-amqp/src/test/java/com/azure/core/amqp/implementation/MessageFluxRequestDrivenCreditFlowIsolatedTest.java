@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
  * Tests for credit flow using {@link RequestDrivenCreditAccountingStrategy} strategy.
  * <p>
  * See <a href=
- * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * "https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */

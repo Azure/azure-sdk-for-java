@@ -9,21 +9,20 @@ import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions
 import com.azure.core.util.TracingOptions
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry
 import com.azure.cosmos.implementation.{Configs, CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
+import com.azure.cosmos.models.{CosmosAdditionalHeaderName, CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, CosmosAdditionalHeaderName, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.monitor.opentelemetry.autoconfigure.{AzureMonitorAutoConfigure, AzureMonitorAutoConfigureOptions}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import com.microsoft.applicationinsights.TelemetryConfiguration
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry
-import io.micrometer.core.instrument.{Clock, MeterRegistry}
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
+import io.micrometer.core.instrument.{Clock, MeterRegistry}
 import io.netty.util.ResourceLeakDetector
 import io.opentelemetry.api.common.AttributeKey
-import io.opentelemetry.api.logs.Severity
 import io.opentelemetry.sdk.OpenTelemetrySdk
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import io.opentelemetry.sdk.metrics.SdkMeterProvider
@@ -37,10 +36,10 @@ import reactor.core.scheduler.{Scheduler, Schedulers}
 import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
 import java.util
-import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import java.util.function.BiPredicate
+import java.util.{Base64, ConcurrentModificationException}
 import scala.collection.concurrent.TrieMap
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._

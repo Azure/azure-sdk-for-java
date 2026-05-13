@@ -6,6 +6,8 @@ package com.azure.ai.voicelive;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
+import com.azure.ai.voicelive.models.AudioNoiseReduction;
+import com.azure.ai.voicelive.models.AudioNoiseReductionType;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
@@ -24,7 +26,6 @@ import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
-import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
@@ -33,8 +34,6 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -51,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -88,8 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class FunctionCallingSample {
 
     // Service configuration
-    private static final String DEFAULT_API_VERSION = "2025-10-01";
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
     private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
@@ -129,15 +128,14 @@ public final class FunctionCallingSample {
         System.out.println("🎤️ Voice Assistant with Function Calling - Azure VoiceLive SDK");
         System.out.println(separator);
 
-        // Create client
-        KeyCredential credential = new KeyCredential(apiKey);
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
-            .buildAsyncClient();
-
         try {
+            // Create client
+            KeyCredential credential = new KeyCredential(apiKey);
+            VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildAsyncClient();
+
             runFunctionCallingSession(client);
         } catch (Exception e) {
             System.err.println("Error running function calling sample: " + e.getMessage());
@@ -155,7 +153,9 @@ public final class FunctionCallingSample {
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
-        AtomicReference<String> activeFunctionCallId = new AtomicReference<>();
+
+        // Track pending function calls: callId -> (functionName, previousItemId)
+        Map<String, String[]> pendingFunctionCalls = new ConcurrentHashMap<>();
 
         // Start session
         client.startSession(DEFAULT_MODEL)
@@ -167,52 +167,47 @@ public final class FunctionCallingSample {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
 
-                // Subscribe to receive server events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> handleServerEvent(session, event, audioProcessor, activeFunctionCallId),
-                        error -> {
-                            System.err.println("Error processing events: " + error.getMessage());
-                            running.set(false);
-                        },
-                        () -> System.out.println("✓ Event stream completed")
-                    );
-
-                // Send session configuration with function tools
+                // Send session configuration with function tools, then listen for events.
                 System.out.println("📤 Sending session configuration with function tools...");
                 ClientEventSessionUpdate sessionConfig = createSessionConfigWithFunctions();
-                session.sendEvent(sessionConfig)
-                    .doOnSuccess(v -> System.out.println("✓ Session configured with function tools"))
+                return session.sendEvent(sessionConfig)
+                    .doOnSuccess(v -> {
+                        System.out.println("✓ Session configured with function tools");
+
+                        // Start audio playback
+                        audioProcessor.startPlayback();
+
+                        String separator = new String(new char[70]).replace("\0", "=");
+                        System.out.println("\n" + separator);
+                        System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
+                        System.out.println("Try saying:");
+                        System.out.println("  • 'What's the current time?'");
+                        System.out.println("  • 'What's the weather in Seattle?'");
+                        System.out.println("  • 'What time is it in UTC?'");
+                        System.out.println("Press Ctrl+C to exit");
+                        System.out.println(separator + "\n");
+
+                        // Add shutdown hook
+                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                            System.out.println("\n👋 Shutting down voice assistant...");
+                            running.set(false);
+                            audioProcessor.cleanup();
+                            try {
+                                session.closeAsync().block(Duration.ofSeconds(5));
+                            } catch (Exception e) {
+                                // Suppress errors during forced JVM shutdown
+                            }
+                        }));
+                    })
                     .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .subscribe();
-
-                // Start audio playback
-                audioProcessor.startPlayback();
-
-                String separator = new String(new char[70]).replace("\0", "=");
-                System.out.println("\n" + separator);
-                System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
-                System.out.println("Try saying:");
-                System.out.println("  • 'What's the current time?'");
-                System.out.println("  • 'What's the weather in Seattle?'");
-                System.out.println("  • 'What time is it in UTC?'");
-                System.out.println("Press Ctrl+C to exit");
-                System.out.println(separator + "\n");
-
-                // Add shutdown hook
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n👋 Shutting down voice assistant...");
-                    running.set(false);
-                    audioProcessor.cleanup();
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown
-                    }
-                }));
-
-                // Keep the reactive chain alive
-                return Mono.never();
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleServerEvent(session, event, audioProcessor, pendingFunctionCalls))
+                        .doOnError(error -> {
+                            System.err.println("Error processing events: " + error.getMessage());
+                            running.set(false);
+                        })
+                        .doOnComplete(() -> System.out.println("✓ Event stream completed")))
+                    .then(); // receiveEvents() never completes, so this keeps session alive
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
             .doFinally(signalType -> {
@@ -256,6 +251,7 @@ public final class FunctionCallingSample {
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(SAMPLE_RATE)
             .setInputAudioEchoCancellation(new AudioEchoCancellation())
+            .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
             .setTurnDetection(new ServerVadTurnDetection()
                 .setThreshold(0.5)
                 .setPrefixPaddingMs(300)
@@ -314,24 +310,17 @@ public final class FunctionCallingSample {
     }
 
     /**
-     * Handle server events.
+     * Handle server events in a single subscription.
      */
     private static void handleServerEvent(
         VoiceLiveSessionAsyncClient session,
         SessionUpdate event,
         AudioProcessor audioProcessor,
-        AtomicReference<String> activeFunctionCallId
+        Map<String, String[]> pendingFunctionCalls
     ) {
         ServerEventType eventType = event.getType();
 
         if (event instanceof SessionUpdateSessionUpdated) {
-            SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
-
-            // Print the full event details
-            System.out.println("📄 SessionUpdateSessionUpdated Event:");
-            System.out.println(BinaryData.fromObject(sessionUpdated).toString());
-            System.out.println();
-
             System.out.println("✅ Session ready");
             audioProcessor.startCapture();
             System.out.println("🎤 Start speaking. Say 'What's the time?' or 'What's the weather in Seattle?'");
@@ -351,102 +340,48 @@ public final class FunctionCallingSample {
             }
 
         } else if (event instanceof SessionUpdateConversationItemCreated) {
+            // A function call item was created — remember it so we can execute when arguments arrive.
             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
             if (itemCreated.getItem() != null && itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                ResponseFunctionCallItem functionCallItem = (ResponseFunctionCallItem) itemCreated.getItem();
-                String functionName = functionCallItem.getName();
-                String callId = functionCallItem.getCallId();
-                String previousItemId = functionCallItem.getId();
-
-                System.out.println("🔧 Calling function: " + functionName);
-                activeFunctionCallId.set(callId);
-
-                // Handle function call asynchronously
-                handleFunctionCall(session, callId, previousItemId, functionName, activeFunctionCallId)
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .subscribe(
-                        v -> {},
-                        error -> System.err.println("Error handling function call: " + error.getMessage())
-                    );
+                ResponseFunctionCallItem fc = (ResponseFunctionCallItem) itemCreated.getItem();
+                System.out.println("🔧 Function call started: " + fc.getName());
+                pendingFunctionCalls.put(fc.getCallId(), new String[]{fc.getName(), fc.getId()});
             }
+
+        } else if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
+            // Arguments are complete — execute the function and send the result.
+            SessionUpdateResponseFunctionCallArgumentsDone argsDone
+                = (SessionUpdateResponseFunctionCallArgumentsDone) event;
+            String callId = argsDone.getCallId();
+            String[] meta = pendingFunctionCalls.remove(callId);
+            if (meta == null) {
+                return;
+            }
+            String functionName = meta[0];
+            String previousItemId = meta[1];
+            String arguments = argsDone.getArguments();
+
+            System.out.println("📋 Function arguments: " + arguments);
+            Map<String, Object> result = executeFunction(functionName, arguments);
+            System.out.println("✅ Function result: " + result);
+
+            String resultJson;
+            try {
+                resultJson = OBJECT_MAPPER.writeValueAsString(result);
+            } catch (Exception e) {
+                resultJson = "{\"error\": \"Failed to serialize result\"}";
+            }
+
+            FunctionCallOutputItem output = new FunctionCallOutputItem(callId, resultJson);
+            ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                .setItem(output)
+                .setPreviousItemId(previousItemId);
+
+            session.sendEvent(createItem)
+                .then(session.sendEvent(new ClientEventResponseCreate()))
+                .doOnSuccess(v -> System.out.println("🤖 Function result sent"))
+                .subscribe();
         }
-    }
-
-    /**
-     * Handle function call execution.
-     */
-    private static Mono<Void> handleFunctionCall(
-        VoiceLiveSessionAsyncClient session,
-        String callId,
-        String previousItemId,
-        String functionName,
-        AtomicReference<String> activeFunctionCallId
-    ) {
-        return waitForFunctionArguments(session, callId)
-            .flatMap(arguments -> {
-                System.out.println("📋 Function arguments: " + arguments);
-
-                // Execute the function
-                Map<String, Object> result = executeFunction(functionName, arguments);
-                System.out.println("✅ Function result: " + result);
-
-                // Create function output item
-                String resultJson;
-                try {
-                    resultJson = OBJECT_MAPPER.writeValueAsString(result);
-                } catch (Exception e) {
-                    resultJson = "{\"error\": \"Failed to serialize result\"}";
-                }
-
-                FunctionCallOutputItem functionOutput = new FunctionCallOutputItem(callId, resultJson);
-
-                // Send the result back via ClientEventConversationItemCreate
-                ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
-                    .setItem(functionOutput)
-                    .setPreviousItemId(previousItemId);
-
-                return session.sendEvent(createItem)
-                    .then(session.sendEvent(new ClientEventResponseCreate()))
-                    .then(waitForResponseComplete(session, previousItemId))
-                    .doFinally(signal -> activeFunctionCallId.set(null));
-            })
-            .onErrorResume(error -> {
-                System.err.println("Error in function call: " + error.getMessage());
-                activeFunctionCallId.set(null);
-                return Mono.empty();
-            });
-    }
-
-    /**
-     * Wait for function arguments to be complete.
-     */
-    private static Mono<String> waitForFunctionArguments(VoiceLiveSessionAsyncClient session, String callId) {
-        return session.receiveEvents()
-            .filter(event -> event instanceof SessionUpdateResponseFunctionCallArgumentsDone)
-            .map(event -> (SessionUpdateResponseFunctionCallArgumentsDone) event)
-            .filter(event -> callId.equals(event.getCallId()))
-            .map(SessionUpdateResponseFunctionCallArgumentsDone::getArguments)
-            .next()
-            .timeout(Duration.ofSeconds(10));
-    }
-
-    /**
-     * Wait for response to complete after function call.
-     */
-    private static Mono<Void> waitForResponseComplete(VoiceLiveSessionAsyncClient session, String previousItemId) {
-        return session.receiveEvents()
-            .filter(event -> event.getType() == ServerEventType.RESPONSE_DONE)
-            .next()
-            .then(
-                session.receiveEvents()
-                    .filter(event -> event instanceof SessionUpdateResponseOutputItemDone)
-                    .map(event -> (SessionUpdateResponseOutputItemDone) event)
-                    .filter(event -> event.getItem() != null && !previousItemId.equals(event.getItem().getId()))
-                    .next()
-                    .doOnNext(event -> System.out.println("🤖 Assistant responded with function result"))
-                    .then()
-            )
-            .timeout(Duration.ofSeconds(10));
     }
 
     /**
