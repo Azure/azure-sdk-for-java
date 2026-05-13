@@ -86,7 +86,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of nSP Configuration for an Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
@@ -102,7 +102,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of nSP Configuration for an Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
@@ -117,7 +117,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return nSP Configuration for an Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName, String accountName,
@@ -133,7 +133,7 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return nSP Configuration for an Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName, String accountName,
