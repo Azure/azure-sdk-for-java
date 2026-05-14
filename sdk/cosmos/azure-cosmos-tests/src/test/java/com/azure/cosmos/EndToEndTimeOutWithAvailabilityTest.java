@@ -18,6 +18,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.RequestedRegion;
+import com.azure.cosmos.models.RequestedRegionReason;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -138,6 +140,76 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             } finally {
                 rule.disable();
             }
+        }
+    }
+
+    /**
+     * Live multi-region smoke test for the hedging-detection API (issue
+     * Azure/azure-sdk-for-java#49182, AC14). Runs only against the team's multi-region test
+     * account. Asserts the public {@code isHedgingStarted} / {@code getRequestedRegions} /
+     * {@code getRespondedRegions} surface produces the expected end-to-end signal when the
+     * primary region is slow and a hedge to the secondary wins. End-to-end fidelity check;
+     * not a substitute for the AC-matrix coverage under
+     * {@code com.azure.cosmos.diagnostics.HedgingDetectionUnitTests}.
+     */
+    @Test(groups = {"multi-master"}, timeOut = TIMEOUT * 10)
+    public void hedgingDetectionApi_primarySlow_returnsCrossRegionDiagnostics_liveAccount() {
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("hedgingDetectionApi smoke test requires >= 2 preferred regions");
+        }
+
+        ConnectionMode connectionMode = getClientBuilder().buildConnectionPolicy().getConnectionMode();
+        FaultInjectionConnectionType faultInjectionConnectionType = connectionMode == ConnectionMode.DIRECT ?
+            FaultInjectionConnectionType.DIRECT :
+            FaultInjectionConnectionType.GATEWAY;
+
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainer.createItem(createdItem).block();
+
+        FaultInjectionRule rule = injectFailure(this.cosmosAsyncContainer, faultInjectionConnectionType);
+        try {
+            // Let cross-region replication catch up so the hedge arm in region[1] can succeed.
+            Thread.sleep(2000);
+
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(
+                this.cosmosAsyncContainer, OperationType.Read, createdItem, options, false, null);
+
+            assertThat(cosmosDiagnostics).isNotNull();
+
+            // AC14(b): hedging actually fired.
+            assertThat(cosmosDiagnostics.isHedgingStarted())
+                .as("isHedgingStarted() should be true when the primary is slow and a hedge wins")
+                .isTrue();
+
+            // AC14(a): both regions appear, secondary tagged HEDGING.
+            List<RequestedRegion> regions = cosmosDiagnostics.getRequestedRegions();
+            assertThat(regions)
+                .as("getRequestedRegions() should contain INITIAL on primary and HEDGING on secondary")
+                .anyMatch(r -> r.getReason() == RequestedRegionReason.INITIAL
+                    && r.getRegionName().equalsIgnoreCase(this.regions.get(0)))
+                .anyMatch(r -> r.getReason() == RequestedRegionReason.HEDGING
+                    && r.getRegionName().equalsIgnoreCase(this.regions.get(1)));
+
+            // AC14(c): secondary actually responded.
+            assertThat(cosmosDiagnostics.getRespondedRegions())
+                .as("getRespondedRegions() should include the hedge winner")
+                .anyMatch(name -> name.equalsIgnoreCase(this.regions.get(1)));
+
+            CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
+            if (ctx != null) {
+                // Context-level mirror should agree with the per-operation diagnostics.
+                assertThat(ctx.isHedgingStarted()).isTrue();
+                assertThat(ctx.getRequestedRegions())
+                    .anyMatch(r -> r.getReason() == RequestedRegionReason.HEDGING);
+                assertThat(ctx.getRespondedRegions())
+                    .anyMatch(name -> name.equalsIgnoreCase(this.regions.get(1)));
+            }
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            fail("hedging-detection smoke test interrupted", ex);
+        } finally {
+            rule.disable();
         }
     }
 
