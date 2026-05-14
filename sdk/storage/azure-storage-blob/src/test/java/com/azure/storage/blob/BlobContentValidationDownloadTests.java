@@ -64,6 +64,15 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     private static final int FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
 
+    /**
+     * Live-only random payload band for the large parallel-download fuzzy tests
+     * ({@link #fuzzyParallelDownloadLargeMultiPartRoundTrip(int, long, int)}): each run draws a per-run payload size
+     * in {@code (256 MiB, 500 MiB]} so the structured-message decoder is exercised against payloads whose size varies
+     * per run in addition to the random byte contents. Matches the encoder fuzzy upload range.
+     */
+    private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
+    private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
+
     private final List<File> createdFiles = new ArrayList<>();
 
     @AfterEach
@@ -480,12 +489,18 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertParallelDownloadFuzzyRoundTrip("mediumMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
     }
 
-    @LiveOnly // payload >> blockSize; ~96-320 MiB downloads.
+    @LiveOnly // payload >> blockSize; randomized 256-500 MiB downloads per run.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases")
     public void fuzzyParallelDownloadLargeMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
         throws IOException {
-        assertParallelDownloadFuzzyRoundTrip("largeMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+        // Override the MethodSource payload with a randomized size in (256 MiB, 500 MiB] (matches encoder fuzzy
+        // upload range) so each run exercises the decoder against a different payload size in addition to random
+        // byte contents. blockSize and maxConcurrency variations still come from the MethodSource grid.
+        int randomizedPayloadBytes
+            = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+                LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        assertParallelDownloadFuzzyRoundTrip("largeMultiPart", randomizedPayloadBytes, blockSizeBytes, maxConcurrency);
     }
 
     @LiveOnly // ~1 GiB single case; far too large for the test proxy.

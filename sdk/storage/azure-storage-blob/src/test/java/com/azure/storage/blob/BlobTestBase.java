@@ -1629,11 +1629,14 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Stresses high block counts and long-running parallel downloads (~96-320 MiB payloads) with service-realistic
-     * block sizes (8-61 MiB class) and heavy concurrency.
+     * Stresses high block counts and long-running parallel downloads with service-realistic block sizes
+     * (8-61 MiB class) and heavy concurrency.
      * <p>
-     * The final rows use named near-256/288/320 MiB totals with irregular byte tails to keep total bytes and block
-     * remainders off common multiples while still bounding runtime for Live-only CI.
+     * Each row's payload value is treated as a baseline only - {@code fuzzyParallelDownloadLargeMultiPartRoundTrip}
+     * in the download test classes overrides {@code payloadBytes} per run with a randomized size in
+     * {@code [256 MiB, 500 MiB]} (the encoder fuzzy upload range) so each invocation exercises the decoder
+     * against a different payload size in addition to random byte contents. blockSize and maxConcurrency values
+     * still come from this grid.
      */
     protected static Stream<Arguments> fuzzyParallelDownloadLargeMultiPartCases() {
         final int payload257MiBPlus = (int) (257L * Constants.MB + 18881);
