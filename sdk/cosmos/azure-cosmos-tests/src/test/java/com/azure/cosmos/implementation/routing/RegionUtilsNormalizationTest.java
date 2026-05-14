@@ -74,6 +74,22 @@ public class RegionUtilsNormalizationTest {
             { "mexicocentral", "Mexico Central" },
             { "israelcentral", "Israel Central" },
             { "newzealandnorth", "New Zealand North" },
+
+            // Hyphen-separated variants
+            { "west-us-3", "West US 3" },
+            { "east-us", "East US" },
+            { "north-europe", "North Europe" },
+            { "south-central-us", "South Central US" },
+
+            // Underscore-separated variants
+            { "west_us_3", "West US 3" },
+            { "east_us", "East US" },
+            { "north_europe", "North Europe" },
+            { "south_central_us", "South Central US" },
+
+            // Mixed separators
+            { "West-US_3", "West US 3" },
+            { "EAST_US", "East US" },
         };
     }
 

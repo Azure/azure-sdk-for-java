@@ -190,7 +190,7 @@ public final class RegionUtils {
 
         for (Map.Entry<String, Integer> entry : CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS.entrySet()) {
             String canonicalName = entry.getKey();                                   // e.g., "West US 3"
-            String normalizedName = canonicalName.toLowerCase(Locale.ROOT).replace(" ", ""); // e.g., "westus3"
+            String normalizedName = toNormalizedForm(canonicalName); // e.g., "westus3"
 
             if (normalizedToId.put(normalizedName, entry.getValue()) != null) {
                 throw new IllegalStateException("Duplicate normalized region name '" + normalizedName + "' in CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS");
@@ -207,6 +207,17 @@ public final class RegionUtils {
     }
 
     private RegionUtils() {
+    }
+
+    /**
+     * Converts a region name to its normalized form: lowercase, with spaces, hyphens, and underscores stripped.
+     * This is the single normalization function used across all lookup paths.
+     */
+    private static String toNormalizedForm(String regionName) {
+        return regionName.toLowerCase(Locale.ROOT)
+            .replace(" ", "")
+            .replace("-", "")
+            .replace("_", "");
     }
 
     /**
@@ -237,8 +248,8 @@ public final class RegionUtils {
         if (id != -1) {
             return id;
         }
-        // Slow path: normalize input to lowercase-no-spaces and retry
-        String normalizedName = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        // Slow path: normalize input to lowercase, strip spaces/hyphens/underscores and retry
+        String normalizedName = toNormalizedForm(regionName);
         return NORMALIZED_REGION_NAME_TO_REGION_ID_MAPPINGS.getOrDefault(normalizedName, -1);
     }
 
@@ -260,8 +271,8 @@ public final class RegionUtils {
             return regionName;
         }
 
-        // Normalize to lowercase-no-spaces for map lookup
-        String normalizedName = regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        // Normalize to lowercase, strip spaces/hyphens/underscores for map lookup
+        String normalizedName = toNormalizedForm(regionName);
 
         // Look up canonical display name
         String canonicalName = NORMALIZED_TO_CANONICAL.get(normalizedName);
@@ -275,25 +286,26 @@ public final class RegionUtils {
     }
 
     /**
-     * Returns the normalized form of a region name: lowercase, no spaces.
+     * Returns the normalized form of a region name: lowercase, no spaces/hyphens/underscores.
      * <p>
      * Examples:
      * <ul>
      *   <li>"West US 3" → "westus3"</li>
-     *   <li>"EAST US" → "eastus"</li>
+     *   <li>"EAST-US" → "eastus"</li>
+     *   <li>"east_us_2" → "eastus2"</li>
      *   <li>"Future Region" → "futureregion"</li>
      * </ul>
      * Used by {@code LocationHelper} for constructing regional endpoint URLs.
      * DNS is case-insensitive, so casing doesn't affect resolution.
      *
      * @param regionName the region name in any format
-     * @return the normalized form (lowercase, no spaces)
+     * @return the normalized form (lowercase, no spaces/hyphens/underscores)
      */
     public static String getNormalizedRegionName(String regionName) {
         if (StringUtils.isEmpty(regionName)) {
             return regionName;
         }
-        return regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+        return toNormalizedForm(regionName);
     }
 
     /**
