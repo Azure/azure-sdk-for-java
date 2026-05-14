@@ -14,8 +14,6 @@ import org.springframework.util.StringUtils;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
 import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
 
-import com.azure.spring.cloud.appconfiguration.config.implementation.ValidationUtil;
-
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
 

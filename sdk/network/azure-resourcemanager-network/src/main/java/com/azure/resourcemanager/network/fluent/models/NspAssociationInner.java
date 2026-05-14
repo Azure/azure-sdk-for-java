@@ -6,13 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AssociationAccessMode;
 import com.azure.resourcemanager.network.models.NspProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
-import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import java.io.IOException;
 
 /**
@@ -28,7 +28,7 @@ public final class NspAssociationInner extends SecurityPerimeterProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -67,7 +67,7 @@ public final class NspAssociationInner extends SecurityPerimeterProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
@@ -200,9 +200,6 @@ public final class NspAssociationInner extends SecurityPerimeterProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 
     /**
@@ -238,7 +235,7 @@ public final class NspAssociationInner extends SecurityPerimeterProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspAssociationInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspAssociationInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedNspAssociationInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspAssociationInner.innerProperties = NspAssociationProperties.fromJson(reader);
                 } else {

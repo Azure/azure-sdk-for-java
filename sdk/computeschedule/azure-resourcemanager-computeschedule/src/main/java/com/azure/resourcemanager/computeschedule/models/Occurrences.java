@@ -137,7 +137,7 @@ public interface Occurrences {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     RecurringActionsResourceOperationResult delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body);
@@ -153,7 +153,7 @@ public interface Occurrences {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     RecurringActionsResourceOperationResult delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body, Context context);

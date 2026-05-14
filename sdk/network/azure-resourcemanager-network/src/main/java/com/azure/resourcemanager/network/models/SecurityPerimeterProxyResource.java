@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,7 +19,7 @@ public class SecurityPerimeterProxyResource extends SecurityPerimeterResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -48,7 +49,7 @@ public class SecurityPerimeterProxyResource extends SecurityPerimeterResource {
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
@@ -91,9 +92,6 @@ public class SecurityPerimeterProxyResource extends SecurityPerimeterResource {
      */
     @Override
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 
     /**
@@ -129,8 +127,7 @@ public class SecurityPerimeterProxyResource extends SecurityPerimeterResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityPerimeterProxyResource.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedSecurityPerimeterProxyResource.systemData
-                        = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedSecurityPerimeterProxyResource.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.horizondb.models;
 ========
 package com.azure.resourcemanager.fileshares.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
@@ -27,7 +27,7 @@ import java.util.Map;
  * An immutable client-side representation of FileShare.
  */
 public interface FileShare {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -72,7 +72,7 @@ public interface FileShare {
     HorizonDbParameterGroupProperties properties();
 ========
     FileShareProperties properties();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -121,7 +121,7 @@ public interface FileShare {
 
     /**
      * The entirety of the FileShare definition.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
         DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
@@ -140,7 +140,7 @@ public interface FileShare {
     interface DefinitionStages {
         /**
          * The first stage of the FileShare definition.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface Blank extends WithLocation {
         }
@@ -150,7 +150,7 @@ public interface FileShare {
          * The stage of the HorizonDbParameterGroup definition allowing to specify location.
 ========
          * The stage of the FileShare definition allowing to specify location.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithLocation {
             /**
@@ -175,7 +175,7 @@ public interface FileShare {
          * The stage of the HorizonDbParameterGroup definition allowing to specify parent resource.
 ========
          * The stage of the FileShare definition allowing to specify parent resource.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithResourceGroup {
             /**
@@ -194,7 +194,7 @@ public interface FileShare {
 ========
          * The stage of the FileShare definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
@@ -206,7 +206,7 @@ public interface FileShare {
             HorizonDbParameterGroup create();
 ========
             FileShare create();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 
             /**
              * Executes the create request.
@@ -226,7 +226,7 @@ public interface FileShare {
 
         /**
          * The stage of the FileShare definition allowing to specify tags.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithTags {
             /**
@@ -243,7 +243,7 @@ public interface FileShare {
          * The stage of the HorizonDbParameterGroup definition allowing to specify properties.
 ========
          * The stage of the FileShare definition allowing to specify properties.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithProperties {
             /**
@@ -256,7 +256,7 @@ public interface FileShare {
             WithCreate withProperties(HorizonDbParameterGroupProperties properties);
 ========
             WithCreate withProperties(FileShareProperties properties);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
         }
     }
 
@@ -279,7 +279,7 @@ public interface FileShare {
 
     /**
      * The template for FileShare update.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
@@ -291,7 +291,7 @@ public interface FileShare {
         HorizonDbParameterGroup apply();
 ========
         FileShare apply();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 
         /**
          * Executes the update request.
@@ -319,7 +319,7 @@ public interface FileShare {
     interface UpdateStages {
         /**
          * The stage of the FileShare update allowing to specify tags.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithTags {
             /**
@@ -336,7 +336,7 @@ public interface FileShare {
          * The stage of the HorizonDbParameterGroup update allowing to specify properties.
 ========
          * The stage of the FileShare update allowing to specify properties.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
          */
         interface WithProperties {
             /**
@@ -349,7 +349,7 @@ public interface FileShare {
             Update withProperties(HorizonDbParameterGroupPropertiesForPatchUpdate properties);
 ========
             Update withProperties(FileShareUpdateProperties properties);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
         }
     }
 
@@ -362,7 +362,7 @@ public interface FileShare {
     HorizonDbParameterGroup refresh();
 ========
     FileShare refresh();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 
     /**
      * Refreshes the resource to sync with Azure.
@@ -374,5 +374,5 @@ public interface FileShare {
     HorizonDbParameterGroup refresh(Context context);
 ========
     FileShare refresh(Context context);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/models/FileShare.java
 }

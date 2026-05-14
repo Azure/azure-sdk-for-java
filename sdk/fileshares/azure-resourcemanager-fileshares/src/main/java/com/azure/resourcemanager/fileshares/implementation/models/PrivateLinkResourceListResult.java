@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 package com.azure.resourcemanager.fileshares.implementation.models;
 
 import com.azure.core.annotation.Immutable;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateLinkResourceListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateLinkResourceListResult.java
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -74,7 +74,7 @@ public final class PrivateLinkResourceListResult implements JsonSerializable<Pri
             value().forEach(e -> e.validate());
         }
 ========
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateLinkResourceListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateLinkResourceListResult.java
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourceListResult.class);

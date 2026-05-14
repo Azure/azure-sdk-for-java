@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.cognitiveservices.fluent;
 ========
 package com.azure.resourcemanager.fileshares.fluent;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -47,7 +47,7 @@ public interface FileSharesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
      * Manager.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,7 +307,7 @@ public interface FileSharesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
      * Manager.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,7 +334,7 @@ public interface FileSharesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
      * Manager.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -362,7 +362,7 @@ public interface FileSharesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
      * Manager.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,7 +387,7 @@ public interface FileSharesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The resource name of the file share, as seen by the administrator through Azure Resource
      * Manager.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -440,7 +440,7 @@ public interface FileSharesClient {
     /**
      * List FileShare resources by subscription ID.
      * 
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -546,7 +546,7 @@ public interface FileSharesClient {
      * List FileShare resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -604,5 +604,5 @@ public interface FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckNameAvailabilityResponseInner checkNameAvailability(String location, CheckNameAvailabilityRequest body);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/fluent/FileSharesClient.java
 }

@@ -74,7 +74,7 @@ public final class UpdateToolboxInput implements JsonSerializable<UpdateToolboxI
     @Generated
     public String getDefaultVersion() {
         return this.defaultVersion;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
     }
 
     /**
@@ -88,7 +88,7 @@ public final class UpdateToolboxInput implements JsonSerializable<UpdateToolboxI
         jsonWriter.writeStringField("url", this.url);
 ========
         jsonWriter.writeStringField("default_version", this.defaultVersion);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
         return jsonWriter.writeEndObject();
     }
 
@@ -130,7 +130,7 @@ public final class UpdateToolboxInput implements JsonSerializable<UpdateToolboxI
                 reader.nextToken();
                 if ("default_version".equals(fieldName)) {
                     defaultVersion = reader.getString();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
                 } else {
                     reader.skipChildren();
                 }
@@ -139,7 +139,7 @@ public final class UpdateToolboxInput implements JsonSerializable<UpdateToolboxI
             return new ImageResponse(url);
 ========
             return new UpdateToolboxInput(defaultVersion);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/implementation/models/UpdateToolboxInput.java
         });
     }
 }

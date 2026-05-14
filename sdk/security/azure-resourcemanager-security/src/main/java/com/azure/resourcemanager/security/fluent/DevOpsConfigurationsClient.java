@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.appnetwork.fluent;
 ========
 package com.azure.resourcemanager.security.fluent;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -41,7 +41,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +131,7 @@ public interface DevOpsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @param devOpsConfiguration The DevOps configuration resource payload.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -195,7 +195,7 @@ public interface DevOpsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @param devOpsConfiguration The DevOps configuration resource payload.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -258,7 +258,7 @@ public interface DevOpsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @param devOpsConfiguration The DevOps configuration resource payload.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -321,7 +321,7 @@ public interface DevOpsConfigurationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @param devOpsConfiguration The DevOps configuration resource payload.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -351,7 +351,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -376,7 +376,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -403,7 +403,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,7 +426,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -475,7 +475,7 @@ public interface DevOpsConfigurationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -491,5 +491,5 @@ public interface DevOpsConfigurationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DevOpsConfigurationInner> list(String resourceGroupName, String securityConnectorName,
         Context context);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/DevOpsConfigurationsClient.java
 }

@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 ========
 package com.azure.resourcemanager.security.fluent.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
@@ -36,7 +36,7 @@ public final class ScanResultInner extends ProxyResource {
      * A vulnerability assessment scan result properties for a single rule.
      */
     private ScanResultProperties properties;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -96,7 +96,7 @@ public final class ScanResultInner extends ProxyResource {
      */
     public ScanResultProperties properties() {
         return this.properties;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
     }
 
     /**
@@ -184,7 +184,7 @@ public final class ScanResultInner extends ProxyResource {
     public static ScanResultInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScanResultInner deserializedScanResultInner = new ScanResultInner();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -210,7 +210,7 @@ public final class ScanResultInner extends ProxyResource {
                     deserializedScanResultInner.properties = ScanResultProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedScanResultInner.systemData = SystemData.fromJson(reader);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
                 } else {
                     reader.skipChildren();
                 }
@@ -220,7 +220,7 @@ public final class ScanResultInner extends ProxyResource {
             return deserializedAlertConfigurationInner;
 ========
             return deserializedScanResultInner;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/ScanResultInner.java
         });
     }
 }

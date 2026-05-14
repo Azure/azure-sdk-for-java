@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,7 +13,6 @@ import com.azure.resourcemanager.network.models.AccessRuleDirection;
 import com.azure.resourcemanager.network.models.NspProvisioningState;
 import com.azure.resourcemanager.network.models.PerimeterBasedAccessRule;
 import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
-import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import com.azure.resourcemanager.network.models.SubscriptionId;
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +30,7 @@ public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -69,7 +69,7 @@ public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
@@ -300,9 +300,6 @@ public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 
     /**
@@ -338,7 +335,7 @@ public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspAccessRuleInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspAccessRuleInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedNspAccessRuleInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspAccessRuleInner.innerProperties = NspAccessRuleProperties.fromJson(reader);
                 } else {
