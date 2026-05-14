@@ -147,8 +147,17 @@ public class HedgingDetectionUnitTests {
     @Test(groups = {"unit"}, timeOut = 30_000L)
     public void compoundAtomicityIsPreservedUnderConcurrentWriters() throws InterruptedException {
         // 16 writer threads, each appending 1000 HEDGING entries to the same diagnostics.
-        // Invariant: every reader that observes isHedgingStarted() == true must also see at
-        // least one HEDGING entry in getRequestedRegions(), and vice-versa.
+        //
+        // Writers hold `regionLock` across (list.add + maybe-flip hedgingStarted), so any reader
+        // that observes hedgingStarted == true and then reads getRequestedRegions() MUST see at
+        // least one HEDGING entry: hedgingStarted is monotonic (false -> true, never back), so
+        // the lock-release that flipped the flag happens-before the next snapshot acquisition.
+        //
+        // The reverse direction (flag == false, hasHedge == true) is a BENIGN read-skew: the
+        // reader's two accessor calls release the lock between them, so a writer can commit
+        // (append HEDGING entry + flip flag) in that window. A retry of the flag read would
+        // observe true. This is not a violation of M5/M6/M8 compound atomicity, which is a
+        // write-side invariant.
         CosmosDiagnostics diagnostics = newDiagnostics();
 
         final int writers = 16;
@@ -161,7 +170,10 @@ public class HedgingDetectionUnitTests {
                 boolean flag = diagnostics.isHedgingStarted();
                 List<RequestedRegion> regions = diagnostics.getRequestedRegions();
                 boolean hasHedge = regions.stream().anyMatch(r -> r.getReason() == RequestedRegionReason.HEDGING);
-                if (flag != hasHedge) {
+                // Only count the provably-impossible direction: flag observed true implies a
+                // writer's compound-atomic update committed before this read; therefore the
+                // later regions snapshot must include a HEDGING entry.
+                if (flag && !hasHedge) {
                     violations.incrementAndGet();
                 }
             }
@@ -187,7 +199,8 @@ public class HedgingDetectionUnitTests {
         reader.join(5_000L);
 
         assertThat(violations.get())
-            .as("isHedgingStarted() and getRequestedRegions() must agree under concurrent writers (M5/M6/M8)")
+            .as("isHedgingStarted() == true must imply at least one HEDGING entry in "
+                + "getRequestedRegions() (monotonic flag + compound-atomic write; M5/M6/M8)")
             .isZero();
         assertThat(diagnostics.isHedgingStarted()).isTrue();
         assertThat(diagnostics.getRequestedRegions()).hasSize(writers * perWriter);
