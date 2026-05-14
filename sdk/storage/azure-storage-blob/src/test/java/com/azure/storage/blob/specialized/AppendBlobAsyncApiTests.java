@@ -354,6 +354,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 validateBasicHeaders(r.getHeaders());
                 assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                byte[] expectedContentCrc64 = Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                TestUtils.assertArraysEqual(expectedContentCrc64, r.getValue().getContentCrc64());
                 assertNotNull(r.getValue().getBlobAppendOffset());
                 assertNotNull(r.getValue().getBlobCommittedBlockCount());
             })

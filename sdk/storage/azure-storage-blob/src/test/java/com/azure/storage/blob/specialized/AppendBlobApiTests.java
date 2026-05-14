@@ -353,6 +353,9 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         validateBasicHeaders(appendResponse.getHeaders());
         assertNotNull(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        byte[] expectedContentCrc64
+            = Base64.getDecoder().decode(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        TestUtils.assertArraysEqual(expectedContentCrc64, appendResponse.getValue().getContentCrc64());
         assertNotNull(appendResponse.getValue().getBlobAppendOffset());
         assertNotNull(appendResponse.getValue().getBlobCommittedBlockCount());
         assertEquals(1, bc.getProperties().getCommittedBlockCount());
