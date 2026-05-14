@@ -238,7 +238,12 @@ public class BlobCheckpointStore implements CheckpointStore {
     /**
      * Updates the checkpoint in Storage Blobs for a partition.
      *
-     * @param checkpoint Checkpoint information containing sequence number and offset to be stored for this partition.
+     * <p>At least one of {@code sequenceNumber}, {@code offsetString}, or the deprecated {@code offset} must be
+     * populated on the supplied {@link Checkpoint}. When both {@code offsetString} and the deprecated {@code offset}
+     * are populated, {@code offsetString} is preferred and persisted as the offset metadata value.</p>
+     *
+     * @param checkpoint Checkpoint information containing the sequence number and/or offset (as {@code offsetString}
+     * or the deprecated {@code offset}) to be stored for this partition.
      * @return The new ETag on successful update.
      */
     @Override
