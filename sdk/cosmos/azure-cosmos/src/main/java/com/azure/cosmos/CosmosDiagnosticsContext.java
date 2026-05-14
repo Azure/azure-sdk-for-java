@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.models.RequestedRegion;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -436,6 +438,77 @@ public final class CosmosDiagnosticsContext {
         }
 
         return regionsContacted;
+    }
+
+    /**
+     * Returns {@code true} if any per-operation {@link CosmosDiagnostics} aggregated under this
+     * context reports {@link CosmosDiagnostics#isHedgingStarted()} as {@code true}.
+     * <p>
+     * Returns {@code false} when no hedge arm was dispatched — including the case where hedging
+     * was configured but the primary responded under the hedge threshold (hedge arms registered
+     * but never subscribed).
+     *
+     * @return {@code true} if hedging was actually dispatched for any aggregated operation.
+     */
+    public boolean isHedgingStarted() {
+        if (this.diagnostics == null) {
+            return false;
+        }
+        for (CosmosDiagnostics d : this.diagnostics) {
+            if (d.isHedgingStarted()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the regions the SDK dispatched this operation to, aggregated across all
+     * per-operation {@link CosmosDiagnostics} children in observed order
+     * (FIFO traversal of the underlying {@code ConcurrentLinkedDeque}, matching the order used
+     * by {@link #getContactedRegionNames()}). The returned list is unmodifiable.
+     * <p>
+     * Each entry reflects an actual SDK dispatch decision (post-threshold-delay,
+     * post-non-cancellation for hedge arms). See
+     * {@link CosmosDiagnostics#getRequestedRegions()} for the full "dispatched, not necessarily
+     * wire-issued" semantic and a note about the non-exhaustive
+     * {@link com.azure.cosmos.models.RequestedRegionReason} enum.
+     *
+     * @return an unmodifiable, FIFO-ordered list of dispatched regions across all child
+     *     diagnostics. Never {@code null}.
+     */
+    public List<RequestedRegion> getRequestedRegions() {
+        if (this.diagnostics == null) {
+            return Collections.emptyList();
+        }
+        List<RequestedRegion> aggregated = new ArrayList<>();
+        for (CosmosDiagnostics d : this.diagnostics) {
+            aggregated.addAll(d.getRequestedRegions());
+        }
+        return Collections.unmodifiableList(aggregated);
+    }
+
+    /**
+     * Returns the regions that returned a response (success or failure) aggregated across all
+     * per-operation {@link CosmosDiagnostics} children in observed order. The returned list is
+     * unmodifiable.
+     * <p>
+     * <strong>Duplicates are allowed and expected.</strong> See
+     * {@link CosmosDiagnostics#getRespondedRegions()} for the full contract and the
+     * dedup recipe.
+     *
+     * @return an unmodifiable list of regions that responded, across all child diagnostics.
+     *     Never {@code null}.
+     */
+    public List<String> getRespondedRegions() {
+        if (this.diagnostics == null) {
+            return Collections.emptyList();
+        }
+        List<String> aggregated = new ArrayList<>();
+        for (CosmosDiagnostics d : this.diagnostics) {
+            aggregated.addAll(d.getRespondedRegions());
+        }
+        return Collections.unmodifiableList(aggregated);
     }
 
     /**
