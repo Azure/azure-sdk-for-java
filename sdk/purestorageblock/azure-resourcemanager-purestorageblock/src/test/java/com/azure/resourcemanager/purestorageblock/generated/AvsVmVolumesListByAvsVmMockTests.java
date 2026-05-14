@@ -22,7 +22,7 @@ public final class AvsVmVolumesListByAvsVmMockTests {
     @Test
     public void testListByAvsVm() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"ixz\",\"storagePoolResourceId\":\"pnodawopqhe\",\"volumeInternalId\":\"ptmcgsbostzelnd\",\"displayName\":\"tutmzl\",\"space\":{\"totalUsed\":7609604165307370108,\"unique\":8308748747055589302,\"snapshots\":4220060772224988907,\"shared\":5505717621673300435},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"neqvcwwyyurmo\"},\"createdTimestamp\":\"ppr\",\"provisionedSize\":2038521709899225408,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"ayzejnhlbkpbz\",\"diskName\":\"cpilj\",\"folder\":\"a\",\"avsVmInternalId\":\"zv\",\"avsVmResourceId\":\"chndbnwie\",\"avsVmName\":\"olewjwi\",\"avsStorageContainerResourceId\":\"ubwefqs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qtferrqwexjkmf\",\"name\":\"apjwogqqnobpudcd\",\"type\":\"btqwpwyawbzas\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"bcpzgpxtivh\",\"storagePoolResourceId\":\"nidibgqjxg\",\"volumeInternalId\":\"r\",\"displayName\":\"ov\",\"space\":{\"totalUsed\":6131768695545339790,\"unique\":2071499549618341176,\"snapshots\":4084484216418195821,\"shared\":5672061659832825147},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"jrmzvupor\"},\"createdTimestamp\":\"dfuyd\",\"provisionedSize\":7661627240347689089,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"nq\",\"diskName\":\"xqpswok\",\"folder\":\"vkhlggdhbemz\",\"avsVmInternalId\":\"kzsz\",\"avsVmResourceId\":\"wiwtglxxhl\",\"avsVmName\":\"fpgpicrmnzhrgm\",\"avsStorageContainerResourceId\":\"gjsxv\"},\"provisioningState\":\"Failed\"},\"id\":\"frmbodthsqq\",\"name\":\"vriibakclacjfr\",\"type\":\"xousxauzl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class AvsVmVolumesListByAvsVmMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AvsVmVolume> response
-            = manager.avsVmVolumes().listByAvsVm("zrxcczurt", "e", "pqxbkwvzgnzvdf", com.azure.core.util.Context.NONE);
+        PagedIterable<AvsVmVolume> response = manager.avsVmVolumes()
+            .listByAvsVm("glnkvxlxpagl", "ivbgkcv", "hpzvuqdflvoniyp", com.azure.core.util.Context.NONE);
 
         Assertions.assertTrue(response.iterator().next().properties().softDeletion().destroyed());
     }

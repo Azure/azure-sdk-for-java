@@ -21,7 +21,7 @@ public final class AvsStorageContainerVolumesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"cgcckknhxkizvyt\",\"storagePoolResourceId\":\"zvulj\",\"volumeInternalId\":\"aeranokqgukkjqnv\",\"displayName\":\"oylaxxul\",\"space\":{\"totalUsed\":5101303402831257640,\"unique\":5029433390313491179,\"snapshots\":8813063868718248905,\"shared\":1780260345090786386},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"vgjrwhr\"},\"createdTimestamp\":\"ycy\",\"provisionedSize\":434681128132082293,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"cknfnwmbtmvpd\",\"diskName\":\"jdhttzaefedxi\",\"folder\":\"ch\",\"avsVmInternalId\":\"phkmcrjdqnsdfz\",\"avsVmResourceId\":\"bg\",\"avsVmName\":\"gkylkdghr\",\"avsStorageContainerResourceId\":\"euutlwxezwzh\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wnhhtqlgehgppip\",\"name\":\"fhpfeoajvgcxtx\",\"type\":\"csheafidltugsr\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"kpzvcpopmxelnwc\",\"storagePoolResourceId\":\"yjede\",\"volumeInternalId\":\"mlfmkqs\",\"displayName\":\"zuawxtzxpuamwa\",\"space\":{\"totalUsed\":5681353698337068642,\"unique\":6737615589227473915,\"snapshots\":3578038999561407028,\"shared\":166767772147299373},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"haivm\"},\"createdTimestamp\":\"asflvg\",\"provisionedSize\":7685895950417389638,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"koih\",\"diskName\":\"nsmjbl\",\"folder\":\"ljhlnymzotq\",\"avsVmInternalId\":\"ryuzcbmqqv\",\"avsVmResourceId\":\"mv\",\"avsVmName\":\"fgtayxonsup\",\"avsStorageContainerResourceId\":\"ujlzqnhcvsqltn\"},\"provisioningState\":\"Canceled\"},\"id\":\"gsxgnxfyqon\",\"name\":\"p\",\"type\":\"ox\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AvsStorageContainerVolumesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsStorageContainerVolume response = manager.avsStorageContainerVolumes()
-            .getWithResponse("mes", "kdlpa", "zrcxfailcfxwmdbo", "dfgsftufqobrj", com.azure.core.util.Context.NONE)
+            .getWithResponse("wjutifdwfmv", "gorqjbttzh", "aglkafhon", "juj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.properties().softDeletion().destroyed());
+        Assertions.assertTrue(response.properties().softDeletion().destroyed());
     }
 }

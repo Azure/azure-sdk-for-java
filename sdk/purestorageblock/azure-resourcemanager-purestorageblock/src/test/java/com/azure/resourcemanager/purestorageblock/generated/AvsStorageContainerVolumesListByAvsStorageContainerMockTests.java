@@ -22,7 +22,7 @@ public final class AvsStorageContainerVolumesListByAvsStorageContainerMockTests 
     @Test
     public void testListByAvsStorageContainer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"prhptillu\",\"storagePoolResourceId\":\"iqtgdqoh\",\"volumeInternalId\":\"wsldrizetpwbr\",\"displayName\":\"llibphbqzmizak\",\"space\":{\"totalUsed\":2130055064209410437,\"unique\":2736442030278845624,\"snapshots\":907050390570708707,\"shared\":43816545117778318},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"ajoylhjl\"},\"createdTimestamp\":\"oyxprimr\",\"provisionedSize\":8744366569550226962,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"jme\",\"diskName\":\"slstvasy\",\"folder\":\"wxdzaumweoohgu\",\"avsVmInternalId\":\"fuzboyjathwtzolb\",\"avsVmResourceId\":\"emwmdxmebwjs\",\"avsVmName\":\"jpahlxvea\",\"avsStorageContainerResourceId\":\"f\"},\"provisioningState\":\"Canceled\"},\"id\":\"wmqtibx\",\"name\":\"ijddtvqc\",\"type\":\"tad\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"qpofvwbc\",\"storagePoolResourceId\":\"embnkbw\",\"volumeInternalId\":\"vxkdivqihebwtswb\",\"displayName\":\"wfmdurage\",\"space\":{\"totalUsed\":8212495412619748670,\"unique\":5639292583520635769,\"snapshots\":377873191870367631,\"shared\":2970204567624224767},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"jubggbqigkxkb\"},\"createdTimestamp\":\"zgakgacyrcmj\",\"provisionedSize\":3103718277552317709,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"pv\",\"diskName\":\"hryl\",\"folder\":\"iofrzgbzjedmstk\",\"avsVmInternalId\":\"nlvxbcuii\",\"avsVmResourceId\":\"nktwfansnvpdibmi\",\"avsVmName\":\"ostbzbkiwb\",\"avsStorageContainerResourceId\":\"qnyophzfyls\"},\"provisioningState\":\"Failed\"},\"id\":\"fbcunezz\",\"name\":\"e\",\"type\":\"elfwy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class AvsStorageContainerVolumesListByAvsStorageContainerMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvsStorageContainerVolume> response = manager.avsStorageContainerVolumes()
-            .listByAvsStorageContainer("smkss", "h", "iftxfkf", com.azure.core.util.Context.NONE);
+            .listByAvsStorageContainer("dofdbxiqx", "iiqbi", "htmwwinh", com.azure.core.util.Context.NONE);
 
         Assertions.assertTrue(response.iterator().next().properties().softDeletion().destroyed());
     }

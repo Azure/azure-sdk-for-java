@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class ReservationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Get.
@@ -18,6 +18,6 @@ public final class ReservationsGetByResourceGroupSamples {
      */
     public static void reservationsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.reservations()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

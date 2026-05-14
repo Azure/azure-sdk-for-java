@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Delete.
@@ -17,6 +17,6 @@ public final class StoragePoolsDeleteSamples {
      * @param manager Entry point to PureStorageBlockManager.
      */
     public static void storagePoolsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools().delete("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.storagePools().delete("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsC
  */
 public final class StoragePoolsFinalizeAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_FinalizeAvsConnection.
@@ -22,7 +22,7 @@ public final class StoragePoolsFinalizeAvsConnectionSamples {
     public static void
         storagePoolsFinalizeAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .finalizeAvsConnection("rgpurestorage", "storagePoolname",
+            .finalizeAvsConnection("rgpurestorage", "storagepool-01",
                 new StoragePoolFinalizeAvsConnectionPost().withServiceInitializationDataEnc("hlgzaxrohv")
                     .withServiceInitializationData(new ServiceInitializationInfo().withServiceAccountUsername("axchgm")
                         .withServiceAccountPassword("fakeTokenPlaceholder")

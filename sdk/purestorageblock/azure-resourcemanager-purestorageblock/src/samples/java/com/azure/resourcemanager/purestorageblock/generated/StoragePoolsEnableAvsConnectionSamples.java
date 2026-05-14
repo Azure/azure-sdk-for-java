@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsCon
  */
 public final class StoragePoolsEnableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_EnableAvsConnection.
@@ -21,7 +21,7 @@ public final class StoragePoolsEnableAvsConnectionSamples {
     public static void
         storagePoolsEnableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .enableAvsConnection("rgpurestorage", "storagePoolname",
+            .enableAvsConnection("rgpurestorage", "storagepool-01",
                 new StoragePoolEnableAvsConnectionPost().withClusterResourceId("tghkgktlddwlszbeh"),
                 com.azure.core.util.Context.NONE);
     }

@@ -24,7 +24,7 @@ public final class AvsVmVolumesUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"gfdgugeyzi\",\"storagePoolResourceId\":\"rkyui\",\"volumeInternalId\":\"bsnmfpph\",\"displayName\":\"eevy\",\"space\":{\"totalUsed\":4522527069130140282,\"unique\":3597759724277023056,\"snapshots\":7698479884404425134,\"shared\":1273035816626433679},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"mfg\"},\"createdTimestamp\":\"glqgleoh\",\"provisionedSize\":4155522088273976517,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"ankrrfxee\",\"diskName\":\"btijvacvbm\",\"folder\":\"z\",\"avsVmInternalId\":\"qqxlajr\",\"avsVmResourceId\":\"wxacevehj\",\"avsVmName\":\"uyxoaf\",\"avsStorageContainerResourceId\":\"aoqltfaey\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fgvxirpghriypoqe\",\"name\":\"hlqhykprlpy\",\"type\":\"nuciqdsmexiit\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"ytunlbfjkwr\",\"storagePoolResourceId\":\"nkqbhsyrq\",\"volumeInternalId\":\"jqhden\",\"displayName\":\"ulkpakd\",\"space\":{\"totalUsed\":2001869363644606291,\"unique\":9213659724068694938,\"snapshots\":907702570913496206,\"shared\":2755469222712772213},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"bpxuckpggqoweyi\"},\"createdTimestamp\":\"hlisngw\",\"provisionedSize\":5405797443088065857,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"zruwn\",\"diskName\":\"qxpxiwfcngjsaa\",\"folder\":\"iixtmkzj\",\"avsVmInternalId\":\"kv\",\"avsVmResourceId\":\"irhgfgrwsdp\",\"avsVmName\":\"ra\",\"avsStorageContainerResourceId\":\"zvzbglbyv\"},\"provisioningState\":\"Succeeded\"},\"id\":\"tbrxkjz\",\"name\":\"rgxffmshkw\",\"type\":\"bkgozxwopdbydpi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class AvsVmVolumesUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsVmVolume response = manager.avsVmVolumes()
-            .update("rjtloq", "fuojrngif", "rzpasccbiuimzdly", "dfqwmkyoq",
+            .update("oqeq", "larvlagunbtg", "ebwlnbmhyreeudzq", "vbpdqmjxlyyzglgo",
                 new AvsVmVolumeUpdate().withProperties(
-                    new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
+                    new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(false))),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertTrue(response.properties().softDeletion().destroyed());

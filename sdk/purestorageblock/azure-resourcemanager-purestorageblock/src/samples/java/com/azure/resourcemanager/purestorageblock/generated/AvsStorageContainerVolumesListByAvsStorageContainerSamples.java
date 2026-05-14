@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_ListByAvsStorageContainer.
@@ -19,6 +19,7 @@ public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
     public static void avsStorageContainerVolumesListByAvsStorageContainer(
         com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainerVolumes()
-            .listByAvsStorageContainer("rgpurestorage", "storagePoolname", "name", com.azure.core.util.Context.NONE);
+            .listByAvsStorageContainer("rgpurestorage", "storagepool-01", "container-01",
+                com.azure.core.util.Context.NONE);
     }
 }

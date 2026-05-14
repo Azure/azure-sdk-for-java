@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class StoragePoolsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Create.
@@ -26,17 +26,20 @@ public final class StoragePoolsCreateSamples {
      */
     public static void storagePoolsCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .define("storagePoolname")
-            .withRegion("lonlc")
+            .define("storagepool-01")
+            .withRegion("eastus")
             .withExistingResourceGroup("rgpurestorage")
-            .withTags(mapOf("key7593", "fakeTokenPlaceholder"))
-            .withProperties(new StoragePoolProperties().withAvailabilityZone("vknyl")
-                .withVnetInjection(new VnetInjection().withSubnetId("tnlctolrxdvnkjiphlrdxq")
-                    .withVnetId("zbumtytyqwewjcyckwqchiypshv"))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new StoragePoolProperties().withAvailabilityZone("1")
+                .withVnetInjection(new VnetInjection().withSubnetId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01")
+                    .withVnetId(
+                        "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"))
                 .withProvisionedBandwidthMbPerSec(17L)
-                .withReservationResourceId("xiowoxnbtcotutcmmrofvgdi"))
+                .withReservationResourceId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key4211", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("identity-01", new UserAssignedIdentity())))
             .create();
     }
 

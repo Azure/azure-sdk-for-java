@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmsGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Get.
@@ -18,6 +18,6 @@ public final class AvsVmsGetSamples {
      */
     public static void avsVmsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVms()
-            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .getWithResponse("rgpurestorage", "storagepool-01", "abc123def456", com.azure.core.util.Context.NONE);
     }
 }

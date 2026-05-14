@@ -22,7 +22,7 @@ public final class AvsVmsListByStoragePoolMockTests {
     @Test
     public void testListByStoragePool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"akchzyvlixqnrk\",\"storagePoolResourceId\":\"kjibnxmysuxswqrn\",\"displayName\":\"lwi\",\"createdTimestamp\":\"sttex\",\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"wcyyufmhruncu\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"pkcdqzhlct\",\"vmName\":\"dunqnd\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"pchrqbn\"},\"space\":{\"totalUsed\":7384163367118885266,\"unique\":5708023666168728932,\"snapshots\":5663417988942053637,\"shared\":19081015441774011},\"provisioningState\":\"Canceled\"},\"id\":\"xjumvq\",\"name\":\"olihrra\",\"type\":\"ouau\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"wtxxpkyjcx\",\"storagePoolResourceId\":\"xgrytfmp\",\"displayName\":\"cil\",\"createdTimestamp\":\"caykggnoxuz\",\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"xwpndfcpf\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"hjtwkjaosrx\",\"vmName\":\"zvoamktc\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"os\"},\"space\":{\"totalUsed\":8116683592498918635,\"unique\":3564054239080397044,\"snapshots\":3433394033702639925,\"shared\":7652180722953630761},\"provisioningState\":\"Failed\"},\"id\":\"tlt\",\"name\":\"ap\",\"type\":\"ltzkatbhjmznnb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AvsVmsListByStoragePoolMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvsVm> response
-            = manager.avsVms().listByStoragePool("lalniex", "srzpgepqtybbww", com.azure.core.util.Context.NONE);
+            = manager.avsVms().listByStoragePool("npbs", "vefloccsrmozihmi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertTrue(response.iterator().next().properties().softDeletion().destroyed());
+        Assertions.assertFalse(response.iterator().next().properties().softDeletion().destroyed());
     }
 }

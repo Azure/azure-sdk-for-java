@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class StoragePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Update.
@@ -26,12 +26,12 @@ public final class StoragePoolsUpdateSamples {
      */
     public static void storagePoolsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         StoragePool resource = manager.storagePools()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("key9065", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key4211", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("identity-01", new UserAssignedIdentity())))
             .withProperties(new StoragePoolUpdateProperties().withProvisionedBandwidthMbPerSec(23L))
             .apply();
     }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsGetAvsStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_GetAvsStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetAvsStatus.
@@ -19,6 +19,6 @@ public final class StoragePoolsGetAvsStatusSamples {
     public static void
         storagePoolsGetAvsStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getAvsStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getAvsStatusWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,7 @@ public final class StoragePoolsGetAvsConnectionWithResponseMockTests {
     @Test
     public void testGetAvsConnectionWithResponse() throws Exception {
         String responseStr
-            = "{\"serviceInitializationCompleted\":false,\"serviceInitializationHandleEnc\":\"mozuxylfsb\",\"serviceInitializationHandle\":{\"sddcResourceId\":\"dp\",\"serviceAccountUsername\":\"own\"}}";
+            = "{\"serviceInitializationCompleted\":true,\"serviceInitializationHandleEnc\":\"zpgepqty\",\"serviceInitializationHandle\":{\"sddcResourceId\":\"wpgdak\",\"serviceAccountUsername\":\"zyvli\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class StoragePoolsGetAvsConnectionWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsConnection response = manager.storagePools()
-            .getAvsConnectionWithResponse("iagtc", "jocqwogfnzjvusf", com.azure.core.util.Context.NONE)
+            .getAvsConnectionWithResponse("fuurutlwexx", "lalniex", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.serviceInitializationCompleted());
-        Assertions.assertEquals("mozuxylfsb", response.serviceInitializationHandleEnc());
-        Assertions.assertEquals("dp", response.serviceInitializationHandle().clusterResourceId());
-        Assertions.assertEquals("own", response.serviceInitializationHandle().serviceAccountUsername());
+        Assertions.assertTrue(response.serviceInitializationCompleted());
+        Assertions.assertEquals("zpgepqty", response.serviceInitializationHandleEnc());
+        Assertions.assertEquals("wpgdak", response.serviceInitializationHandle().clusterResourceId());
+        Assertions.assertEquals("zyvli", response.serviceInitializationHandle().serviceAccountUsername());
     }
 }

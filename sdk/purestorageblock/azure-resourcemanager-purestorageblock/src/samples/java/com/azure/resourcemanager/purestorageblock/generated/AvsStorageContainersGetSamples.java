@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsStorageContainersGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Get.
@@ -19,7 +19,6 @@ public final class AvsStorageContainersGetSamples {
     public static void
         avsStorageContainersGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainers()
-            .getWithResponse("rgpurestorage", "storagePoolName", "storageContainerName",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("rgpurestorage", "storagepool-01", "container-01", com.azure.core.util.Context.NONE);
     }
 }

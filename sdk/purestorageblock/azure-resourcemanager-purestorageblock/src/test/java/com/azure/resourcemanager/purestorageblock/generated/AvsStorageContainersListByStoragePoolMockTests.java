@@ -22,7 +22,7 @@ public final class AvsStorageContainersListByStoragePoolMockTests {
     @Test
     public void testListByStoragePool() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"space\":{\"totalUsed\":7508002576192467250,\"unique\":8940030353238765514,\"snapshots\":3204420245532219409,\"shared\":2757366705767259016},\"resourceName\":\"vdaeyyguxakjsq\",\"provisionedLimit\":8392675363801599974,\"datastore\":\"zkgimsid\",\"mounted\":false},\"id\":\"cddyvvjsk\",\"name\":\"fmocwahpq\",\"type\":\"atjeaahh\"}]}";
+            = "{\"value\":[{\"properties\":{\"space\":{\"totalUsed\":7819263829241557940,\"unique\":1322748423438420767,\"snapshots\":326883131469492313,\"shared\":1718820549593481354},\"resourceName\":\"echndbnwieholew\",\"provisionedLimit\":1432187533240943633,\"datastore\":\"bwefqsfapaqtfer\",\"mounted\":true},\"id\":\"x\",\"name\":\"kmfx\",\"type\":\"pjwogqqno\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AvsStorageContainersListByStoragePoolMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AvsStorageContainer> response = manager.avsStorageContainers()
-            .listByStoragePool("ealzxwhcansymoyq", "lwigdivbkbx", com.azure.core.util.Context.NONE);
+        PagedIterable<AvsStorageContainer> response
+            = manager.avsStorageContainers().listByStoragePool("mo", "ayzejnhlbkpbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(8392675363801599974L, response.iterator().next().properties().provisionedLimit());
+        Assertions.assertEquals(1432187533240943633L, response.iterator().next().properties().provisionedLimit());
     }
 }

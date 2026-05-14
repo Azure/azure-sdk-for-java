@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsGetHealthStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetHealthStatus.
@@ -19,6 +19,6 @@ public final class StoragePoolsGetHealthStatusSamples {
     public static void
         storagePoolsGetHealthStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getHealthStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getHealthStatusWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

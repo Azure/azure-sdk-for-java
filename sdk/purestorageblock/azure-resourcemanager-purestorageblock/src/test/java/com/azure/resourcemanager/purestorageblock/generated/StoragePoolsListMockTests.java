@@ -23,7 +23,7 @@ public final class StoragePoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"vjlboxqvk\",\"availabilityZone\":\"lmxhomdyn\",\"vnetInjection\":{\"subnetId\":\"dwdigumb\",\"vnetId\":\"raauzzpt\"},\"dataRetentionPeriod\":6520171368318103183,\"provisionedBandwidthMbPerSec\":8740215687103788004,\"provisionedIops\":694347941979417663,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"vaiqyuvvf\"},\"provisioningState\":\"Deleting\",\"reservationResourceId\":\"p\"},\"identity\":{\"principalId\":\"yik\",\"tenantId\":\"lauyav\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gnjdgkynscliqhz\":{\"principalId\":\"csttijfybvpoekr\",\"clientId\":\"sgbdhuz\"},\"hihfrbbcevqagtlt\":{\"principalId\":\"xnkomtkubo\",\"clientId\":\"pnvdxz\"},\"nifmzzsdymbrnysu\":{\"principalId\":\"lfkqojpy\",\"clientId\":\"gtrd\"},\"ffwafq\":{\"principalId\":\"prafwgckhoc\",\"clientId\":\"d\"}}},\"location\":\"udaspavehh\",\"tags\":{\"xg\":\"bunzozudh\",\"cdyuibhmfdnbzyd\":\"moy\"},\"id\":\"f\",\"name\":\"fcjnaeoisrvhmgor\",\"type\":\"fukiscvwmzhw\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"hheioqaqhvseuf\",\"availabilityZone\":\"qyrxp\",\"vnetInjection\":{\"subnetId\":\"lcgqlsismj\",\"vnetId\":\"frddgamquhiosrsj\"},\"dataRetentionPeriod\":1565802673451378202,\"provisionedBandwidthMbPerSec\":7632126345733001237,\"provisionedIops\":6374226112338292700,\"avs\":{\"avsEnabled\":false,\"sddcResourceId\":\"xzhczexrxz\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"rtrhqvwrevkhgnl\"},\"identity\":{\"principalId\":\"nzlrpiqywncvjt\",\"tenantId\":\"cof\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"uanashcxlp\":{\"principalId\":\"dhgbjkvre\",\"clientId\":\"eamurvzmlo\"}}},\"location\":\"erbdk\",\"tags\":{\"fdgnwncypuuwwlt\":\"idizozsdbccxjmo\",\"tzenk\":\"uqj\",\"zhmkdasvflyh\":\"if\"},\"id\":\"xcudchxgsr\",\"name\":\"oldforobw\",\"type\":\"lvizb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class StoragePoolsListMockTests {
 
         PagedIterable<StoragePool> response = manager.storagePools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("udaspavehh", response.iterator().next().location());
-        Assertions.assertEquals("bunzozudh", response.iterator().next().tags().get("xg"));
-        Assertions.assertEquals("lmxhomdyn", response.iterator().next().properties().availabilityZone());
-        Assertions.assertEquals("dwdigumb", response.iterator().next().properties().vnetInjection().subnetId());
-        Assertions.assertEquals("raauzzpt", response.iterator().next().properties().vnetInjection().vnetId());
-        Assertions.assertEquals(8740215687103788004L,
+        Assertions.assertEquals("erbdk", response.iterator().next().location());
+        Assertions.assertEquals("idizozsdbccxjmo", response.iterator().next().tags().get("fdgnwncypuuwwlt"));
+        Assertions.assertEquals("qyrxp", response.iterator().next().properties().availabilityZone());
+        Assertions.assertEquals("lcgqlsismj", response.iterator().next().properties().vnetInjection().subnetId());
+        Assertions.assertEquals("frddgamquhiosrsj", response.iterator().next().properties().vnetInjection().vnetId());
+        Assertions.assertEquals(7632126345733001237L,
             response.iterator().next().properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("p", response.iterator().next().properties().reservationResourceId());
+        Assertions.assertEquals("rtrhqvwrevkhgnl", response.iterator().next().properties().reservationResourceId());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
     }

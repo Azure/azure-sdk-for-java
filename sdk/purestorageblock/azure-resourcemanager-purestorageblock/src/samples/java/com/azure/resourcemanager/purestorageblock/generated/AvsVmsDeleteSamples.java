@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Delete.
@@ -17,6 +17,6 @@ public final class AvsVmsDeleteSamples {
      * @param manager Entry point to PureStorageBlockManager.
      */
     public static void avsVmsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+        manager.avsVms().delete("rgpurestorage", "storagepool-01", "abc123def456", com.azure.core.util.Context.NONE);
     }
 }

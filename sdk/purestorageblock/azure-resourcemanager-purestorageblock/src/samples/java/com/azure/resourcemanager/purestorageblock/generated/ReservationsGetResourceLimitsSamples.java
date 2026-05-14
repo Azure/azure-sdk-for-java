@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class ReservationsGetResourceLimitsSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetResourceLimits.
@@ -19,6 +19,6 @@ public final class ReservationsGetResourceLimitsSamples {
     public static void
         reservationsGetResourceLimits(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.reservations()
-            .getResourceLimitsWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getResourceLimitsWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

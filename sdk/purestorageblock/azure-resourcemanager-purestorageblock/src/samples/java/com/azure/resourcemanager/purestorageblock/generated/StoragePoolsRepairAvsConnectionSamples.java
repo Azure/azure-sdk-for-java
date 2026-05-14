@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsRepairAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_RepairAvsConnection.
@@ -18,7 +18,6 @@ public final class StoragePoolsRepairAvsConnectionSamples {
      */
     public static void
         storagePoolsRepairAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .repairAvsConnection("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.storagePools().repairAvsConnection("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,7 +22,7 @@ public final class StoragePoolsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"wqjnob\",\"availabilityZone\":\"iyhddvi\",\"vnetInjection\":{\"subnetId\":\"cegfnmntfp\",\"vnetId\":\"vm\"},\"dataRetentionPeriod\":4290987357614986610,\"provisionedBandwidthMbPerSec\":5936316598559171392,\"provisionedIops\":3782508391126657105,\"avs\":{\"avsEnabled\":false,\"sddcResourceId\":\"lxlllchpo\"},\"provisioningState\":\"Canceled\",\"reservationResourceId\":\"evwrdnhfuk\"},\"identity\":{\"principalId\":\"jcswsmys\",\"tenantId\":\"luqypfcvlerch\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"drihpfhoqcaaewda\":{\"principalId\":\"pjbabwidfc\",\"clientId\":\"spuunnoxyhkxgq\"},\"zkdnc\":{\"principalId\":\"djvlpj\",\"clientId\":\"kzbrmsgeivsiy\"}}},\"location\":\"xonbzoggculapz\",\"tags\":{\"b\":\"pgogtqxepny\",\"lvofqzhvfcibyfmo\":\"uajlyj\",\"dwxf\":\"uxrkjp\"},\"id\":\"wiivwzjbhyzsx\",\"name\":\"rkambt\",\"type\":\"negvmnvuqe\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"slhhxudbxv\",\"availabilityZone\":\"d\",\"vnetInjection\":{\"subnetId\":\"tnsi\",\"vnetId\":\"ud\"},\"dataRetentionPeriod\":522814180418790552,\"provisionedBandwidthMbPerSec\":1178624651848849936,\"provisionedIops\":4640627057702516457,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"gzrcxfailcfxwmdb\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"fgsftufqob\"},\"identity\":{\"principalId\":\"nac\",\"tenantId\":\"ckknhxkizvy\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gukkjqnvbroy\":{\"principalId\":\"uljraae\",\"clientId\":\"nok\"},\"jrwhryvy\":{\"principalId\":\"xxulcdi\",\"clientId\":\"osfjbjsv\"}}},\"location\":\"t\",\"tags\":{\"btmvpdvjdhttza\":\"xgccknfnw\",\"rjdqnsdfzp\":\"fedxihchrphkm\",\"euutlwxezwzh\":\"gtgkylkdghr\",\"ppipifhpfeoa\":\"kvbwnhhtqlgeh\"},\"id\":\"vgcxtx\",\"name\":\"csheafidltugsr\",\"type\":\"smkss\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class StoragePoolsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StoragePool response = manager.storagePools()
-            .getByResourceGroupWithResponse("hpfkyrkdbdgi", "gsj", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dmdqb", "pypqtgsfj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xonbzoggculapz", response.location());
-        Assertions.assertEquals("pgogtqxepny", response.tags().get("b"));
-        Assertions.assertEquals("iyhddvi", response.properties().availabilityZone());
-        Assertions.assertEquals("cegfnmntfp", response.properties().vnetInjection().subnetId());
-        Assertions.assertEquals("vm", response.properties().vnetInjection().vnetId());
-        Assertions.assertEquals(5936316598559171392L, response.properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("evwrdnhfuk", response.properties().reservationResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("t", response.location());
+        Assertions.assertEquals("xgccknfnw", response.tags().get("btmvpdvjdhttza"));
+        Assertions.assertEquals("d", response.properties().availabilityZone());
+        Assertions.assertEquals("tnsi", response.properties().vnetInjection().subnetId());
+        Assertions.assertEquals("ud", response.properties().vnetInjection().vnetId());
+        Assertions.assertEquals(1178624651848849936L, response.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("fgsftufqob", response.properties().reservationResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 }

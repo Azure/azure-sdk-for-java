@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class ReservationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_ListBySubscription.

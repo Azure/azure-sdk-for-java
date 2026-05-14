@@ -21,7 +21,7 @@ public final class AvsStorageContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"space\":{\"totalUsed\":6631490194181258927,\"unique\":4155504015372281665,\"snapshots\":7780463518072084931,\"shared\":6008082652066611938},\"resourceName\":\"yyefrpmpdnqqs\",\"provisionedLimit\":9156957823967073009,\"datastore\":\"qvmmbn\",\"mounted\":false},\"id\":\"tqlkz\",\"name\":\"egnitg\",\"type\":\"kxlzyqdrfeg\"}";
+            = "{\"properties\":{\"space\":{\"totalUsed\":5642009321604531897,\"unique\":8320087394217577004,\"snapshots\":3274938663203869419,\"shared\":4220293765327614026},\"resourceName\":\"cgsbost\",\"provisionedLimit\":3005843877546789595,\"datastore\":\"la\",\"mounted\":true},\"id\":\"zlbiojlvfhrbbpn\",\"name\":\"qvcww\",\"type\":\"yurmochpprprs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AvsStorageContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsStorageContainer response = manager.avsStorageContainers()
-            .getWithResponse("ijouwivkxoyzunb", "xxrtikvc", "wpgclrcivt", com.azure.core.util.Context.NONE)
+            .getWithResponse("pqxbkwvzgnzvdf", "zdix", "mqpnoda", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(9156957823967073009L, response.properties().provisionedLimit());
+        Assertions.assertEquals(3005843877546789595L, response.properties().provisionedLimit());
     }
 }

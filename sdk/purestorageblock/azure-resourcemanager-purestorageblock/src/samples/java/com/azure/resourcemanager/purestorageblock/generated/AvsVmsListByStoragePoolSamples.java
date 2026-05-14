@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_ListByStoragePool.
@@ -18,6 +18,6 @@ public final class AvsVmsListByStoragePoolSamples {
      */
     public static void
         avsVmsListByStoragePool(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().listByStoragePool("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.avsVms().listByStoragePool("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }

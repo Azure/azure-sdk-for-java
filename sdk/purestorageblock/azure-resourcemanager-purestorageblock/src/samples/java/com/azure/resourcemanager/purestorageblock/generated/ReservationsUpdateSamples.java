@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ReservationsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Update.
@@ -26,14 +26,14 @@ public final class ReservationsUpdateSamples {
      */
     public static void reservationsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         Reservation resource = manager.reservations()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("key8751", "fakeTokenPlaceholder"))
             .withProperties(
                 new ReservationUpdateProperties().withUser(new UserDetails().withFirstName("sjzquetrvxcrajxdfwfeuro")
                     .withLastName("qimvqxnlbclfouwzfk")
-                    .withEmailAddress("abc@example.com")
+                    .withEmailAddress("john.doe@contoso.com")
                     .withUpn("pvafwnbigmhuigxfu")
                     .withPhoneNumber("jfljnoxsfsplwczwgvmlurfnorimvl")
                     .withCompanyDetails(new CompanyDetails().withCompanyName("uleytbkckdhaiykwjjcjqmnlik")

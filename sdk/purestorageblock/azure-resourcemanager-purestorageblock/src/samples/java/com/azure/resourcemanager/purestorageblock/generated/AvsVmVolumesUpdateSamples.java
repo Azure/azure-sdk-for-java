@@ -13,7 +13,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Update.
@@ -22,7 +22,7 @@ public final class AvsVmVolumesUpdateSamples {
      */
     public static void avsVmVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
+            .update("rgpurestorage", "storagepool-01", "abc123def456", "a1b2c3d4-e5f6",
                 new AvsVmVolumeUpdate().withProperties(
                     new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
                 com.azure.core.util.Context.NONE);

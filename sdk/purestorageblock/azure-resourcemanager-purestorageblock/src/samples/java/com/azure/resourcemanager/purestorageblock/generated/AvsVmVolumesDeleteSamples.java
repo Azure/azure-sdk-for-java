@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Delete.
@@ -18,6 +18,7 @@ public final class AvsVmVolumesDeleteSamples {
      */
     public static void avsVmVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .delete("rgpurestorage", "storagepool-01", "abc123def456", "a1b2c3d4-e5f6",
+                com.azure.core.util.Context.NONE);
     }
 }

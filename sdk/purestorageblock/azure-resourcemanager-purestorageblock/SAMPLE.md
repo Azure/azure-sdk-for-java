@@ -34,9 +34,15 @@
 
 ## Reservations
 
+- [Create](#reservations_create)
+- [Delete](#reservations_delete)
 - [GetBillingReport](#reservations_getbillingreport)
 - [GetBillingStatus](#reservations_getbillingstatus)
+- [GetByResourceGroup](#reservations_getbyresourcegroup)
 - [GetResourceLimits](#reservations_getresourcelimits)
+- [List](#reservations_list)
+- [ListByResourceGroup](#reservations_listbyresourcegroup)
+- [Update](#reservations_update)
 
 ## StoragePools
 
@@ -53,6 +59,24 @@
 - [ListByResourceGroup](#storagepools_listbyresourcegroup)
 - [RepairAvsConnection](#storagepools_repairavsconnection)
 - [Update](#storagepools_update)
+
+## VolumeGroups
+
+- [Create](#volumegroups_create)
+- [Delete](#volumegroups_delete)
+- [Get](#volumegroups_get)
+- [GetStatus](#volumegroups_getstatus)
+- [ListByStoragePool](#volumegroups_listbystoragepool)
+- [ListConnectionParameters](#volumegroups_listconnectionparameters)
+- [Update](#volumegroups_update)
+
+## Volumes
+
+- [Create](#volumes_create)
+- [Delete](#volumes_delete)
+- [Get](#volumes_get)
+- [ListByVolumeGroup](#volumes_listbyvolumegroup)
+- [Update](#volumes_update)
 ### AvsStorageContainerVolumes_Delete
 
 ```java
@@ -61,7 +85,7 @@
  */
 public final class AvsStorageContainerVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Delete.
@@ -71,7 +95,8 @@ public final class AvsStorageContainerVolumesDeleteSamples {
     public static void
         avsStorageContainerVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainerVolumes()
-            .delete("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .delete("rgpurestorage", "storagepool-01", "container-01", "a1b2c3d4-e5f6",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -84,7 +109,7 @@ public final class AvsStorageContainerVolumesDeleteSamples {
  */
 public final class AvsStorageContainerVolumesGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Get.
@@ -94,7 +119,7 @@ public final class AvsStorageContainerVolumesGetSamples {
     public static void
         avsStorageContainerVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainerVolumes()
-            .getWithResponse("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
+            .getWithResponse("rgpurestorage", "storagepool-01", "container-01", "a1b2c3d4-e5f6",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -108,7 +133,7 @@ public final class AvsStorageContainerVolumesGetSamples {
  */
 public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_ListByAvsStorageContainer.
@@ -118,7 +143,8 @@ public final class AvsStorageContainerVolumesListByAvsStorageContainerSamples {
     public static void avsStorageContainerVolumesListByAvsStorageContainer(
         com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainerVolumes()
-            .listByAvsStorageContainer("rgpurestorage", "storagePoolname", "name", com.azure.core.util.Context.NONE);
+            .listByAvsStorageContainer("rgpurestorage", "storagepool-01", "container-01",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -135,7 +161,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsStorageContainerVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainerVolumes_Update.
@@ -145,7 +171,7 @@ public final class AvsStorageContainerVolumesUpdateSamples {
     public static void
         avsStorageContainerVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainerVolumes()
-            .update("rgpurestorage", "storagePoolname", "name", "cbdec-ddbb",
+            .update("rgpurestorage", "storagepool-01", "container-01", "a1b2c3d4-e5f6",
                 new AvsStorageContainerVolumeUpdate().withProperties(new AvsStorageContainerVolumeUpdateProperties()
                     .withSoftDeletion(new SoftDeletion().withDestroyed(true))),
                 com.azure.core.util.Context.NONE);
@@ -161,7 +187,7 @@ public final class AvsStorageContainerVolumesUpdateSamples {
  */
 public final class AvsStorageContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Delete.
@@ -171,7 +197,7 @@ public final class AvsStorageContainersDeleteSamples {
     public static void
         avsStorageContainersDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainers()
-            .delete("rgpurestorage", "storagePoolName", "storageContainerName", com.azure.core.util.Context.NONE);
+            .delete("rgpurestorage", "storagepool-01", "container-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -184,7 +210,7 @@ public final class AvsStorageContainersDeleteSamples {
  */
 public final class AvsStorageContainersGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Get.
@@ -194,8 +220,7 @@ public final class AvsStorageContainersGetSamples {
     public static void
         avsStorageContainersGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsStorageContainers()
-            .getWithResponse("rgpurestorage", "storagePoolName", "storageContainerName",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("rgpurestorage", "storagepool-01", "container-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -208,7 +233,7 @@ public final class AvsStorageContainersGetSamples {
  */
 public final class AvsStorageContainersListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsStorageContainers_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_ListByStoragePool.
@@ -230,7 +255,7 @@ public final class AvsStorageContainersListByStoragePoolSamples {
  */
 public final class AvsVmVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Delete.
@@ -239,7 +264,8 @@ public final class AvsVmVolumesDeleteSamples {
      */
     public static void avsVmVolumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .delete("rgpurestorage", "storagepool-01", "abc123def456", "a1b2c3d4-e5f6",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -252,7 +278,7 @@ public final class AvsVmVolumesDeleteSamples {
  */
 public final class AvsVmVolumesGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Get.
@@ -261,7 +287,7 @@ public final class AvsVmVolumesGetSamples {
      */
     public static void avsVmVolumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
+            .getWithResponse("rgpurestorage", "storagepool-01", "abc123def456", "a1b2c3d4-e5f6",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -275,7 +301,7 @@ public final class AvsVmVolumesGetSamples {
  */
 public final class AvsVmVolumesListByAvsVmSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_ListByAvsVm.
@@ -285,7 +311,7 @@ public final class AvsVmVolumesListByAvsVmSamples {
     public static void
         avsVmVolumesListByAvsVm(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .listByAvsVm("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .listByAvsVm("rgpurestorage", "storagepool-01", "abc123def456", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -302,7 +328,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVmVolumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVmVolumes_Update.
@@ -311,7 +337,7 @@ public final class AvsVmVolumesUpdateSamples {
      */
     public static void avsVmVolumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVmVolumes()
-            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb", "cbdec-ddbb",
+            .update("rgpurestorage", "storagepool-01", "abc123def456", "a1b2c3d4-e5f6",
                 new AvsVmVolumeUpdate().withProperties(
                     new AvsVmVolumeUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
                 com.azure.core.util.Context.NONE);
@@ -327,7 +353,7 @@ public final class AvsVmVolumesUpdateSamples {
  */
 public final class AvsVmsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Delete.
@@ -335,7 +361,7 @@ public final class AvsVmsDeleteSamples {
      * @param manager Entry point to PureStorageBlockManager.
      */
     public static void avsVmsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().delete("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+        manager.avsVms().delete("rgpurestorage", "storagepool-01", "abc123def456", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -348,7 +374,7 @@ public final class AvsVmsDeleteSamples {
  */
 public final class AvsVmsGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Get.
@@ -357,7 +383,7 @@ public final class AvsVmsGetSamples {
      */
     public static void avsVmsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVms()
-            .getWithResponse("rgpurestorage", "storagePoolname", "cbdec-ddbb", com.azure.core.util.Context.NONE);
+            .getWithResponse("rgpurestorage", "storagepool-01", "abc123def456", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -370,7 +396,7 @@ public final class AvsVmsGetSamples {
  */
 public final class AvsVmsListByStoragePoolSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_ListByStoragePool_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_ListByStoragePool_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_ListByStoragePool.
@@ -379,7 +405,7 @@ public final class AvsVmsListByStoragePoolSamples {
      */
     public static void
         avsVmsListByStoragePool(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.avsVms().listByStoragePool("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.avsVms().listByStoragePool("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -396,7 +422,7 @@ import com.azure.resourcemanager.purestorageblock.models.SoftDeletion;
  */
 public final class AvsVmsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/AvsVms_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/AvsVms_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Update.
@@ -405,7 +431,7 @@ public final class AvsVmsUpdateSamples {
      */
     public static void avsVmsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.avsVms()
-            .update("rgpurestorage", "storagePoolname", "cbdec-ddbb",
+            .update("rgpurestorage", "storagepool-01", "abc123def456",
                 new AvsVmUpdate().withProperties(
                     new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true))),
                 com.azure.core.util.Context.NONE);
@@ -421,7 +447,7 @@ public final class AvsVmsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -433,7 +459,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumGen_Set.
@@ -447,6 +473,96 @@ public final class OperationsListSamples {
 }
 ```
 
+### Reservations_Create
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.Address;
+import com.azure.resourcemanager.purestorageblock.models.CompanyDetails;
+import com.azure.resourcemanager.purestorageblock.models.MarketplaceDetails;
+import com.azure.resourcemanager.purestorageblock.models.MarketplaceSubscriptionStatus;
+import com.azure.resourcemanager.purestorageblock.models.OfferDetails;
+import com.azure.resourcemanager.purestorageblock.models.ReservationPropertiesBaseResourceProperties;
+import com.azure.resourcemanager.purestorageblock.models.UserDetails;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Reservations Create.
+ */
+public final class ReservationsCreateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_Create.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations()
+            .define("reservation-01")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rgpurestorage")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new ReservationPropertiesBaseResourceProperties()
+                .withMarketplace(new MarketplaceDetails()
+                    .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
+                    .withOfferDetails(new OfferDetails().withPublisherId("pure_storage")
+                        .withOfferId("purestorage-block-offer")
+                        .withPlanId("standard-plan")
+                        .withPlanName("Standard Plan")
+                        .withTermUnit("month")
+                        .withTermId("12-month-term")))
+                .withUser(new UserDetails().withFirstName("John")
+                    .withLastName("Doe")
+                    .withEmailAddress("john.doe@contoso.com")
+                    .withUpn("john.doe@contoso.com")
+                    .withPhoneNumber("+1-425-555-1234")
+                    .withCompanyDetails(new CompanyDetails().withCompanyName("Contoso Ltd.")
+                        .withAddress(new Address().withAddressLine1("1 Microsoft Way")
+                            .withAddressLine2("Suite 100")
+                            .withCity("Redmond")
+                            .withState("Washington")
+                            .withCountry("United States")
+                            .withPostalCode("fakeTokenPlaceholder")))))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Reservations_Delete
+
+```java
+/**
+ * Samples for Reservations Delete.
+ */
+public final class ReservationsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations().delete("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Reservations_GetBillingReport
 
 ```java
@@ -455,7 +571,7 @@ public final class OperationsListSamples {
  */
 public final class ReservationsGetBillingReportSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetBillingReport_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetBillingReport_MaximumSet.
@@ -478,7 +594,7 @@ public final class ReservationsGetBillingReportSamples {
  */
 public final class ReservationsGetBillingStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetBillingStatus_MaximumSet.
@@ -493,6 +609,28 @@ public final class ReservationsGetBillingStatusSamples {
 }
 ```
 
+### Reservations_GetByResourceGroup
+
+```java
+/**
+ * Samples for Reservations GetByResourceGroup.
+ */
+public final class ReservationsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations()
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Reservations_GetResourceLimits
 
 ```java
@@ -501,7 +639,7 @@ public final class ReservationsGetBillingStatusSamples {
  */
 public final class ReservationsGetResourceLimitsSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_GetResourceLimits.
@@ -511,7 +649,110 @@ public final class ReservationsGetResourceLimitsSamples {
     public static void
         reservationsGetResourceLimits(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.reservations()
-            .getResourceLimitsWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getResourceLimitsWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_List
+
+```java
+/**
+ * Samples for Reservations List.
+ */
+public final class ReservationsListSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_ListBySubscription.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        reservationsListBySubscription(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_ListByResourceGroup
+
+```java
+/**
+ * Samples for Reservations ListByResourceGroup.
+ */
+public final class ReservationsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_ListByResourceGroup.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        reservationsListByResourceGroup(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.reservations().listByResourceGroup("rgpurestorage", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Reservations_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.Address;
+import com.azure.resourcemanager.purestorageblock.models.CompanyDetails;
+import com.azure.resourcemanager.purestorageblock.models.Reservation;
+import com.azure.resourcemanager.purestorageblock.models.ReservationUpdateProperties;
+import com.azure.resourcemanager.purestorageblock.models.UserDetails;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Reservations Update.
+ */
+public final class ReservationsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Reservations_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void reservationsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        Reservation resource = manager.reservations()
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key8751", "fakeTokenPlaceholder"))
+            .withProperties(
+                new ReservationUpdateProperties().withUser(new UserDetails().withFirstName("sjzquetrvxcrajxdfwfeuro")
+                    .withLastName("qimvqxnlbclfouwzfk")
+                    .withEmailAddress("john.doe@contoso.com")
+                    .withUpn("pvafwnbigmhuigxfu")
+                    .withPhoneNumber("jfljnoxsfsplwczwgvmlurfnorimvl")
+                    .withCompanyDetails(new CompanyDetails().withCompanyName("uleytbkckdhaiykwjjcjqmnlik")
+                        .withAddress(new Address().withAddressLine1("ryaasdffnhwialrgmukpiwtcjgbb")
+                            .withAddressLine2("cvyuuqnvuqfrpkoplfzmhnwrqsbsgn")
+                            .withCity("kdpzfxfbgozxwunkkhjthqdsnmce")
+                            .withState("fygrbnektar")
+                            .withCountry("trmpjpxsfmxprlnv")
+                            .withPostalCode("fakeTokenPlaceholder")))))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -532,7 +773,7 @@ import java.util.Map;
  */
 public final class StoragePoolsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Create.
@@ -541,17 +782,20 @@ public final class StoragePoolsCreateSamples {
      */
     public static void storagePoolsCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .define("storagePoolname")
-            .withRegion("lonlc")
+            .define("storagepool-01")
+            .withRegion("eastus")
             .withExistingResourceGroup("rgpurestorage")
-            .withTags(mapOf("key7593", "fakeTokenPlaceholder"))
-            .withProperties(new StoragePoolProperties().withAvailabilityZone("vknyl")
-                .withVnetInjection(new VnetInjection().withSubnetId("tnlctolrxdvnkjiphlrdxq")
-                    .withVnetId("zbumtytyqwewjcyckwqchiypshv"))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new StoragePoolProperties().withAvailabilityZone("1")
+                .withVnetInjection(new VnetInjection().withSubnetId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01")
+                    .withVnetId(
+                        "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"))
                 .withProvisionedBandwidthMbPerSec(17L)
-                .withReservationResourceId("xiowoxnbtcotutcmmrofvgdi"))
+                .withReservationResourceId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key4211", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("identity-01", new UserAssignedIdentity())))
             .create();
     }
 
@@ -577,7 +821,7 @@ public final class StoragePoolsCreateSamples {
  */
 public final class StoragePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Delete.
@@ -585,7 +829,7 @@ public final class StoragePoolsDeleteSamples {
      * @param manager Entry point to PureStorageBlockManager.
      */
     public static void storagePoolsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools().delete("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.storagePools().delete("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -598,7 +842,7 @@ public final class StoragePoolsDeleteSamples {
  */
 public final class StoragePoolsDisableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_DisableAvsConnection.
@@ -608,7 +852,7 @@ public final class StoragePoolsDisableAvsConnectionSamples {
     public static void
         storagePoolsDisableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .disableAvsConnection("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .disableAvsConnection("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -623,7 +867,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsCon
  */
 public final class StoragePoolsEnableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_EnableAvsConnection.
@@ -633,7 +877,7 @@ public final class StoragePoolsEnableAvsConnectionSamples {
     public static void
         storagePoolsEnableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .enableAvsConnection("rgpurestorage", "storagePoolname",
+            .enableAvsConnection("rgpurestorage", "storagepool-01",
                 new StoragePoolEnableAvsConnectionPost().withClusterResourceId("tghkgktlddwlszbeh"),
                 com.azure.core.util.Context.NONE);
     }
@@ -651,7 +895,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsC
  */
 public final class StoragePoolsFinalizeAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_FinalizeAvsConnection.
@@ -661,7 +905,7 @@ public final class StoragePoolsFinalizeAvsConnectionSamples {
     public static void
         storagePoolsFinalizeAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .finalizeAvsConnection("rgpurestorage", "storagePoolname",
+            .finalizeAvsConnection("rgpurestorage", "storagepool-01",
                 new StoragePoolFinalizeAvsConnectionPost().withServiceInitializationDataEnc("hlgzaxrohv")
                     .withServiceInitializationData(new ServiceInitializationInfo().withServiceAccountUsername("axchgm")
                         .withServiceAccountPassword("fakeTokenPlaceholder")
@@ -680,7 +924,7 @@ public final class StoragePoolsFinalizeAvsConnectionSamples {
  */
 public final class StoragePoolsGetAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_GetAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetAvsConnection.
@@ -690,7 +934,7 @@ public final class StoragePoolsGetAvsConnectionSamples {
     public static void
         storagePoolsGetAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getAvsConnectionWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getAvsConnectionWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -703,7 +947,7 @@ public final class StoragePoolsGetAvsConnectionSamples {
  */
 public final class StoragePoolsGetAvsStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_GetAvsStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetAvsStatus.
@@ -713,7 +957,7 @@ public final class StoragePoolsGetAvsStatusSamples {
     public static void
         storagePoolsGetAvsStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getAvsStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getAvsStatusWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -726,7 +970,7 @@ public final class StoragePoolsGetAvsStatusSamples {
  */
 public final class StoragePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Get.
@@ -735,7 +979,7 @@ public final class StoragePoolsGetByResourceGroupSamples {
      */
     public static void storagePoolsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -748,7 +992,7 @@ public final class StoragePoolsGetByResourceGroupSamples {
  */
 public final class StoragePoolsGetHealthStatusSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_GetHealthStatus.
@@ -758,7 +1002,7 @@ public final class StoragePoolsGetHealthStatusSamples {
     public static void
         storagePoolsGetHealthStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .getHealthStatusWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .getHealthStatusWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -771,7 +1015,7 @@ public final class StoragePoolsGetHealthStatusSamples {
  */
 public final class StoragePoolsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListBySubscription.
@@ -793,7 +1037,7 @@ public final class StoragePoolsListSamples {
  */
 public final class StoragePoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListByResourceGroup.
@@ -815,7 +1059,7 @@ public final class StoragePoolsListByResourceGroupSamples {
  */
 public final class StoragePoolsRepairAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_RepairAvsConnection.
@@ -824,8 +1068,7 @@ public final class StoragePoolsRepairAvsConnectionSamples {
      */
     public static void
         storagePoolsRepairAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
-        manager.storagePools()
-            .repairAvsConnection("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+        manager.storagePools().repairAvsConnection("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -846,7 +1089,7 @@ import java.util.Map;
  */
 public final class StoragePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_Update.
@@ -855,12 +1098,12 @@ public final class StoragePoolsUpdateSamples {
      */
     public static void storagePoolsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         StoragePool resource = manager.storagePools()
-            .getByResourceGroupWithResponse("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("key9065", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key4211", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("identity-01", new UserAssignedIdentity())))
             .withProperties(new StoragePoolUpdateProperties().withProvisionedBandwidthMbPerSec(23L))
             .apply();
     }
@@ -875,6 +1118,346 @@ public final class StoragePoolsUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### VolumeGroups_Create
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.PerformanceParameters;
+import com.azure.resourcemanager.purestorageblock.models.ProtectionParameters;
+import com.azure.resourcemanager.purestorageblock.models.VolumeGroupProperties;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for VolumeGroups Create.
+ */
+public final class VolumeGroupsCreateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_Create.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumeGroupsCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups()
+            .define("volumegroup-01")
+            .withRegion("eastus")
+            .withExistingStoragePool("rgpurestorage", "storagepool-01")
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new VolumeGroupProperties()
+                .withPerformanceParameters(
+                    new PerformanceParameters().withBandwidthLimitMbPerSec(500L).withIopsLimit(10000L))
+                .withProtectionParameters(new ProtectionParameters().withRetention(Duration.parse("P7D"))
+                    .withFrequency(Duration.parse("PT1H"))))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### VolumeGroups_Delete
+
+```java
+/**
+ * Samples for VolumeGroups Delete.
+ */
+public final class VolumeGroupsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumeGroupsDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups()
+            .delete("rgpurestorage", "storagepool-01", "volumegroup-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeGroups_Get
+
+```java
+/**
+ * Samples for VolumeGroups Get.
+ */
+public final class VolumeGroupsGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumeGroupsGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups()
+            .getWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeGroups_GetStatus
+
+```java
+/**
+ * Samples for VolumeGroups GetStatus.
+ */
+public final class VolumeGroupsGetStatusSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_GetStatus.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        volumeGroupsGetStatus(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups()
+            .getStatusWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeGroups_ListByStoragePool
+
+```java
+/**
+ * Samples for VolumeGroups ListByStoragePool.
+ */
+public final class VolumeGroupsListByStoragePoolSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_ListByStoragePool.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        volumeGroupsListByStoragePool(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups().listByStoragePool("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeGroups_ListConnectionParameters
+
+```java
+/**
+ * Samples for VolumeGroups ListConnectionParameters.
+ */
+public final class VolumeGroupsListConnectionParametersSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_ListConnectionParameters.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumeGroupsListConnectionParameters(
+        com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumeGroups()
+            .listConnectionParametersWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### VolumeGroups_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.PerformanceParameters;
+import com.azure.resourcemanager.purestorageblock.models.ProtectionParameters;
+import com.azure.resourcemanager.purestorageblock.models.VolumeGroup;
+import com.azure.resourcemanager.purestorageblock.models.VolumeGroupUpdateProperties;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for VolumeGroups Update.
+ */
+public final class VolumeGroupsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VolumeGroups_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumeGroupsUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        VolumeGroup resource = manager.volumeGroups()
+            .getWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new VolumeGroupUpdateProperties()
+                .withPerformanceParameters(
+                    new PerformanceParameters().withBandwidthLimitMbPerSec(750L).withIopsLimit(15000L))
+                .withProtectionParameters(new ProtectionParameters().withRetention(Duration.parse("P14D"))
+                    .withFrequency(Duration.parse("PT2H"))))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Volumes_Create
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.AzureVolumeProperties;
+
+/**
+ * Samples for Volumes Create.
+ */
+public final class VolumesCreateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Volumes_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Volumes_Create.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumesCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumes()
+            .define("volume-01")
+            .withExistingVolumeGroup("rgpurestorage", "storagepool-01", "volumegroup-01")
+            .withProperties(new AzureVolumeProperties().withProvisionedSize(10737418240L)
+                .withSourceVolumeResourceId(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/source-volume"))
+            .create();
+    }
+}
+```
+
+### Volumes_Delete
+
+```java
+/**
+ * Samples for Volumes Delete.
+ */
+public final class VolumesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Volumes_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Volumes_Delete.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumesDelete(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumes()
+            .delete("rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_Get
+
+```java
+/**
+ * Samples for Volumes Get.
+ */
+public final class VolumesGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Volumes_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Volumes_Get.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumesGet(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumes()
+            .getWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_ListByVolumeGroup
+
+```java
+/**
+ * Samples for Volumes ListByVolumeGroup.
+ */
+public final class VolumesListByVolumeGroupSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Volumes_ListByVolumeGroup.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void
+        volumesListByVolumeGroup(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        manager.volumes()
+            .listByVolumeGroup("rgpurestorage", "storagepool-01", "volumegroup-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Volumes_Update
+
+```java
+import com.azure.resourcemanager.purestorageblock.models.Volume;
+import com.azure.resourcemanager.purestorageblock.models.VolumeUpdateProperties;
+
+/**
+ * Samples for Volumes Update.
+ */
+public final class VolumesUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Volumes_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Volumes_Update.
+     * 
+     * @param manager Entry point to PureStorageBlockManager.
+     */
+    public static void volumesUpdate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
+        Volume resource = manager.volumes()
+            .getWithResponse("rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withProperties(new VolumeUpdateProperties().withProvisionedSize(21474836480L)).apply();
     }
 }
 ```

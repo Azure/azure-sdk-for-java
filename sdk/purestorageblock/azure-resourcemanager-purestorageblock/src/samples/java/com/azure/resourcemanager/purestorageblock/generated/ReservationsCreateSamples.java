@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class ReservationsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Reservations_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/Reservations_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_Create.
@@ -28,30 +28,30 @@ public final class ReservationsCreateSamples {
      */
     public static void reservationsCreate(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.reservations()
-            .define("storagePoolname")
-            .withRegion("jynnbjysbc")
+            .define("reservation-01")
+            .withRegion("eastus")
             .withExistingResourceGroup("rgpurestorage")
-            .withTags(mapOf("key1110", "fakeTokenPlaceholder"))
+            .withTags(mapOf("environment", "production"))
             .withProperties(new ReservationPropertiesBaseResourceProperties()
                 .withMarketplace(new MarketplaceDetails()
                     .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-                    .withOfferDetails(new OfferDetails().withPublisherId("vejockfhoavaqjvhtwvctdnaefvw")
-                        .withOfferId("efojrbphbimq")
-                        .withPlanId("caj")
-                        .withPlanName("lvvzchm")
-                        .withTermUnit("ose")
-                        .withTermId("ucyvzkedohfjazifxweylhnbcmeza")))
-                .withUser(new UserDetails().withFirstName("bucysqbbclhwxrzig")
-                    .withLastName("fnsvxlop")
-                    .withEmailAddress("abc@example.com")
-                    .withUpn("ekqbqgpdylggddusuiifrnjcwiefay")
-                    .withPhoneNumber("jglihtgsacdxocc")
-                    .withCompanyDetails(new CompanyDetails().withCompanyName("nrndfzmrakk")
-                        .withAddress(new Address().withAddressLine1("f")
-                            .withAddressLine2("gycfosmknj")
-                            .withCity("qxzhxjoatyuajoljfkd")
-                            .withState("dnusygshfvmebpmcjsd")
-                            .withCountry("nuexbknolfphlfguyzq")
+                    .withOfferDetails(new OfferDetails().withPublisherId("pure_storage")
+                        .withOfferId("purestorage-block-offer")
+                        .withPlanId("standard-plan")
+                        .withPlanName("Standard Plan")
+                        .withTermUnit("month")
+                        .withTermId("12-month-term")))
+                .withUser(new UserDetails().withFirstName("John")
+                    .withLastName("Doe")
+                    .withEmailAddress("john.doe@contoso.com")
+                    .withUpn("john.doe@contoso.com")
+                    .withPhoneNumber("+1-425-555-1234")
+                    .withCompanyDetails(new CompanyDetails().withCompanyName("Contoso Ltd.")
+                        .withAddress(new Address().withAddressLine1("1 Microsoft Way")
+                            .withAddressLine2("Suite 100")
+                            .withCity("Redmond")
+                            .withState("Washington")
+                            .withCountry("United States")
                             .withPostalCode("fakeTokenPlaceholder")))))
             .create();
     }

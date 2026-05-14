@@ -33,6 +33,8 @@ import com.azure.resourcemanager.purestorageblock.implementation.OperationsImpl;
 import com.azure.resourcemanager.purestorageblock.implementation.PureStorageBlockMgmtClientBuilder;
 import com.azure.resourcemanager.purestorageblock.implementation.ReservationsImpl;
 import com.azure.resourcemanager.purestorageblock.implementation.StoragePoolsImpl;
+import com.azure.resourcemanager.purestorageblock.implementation.VolumeGroupsImpl;
+import com.azure.resourcemanager.purestorageblock.implementation.VolumesImpl;
 import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainerVolumes;
 import com.azure.resourcemanager.purestorageblock.models.AvsStorageContainers;
 import com.azure.resourcemanager.purestorageblock.models.AvsVmVolumes;
@@ -40,6 +42,8 @@ import com.azure.resourcemanager.purestorageblock.models.AvsVms;
 import com.azure.resourcemanager.purestorageblock.models.Operations;
 import com.azure.resourcemanager.purestorageblock.models.Reservations;
 import com.azure.resourcemanager.purestorageblock.models.StoragePools;
+import com.azure.resourcemanager.purestorageblock.models.VolumeGroups;
+import com.azure.resourcemanager.purestorageblock.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -65,6 +69,10 @@ public final class PureStorageBlockManager {
     private AvsVms avsVms;
 
     private AvsVmVolumes avsVmVolumes;
+
+    private VolumeGroups volumeGroups;
+
+    private Volumes volumes;
 
     private final PureStorageBlockMgmtClient clientObject;
 
@@ -364,6 +372,30 @@ public final class PureStorageBlockManager {
             this.avsVmVolumes = new AvsVmVolumesImpl(clientObject.getAvsVmVolumes(), this);
         }
         return avsVmVolumes;
+    }
+
+    /**
+     * Gets the resource collection API of VolumeGroups. It manages VolumeGroup.
+     * 
+     * @return Resource collection API of VolumeGroups.
+     */
+    public VolumeGroups volumeGroups() {
+        if (this.volumeGroups == null) {
+            this.volumeGroups = new VolumeGroupsImpl(clientObject.getVolumeGroups(), this);
+        }
+        return volumeGroups;
+    }
+
+    /**
+     * Gets the resource collection API of Volumes. It manages Volume.
+     * 
+     * @return Resource collection API of Volumes.
+     */
+    public Volumes volumes() {
+        if (this.volumes == null) {
+            this.volumes = new VolumesImpl(clientObject.getVolumes(), this);
+        }
+        return volumes;
     }
 
     /**

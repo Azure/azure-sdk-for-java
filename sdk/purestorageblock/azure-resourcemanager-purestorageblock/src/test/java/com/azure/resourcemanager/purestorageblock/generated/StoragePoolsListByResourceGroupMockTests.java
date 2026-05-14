@@ -23,7 +23,7 @@ public final class StoragePoolsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"bkkd\",\"availabilityZone\":\"flvestmjlxrrilo\",\"vnetInjection\":{\"subnetId\":\"apeewchpxlkt\",\"vnetId\":\"kuziycsle\"},\"dataRetentionPeriod\":376348209063943127,\"provisionedBandwidthMbPerSec\":7273800949722293579,\"provisionedIops\":5765928243400735909,\"avs\":{\"avsEnabled\":false,\"sddcResourceId\":\"tqedcgzulwm\"},\"provisioningState\":\"Accepted\",\"reservationResourceId\":\"z\"},\"identity\":{\"principalId\":\"jvpglydzgk\",\"tenantId\":\"qeevt\",\"type\":\"None\",\"userAssignedIdentities\":{\"z\":{\"principalId\":\"utnwytpzdmovzvf\",\"clientId\":\"awzqadfl\"}}},\"location\":\"iglaecx\",\"tags\":{\"mlqtmldgxob\":\"icokpv\"},\"id\":\"irclnpk\",\"name\":\"iayz\",\"type\":\"iykhy\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePoolInternalId\":\"txfkfweg\",\"availabilityZone\":\"rhptilluc\",\"vnetInjection\":{\"subnetId\":\"iqtgdqoh\",\"vnetId\":\"cwsldri\"},\"dataRetentionPeriod\":3904002199419630886,\"provisionedBandwidthMbPerSec\":7410279931737005304,\"provisionedIops\":809827059140233177,\"avs\":{\"avsEnabled\":false,\"sddcResourceId\":\"bphbqzmizakakank\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"n\"},\"identity\":{\"principalId\":\"ajoylhjl\",\"tenantId\":\"oyxprimr\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"sylwxdzaumweooh\":{\"principalId\":\"ecj\",\"clientId\":\"islstv\"},\"a\":{\"principalId\":\"ufuzboy\",\"clientId\":\"thwtzol\"},\"xveabf\":{\"principalId\":\"wm\",\"clientId\":\"mebwjscjpah\"}}},\"location\":\"nmwmqtibx\",\"tags\":{\"dija\":\"ddtvqctt\",\"sieekpndzaapm\":\"ukm\"},\"id\":\"dqmeqwigpibudq\",\"name\":\"yxeb\",\"type\":\"ybpmzznrtffyaq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,17 @@ public final class StoragePoolsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StoragePool> response
-            = manager.storagePools().listByResourceGroup("vldspa", com.azure.core.util.Context.NONE);
+            = manager.storagePools().listByResourceGroup("h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iglaecx", response.iterator().next().location());
-        Assertions.assertEquals("icokpv", response.iterator().next().tags().get("mlqtmldgxob"));
-        Assertions.assertEquals("flvestmjlxrrilo", response.iterator().next().properties().availabilityZone());
-        Assertions.assertEquals("apeewchpxlkt", response.iterator().next().properties().vnetInjection().subnetId());
-        Assertions.assertEquals("kuziycsle", response.iterator().next().properties().vnetInjection().vnetId());
-        Assertions.assertEquals(7273800949722293579L,
+        Assertions.assertEquals("nmwmqtibx", response.iterator().next().location());
+        Assertions.assertEquals("ddtvqctt", response.iterator().next().tags().get("dija"));
+        Assertions.assertEquals("rhptilluc", response.iterator().next().properties().availabilityZone());
+        Assertions.assertEquals("iqtgdqoh", response.iterator().next().properties().vnetInjection().subnetId());
+        Assertions.assertEquals("cwsldri", response.iterator().next().properties().vnetInjection().vnetId());
+        Assertions.assertEquals(7410279931737005304L,
             response.iterator().next().properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("z", response.iterator().next().properties().reservationResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("n", response.iterator().next().properties().reservationResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

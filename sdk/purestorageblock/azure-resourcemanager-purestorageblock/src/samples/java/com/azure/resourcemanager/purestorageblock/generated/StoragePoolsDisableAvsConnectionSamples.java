@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsDisableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-01-01-preview/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_DisableAvsConnection.
@@ -19,6 +19,6 @@ public final class StoragePoolsDisableAvsConnectionSamples {
     public static void
         storagePoolsDisableAvsConnection(com.azure.resourcemanager.purestorageblock.PureStorageBlockManager manager) {
         manager.storagePools()
-            .disableAvsConnection("rgpurestorage", "storagePoolname", com.azure.core.util.Context.NONE);
+            .disableAvsConnection("rgpurestorage", "storagepool-01", com.azure.core.util.Context.NONE);
     }
 }
