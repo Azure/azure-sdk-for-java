@@ -744,16 +744,19 @@ public abstract class IdentityClientBase {
                                 + "to support claims challenges."));
                     }
 
-                    if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
+                    String parsedMessage = getAzdErrorMessage(redactedOutput);
+
+                    // Dispatch on the parsed message: azd v1.23.7+ embeds "azd auth login" in the
+                    // "suggestion" field of every structured failure, so checking 'redactedOutput' would
+                    // misroute real AAD errors to CredentialUnavailableException.
+                    if (parsedMessage.contains("azd auth login") || parsedMessage.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            throw LOGGER.logExceptionAsError(
-                                new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
+                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(parsedMessage, null));
                         }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(getAzdErrorMessage(redactedOutput)));
+                            new CredentialUnavailableException(parsedMessage));
                     }
-                    throw LOGGER.logExceptionAsError(
-                        new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(parsedMessage, null));
                 } else {
                     throw LOGGER.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
@@ -787,23 +790,32 @@ public abstract class IdentityClientBase {
     }
 
     /**
-     * Extract a single, user-friendly message from azd consoleMessage JSON output.
+     * Extract a single, user-friendly message from azd's stderr JSON output.
+     *
+     * <p>azd writes JSON error messages to stderr. The format depends on the azd version:
+     * <ul>
+     *   <li>v1.24.0+: {@code {"error":"...","message":"...","suggestion":"..."}} (single line)</li>
+     *   <li>v1.23.7 - v1.23.15: an empty {@code {"type":"consoleMessage",...}} line followed by
+     *       the structured {@code {"error":"..."}} line</li>
+     *   <li>pre-v1.23.7 (legacy): a single {@code {"type":"consoleMessage","data":{"message":"..."}}}
+     *       line whose {@code data.message} carries the entire {@code ERROR: ...} output</li>
+     * </ul>
+     *
+     * <p>The structured {@code "error"} field is preferred when present; otherwise the function
+     * falls back to the first non-empty legacy {@code consoleMessage} {@code data.message}.
+     * The top-level {@code "message"} field is intentionally ignored: in newer azd it carries the
+     * friendly wrapper "Authentication with Azure failed." which we don't want to surface in place
+     * of the actual error.
      *
      * @param output The output from the Azure Developer CLI command.
      * @return A user-friendly error message if found, otherwise null.
-     *
-     * Preference order:
-     * 1) A message containing "Suggestion" (case-insensitive)
-     * 2) The second message if multiple are present
-     * 3) The first message if only one exists
-     * Returns null if no messages can be parsed.
      */
     String extractUserFriendlyErrorFromAzdOutput(String output) {
         if (output == null || output.isEmpty()) {
             return null;
         }
 
-        List<String> messages = new ArrayList<>();
+        String fallback = null;
 
         for (String line : output.split("\\R")) { // split on any line break
             String trimmed = line.trim();
@@ -811,13 +823,25 @@ public abstract class IdentityClientBase {
                 continue;
             }
 
-            // Handle multiple JSON objects in a single line
+            // Handle multiple JSON objects on one line (v1 merges stdout+stderr without delimiters).
             try (JsonReader reader = JsonProviders.createReader(trimmed)) {
                 while (reader.nextToken() != null) {
-                    if (reader.currentToken() == JsonToken.START_OBJECT) {
-                        Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
+                    if (reader.currentToken() != JsonToken.START_OBJECT) {
+                        break;
+                    }
+                    Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
 
-                        // check "data.message"
+                    // Prefer structured top-level "error" (azd v1.23.7+).
+                    Object errorField = obj.get("error");
+                    if (errorField instanceof String) {
+                        String errorMsg = ((String) errorField).trim();
+                        if (!errorMsg.isEmpty()) {
+                            return redactInfo(errorMsg);
+                        }
+                    }
+
+                    // Otherwise fall back to first non-empty legacy data.message.
+                    if (fallback == null) {
                         Object data = obj.get("data");
                         if (data instanceof Map) {
                             @SuppressWarnings("unchecked")
@@ -826,22 +850,10 @@ public abstract class IdentityClientBase {
                             if (message instanceof String) {
                                 String msg = ((String) message).trim();
                                 if (!msg.isEmpty()) {
-                                    messages.add(msg);
-                                    continue;
+                                    fallback = msg;
                                 }
                             }
                         }
-
-                        // check "message"
-                        Object message = obj.get("message");
-                        if (message instanceof String) {
-                            String msg = ((String) message).trim();
-                            if (!msg.isEmpty()) {
-                                messages.add(msg);
-                            }
-                        }
-                    } else {
-                        break; // Not a JSON object, stop processing this line
                     }
                 }
             } catch (IOException e) {
@@ -849,23 +861,7 @@ public abstract class IdentityClientBase {
             }
         }
 
-        if (messages.isEmpty()) {
-            return null;
-        }
-
-        // Prefer the suggestion line if present
-        for (String msg : messages) {
-            if (msg.toLowerCase().contains("suggestion")) {
-                return redactInfo(msg);
-            }
-        }
-
-        // If more than one message exists, return the last one
-        if (messages.size() > 1) {
-            return redactInfo(messages.get(messages.size() - 1));
-        }
-
-        return redactInfo(messages.get(0));
+        return fallback != null ? redactInfo(fallback) : null;
     }
 
     // Gets a user-friendly error message from azd output, with fallback to the raw output
