@@ -44,9 +44,6 @@ import java.util.function.BiFunction;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
-    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
-        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
-    }
 
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();

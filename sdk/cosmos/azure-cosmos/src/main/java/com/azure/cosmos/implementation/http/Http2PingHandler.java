@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manual HTTP/2 PING keepalive handler installed on the parent (TCP) channel.
@@ -42,12 +41,11 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
     private final int failureThreshold;
-    private long lastActivityNanos;
-    private long pingOutstandingSinceNanos; // nanoTime when PING was sent; 0 = no outstanding PING
-    private int consecutiveFailures;        // incremented on timeout, reset on ACK
+    private long lastReadNanos;              // nanoTime of last inbound frame (response); PING triggers when no read for interval
+    private long pingOutstandingSinceNanos;  // nanoTime when PING was sent; 0 = no outstanding PING
+    private int consecutiveFailures;         // incremented on timeout, reset on ACK
+    private int pingsSent;
     private ScheduledFuture<?> pingTask;
-    private final AtomicInteger pingsSent = new AtomicInteger(0);
-    private final AtomicInteger pingAcksReceived = new AtomicInteger(0);
 
     /**
      * @param pingIntervalSeconds  interval in seconds; when idle longer than this, a PING is sent
@@ -55,10 +53,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param failureThreshold     consecutive timeouts before closing the connection
      */
     public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
-        this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(pingIntervalSeconds);
-        this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(pingTimeoutSeconds);
+        this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingIntervalSeconds));
+        this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingTimeoutSeconds));
         this.failureThreshold = Math.max(1, failureThreshold);
-        this.lastActivityNanos = System.nanoTime();
+        this.lastReadNanos = System.nanoTime();
     }
 
     @Override
@@ -92,9 +90,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        lastActivityNanos = System.nanoTime();
+        lastReadNanos = System.nanoTime();
         if (msg instanceof Http2PingFrame && ((Http2PingFrame) msg).ack()) {
-            pingAcksReceived.incrementAndGet();
             pingOutstandingSinceNanos = 0;
             consecutiveFailures = 0;
         }
@@ -103,7 +100,9 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        lastActivityNanos = System.nanoTime();
+        // Writes (outbound requests) do NOT reset the idle timer.
+        // We track last *read* (inbound response) to detect half-dead connections
+        // where writes succeed but responses never arrive.
         super.write(ctx, msg, promise);
     }
 
@@ -136,18 +135,18 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         }
 
         // Don't send if there are active streams -- request/response traffic is already
-        // keeping the connection alive, so a PING would be pure noise-neighbour overhead.
+        // keeping the connection alive, so a PING would be pure overhead.
         Http2FrameCodec codec = ctx.pipeline().get(Http2FrameCodec.class);
         if (codec != null && codec.connection().numActiveStreams() > 0) {
-            // Active streams reset the idle baseline so the first idle check after
+            // Active streams reset the read baseline so the first idle check after
             // all streams close measures from *now*, not from the last frame.
-            lastActivityNanos = System.nanoTime();
+            lastReadNanos = System.nanoTime();
             return;
         }
 
-        long idleNanos = System.nanoTime() - lastActivityNanos;
+        long idleNanos = System.nanoTime() - lastReadNanos;
         if (idleNanos >= pingIntervalNanos) {
-            int count = pingsSent.incrementAndGet();
+            int count = ++pingsSent;
             pingOutstandingSinceNanos = System.nanoTime();
             ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
                 .addListener(f -> {
@@ -162,8 +161,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                             f.cause() != null ? f.cause().getMessage() : "unknown");
                     }
                 });
-            // Reset activity so we don't send another PING immediately
-            lastActivityNanos = System.nanoTime();
+            // Reset read timestamp so we don't send another PING immediately
+            lastReadNanos = System.nanoTime();
         }
     }
 
@@ -172,14 +171,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             pingTask.cancel(false);
             pingTask = null;
         }
-    }
-
-    public int getPingsSent() {
-        return pingsSent.get();
-    }
-
-    public int getPingAcksReceived() {
-        return pingAcksReceived.get();
     }
 
     /**
