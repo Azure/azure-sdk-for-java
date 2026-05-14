@@ -27,6 +27,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -51,9 +52,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Sync tests for structured message decoding during blob downloads using StorageContentValidationDecoderPolicy.
  * These tests verify that the pipeline policy correctly decodes structured messages when content validation is enabled.
- * <p>
- * Encoder/decoder-only fuzzy roundtrip and corruption grids live in {@link BlobContentValidationStructuredMessageFuzzyTests}
- * without extending {@link BlobTestBase} (no test-proxy setup).
  */
 public class BlobContentValidationDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
@@ -65,10 +63,10 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     private static final int FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
 
     /**
-     * Live-only random payload band for the large parallel-download fuzzy tests
-     * ({@link #fuzzyParallelDownloadLargeMultiPartRoundTrip(int, long, int)}): each run draws a per-run payload size
-     * in {@code (256 MiB, 500 MiB]} so the structured-message decoder is exercised against payloads whose size varies
-     * per run in addition to the random byte contents. Matches the encoder fuzzy upload range.
+     * Live-only random payload band for the dedicated random-size parallel-download fuzzy test
+     * ({@link #fuzzyParallelDownloadLiveRandomRoundTrip(ContentValidationAlgorithm)}): each run draws a per-run
+     * payload size in {@code (256 MiB, 500 MiB]} (matches the encoder fuzzy upload range) so the structured-message
+     * decoder is exercised against payloads whose size varies per run in addition to the random byte contents.
      */
     private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
     private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
@@ -489,18 +487,12 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertParallelDownloadFuzzyRoundTrip("mediumMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
     }
 
-    @LiveOnly // payload >> blockSize; randomized 256-500 MiB downloads per run.
+    @LiveOnly // payload >> blockSize; ~96-320 MiB downloads.
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases")
     public void fuzzyParallelDownloadLargeMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
         throws IOException {
-        // Override the MethodSource payload with a randomized size in (256 MiB, 500 MiB] (matches encoder fuzzy
-        // upload range) so each run exercises the decoder against a different payload size in addition to random
-        // byte contents. blockSize and maxConcurrency variations still come from the MethodSource grid.
-        int randomizedPayloadBytes
-            = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
-                LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
-        assertParallelDownloadFuzzyRoundTrip("largeMultiPart", randomizedPayloadBytes, blockSizeBytes, maxConcurrency);
+        assertParallelDownloadFuzzyRoundTrip("largeMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
     }
 
     @LiveOnly // ~1 GiB single case; far too large for the test proxy.
@@ -511,8 +503,31 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         assertParallelDownloadFuzzyRoundTrip("oneGiB", payloadBytes, blockSizeBytes, maxConcurrency);
     }
 
+    /**
+     * Live-only random-size parallel download fuzzy round-trip. Each run draws a per-run payload size in
+     * {@code (256 MiB, 500 MiB]} (matches the encoder fuzzy upload range) and exercises both CRC64 and AUTO
+     * content-validation algorithms so the structured-message decoder is tested against payloads whose total size
+     * varies per run in addition to the random byte contents that the deterministic grids already exercise. Kept
+     * separate from the parameterized {@link #fuzzyParallelDownloadLargeMultiPartRoundTrip(int, long, int)} so the
+     * deterministic per-grid round-trips and the randomized round-trip don't share work or cost.
+     */
+    @LiveOnly
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void fuzzyParallelDownloadLiveRandomRoundTrip(ContentValidationAlgorithm algorithm) throws IOException {
+        int sizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+            LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        assertParallelDownloadFuzzyRoundTrip("liveRandom", sizeBytes, 8L * Constants.MB, 8, algorithm);
+    }
+
     private void assertParallelDownloadFuzzyRoundTrip(String caseKind, int payloadBytes, long blockSizeBytes,
         int maxConcurrency) throws IOException {
+        assertParallelDownloadFuzzyRoundTrip(caseKind, payloadBytes, blockSizeBytes, maxConcurrency,
+            ContentValidationAlgorithm.CRC64);
+    }
+
+    private void assertParallelDownloadFuzzyRoundTrip(String caseKind, int payloadBytes, long blockSizeBytes,
+        int maxConcurrency, ContentValidationAlgorithm algorithm) throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
@@ -520,7 +535,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             = new ParallelTransferOptions().setBlockSizeLong(blockSizeBytes).setMaxConcurrency(maxConcurrency);
 
         String assertionMessage = "Fuzzy parallel download [" + caseKind + "] payloadBytes=" + payloadBytes
-            + ", blockSize=" + blockSizeBytes + ", maxConcurrency=" + maxConcurrency;
+            + ", blockSize=" + blockSizeBytes + ", maxConcurrency=" + maxConcurrency + ", algorithm=" + algorithm;
 
         if (payloadBytes >= FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
             File sourceFile = getRandomFile(payloadBytes);
@@ -540,7 +555,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
             BlobDownloadToFileOptions downloadOptions
                 = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    .setContentValidationAlgorithm(algorithm);
             assertNotNull(client.downloadToFileWithResponse(downloadOptions, null, Context.NONE).getValue(),
                 assertionMessage);
 
@@ -557,7 +572,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
                 BlobDownloadToFileOptions downloadOptions = new BlobDownloadToFileOptions(outFile.toPath().toString())
                     .setParallelTransferOptions(parallelOptions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    .setContentValidationAlgorithm(algorithm);
                 assertNotNull(client.downloadToFileWithResponse(downloadOptions, null, Context.NONE).getValue(),
                     assertionMessage);
 
@@ -565,7 +580,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
                 assertArrayEquals(randomData, downloaded, assertionMessage);
             } else {
                 BlobDownloadContentOptions downloadOptions
-                    = new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                    = new BlobDownloadContentOptions().setContentValidationAlgorithm(algorithm);
                 byte[] downloaded
                     = client.downloadContentWithResponse(downloadOptions, null, Context.NONE).getValue().toBytes();
                 assertArrayEquals(randomData, downloaded, assertionMessage);
