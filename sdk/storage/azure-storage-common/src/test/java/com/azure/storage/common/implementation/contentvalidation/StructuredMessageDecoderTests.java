@@ -571,8 +571,7 @@ public class StructuredMessageDecoderTests {
 
     private static Stream<Arguments> segmentPayloadSizeAndTotalPayloadSizeSupplier() {
         return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1),
-            Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1),
-            Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 1024));
+            Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 1024));
     }
 
     // For tests that pass the whole encoded message to decodeChunk.
