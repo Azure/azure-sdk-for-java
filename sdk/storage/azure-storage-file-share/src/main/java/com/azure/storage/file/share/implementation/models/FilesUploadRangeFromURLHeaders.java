@@ -19,16 +19,16 @@ import java.util.Base64;
 @Fluent
 public final class FilesUploadRangeFromURLHeaders {
     /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-content-crc64 property.
@@ -37,22 +37,16 @@ public final class FilesUploadRangeFromURLHeaders {
     private byte[] xMsContentCrc64;
 
     /*
+     * The Last-Modified property.
+     */
+    @Generated
+    private DateTimeRfc1123 lastModified;
+
+    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
-
-    /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-request-server-encrypted property.
@@ -61,14 +55,20 @@ public final class FilesUploadRangeFromURLHeaders {
     private Boolean xMsRequestServerEncrypted;
 
     /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
      * The x-ms-file-last-write-time property.
      */
     @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
-    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
@@ -83,32 +83,32 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesUploadRangeFromURLHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         } else {
             this.xMsContentCrc64 = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
-            this.date = null;
+            this.lastModified = null;
         }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         } else {
             this.xMsRequestServerEncrypted = null;
+        }
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
@@ -116,6 +116,28 @@ public final class FilesUploadRangeFromURLHeaders {
         } else {
             this.xMsFileLastWriteTime = null;
         }
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesUploadRangeFromURLHeaders object itself.
+     */
+    @Generated
+    public FilesUploadRangeFromURLHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
     }
 
     /**
@@ -137,6 +159,28 @@ public final class FilesUploadRangeFromURLHeaders {
     @Generated
     public FilesUploadRangeFromURLHeaders setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @return the xMsContentCrc64 value.
+     */
+    @Generated
+    public byte[] getXMsContentCrc64() {
+        return CoreUtils.clone(this.xMsContentCrc64);
+    }
+
+    /**
+     * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
+     * 
+     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
+     * @return the FilesUploadRangeFromURLHeaders object itself.
+     */
+    @Generated
+    public FilesUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
+        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
     }
 
@@ -170,28 +214,6 @@ public final class FilesUploadRangeFromURLHeaders {
     }
 
     /**
-     * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
-     * @return the xMsContentCrc64 value.
-     */
-    @Generated
-    public byte[] getXMsContentCrc64() {
-        return CoreUtils.clone(this.xMsContentCrc64);
-    }
-
-    /**
-     * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
-     * @param xMsContentCrc64 the xMsContentCrc64 value to set.
-     * @return the FilesUploadRangeFromURLHeaders object itself.
-     */
-    @Generated
-    public FilesUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
-        this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -214,24 +236,24 @@ public final class FilesUploadRangeFromURLHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsRequestServerEncrypted value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
     @Generated
-    public FilesUploadRangeFromURLHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public FilesUploadRangeFromURLHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 
@@ -261,28 +283,6 @@ public final class FilesUploadRangeFromURLHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
-     * @return the xMsRequestServerEncrypted value.
-     */
-    @Generated
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
-    }
-
-    /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
-     * @return the FilesUploadRangeFromURLHeaders object itself.
-     */
-    @Generated
-    public FilesUploadRangeFromURLHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 

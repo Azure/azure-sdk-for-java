@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BlobsSetLegalHoldHeaders {
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-version property.
      */
     @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
@@ -29,22 +29,22 @@ public final class BlobsSetLegalHoldHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-version property.
+     * The x-ms-legal-hold property.
      */
     @Generated
-    private String xMsVersion;
+    private Boolean xMsLegalHold;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
-
-    /*
-     * The x-ms-legal-hold property.
-     */
-    @Generated
-    private Boolean xMsLegalHold;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -57,42 +57,42 @@ public final class BlobsSetLegalHoldHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsSetLegalHoldHeaders(HttpHeaders rawHeaders) {
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
         } else {
             this.xMsLegalHold = null;
         }
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
     @Generated
-    public BlobsSetLegalHoldHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public BlobsSetLegalHoldHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -119,24 +119,46 @@ public final class BlobsSetLegalHoldHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsLegalHold property: The x-ms-legal-hold property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsLegalHold value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public Boolean isXMsLegalHold() {
+        return this.xMsLegalHold;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsLegalHold property: The x-ms-legal-hold property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsSetLegalHoldHeaders object itself.
      */
     @Generated
-    public BlobsSetLegalHoldHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public BlobsSetLegalHoldHeaders setXMsLegalHold(Boolean xMsLegalHold) {
+        this.xMsLegalHold = xMsLegalHold;
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the BlobsSetLegalHoldHeaders object itself.
+     */
+    @Generated
+    public BlobsSetLegalHoldHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -166,28 +188,6 @@ public final class BlobsSetLegalHoldHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
-     * @return the xMsLegalHold value.
-     */
-    @Generated
-    public Boolean isXMsLegalHold() {
-        return this.xMsLegalHold;
-    }
-
-    /**
-     * Set the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
-     * @param xMsLegalHold the xMsLegalHold value to set.
-     * @return the BlobsSetLegalHoldHeaders object itself.
-     */
-    @Generated
-    public BlobsSetLegalHoldHeaders setXMsLegalHold(Boolean xMsLegalHold) {
-        this.xMsLegalHold = xMsLegalHold;
         return this;
     }
 }
