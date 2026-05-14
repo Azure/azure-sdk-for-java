@@ -11,6 +11,12 @@ spring:
       kafka:
         binder:
           brokers: ${AZURE_EVENTHUBS_NAMESPACE}.servicebus.windows.net:9093
+          # Azure Event Hubs for Kafka does not support the Kafka AdminClient API
+          # (topic management must be done via Azure portal/CLI/ARM). Disable
+          # binder-side topic provisioning and admin-based health checks so the
+          # binder does not create an AdminClient against the Event Hubs endpoint.
+          auto-create-topics: false
+          health-timeout: 0
       bindings:
         consume-in-0:
           destination: aad-auth
