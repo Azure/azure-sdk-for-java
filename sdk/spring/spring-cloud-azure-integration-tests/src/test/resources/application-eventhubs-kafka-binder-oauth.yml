@@ -1,4 +1,9 @@
 spring:
+  kafka:
+    properties:
+      request.timeout.ms: 60000
+      metadata.max.age.ms: 180000
+      connections.max.idle.ms: 180000
   cloud:
     function:
       definition: consume;supply

@@ -39,13 +39,13 @@
   </properties>
 
   <dependencies>
-    <!-- Override kafka-clients to 3.9.0 to maintain compatibility with Azure Event Hubs for Kafka endpoint.
-         kafka-clients 4.x changed SaslAuthenticateResponseData to treat authBytes as non-nullable, but
+    <!-- Override kafka-clients to 3.8.1 to maintain compatibility with Azure Event Hubs for Kafka endpoint.
+         kafka-clients 3.9.x and 4.x still fail while parsing Event Hubs SASL authenticate responses.
          Azure Event Hubs returns null authBytes in SASL error responses, causing a RuntimeException. -->
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;springboot4_kafka_compat_org.apache.kafka:kafka-clients;external_dependency} -->
+      <version>3.8.1</version> <!-- {x-version-update;springboot4_kafka_compat_org.apache.kafka:kafka-clients;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

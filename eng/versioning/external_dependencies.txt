@@ -316,7 +316,7 @@ springboot4_net.bytebuddy:byte-buddy-agent;1.17.8
 springboot4_net.bytebuddy:byte-buddy;1.17.8
 springboot4_org.apache.commons:commons-lang3;3.19.0
 springboot4_org.apache.kafka:kafka-clients;4.1.2
-springboot4_kafka_compat_org.apache.kafka:kafka-clients;3.9.0
+springboot4_kafka_compat_org.apache.kafka:kafka-clients;3.8.1
 springboot4_org.apache.maven.plugins:maven-antrun-plugin;3.2.0
 springboot4_org.apache.maven.plugins:maven-compiler-plugin;3.14.1
 springboot4_org.apache.maven.plugins:maven-enforcer-plugin;3.6.2
