@@ -877,7 +877,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         }
     }
 
-    // ---------- Fuzzy parallel upload (async) ----------
+    // ---------- Deterministic parallel upload (async) ----------
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadPutBlobReplayableCases")

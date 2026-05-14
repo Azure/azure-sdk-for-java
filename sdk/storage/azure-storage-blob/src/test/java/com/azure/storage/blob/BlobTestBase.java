@@ -1695,6 +1695,8 @@ public class BlobTestBase extends TestProxyTestBase {
             Arguments.of(payload257MiBPlus, 61L * Constants.MB + 23L * Constants.KB, 6),
             Arguments.of(payload288MiBPlus, 36L * Constants.MB + 513, 8),
             Arguments.of(payload320MiBPlus, 16L * Constants.MB + 511, 8));
+    }
+
     private static boolean hasValidStructuredContentLengthHeader(HttpHeaders headers) {
         String structuredContentLength = headers.getValue("x-ms-structured-content-length");
         if (CoreUtils.isNullOrEmpty(structuredContentLength)

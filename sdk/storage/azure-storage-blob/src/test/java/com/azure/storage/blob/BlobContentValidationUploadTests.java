@@ -1224,7 +1224,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    // ---------- Fuzzy parallel upload (deterministic grids) ----------
+    // ---------- Deterministic parallel upload ----------
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelUploadPutBlobReplayableCases")
