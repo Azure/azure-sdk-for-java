@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ManagedClustersListByResourceGroup.json
+     * x-ms-original-file: 2026-03-02-preview/ManagedClustersListByResourceGroup.json
      */
     /**
      * Sample code: Get Managed Clusters by Resource Group.
