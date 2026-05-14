@@ -128,7 +128,7 @@ public interface CommunityEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body);
@@ -144,7 +144,7 @@ public interface CommunityEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalCallbackRequest body, Context context);
@@ -159,7 +159,7 @@ public interface CommunityEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body);
@@ -175,7 +175,7 @@ public interface CommunityEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String communityName,
         String communityEndpointName, ApprovalDeletionCallbackRequest body, Context context);
