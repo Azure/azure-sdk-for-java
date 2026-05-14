@@ -22,7 +22,7 @@ public class InputContent implements JsonSerializable<InputContent> {
  */
 @Immutable
 public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintReference> {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
 
     /*
      * The type property.
@@ -44,7 +44,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
      */
     @Generated
     public AgentBlueprintReference() {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
     }
 
     /**
@@ -57,7 +57,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
     public InputContentType getType() {
 ========
     public AgentBlueprintReferenceType getType() {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
         return this.type;
     }
 
@@ -93,7 +93,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
      */
     @Generated
     public static AgentBlueprintReference fromJson(JsonReader jsonReader) throws IOException {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -120,7 +120,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
 ========
                 if ("ManagedAgentIdentityBlueprint".equals(discriminatorValue)) {
                     return ManagedAgentIdentityBlueprintReference.fromJson(readerToUse.reset());
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -137,7 +137,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
     static AgentBlueprintReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentBlueprintReference deserializedAgentBlueprintReference = new AgentBlueprintReference();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -147,7 +147,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
 ========
                     deserializedAgentBlueprintReference.type
                         = AgentBlueprintReferenceType.fromString(reader.getString());
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
                 } else {
                     reader.skipChildren();
                 }
@@ -156,7 +156,7 @@ public class AgentBlueprintReference implements JsonSerializable<AgentBlueprintR
             return deserializedInputContent;
 ========
             return deserializedAgentBlueprintReference;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/ai/azure-ai-agents/src/main/java/com/azure/ai/agents/models/AgentBlueprintReference.java
         });
     }
 }

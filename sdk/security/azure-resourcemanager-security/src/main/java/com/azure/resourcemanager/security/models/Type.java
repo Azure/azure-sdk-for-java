@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.datafactory.models;
 ========
 package com.azure.resourcemanager.security.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Type.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Type.java
 
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
@@ -33,7 +33,7 @@ public final class Type extends ExpandableStringEnum<Type> {
      * TVM.
      */
     public static final Type TVM = fromString("TVM");
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Type.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Type.java
 
     /**
      * Creates a new instance of Type value.

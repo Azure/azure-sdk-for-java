@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.durabletask.implementation.models;
 ========
 package com.azure.resourcemanager.fileshares.implementation.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateEndpointConnectionListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateEndpointConnectionListResult.java
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
@@ -17,7 +17,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.durabletask.fluent.models.PrivateEndpointConnectionInner;
 ========
 import com.azure.resourcemanager.fileshares.fluent.models.PrivateEndpointConnectionInner;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateEndpointConnectionListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/fileshares/azure-resourcemanager-fileshares/src/main/java/com/azure/resourcemanager/fileshares/implementation/models/PrivateEndpointConnectionListResult.java
 import java.io.IOException;
 import java.util.List;
 

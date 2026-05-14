@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 ========
 package com.azure.resourcemanager.security.fluent.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
@@ -32,7 +32,7 @@ import java.io.IOException;
  */
 @Fluent
 public final class AzureDevOpsOrgInner extends ProxyResource {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
     /*
      * Azure DevOps Organization properties.
      */
@@ -40,7 +40,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
     private ClusterJobProperties properties;
 ========
     private AzureDevOpsOrgProperties properties;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -71,7 +71,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
      * Creates an instance of AzureDevOpsOrgInner class.
      */
     public AzureDevOpsOrgInner() {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
     }
 
     /**
@@ -83,7 +83,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
     public ClusterJobProperties properties() {
 ========
     public AzureDevOpsOrgProperties properties() {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
         return this.properties;
     }
 
@@ -99,7 +99,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
      * @return the AzureDevOpsOrgInner object itself.
      */
     public AzureDevOpsOrgInner withProperties(AzureDevOpsOrgProperties properties) {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
         this.properties = properties;
         return this;
     }
@@ -178,7 +178,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
     public static AzureDevOpsOrgInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDevOpsOrgInner deserializedAzureDevOpsOrgInner = new AzureDevOpsOrgInner();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -204,7 +204,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
                     deserializedAzureDevOpsOrgInner.properties = AzureDevOpsOrgProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedAzureDevOpsOrgInner.systemData = SystemData.fromJson(reader);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
                 } else {
                     reader.skipChildren();
                 }
@@ -214,7 +214,7 @@ public final class AzureDevOpsOrgInner extends ProxyResource {
             return deserializedClusterJobInner;
 ========
             return deserializedAzureDevOpsOrgInner;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/AzureDevOpsOrgInner.java
         });
     }
 }

@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.search.models;
 ========
 package com.azure.resourcemanager.security.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
@@ -62,7 +62,7 @@ public class Authentication implements JsonSerializable<Authentication> {
      */
     public AuthenticationType authenticationType() {
         return this.authenticationType;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
     }
 
     /**
@@ -84,7 +84,7 @@ public class Authentication implements JsonSerializable<Authentication> {
 ========
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
         return jsonWriter.writeEndObject();
     }
 
@@ -107,7 +107,7 @@ public class Authentication implements JsonSerializable<Authentication> {
      * @throws IOException If an error occurs while reading the Authentication.
      */
     public static Authentication fromJson(JsonReader jsonReader) throws IOException {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -119,7 +119,7 @@ public class Authentication implements JsonSerializable<Authentication> {
                     if ("@odata.type".equals(fieldName)) {
 ========
                     if ("authenticationType".equals(fieldName)) {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
                         discriminatorValue = readerToUse.getString();
                         break;
                     } else {
@@ -135,7 +135,7 @@ public class Authentication implements JsonSerializable<Authentication> {
 ========
                 if ("AccessToken".equals(discriminatorValue)) {
                     return AccessTokenAuthentication.fromJson(readerToUse.reset());
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -151,7 +151,7 @@ public class Authentication implements JsonSerializable<Authentication> {
     static Authentication fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Authentication deserializedAuthentication = new Authentication();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -162,7 +162,7 @@ public class Authentication implements JsonSerializable<Authentication> {
 ========
                 if ("authenticationType".equals(fieldName)) {
                     deserializedAuthentication.authenticationType = AuthenticationType.fromString(reader.getString());
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
                 } else {
                     reader.skipChildren();
                 }
@@ -172,7 +172,7 @@ public class Authentication implements JsonSerializable<Authentication> {
             return deserializedDataIdentity;
 ========
             return deserializedAuthentication;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Authentication.java
         });
     }
 }

@@ -61,56 +61,6 @@
 * Added system property `COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS` and environment variable `COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS` to allow overriding the gateway connection acquire timeout in milliseconds (default 45000ms). Minimum accepted value is 500ms. Replaces the previous `_IN_SECONDS` variants. - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
 * Changed system property for thin client connection timeout from `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` to `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS` (default 5000ms, minimum 500ms). - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
 
-### 4.80.0 (2026-05-01)
-
-#### Features Added
-* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
-* Added `additionalHeaders` support to allow setting additional headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128) 
-* Added `IGNORE_UNKNOWN_RNTBD_TOKENS` SDK capability flag and propagated SDK supported capabilities to barrier requests, enabling N-Region Synchronous Commit to function correctly with backends that return new RNTBD response tokens. - See [PR 48965](https://github.com/Azure/azure-sdk-for-java/pull/48965)
-* Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
-* Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
-* Added `CosmosReadManyByPartitionKeysRequestOptions` - a dedicated request-options type for `readManyByPartitionKeys` that exposes `setContinuationToken(String)` for resuming previous invocations and `setMaxConcurrentBatchPrefetch(int)` to bound per-call prefetch parallelism. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
-* Added `CosmosReadManyByPartitionKeysRequestOptions.setMaxBatchSize(Integer)` to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
-* Added `getCustomItemSerializer()` to `CosmosRequestContext` and `setCustomItemSerializer(CosmosItemSerializer)` to `CosmosRequestOptions` to allow overriding the custom item serializer via operation policies. - See [PR 48963](https://github.com/Azure/azure-sdk-for-java/pull/48963)
-
-#### Bugs Fixed
-* Fixed `readMany` and `readAllItems` returning incorrect results on containers whose partition key path is nested (e.g. `/address/city`) due to malformed selector generation. - See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
-* Fixed an issue where the throughput control `throughputQueryMono` was always subscribed even when `targetThroughput` is used (not `targetThroughputThreshold`), causing unnecessary `throughputSettings/read` permission requirement for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
-* Fixed JVM `<clinit>` deadlock when multiple threads concurrently trigger Cosmos SDK class loading for the first time. - See [PR 48689](https://github.com/Azure/azure-sdk-for-java/pull/48689)
-* Fixed an issue where `CustomItemSerializer` was incorrectly applied to internal SDK query pipeline structures (e.g., `OrderByRowResult`, `Document`), causing deserialization failures in ORDER BY, GROUP BY, aggregate, DISTINCT, and hybrid search queries. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
-* Fixed an issue where `SqlParameter` ignored the configured `CustomItemSerializer`, always using the internal default serializer instead. - See [PR 48811](https://github.com/Azure/azure-sdk-for-java/pull/48811)
-* Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
-* Fixed an issue where Netty could log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" on HTTP/2 connections when the server resets idle TCP connections by adding an exception handler on the HTTP/2 parent channel to handle these connection-level exceptions more appropriately. - See [PR 48890](https://github.com/Azure/azure-sdk-for-java/pull/48890)
-* Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
-
-### 4.79.1 (2026-04-06)
-
-#### Bugs Fixed
-* Fixing an NPE caused due to boxed Boolean conversion. - See [PR 48656](https://github.com/Azure/azure-sdk-for-java/pull/48656/)
-
-### 4.79.0 (2026-03-27)
-
-#### Features Added
-* Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
-* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160)
-* Added `CosmosFullTextScoreScope` enum and `setFullTextScoreScope()` on `CosmosQueryRequestOptions` for controlling BM25 statistics scope in hybrid search queries. Supports `LOCAL` (scoped to target partitions) and `GLOBAL` (default, all partitions) scopes. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
-
-#### Bugs Fixed
-* Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
-* Fixed `NullPointerException` in `DocumentQueryExecutionContextFactory.tryCacheQueryPlan` when executing hybrid search queries with a partition key filter. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
-* Fixed `ConcurrentModificationException` in hybrid search component query execution caused by concurrent access to shared mutable state. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
-* Fixed availability strategy for Gateway V2 (thin client) by ensuring `RegionalRoutingContext` identity is based only on the immutable gateway endpoint. - See [PR 48432](https://github.com/Azure/azure-sdk-for-java/pull/48432)
-* Fixed an issue where `replaceItem` bypassed the `customItemSerializer`, serialising POJOs with the SDK's internal `ObjectMapper` instead of the user-configured one. - See [PR 48529](https://github.com/Azure/azure-sdk-for-java/pull/48529)
-* Fixed `ClassCastException` (`ArrayNode cannot be cast to ObjectNode`) when executing `SELECT VALUE ... GROUP BY` queries. See - [PR 48507](https://github.com/Azure/azure-sdk-for-java/pull/48507)
-
-#### Other Changes
-* Promoted the following `@Beta` APIs to GA: `CosmosContainerProperties.getFullTextPolicy()`/`setFullTextPolicy()`, `IndexingPolicy.getCosmosFullTextIndexes()`/`setCosmosFullTextIndexes()`. - See [PR 48538](https://github.com/Azure/azure-sdk-for-java/pull/48538)
-* Added `appendUserAgentSuffix` method to `AsyncDocumentClient` to allow downstream libraries to append to the user agent after client construction. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
-* Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
-* Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
-* Added system property `COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS` and environment variable `COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS` to allow overriding the gateway connection acquire timeout in milliseconds (default 45000ms). Minimum accepted value is 500ms. Replaces the previous `_IN_SECONDS` variants. - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
-* Changed system property for thin client connection timeout from `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` to `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS` (default 5000ms, minimum 500ms). - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
-
 ### 4.78.0 (2026-02-10)
 
 #### Features Added

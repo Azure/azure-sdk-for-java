@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.servicebus.implementation.models;
 ========
 package com.azure.resourcemanager.databricks.implementation.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,7 +24,7 @@ import java.util.List;
 ========
  * Result of the request to list Resource Provider operations. It contains a list of operations and a URL link to get
  * the next set of results.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
  */
 @Immutable
 public final class OperationListResult implements JsonSerializable<OperationListResult> {
@@ -33,7 +33,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
      * The list of operations.
 ========
      * List of Resource Provider operations supported by the Resource Provider resource provider.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
      */
     private List<OperationInner> value;
 
@@ -54,7 +54,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
 ========
      * Get the value property: List of Resource Provider operations supported by the Resource Provider resource
      * provider.
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
      * 
      * @return the value value.
      */
@@ -90,7 +90,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
 
     /**
 ========
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
      * {@inheritDoc}
      */
     @Override
@@ -100,7 +100,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
 <<<<<<<< HEAD:sdk/servicebus/azure-resourcemanager-servicebus/src/main/java/com/azure/resourcemanager/servicebus/implementation/models/OperationListResult.java
         jsonWriter.writeStringField("nextLink", this.nextLink);
 ========
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/databricks/azure-resourcemanager-databricks/src/main/java/com/azure/resourcemanager/databricks/implementation/models/OperationListResult.java
         return jsonWriter.writeEndObject();
     }
 

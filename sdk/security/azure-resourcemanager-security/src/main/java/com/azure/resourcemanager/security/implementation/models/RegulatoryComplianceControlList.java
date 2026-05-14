@@ -6,7 +6,7 @@
 package com.azure.resourcemanager.cosmos.implementation.models;
 ========
 package com.azure.resourcemanager.security.implementation.models;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,7 +18,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinRoleAssignmentResourceInner;
 ========
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceControlInner;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
 import java.io.IOException;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
      * The RegulatoryComplianceControl items on this page
      */
     private List<RegulatoryComplianceControlInner> value;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
 
     /*
      * The link to the next page of items
@@ -73,7 +73,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
      * @return the value value.
      */
     public List<RegulatoryComplianceControlInner> value() {
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
         return this.value;
     }
 
@@ -99,7 +99,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
                     "Missing required property value in model GremlinRoleAssignmentListResult"));
 ========
                     "Missing required property value in model RegulatoryComplianceControlList"));
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
         } else {
             value().forEach(e -> e.validate());
         }
@@ -109,7 +109,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
     private static final ClientLogger LOGGER = new ClientLogger(GremlinRoleAssignmentListResult.class);
 ========
     private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceControlList.class);
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
 
     /**
      * {@inheritDoc}
@@ -149,7 +149,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
         return jsonReader.readObject(reader -> {
             RegulatoryComplianceControlList deserializedRegulatoryComplianceControlList
                 = new RegulatoryComplianceControlList();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -167,7 +167,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
                     deserializedRegulatoryComplianceControlList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedRegulatoryComplianceControlList.nextLink = reader.getString();
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
                 } else {
                     reader.skipChildren();
                 }
@@ -177,7 +177,7 @@ public final class RegulatoryComplianceControlList implements JsonSerializable<R
             return deserializedGremlinRoleAssignmentListResult;
 ========
             return deserializedRegulatoryComplianceControlList;
->>>>>>>> 3ed5b63f21903d08fde0dbf6b42f70047bcded21:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
+>>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/implementation/models/RegulatoryComplianceControlList.java
         });
     }
 }
