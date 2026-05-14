@@ -134,12 +134,6 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                 if (credential == null) {
                     credential = delegated.resolve(properties);
                     if (credential == null) {
-                        // No credential could be resolved from explicit configuration. Build a chained
-                        // credential: try AzurePipelinesCredential first when the Azure DevOps federated
-                        // workload-identity environment variables are present (DefaultAzureCredential's
-                        // chain intentionally does not include AzurePipelinesCredential because its
-                        // service-connection-id is not auto-discoverable); fall back to
-                        // DefaultAzureCredential for all other environments.
                         TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
                         TokenCredential pipelinesCredential = tryBuildAzurePipelinesCredential();
                         if (pipelinesCredential == null) {
