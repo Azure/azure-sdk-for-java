@@ -17,6 +17,7 @@ import com.azure.resourcemanager.storagemover.models.StorageMover;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -24,8 +25,9 @@ import java.util.Collections;
  * Mirrors {@code JobDefinitionScheduleTests.cs} from the .NET source-of-truth.
  *
  * <p>All schedule {@code startDate}/{@code endDate} values are derived from
- * {@link #FIXED_SCHEDULE_START} (a fixed far-future {@code Z}-offset
- * {@code OffsetDateTime}) so playback recordings stay deterministic and the
+ * {@link #scheduleStartDate()} (a {@code Z}-offset {@code OffsetDateTime} of
+ * {@code now() + 1 day}, sanitized in recordings to a fixed placeholder so
+ * playback is deterministic) so playback recordings stay portable and the
  * server does not see the {@code +00:00}-suffix that triggers an RP bug — see
  * the cross-language playbook.
  */
@@ -36,11 +38,12 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
         TestContext ctx = provisionParents();
         String jobDefinitionName = generateRandomResourceName("jobdef-sched-", 24);
 
+        OffsetDateTime start = scheduleStartDate();
         ScheduleInfo schedule = new ScheduleInfo().withFrequency(Frequency.WEEKLY)
             .withIsActive(true)
             .withExecutionTime(new SchedulerTime().withHour(2))
-            .withStartDate(FIXED_SCHEDULE_START)
-            .withEndDate(FIXED_SCHEDULE_START.plusDays(30))
+            .withStartDate(start)
+            .withEndDate(start.plusDays(30))
             .withDaysOfWeek(Arrays.asList("Monday", "Wednesday", "Friday"));
 
         JobDefinition jobDefinition = storageMoverManager.jobDefinitions()
@@ -83,11 +86,12 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
         TestContext ctx = provisionParents();
         String jobDefinitionName = generateRandomResourceName("jobdef-daily-", 24);
 
+        OffsetDateTime start = scheduleStartDate();
         ScheduleInfo schedule = new ScheduleInfo().withFrequency(Frequency.DAILY)
             .withIsActive(true)
             .withExecutionTime(new SchedulerTime().withHour(0))
-            .withStartDate(FIXED_SCHEDULE_START)
-            .withEndDate(FIXED_SCHEDULE_START.plusDays(30));
+            .withStartDate(start)
+            .withEndDate(start.plusDays(30));
 
         JobDefinition jobDefinition = storageMoverManager.jobDefinitions()
             .define(jobDefinitionName)
@@ -120,7 +124,7 @@ public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
         ScheduleInfo schedule = new ScheduleInfo().withFrequency(Frequency.ONETIME)
             .withIsActive(true)
             .withExecutionTime(new SchedulerTime().withHour(10))
-            .withStartDate(FIXED_SCHEDULE_START)
+            .withStartDate(scheduleStartDate())
             .withDaysOfWeek(Collections.<String>emptyList());
 
         JobDefinition jobDefinition = storageMoverManager.jobDefinitions()

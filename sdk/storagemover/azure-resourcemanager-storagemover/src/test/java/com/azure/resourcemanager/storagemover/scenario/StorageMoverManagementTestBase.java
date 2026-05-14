@@ -12,6 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -25,8 +27,10 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,15 +51,28 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         = parseRegionOrDefault(Configuration.getGlobalConfiguration().get("AZURE_TEST_LOCATION"), Region.US_EAST);
 
     /**
-     * Fixed schedule {@code startDate} used across schedule tests.
-     *
-     * <p>Java's test-proxy does not have a {@code Recording.Now} equivalent; using
-     * {@code OffsetDateTime.now()} would produce a different timestamp on every
-     * run and break playback. The value uses {@code Z} offset suffix (not
-     * {@code +00:00}) to avoid an RP serialization bug documented in the
-     * cross-language playbook.
+     * Placeholder value the {@code $..startDate} / {@code $..endDate} body-key
+     * sanitizers rewrite all schedule dates to. Both the stored recording and
+     * the live request body during playback get this value, so playback matches
+     * succeed regardless of when the test is run.
      */
-    protected static final OffsetDateTime FIXED_SCHEDULE_START = OffsetDateTime.parse("2030-01-01T00:00:00Z");
+    private static final String REDACTED_SCHEDULE_DATE = "2030-01-01T00:00:00Z";
+
+    /**
+     * Returns a {@code startDate} suitable for schedule tests.
+     *
+     * <p>The Storage Mover RP rejects any {@code endDate} more than one year
+     * past wall-clock {@code now()}, so a hard-coded far-future date does not
+     * work. The body-key sanitizer registered in {@link #beforeTest} rewrites
+     * the value to {@link #REDACTED_SCHEDULE_DATE} in both the stored recording
+     * and the live request during playback, keeping the recordings portable.
+     *
+     * @return a UTC {@link OffsetDateTime} one day in the future, truncated to
+     *     the day so the JSON payload is stable.
+     */
+    protected static OffsetDateTime scheduleStartDate() {
+        return OffsetDateTime.now(ZoneOffset.UTC).plusDays(1).truncatedTo(ChronoUnit.DAYS);
+    }
 
     /**
      * Well-known resource ids used by the {@code AzureMultiCloudConnector}
@@ -104,6 +121,18 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         mergedPolicies.add(providerRegistrationPolicy);
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
             new RetryPolicy("Retry-After", ChronoUnit.SECONDS), mergedPolicies, httpClient);
+    }
+
+    @Override
+    protected void beforeTest() {
+        // Schedule dates are dynamic ("now + N days") so the RP accepts them,
+        // but we sanitize them to a fixed placeholder so recordings replay on
+        // any date. The sanitizer is bidirectional: applied both when storing
+        // recordings and when matching incoming requests during playback.
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("$..startDate", null, REDACTED_SCHEDULE_DATE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..endDate", null, REDACTED_SCHEDULE_DATE, TestProxySanitizerType.BODY_KEY)));
+        super.beforeTest();
     }
 
     @Override
