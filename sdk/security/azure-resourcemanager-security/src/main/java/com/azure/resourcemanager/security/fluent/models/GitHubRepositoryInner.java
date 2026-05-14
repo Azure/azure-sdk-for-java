@@ -10,20 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-import com.azure.resourcemanager.security.models.Identity;
-import java.io.IOException;
-
-/**
- * Security operator under a given subscription and pricing.
- */
-@Immutable
-public final class SecurityOperatorInner extends ProxyResource {
-    /*
-     * Identity for the resource.
-     */
-    private Identity identity;
-========
 import com.azure.resourcemanager.security.models.GitHubRepositoryProperties;
 import java.io.IOException;
 
@@ -36,7 +22,6 @@ public final class GitHubRepositoryInner extends ProxyResource {
      * GitHub Repository properties.
      */
     private GitHubRepositoryProperties properties;
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -59,20 +44,6 @@ public final class GitHubRepositoryInner extends ProxyResource {
     private String id;
 
     /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-     * Creates an instance of SecurityOperatorInner class.
-     */
-    private SecurityOperatorInner() {
-    }
-
-    /**
-     * Get the identity property: Identity for the resource.
-     * 
-     * @return the identity value.
-     */
-    public Identity identity() {
-        return this.identity;
-========
      * Creates an instance of GitHubRepositoryInner class.
      */
     private GitHubRepositoryInner() {
@@ -80,17 +51,16 @@ public final class GitHubRepositoryInner extends ProxyResource {
 
     /**
      * Get the properties property: GitHub Repository properties.
-     * 
+     *
      * @return the properties value.
      */
     public GitHubRepositoryProperties properties() {
         return this.properties;
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
+     *
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -99,7 +69,7 @@ public final class GitHubRepositoryInner extends ProxyResource {
 
     /**
      * Get the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
@@ -109,7 +79,7 @@ public final class GitHubRepositoryInner extends ProxyResource {
 
     /**
      * Get the name property: The name of the resource.
-     * 
+     *
      * @return the name value.
      */
     @Override
@@ -119,7 +89,7 @@ public final class GitHubRepositoryInner extends ProxyResource {
 
     /**
      * Get the id property: Fully qualified resource Id for the resource.
-     * 
+     *
      * @return the id value.
      */
     @Override
@@ -129,17 +99,12 @@ public final class GitHubRepositoryInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-        if (identity() != null) {
-            identity().validate();
-========
         if (properties() != null) {
             properties().validate();
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
         }
     }
 
@@ -149,30 +114,13 @@ public final class GitHubRepositoryInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-        jsonWriter.writeJsonField("identity", this.identity);
-========
         jsonWriter.writeJsonField("properties", this.properties);
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
         return jsonWriter.writeEndObject();
     }
 
     /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-     * Reads an instance of SecurityOperatorInner from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SecurityOperatorInner if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SecurityOperatorInner.
-     */
-    public static SecurityOperatorInner fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SecurityOperatorInner deserializedSecurityOperatorInner = new SecurityOperatorInner();
-========
      * Reads an instance of GitHubRepositoryInner from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of GitHubRepositoryInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -182,23 +130,11 @@ public final class GitHubRepositoryInner extends ProxyResource {
     public static GitHubRepositoryInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GitHubRepositoryInner deserializedGitHubRepositoryInner = new GitHubRepositoryInner();
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-                    deserializedSecurityOperatorInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedSecurityOperatorInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedSecurityOperatorInner.type = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedSecurityOperatorInner.identity = Identity.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedSecurityOperatorInner.systemData = SystemData.fromJson(reader);
-========
                     deserializedGitHubRepositoryInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedGitHubRepositoryInner.name = reader.getString();
@@ -208,17 +144,12 @@ public final class GitHubRepositoryInner extends ProxyResource {
                     deserializedGitHubRepositoryInner.properties = GitHubRepositoryProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedGitHubRepositoryInner.systemData = SystemData.fromJson(reader);
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
                 } else {
                     reader.skipChildren();
                 }
             }
 
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/SecurityOperatorInner.java
-            return deserializedSecurityOperatorInner;
-========
             return deserializedGitHubRepositoryInner;
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/fluent/models/GitHubRepositoryInner.java
         });
     }
 }

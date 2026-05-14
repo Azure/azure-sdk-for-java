@@ -5,42 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Rank.java
- * The rank of the sensitivity label.
- */
-public enum Rank {
-    /**
-     * None.
-     */
-    NONE("None"),
-
-    /**
-     * Low.
-     */
-    LOW("Low"),
-
-    /**
-     * Medium.
-     */
-    MEDIUM("Medium"),
-
-    /**
-     * High.
-     */
-    HIGH("High"),
-
-    /**
-     * Critical.
-     */
-    CRITICAL("Critical");
-
-    /**
-     * The actual serialized value for a Rank instance.
-     */
-    private final String value;
-
-    Rank(String value) {
-========
  * Possible states of the rule.
  */
 public enum RuleState {
@@ -65,26 +29,12 @@ public enum RuleState {
     private final String value;
 
     RuleState(String value) {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/RuleState.java
         this.value = value;
     }
 
     /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Rank.java
-     * Parses a serialized value to a Rank instance.
-     * 
-     * @param value the serialized value to parse.
-     * @return the parsed Rank object, or null if unable to parse.
-     */
-    public static Rank fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        Rank[] items = Rank.values();
-        for (Rank item : items) {
-========
      * Parses a serialized value to a RuleState instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed RuleState object, or null if unable to parse.
      */
@@ -94,7 +44,6 @@ public enum RuleState {
         }
         RuleState[] items = RuleState.values();
         for (RuleState item : items) {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/RuleState.java
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

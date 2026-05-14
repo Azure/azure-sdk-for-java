@@ -9,109 +9,18 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
- * Resource collection API of Assignments.
- */
-public interface Assignments {
-    /**
-     * Get a specific standard assignment for the requested scope by resourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assignmentId The security assignment key - unique key for the standard assignment.
-========
  * Resource collection API of SecurityConnectors.
  */
 public interface SecurityConnectors {
     /**
      * Retrieves details of a specific security connector.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * @return a specific standard assignment for the requested scope by resourceId along with {@link Response}.
-     */
-    Response<Assignment> getByResourceGroupWithResponse(String resourceGroupName, String assignmentId, Context context);
-
-    /**
-     * Get a specific standard assignment for the requested scope by resourceId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assignmentId The security assignment key - unique key for the standard assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific standard assignment for the requested scope by resourceId.
-     */
-    Assignment getByResourceGroup(String resourceGroupName, String assignmentId);
-
-    /**
-     * Delete a standard assignment over a given scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assignmentId The security assignment key - unique key for the standard assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String assignmentId, Context context);
-
-    /**
-     * Delete a standard assignment over a given scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assignmentId The security assignment key - unique key for the standard assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByResourceGroup(String resourceGroupName, String assignmentId);
-
-    /**
-     * Get a list of all relevant standardAssignments available for scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant standardAssignments available for scope as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<Assignment> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Get a list of all relevant standardAssignments available for scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant standardAssignments available for scope as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<Assignment> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Get a list of all relevant standardAssignments over a subscription level scope.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant standardAssignments over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<Assignment> list();
-
-    /**
-     * Get a list of all relevant standardAssignments over a subscription level scope.
-     * 
-========
      * @return the security connector resource along with {@link Response}.
      */
     Response<SecurityConnector> getByResourceGroupWithResponse(String resourceGroupName, String securityConnectorName,
@@ -119,7 +28,7 @@ public interface SecurityConnectors {
 
     /**
      * Retrieves details of a specific security connector.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,23 +40,13 @@ public interface SecurityConnectors {
 
     /**
      * Deletes a security connector.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * @return a list of all relevant standardAssignments over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<Assignment> list(Context context);
-
-    /**
-     * Get a specific standard assignment for the requested scope by resourceId.
-========
      * @return the {@link Response}.
      */
     Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String securityConnectorName,
@@ -155,7 +54,7 @@ public interface SecurityConnectors {
 
     /**
      * Deletes a security connector.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param securityConnectorName The security connector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +66,7 @@ public interface SecurityConnectors {
     /**
      * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +78,7 @@ public interface SecurityConnectors {
     /**
      * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +91,7 @@ public interface SecurityConnectors {
     /**
      * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security connectors response as paginated response with {@link PagedIterable}.
@@ -202,7 +101,7 @@ public interface SecurityConnectors {
     /**
      * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,49 +112,30 @@ public interface SecurityConnectors {
 
     /**
      * Retrieves details of a specific security connector.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
-     * 
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * @return a specific standard assignment for the requested scope by resourceId along with {@link Response}.
-     */
-    Assignment getById(String id);
-
-    /**
-     * Get a specific standard assignment for the requested scope by resourceId.
-========
      * @return the security connector resource along with {@link Response}.
      */
     SecurityConnector getById(String id);
 
     /**
      * Retrieves details of a specific security connector.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
-     * 
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * @return a specific standard assignment for the requested scope by resourceId along with {@link Response}.
-     */
-    Response<Assignment> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete a standard assignment over a given scope.
-========
      * @return the security connector resource along with {@link Response}.
      */
     Response<SecurityConnector> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a security connector.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
-     * 
+     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -264,12 +144,8 @@ public interface SecurityConnectors {
     void deleteById(String id);
 
     /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * Delete a standard assignment over a given scope.
-========
      * Deletes a security connector.
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
-     * 
+     *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,19 +156,10 @@ public interface SecurityConnectors {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-<<<<<<<< HEAD:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/Assignments.java
-     * Begins definition for a new Assignment resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new Assignment definition.
-     */
-    Assignment.DefinitionStages.Blank define(String name);
-========
      * Begins definition for a new SecurityConnector resource.
-     * 
+     *
      * @param name resource name.
      * @return the first stage of the new SecurityConnector definition.
      */
     SecurityConnector.DefinitionStages.Blank define(String name);
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/security/azure-resourcemanager-security/src/main/java/com/azure/resourcemanager/security/models/SecurityConnectors.java
 }

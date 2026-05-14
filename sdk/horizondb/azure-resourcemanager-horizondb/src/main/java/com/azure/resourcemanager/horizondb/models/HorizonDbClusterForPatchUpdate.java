@@ -13,34 +13,16 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
- * HorizonDb parameter group for update operations.
- */
-@Fluent
-public final class HorizonDbParameterGroupForPatchUpdate
-    implements JsonSerializable<HorizonDbParameterGroupForPatchUpdate> {
-========
  * HorizonDb cluster for update operations.
  */
 @Fluent
 public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<HorizonDbClusterForPatchUpdate> {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
     /*
      * Resource tags.
      */
     private Map<String, String> tags;
 
     /*
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-     * The properties that can be updated for a HorizonDb parameter group.
-     */
-    private HorizonDbParameterGroupPropertiesForPatchUpdate properties;
-
-    /**
-     * Creates an instance of HorizonDbParameterGroupForPatchUpdate class.
-     */
-    public HorizonDbParameterGroupForPatchUpdate() {
-========
      * The properties that can be updated for a HorizonDb cluster.
      */
     private HorizonDbClusterPropertiesForPatchUpdate properties;
@@ -49,12 +31,11 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
      * Creates an instance of HorizonDbClusterForPatchUpdate class.
      */
     public HorizonDbClusterForPatchUpdate() {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
     }
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -63,55 +44,31 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-     * @return the HorizonDbParameterGroupForPatchUpdate object itself.
-     */
-    public HorizonDbParameterGroupForPatchUpdate withTags(Map<String, String> tags) {
-========
      * @return the HorizonDbClusterForPatchUpdate object itself.
      */
     public HorizonDbClusterForPatchUpdate withTags(Map<String, String> tags) {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
         this.tags = tags;
         return this;
     }
 
     /**
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-     * Get the properties property: The properties that can be updated for a HorizonDb parameter group.
-     * 
-     * @return the properties value.
-     */
-    public HorizonDbParameterGroupPropertiesForPatchUpdate properties() {
-========
      * Get the properties property: The properties that can be updated for a HorizonDb cluster.
-     * 
+     *
      * @return the properties value.
      */
     public HorizonDbClusterPropertiesForPatchUpdate properties() {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
         return this.properties;
     }
 
     /**
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-     * Set the properties property: The properties that can be updated for a HorizonDb parameter group.
-     * 
-     * @param properties the properties value to set.
-     * @return the HorizonDbParameterGroupForPatchUpdate object itself.
-     */
-    public HorizonDbParameterGroupForPatchUpdate
-        withProperties(HorizonDbParameterGroupPropertiesForPatchUpdate properties) {
-========
      * Set the properties property: The properties that can be updated for a HorizonDb cluster.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the HorizonDbClusterForPatchUpdate object itself.
      */
     public HorizonDbClusterForPatchUpdate withProperties(HorizonDbClusterPropertiesForPatchUpdate properties) {
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
         this.properties = properties;
         return this;
     }
@@ -128,21 +85,8 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
     }
 
     /**
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-     * Reads an instance of HorizonDbParameterGroupForPatchUpdate from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HorizonDbParameterGroupForPatchUpdate if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HorizonDbParameterGroupForPatchUpdate.
-     */
-    public static HorizonDbParameterGroupForPatchUpdate fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            HorizonDbParameterGroupForPatchUpdate deserializedHorizonDbParameterGroupForPatchUpdate
-                = new HorizonDbParameterGroupForPatchUpdate();
-========
      * Reads an instance of HorizonDbClusterForPatchUpdate from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of HorizonDbClusterForPatchUpdate if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
@@ -152,34 +96,22 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
         return jsonReader.readObject(reader -> {
             HorizonDbClusterForPatchUpdate deserializedHorizonDbClusterForPatchUpdate
                 = new HorizonDbClusterForPatchUpdate();
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-                    deserializedHorizonDbParameterGroupForPatchUpdate.tags = tags;
-                } else if ("properties".equals(fieldName)) {
-                    deserializedHorizonDbParameterGroupForPatchUpdate.properties
-                        = HorizonDbParameterGroupPropertiesForPatchUpdate.fromJson(reader);
-========
                     deserializedHorizonDbClusterForPatchUpdate.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedHorizonDbClusterForPatchUpdate.properties
                         = HorizonDbClusterPropertiesForPatchUpdate.fromJson(reader);
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
                 } else {
                     reader.skipChildren();
                 }
             }
 
-<<<<<<<< HEAD:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbParameterGroupForPatchUpdate.java
-            return deserializedHorizonDbParameterGroupForPatchUpdate;
-========
             return deserializedHorizonDbClusterForPatchUpdate;
->>>>>>>> fe96ca870320f16ba563c74f48d981eb2265ff3a:sdk/horizondb/azure-resourcemanager-horizondb/src/main/java/com/azure/resourcemanager/horizondb/models/HorizonDbClusterForPatchUpdate.java
         });
     }
 }
