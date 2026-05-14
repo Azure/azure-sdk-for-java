@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.models.RequestedRegion;
+import com.azure.cosmos.models.RequestedRegionReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -251,6 +253,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return ShouldRetryResult.noRetry();
                 } else {
                     this.retryContext = new RetryContext(this.sessionTokenRetryCount , true);
+                    // Hedging Detection API: same-region in-session retry — OPERATION_RETRY.
+                    recordRequestedRegion(RequestedRegionReason.OPERATION_RETRY);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
@@ -344,6 +348,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             this.failoverRetryCount++;
             this.retryContext = new RetryContext(this.failoverRetryCount, true);
             Duration retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
+            // Hedging Detection API: gateway-timeout cross-region retry is a REGION_FAILOVER.
+            recordRequestedRegion(RequestedRegionReason.REGION_FAILOVER);
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         }
 
@@ -386,7 +392,42 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         this.retryContext = new RetryContext(this.failoverRetryCount, usePreferredLocations);
+
+        // Hedging Detection API: record REGION_FAILOVER at the moment this policy commits to
+        // retrying on a different region (the previous endpoint has been marked unavailable;
+        // a refresh will be issued to pick a new region). See public-spec-java §M7.
+        recordRequestedRegion(RequestedRegionReason.REGION_FAILOVER);
+
         return this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
+    }
+
+    // Hedging Detection API helper — records a RequestedRegion entry on the diagnostics
+    // associated with the current request. Region name is resolved via the GlobalEndpointManager
+    // using the currently-pinned `regionalRoutingContext`. Best-effort: silently no-ops when
+    // the request, diagnostics, or routing context is unavailable.
+    private void recordRequestedRegion(RequestedRegionReason reason) {
+        if (this.request == null || this.request.requestContext == null
+            || this.request.requestContext.cosmosDiagnostics == null
+            || this.regionalRoutingContext == null) {
+            return;
+        }
+        try {
+            String regionName = this.globalEndpointManager.getRegionName(
+                this.regionalRoutingContext.getGatewayRegionalEndpoint(),
+                this.request.getOperationType(),
+                this.request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
+            if (regionName == null || regionName.isEmpty()) {
+                return;
+            }
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+            diagAcc.appendRequestedRegion(
+                this.request.requestContext.cosmosDiagnostics,
+                new RequestedRegion(regionName, reason));
+        } catch (RuntimeException ex) {
+            // Defensive: diagnostics-append must never break the retry flow.
+            logger.debug("Failed to record RequestedRegion for retry decision", ex);
+        }
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(

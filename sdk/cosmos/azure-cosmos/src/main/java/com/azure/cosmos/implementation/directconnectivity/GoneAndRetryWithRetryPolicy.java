@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -21,6 +22,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.RequestedRegion;
+import com.azure.cosmos.models.RequestedRegionReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -91,6 +94,40 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         Instant endSnapshot = this.end != null ? this.end : Instant.now();
 
         return Duration.between(this.start, endSnapshot);
+    }
+
+    // Hedging Detection API: best-effort helper that appends a TRANSPORT_RETRY entry to the
+    // request's diagnostics. The region is the most-recently-contacted region on the request's
+    // ClientSideRequestStatistics (matching the retry-dispatch semantic). Silently no-ops when
+    // the request, diagnostics, or region cannot be resolved. NOTE: the PPCB / PPAF probe sites
+    // also need to surface a TRANSPORT_RETRY / CIRCUIT_BREAKER_PROBE hook — those depend on
+    // upstream PRs #45197 / #45267 / #46477 / #48421 (SE-005 / SE-012). When those land in the
+    // Java SDK, wire CIRCUIT_BREAKER_PROBE at the probe-issue site there.
+    private static void recordTransportRetryRequestedRegion(RxDocumentServiceRequest request) {
+        if (request == null || request.requestContext == null
+            || request.requestContext.cosmosDiagnostics == null) {
+            return;
+        }
+        try {
+            String regionName = null;
+            CosmosDiagnostics diag = request.requestContext.cosmosDiagnostics;
+            // Region resolution: fall back to "FirstContactedRegion" if currently-pinned region
+            // is unknown at this layer.
+            if (!diag.getContactedRegionNames().isEmpty()) {
+                regionName = diag.getContactedRegionNames().iterator().next();
+            }
+            if (regionName == null || regionName.isEmpty()) {
+                return;
+            }
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+            diagAcc.appendRequestedRegion(
+                diag,
+                new RequestedRegion(regionName, RequestedRegionReason.TRANSPORT_RETRY));
+        } catch (RuntimeException ex) {
+            // Defensive: diagnostics-append must never break the retry flow.
+            logger.debug("Failed to record TRANSPORT_RETRY RequestedRegion", ex);
+        }
     }
 
     class GoneRetryPolicy implements IRetryPolicy {
@@ -268,6 +305,14 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             }
 
             forceRefreshAddressCache = exceptionHandlingResult.getRight();
+
+            // Hedging Detection API: TRANSPORT_RETRY is recorded at the actual retry-dispatch
+            // site. Although the spec's enum value also covers PPCB / Direct-mode probe paths
+            // (which require upstream PRs #45197 / #45267 / #46477 / #48421 to surface a clean
+            // hook), the 410 Gone retry path is observable here and is the canonical
+            // transport-layer retry. The region is the currently-pinned region on the request's
+            // diagnostics; we record on the request's cosmosDiagnostics.
+            recordTransportRetryRequestedRegion(this.request);
 
             return Mono.just(ShouldRetryResult.retryAfter(backoffTime,
                 Quadruple.with(forceRefreshAddressCache, true, timeout, currentRetryAttemptCount)));

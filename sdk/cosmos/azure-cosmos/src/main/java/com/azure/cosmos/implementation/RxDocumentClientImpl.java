@@ -93,6 +93,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
+import com.azure.cosmos.models.RequestedRegion;
+import com.azure.cosmos.models.RequestedRegionReason;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7442,6 +7444,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
 
                 if (monoList.isEmpty()) {
+                    // Hedging Detection API: record INITIAL at orchestrator entry, BEFORE the
+                    // primary regional Mono is built. The primary is unconditionally dispatched.
+                    diagnosticsFactory.recordRequestedRegion(
+                        new RequestedRegion(region, RequestedRegionReason.INITIAL));
                     // no special error handling for transient errors to suppress them here
                     // because any cross-regional retries are expected to be processed
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
@@ -7529,14 +7535,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             .getThresholdStep()
                             .multipliedBy(monoList.size() - 1));
 
+                    // Hedging Detection API: append `.doOnSubscribe(...)` BEFORE `.delaySubscription(...)`.
+                    // Operator order is significant — see the comment above the feed-operation
+                    // counterpart and public-spec-java §M7 / AC2 / AC10.
+                    Mono<NonTransientPointOperationResult> hedgeArmWithDispatchTracking =
+                        regionalCrossRegionRetryMono
+                            .doOnSubscribe(s -> diagnosticsFactory.recordRequestedRegion(
+                                new RequestedRegion(region, RequestedRegionReason.HEDGING)));
+
                     if (logger.isDebugEnabled()) {
                         monoList.add(
-                            regionalCrossRegionRetryMono
+                            hedgeArmWithDispatchTracking
                                 .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
                                 .delaySubscription(delayForCrossRegionalRetry));
                     } else {
                         monoList.add(
-                            regionalCrossRegionRetryMono
+                            hedgeArmWithDispatchTracking
                                 .delaySubscription(delayForCrossRegionalRetry));
                     }
                 }
@@ -7900,6 +7914,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
         List<Mono<NonTransientFeedOperationResult<T>>> monoList = new ArrayList<>();
 
+        // Hedging Detection API: feed-op orchestrator does not use ScopedDiagnosticsFactory; per-arm
+        // diagnostics live on each cloned request's request context. We append the requested-region
+        // entry directly onto that diagnostics via the bridge. The aggregation across arms is
+        // performed by CosmosDiagnosticsContext (which the customer accesses via the operation
+        // context, matching getContactedRegionNames aggregation at line 428).
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor feedDiagAccessor =
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
         orderedApplicableRegionsForSpeculation
             .forEach(region -> {
                 RxDocumentServiceRequest clonedRequest = req.clone();
@@ -7929,6 +7951,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         perPartitionAutomaticFailoverInfoHolder);
 
                     clonedRequest.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequestForNonHedgedRequest);
+
+                    // Hedging Detection API: record INITIAL for the primary feed-op arm at
+                    // orchestrator entry, before the regional Mono is built. Primary is
+                    // unconditionally dispatched.
+                    if (clonedRequest.requestContext.cosmosDiagnostics != null) {
+                        feedDiagAccessor.appendRequestedRegion(
+                            clonedRequest.requestContext.cosmosDiagnostics,
+                            new RequestedRegion(region, RequestedRegionReason.INITIAL));
+                    }
 
                     Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
                         handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(feedOperation.apply(retryPolicyFactory, clonedRequest)
@@ -7996,14 +8027,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             .getThresholdStep()
                             .multipliedBy(monoList.size() - 1));
 
+                    // Hedging Detection API: feed-op hedge-arm dispatch tracking. The
+                    // `.doOnSubscribe(...)` MUST be BEFORE `.delaySubscription(...)` so the
+                    // handler fires only after the threshold delay elapses without cancellation.
+                    // Primary-wins-under-threshold leaves no phantom HEDGING entry. See
+                    // public-spec-java §M7 / AC2 / AC10; internal-spec §SE-013 / SE-021.
+                    final RxDocumentServiceRequest hedgeArmRequest = clonedRequest;
+                    Mono<NonTransientFeedOperationResult<T>> hedgeArmWithDispatchTracking =
+                        regionalCrossRegionRetryMono
+                            .doOnSubscribe(s -> {
+                                if (hedgeArmRequest.requestContext.cosmosDiagnostics != null) {
+                                    feedDiagAccessor.appendRequestedRegion(
+                                        hedgeArmRequest.requestContext.cosmosDiagnostics,
+                                        new RequestedRegion(region, RequestedRegionReason.HEDGING));
+                                }
+                            });
+
                     if (logger.isDebugEnabled()) {
                         monoList.add(
-                            regionalCrossRegionRetryMono
+                            hedgeArmWithDispatchTracking
                                 .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
                                 .delaySubscription(delayForCrossRegionalRetry));
                     } else {
                         monoList.add(
-                            regionalCrossRegionRetryMono
+                            hedgeArmWithDispatchTracking
                                 .delaySubscription(delayForCrossRegionalRetry));
                     }
                 }
@@ -8304,6 +8351,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         private final AtomicReference<Consumer<CosmosException>> gatewayCancelledDiagnosticsHandler
             = new AtomicReference<>(null);
 
+        // ===== Hedging Detection API — orchestrator-scoped requested-regions state =====
+        //
+        // For multi-region availability-strategy operations, the orchestrator owns the
+        // requested-regions intent log. We propagate every recorded entry to:
+        //   (a) every already-created per-arm CosmosDiagnostics (so callers reading any arm's
+        //       diagnostics see the full orchestrator view), and
+        //   (b) every diagnostics created after the entry was recorded (back-fill at create
+        //       time).
+        // Guarded by `factoryRegionLock`. The per-stats ClientSideRequestStatistics.regionLock
+        // independently guards the per-arm storage (see M5/M6/M8).
+        private final Object factoryRegionLock = new Object();
+        private final List<RequestedRegion> orchestratorRequestedRegions = new ArrayList<>();
+
         public ScopedDiagnosticsFactory(DiagnosticsClientContext inner, boolean shouldCaptureAllFeedDiagnostics) {
             checkNotNull(inner, "Argument 'inner' must not be null.");
             this.inner = inner;
@@ -8321,7 +8381,51 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
             mostRecentlyCreatedDiagnostics.set(diagnostics);
+            // Back-fill any requested-regions entries already recorded at the orchestrator scope
+            // so that this newly-created per-arm diagnostics sees the full view (including the
+            // INITIAL entry recorded before this arm's diagnostics existed).
+            List<RequestedRegion> snapshot;
+            synchronized (factoryRegionLock) {
+                if (orchestratorRequestedRegions.isEmpty()) {
+                    return diagnostics;
+                }
+                snapshot = new ArrayList<>(orchestratorRequestedRegions);
+            }
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+            for (RequestedRegion entry : snapshot) {
+                diagAcc.appendRequestedRegion(diagnostics, entry);
+            }
             return diagnostics;
+        }
+
+        /**
+         * Records an orchestrator-level requested-region entry. The entry is:
+         *  (a) stored in the factory-scope list, so any per-arm CosmosDiagnostics created
+         *      LATER will see the entry; and
+         *  (b) appended (via the bridge) to every already-created per-arm CosmosDiagnostics,
+         *      so any reader of any arm's diagnostics sees the full orchestrator view.
+         *
+         * Reactor operator-order discipline: callers MUST place {@code .doOnSubscribe(s -> ...)}
+         * BEFORE {@code .delaySubscription(threshold)} in the fluent chain. That way, the
+         * doOnSubscribe handler fires only after the delay elapses without cancellation —
+         * primary-wins-under-threshold leaves no phantom HEDGING entries (design doc §12
+         * "no phantom entries"; AC2/AC10; SE-021).
+         */
+        public void recordRequestedRegion(RequestedRegion entry) {
+            if (entry == null) {
+                return;
+            }
+            List<CosmosDiagnostics> snapshot;
+            synchronized (factoryRegionLock) {
+                orchestratorRequestedRegions.add(entry);
+                snapshot = new ArrayList<>(createdDiagnostics);
+            }
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+            for (CosmosDiagnostics d : snapshot) {
+                diagAcc.appendRequestedRegion(d, entry);
+            }
         }
 
         @Override
