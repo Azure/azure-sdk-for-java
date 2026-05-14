@@ -1995,7 +1995,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
@@ -2032,7 +2033,8 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
@@ -2067,7 +2069,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2089,7 +2091,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -2112,7 +2114,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2130,7 +2132,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2147,7 +2149,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RefreshExternalGovernanceStatusOperationResultMIInner> refreshStatusAsync(String resourceGroupName,
@@ -2165,7 +2167,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RefreshExternalGovernanceStatusOperationResultMIInner> refreshStatusAsync(String resourceGroupName,
@@ -2182,7 +2184,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(String resourceGroupName,
@@ -2199,7 +2201,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(String resourceGroupName,
@@ -2215,7 +2217,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -2252,7 +2254,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -2287,7 +2289,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStartAsync(String resourceGroupName,
@@ -2306,7 +2308,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStartAsync(String resourceGroupName,
@@ -2325,7 +2327,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(String resourceGroupName,
@@ -2342,7 +2344,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(String resourceGroupName,
@@ -2358,7 +2360,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> startAsync(String resourceGroupName, String managedInstanceName) {
@@ -2375,7 +2377,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedInstanceInner> startAsync(String resourceGroupName, String managedInstanceName,
@@ -2392,7 +2394,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner start(String resourceGroupName, String managedInstanceName) {
@@ -2408,7 +2410,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner start(String resourceGroupName, String managedInstanceName, Context context) {
@@ -2423,7 +2425,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
@@ -2460,7 +2462,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String managedInstanceName,
@@ -2495,7 +2497,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStopAsync(String resourceGroupName,
@@ -2514,7 +2516,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStopAsync(String resourceGroupName,
@@ -2533,7 +2535,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(String resourceGroupName,
@@ -2550,7 +2552,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(String resourceGroupName,
@@ -2566,7 +2568,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> stopAsync(String resourceGroupName, String managedInstanceName) {
@@ -2583,7 +2585,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedInstanceInner> stopAsync(String resourceGroupName, String managedInstanceName,
@@ -2600,7 +2602,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName) {
@@ -2616,7 +2618,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an Azure SQL managed instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName, Context context) {

@@ -29,18 +29,17 @@ public final class StaticCidrInner extends CommonProxyResource {
     private SystemData systemData;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the resource
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -81,8 +80,7 @@ public final class StaticCidrInner extends CommonProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -102,8 +100,7 @@ public final class StaticCidrInner extends CommonProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */

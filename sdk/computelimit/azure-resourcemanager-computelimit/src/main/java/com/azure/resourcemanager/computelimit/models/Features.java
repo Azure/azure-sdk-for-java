@@ -68,7 +68,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult enable(String location, String featureName);
 
@@ -81,7 +81,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult enable(String location, String featureName, Context context);
 
@@ -93,7 +93,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult disable(String location, String featureName);
 
@@ -106,7 +106,7 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult disable(String location, String featureName, Context context);
 }
