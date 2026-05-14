@@ -546,7 +546,6 @@ public class StructuredMessageDecoderTests {
         throws IOException {
         byte[] originalData = new byte[totalPayloadSize];
         ThreadLocalRandom.current().nextBytes(originalData);
-
         byte[] encodedBytes = encodeToBytes(originalData, segmentPayloadSize, StructuredMessageFlags.STORAGE_CRC64);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
