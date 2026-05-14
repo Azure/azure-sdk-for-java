@@ -6,7 +6,6 @@ package com.azure.storage.common.implementation.contentvalidation;
 import com.azure.core.util.Context;
 import com.azure.core.util.ProgressListener;
 import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ParallelTransferOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -210,12 +209,6 @@ public class ContentValidationModeResolverTests {
     }
 
     @Test
-    public void validateProgressWithContentValidationPassesWhenParallelOptionsNull() {
-        assertDoesNotThrow(() -> ContentValidationModeResolver
-            .validateProgressWithContentValidation((ParallelTransferOptions) null, ContentValidationAlgorithm.CRC64));
-    }
-
-    @Test
     public void validateProgressWithContentValidationThrowsForCrc64() {
         ProgressListener listener = l -> {
         };
@@ -231,14 +224,6 @@ public class ContentValidationModeResolverTests {
         };
         assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
             .validateProgressWithContentValidation(listener, ContentValidationAlgorithm.AUTO));
-    }
-
-    @Test
-    public void validateProgressWithContentValidationParallelOptionsDelegatesToListener() {
-        ParallelTransferOptions opts = new ParallelTransferOptions().setProgressListener(l -> {
-        });
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateProgressWithContentValidation(opts, ContentValidationAlgorithm.CRC64));
     }
 
     @Test

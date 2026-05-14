@@ -12,6 +12,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -97,6 +100,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -1382,14 +1386,63 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, true);
+        return hasStructuredMessageDownloadRequestHeaders(recordedRequestHeaders, true);
     }
 
-    protected static boolean hasOnlyStructuredMessageDownloadHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return hasStructuredMessageRequestHeaders(recordedRequestHeaders, false);
+    protected static boolean hasStructuredMessageDownloadRequestHeaders(HttpHeaders recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.getSize() == 0) {
+            return false;
+        }
+        return hasStructuredMessageDownloadRequestHeaders(Collections.singletonList(recordedRequestHeaders), false);
     }
 
-    private static boolean hasStructuredMessageRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
+    protected static boolean hasStructuredMessageDownloadResponseHeaders(HttpHeaders headers) {
+        return validateBasicHeaders(headers)
+            && StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE
+                .equalsIgnoreCase(headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME))
+            && hasValidStructuredContentLengthHeader(headers);
+    }
+
+    protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        HttpHeaders recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        return getRequestAndResponseHeaderSniffer(targetUrlPrefix, headers -> {
+            synchronized (recordedRequestHeaders) {
+                recordedRequestHeaders.setAllHttpHeaders(headers);
+            }
+        }, recordedResponseHeaders);
+    }
+
+    protected static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        List<HttpHeaders> recordedRequestHeaders, HttpHeaders recordedResponseHeaders) {
+        return getRequestAndResponseHeaderSniffer(targetUrlPrefix, recordedRequestHeaders::add,
+            recordedResponseHeaders);
+    }
+
+    private static HttpPipelinePolicy getRequestAndResponseHeaderSniffer(String targetUrlPrefix,
+        Consumer<HttpHeaders> requestRecorder, HttpHeaders recordedResponseHeaders) {
+        return new HttpPipelinePolicy() {
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_RETRY;
+            }
+
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                requestRecorder.accept(context.getHttpRequest().getHeaders());
+                return next.process().map(response -> {
+                    if (response.getRequest().getHttpMethod() == HttpMethod.GET
+                        && response.getRequest().getUrl().toString().startsWith(targetUrlPrefix)) {
+                        synchronized (recordedResponseHeaders) {
+                            recordedResponseHeaders.setAllHttpHeaders(response.getHeaders());
+                        }
+                    }
+                    return response;
+                });
+            }
+        };
+    }
+
+    protected static boolean hasStructuredMessageDownloadRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
         boolean requireStructuredContentLength) {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
@@ -1473,9 +1526,9 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-    * Creates a BlobClient that records all outgoing request headers into the supplied list.
-    * Each test should use its own list so tests can run concurrently.
-    */
+     * Creates a BlobClient that records all outgoing request headers into the supplied list.
+     * Each test should use its own list so tests can run concurrently.
+     */
     protected BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
         HttpPipelinePolicy sniffPolicy = (context, next) -> {
             recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
@@ -1487,8 +1540,8 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
-    * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
-    */
+     * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
+     */
     protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
         HttpPipelinePolicy sniffPolicy = (context, next) -> {
             recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
@@ -1642,5 +1695,16 @@ public class BlobTestBase extends TestProxyTestBase {
             Arguments.of(payload257MiBPlus, 61L * Constants.MB + 23L * Constants.KB, 6),
             Arguments.of(payload288MiBPlus, 36L * Constants.MB + 513, 8),
             Arguments.of(payload320MiBPlus, 16L * Constants.MB + 511, 8));
+    private static boolean hasValidStructuredContentLengthHeader(HttpHeaders headers) {
+        String structuredContentLength = headers.getValue("x-ms-structured-content-length");
+        if (CoreUtils.isNullOrEmpty(structuredContentLength)
+            || CoreUtils.isNullOrEmpty(structuredContentLength.trim())) {
+            return false;
+        }
+        try {
+            return Long.parseLong(structuredContentLength.trim()) >= 0;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 }

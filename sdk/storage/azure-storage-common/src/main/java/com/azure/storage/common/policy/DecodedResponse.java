@@ -3,8 +3,10 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,8 +26,6 @@ import java.nio.charset.Charset;
 class DecodedResponse extends HttpResponse {
     private final HttpResponse originalResponse;
     private final Flux<ByteBuffer> decodedBody;
-    private final HttpHeaders httpHeaders;
-    private final int statusCode;
 
     /**
      * Wraps {@code httpResponse} with a body backed by {@code decodedBody}.
@@ -36,28 +36,25 @@ class DecodedResponse extends HttpResponse {
      * pipeline.
      */
     DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
-        // Preserve the original request so retry policies, response models, and logging keep their reference chain
-        // intact.
         super(httpResponse.getRequest());
         this.originalResponse = httpResponse;
         this.decodedBody = decodedBody;
-        this.statusCode = httpResponse.getStatusCode();
-        this.httpHeaders = httpResponse.getHeaders();
     }
 
     @Override
     public int getStatusCode() {
-        return statusCode;
+        return originalResponse.getStatusCode();
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getHeaderValue(String name) {
-        return httpHeaders.getValue(name);
+        return originalResponse.getHeaderValue(name);
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return httpHeaders;
+        return originalResponse.getHeaders();
     }
 
     @Override
@@ -72,7 +69,8 @@ class DecodedResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(String::new);
+        return getBodyAsByteArray()
+            .map(b -> CoreUtils.bomAwareToString(b, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
