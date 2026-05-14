@@ -180,4 +180,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType MEMORY_SEARCH_PREVIEW = fromString("memory_search_preview");
+
+    /**
+     * Static value work_iq_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType WORK_IQ_PREVIEW = fromString("work_iq_preview");
 }

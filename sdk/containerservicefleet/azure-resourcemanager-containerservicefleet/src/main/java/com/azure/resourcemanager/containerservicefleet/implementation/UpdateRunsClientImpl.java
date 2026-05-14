@@ -979,7 +979,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String fleetName,
@@ -1001,7 +1002,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1023,7 +1024,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1043,7 +1044,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStartAsync(String resourceGroupName,
@@ -1063,7 +1065,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStartAsync(String resourceGroupName,
@@ -1085,7 +1088,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
@@ -1104,7 +1108,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
@@ -1126,7 +1131,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(String resourceGroupName, String fleetName,
@@ -1147,7 +1153,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> startAsync(String resourceGroupName, String fleetName, String updateRunName,
@@ -1165,7 +1172,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> startAsync(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1183,7 +1191,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1202,7 +1210,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
@@ -1220,7 +1228,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String fleetName,
@@ -1242,7 +1251,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1263,7 +1272,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1283,7 +1292,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStopAsync(String resourceGroupName,
@@ -1303,7 +1313,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStopAsync(String resourceGroupName,
@@ -1325,7 +1336,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
@@ -1344,7 +1356,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
@@ -1366,7 +1379,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(String resourceGroupName, String fleetName,
@@ -1386,7 +1400,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> stopAsync(String resourceGroupName, String fleetName, String updateRunName,
@@ -1404,7 +1419,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> stopAsync(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1422,7 +1438,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1441,7 +1457,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName, String ifMatch,
@@ -1460,7 +1476,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> skipWithResponseAsync(String resourceGroupName, String fleetName,
@@ -1485,7 +1502,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> skipWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1508,7 +1525,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> skipWithResponse(String resourceGroupName, String fleetName, String updateRunName,
@@ -1530,7 +1547,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginSkipAsync(String resourceGroupName,
@@ -1551,7 +1569,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginSkipAsync(String resourceGroupName,
@@ -1574,7 +1593,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
@@ -1594,7 +1614,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
@@ -1617,7 +1638,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     * of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginSkip(String resourceGroupName, String fleetName,
@@ -1639,7 +1661,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> skipAsync(String resourceGroupName, String fleetName, String updateRunName,
@@ -1658,7 +1681,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> skipAsync(String resourceGroupName, String fleetName, String updateRunName,
@@ -1678,7 +1702,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body) {
@@ -1698,7 +1722,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,

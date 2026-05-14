@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
-import com.azure.analytics.planetarycomputer.models.GetMosaicsTileContentType;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
@@ -182,8 +181,8 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         GetMosaicTileOptions tileOptions = new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
             .setAssetBandIndices("image|1,2,3")
             .setCollection(collectionId);
-        BinaryData imageData = dataClient.getMosaicsTile(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png",
-            tileOptions, GetMosaicsTileContentType.IMAGE_PNG);
+        BinaryData imageData
+            = dataClient.getMosaicsTile(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png", tileOptions);
 
         // Assert
         byte[] imageBytes = imageData.toBytes();
