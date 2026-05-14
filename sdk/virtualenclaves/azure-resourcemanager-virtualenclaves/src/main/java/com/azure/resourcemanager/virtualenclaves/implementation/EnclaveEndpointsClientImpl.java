@@ -1148,7 +1148,8 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> handleApprovalCreationWithResponseAsync(String resourceGroupName,
@@ -1172,7 +1173,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalCreationWithResponse(String resourceGroupName, String virtualEnclaveName,
@@ -1195,7 +1196,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalCreationWithResponse(String resourceGroupName, String virtualEnclaveName,
@@ -1217,7 +1218,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner>
@@ -1240,7 +1241,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
@@ -1262,7 +1263,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
@@ -1284,7 +1285,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body after handling of approvalCallbackRequest on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApprovalActionResponseInner> handleApprovalCreationAsync(String resourceGroupName,
@@ -1303,7 +1304,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
@@ -1323,7 +1324,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
@@ -1342,7 +1343,8 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> handleApprovalDeletionWithResponseAsync(String resourceGroupName,
@@ -1366,7 +1368,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalDeletionWithResponse(String resourceGroupName, String virtualEnclaveName,
@@ -1389,7 +1391,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body after handling of approvalCallbackRequest along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalDeletionWithResponse(String resourceGroupName, String virtualEnclaveName,
@@ -1411,7 +1413,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner>
@@ -1434,7 +1436,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
@@ -1457,7 +1459,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
@@ -1479,7 +1481,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body after handling of approvalCallbackRequest on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApprovalActionResponseInner> handleApprovalDeletionAsync(String resourceGroupName,
@@ -1498,7 +1500,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
@@ -1518,7 +1520,7 @@ public final class EnclaveEndpointsClientImpl implements EnclaveEndpointsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
