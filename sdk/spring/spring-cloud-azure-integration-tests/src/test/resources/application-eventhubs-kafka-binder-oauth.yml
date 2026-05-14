@@ -17,17 +17,6 @@ spring:
           # binder does not create an AdminClient against the Event Hubs endpoint.
           auto-create-topics: false
           health-timeout: 0
-          # Force the binder's producer/consumer/admin clients to use our test
-          # callback handler, which authenticates with the federated
-          # AzurePipelinesCredential (testApplicationOid) the bicep grants
-          # Event Hubs Data Owner to. Otherwise spring-cloud-azure's default
-          # KafkaOAuth2AuthenticateCallbackHandler falls back to
-          # DefaultAzureCredential -> agent managed identity, which has no role.
-          configuration:
-            security.protocol: SASL_SSL
-            sasl.mechanism: OAUTHBEARER
-            sasl.jaas.config: org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-            sasl.login.callback.handler.class: com.azure.spring.cloud.integration.tests.util.TestKafkaOAuth2CallbackHandler
       bindings:
         consume-in-0:
           destination: aad-auth

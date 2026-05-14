@@ -4,6 +4,10 @@ package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
@@ -111,6 +115,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     }
 
     private static class InternalCredentialResolver implements AzureCredentialResolver<TokenCredential> {
+        private static final ClientLogger LOGGER = new ClientLogger(InternalCredentialResolver.class);
+
         private final AzureCredentialResolver<TokenCredential> delegated;
         private final Map<String, ?> configs;
         private TokenCredential credential;
@@ -128,8 +134,22 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                 if (credential == null) {
                     credential = delegated.resolve(properties);
                     if (credential == null) {
-                        // Create DefaultAzureCredential when no credential can be resolved from configs.
-                        credential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
+                        // No credential could be resolved from explicit configuration. Build a chained
+                        // credential: try AzurePipelinesCredential first when the Azure DevOps federated
+                        // workload-identity environment variables are present (DefaultAzureCredential's
+                        // chain intentionally does not include AzurePipelinesCredential because its
+                        // service-connection-id is not auto-discoverable); fall back to
+                        // DefaultAzureCredential for all other environments.
+                        TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
+                        TokenCredential pipelinesCredential = tryBuildAzurePipelinesCredential();
+                        if (pipelinesCredential == null) {
+                            credential = defaultAzureCredential;
+                        } else {
+                            credential = new ChainedTokenCredentialBuilder()
+                                .addLast(pipelinesCredential)
+                                .addLast(defaultAzureCredential)
+                                .build();
+                        }
                     }
                 }
             }
@@ -139,6 +159,40 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         @Override
         public boolean isResolvable(AzureProperties properties) {
             return true;
+        }
+
+        /**
+         * Attempts to build an {@code AzurePipelinesCredential} from the Azure DevOps federated
+         * workload-identity environment variables. Returns {@code null} when any of the required
+         * variables are missing (the typical case outside an Azure DevOps job).
+         */
+        private static TokenCredential tryBuildAzurePipelinesCredential() {
+            Configuration config = Configuration.getGlobalConfiguration();
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+            if (isNullOrEmpty(serviceConnectionId)
+                || isNullOrEmpty(clientId)
+                || isNullOrEmpty(tenantId)
+                || isNullOrEmpty(systemAccessToken)) {
+                return null;
+            }
+            try {
+                return new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build();
+            } catch (RuntimeException e) {
+                LOGGER.verbose("Failed to build AzurePipelinesCredential, will fall back to DefaultAzureCredential.", e);
+                return null;
+            }
+        }
+
+        private static boolean isNullOrEmpty(String value) {
+            return value == null || value.isEmpty();
         }
     }
 }

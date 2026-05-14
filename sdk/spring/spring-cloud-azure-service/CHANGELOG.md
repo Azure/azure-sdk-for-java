@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- When `KafkaOAuth2AuthenticateCallbackHandler` cannot resolve a credential from explicit Azure properties, the fallback now chains an `AzurePipelinesCredential` (built from the standard `AZURESUBSCRIPTION_*` and `SYSTEM_ACCESSTOKEN` environment variables, when all are present) before `DefaultAzureCredential`. This enables Spring Cloud Azure Kafka OAuth2 to authenticate to Azure Event Hubs from Azure DevOps pipeline jobs that use a federated workload-identity service connection without any additional configuration.
+
 ### Breaking Changes
 
 ### Bugs Fixed
