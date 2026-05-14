@@ -76,6 +76,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.RequestedRegion;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -857,6 +858,27 @@ public class ImplementationBridgeHelpers {
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
 
             void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext);
+
+            // ===== Hedging Detection API bridge surface =====
+            //
+            // Single append method — implementation acquires the per-stats `regionLock` and
+            // performs BOTH writes (append to `requestedRegions` AND, if the entry's reason is
+            // HEDGING, flip `hedgingStarted = true`) inside the synchronized block. Reads on
+            // isHedgingStarted() / getRequestedRegions() / getRespondedRegions() also take the
+            // same lock, so any reader observes both writes or neither. See public-spec-java
+            // §M5 / §M6 / §M8 and internal-spec §SE-017.
+            //
+            // Note: there is intentionally NO separate `setHedgingStarted` bridge surface —
+            // compound atomicity is enforced from the bridge.
+            void appendRequestedRegion(CosmosDiagnostics cosmosDiagnostics, RequestedRegion entry);
+
+            void appendRespondedRegion(CosmosDiagnostics cosmosDiagnostics, String regionName);
+
+            List<RequestedRegion> getRequestedRegionsInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            List<String> getRespondedRegionsInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            boolean isHedgingStartedInternal(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

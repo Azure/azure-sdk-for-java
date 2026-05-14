@@ -10,6 +10,8 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.RequestedRegion;
+import com.azure.cosmos.models.RequestedRegionReason;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -67,6 +69,22 @@ public class ClientSideRequestStatistics {
     private long approximateInsertionCountInBloomFilter = 0;
     private Set<String> keywordIdentifiers;
 
+    // ===== Hedging Detection API (cross-SDK Hedging Detection API) =====
+    // The following three fields are guarded together by `regionLock`.
+    // They are intentionally excluded from JSON serialization to avoid surprising the
+    // Spark / encryption / Kafka-connect modules that round-trip this class through Jackson.
+    @JsonIgnore
+    private final Object regionLock = new Object();
+
+    @JsonIgnore
+    private final List<RequestedRegion> requestedRegions = new ArrayList<>();
+
+    @JsonIgnore
+    private final List<String> respondedRegions = new ArrayList<>();
+
+    @JsonIgnore
+    private boolean hedgingStarted = false;
+
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
@@ -113,6 +131,13 @@ public class ClientSideRequestStatistics {
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
         this.approximateInsertionCountInBloomFilter = toBeCloned.approximateInsertionCountInBloomFilter;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
+
+        // Copy hedging-detection state under the source's regionLock so the snapshot is consistent.
+        synchronized (toBeCloned.regionLock) {
+            this.requestedRegions.addAll(toBeCloned.requestedRegions);
+            this.respondedRegions.addAll(toBeCloned.respondedRegions);
+            this.hedgingStarted = toBeCloned.hedgingStarted;
+        }
     }
 
     @JsonIgnore
@@ -213,6 +238,8 @@ public class ClientSideRequestStatistics {
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
                 this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, regionalRoutingContext));
+                // Hedging Detection API: track in arrival order; duplicates allowed (see Javadoc on getRespondedRegions).
+                appendRespondedRegionInternal(storeResponseStatistics.regionName);
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -258,6 +285,8 @@ public class ClientSideRequestStatistics {
                 this.locationEndpointsContacted.add(locationEndpoint);
 
                 this.regionsContactedWithContext.add(new RegionWithContext(regionName, regionalRoutingContext));
+                // Hedging Detection API: track gateway responses in arrival order; duplicates allowed.
+                appendRespondedRegionInternal(regionName);
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -713,6 +742,58 @@ public class ClientSideRequestStatistics {
         }
 
         return this.regionsContactedWithContext.first().locationEndpointsContacted;
+    }
+
+    // ===== Hedging Detection API internal accessors =====
+    //
+    // appendRequestedRegion / appendRespondedRegion and the matching getters are the *only*
+    // mutators / accessors for the new state. They are reachable from the public surface only
+    // via the CosmosDiagnosticsAccessor bridge. All operations acquire the shared `regionLock`
+    // so that any reader sees both the list-append and the `hedgingStarted` flip atomically
+    // (compound atomicity invariant; see public-spec-java §M5/M6/M8 and internal-spec §SE-017).
+
+    @JsonIgnore
+    public void appendRequestedRegionInternal(RequestedRegion entry) {
+        if (entry == null) {
+            return;
+        }
+        synchronized (this.regionLock) {
+            this.requestedRegions.add(entry);
+            if (entry.getReason() == RequestedRegionReason.HEDGING) {
+                this.hedgingStarted = true;
+            }
+        }
+    }
+
+    @JsonIgnore
+    public void appendRespondedRegionInternal(String regionName) {
+        if (regionName == null || regionName.isEmpty()) {
+            return;
+        }
+        synchronized (this.regionLock) {
+            this.respondedRegions.add(regionName);
+        }
+    }
+
+    @JsonIgnore
+    public List<RequestedRegion> getRequestedRegionsSnapshot() {
+        synchronized (this.regionLock) {
+            return Collections.unmodifiableList(new ArrayList<>(this.requestedRegions));
+        }
+    }
+
+    @JsonIgnore
+    public List<String> getRespondedRegionsSnapshot() {
+        synchronized (this.regionLock) {
+            return Collections.unmodifiableList(new ArrayList<>(this.respondedRegions));
+        }
+    }
+
+    @JsonIgnore
+    public boolean isHedgingStartedInternal() {
+        synchronized (this.regionLock) {
+            return this.hedgingStarted;
+        }
     }
 
     public static class StoreResponseStatistics {
