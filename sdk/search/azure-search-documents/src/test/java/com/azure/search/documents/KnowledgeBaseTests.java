@@ -74,7 +74,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class KnowledgeBaseTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME = "shared-knowledge-knowledgebase-index";
     private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "shared-knowledge-knowledgebase-source";
-    private static final String KNOWLEDGEBASE_DEPLOYMENT_NAME = "search-knowledge-base-model";
+    private static final String KNOWLEDGEBASE_DEPLOYMENT_NAME = OPENAI_DEPLOYMENT_NAME;
     private static final KnowledgeBaseAzureOpenAIModel OPEN_AI_KNOWLEDGEBASE_MODEL = new KnowledgeBaseAzureOpenAIModel(
         new AzureOpenAIVectorizerParameters().setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
             .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
