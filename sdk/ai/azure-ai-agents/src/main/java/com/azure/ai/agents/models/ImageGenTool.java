@@ -306,6 +306,8 @@ public final class ImageGenTool extends Tool {
         jsonWriter.writeJsonField("input_image_mask", this.inputImageMask);
         jsonWriter.writeNumberField("partial_images", this.partialImages);
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -348,6 +350,10 @@ public final class ImageGenTool extends Tool {
                     deserializedImageGenTool.partialImages = reader.getNullable(JsonReader::getLong);
                 } else if ("action".equals(fieldName)) {
                     deserializedImageGenTool.action = ImageGenActionEnum.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedImageGenTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedImageGenTool.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -434,6 +440,62 @@ public final class ImageGenTool extends Tool {
     @Generated
     public ImageGenTool setAction(ImageGenActionEnum action) {
         this.action = action;
+        return this;
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

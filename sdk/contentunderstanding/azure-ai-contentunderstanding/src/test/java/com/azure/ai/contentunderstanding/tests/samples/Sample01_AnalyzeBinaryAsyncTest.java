@@ -7,6 +7,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -268,6 +269,18 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
                 .println("⚠️ Content type: " + content.getClass().getSimpleName() + " (AnalysisContent validated)");
         }
         // END:Assertion_ContentUnderstandingAccessDocumentProperties
+
+        // BEGIN:ContentUnderstandingConvertToLlmInputAsync
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingConvertToLlmInputAsync
+
+        // BEGIN:Assertion_ContentUnderstandingConvertToLlmInputAsync
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("contentType: document"));
+        System.out.println("LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingConvertToLlmInputAsync
     }
 
     @Test

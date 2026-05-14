@@ -18,7 +18,7 @@ public interface DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +33,7 @@ public interface DataProtectionsClient {
     /**
      * Validates if a feature is supported.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -11,7 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OkResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +30,7 @@ public final class ResourceProvidersBmsTriggerDataMoveMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        OkResponse response = manager.resourceProviders()
+        manager.resourceProviders()
             .bmsTriggerDataMove("wjhrsidqpxlbtpa", "f",
                 new TriggerDataMoveRequest().withSourceResourceId("ngatwmy")
                     .withSourceRegion("yutrymd")

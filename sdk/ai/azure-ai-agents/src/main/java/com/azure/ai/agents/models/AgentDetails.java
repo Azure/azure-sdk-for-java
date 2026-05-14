@@ -76,6 +76,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
+        jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
+        jsonWriter.writeJsonField("agent_card", this.agentCard);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,6 +96,11 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             String id = null;
             String name = null;
             AgentDetailsVersions versions = null;
+            AgentEndpoint agentEndpoint = null;
+            AgentIdentity instanceIdentity = null;
+            AgentIdentity blueprint = null;
+            AgentBlueprintReference blueprintReference = null;
+            AgentCard agentCard = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -103,11 +110,27 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     name = reader.getString();
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
+                } else if ("agent_endpoint".equals(fieldName)) {
+                    agentEndpoint = AgentEndpoint.fromJson(reader);
+                } else if ("instance_identity".equals(fieldName)) {
+                    instanceIdentity = AgentIdentity.fromJson(reader);
+                } else if ("blueprint".equals(fieldName)) {
+                    blueprint = AgentIdentity.fromJson(reader);
+                } else if ("blueprint_reference".equals(fieldName)) {
+                    blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("agent_card".equals(fieldName)) {
+                    agentCard = AgentCard.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AgentDetails(id, name, versions);
+            AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
+            deserializedAgentDetails.agentEndpoint = agentEndpoint;
+            deserializedAgentDetails.instanceIdentity = instanceIdentity;
+            deserializedAgentDetails.blueprint = blueprint;
+            deserializedAgentDetails.blueprintReference = blueprintReference;
+            deserializedAgentDetails.agentCard = agentCard;
+            return deserializedAgentDetails;
         });
     }
 
@@ -139,5 +162,85 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Generated
     public AgentObjectType getObjectType() {
         return this.objectType;
+    }
+
+    /*
+     * The endpoint configuration for the agent
+     */
+    @Generated
+    private AgentEndpoint agentEndpoint;
+
+    /*
+     * The instance identity of the agent
+     */
+    @Generated
+    private AgentIdentity instanceIdentity;
+
+    /*
+     * The blueprint for the agent
+     */
+    @Generated
+    private AgentIdentity blueprint;
+
+    /*
+     * The blueprint for the agent
+     */
+    @Generated
+    private AgentBlueprintReference blueprintReference;
+
+    /*
+     * The agent_card property.
+     */
+    @Generated
+    private AgentCard agentCard;
+
+    /**
+     * Get the agentEndpoint property: The endpoint configuration for the agent.
+     *
+     * @return the agentEndpoint value.
+     */
+    @Generated
+    public AgentEndpoint getAgentEndpoint() {
+        return this.agentEndpoint;
+    }
+
+    /**
+     * Get the instanceIdentity property: The instance identity of the agent.
+     *
+     * @return the instanceIdentity value.
+     */
+    @Generated
+    public AgentIdentity getInstanceIdentity() {
+        return this.instanceIdentity;
+    }
+
+    /**
+     * Get the blueprint property: The blueprint for the agent.
+     *
+     * @return the blueprint value.
+     */
+    @Generated
+    public AgentIdentity getBlueprint() {
+        return this.blueprint;
+    }
+
+    /**
+     * Get the blueprintReference property: The blueprint for the agent.
+     *
+     * @return the blueprintReference value.
+     */
+    @Generated
+    public AgentBlueprintReference getBlueprintReference() {
+        return this.blueprintReference;
+    }
+
+    /**
+     * Get the agentCard property: The agent_card property.
+     *
+     * @return the agentCard value.
+     */
+    @Generated
+    public AgentCard getAgentCard() {
+        return this.agentCard;
     }
 }

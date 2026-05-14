@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRe
  */
 public final class ResourceProviderBmsTriggerDataMoveSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupDataMove/TriggerDataMove_Post.json
+     * x-ms-original-file: 2026-01-31-preview/BackupDataMove/TriggerDataMove_Post.json
      */
     /**
      * Sample code: Trigger Data Move.

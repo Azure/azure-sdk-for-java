@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters
  */
 public final class ConfigurationStoresRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresRegenerateKey.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresRegenerateKey.json
      */
     /**
      * Sample code: ConfigurationStores_RegenerateKey.

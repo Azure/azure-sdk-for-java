@@ -21,7 +21,7 @@ public final class SharedLimitsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceName\":{\"value\":\"yjgzjaoyfhrtxiln\",\"localizedValue\":\"kujysvlejuvfq\"},\"limit\":1135390068,\"unit\":\"yxwjkcp\",\"provisioningState\":\"Canceled\"},\"id\":\"b\",\"name\":\"gjvtbv\",\"type\":\"ysszdnrujqguh\"}";
+            = "{\"properties\":{\"resourceName\":{\"value\":\"hd\",\"localizedValue\":\"i\"},\"limit\":996013729,\"unit\":\"jnxqbzvddntwn\",\"provisioningState\":\"Failed\"},\"id\":\"btwnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class SharedLimitsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SharedLimit response = manager.sharedLimits()
-            .define("modmglougpb")
-            .withExistingLocation("iqfouflmmnkz")
+            .define("gmaajrm")
+            .withExistingLocation("po")
             .withProperties(new SharedLimitProperties())
             .create();
 

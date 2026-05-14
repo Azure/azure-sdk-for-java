@@ -9,6 +9,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -140,6 +141,14 @@ public class Sample01_AnalyzeBinaryAsync {
                     System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
                 }
                 // END:ContentUnderstandingAccessDocumentPropertiesAsync
+
+                // BEGIN:ContentUnderstandingConvertToLlmInputAsync
+                String llmText = LlmInputHelper.toLlmInput(result);
+                System.out.println("\n============================================================");
+                System.out.println("LLM-READY OUTPUT");
+                System.out.println("============================================================");
+                System.out.println(llmText);
+                // END:ContentUnderstandingConvertToLlmInputAsync
 
                 System.out.println("\nBinary document analysis completed successfully");
             })
