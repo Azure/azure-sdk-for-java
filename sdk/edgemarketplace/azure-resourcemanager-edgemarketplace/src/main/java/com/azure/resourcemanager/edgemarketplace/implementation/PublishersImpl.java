@@ -29,12 +29,8 @@ public final class PublishersImpl implements Publishers {
 
     public Response<Publisher> getWithResponse(String resourceUri, String publisherName, Context context) {
         Response<PublisherInner> inner = this.serviceClient().getWithResponse(resourceUri, publisherName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PublisherImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PublisherImpl(inner.getValue(), this.manager()));
     }
 
     public Publisher get(String resourceUri, String publisherName) {

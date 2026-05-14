@@ -33,12 +33,8 @@ public final class OffersImpl implements Offers {
 
     public Response<Offer> getWithResponse(String resourceUri, String offerId, Context context) {
         Response<OfferInner> inner = this.serviceClient().getWithResponse(resourceUri, offerId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OfferImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OfferImpl(inner.getValue(), this.manager()));
     }
 
     public Offer get(String resourceUri, String offerId) {
@@ -85,12 +81,8 @@ public final class OffersImpl implements Offers {
         AccessTokenReadRequest body, Context context) {
         Response<DiskAccessTokenInner> inner
             = this.serviceClient().getAccessTokenWithResponse(resourceUri, offerId, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiskAccessTokenImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiskAccessTokenImpl(inner.getValue(), this.manager()));
     }
 
     public DiskAccessToken getAccessToken(String resourceUri, String offerId, AccessTokenReadRequest body) {
