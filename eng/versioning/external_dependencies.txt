@@ -251,7 +251,7 @@ cosmos_com.microsoft.azure:applicationinsights-core;2.6.4
 cosmos_io.micrometer:micrometer-core;1.15.1
 cosmos_io.micrometer:micrometer-registry-azure-monitor;1.15.1
 cosmos_io.micrometer:micrometer-registry-graphite;1.15.1
-
+``
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2
 cosmos-scala213_org.scalatest:scalatest_2.13;3.2.2
