@@ -157,10 +157,13 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
         /**
          * Attempts to build an {@code AzurePipelinesCredential} from the Azure DevOps federated
-         * workload-identity environment variables. Returns {@code null} when any of the required
-         * variables are missing (the typical case outside an Azure DevOps job). The authority host
-         * is taken from the {@link AzureProperties} profile so that the credential targets the
-         * correct cloud (public, China, US Gov).
+         * workload-identity environment variables. Returns {@code null} when any of the four
+         * caller-provided variables ({@code AZURESUBSCRIPTION_SERVICE_CONNECTION_ID},
+         * {@code AZURESUBSCRIPTION_CLIENT_ID}, {@code AZURESUBSCRIPTION_TENANT_ID},
+         * {@code SYSTEM_ACCESSTOKEN}) are missing, or when {@code AzurePipelinesCredentialBuilder#build()}
+         * itself fails (e.g. {@code SYSTEM_OIDCREQUESTURI} is unavailable outside an Azure DevOps
+         * job). The authority host is taken from the {@link AzureProperties} profile so that the
+         * credential targets the correct cloud (public, China, US Gov).
          */
         private static TokenCredential tryBuildAzurePipelinesCredential(AzureProperties properties) {
             Configuration config = Configuration.getGlobalConfiguration();
