@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
@@ -80,6 +81,32 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
             (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
         assertNotNull(azureTokenCredentialResolver);
         assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
+    }
+
+    @Test
+    void testCreateChainedTokenCredentialWhenAzurePipelinesEnvVarsPresent() {
+        System.setProperty("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", "test-service-connection-id");
+        System.setProperty("AZURESUBSCRIPTION_CLIENT_ID", "00000000-0000-0000-0000-000000000000");
+        System.setProperty("AZURESUBSCRIPTION_TENANT_ID", "11111111-1111-1111-1111-111111111111");
+        System.setProperty("SYSTEM_ACCESSTOKEN", "test-system-access-token");
+        try {
+            Map<String, Object> configs = new HashMap<>();
+            configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
+            KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
+            handler.configure(configs, null, null);
+
+            AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
+                    .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
+            @SuppressWarnings("unchecked") AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
+                (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
+            assertNotNull(azureTokenCredentialResolver);
+            assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ChainedTokenCredential);
+        } finally {
+            System.clearProperty("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            System.clearProperty("AZURESUBSCRIPTION_CLIENT_ID");
+            System.clearProperty("AZURESUBSCRIPTION_TENANT_ID");
+            System.clearProperty("SYSTEM_ACCESSTOKEN");
+        }
     }
 
     @Test
