@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsPutSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/PutUpdateRuns.json
+     * x-ms-original-file: 2026-04-30/PutUpdateRuns.json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
