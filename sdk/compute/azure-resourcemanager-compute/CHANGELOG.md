@@ -1,14 +1,22 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.58.0 (2026-05-15)
 
 ### Features Added
 
-### Breaking Changes
+* `models.UrgencyLevel` was added
 
-### Bugs Fixed
+* `models.ExtensionFeatureTag` was added
 
-### Other Changes
+* `models.ExtensionFeatureMetadata` was added
+
+* `models.RunProfile` was added
+
+* `models.ReleaseCategory` was added
+
+#### `models.VirtualMachinePriorityTypes` was modified
+
+* `SPOT_PLUS` was added
 
 ## 2.57.1 (2026-05-05)
 
