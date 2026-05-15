@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionIntentGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/BackupProtectionIntent_Get.json
+     * x-ms-original-file: 2026-01-31-preview/AzureWorkload/BackupProtectionIntent_Get.json
      */
     /**
      * Sample code: Get ProtectionIntent for an item.

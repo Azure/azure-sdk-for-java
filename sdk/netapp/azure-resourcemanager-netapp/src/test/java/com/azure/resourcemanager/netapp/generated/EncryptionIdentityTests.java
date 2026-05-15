@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionIdentity model = BinaryData
-            .fromString(
-                "{\"principalId\":\"mc\",\"userAssignedIdentity\":\"hixbjxyfwnyl\",\"federatedClientId\":\"ool\"}")
+        EncryptionIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"fgmvecactxmwo\",\"userAssignedIdentity\":\"yowc\",\"federatedClientId\":\"qovekqvgqou\"}")
             .toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("hixbjxyfwnyl", model.userAssignedIdentity());
-        Assertions.assertEquals("ool", model.federatedClientId());
+        Assertions.assertEquals("yowc", model.userAssignedIdentity());
+        Assertions.assertEquals("qovekqvgqou", model.federatedClientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EncryptionIdentity model
-            = new EncryptionIdentity().withUserAssignedIdentity("hixbjxyfwnyl").withFederatedClientId("ool");
+            = new EncryptionIdentity().withUserAssignedIdentity("yowc").withFederatedClientId("qovekqvgqou");
         model = BinaryData.fromObject(model).toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("hixbjxyfwnyl", model.userAssignedIdentity());
-        Assertions.assertEquals("ool", model.federatedClientId());
+        Assertions.assertEquals("yowc", model.userAssignedIdentity());
+        Assertions.assertEquals("qovekqvgqou", model.federatedClientId());
     }
 }

@@ -43,12 +43,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
     private Boolean includeReferenceSourceData;
 
     /*
-     * Indicates that this knowledge source should bypass source selection and always be queried at retrieval time.
-     */
-    @Generated
-    private Boolean alwaysQuerySource;
-
-    /*
      * The reranker threshold all retrieved documents must meet to be included in the response.
      */
     @Generated
@@ -133,30 +127,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
     }
 
     /**
-     * Get the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     *
-     * @return the alwaysQuerySource value.
-     */
-    @Generated
-    public Boolean isAlwaysQuerySource() {
-        return this.alwaysQuerySource;
-    }
-
-    /**
-     * Set the alwaysQuerySource property: Indicates that this knowledge source should bypass source selection and
-     * always be queried at retrieval time.
-     *
-     * @param alwaysQuerySource the alwaysQuerySource value to set.
-     * @return the KnowledgeSourceParams object itself.
-     */
-    @Generated
-    public KnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        this.alwaysQuerySource = alwaysQuerySource;
-        return this;
-    }
-
-    /**
      * Get the rerankerThreshold property: The reranker threshold all retrieved documents must meet to be included in
      * the response.
      *
@@ -191,7 +161,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("includeReferences", this.includeReferences);
         jsonWriter.writeBooleanField("includeReferenceSourceData", this.includeReferenceSourceData);
-        jsonWriter.writeBooleanField("alwaysQuerySource", this.alwaysQuerySource);
         jsonWriter.writeNumberField("rerankerThreshold", this.rerankerThreshold);
         return jsonWriter.writeEndObject();
     }
@@ -227,14 +196,10 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     return SearchIndexKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("indexedSharePoint".equals(discriminatorValue)) {
-                    return IndexedSharePointKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("indexedOneLake".equals(discriminatorValue)) {
                     return IndexedOneLakeKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return WebKnowledgeSourceParams.fromJson(readerToUse.reset());
-                } else if ("remoteSharePoint".equals(discriminatorValue)) {
-                    return RemoteSharePointKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -249,7 +214,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             KnowledgeSourceKind kind = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -262,8 +226,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else {
@@ -274,7 +236,6 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             deserializedKnowledgeSourceParams.kind = kind;
             deserializedKnowledgeSourceParams.includeReferences = includeReferences;
             deserializedKnowledgeSourceParams.includeReferenceSourceData = includeReferenceSourceData;
-            deserializedKnowledgeSourceParams.alwaysQuerySource = alwaysQuerySource;
             deserializedKnowledgeSourceParams.rerankerThreshold = rerankerThreshold;
             return deserializedKnowledgeSourceParams;
         });

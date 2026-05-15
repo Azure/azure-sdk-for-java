@@ -31,12 +31,8 @@ public final class CertificateObjectGlobalRulestacksImpl implements CertificateO
         Context context) {
         Response<CertificateObjectGlobalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(globalRulestackName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CertificateObjectGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CertificateObjectGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public CertificateObjectGlobalRulestackResource get(String globalRulestackName, String name) {

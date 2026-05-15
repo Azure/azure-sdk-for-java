@@ -29,8 +29,9 @@ import java.util.UUID;
  * in the Azure Cosmos DB database service.
  */
 public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> implements OverridableRequestOptions {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
+    }
 
     private ConsistencyLevel consistencyLevel;
     private ReadConsistencyStrategy readConsistencyStrategy;
@@ -44,6 +45,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private CosmosDiagnosticsThresholds thresholds;
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
+    private boolean queryAdviceEnabled;
     private UUID correlationActivityId;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
@@ -76,6 +78,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
+        this.queryAdviceEnabled = options.queryAdviceEnabled;
         this.correlationActivityId = options.correlationActivityId;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
@@ -371,7 +374,8 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
             return CosmosDiagnosticsThresholds.DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
         }
 
-        return thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds);
+        return diagThresholdsAccessor()
+            .getNonPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
@@ -440,6 +444,34 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     }
 
     /**
+     * Gets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries.
+     *
+     * @return queryAdviceEnabled (default: false)
+     */
+    @Override
+    public Boolean isQueryAdviceEnabled() {
+        return queryAdviceEnabled;
+    }
+
+    /**
+     * Sets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries. By default, query advice is disabled.
+     *
+     * @param queryAdviceEnabled a boolean used to obtain the query advice
+     * @return the current request options instance
+     */
+    @SuppressWarnings("unchecked")
+    public T setQueryAdviceEnabled(boolean queryAdviceEnabled) {
+        this.queryAdviceEnabled = queryAdviceEnabled;
+        return (T)this;
+    }
+
+    /**
      * Sets the custom query request option value by key
      *
      * @param name  a string representing the custom option's name
@@ -479,6 +511,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * Gets the custom item serializer defined for this instance of request options
      * @return the custom item serializer
      */
+    @Override
     public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
@@ -520,9 +553,11 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.indexMetricsEnabled = overrideOption(cosmosRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryAdviceEnabled = overrideOption(cosmosRequestOptions.isQueryAdviceEnabled(), this.queryAdviceEnabled);
         this.queryMetricsEnabled = overrideOption(cosmosRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
         this.responseContinuationTokenLimitInKb = overrideOption(cosmosRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.customSerializer = overrideOption(cosmosRequestOptions.getCustomItemSerializer(), this.customSerializer);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

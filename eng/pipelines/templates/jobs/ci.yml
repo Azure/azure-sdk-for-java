@@ -40,6 +40,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -97,6 +100,14 @@ jobs:
       os: linux
 
     steps:
+      # Fail fast if this is a manual release build but no packages were selected.
+      # When manually triggering the pipeline, at least one release_* parameter must be checked.
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual'), eq(length(parameters.ReleaseArtifacts), 0)) }}:
+        - pwsh: |
+            Write-Host "##vso[task.logissue type=error]No packages selected for release. When manually queuing this pipeline, please select at least one package by checking the appropriate package-name parameter(s)."
+            exit 1
+          displayName: 'Validate: at least one package is selected for release'
+
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
@@ -197,6 +208,11 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
           parameters:
             PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+      - task: PipAuthenticate@1
+        displayName: 'Pip Authenticate to Azure Artifacts'
+        inputs:
+          artifactFeeds: 'public/azure-sdk-for-python'
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -351,10 +367,21 @@ jobs:
             Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
 
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
+
+      # Authenticate npm to Azure Artifacts before any npm-backed Analyze steps run.
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+        parameters:
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
+
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
+          NpmConfigUserConfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - ${{ if eq(parameters.TestPipeline, true) }}:
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
@@ -408,10 +435,8 @@ jobs:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
 
-      - task: UseNode@1
-        inputs:
-          version: 22.x
-        displayName: Use Node.js 22.x
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - task: PowerShell@2
         displayName: Verify Swagger and TypeSpec Code Generation
@@ -421,9 +446,8 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
-
-      # Authenticate with Azure Artifacts
-      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -503,6 +527,7 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        BuildOptions: ${{ parameters.BuildOptions }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}

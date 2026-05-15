@@ -17,15 +17,14 @@ import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.query.queryadvisor.QueryAdvice;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -39,9 +38,9 @@ import java.util.regex.Pattern;
  */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
@@ -55,6 +54,21 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+
+    // All header maps are produced by the SDK's own query pipeline. Non-null maps
+    // are always mutable (HashMap or ConcurrentHashMap) - the SDK intentionally
+    // allows callers to add/modify headers on FeedResponse. The only known
+    // exception is empty-page responses where the query pipeline may pass null.
+    // We do NOT clone non-null maps here to avoid unnecessary allocations on every
+    // FeedResponse construction - the wider blast radius of cloning (every query,
+    // change feed, readMany response) is not justified by the narrow null case.
+    // If a future code path introduces an immutable non-null header map, the
+    // setContinuationTokenInternal method will fail fast with
+    // UnsupportedOperationException, and the fix should be to make the upstream
+    // pipeline emit a mutable map rather than adding defensive cloning here.
+    private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
+        return headers == null ? new HashMap<>() : headers;
+    }
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -92,14 +106,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         if (diagnostics != null) {
             ClientSideRequestStatistics requestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatisticsRaw(diagnostics);
+                diagAccessor().getClientSideRequestStatisticsRaw(diagnostics);
             if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(cosmosDiagnostics,
+                diagAccessor().addClientSideDiagnosticsToFeed(cosmosDiagnostics,
                     Collections.singletonList(requestStatistics));
             } else {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                diagAccessor().addClientSideDiagnosticsToFeed(
                     cosmosDiagnostics,
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
+                    diagAccessor().getClientSideRequestStatistics(diagnostics));
             }
         }
     }
@@ -113,7 +127,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         boolean nochanges,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -130,7 +144,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         CosmosDiagnostics diagnostics) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -146,7 +160,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         // NOTE - it is important to use HashMap over ConcurrentHashMap here because some keys/values might be null
         // and this is not allowed in ConcurrentHashMap - while it is ok in HashMap
-        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : null;
+        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : new HashMap<>();
 
         this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
         this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;
@@ -431,9 +445,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             ? HttpConstants.HttpHeaders.E_TAG
             : HttpConstants.HttpHeaders.CONTINUATION;
 
+        setContinuationTokenInternal(headerName, continuationToken);
+    }
+
+    private void setContinuationTokenInternal(String headerName, String continuationToken) {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
-        } else {
+        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
+            // The query API returns unmodifiable header collections for empty
+            // responses (no documents returned - when only header set is request charge)
+            // the protection here to check for existence of the header before attempting
+            // to remove it would not be robust enough against unknown headers
+            // but since we only ever call our own query pipeline
+            // avoiding cloning in all cases and gating on continuation header
+            // existence is a reasonable trade-off - test coverage exists that uncovered
+            // the problem - so, this acts as regression test as well
+            // --> the test coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
+            // it should "return empty results for non-existent partition keys"
             this.header.remove(headerName);
         }
     }
@@ -458,6 +486,28 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public Map<String, String> getResponseHeaders() {
         return header;
+    }
+
+    /**
+     * Gets the query advice returned by the Cosmos DB query advisor, or {@code null} if the
+     * request was not made with {@code populateQueryAdvice} enabled or no advice is available.
+     *
+     * <p>The returned string contains one advice recommendation per line. Each line has the form:
+     * {@code <RuleId>: <message> For more information, please visit <url>}</p>
+     *
+     * @return human-readable query advice string, or {@code null} if none is available.
+     */
+    public String getQueryAdvice() {
+        String rawHeader = getValueOrNull(this.header, HttpConstants.HttpHeaders.QUERY_ADVICE);
+        if (rawHeader == null) {
+            return null;
+        }
+        QueryAdvice queryAdvice = QueryAdvice.tryCreateFromString(rawHeader);
+        if (queryAdvice == null) {
+            return null;
+        }
+        String result = queryAdvice.toString();
+        return result.isEmpty() ? null : result;
     }
 
     private String getQueryMetricsString() {

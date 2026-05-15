@@ -68,7 +68,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyClientPolicyAs")
+    @ServiceInterface(name = "PolicyClientPolicyAssignments")
     public interface PolicyAssignmentsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
@@ -179,8 +179,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentInner>> getById(@HostParam("$host") String endpoint,
             @PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId,
-            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/{policyAssignmentId}")
@@ -256,7 +255,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -297,7 +296,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, accept, context);
@@ -412,7 +411,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -459,7 +458,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, parameters, accept,
@@ -574,7 +573,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), scope, policyAssignmentName, expand,
@@ -615,7 +614,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, policyAssignmentName, expand, apiVersion, accept, context);
@@ -729,7 +728,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -776,7 +775,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, parameters, accept,
@@ -904,7 +903,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -960,7 +959,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1215,7 +1214,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1302,7 +1301,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1608,7 +1607,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForManagementGroup(this.client.getEndpoint(), managementGroupId, filter,
@@ -1657,7 +1656,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1861,7 +1860,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), filter, expand, top, apiVersion,
@@ -1912,7 +1911,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2109,7 +2108,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.deleteById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context))
@@ -2146,7 +2145,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context);
@@ -2258,7 +2257,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createById(this.client.getEndpoint(), policyAssignmentId, apiVersion,
@@ -2303,7 +2302,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createById(this.client.getEndpoint(), policyAssignmentId, apiVersion, parameters, accept,
@@ -2400,15 +2399,13 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand) {
+    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2417,11 +2414,11 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getById(this.client.getEndpoint(), policyAssignmentId, expand, apiVersion,
-                accept, context))
+            .withContext(
+                context -> service.getById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2437,8 +2434,6 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2446,8 +2441,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand,
-        Context context) {
+    private Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2456,10 +2450,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getById(this.client.getEndpoint(), policyAssignmentId, expand, apiVersion, accept, context);
+        return service.getById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context);
     }
 
     /**
@@ -2481,8 +2475,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
-        final String expand = null;
-        return getByIdWithResponseAsync(policyAssignmentId, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getByIdWithResponseAsync(policyAssignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2497,8 +2490,6 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
-     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2506,9 +2497,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, String expand,
-        Context context) {
-        return getByIdWithResponseAsync(policyAssignmentId, expand, context).block();
+    public Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, Context context) {
+        return getByIdWithResponseAsync(policyAssignmentId, context).block();
     }
 
     /**
@@ -2530,8 +2520,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyAssignmentInner getById(String policyAssignmentId) {
-        final String expand = null;
-        return getByIdWithResponse(policyAssignmentId, expand, Context.NONE).getValue();
+        return getByIdWithResponse(policyAssignmentId, Context.NONE).getValue();
     }
 
     /**
@@ -2570,7 +2559,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateById(this.client.getEndpoint(), policyAssignmentId, apiVersion,
@@ -2615,7 +2604,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateById(this.client.getEndpoint(), policyAssignmentId, apiVersion, parameters, accept,
@@ -2701,6 +2690,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2728,6 +2719,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2755,6 +2748,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2781,6 +2776,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2808,6 +2805,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a management group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2835,6 +2834,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a management group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2862,6 +2863,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2887,6 +2890,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     }
 
     /**
+     * Retrieves all policy assignments that apply to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

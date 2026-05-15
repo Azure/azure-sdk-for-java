@@ -31,12 +31,8 @@ public final class GatewaysImpl implements Gateways {
         Context context) {
         Response<GatewayInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, gatewayName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GatewayImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GatewayImpl(inner.getValue(), this.manager()));
     }
 
     public Gateway getByResourceGroup(String resourceGroupName, String gatewayName) {

@@ -10,9 +10,15 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager;
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingPeriod;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperation;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,7 +32,7 @@ public final class DisconnectedOperationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"aierhhb\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Disconnected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"jtjaodxobnbdxkq\"},\"location\":\"okaj\",\"tags\":{\"aajrm\":\"pimexgstxgcpodg\",\"clwhijcoejctbz\":\"djwzrlov\"},\"id\":\"qsqsy\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"qn\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Disconnected\",\"registrationStatus\":\"Unregistered\",\"deviceVersion\":\"fqrvkdvjsllrmvvd\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Disabled\",\"current\":{\"cores\":1829419035,\"pricingModel\":\"Annual\"},\"upcoming\":{\"cores\":608072417,\"pricingModel\":\"Annual\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":2058649208}},\"location\":\"uwiqzb\",\"tags\":{\"zdobpxjmflbvvnch\":\"sovmyokacspkwl\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"vxieduugidyj\",\"name\":\"rfbyaosvexcso\",\"type\":\"pclhocohslk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +42,35 @@ public final class DisconnectedOperationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DisconnectedOperation response = manager.disconnectedOperations()
-            .define("flnrosfqpteehzz")
-            .withRegion("hjtckwhd")
-            .withExistingResourceGroup("mdwzjeiachboo")
-            .withTags(mapOf("znorcj", "fiyipjxsqwpgrj", "xqabnmocpcysh", "vsnb", "klj", "rzafbljjgpbtoqcj",
-                "qajzyulpkudjkr", "vbqid"))
-            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED)
-                .withRegistrationStatus(RegistrationStatus.UNREGISTERED)
-                .withDeviceVersion("oodqxhcrm"))
+            .define("a")
+            .withRegion("ydagfuaxbe")
+            .withExistingResourceGroup("nysounqe")
+            .withTags(mapOf("wqsmbsur", "uokktwhrdxwz"))
+            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.CONNECTED)
+                .withRegistrationStatus(RegistrationStatus.REGISTERED)
+                .withDeviceVersion("pjmcmatuokthfuiu")
+                .withBillingConfiguration(new BillingConfiguration().withAutoRenew(AutoRenew.DISABLED)
+                    .withCurrent(new BillingPeriod().withCores(680550088).withPricingModel(PricingModel.TRIAL))
+                    .withUpcoming(new BillingPeriod().withCores(1920880851).withPricingModel(PricingModel.ANNUAL)))
+                .withBenefitPlans(new BenefitPlans().withAzureHybridWindowsServerBenefit(BenefitPlanStatus.DISABLED)
+                    .withWindowsServerVmCount(1621494681)))
             .create();
 
-        Assertions.assertEquals("okaj", response.location());
-        Assertions.assertEquals("pimexgstxgcpodg", response.tags().get("aajrm"));
+        Assertions.assertEquals("uwiqzb", response.location());
+        Assertions.assertEquals("sovmyokacspkwl", response.tags().get("zdobpxjmflbvvnch"));
         Assertions.assertEquals(ConnectionIntent.CONNECTED, response.properties().connectionIntent());
-        Assertions.assertEquals(RegistrationStatus.REGISTERED, response.properties().registrationStatus());
-        Assertions.assertEquals("jtjaodxobnbdxkq", response.properties().deviceVersion());
+        Assertions.assertEquals(RegistrationStatus.UNREGISTERED, response.properties().registrationStatus());
+        Assertions.assertEquals("fqrvkdvjsllrmvvd", response.properties().deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED, response.properties().billingConfiguration().autoRenew());
+        Assertions.assertEquals(1829419035, response.properties().billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            response.properties().billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(608072417, response.properties().billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            response.properties().billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.DISABLED,
+            response.properties().benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(2058649208, response.properties().benefitPlans().windowsServerVmCount());
     }
 
     // Use "Map.of" if available

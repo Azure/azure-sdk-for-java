@@ -1,6 +1,6 @@
 # Release History
 
-## 12.34.0-beta.2 (Unreleased)
+## 12.35.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.33.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.2` to version `12.18.3`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-storage-common` from `12.32.2` to version `12.32.3`.
+
+## 12.33.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.18.2`.
+
+
+## 12.35.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS. 
+- Added support for service version 2026-06-06.
 
 ## 12.34.0-beta.1 (2026-02-19)
 

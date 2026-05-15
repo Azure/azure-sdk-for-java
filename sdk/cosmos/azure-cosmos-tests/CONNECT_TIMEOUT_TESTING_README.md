@@ -20,7 +20,7 @@ Only `iptables DROP SYN` prevents the TCP handshake, triggering the real netty `
 - Docker Desktop with Linux containers
 - Docker memory: **8 GB+**
 - A Cosmos DB account with thin client enabled
-- System properties: `COSMOS.THINCLIENT_ENABLED=true`, `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=5` (default; override to 1 for fast-fail local tests)
+- System properties: `COSMOS.THINCLIENT_ENABLED=true`, `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS=5000` (default; override to 1000 for fast-fail local tests)
 - Credentials in `sdk/cosmos/cosmos-v4.properties`
 
 ## Build & Run
@@ -36,7 +36,7 @@ docker run --rm --cap-add=NET_ADMIN --memory 8g \
   cosmos-netem-test bash -c '
     cd /workspace && \
     java -DCOSMOS.THINCLIENT_ENABLED=true \
-      -DCOSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=1 \
+      -DCOSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS=1000 \
       -DCOSMOS.HTTP2_ENABLED=true \
       org.testng.TestNG /workspace/azure-cosmos-tests/src/test/resources/manual-thinclient-network-delay-testng.xml \
       -verbose 2
@@ -111,4 +111,4 @@ is required to route non-SYN traffic to band 3 (no delay).
 - Tests run **sequentially** — tc/iptables are interface-global
 - `--cap-add=NET_ADMIN` required for both `tc` and `iptables`
 - `@AfterClass` removes all iptables rules (`alwaysRun=true`)
-- System property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS=1` sets the 1s bifurcated timeout
+- System property `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS=1000` sets the 1s bifurcated timeout

@@ -117,7 +117,7 @@ public interface DnsResolverDomainLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes a DNS resolver domain list.
      */
     DnsResolverDomainList bulk(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListBulk parameters);
@@ -136,7 +136,7 @@ public interface DnsResolverDomainLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes a DNS resolver domain list.
      */
     DnsResolverDomainList bulk(String resourceGroupName, String dnsResolverDomainListName,
         DnsResolverDomainListBulk parameters, String ifMatch, String ifNoneMatch, Context context);

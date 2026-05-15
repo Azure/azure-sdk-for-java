@@ -31,12 +31,8 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
         Context context) {
         Response<FqdnListGlobalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(globalRulestackName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FqdnListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FqdnListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public FqdnListGlobalRulestackResource get(String globalRulestackName, String name) {

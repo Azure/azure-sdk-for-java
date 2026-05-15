@@ -141,6 +141,8 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
     @JsonProperty
     private final RntbdToken correlatedActivityId;
     @JsonProperty
+    private final RntbdToken queryAdvice;
+    @JsonProperty
     private final RntbdToken globalNRegionCommittedGLSN;
 
     // endregion
@@ -202,6 +204,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
         this.xpRole = this.get(RntbdResponseHeader.XPRole);
         this.backendRequestDurationMilliseconds = this.get(RntbdResponseHeader.BackendRequestDurationMilliseconds);
         this.correlatedActivityId = this.get(RntbdResponseHeader.CorrelatedActivityId);
+        this.queryAdvice = this.get(RntbdResponseHeader.QueryAdvice);
         this.globalNRegionCommittedGLSN = this.get(RntbdResponseHeader.GlobalNRegionCommittedGLSN);
     }
 
@@ -307,6 +310,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
         this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
         this.mapValue(this.backendRequestDurationMilliseconds, BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, Double::parseDouble, headers);
         this.mapValue(this.correlatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID, UUID::fromString, headers);
+        this.mapValue(this.queryAdvice, BackendHeaders.QUERY_ADVICE, String::toString, headers);
         this.mapValue(this.globalNRegionCommittedGLSN, BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN, Long::parseLong, headers);
     }
 
@@ -507,6 +511,10 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
 
         collector.accept(this.correlatedActivityId, token ->
             toUuidEntry(HttpHeaders.CORRELATED_ACTIVITY_ID, token));
+
+        collector.accept(this.queryAdvice, token ->
+            toStringEntry(BackendHeaders.QUERY_ADVICE, token)
+        );
 
         collector.accept(this.globalNRegionCommittedGLSN, token ->
             toLongEntry(BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN, token)

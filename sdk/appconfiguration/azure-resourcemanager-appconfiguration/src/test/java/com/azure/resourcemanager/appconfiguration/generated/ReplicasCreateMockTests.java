@@ -21,7 +21,7 @@ public final class ReplicasCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpoint\":\"xgc\",\"provisioningState\":\"Succeeded\"},\"location\":\"rhos\",\"id\":\"dqrhzoymib\",\"name\":\"rq\",\"type\":\"ibahwflus\"}";
+            = "{\"properties\":{\"endpoint\":\"qfkuvscxkdmli\",\"provisioningState\":\"Succeeded\"},\"location\":\"brxk\",\"id\":\"loazuruocbgoo\",\"name\":\"bteoybf\",\"type\":\"jxakv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ReplicasCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Replica response = manager.replicas()
-            .define("ksmond")
-            .withExistingConfigurationStore("iyzvqtmnub", "xkp")
-            .withRegion("ajqgxy")
+            .define("tsttktlahbq")
+            .withExistingConfigurationStore("yhgk", "minsgowzf")
+            .withRegion("n")
             .create();
 
-        Assertions.assertEquals("rhos", response.location());
+        Assertions.assertEquals("brxk", response.location());
     }
 }

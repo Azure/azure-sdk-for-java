@@ -7,7 +7,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.codahale.metrics.MetricRegistry;
 
 import java.util.UUID;
 
@@ -16,8 +15,8 @@ class SyncWriteBenchmark extends SyncBenchmark<CosmosItemResponse> {
     private final String dataFieldValue;
     private final String uuid;
 
-    SyncWriteBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws Exception {
-        super(workloadCfg, sharedRegistry);
+    SyncWriteBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
+        super(workloadCfg);
 
         uuid = UUID.randomUUID().toString();
         dataFieldValue =

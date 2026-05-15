@@ -67,6 +67,13 @@ public final class DeletedSecretBundle implements JsonSerializable<DeletedSecret
     private Boolean managed;
 
     /*
+     * The version of the previous certificate, if applicable. Applies only to certificates created after June 1, 2025.
+     * Certificates created before this date are not retroactively updated.
+     */
+    @Generated
+    private String previousVersion;
+
+    /*
      * The url of the recovery object, used to identify and recover the deleted secret.
      */
     @Generated
@@ -164,6 +171,17 @@ public final class DeletedSecretBundle implements JsonSerializable<DeletedSecret
     }
 
     /**
+     * Get the previousVersion property: The version of the previous certificate, if applicable. Applies only to
+     * certificates created after June 1, 2025. Certificates created before this date are not retroactively updated.
+     * 
+     * @return the previousVersion value.
+     */
+    @Generated
+    public String getPreviousVersion() {
+        return this.previousVersion;
+    }
+
+    /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
      * 
      * @return the recoveryId value.
@@ -211,6 +229,7 @@ public final class DeletedSecretBundle implements JsonSerializable<DeletedSecret
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeJsonField("attributes", this.attributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("previousVersion", this.previousVersion);
         jsonWriter.writeStringField("recoveryId", this.recoveryId);
         return jsonWriter.writeEndObject();
     }
@@ -246,6 +265,8 @@ public final class DeletedSecretBundle implements JsonSerializable<DeletedSecret
                     deserializedDeletedSecretBundle.kid = reader.getString();
                 } else if ("managed".equals(fieldName)) {
                     deserializedDeletedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("previousVersion".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.previousVersion = reader.getString();
                 } else if ("recoveryId".equals(fieldName)) {
                     deserializedDeletedSecretBundle.recoveryId = reader.getString();
                 } else if ("scheduledPurgeDate".equals(fieldName)) {

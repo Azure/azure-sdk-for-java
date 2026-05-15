@@ -31,12 +31,8 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
         String authenticationSettingName, Context context) {
         Response<AuthenticationSettingInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, healthModelName, authenticationSettingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AuthenticationSettingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AuthenticationSettingImpl(inner.getValue(), this.manager()));
     }
 
     public AuthenticationSetting get(String resourceGroupName, String healthModelName,

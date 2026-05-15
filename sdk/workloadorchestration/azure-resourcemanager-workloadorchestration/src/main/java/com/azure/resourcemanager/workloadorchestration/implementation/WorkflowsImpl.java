@@ -31,12 +31,8 @@ public final class WorkflowsImpl implements Workflows {
         Context context) {
         Response<WorkflowInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, contextName, workflowName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkflowImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkflowImpl(inner.getValue(), this.manager()));
     }
 
     public Workflow get(String resourceGroupName, String contextName, String workflowName) {

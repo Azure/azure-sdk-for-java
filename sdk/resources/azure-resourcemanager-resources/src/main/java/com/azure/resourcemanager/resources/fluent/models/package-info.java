@@ -4,6 +4,6 @@
 
 /**
  * Package containing the inner data models for ResourceManagementClient.
- * Provides operations for working with resources and resource groups.
+ * ResourceManagement Client.
  */
 package com.azure.resourcemanager.resources.fluent.models;

@@ -33,6 +33,8 @@ import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
+import com.azure.resourcemanager.netapp.fluent.BucketsClient;
+import com.azure.resourcemanager.netapp.fluent.CachesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
@@ -301,6 +303,34 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The BucketsClient object to access its operations.
+     */
+    private final BucketsClient buckets;
+
+    /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    public BucketsClient getBuckets() {
+        return this.buckets;
+    }
+
+    /**
+     * The CachesClient object to access its operations.
+     */
+    private final CachesClient caches;
+
+    /**
+     * Gets the CachesClient object to access its operations.
+     * 
+     * @return the CachesClient object.
+     */
+    public CachesClient getCaches() {
+        return this.caches;
+    }
+
+    /**
      * The NetAppResourceQuotaLimitsClient object to access its operations.
      */
     private final NetAppResourceQuotaLimitsClient netAppResourceQuotaLimits;
@@ -457,7 +487,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-12-01";
+        this.apiVersion = "2026-01-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -469,6 +499,8 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
         this.ransomwareReports = new RansomwareReportsClientImpl(this);
         this.backupVaults = new BackupVaultsClientImpl(this);
+        this.buckets = new BucketsClientImpl(this);
+        this.caches = new CachesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);

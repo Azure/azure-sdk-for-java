@@ -9,7 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/Deployments_Create.json
+     * x-ms-original-file: 2025-11-01/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.

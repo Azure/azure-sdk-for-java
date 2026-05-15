@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupResourceEncryptionConfigsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupResourceEncryptionConfig_Get.json
+     * x-ms-original-file: 2026-01-31-preview/BackupResourceEncryptionConfig_Get.json
      */
     /**
      * Sample code: Get Vault Encryption Configuration.

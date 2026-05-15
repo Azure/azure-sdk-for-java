@@ -30,12 +30,8 @@ public final class OperationStatusResourceGroupContextsImpl implements Operation
         Context context) {
         Response<OperationResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OperationResource getByResourceGroup(String resourceGroupName, String operationId) {

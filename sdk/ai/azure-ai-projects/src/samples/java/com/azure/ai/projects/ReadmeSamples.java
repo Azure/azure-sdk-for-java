@@ -6,11 +6,11 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
+import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
 
 public final class ReadmeSamples {
@@ -25,18 +25,19 @@ public final class ReadmeSamples {
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-        EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
         EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
         EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         InsightsClient insightsClient = builder.buildInsightsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
+        SkillsClient skillsClient = builder.buildSkillsClient();
         // END: com.azure.ai.projects.clientInitialization
 
-        // BEGIN: com.azure.ai.projects.evaluationsClientInit
-        EvalService evalService = evaluationsClient.getEvalService();
-        // END: com.azure.ai.projects.evaluationsClientInit
+        // BEGIN: com.azure.ai.projects.evalsServices
+        EvalService evalService = builder.buildOpenAIClient().evals();
+        EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
+        // END: com.azure.ai.projects.evalsServices
 
         // BEGIN: com.azure.ai.projects.openAIClient
         OpenAIClient openAIClient = builder.buildOpenAIClient();
@@ -47,7 +48,6 @@ public final class ReadmeSamples {
         AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-        ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
         MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
         ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
         // END: com.azure.ai.projects.agentsSubClients

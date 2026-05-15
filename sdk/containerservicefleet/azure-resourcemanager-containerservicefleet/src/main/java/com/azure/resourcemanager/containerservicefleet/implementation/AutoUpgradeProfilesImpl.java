@@ -31,12 +31,8 @@ public final class AutoUpgradeProfilesImpl implements AutoUpgradeProfiles {
         String autoUpgradeProfileName, Context context) {
         Response<AutoUpgradeProfileInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AutoUpgradeProfileImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AutoUpgradeProfileImpl(inner.getValue(), this.manager()));
     }
 
     public AutoUpgradeProfile get(String resourceGroupName, String fleetName, String autoUpgradeProfileName) {
@@ -62,9 +58,10 @@ public final class AutoUpgradeProfilesImpl implements AutoUpgradeProfiles {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoUpgradeProfileImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AutoUpgradeProfile> listByFleet(String resourceGroupName, String fleetName, Context context) {
+    public PagedIterable<AutoUpgradeProfile> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<AutoUpgradeProfileInner> inner
-            = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoUpgradeProfileImpl(inner1, this.manager()));
     }
 

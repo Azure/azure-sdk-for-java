@@ -148,7 +148,8 @@ $generateScript = {
 
   if ($_.Type -eq 'Swagger') {
     # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
-    $generateOutput = (& $updateCodegenScript 6>&1)
+    # 2>&1 redirects stderr to stdout to suppress autorest deprecation messages that would fail the pipeline.
+    $generateOutput = (& $updateCodegenScript 2>&1 6>&1)
 
     if ($LastExitCode -ne 0) {
       Write-Host "$separatorBar`nError running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
@@ -175,9 +176,17 @@ $generateScript = {
           throw
         }
       } finally {
-        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-          Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
-        }
+        # Sort by descending path length so deepest TempTypeSpecFiles copies are
+        # removed first. An outer TempTypeSpecFiles can contain nested copies inside
+        # node_modules/@azure-tools/<emitter>/TempTypeSpecFiles; without sorting,
+        # the recursive removal of an outer match can wipe a path that a later
+        # iteration still expects to exist. SilentlyContinue covers the residual
+        # cross-root race where deletion order alone is not enough.
+        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory |
+          Sort-Object -Property { $_.FullName.Length } -Descending |
+          ForEach-Object {
+            Remove-Item -Path $_.FullName -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+          }
       }
 
       # Update code snippets before comparing the diff
