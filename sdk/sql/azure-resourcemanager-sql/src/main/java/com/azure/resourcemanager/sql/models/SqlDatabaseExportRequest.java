@@ -97,6 +97,20 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
              */
             SqlDatabaseExportRequest.DefinitionStages.WithExecute
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Sets the user-assigned managed identity used to authenticate to the SQL database for export.
+             *
+             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
+             * its primary identity), the identity must be granted the appropriate role on the target storage account
+             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
+             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**

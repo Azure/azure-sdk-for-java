@@ -503,6 +503,20 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
              */
             SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
+             * its primary identity), the identity must be granted the appropriate role on the source storage account
+             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
+             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
+                withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**
@@ -581,6 +595,20 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
              */
             SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
+             * its primary identity), the identity must be granted the appropriate role on the source storage account
+             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
+             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
+                withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**

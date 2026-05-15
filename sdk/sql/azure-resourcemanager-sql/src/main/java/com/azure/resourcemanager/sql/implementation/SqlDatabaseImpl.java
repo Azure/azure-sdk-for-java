@@ -757,6 +757,16 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
+    public SqlDatabaseImpl withManagedIdentity(String managedIdentityResourceId) {
+        Objects.requireNonNull(managedIdentityResourceId);
+        this.importRequestInner.withAuthenticationType(AuthenticationType.MANAGED_IDENTITY.toString());
+        this.importRequestInner.withAdministratorLogin(managedIdentityResourceId);
+        // No administrator password is required for managed identity authentication.
+        this.importRequestInner.withAdministratorLoginPassword(null);
+        return this;
+    }
+
+    @Override
     public SqlDatabaseImpl fromRestorePoint(RestorePoint restorePoint) {
         return fromRestorePoint(restorePoint, restorePoint.earliestRestoreDate());
     }

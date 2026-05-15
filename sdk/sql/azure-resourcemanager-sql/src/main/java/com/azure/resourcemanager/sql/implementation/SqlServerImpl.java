@@ -21,6 +21,7 @@ import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.IdentityType;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerMetric;
@@ -360,14 +361,32 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServerImpl withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid) {
+    public SqlServerImpl withAzureActiveDirectoryOnlyAuthentication() {
+        if (this.innerModel().administrators() == null) {
+            this.innerModel()
+                .withAdministrators(
+                    new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                        .withTenantId(UUID.fromString(this.manager().tenantId())));
+        }
+        this.innerModel().administrators().withAzureADOnlyAuthentication(true);
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid) {
+        if (this.innerModel().administrators() == null) {
+            this.innerModel()
+                .withAdministrators(
+                    new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                        .withTenantId(UUID.fromString(this.manager().tenantId())));
+        } else {
+            this.innerModel().administrators().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY);
+        }
         this.innerModel()
-            .withAdministrators(
-                new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                    .withLogin(userLogin)
-                    .withSid(UUID.fromString(sid))
-                    .withTenantId(UUID.fromString(this.manager().tenantId()))
-                    .withAzureADOnlyAuthentication(true));
+            .administrators()
+            .withLogin(userLogin)
+            .withSid(UUID.fromString(sid))
+            .withPrincipalType(PrincipalType.USER);
         return this;
     }
 

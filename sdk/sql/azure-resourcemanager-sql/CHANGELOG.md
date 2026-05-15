@@ -4,7 +4,8 @@
 
 ### Features Added
 
-- Added a new method `withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid)` on `SqlServer.DefinitionStages.WithAdministratorLogin` to create a SQL Server with Microsoft Entra-only authentication enabled at creation time. This is required when the target subscription/management group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.
+- Added a new stage `WithAzureActiveDirectoryOnlyAuthentication` with the method `withAzureActiveDirectoryOnlyAuthentication()` on `SqlServer.DefinitionStages.WithAdministratorLogin`, followed by the new stage `WithExternalActiveDirectoryAdministrator` with the method `withExternalActiveDirectoryAdministrator(String userLogin, String sid)`. This enables creating a SQL Server with Microsoft Entra-only authentication enabled at creation time, which is required when the target subscription/management group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.
+- Added `withManagedIdentity(String managedIdentityResourceId)` to the import/export authentication stages of `SqlDatabaseImportRequest`, `SqlDatabaseExportRequest`, `SqlDatabaseOperations` (both standalone and in-elastic-pool import definitions) and `SqlDatabase` (both standalone and in-elastic-pool import definitions). This lets callers authenticate to the storage account using a user-assigned managed identity assigned to the SQL server instead of a storage access/shared key, which is required when the storage account has shared-key access disabled.
 
 ### Breaking Changes
 

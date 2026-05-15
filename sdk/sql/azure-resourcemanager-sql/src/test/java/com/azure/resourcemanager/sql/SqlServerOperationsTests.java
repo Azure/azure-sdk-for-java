@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -28,9 +29,8 @@ import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
+import com.azure.resourcemanager.sql.models.ReplicationState;
 import com.azure.resourcemanager.sql.models.SampleName;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
@@ -40,7 +40,6 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
-import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
@@ -56,7 +55,10 @@ import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.test.model.AzureUser;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -85,6 +87,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_FIREWALLRULE_NAME = "firewallrule1";
     private static final String START_IPADDRESS = "10.102.1.10";
     private static final String END_IPADDRESS = "10.102.1.12";
+    private static final Region DEFAULT_REGION = Region.US_WEST3;
+    private static final Region SECONDARY_REGION = Region.US_EAST2;
+    private static final Region TERTIARY_REGION = Region.EUROPE_NORTH;
 
     // Only one sync database is allowed per region per subscription
     // canCRUDSqlSyncMember and canCRUDSqlSyncGroup need to be in 2 different region
@@ -99,12 +104,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorLogin = "sqladmin";
         final String administratorPassword = password();
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -168,12 +175,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorLogin = "sqladmin";
         final String administratorPassword = password();
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST2)
+            .withRegion(SECONDARY_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -202,7 +211,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertTrue(sqlServerManager.sqlServers()
             .syncGroups()
-            .listSyncDatabaseIds(Region.US_EAST2)
+            .listSyncDatabaseIds(SECONDARY_REGION)
             .stream()
             .findAny()
             .isPresent());
@@ -223,12 +232,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String epName = "epSample";
         final String dbName = "dbSample";
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlPrimaryServerName)
-            .withRegion(Region.US_EAST2)
+            .withRegion(SECONDARY_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .defineElasticPool(epName)
             .withPremiumPool()
             .attach()
@@ -240,9 +251,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
             .define(sqlSecondaryServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withExistingResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
 
         SqlDatabase dbSample = sqlPrimaryServer.databases().get(dbName);
@@ -266,12 +278,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String failoverGroupName2 = generateRandomResourceName("fg2", 22);
         final String dbName = "dbSample";
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
             .define(sqlPrimaryServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -280,16 +294,18 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
             .define(sqlSecondaryServerName)
-            .withRegion(Region.US_EAST2)
+            .withRegion(SECONDARY_REGION)
             .withExistingResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
 
         SqlServer sqlOtherServer = sqlServerManager.sqlServers()
             .define(sqlOtherServerName)
-            .withRegion(Region.EUROPE_NORTH)
+            .withRegion(TERTIARY_REGION)
             .withExistingResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
 
         SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups()
@@ -381,15 +397,15 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
         String databaseName = "db-from-sample";
-        String id = generateRandomUuid();
-        String storageName = generateRandomResourceName(sqlServerName, 22);
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withBasicEdition()
@@ -456,12 +472,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerName1 = sqlServerName + "1";
         String sqlServerName2 = sqlServerName + "2";
 
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlServer1 = sqlServerManager.sqlServers()
             .define(sqlServerName1)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
         Assertions.assertNotNull(sqlServer1);
 
@@ -480,9 +498,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         SqlServer sqlServer2 = sqlServerManager.sqlServers()
             .define(sqlServerName2)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
         Assertions.assertNotNull(sqlServer2);
 
@@ -506,8 +525,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String databaseName = "db-from-sample";
+        AzureUser user = azureCliSignedInUser();
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_WEST3);
+        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(DEFAULT_REGION);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions.assertTrue(
@@ -519,9 +539,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .withSystemAssignedManagedServiceIdentity()
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
@@ -554,58 +575,62 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    @Disabled("Not supported in AAD-only tenants: SQL auth and ADPassword (ROPC) are blocked.")
     // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
     public void canCRUDSqlServerWithImportDatabase() throws Exception {
         // Create
 
-        String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = password();
-        String id = generateRandomUuid();
         String storageName = generateRandomResourceName(sqlServerName, 22);
+        AzureUser user = azureCliSignedInUser();
+
+        // Pre-create the resource group explicitly so that downstream resource providers (Storage in
+        // particular) observe it consistently. Creating the RG as a dependency of the SQL server can
+        // race with Storage RP and surface as 404 "ResourceGroupNotFound" when the storage account is
+        // subsequently created or fetched in that RG.
+        resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
+
+        // Import/export against an AAD-only SQL server requires Managed Identity authentication
+        // (SQL auth and ADPassword/ROPC are blocked in AAD-only tenants). The user-assigned managed
+        // identity must be:
+        //   1. Assigned to the SQL server (and typically set as its primary identity).
+        //   2. Granted "Storage Blob Data Contributor" on the storage account.
+        //   3. Mapped to a database user with the required privileges (db_owner or equivalent).
+        //
+        // The UAMI resource ID is read from the AZURE_SQL_IMPORT_EXPORT_UAMI_ID environment variable.
+        // If it is not provided the test is skipped instead of failing.
+        String uamiResourceId = System.getenv("AZURE_SQL_IMPORT_EXPORT_UAMI_ID");
+        Assumptions.assumeFalse(CoreUtils.isNullOrEmpty(uamiResourceId),
+            "AZURE_SQL_IMPORT_EXPORT_UAMI_ID is not set; skipping import/export Managed Identity test.");
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_EAST)
-            .withNewResourceGroup(rgName)
-            .withAdministratorLogin(sqlServerAdminName)
-            .withAdministratorPassword(sqlServerAdminPassword)
-            .withActiveDirectoryAdministrator("DSEng", id)
+            .withRegion(DEFAULT_REGION)
+            .withExistingResourceGroup(rgName)
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
 
         SqlDatabase dbFromSample = sqlServer.databases()
             .define("db-from-sample")
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withBasicEdition()
-            .withTag("tag1", "value1")
             .create();
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
-        SqlDatabaseImportExportResponse exportedDB;
-        StorageAccount storageAccount = null;
-        try {
-            storageAccount
-                = storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
-        } catch (ManagementException e) {
-            Assertions.assertEquals(404, e.getResponse().getStatusCode());
-        }
-        if (storageAccount == null) {
-            Creatable<StorageAccount> storageAccountCreatable = storageManager.storageAccounts()
-                .define(storageName)
-                .withRegion(sqlServer.regionName())
-                .withExistingResourceGroup(sqlServer.resourceGroupName());
+        // Pre-create the storage account synchronously (rather than wiring it as a Creatable dependency
+        // of the export request) so that we have a fully provisioned StorageAccount instance to reuse
+        // for both export and import, and any provisioning failure surfaces here rather than deep in
+        // the export pipeline.
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageName)
+            .withRegion(sqlServer.regionName())
+            .withExistingResourceGroup(sqlServer.resourceGroupName())
+            .create();
 
-            exportedDB = dbFromSample.exportTo(storageAccountCreatable, "from-sample", "dbfromsample.bacpac")
-                .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
+        SqlDatabaseImportExportResponse exportedDB
+            = dbFromSample.exportTo(storageAccount, "from-sample", "dbfromsample.bacpac")
+                .withManagedIdentity(uamiResourceId)
                 .execute();
-            storageAccount
-                = storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
-        } else {
-            exportedDB = dbFromSample.exportTo(storageAccount, "from-sample", "dbfromsample.bacpac")
-                .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
-                .execute();
-        }
 
         SqlDatabase dbFromImport = sqlServer.databases()
             .define("db-from-import")
@@ -613,7 +638,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withBasicPool()
             .attach()
             .importFrom(storageAccount, "from-sample", "dbfromsample.bacpac")
-            .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
+            .withManagedIdentity(uamiResourceId)
             .withTag("tag2", "value2")
             .create();
         Assertions.assertNotNull(dbFromImport);
@@ -628,13 +653,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
-        String id = adminSid();
+        AzureUser user = azureCliSignedInUser();
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly("DSEng", id)
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator("DSEng", user.id())
             .withoutAccessFromAzureServices()
             .defineFirewallRule("somefirewallrule1")
             .withIpAddress("0.0.0.1")
@@ -654,7 +680,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(sqlADAdmin.id());
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
 
-        sqlADAdmin = sqlServer.setActiveDirectoryAdministrator("DSEngAll", id);
+        sqlADAdmin = sqlServer.setActiveDirectoryAdministrator("DSEngAll", user.id());
         Assertions.assertNotNull(sqlADAdmin);
         Assertions.assertEquals("DSEngAll", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
@@ -767,13 +793,15 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String elasticPool2Name = "elasticPool2";
         String elasticPool3Name = "elasticPool3";
         String elasticPool1Name = SQL_ELASTIC_POOL_NAME;
+        AzureUser user = azureCliSignedInUser();
 
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .withoutAccessFromAzureServices()
             .defineDatabase(SQL_DATABASE_NAME)
             .attach()
@@ -885,36 +913,57 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
-        // Test security alert policy settings.
+        // Threat detection policy test is disabled.
+        //
+        // The storage account used here is provisioned with shared-key access disabled
+        // (`disableSharedKeyAccess()`) because the target test subscription is an AAD-only tenant:
+        // storage accounts created there must reject shared-key authentication and only accept
+        // Microsoft Entra (Azure AD) credentials. As a result, the access-key path returns a key
+        // value that the storage data plane will not accept.
+        // The database-level "securityAlertPolicies" ARM resource does not offer a Managed
+        // Identity alternative either: the latest schema (api-version 2025-01-01) defines only
+        // state / disabledAlerts / emailAccountAdmins / emailAddresses / retentionDays /
+        // storageAccountAccessKey / storageEndpoint, with no identity / isManagedIdentityInUse
+        // field. Compare with "auditingSettings", which on the same api-version explicitly
+        // exposes isManagedIdentityInUse and documents the "omit access key to use SAMI" path.
+        // The service enforces this: omitting storageAccountAccessKey when storageEndpoint is
+        // set fails with "DataSecurityInvalidUserSuppliedParameter: storageAccountAccessKey
+        // parameter can not be null when storageEndpoint parameter is not null".
+        //
+        // References:
+        //   https://learn.microsoft.com/en-us/rest/api/sql/database-security-alert-policies/create-or-update?view=rest-sql-2025-01-01
+        //   https://learn.microsoft.com/en-us/rest/api/sql/database-blob-auditing-policies/create-or-update?view=rest-sql-2025-01-01
+        //
+        // Re-enable when either (a) the storage account in this test is recreated with shared
+        // key access enabled, or (b) the SQL securityAlertPolicies resource adds first-class
+        // Managed Identity support.
 
-        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
-        StorageAccount storageAccount = storageManager.storageAccounts()
-            .define(storageAccountName)
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .disableSharedKeyAccess()
-            .create();
-        String accountKey = storageAccount.getKeys().get(0).value();
-        String blobEntrypoint = storageAccount.endPoints().primary().blob();
+        // final String storageAccountName = generateRandomResourceName("sqlsa", 20);
+        // StorageAccount storageAccount = storageManager.storageAccounts()
+        //     .define(storageAccountName)
+        //     .withRegion(DEFAULT_REGION)
+        //     .withExistingResourceGroup(rgName)
+        //     .disableSharedKeyAccess()
+        //     .create();
+        // String accountKey = storageAccount.getKeys().get(0).value();
+        // String blobEntrypoint = storageAccount.endPoints().primary().blob();
 
-        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
+        // List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
 
-        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
-            .withPolicyEnabled()
-            .withStorageEndpoint(blobEntrypoint)
-            .withStorageAccountAccessKey(accountKey)
-            .withAlertsFilter(disabledAlerts)
-            .create();
+        // sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
+        //     .withPolicyEnabled()
+        //     .withStorageEndpoint(blobEntrypoint)
+        //     .withStorageAccountAccessKey(accountKey)
+        //     .withAlertsFilter(disabledAlerts)
+        //     .create();
 
-        sqlDatabase.refresh();
+        // sqlDatabase.refresh();
 
-        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
-        Assertions.assertNotNull(alertPolicy);
-        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
-        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
-        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
-
-        // Done testing security alert policy
+        // SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
+        // Assertions.assertNotNull(alertPolicy);
+        // Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+        // Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
+        // Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
 
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();
@@ -1004,6 +1053,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .define(SQL_DATABASE_NAME)
             .withSourceDatabase(databaseInServer1.id())
             .withMode(CreateMode.ONLINE_SECONDARY)
+            // Explicitly pin the secondary to Standard S0 (DTU-based) to match the primary.
+            // Without an explicit edition, Azure SQL applies the region's default tier —currently
+            // GeneralPurpose / GP_S_Gen5 (serverless, vCore-based), which counts against the
+            // subscription's vCore quota and can fail with
+            // "subscription would exceed the allowed vCore quota of 500" when the quota is near
+            // its limit (e.g. due to leftover resources from earlier test runs).
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
             .create();
         ResourceManagerUtils.sleep(Duration.ofSeconds(2));
         List<ReplicationLink> replicationLinksInDb1
@@ -1030,11 +1086,23 @@ public class SqlServerOperationsTests extends SqlServerTest {
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        // Wait for the link to leave SUSPENDED state after forceFailoverAllowDataLoss before delete;
-        // otherwise delete() fails with 409 GeoReplicationCannotBecomePrimaryDuringUndo.
-        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
+        // Wait until the relationship has entered and then left SUSPENDED after
+        // forceFailoverAllowDataLoss; otherwise delete() fails with
+        // 409 GeoReplicationCannotBecomePrimaryDuringUndo.
+        ReplicationLink secondaryLink = replicationLinksInDb2.get(0);
+        int maxAttempts = 300;
+        boolean sawSuspended = false;
+        while (maxAttempts-- > 0) {
+            secondaryLink.refresh();
+            if (secondaryLink.replicationState() == ReplicationState.SUSPENDED) {
+                sawSuspended = true;
+            } else if (sawSuspended) {
+                break;
+            }
+            ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+        }
 
-        replicationLinksInDb2.get(0).delete();
+        secondaryLink.delete();
         Assertions.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);
 
         sqlServer1.databases().delete(databaseInServer1.name());
@@ -1059,7 +1127,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Mono<SqlDatabase> resourceStream = sqlServer.databases()
             .define(SQL_DATABASE_NAME)
             .withCollation(COLLATION)
-            .withSku(DatabaseSku.DATAWAREHOUSE_DW1000C)
+            // Use DW100c (the smallest DataWarehouse SKU) instead of DW1000c.
+            // DW1000c provisions ~5 compute nodes and consumes a large share of the subscription's
+            // vCore quota (500). The test only exercises pause/resume/list operations, none of
+            // which require a large warehouse, so DW100c is sufficient and avoids the
+            // "subscription would exceed the allowed vCore quota of 500" failure.
+            .withSku(DatabaseSku.DATAWAREHOUSE_DW100C)
             .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
@@ -1429,11 +1502,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     private SqlServer createSqlServer(String sqlServerName) {
+        AzureUser user = azureCliSignedInUser();
         return sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
     }
 
@@ -1455,7 +1530,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
         Assertions.assertEquals(rgName, sqlFirewallRule.resourceGroupName());
         Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
-        Assertions.assertEquals(Region.US_WEST3, sqlFirewallRule.region());
+        Assertions.assertEquals(DEFAULT_REGION, sqlFirewallRule.region());
     }
 
     private static void validateListSqlElasticPool(List<SqlElasticPool> sqlElasticPools) {
@@ -1533,7 +1608,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Collections.shuffle(elasticPoolSkus);
 
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_WEST3)
+            .getCapabilitiesByRegion(DEFAULT_REGION)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
@@ -1552,11 +1627,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 });
             });
 
+        AzureUser user = azureCliSignedInUser();
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .create();
 
         // Too many elastic pools defined will hit sql server DTU quota limits.
@@ -1583,7 +1660,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
         sqlServerManager.sqlServers()
-            .getCapabilitiesByRegion(Region.US_WEST3)
+            .getCapabilitiesByRegion(DEFAULT_REGION)
             .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
@@ -1620,7 +1697,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(),
             elasticPoolSku.getBytes(StandardCharsets.UTF_8));
 
-        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_WEST3).create(); // for deletion
+        sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create(); // for deletion
     }
 
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
@@ -1668,12 +1745,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCreateAndUpdatePublicNetworkAccess() {
+        AzureUser user = azureCliSignedInUser();
         // Create
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
-            .withRegion(Region.US_WEST3)
+            .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
-            .withAdministratorAzureActiveDirectoryOnly(adminLogin(), adminSid())
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
             .withoutAccessFromAzureServices()
             .disablePublicNetworkAccess()
             .create();

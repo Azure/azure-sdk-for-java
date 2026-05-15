@@ -117,6 +117,16 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 
+    @Override
+    public SqlDatabaseImportRequestImpl withManagedIdentity(String managedIdentityResourceId) {
+        Objects.requireNonNull(managedIdentityResourceId);
+        this.inner.withAuthenticationType(AuthenticationType.MANAGED_IDENTITY.toString());
+        this.inner.withAdministratorLogin(managedIdentityResourceId);
+        // No administrator password is required for managed identity authentication.
+        this.inner.withAdministratorLoginPassword(null);
+        return this;
+    }
+
     SqlDatabaseImportRequestImpl withLoginAndPassword(String administratorLogin, String administratorPassword) {
         this.inner.withAdministratorLogin(administratorLogin);
         this.inner.withAdministratorLoginPassword(administratorPassword);

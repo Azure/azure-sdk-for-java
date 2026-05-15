@@ -236,8 +236,8 @@ public interface SqlServer
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAdministratorLogin,
-        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithElasticPool, DefinitionStages.WithDatabase,
-        DefinitionStages.WithFirewallRule, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithCreate {
+        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithExternalActiveDirectoryAdministrator,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -251,7 +251,7 @@ public interface SqlServer
         }
 
         /** A SQL Server definition setting administrator user name. */
-        interface WithAdministratorLogin {
+        interface WithAdministratorLogin extends WithAzureActiveDirectoryOnlyAuthentication {
             /**
              * Sets the administrator login user name.
              *
@@ -259,20 +259,36 @@ public interface SqlServer
              * @return Next stage of the SQL Server definition
              */
             WithAdministratorPassword withAdministratorLogin(String administratorLogin);
+        }
 
+        /**
+         * A SQL Server definition stage allowing Microsoft Entra-only authentication to be enabled at creation time.
+         *
+         * <p>When Microsoft Entra-only authentication is enabled, the SQL authentication (login/password)
+         * administrator is not configured on the server. This is required when the target subscription or management
+         * group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.</p>
+         */
+        interface WithAzureActiveDirectoryOnlyAuthentication {
             /**
-             * Configures the SQL Server to use Microsoft Entra (Azure Active Directory) only authentication, with the
-             * specified user or group as the Active Directory administrator. The SQL authentication
-             * (login/password) administrator is not configured.
+             * Enables Microsoft Entra (Azure Active Directory) only authentication on the SQL Server.
              *
-             * <p>This method should be used when the target subscription/management group enforces a policy that
-             * requires Microsoft Entra-only authentication on Azure SQL Server creation.</p>
+             * <p>An external Microsoft Entra administrator must be specified on the next stage.</p>
+             *
+             * @return Next stage of the SQL Server definition
+             */
+            WithExternalActiveDirectoryAdministrator withAzureActiveDirectoryOnlyAuthentication();
+        }
+
+        /** A SQL Server definition stage setting the external Microsoft Entra administrator on the server. */
+        interface WithExternalActiveDirectoryAdministrator {
+            /**
+             * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
              *
              * @param userLogin the user or group login; it can be the name or the email address
              * @param sid the user or group object ID
              * @return Next stage of the SQL Server definition
              */
-            WithCreate withAdministratorAzureActiveDirectoryOnly(String userLogin, String sid);
+            WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid);
         }
 
         /** A SQL Server definition setting admin user password. */

@@ -187,6 +187,20 @@ public interface SqlDatabaseOperations
              */
             SqlDatabaseOperations.DefinitionStages.WithEditionDefaults
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
+             * its primary identity), the identity must be granted the appropriate role on the source storage account
+             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
+             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            SqlDatabaseOperations.DefinitionStages.WithEditionDefaults
+                withManagedIdentity(String managedIdentityResourceId);
         }
 
         /** The SQL Database definition to import a BACPAC file as the source database. */
@@ -253,6 +267,20 @@ public interface SqlDatabaseOperations
              */
             SqlDatabaseOperations.DefinitionStages.WithCreateAfterElasticPoolOptions
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Specifies the user-assigned managed identity used to authenticate to the SQL database for import.
+             *
+             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
+             * its primary identity), the identity must be granted the appropriate role on the source storage account
+             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
+             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             * @return next definition stage
+             */
+            SqlDatabaseOperations.DefinitionStages.WithCreateAfterElasticPoolOptions
+                withManagedIdentity(String managedIdentityResourceId);
         }
 
         /** The SQL Database definition to set a restorable dropped database as the source database. */
