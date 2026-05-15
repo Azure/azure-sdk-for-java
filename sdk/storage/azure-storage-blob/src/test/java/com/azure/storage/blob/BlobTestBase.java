@@ -1573,6 +1573,30 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * Every tuple keeps payloadBytes <= blockSizeBytes, so the parallel download path issues a single GET (no
+     * follow-on range requests for additional blocks), which replays under the test proxy.
+     * <p>
+     * Sizes are deliberately non-power-of-two (e.g. 7 * KB + 3) and use mixed block ceilings (64 KiB through
+     * multi-MiB) to catch alignment and decoder edge cases at structural boundaries (message header, segment
+     * footer, message footer); the 4 MiB boundary row exercises the exact service-side default segment length.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadReplayableCases() {
+        return Stream.of(Arguments.of(1, 64L * Constants.KB, 1),
+            Arguments.of(7 * Constants.KB + 3, 64L * Constants.KB, 1),
+            Arguments.of(7 * Constants.KB + 3, 128L * Constants.KB, 4),
+            Arguments.of(41 * Constants.KB + 17, 256L * Constants.KB, 1),
+            Arguments.of(41 * Constants.KB + 17, 256L * Constants.KB, 8),
+            Arguments.of(199 * Constants.KB + 5, 512L * Constants.KB, 2),
+            Arguments.of(512 * Constants.KB - 31, 1L * Constants.MB, 8),
+            Arguments.of(896 * Constants.KB + 101, 1L * Constants.MB, 6),
+            Arguments.of(2 * Constants.MB - 1, 4L * Constants.MB, 4),
+            Arguments.of(2 * Constants.MB + 33, 4L * Constants.MB, 1),
+            Arguments.of(4 * Constants.MB - 1, 4L * Constants.MB, 2),
+            Arguments.of(4 * Constants.MB, 4L * Constants.MB, 1),
+            Arguments.of(4 * Constants.MB, 7L * Constants.MB + 919, 3));
+    }
+
+    /**
      * Every tuple keeps payloadBytes <= segmentBytes, so the parallel upload path issues a single Put Blob (no
      * Put Block IDs), which replays under the test proxy unlike staging-heavy cases.
      * <p>
@@ -1593,6 +1617,20 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * payloadBytes > blockSizeBytes but totals stay in the hundreds of KiB, so downloads issue many small ranged
+     * GETs even though the blob itself is small. Live-only because chunked range GETs across many tiny requests
+     * produce per-block proxy churn similar to the upload-side staging cases.
+     * <p>
+     * One row pairs a ~200 KiB payload with a 64 KiB block size and moderate concurrency; the other uses a
+     * ~512 KiB payload with a 1 KiB block size to force many tiny range GETs (stress decoder framing and
+     * scheduling) without the cost of the large multi-part grids.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadSmallMultiPartCases() {
+        return Stream.of(Arguments.of(200 * Constants.KB, 64L * Constants.KB, 3),
+            Arguments.of(512 * Constants.KB - 31, 1L * Constants.KB, 1));
+    }
+
+    /**
      * payloadBytes > segmentBytes, so uploads still go through Put Block staging even though totals are only
      * hundreds of KiB—too small for the proxy when block IDs vary per run.
      * <p>
@@ -1603,6 +1641,30 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static Stream<Arguments> fuzzyParallelUploadSmallPayloadStagingCases() {
         return Stream.of(Arguments.of(200 * Constants.KB, 64L * Constants.KB, 3),
             Arguments.of(512 * Constants.KB - 31, 1L * Constants.KB, 1));
+    }
+
+    /**
+     * payloadBytes > blockSizeBytes and payloadBytes <= 4 * Constants.MB - 1 (the ceiling field), so the blob
+     * stays strictly under the 4 MiB single-shot CRC64-header path while downloads remain chunked across
+     * multiple range GETs.
+     * <p>
+     * Values mix MiB/KiB block sizes with offsets (e.g. + 19, - 903) so part counts and last-block lengths are
+     * not powers of two; the last rows hug ceiling with awkward divisors in blockSizeBytes to stress remainder
+     * handling near the sub-4 MiB limit.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadSubFourMiBCases() {
+        final int ceiling = (4 * Constants.MB) - 1;
+        return Stream.of(Arguments.of(1 * Constants.MB + 1, 1L * Constants.MB, 1),
+            Arguments.of(1 * Constants.MB + 1, 2L * Constants.KB, 8),
+            Arguments.of((5 * Constants.MB) / 4 + 19, 256L * Constants.KB, 4),
+            Arguments.of(2 * Constants.MB - 903, 1L * Constants.MB, 2),
+            Arguments.of(2 * Constants.MB + 33, 1L * Constants.KB, 1),
+            Arguments.of(2 * Constants.MB + 33, 1L * Constants.MB, 8),
+            Arguments.of((11 * Constants.MB) / 4 - 17, 512L * Constants.KB, 6),
+            Arguments.of(3 * Constants.MB - 777, 2L * Constants.MB, 8),
+            Arguments.of(3 * Constants.MB - 1, 1L * Constants.MB, 1), Arguments.of(ceiling - 511, 1L * Constants.MB, 4),
+            Arguments.of(ceiling - 511, 1L * Constants.MB + 511, 2),
+            Arguments.of(ceiling, (long) (ceiling / 7 + 17), 3), Arguments.of(ceiling, (long) (ceiling / 2 + 1), 8));
     }
 
     /**
@@ -1630,6 +1692,27 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * Centers on 4 * Constants.MB - 1, exactly 4 * Constants.MB, and just above 4 MiB, with block sizes spanning
+     * KiB through multi-MiB - exercising the SDK/service boundary where single-shot vs chunked range GET and
+     * CRC64 header vs structured-message rules flip, while keeping deterministic single-GET coverage in the
+     * replayable supplier above.
+     * <p>
+     * Includes near-boundary payloads (e.g. -8192, +31, +8191 from 4 MiB) so neither total size nor last segment
+     * length aligns to typical buffer multiples.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadFourMiBBoundaryCases() {
+        final int minus = (4 * Constants.MB) - 1;
+        final int plus = (4 * Constants.MB) + 1;
+        return Stream.of(Arguments.of(minus, 1L * Constants.MB, 1), Arguments.of(minus, 512L * Constants.KB, 6),
+            Arguments.of(minus, 2L * Constants.MB, 8), Arguments.of((4 * Constants.MB) - 8192, 1L * Constants.KB, 4),
+            Arguments.of(4 * Constants.MB, (long) (4 * Constants.MB / 2), 8),
+            Arguments.of(4 * Constants.MB, 256L * Constants.KB, 2), Arguments.of(plus, 1L * Constants.MB, 1),
+            Arguments.of(plus, 2L * Constants.MB, 8), Arguments.of(plus, 1L * Constants.KB, 7),
+            Arguments.of((4 * Constants.MB) + 31, 511L * Constants.KB + 409, 4),
+            Arguments.of((4 * Constants.MB) + 8191, 3L * Constants.MB - 413, 6));
+    }
+
+    /**
      * Centers on 4 * Constants.MB - 1, exactly 4 * Constants.MB, and just above 4 MiB, with segment
      * sizes spanning KiB through multi-MiB—exercising the SDK/service boundary where single-shot vs block staging and
      * CRC64 header vs structured-message rules flip, while keeping deterministic Put Blob coverage in the replayable
@@ -1648,6 +1731,32 @@ public class BlobTestBase extends TestProxyTestBase {
             Arguments.of(plus, 2L * Constants.MB, 8), Arguments.of(plus, 1L * Constants.KB, 7),
             Arguments.of((4 * Constants.MB) + 31, 511L * Constants.KB + 409, 4),
             Arguments.of((4 * Constants.MB) + 8191, 3L * Constants.MB - 413, 6));
+    }
+
+    /**
+     * payloadBytes > blockSizeBytes, so downloads always go through multiple ranged GETs (parallel download
+     * fan-out) with totals roughly 6-80 MiB. Large enough to exercise the structured-message decoder over
+     * multiple HTTP responses, but cheaper than {@link #fuzzyParallelDownloadLargeMultiPartCases}.
+     * <p>
+     * Block sizes step through common service limits (1-8 MiB, half-MiB tail values); concurrency 1-8 pairs
+     * with imbalanced payloads (e.g. 701, 333) to flush merge/retry edge cases.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadMediumMultiPartCases() {
+        return Stream.of(Arguments.of(6 * Constants.MB + 701, Constants.MB, 1),
+            Arguments.of(6 * Constants.MB + 701, 3L * Constants.MB + 271, 4),
+            Arguments.of(9 * Constants.MB + 333, 2L * Constants.MB, 1),
+            Arguments.of(9 * Constants.MB + 333, 3L * Constants.MB + 199, 8),
+            Arguments.of(12 * Constants.MB + 901, 4L * Constants.MB + 901, 2),
+            Arguments.of(14 * Constants.MB, 500L * Constants.KB + 13, 6),
+            Arguments.of(18 * Constants.MB - 4021, 5L * Constants.MB - 701, 3),
+            Arguments.of(24 * Constants.MB, 8L * Constants.MB, 8),
+            Arguments.of(28 * Constants.MB + 56789, 7L * Constants.MB + 13, 2),
+            Arguments.of(31 * Constants.MB, 1024L * Constants.KB + 17, 4),
+            Arguments.of(40 * Constants.MB + 12345, 7L * Constants.MB + 13, 3),
+            Arguments.of(48 * Constants.MB - 777, 5L * Constants.MB + 809L * Constants.KB, 6),
+            Arguments.of(56 * Constants.MB + 19, 9L * Constants.MB + 4096, 8),
+            Arguments.of(72 * Constants.MB, 4L * Constants.MB + 65536, 8),
+            Arguments.of(80 * Constants.MB + 321, 13L * Constants.MB - 3073, 1));
     }
 
     /**
@@ -1676,6 +1785,28 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * Stresses high block counts and long-running parallel downloads (~96-320 MiB payloads) with service-realistic
+     * block sizes (8-61 MiB class) and heavy concurrency.
+     * <p>
+     * The final rows use named near-256/288/320 MiB totals with irregular byte tails to keep total bytes and block
+     * remainders off common multiples while still bounding runtime for Live-only CI.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadLargeMultiPartCases() {
+        final int payload257MiBPlus = (int) (257L * Constants.MB + 18881);
+        final int payload288MiBPlus = (int) (288L * Constants.MB + 7777);
+        final int payload320MiBPlus = (int) (320L * Constants.MB + 1999);
+        return Stream.of(Arguments.of(96 * Constants.MB + 17, 8L * Constants.MB + 511, 2),
+            Arguments.of(112 * Constants.MB, 15L * Constants.MB + 4096, 8),
+            Arguments.of(128 * Constants.MB + 45673, 17L * Constants.MB - 11264 + 173, 4),
+            Arguments.of(160 * Constants.MB + 12345, 12L * Constants.MB + 8192, 8),
+            Arguments.of(192 * Constants.MB + 9876, 31L * Constants.MB - 513, 8),
+            Arguments.of(224 * Constants.MB, 23L * Constants.MB + 524288, 8),
+            Arguments.of(payload257MiBPlus, 61L * Constants.MB + 23L * Constants.KB, 6),
+            Arguments.of(payload288MiBPlus, 36L * Constants.MB + 513, 8),
+            Arguments.of(payload320MiBPlus, 16L * Constants.MB + 511, 8));
+    }
+
+    /**
      * Stresses high block counts and long-running parallel uploads (~96–320 MiB payloads) with service-realistic segment
      * sizes (8–61 MiB class) and heavy concurrency.
      * <p>
@@ -1695,6 +1826,15 @@ public class BlobTestBase extends TestProxyTestBase {
             Arguments.of(payload257MiBPlus, 61L * Constants.MB + 23L * Constants.KB, 6),
             Arguments.of(payload288MiBPlus, 36L * Constants.MB + 513, 8),
             Arguments.of(payload320MiBPlus, 16L * Constants.MB + 511, 8));
+    }
+
+    /**
+     * Single ~1 GiB download with high concurrency and an awkward (non-aligned) tail to exercise the structured
+     * message decoder under a sustained, fan-out-heavy parallel download. Live-only and file-backed so payload
+     * never materializes twice in heap.
+     */
+    protected static Stream<Arguments> fuzzyParallelDownloadOneGiBCases() {
+        return Stream.of(Arguments.of((int) (1L * Constants.GB + 1377), 16L * Constants.MB + 511, 8));
     }
 
     private static boolean hasValidStructuredContentLengthHeader(HttpHeaders headers) {
