@@ -70,11 +70,13 @@ import java.util.concurrent.TimeUnit;
  *   <li>{@link VoiceAssistantSample} - See a complete production-ready voice assistant</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -98,9 +100,7 @@ public final class BasicVoiceConversationSample {
             return;
         }
 
-        // Create the VoiceLive client using DefaultAzureCredential (recommended).
-        // To use an API key instead:
-        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())

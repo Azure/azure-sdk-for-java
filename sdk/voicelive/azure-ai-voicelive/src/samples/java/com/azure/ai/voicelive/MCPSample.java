@@ -32,8 +32,8 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
@@ -42,7 +42,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -71,11 +70,13 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>Process MCP call results and continue conversations</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -143,13 +144,11 @@ public final class MCPSample {
         // Latch keeps main alive until the event stream completes (or an error occurs).
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
-        // Create VoiceLive client using DefaultAzureCredential (recommended).
-        // To use an API key instead:
-        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
             .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Start the session
@@ -184,20 +183,6 @@ public final class MCPSample {
                 System.out.println();
 
                 audioProcessor.startPlayback();
-
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n👋 Shutting down MCP voice assistant...");
-                    running.set(false);
-                    AudioProcessor processor = audioProcessorRef.get();
-                    if (processor != null) {
-                        processor.cleanup();
-                    }
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown
-                    }
-                }));
 
                 return Mono.just(session);
             })
@@ -432,7 +417,7 @@ public final class MCPSample {
 
         session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse))
             .subscribe(
-                v -> {
+                noValueEmitted -> {
                     if (approved) {
                         System.out.println("✅ MCP call approved and response sent");
                     } else {
@@ -486,7 +471,7 @@ public final class MCPSample {
         // For this sample, we'll just trigger a new response
         session.sendEvent(new ClientEventResponseCreate())
             .subscribe(
-                v -> System.out.println("📤 New response created to process MCP output"),
+                noValueEmitted -> System.out.println("📤 New response created to process MCP output"),
                 error -> System.err.println("❌ Error creating response: " + error.getMessage())
             );
     }
@@ -548,7 +533,7 @@ public final class MCPSample {
                                 // for the audio to actually be sent over the WebSocket.
                                 session.sendInputAudio(BinaryData.fromBytes(audioData))
                                     .subscribe(
-                                        v -> { },
+                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
                                         error -> System.err.println("Error sending audio: " + error.getMessage())
                                     );
                             }

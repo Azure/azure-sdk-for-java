@@ -21,7 +21,6 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -49,20 +48,20 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>NOTE:</strong> This is a comprehensive sample showing all features together.
  * For easier understanding, see these focused samples:</p>
- *
- * <p>Use this sample when you want the closest thing to an end-to-end assistant experience in this
- * package. It combines session configuration, microphone capture, speaker playback, interruption
- * handling, and authentication in one place.</p>
- *
- * <p>When you run it, the sample opens a realtime session, configures the assistant, starts local
- * playback, waits for the session to be ready, and then begins streaming microphone audio while
- * playing the model's responses through your speakers.</p>
  * <ul>
  *   <li>{@link BasicVoiceConversationSample} - Minimal setup and session management</li>
  *   <li>{@link MicrophoneInputSample} - Audio capture from microphone</li>
  *   <li>{@link AudioPlaybackSample} - Audio playback to speakers</li>
  *   <li>{@link AuthenticationMethodsSample} - Different authentication methods</li>
  * </ul>
+ *
+ * <p>Use this sample when you want the closest thing to an end-to-end assistant experience in this
+ * package. It combines session configuration, microphone capture, speaker playback, and interruption
+ * handling in one place.</p>
+ *
+ * <p>When you run it, the sample opens a realtime session, configures the assistant, starts local
+ * playback, waits for the session to be ready, and then begins streaming microphone audio while
+ * playing the model's responses through your speakers.</p>
  *
  * <p>This sample demonstrates:</p>
  * <ul>
@@ -73,26 +72,24 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>Multi-threaded audio processing</li>
  *   <li>Audio transcription with Whisper</li>
  *   <li>Noise reduction and echo cancellation</li>
- *   <li>Dual authentication support (API key and token credential)</li>
+ *   <li>Realtime audio playback through speakers</li>
  * </ul>
  *
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key (required only with --use-api-key flag)</li>
  * </ul>
  *
  * <p><strong>Audio Requirements:</strong></p>
  * The sample requires a working microphone and speakers/headphones.
  * Audio format is 24kHz, 16-bit PCM, mono as required by the VoiceLive service.
  *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
+ *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
- * # With DefaultAzureCredential (default):
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test
- *
- * # With API Key (requires AZURE_VOICELIVE_API_KEY):
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-api-key"
  * }</pre>
  */
 public final class VoiceAssistantSample {
@@ -102,7 +99,6 @@ public final class VoiceAssistantSample {
 
     // Environment variable names
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
-    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
     // Audio format constants (VoiceLive requirements)
     private static final int SAMPLE_RATE = 24000;          // 24kHz as required by VoiceLive
@@ -256,7 +252,7 @@ public final class VoiceAssistantSample {
                         // Send audio asynchronously using the session's audio buffer append
                         session.sendInputAudio(BinaryData.fromBytes(audioChunk))
                             .subscribe(
-                                v -> {}, // onNext
+                                noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ }, // onNext
                                 error -> {
                                     // Only log non-interruption errors
                                     if (!error.getMessage().contains("cancelled")) {
@@ -363,37 +359,16 @@ public final class VoiceAssistantSample {
     /**
      * Main method to run the voice assistant sample.
      *
-     * <p>Supports two authentication methods:</p>
-     * <ul>
-     *   <li>DefaultAzureCredential (default): uses the credential chain from azure-identity (managed identity,
-     *       environment variables, Azure CLI, etc.). No flag required.</li>
-     *   <li>API Key: pass {@code --use-api-key} on the command line; requires the {@code AZURE_VOICELIVE_API_KEY}
-     *       environment variable to be set.</li>
-     * </ul>
+     * <p>Authenticates using {@link DefaultAzureCredentialBuilder} (Entra ID). For an example of
+     * API key authentication, see {@link AuthenticationMethodsSample}.</p>
      *
-     * @param args Command line arguments. Pass {@code --use-api-key} to use API key authentication instead
-     *             of the default DefaultAzureCredential.
+     * @param args Unused command line arguments.
      */
     public static void main(String[] args) {
-        // Parse command line arguments
-        boolean useApiKey = false;
-        for (String arg : args) {
-            if ("--use-api-key".equals(arg)) {
-                useApiKey = true;
-            }
-        }
-
         // Validate environment variables
         String endpoint = System.getenv(ENV_ENDPOINT);
-        String apiKey = System.getenv(ENV_API_KEY);
 
         if (endpoint == null) {
-            printUsage();
-            return;
-        }
-
-        if (useApiKey && apiKey == null) {
-            System.err.println("❌ AZURE_VOICELIVE_API_KEY environment variable is required when using --use-api-key");
             printUsage();
             return;
         }
@@ -407,17 +382,10 @@ public final class VoiceAssistantSample {
         System.out.println("🎙️ Starting Voice Assistant...");
 
         try {
-            if (useApiKey) {
-                // Use API Key authentication
-                System.out.println("🔑 Using API Key authentication");
-                runVoiceAssistant(endpoint, new KeyCredential(apiKey));
-            } else {
-                // Use token credential authentication (DefaultAzureCredential, recommended)
-                System.out.println("🔑 Using DefaultAzureCredential authentication");
-                System.out.println("   Make sure you have run 'az login' before running this sample");
-                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-                runVoiceAssistant(endpoint, credential);
-            }
+            System.out.println("🔑 Using DefaultAzureCredential authentication");
+            System.out.println("   Make sure you have run 'az login' before running this sample");
+            TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+            runVoiceAssistant(endpoint, credential);
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
             System.err.println("❌ Voice Assistant failed: " + e.getMessage());
@@ -461,28 +429,6 @@ public final class VoiceAssistantSample {
     private static void printUsage() {
         System.err.println("\nRequired Environment Variables:");
         System.err.println("  " + ENV_ENDPOINT + "=<your-voicelive-endpoint>");
-        System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required only with --use-api-key flag)");
-        System.err.println("\nOptional:");
-        System.err.println("  Use --use-api-key flag to authenticate with an API key instead of DefaultAzureCredential");
-    }
-
-    /**
-     * Run the voice assistant with API key authentication.
-     *
-     * @param endpoint The VoiceLive service endpoint
-     * @param credential The API key credential
-     */
-    private static void runVoiceAssistant(String endpoint, KeyCredential credential) {
-        System.out.println("🔧 Initializing VoiceLive client:");
-        System.out.println("   Endpoint: " + endpoint);
-
-        // Create the VoiceLive client
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .buildAsyncClient();
-
-        runVoiceAssistantWithClient(client);
     }
 
     /**
@@ -543,21 +489,6 @@ public final class VoiceAssistantSample {
                 System.out.println("Start speaking to begin conversation");
                 System.out.println("Press Ctrl+C to exit");
 
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    try {
-                        System.out.println("\n🛑 Shutting down gracefully...");
-                    } catch (Exception ignored) {
-                        // jansi may have torn down the ANSI output stream already
-                    }
-                    audioProcessor.shutdown();
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown -
-                        // the WebSocket connection may already be partially torn down
-                    }
-                }));
-
                 return Mono.just(session);
             })
             // Subscribe to the server event stream and block until it completes.
@@ -584,7 +515,7 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Cleanup audio processor and close session.
+     * Cleanup audio processor and close session asynchronously with a 5-second timeout.
      */
     private static void cleanupVoiceAssistant(AtomicReference<AudioProcessor> audioProcessorRef,
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
@@ -594,11 +525,12 @@ public final class VoiceAssistantSample {
         }
         VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
         if (session != null) {
-            try {
-                session.close();
-            } catch (Exception e) {
-                // Suppress errors during cleanup
-            }
+            // Best-effort close: cap the wait so a hung server can't hang the JVM.
+            session.closeAsync()
+                .timeout(Duration.ofSeconds(5))
+                .subscribe(
+                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
+                    error -> { /* server may have already torn the WebSocket down */ });
         }
     }
 

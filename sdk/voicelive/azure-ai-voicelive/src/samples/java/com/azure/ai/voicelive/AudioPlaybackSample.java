@@ -18,8 +18,8 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -64,11 +64,13 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>{@link VoiceAssistantSample} - Complete voice assistant combining input and output</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>Audio Requirements:</strong></p>
  * Requires working speakers or headphones. Audio format is 24kHz, 16-bit PCM, mono.
@@ -110,9 +112,7 @@ public final class AudioPlaybackSample {
             return;
         }
 
-        // Create the VoiceLive client using DefaultAzureCredential (recommended).
-        // To use an API key instead:
-        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())

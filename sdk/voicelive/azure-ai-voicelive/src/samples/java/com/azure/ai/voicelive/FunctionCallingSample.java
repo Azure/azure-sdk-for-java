@@ -29,8 +29,8 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -77,11 +77,13 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>Process the AI's response after function execution</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - (Optional) The API key, if not using DefaultAzureCredential</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -132,9 +134,7 @@ public final class FunctionCallingSample {
         System.out.println(separator);
 
         try {
-            // Create client using DefaultAzureCredential (recommended).
-            // To use an API key instead:
-            //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
+            // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -193,17 +193,6 @@ public final class FunctionCallingSample {
                 System.out.println("Press Ctrl+C to exit");
                 System.out.println(separator + "\n");
 
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n👋 Shutting down voice assistant...");
-                    running.set(false);
-                    audioProcessor.cleanup();
-                    try {
-                        session.closeAsync().block(Duration.ofSeconds(5));
-                    } catch (Exception e) {
-                        // Suppress errors during forced JVM shutdown
-                    }
-                }));
-
                 return Mono.just(session);
             })
             // Subscribe to the server event stream and block until it completes.
@@ -231,7 +220,7 @@ public final class FunctionCallingSample {
     }
 
     /**
-     * Cleanup audio processor and close session.
+     * Cleanup audio processor and close session asynchronously with a 5-second timeout.
      */
     private static void cleanupFunctionCalling(AtomicReference<AudioProcessor> audioProcessorRef,
         AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
@@ -239,13 +228,14 @@ public final class FunctionCallingSample {
         if (audioProcessor != null) {
             audioProcessor.cleanup();
         }
-        VoiceLiveSessionAsyncClient s = sessionRef.getAndSet(null);
-        if (s != null) {
-            try {
-                s.close();
-            } catch (Exception e) {
-                // Suppress errors during cleanup
-            }
+        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
+        if (session != null) {
+            // Best-effort close: cap the wait so a hung server can't hang the JVM.
+            session.closeAsync()
+                .timeout(Duration.ofSeconds(5))
+                .subscribe(
+                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
+                    error -> { /* server may have already torn the WebSocket down */ });
         }
     }
 
@@ -365,9 +355,10 @@ public final class FunctionCallingSample {
             // A function call item was created — remember it so we can execute when arguments arrive.
             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
             if (itemCreated.getItem() != null && itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                ResponseFunctionCallItem fc = (ResponseFunctionCallItem) itemCreated.getItem();
-                System.out.println("🔧 Function call started: " + fc.getName());
-                pendingFunctionCalls.put(fc.getCallId(), new String[]{fc.getName(), fc.getId()});
+                ResponseFunctionCallItem functionCall = (ResponseFunctionCallItem) itemCreated.getItem();
+                System.out.println("🔧 Function call started: " + functionCall.getName());
+                pendingFunctionCalls.put(functionCall.getCallId(),
+                    new String[]{functionCall.getName(), functionCall.getId()});
             }
 
         } else if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
@@ -375,12 +366,12 @@ public final class FunctionCallingSample {
             SessionUpdateResponseFunctionCallArgumentsDone argsDone
                 = (SessionUpdateResponseFunctionCallArgumentsDone) event;
             String callId = argsDone.getCallId();
-            String[] meta = pendingFunctionCalls.remove(callId);
-            if (meta == null) {
+            String[] callMetadata = pendingFunctionCalls.remove(callId);
+            if (callMetadata == null) {
                 return;
             }
-            String functionName = meta[0];
-            String previousItemId = meta[1];
+            String functionName = callMetadata[0];
+            String previousItemId = callMetadata[1];
             String arguments = argsDone.getArguments();
 
             System.out.println("📋 Function arguments: " + arguments);
@@ -402,7 +393,7 @@ public final class FunctionCallingSample {
             session.sendEvent(createItem)
                 .then(session.sendEvent(new ClientEventResponseCreate()))
                 .subscribe(
-                    v -> System.out.println("🤖 Function result sent"),
+                    noValueEmitted -> System.out.println("🤖 Function result sent"),
                     error -> System.err.println("❌ Failed to send function result: " + error.getMessage())
                 );
         }
@@ -529,7 +520,7 @@ public final class FunctionCallingSample {
                                 byte[] audioData = Arrays.copyOf(buffer, bytesRead);
                                 session.sendInputAudio(BinaryData.fromBytes(audioData))
                                     .subscribe(
-                                        v -> {},
+                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
                                         error -> System.err.println("Error sending audio: " + error.getMessage())
                                     );
                             }

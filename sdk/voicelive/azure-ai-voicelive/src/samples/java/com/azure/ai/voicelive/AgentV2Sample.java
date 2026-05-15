@@ -36,15 +36,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -80,10 +72,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p>Required environment variables:</p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The Azure VoiceLive endpoint</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  *   <li>AGENT_NAME - The name of your Azure AI Foundry agent</li>
  *   <li>AGENT_PROJECT_NAME - The name of the Foundry project containing the agent</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
+ *
+ * <p><strong>How to Run:</strong></p>
+ * <pre>{@code
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AgentV2Sample" -Dexec.classpathScope=test
+ * }</pre>
  *
  * <p>Optional environment variables:</p>
  * <ul>
@@ -118,15 +118,6 @@ public class AgentV2Sample {
     private static final int TURN_DETECTION_PREFIX_PADDING_MS = 300;
     private static final int TURN_DETECTION_SILENCE_DURATION_MS = 500;
 
-    // Logging
-    private static final String LOG_DIR = "logs";
-    private static final String LOG_FILENAME;
-
-    static {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-        LOG_FILENAME = timestamp + "_agent_v2_conversation.log";
-    }
-
     public static void main(String[] args) {
         System.out.println("Agent V2 Voice Assistant with Azure VoiceLive SDK");
         System.out.println("==================================================");
@@ -141,13 +132,6 @@ public class AgentV2Sample {
         // Check audio system
         if (!checkAudioSystem()) {
             System.exit(1);
-        }
-
-        // Create logs directory
-        try {
-            Files.createDirectories(Paths.get(LOG_DIR));
-        } catch (IOException e) {
-            System.err.println("Warning: Could not create logs directory: " + e.getMessage());
         }
 
         // Run the assistant
@@ -185,16 +169,6 @@ public class AgentV2Sample {
             agentConfig,
             AGENT_VOICE
         );
-
-        // Setup shutdown hook for graceful termination
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                System.out.println("\nVoice assistant shut down. Goodbye!");
-            } catch (Exception ignored) {
-                // jansi/Maven may throw during shutdown
-            }
-            assistant.shutdown();
-        }));
 
         // Start the assistant
         assistant.start();
@@ -262,26 +236,26 @@ public class AgentV2Sample {
             System.out.println("\nConnecting to VoiceLive API with agent " + agentConfig.getAgentName()
                 + " for project " + agentConfig.getProjectName());
 
-            // Create client with DefaultAzureCredential
+            // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
-                .credential(new DefaultAzureCredentialBuilder().build())
                 .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
             // Connect using AgentSessionConfig
             client.startSession(agentConfig)
                 // Configure the session.
-                .flatMap(s -> {
-                    this.session = s;
+                .flatMap(voiceLiveSession -> {
+                    this.session = voiceLiveSession;
                     System.out.println("Connected to VoiceLive service");
 
-                    this.audioProcessor = new AudioProcessor(s);
+                    this.audioProcessor = new AudioProcessor(voiceLiveSession);
 
-                    return configureSession().thenReturn(s);
+                    return configureSession().thenReturn(voiceLiveSession);
                 })
                 // Subscribe to the server event stream.
-                .flatMapMany(s -> s.receiveEvents())
+                .flatMapMany(voiceLiveSession -> voiceLiveSession.receiveEvents())
                 .subscribe(
                     this::handleEvent,
                     error -> {
@@ -356,9 +330,7 @@ public class AgentV2Sample {
                 String model = sessionEvent.getSession().getModel();
 
                 System.out.println("Session ready: " + sessionId);
-                writeConversationLog("SessionID: " + sessionId);
-                writeConversationLog("Model: " + model);
-                writeConversationLog("");
+                System.out.println("Model: " + model);
 
                 // Start audio capture once session is ready
                 audioProcessor.startCapture();
@@ -371,20 +343,17 @@ public class AgentV2Sample {
                     (SessionUpdateConversationItemInputAudioTranscriptionCompleted) event;
                 String transcript = transcriptionEvent.getTranscript();
                 System.out.println("You said: " + transcript);
-                writeConversationLog("User Input:\t" + transcript);
 
             } else if (eventType == ServerEventType.RESPONSE_TEXT_DONE) {
                 SessionUpdateResponseTextDone textEvent = (SessionUpdateResponseTextDone) event;
                 String text = textEvent.getText();
                 System.out.println("Agent responded with text: " + text);
-                writeConversationLog("Agent Text Response:\t" + text);
 
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
                 SessionUpdateResponseAudioTranscriptDone transcriptEvent =
                     (SessionUpdateResponseAudioTranscriptDone) event;
                 String transcript = transcriptEvent.getTranscript();
                 System.out.println("Agent responded with audio transcript: " + transcript);
-                writeConversationLog("Agent Audio Response:\t" + transcript);
 
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
                 System.out.println("Listening...");
@@ -450,27 +419,17 @@ public class AgentV2Sample {
 
                 try {
                     if (session != null) {
-                        // closeAsync() returns a cold Mono - we must subscribe (block) for it to run.
-                        // Block with a timeout so a hung close can't hang the shutdown hook.
-                        session.closeAsync().block(Duration.ofSeconds(5));
+                        // Best-effort close: cap the wait so a hung server can't hang shutdown.
+                        session.closeAsync()
+                            .timeout(Duration.ofSeconds(5))
+                            .subscribe(
+                                ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
+                                error -> System.err.println("Error closing session: " + error.getMessage()));
                     }
-                } catch (Exception e) {
-                    System.err.println("Error closing session: " + e.getMessage());
                 } finally {
                     // Always release the latch so start()'s await() returns.
                     shutdownLatch.countDown();
                 }
-            }
-        }
-
-        private void writeConversationLog(String message) {
-            try {
-                Path logPath = Paths.get(LOG_DIR, LOG_FILENAME);
-                try (PrintWriter writer = new PrintWriter(new FileWriter(logPath.toFile(), true))) {
-                    writer.println(message);
-                }
-            } catch (IOException e) {
-                System.err.println("Warning: Could not write to conversation log: " + e.getMessage());
             }
         }
     }
@@ -539,7 +498,7 @@ public class AgentV2Sample {
                     // audio to actually be sent over the WebSocket.
                     session.sendInputAudio(audioData)
                         .subscribe(
-                            v -> { },
+                            noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
                             error -> System.err.println("Error sending audio: " + error.getMessage())
                         );
                 }

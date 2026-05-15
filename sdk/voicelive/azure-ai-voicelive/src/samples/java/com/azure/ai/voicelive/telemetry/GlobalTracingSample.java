@@ -17,8 +17,7 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,11 +41,13 @@ import java.util.concurrent.TimeUnit;
  * <p>Alternatively, attach the OpenTelemetry Java agent ({@code -javaagent:opentelemetry-javaagent.jar})
  * which registers the global instance automatically — no code needed at all.</p>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *     <li>{@code AZURE_VOICELIVE_ENDPOINT} — The VoiceLive service endpoint URL</li>
- *     <li>{@code AZURE_VOICELIVE_API_KEY} — (Optional) The API key, if not using DefaultAzureCredential</li>
+ *     <li>{@code AZURE_VOICELIVE_ENDPOINT} — (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@code AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -76,12 +77,14 @@ public final class GlobalTracingSample {
         System.out.println("GlobalOpenTelemetry registered (console exporter)");
 
         // 2. Build client — it picks up GlobalOpenTelemetry automatically.
-        // Uses DefaultAzureCredential (recommended). To use an API key instead:
-        //   .credential(new KeyCredential(System.getenv("AZURE_VOICELIVE_API_KEY")))
+        //    Authenticates using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
+        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
+            .setModalities(Arrays.asList(InteractionModality.TEXT))
+            .setInstructions("You are a helpful assistant. Be concise.");
 
         System.out.println("Starting voice session (automatic tracing)...");
 
@@ -89,36 +92,20 @@ public final class GlobalTracingSample {
 
         // 3. Run a short text-mode conversation — all operations are traced automatically.
         client.startSession("gpt-realtime")
-            .flatMap(session -> {
-                VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
-                    .setModalities(Arrays.asList(InteractionModality.TEXT))
-                    .setInstructions("You are a helpful assistant. Be concise.");
-
-                // Configure the session, trigger a response, then wait for response.done.
-                // Uses a single reactive chain: send config → start response → wait for done → close.
-                Sinks.One<Void> eventSubscribed = Sinks.one();
-                Flux<SessionUpdateResponseDone> responseDoneEvents = session.receiveEvents()
-                    .doOnSubscribe(subscription -> eventSubscribed.tryEmitEmpty())
-                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
-                    .filter(event -> event instanceof SessionUpdateResponseDone)
-                    .map(event -> (SessionUpdateResponseDone) event)
-                    .take(1);
-
-                return Flux.merge(
-                        responseDoneEvents,
-                        eventSubscribed.asMono()
-                            .then(session.sendEvent(new ClientEventSessionUpdate(options)))
-                            .then(session.startResponse())
-                            .thenMany(Flux.<SessionUpdateResponseDone>empty()))
-                    .next()
-                    .flatMap(event -> session.closeAsync())
-                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                    .onErrorComplete()
-                    .then();
-            })
+            // Send config and trigger a response, then continue with the same session.
+            .flatMap(session -> session.sendEvent(new ClientEventSessionUpdate(sessionOptions))
+                .then(session.startResponse())
+                .thenReturn(session))
+            // Stream server events until response.done, then close the session.
+            .flatMapMany(session -> session.receiveEvents()
+                .takeUntil(serverEvent -> serverEvent instanceof SessionUpdateResponseDone)
+                .concatWith(session.closeAsync().then(Mono.empty())))
             .subscribe(
-                v -> {},
-                error -> done.countDown(),
+                serverEvent -> System.out.println("Event: " + serverEvent.getType()),
+                error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    done.countDown();
+                },
                 () -> done.countDown()
             );
 
