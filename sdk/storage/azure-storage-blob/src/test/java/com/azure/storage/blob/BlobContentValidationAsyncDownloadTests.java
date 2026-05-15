@@ -494,19 +494,19 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         BlobDownloadToFileOptions optionsWithContentVal
             = new BlobDownloadToFileOptions(outFileWithContentVal.getAbsolutePath())
-            .setParallelTransferOptions(parallelOptionsWithContentVal)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                .setParallelTransferOptions(parallelOptionsWithContentVal)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
         BlobDownloadToFileOptions optionsWithoutContentVal
             = new BlobDownloadToFileOptions(outFileWithoutContentVal.getAbsolutePath())
-            .setParallelTransferOptions(parallelOptionsWithoutContentVal);
+                .setParallelTransferOptions(parallelOptionsWithoutContentVal);
 
         StepVerifier.create(client.upload(BinaryData.fromBytes(data))
             .then(client.downloadToFileWithResponse(optionsWithContentVal))
             .then(client.downloadToFileWithResponse(optionsWithoutContentVal))).assertNext(ignored -> {
-            long expectedBytes = data.length;
-            assertEquals(expectedBytes, mockListenerWithContentVal.getReportedByteCount());
-            assertEquals(expectedBytes, mockListenerWithoutContentVal.getReportedByteCount());
-        }).verifyComplete();
+                long expectedBytes = data.length;
+                assertEquals(expectedBytes, mockListenerWithContentVal.getReportedByteCount());
+                assertEquals(expectedBytes, mockListenerWithoutContentVal.getReportedByteCount());
+            }).verifyComplete();
     }
 
     private static final class MockProgressListener implements ProgressListener {
@@ -595,8 +595,6 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         assertParallelDownloadFuzzyRoundTripAsync("liveRandom", sizeBytes, 8L * Constants.MB, 8, algorithm);
     }
-
-
 
     private void assertParallelDownloadFuzzyRoundTripAsync(String caseKind, int payloadBytes, long blockSizeBytes,
         int maxConcurrency) throws IOException {
