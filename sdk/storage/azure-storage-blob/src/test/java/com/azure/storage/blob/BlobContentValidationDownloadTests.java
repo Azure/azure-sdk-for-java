@@ -20,6 +20,7 @@ import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -31,22 +32,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.BlobSeekableByteChannelTests.copy;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,6 +64,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BlobContentValidationDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
     private static final int BLOCK_SIZE = 4 * Constants.MB;
+    /**
+     * {@link BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases()} starts at ~96 MiB; above this threshold fuzzy
+     * parallel download helpers use temp files + {@link BlobTestBase#compareFiles(File, File, long, long)} so the full
+     * payload never lives twice in heap.
+     */
+    private static final int FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES = 96 * Constants.MB;
+
+    /**
+     * Live-only random payload band for the dedicated random-size parallel-download fuzzy test
+     * ({@link #fuzzyParallelDownloadLiveRandomRoundTrip(ContentValidationAlgorithm)}): each run draws a per-run
+     * payload size in {@code (256 MiB, 500 MiB]} (matches the encoder fuzzy upload range) so the structured-message
+     * decoder is exercised against payloads whose size varies per run in addition to the random byte contents.
+     */
+    private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
+    private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
+
+    private final List<File> createdFiles = new ArrayList<>();
 
     private File createRandomFile(Path tempDir, int size) throws IOException {
         File file = Files.createTempFile(tempDir, "blob-cv-source", ".bin").toFile();
@@ -470,6 +492,161 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
         long getReportedByteCount() {
             return this.reportedByteCount.get();
+        }
+    }
+
+    // ---------- Fuzzy parallel download (deterministic grids) ----------
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadReplayableCases")
+    public void fuzzyParallelDownloadReplayableRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("replayable", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // payload > blockSize with tiny totals; many small range GETs not replayable under the proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadSmallMultiPartCases")
+    public void fuzzyParallelDownloadSmallMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("smallMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // sub-4 MiB chunked range GETs not replayable under the proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadSubFourMiBCases")
+    public void fuzzyParallelDownloadSubFourMiBRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("subFourMiB", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // 4 MiB boundary tuples that fan out into chunked range GETs.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadFourMiBBoundaryCases")
+    public void fuzzyParallelDownloadFourMiBBoundaryRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("fourMiBBoundary", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // payload > blockSize for every tuple; chunked range GETs across many requests.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadMediumMultiPartCases")
+    public void fuzzyParallelDownloadMediumMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("mediumMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // payload >> blockSize; ~96-320 MiB downloads.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases")
+    public void fuzzyParallelDownloadLargeMultiPartRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("largeMultiPart", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    @LiveOnly // ~1 GiB single case; far too large for the test proxy.
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fuzzyParallelDownloadOneGiBCases")
+    public void fuzzyParallelDownloadOneGiBRoundTrip(int payloadBytes, long blockSizeBytes, int maxConcurrency)
+        throws IOException {
+        assertParallelDownloadFuzzyRoundTrip("oneGiB", payloadBytes, blockSizeBytes, maxConcurrency);
+    }
+
+    /**
+     * Live-only random-size parallel download fuzzy round-trip. Each run draws a per-run payload size in
+     * {@code (256 MiB, 500 MiB]} (matches the encoder fuzzy upload range) and exercises both CRC64 and AUTO
+     * content-validation algorithms so the structured-message decoder is tested against payloads whose total size
+     * varies per run in addition to the random byte contents that the deterministic grids already exercise. Kept
+     * separate from the parameterized {@link #fuzzyParallelDownloadLargeMultiPartRoundTrip(int, long, int)} so the
+     * deterministic per-grid round-trips and the randomized round-trip don't share work or cost.
+     */
+    @LiveOnly
+    @ParameterizedTest
+    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
+    public void fuzzyParallelDownloadLiveRandomRoundTrip(ContentValidationAlgorithm algorithm) throws IOException {
+        int sizeBytes = (int) randomLongFromNamer(LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE + 1,
+            LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
+        assertParallelDownloadFuzzyRoundTrip("liveRandom", sizeBytes, 8L * Constants.MB, 8, algorithm);
+    }
+
+    private void assertParallelDownloadFuzzyRoundTrip(String caseKind, int payloadBytes, long blockSizeBytes,
+        int maxConcurrency) throws IOException {
+        assertParallelDownloadFuzzyRoundTrip(caseKind, payloadBytes, blockSizeBytes, maxConcurrency,
+            ContentValidationAlgorithm.CRC64);
+    }
+
+    private void assertParallelDownloadFuzzyRoundTrip(String caseKind, int payloadBytes, long blockSizeBytes,
+        int maxConcurrency, ContentValidationAlgorithm algorithm) throws IOException {
+        List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
+
+        ParallelTransferOptions parallelOptions
+            = new ParallelTransferOptions().setBlockSizeLong(blockSizeBytes).setMaxConcurrency(maxConcurrency);
+
+        String assertionMessage = "Fuzzy parallel download [" + caseKind + "] payloadBytes=" + payloadBytes
+            + ", blockSize=" + blockSizeBytes + ", maxConcurrency=" + maxConcurrency + ", algorithm=" + algorithm;
+
+        if (payloadBytes >= FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
+            File sourceFile = getRandomFile(payloadBytes);
+            sourceFile.deleteOnExit();
+            createdFiles.add(sourceFile);
+            File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl", ".bin").toFile();
+            outFile.deleteOnExit();
+            createdFiles.add(outFile);
+            Files.deleteIfExists(outFile.toPath());
+
+            BlobUploadFromFileOptions uploadOptions
+                = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath()).setParallelTransferOptions(
+                    new com.azure.storage.blob.models.ParallelTransferOptions().setBlockSizeLong(blockSizeBytes)
+                        .setMaxConcurrency(maxConcurrency));
+            assertNotNull(client.uploadFromFileWithResponse(uploadOptions, null, Context.NONE).getValue().getETag(),
+                assertionMessage);
+
+            BlobDownloadToFileOptions downloadOptions
+                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(algorithm);
+            assertNotNull(client.downloadToFileWithResponse(downloadOptions, null, Context.NONE).getValue(),
+                assertionMessage);
+
+            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
+        } else {
+            byte[] randomData = getRandomByteArray(payloadBytes);
+            client.upload(BinaryData.fromBytes(randomData), true);
+
+            if (payloadBytes > blockSizeBytes) {
+                File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-mp", ".bin").toFile();
+                outFile.deleteOnExit();
+                createdFiles.add(outFile);
+                Files.deleteIfExists(outFile.toPath());
+
+                BlobDownloadToFileOptions downloadOptions = new BlobDownloadToFileOptions(outFile.toPath().toString())
+                    .setParallelTransferOptions(parallelOptions)
+                    .setContentValidationAlgorithm(algorithm);
+                assertNotNull(client.downloadToFileWithResponse(downloadOptions, null, Context.NONE).getValue(),
+                    assertionMessage);
+
+                byte[] downloaded = readAllBytesFromFile(outFile);
+                assertArrayEquals(randomData, downloaded, assertionMessage);
+            } else {
+                BlobDownloadContentOptions downloadOptions
+                    = new BlobDownloadContentOptions().setContentValidationAlgorithm(algorithm);
+                byte[] downloaded
+                    = client.downloadContentWithResponse(downloadOptions, null, Context.NONE).getValue().toBytes();
+                assertArrayEquals(randomData, downloaded, assertionMessage);
+            }
+        }
+        assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded, false), assertionMessage);
+    }
+
+    private static byte[] readAllBytesFromFile(File file) throws IOException {
+        try (InputStream is = Files.newInputStream(file.toPath())) {
+            byte[] buffer = new byte[(int) file.length()];
+            int offset = 0;
+            int read;
+            while (offset < buffer.length && (read = is.read(buffer, offset, buffer.length - offset)) != -1) {
+                offset += read;
+            }
+            return buffer;
         }
     }
 
