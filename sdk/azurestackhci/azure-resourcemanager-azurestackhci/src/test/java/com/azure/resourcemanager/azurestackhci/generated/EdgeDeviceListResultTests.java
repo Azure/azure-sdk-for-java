@@ -12,8 +12,8 @@ public final class EdgeDeviceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"b\",\"name\":\"fdb\",\"type\":\"jbzten\"},{\"kind\":\"EdgeDevice\",\"id\":\"kzykjtjk\",\"name\":\"sxfwushcdp\",\"type\":\"upnqrmgjfb\"},{\"kind\":\"EdgeDevice\",\"id\":\"uwxeoiojfizf\",\"name\":\"vkjzwfbcyaykm\",\"type\":\"fz\"},{\"kind\":\"EdgeDevice\",\"id\":\"fwxrzxmdew\",\"name\":\"rsxkr\",\"type\":\"lbjazejww\"}],\"nextLink\":\"yoyp\"}")
+            "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"htssruqnmdvhazc\",\"name\":\"jy\",\"type\":\"iqswbqer\"},{\"kind\":\"EdgeDevice\",\"id\":\"xiytxtdgukvl\",\"name\":\"pktgdstyouambew\",\"type\":\"esw\"}],\"nextLink\":\"weg\"}")
             .toObject(EdgeDeviceListResult.class);
-        Assertions.assertEquals("yoyp", model.nextLink());
+        Assertions.assertEquals("weg", model.nextLink());
     }
 }

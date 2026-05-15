@@ -758,6 +758,7 @@ public final class ModelBridgeInternal {
         CosmosItemRequestOptions.initialize();
         CosmosItemResponse.initialize();
         CosmosPatchOperations.initialize();
+        CosmosReadManyByPartitionKeysRequestOptions.initialize();
         CosmosReadManyRequestOptions.initialize();
         CosmosQueryRequestOptions.initialize();
         CosmosOperationDetails.initialize();
@@ -766,5 +767,7 @@ public final class ModelBridgeInternal {
         CosmosClientTelemetryConfig.initialize();
         CosmosContainerIdentity.initialize();
         PriorityLevel.initialize();
+        SqlQuerySpec.initialize();
+        SqlParameter.initialize();
     }
 }

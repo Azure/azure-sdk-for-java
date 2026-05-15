@@ -12,18 +12,18 @@ public final class ValidatedSolutionRecipeComponentMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidatedSolutionRecipeComponentMetadata model = BinaryData.fromString(
-            "{\"extensionType\":\"z\",\"publisher\":\"eqrztrxalxrdh\",\"enableAutomaticUpgrade\":true,\"lcmUpdate\":false,\"catalog\":\"sn\",\"ring\":\"pqatiwkkvyanxkv\",\"releaseTrain\":\"semsvuvd\",\"link\":\"qxetqmmlivrjjx\",\"name\":\"xdchp\",\"expectedHash\":\"xlehzlxpgfquwzp\",\"previewSource\":\"ibelwcerwkw\"}")
+            "{\"extensionType\":\"k\",\"publisher\":\"xprwpxs\",\"enableAutomaticUpgrade\":false,\"lcmUpdate\":false,\"catalog\":\"lcsklt\",\"ring\":\"uugggzlfbgrd\",\"releaseTrain\":\"ubsrtmdylperpilt\",\"link\":\"zgczfcmfpfbode\",\"name\":\"esrgvtshuvftwai\",\"expectedHash\":\"uqk\",\"previewSource\":\"zgjypanhxmpdxxz\"}")
             .toObject(ValidatedSolutionRecipeComponentMetadata.class);
-        Assertions.assertEquals("z", model.extensionType());
-        Assertions.assertEquals("eqrztrxalxrdh", model.publisher());
-        Assertions.assertTrue(model.enableAutomaticUpgrade());
+        Assertions.assertEquals("k", model.extensionType());
+        Assertions.assertEquals("xprwpxs", model.publisher());
+        Assertions.assertFalse(model.enableAutomaticUpgrade());
         Assertions.assertFalse(model.lcmUpdate());
-        Assertions.assertEquals("sn", model.catalog());
-        Assertions.assertEquals("pqatiwkkvyanxkv", model.ring());
-        Assertions.assertEquals("semsvuvd", model.releaseTrain());
-        Assertions.assertEquals("qxetqmmlivrjjx", model.link());
-        Assertions.assertEquals("xdchp", model.name());
-        Assertions.assertEquals("xlehzlxpgfquwzp", model.expectedHash());
-        Assertions.assertEquals("ibelwcerwkw", model.previewSource());
+        Assertions.assertEquals("lcsklt", model.catalog());
+        Assertions.assertEquals("uugggzlfbgrd", model.ring());
+        Assertions.assertEquals("ubsrtmdylperpilt", model.releaseTrain());
+        Assertions.assertEquals("zgczfcmfpfbode", model.link());
+        Assertions.assertEquals("esrgvtshuvftwai", model.name());
+        Assertions.assertEquals("uqk", model.expectedHash());
+        Assertions.assertEquals("zgjypanhxmpdxxz", model.previewSource());
     }
 }

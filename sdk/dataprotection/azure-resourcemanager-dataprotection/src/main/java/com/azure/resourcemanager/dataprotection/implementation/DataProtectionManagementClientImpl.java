@@ -35,6 +35,7 @@ import com.azure.resourcemanager.dataprotection.fluent.DataProtectionManagementC
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupInstancesClient;
+import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupVaultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.DppResourceGuardProxiesClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
@@ -187,6 +188,20 @@ public final class DataProtectionManagementClientImpl implements DataProtectionM
      */
     public BackupVaultOperationResultsClient getBackupVaultOperationResults() {
         return this.backupVaultOperationResults;
+    }
+
+    /**
+     * The DeletedBackupVaultsClient object to access its operations.
+     */
+    private final DeletedBackupVaultsClient deletedBackupVaults;
+
+    /**
+     * Gets the DeletedBackupVaultsClient object to access its operations.
+     * 
+     * @return the DeletedBackupVaultsClient object.
+     */
+    public DeletedBackupVaultsClient getDeletedBackupVaults() {
+        return this.deletedBackupVaults;
     }
 
     /**
@@ -472,10 +487,11 @@ public final class DataProtectionManagementClientImpl implements DataProtectionM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01";
+        this.apiVersion = "2026-03-01";
         this.dataProtectionOperations = new DataProtectionOperationsClientImpl(this);
         this.backupInstances = new BackupInstancesClientImpl(this);
         this.backupVaultOperationResults = new BackupVaultOperationResultsClientImpl(this);
+        this.deletedBackupVaults = new DeletedBackupVaultsClientImpl(this);
         this.resourceGuards = new ResourceGuardsClientImpl(this);
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationStatusBackupVaultContexts = new OperationStatusBackupVaultContextsClientImpl(this);

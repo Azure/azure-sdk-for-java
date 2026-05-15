@@ -69,6 +69,7 @@ public interface BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +78,8 @@ public interface BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, String xMsDeletedVaultId,
+        Context context);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
@@ -100,6 +102,7 @@ public interface BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,7 +111,7 @@ public interface BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupVaultResourceInner createOrUpdate(String resourceGroupName, String vaultName,
-        BackupVaultResourceInner parameters, Context context);
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId, Context context);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.

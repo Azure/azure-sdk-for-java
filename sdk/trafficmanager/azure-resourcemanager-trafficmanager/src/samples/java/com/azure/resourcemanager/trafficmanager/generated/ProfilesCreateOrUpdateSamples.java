@@ -15,6 +15,7 @@ import com.azure.resourcemanager.trafficmanager.models.MonitorConfigCustomHeader
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfigExpectedStatusCodeRangesItem;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
+import com.azure.resourcemanager.trafficmanager.models.RecordType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ import java.util.Arrays;
  */
 public final class ProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-MultiValue.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-MultiValue.json
      */
     /**
      * Sample code: Profile-PUT-MultiValue.
@@ -47,7 +48,41 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-WithCustomHeaders.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithEndpointsAndRecordType.json
+     */
+    /**
+     * Sample code: Profile-PUT-WithEndpointsAndRecordType.
+     * 
+     * @param manager Entry point to TrafficManager.
+     */
+    public static void
+        profilePUTWithEndpointsAndRecordType(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
+        manager.serviceClient()
+            .getProfiles()
+            .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2583",
+                "azuresdkfornetautoresttrafficmanager6192",
+                new ProfileInner().withLocation("global")
+                    .withProfileStatus(ProfileStatus.ENABLED)
+                    .withTrafficRoutingMethod(TrafficRoutingMethod.PERFORMANCE)
+                    .withDnsConfig(
+                        new DnsConfig().withRelativeName("azuresdkfornetautoresttrafficmanager6192").withTtl(35L))
+                    .withMonitorConfig(new MonitorConfig().withProtocol(MonitorProtocol.HTTP)
+                        .withPort(80L)
+                        .withPath("/testpath.aspx")
+                        .withIntervalInSeconds(10L)
+                        .withTimeoutInSeconds(5L)
+                        .withToleratedNumberOfFailures(2L))
+                    .withEndpoints(Arrays.asList(new EndpointInner().withName("My external endpoint")
+                        .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
+                        .withTarget("foobar.contoso.com")
+                        .withEndpointStatus(EndpointStatus.ENABLED)
+                        .withEndpointLocation("North Europe")))
+                    .withRecordType(RecordType.CNAME),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithCustomHeaders.json
      */
     /**
      * Sample code: Profile-PUT-WithCustomHeaders.
@@ -88,7 +123,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-NoEndpoints.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-NoEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-NoEndpoints.
@@ -110,7 +145,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-WithAliasing.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithAliasing.json
      */
     /**
      * Sample code: Profile-PUT-WithAliasing.
@@ -143,7 +178,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-WithEndpoints.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-WithEndpoints.
@@ -175,7 +210,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PUT-WithNestedEndpoints.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithNestedEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-WithNestedEndpoints.

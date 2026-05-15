@@ -12,21 +12,21 @@ public final class QosPolicyOverridesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QosPolicyOverrides model = BinaryData.fromString(
-            "{\"priorityValue8021Action_Cluster\":\"xkalla\",\"priorityValue8021Action_SMB\":\"elwuipi\",\"bandwidthPercentage_SMB\":\"jzkzi\"}")
+            "{\"priorityValue8021Action_Cluster\":\"hfjx\",\"priorityValue8021Action_SMB\":\"szkkfoqre\",\"bandwidthPercentage_SMB\":\"kzikfjawneaivxwc\"}")
             .toObject(QosPolicyOverrides.class);
-        Assertions.assertEquals("xkalla", model.priorityValue8021ActionCluster());
-        Assertions.assertEquals("elwuipi", model.priorityValue8021ActionSmb());
-        Assertions.assertEquals("jzkzi", model.bandwidthPercentageSmb());
+        Assertions.assertEquals("hfjx", model.priorityValue8021ActionCluster());
+        Assertions.assertEquals("szkkfoqre", model.priorityValue8021ActionSmb());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.bandwidthPercentageSmb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QosPolicyOverrides model = new QosPolicyOverrides().withPriorityValue8021ActionCluster("xkalla")
-            .withPriorityValue8021ActionSmb("elwuipi")
-            .withBandwidthPercentageSmb("jzkzi");
+        QosPolicyOverrides model = new QosPolicyOverrides().withPriorityValue8021ActionCluster("hfjx")
+            .withPriorityValue8021ActionSmb("szkkfoqre")
+            .withBandwidthPercentageSmb("kzikfjawneaivxwc");
         model = BinaryData.fromObject(model).toObject(QosPolicyOverrides.class);
-        Assertions.assertEquals("xkalla", model.priorityValue8021ActionCluster());
-        Assertions.assertEquals("elwuipi", model.priorityValue8021ActionSmb());
-        Assertions.assertEquals("jzkzi", model.bandwidthPercentageSmb());
+        Assertions.assertEquals("hfjx", model.priorityValue8021ActionCluster());
+        Assertions.assertEquals("szkkfoqre", model.priorityValue8021ActionSmb());
+        Assertions.assertEquals("kzikfjawneaivxwc", model.bandwidthPercentageSmb());
     }
 }

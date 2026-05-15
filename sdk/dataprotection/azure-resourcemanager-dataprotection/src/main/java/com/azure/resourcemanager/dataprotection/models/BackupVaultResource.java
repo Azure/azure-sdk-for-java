@@ -173,8 +173,8 @@ public interface BackupVaultResource {
          * The stage of the BackupVaultResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithEtag {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithEtag, DefinitionStages.WithXMsDeletedVaultId {
             /**
              * Executes the create request.
              * 
@@ -228,6 +228,20 @@ public interface BackupVaultResource {
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
+        }
+
+        /**
+         * The stage of the BackupVaultResource definition allowing to specify xMsDeletedVaultId.
+         */
+        interface WithXMsDeletedVaultId {
+            /**
+             * Specifies the xMsDeletedVaultId property: The ID of the deleted backup vault to restore from during
+             * undelete flow..
+             * 
+             * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
+             * @return the next definition stage.
+             */
+            WithCreate withXMsDeletedVaultId(String xMsDeletedVaultId);
         }
     }
 

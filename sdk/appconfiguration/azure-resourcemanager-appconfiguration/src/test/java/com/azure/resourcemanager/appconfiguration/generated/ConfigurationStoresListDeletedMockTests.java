@@ -21,7 +21,7 @@ public final class ConfigurationStoresListDeletedMockTests {
     @Test
     public void testListDeleted() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurationStoreId\":\"n\",\"location\":\"xisxyawjoyaqcsl\",\"deletionDate\":\"2021-01-14T07:52:43Z\",\"scheduledPurgeDate\":\"2021-02-10T10:28:36Z\",\"tags\":{\"lixhnrztfol\":\"zyexzn\",\"dtpnapnyiropuhp\":\"bnxknalaulppg\",\"gqgitxmedjvcsl\":\"gvpgy\"},\"purgeProtectionEnabled\":false},\"id\":\"wncwzzhxgktrmg\",\"name\":\"cnapkteoell\",\"type\":\"pt\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurationStoreId\":\"gitvg\",\"location\":\"hrixkwmy\",\"deletionDate\":\"2021-05-15T07:36:09Z\",\"scheduledPurgeDate\":\"2021-03-16T09:00:03Z\",\"tags\":{\"pna\":\"rh\",\"rvqahqkghtpwi\":\"xexccbdreaxhcexd\"},\"purgeProtectionEnabled\":true},\"id\":\"jsvfycxzbfvoowv\",\"name\":\"vmtgjqppy\",\"type\":\"s\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

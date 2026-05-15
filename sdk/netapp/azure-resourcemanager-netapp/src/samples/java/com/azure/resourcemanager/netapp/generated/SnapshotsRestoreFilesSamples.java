@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class SnapshotsRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_SingleFileRestore.json
+     * x-ms-original-file: 2026-01-01/Snapshots_SingleFileRestore.json
      */
     /**
      * Sample code: Snapshots_SingleFileRestore.

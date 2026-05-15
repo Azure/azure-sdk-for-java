@@ -161,7 +161,7 @@ $env:AZURE_LOG_LEVEL = "verbose"
 ## Additional Resources
 
 - [Azure SDK for Java Test Documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/README.md)
-- [TypeSpec Java QuickStart - Adding Tests](https://github.com/Azure/azure-sdk-for-java/wiki/TypeSpec-Java-QuickStart#adding-tests)
+- [TypeSpec Quickstart - Tests](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md#6-tests)
 - [Azure Speech Service Documentation](https://learn.microsoft.com/azure/cognitive-services/speech-service/)
 - [Azure SDK for Java Contributing Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md)
 

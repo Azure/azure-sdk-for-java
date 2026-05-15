@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
@@ -24,6 +25,7 @@ import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
 import com.azure.resourcemanager.azurestackhci.models.SecretsLocationDetails;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
 import com.azure.resourcemanager.azurestackhci.models.UserAssignedIdentity;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -44,6 +46,11 @@ public final class ClusterInner extends Resource {
      * The managed service identities assigned to this resource.
      */
     private ManagedServiceIdentity innerIdentity;
+
+    /*
+     * This property identifies the purpose of the Cluster deployment. For example, a valid value is AzureLocal
+     */
+    private String kind;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -87,6 +94,28 @@ public final class ClusterInner extends Resource {
      */
     private ManagedServiceIdentity innerIdentity() {
         return this.innerIdentity;
+    }
+
+    /**
+     * Get the kind property: This property identifies the purpose of the Cluster deployment. For example, a valid value
+     * is AzureLocal.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: This property identifies the purpose of the Cluster deployment. For example, a valid value
+     * is AzureLocal.
+     * 
+     * @param kind the kind value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 
     /**
@@ -440,6 +469,15 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the billingProperties property: Billing properties of the cluster, including upcoming billing model details.
+     * 
+     * @return the billingProperties value.
+     */
+    public ClusterBillingProperties billingProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingProperties();
+    }
+
+    /**
      * Get the registrationTimestamp property: First cluster sync timestamp.
      * 
      * @return the registrationTimestamp value.
@@ -549,6 +587,16 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the storageType property: Storage type of the cluster. Indicates whether the cluster uses S2D, SAN, or a
+     * combination.
+     * 
+     * @return the storageType value.
+     */
+    public StorageType storageType() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageType();
+    }
+
+    /**
      * Get the principalId property: The service principal ID of the system assigned identity. This property will only
      * be provided for a system assigned identity.
      * 
@@ -624,6 +672,7 @@ public final class ClusterInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.innerIdentity);
+        jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
     }
 
@@ -658,6 +707,8 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterInner.innerIdentity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedClusterInner.kind = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

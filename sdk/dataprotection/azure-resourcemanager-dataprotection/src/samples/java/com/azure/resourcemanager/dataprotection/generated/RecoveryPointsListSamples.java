@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class RecoveryPointsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/ListRecoveryPoints.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ListRecoveryPoints.json
      */
     /**
      * Sample code: List Recovery Points in a Vault.
