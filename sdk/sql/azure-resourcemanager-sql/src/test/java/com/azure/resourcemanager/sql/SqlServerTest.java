@@ -54,5 +54,4 @@ public abstract class SqlServerTest extends ResourceManagerTestProxyTestBase {
         ResourceManagerUtils.sleep(Duration.ofSeconds(1));
         resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
-
 }
