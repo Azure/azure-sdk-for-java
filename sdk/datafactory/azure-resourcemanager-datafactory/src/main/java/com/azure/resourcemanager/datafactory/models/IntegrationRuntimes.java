@@ -258,7 +258,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return integration runtime status response.
      */
     IntegrationRuntimeStatusResponse start(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
@@ -272,7 +272,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return integration runtime status response.
      */
     IntegrationRuntimeStatusResponse start(String resourceGroupName, String factoryName, String integrationRuntimeName,
         Context context);

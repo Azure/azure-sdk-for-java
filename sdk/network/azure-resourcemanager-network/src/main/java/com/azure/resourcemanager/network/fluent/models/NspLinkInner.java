@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NspLinkProvisioningState;
 import com.azure.resourcemanager.network.models.NspLinkStatus;
 import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
-import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,21 +28,20 @@ public final class NspLinkInner extends SecurityPerimeterProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the resource
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -67,13 +66,12 @@ public final class NspLinkInner extends SecurityPerimeterProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -93,8 +91,7 @@ public final class NspLinkInner extends SecurityPerimeterProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -273,9 +270,6 @@ public final class NspLinkInner extends SecurityPerimeterProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 
     /**
@@ -311,7 +305,7 @@ public final class NspLinkInner extends SecurityPerimeterProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspLinkInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspLinkInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedNspLinkInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspLinkInner.innerProperties = NspLinkProperties.fromJson(reader);
                 } else {
