@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.Configuration;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
@@ -15,6 +16,8 @@ import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
@@ -84,11 +87,19 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     }
 
     @Test
+    @ResourceLock(value = Resources.GLOBAL, mode = org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE)
+    @SuppressWarnings("deprecation")
     void testCreateChainedTokenCredentialWhenAzurePipelinesEnvVarsPresent() {
-        System.setProperty("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", "test-service-connection-id");
-        System.setProperty("AZURESUBSCRIPTION_CLIENT_ID", "00000000-0000-0000-0000-000000000000");
-        System.setProperty("AZURESUBSCRIPTION_TENANT_ID", "11111111-1111-1111-1111-111111111111");
-        System.setProperty("SYSTEM_ACCESSTOKEN", "test-system-access-token");
+        // Use Configuration.put rather than System.setProperty because Configuration internally
+        // caches system-property/env-var lookups; only the explicitConfigurations map (populated
+        // by put) is cleared by remove, giving us proper per-test isolation.
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        globalConfiguration.put("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", "test-service-connection-id");
+        globalConfiguration.put("AZURESUBSCRIPTION_CLIENT_ID", "00000000-0000-0000-0000-000000000000");
+        globalConfiguration.put("AZURESUBSCRIPTION_TENANT_ID", "11111111-1111-1111-1111-111111111111");
+        globalConfiguration.put("SYSTEM_ACCESSTOKEN", "test-system-access-token");
+        // AzurePipelinesCredentialBuilder.build() also validates SYSTEM_OIDCREQUESTURI.
+        globalConfiguration.put("SYSTEM_OIDCREQUESTURI", "https://example.test/oidc");
         try {
             Map<String, Object> configs = new HashMap<>();
             configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
@@ -102,10 +113,11 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
             assertNotNull(azureTokenCredentialResolver);
             assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ChainedTokenCredential);
         } finally {
-            System.clearProperty("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-            System.clearProperty("AZURESUBSCRIPTION_CLIENT_ID");
-            System.clearProperty("AZURESUBSCRIPTION_TENANT_ID");
-            System.clearProperty("SYSTEM_ACCESSTOKEN");
+            globalConfiguration.remove("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            globalConfiguration.remove("AZURESUBSCRIPTION_CLIENT_ID");
+            globalConfiguration.remove("AZURESUBSCRIPTION_TENANT_ID");
+            globalConfiguration.remove("SYSTEM_ACCESSTOKEN");
+            globalConfiguration.remove("SYSTEM_OIDCREQUESTURI");
         }
     }
 
