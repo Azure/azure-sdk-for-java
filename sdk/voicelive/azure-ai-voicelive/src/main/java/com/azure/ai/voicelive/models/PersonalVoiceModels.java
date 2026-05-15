@@ -66,4 +66,10 @@ public final class PersonalVoiceModels extends ExpandableStringEnum<PersonalVoic
      */
     @Generated
     public static final PersonalVoiceModels MAI_VOICE_1 = fromString("MAI-Voice-1");
+
+    /**
+     * Use the Phoenix V2 model.
+     */
+    @Generated
+    public static final PersonalVoiceModels PHOENIX_V2NEURAL = fromString("PhoenixV2Neural");
 }
