@@ -34,6 +34,11 @@ public enum FoundryFeaturesOptInKeys {
     MEMORY_STORES_V1_PREVIEW("MemoryStores=V1Preview"),
 
     /**
+     * Enum value Routines=V1Preview.
+     */
+    ROUTINES_V1_PREVIEW("Routines=V1Preview"),
+
+    /**
      * Enum value Toolboxes=V1Preview.
      */
     TOOLBOXES_V1_PREVIEW("Toolboxes=V1Preview"),
@@ -51,7 +56,12 @@ public enum FoundryFeaturesOptInKeys {
     /**
      * Enum value Models=V1Preview.
      */
-    MODELS_V1_PREVIEW("Models=V1Preview");
+    MODELS_V1_PREVIEW("Models=V1Preview"),
+
+    /**
+     * Enum value AgentsOptimization=V1Preview.
+     */
+    AGENTS_OPTIMIZATION_V1_PREVIEW("AgentsOptimization=V1Preview");
 
     /**
      * The actual serialized value for a FoundryFeaturesOptInKeys instance.

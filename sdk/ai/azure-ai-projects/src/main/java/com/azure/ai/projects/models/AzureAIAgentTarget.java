@@ -130,6 +130,7 @@ public final class AzureAIAgentTarget extends Target {
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeArrayField("tool_descriptions", this.toolDescriptions,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +150,7 @@ public final class AzureAIAgentTarget extends Target {
             String type = "azure_ai_agent";
             String version = null;
             List<ToolDescription> toolDescriptions = null;
+            List<Tool> tools = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -160,6 +162,8 @@ public final class AzureAIAgentTarget extends Target {
                     version = reader.getString();
                 } else if ("tool_descriptions".equals(fieldName)) {
                     toolDescriptions = reader.readArray(reader1 -> ToolDescription.fromJson(reader1));
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -168,7 +172,36 @@ public final class AzureAIAgentTarget extends Target {
             deserializedAzureAIAgentTarget.type = type;
             deserializedAzureAIAgentTarget.version = version;
             deserializedAzureAIAgentTarget.toolDescriptions = toolDescriptions;
+            deserializedAzureAIAgentTarget.tools = tools;
             return deserializedAzureAIAgentTarget;
         });
+    }
+
+    /*
+     * The tools property.
+     */
+    @Generated
+    private List<Tool> tools;
+
+    /**
+     * Get the tools property: The tools property.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<Tool> getTools() {
+        return this.tools;
+    }
+
+    /**
+     * Set the tools property: The tools property.
+     *
+     * @param tools the tools value to set.
+     * @return the AzureAIAgentTarget object itself.
+     */
+    @Generated
+    public AzureAIAgentTarget setTools(List<Tool> tools) {
+        this.tools = tools;
+        return this;
     }
 }

@@ -60,9 +60,12 @@ import java.util.Objects;
         EvaluationRulesClient.class,
         EvaluationTaxonomiesClient.class,
         EvaluatorsClient.class,
+        EvaluatorGenerationJobsClient.class,
         InsightsClient.class,
         SchedulesClient.class,
+        RoutinesClient.class,
         SkillsClient.class,
+        DataGenerationJobsClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
@@ -72,9 +75,12 @@ import java.util.Objects;
         EvaluationRulesAsyncClient.class,
         EvaluationTaxonomiesAsyncClient.class,
         EvaluatorsAsyncClient.class,
+        EvaluatorGenerationJobsAsyncClient.class,
         InsightsAsyncClient.class,
         SchedulesAsyncClient.class,
-        SkillsAsyncClient.class })
+        RoutinesAsyncClient.class,
+        SkillsAsyncClient.class,
+        DataGenerationJobsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -669,5 +675,65 @@ public final class AIProjectClientBuilder
     @Generated
     public ModelsClient buildModelsClient() {
         return new ModelsClient(buildInnerClient().getModels());
+    }
+
+    /**
+     * Builds an instance of EvaluatorGenerationJobsAsyncClient class.
+     *
+     * @return an instance of EvaluatorGenerationJobsAsyncClient.
+     */
+    @Generated
+    public EvaluatorGenerationJobsAsyncClient buildEvaluatorGenerationJobsAsyncClient() {
+        return new EvaluatorGenerationJobsAsyncClient(buildInnerClient().getEvaluatorGenerationJobs());
+    }
+
+    /**
+     * Builds an instance of RoutinesAsyncClient class.
+     *
+     * @return an instance of RoutinesAsyncClient.
+     */
+    @Generated
+    public RoutinesAsyncClient buildRoutinesAsyncClient() {
+        return new RoutinesAsyncClient(buildInnerClient().getRoutines());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsAsyncClient class.
+     *
+     * @return an instance of DataGenerationJobsAsyncClient.
+     */
+    @Generated
+    public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
+        return new DataGenerationJobsAsyncClient(buildInnerClient().getDataGenerationJobs());
+    }
+
+    /**
+     * Builds an instance of EvaluatorGenerationJobsClient class.
+     *
+     * @return an instance of EvaluatorGenerationJobsClient.
+     */
+    @Generated
+    public EvaluatorGenerationJobsClient buildEvaluatorGenerationJobsClient() {
+        return new EvaluatorGenerationJobsClient(buildInnerClient().getEvaluatorGenerationJobs());
+    }
+
+    /**
+     * Builds an instance of RoutinesClient class.
+     *
+     * @return an instance of RoutinesClient.
+     */
+    @Generated
+    public RoutinesClient buildRoutinesClient() {
+        return new RoutinesClient(buildInnerClient().getRoutines());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsClient class.
+     *
+     * @return an instance of DataGenerationJobsClient.
+     */
+    @Generated
+    public DataGenerationJobsClient buildDataGenerationJobsClient() {
+        return new DataGenerationJobsClient(buildInnerClient().getDataGenerationJobs());
     }
 }

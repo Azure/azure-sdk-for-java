@@ -4,8 +4,13 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.EvaluatorsImpl;
+import com.azure.ai.projects.models.DatasetCredential;
+import com.azure.ai.projects.models.EvaluatorCredentialRequest;
 import com.azure.ai.projects.models.EvaluatorVersion;
+import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.ListVersionsRequestType;
+import com.azure.ai.projects.models.PendingUploadRequest;
+import com.azure.ai.projects.models.PendingUploadResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -14,6 +19,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -64,7 +70,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -81,6 +87,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -136,7 +151,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -153,6 +168,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -198,7 +222,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -215,6 +239,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -282,7 +315,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -299,6 +332,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -328,7 +370,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -345,6 +387,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -392,7 +443,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -409,6 +460,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -438,7 +498,7 @@ public final class EvaluatorsClient {
      *         String(quality/safety/agents) (Required)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -455,6 +515,15 @@ public final class EvaluatorsClient {
      *                 is_primary: Boolean (Optional)
      *             }
      *         }
+     *     }
+     *     generation_artifacts (Optional): {
+     *         dataset (Required): {
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         kinds (Required): [
+     *             String (Required)
+     *         ]
      *     }
      *     created_by: String (Required)
      *     created_at: OffsetDateTime (Required)
@@ -675,5 +744,232 @@ public final class EvaluatorsClient {
         RequestOptions requestOptions = new RequestOptions();
         return updateEvaluatorVersionWithResponse(name, version, BinaryData.fromObject(evaluatorVersion),
             requestOptions).getValue().toObject(EvaluatorVersion.class);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     pendingUploadId: String (Optional)
+     *     connectionName: String (Optional)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     *     pendingUploadId: String (Required)
+     *     version: String (Optional)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the response for a pending upload request along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> startPendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        return this.serviceClient.startPendingUploadWithResponse(name, version, pendingUploadRequest, requestOptions);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blob_uri: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     blobReference (Required): {
+     *         blobUri: String (Required)
+     *         storageAccountArmId: String (Required)
+     *         credential (Required): {
+     *             sasUri: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SAS credential to access the storage account associated with an Evaluator version along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCredentialsWithResponse(String name, String version, BinaryData credentialRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getCredentialsWithResponse(name, version, credentialRequest, requestOptions);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response for a pending upload request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PendingUploadResponse startPendingUpload(String name, String version,
+        PendingUploadRequest pendingUploadRequest, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for startPendingUploadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return startPendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest),
+            requestOptions).getValue().toObject(PendingUploadResponse.class);
+    }
+
+    /**
+     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param pendingUploadRequest The pending upload request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response for a pending upload request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PendingUploadResponse startPendingUpload(String name, String version,
+        PendingUploadRequest pendingUploadRequest) {
+        // Generated convenience method for startPendingUploadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return startPendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest),
+            requestOptions).getValue().toObject(PendingUploadResponse.class);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with an Evaluator version.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetCredential getCredentials(String name, String version, EvaluatorCredentialRequest credentialRequest,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .getValue()
+            .toObject(DatasetCredential.class);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with an Evaluator version.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetCredential getCredentials(String name, String version, EvaluatorCredentialRequest credentialRequest) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .getValue()
+            .toObject(DatasetCredential.class);
     }
 }

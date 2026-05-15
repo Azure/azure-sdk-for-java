@@ -166,6 +166,8 @@ public class MemoryItem implements JsonSerializable<MemoryItem> {
                     return UserProfileMemoryItem.fromJson(readerToUse.reset());
                 } else if ("chat_summary".equals(discriminatorValue)) {
                     return ChatSummaryMemoryItem.fromJson(readerToUse.reset());
+                } else if ("procedural".equals(discriminatorValue)) {
+                    return ProceduralMemoryItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
