@@ -135,7 +135,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                     credential = delegated.resolve(properties);
                     if (credential == null) {
                         TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
-                        TokenCredential pipelinesCredential = tryBuildAzurePipelinesCredential();
+                        TokenCredential pipelinesCredential = tryBuildAzurePipelinesCredential(properties);
                         if (pipelinesCredential == null) {
                             credential = defaultAzureCredential;
                         } else {
@@ -158,9 +158,11 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         /**
          * Attempts to build an {@code AzurePipelinesCredential} from the Azure DevOps federated
          * workload-identity environment variables. Returns {@code null} when any of the required
-         * variables are missing (the typical case outside an Azure DevOps job).
+         * variables are missing (the typical case outside an Azure DevOps job). The authority host
+         * is taken from the {@link AzureProperties} profile so that the credential targets the
+         * correct cloud (public, China, US Gov).
          */
-        private static TokenCredential tryBuildAzurePipelinesCredential() {
+        private static TokenCredential tryBuildAzurePipelinesCredential(AzureProperties properties) {
             Configuration config = Configuration.getGlobalConfiguration();
             String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
             String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -173,16 +175,27 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                 return null;
             }
             try {
-                return new AzurePipelinesCredentialBuilder()
+                AzurePipelinesCredentialBuilder builder = new AzurePipelinesCredentialBuilder()
                     .systemAccessToken(systemAccessToken)
                     .clientId(clientId)
                     .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .build();
+                    .serviceConnectionId(serviceConnectionId);
+                String authorityHost = resolveAuthorityHost(properties);
+                if (!isNullOrEmpty(authorityHost)) {
+                    builder.authorityHost(authorityHost);
+                }
+                return builder.build();
             } catch (RuntimeException e) {
                 LOGGER.verbose("Failed to build AzurePipelinesCredential, will fall back to DefaultAzureCredential.", e);
                 return null;
             }
+        }
+
+        private static String resolveAuthorityHost(AzureProperties properties) {
+            if (properties == null || properties.getProfile() == null || properties.getProfile().getEnvironment() == null) {
+                return null;
+            }
+            return properties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
         }
 
         private static boolean isNullOrEmpty(String value) {
