@@ -32,7 +32,11 @@ This section includes changes in `spring-cloud-azure-service` module.
 
 #### Features Added
 
-- When `KafkaOAuth2AuthenticateCallbackHandler` cannot resolve a credential from explicit Azure properties, the fallback now chains an `AzurePipelinesCredential` (built from the standard `AZURESUBSCRIPTION_*` and `SYSTEM_ACCESSTOKEN` environment variables, when all are present) before `DefaultAzureCredential`. This enables Spring Cloud Azure Kafka OAuth2 to authenticate to Azure Event Hubs from Azure DevOps pipeline jobs that use a federated workload-identity service connection without any additional configuration.
+- Support `AzurePipelinesCredential` in Azure Event Hubs for Kafka passwordless connection ([#49108](https://github.com/Azure/azure-sdk-for-java/pull/49108)). It only takes effect when all the following 4 environment variables exist at runtime:
+  - `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`
+  - `AZURESUBSCRIPTION_CLIENT_ID`
+  - `AZURESUBSCRIPTION_TENANT_ID`
+  - `SYSTEM_ACCESSTOKEN`
 
 ## 6.3.0 (2026-04-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
