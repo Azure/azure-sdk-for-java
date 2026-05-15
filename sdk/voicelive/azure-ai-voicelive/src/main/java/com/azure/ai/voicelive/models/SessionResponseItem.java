@@ -149,10 +149,6 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
                     return ResponseMCPApprovalRequestItem.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_response".equals(discriminatorValue)) {
                     return ResponseMCPApprovalResponseItem.fromJson(readerToUse.reset());
-                } else if ("web_search_call".equals(discriminatorValue)) {
-                    return ResponseWebSearchCallItem.fromJson(readerToUse.reset());
-                } else if ("file_search_call".equals(discriminatorValue)) {
-                    return ResponseFileSearchCallItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

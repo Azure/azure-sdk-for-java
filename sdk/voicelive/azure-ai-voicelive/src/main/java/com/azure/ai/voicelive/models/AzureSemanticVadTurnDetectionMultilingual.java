@@ -24,61 +24,61 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     private TurnDetectionType type = TurnDetectionType.AZURE_SEMANTIC_VAD_MULTILINGUAL;
 
     /*
-     * Activation threshold for VAD detection. Range: 0.0 to 1.0.
+     * The threshold property.
      */
     @Generated
     private Double threshold;
 
     /*
-     * Amount of audio to include before speech is detected, in milliseconds.
+     * The prefix_padding_ms property.
      */
     @Generated
     private Integer prefixPaddingMs;
 
     /*
-     * Duration of silence required to end speech detection, in milliseconds.
+     * The silence_duration_ms property.
      */
     @Generated
     private Integer silenceDurationMs;
 
     /*
-     * Configuration for end-of-utterance detection.
+     * The end_of_utterance_detection property.
      */
     @Generated
     private EouDetection endOfUtteranceDetection;
 
     /*
-     * Minimum speech duration in milliseconds to trigger detection.
+     * The speech_duration_ms property.
      */
     @Generated
     private Integer speechDurationMs;
 
     /*
-     * Whether to remove filler words (e.g., 'um', 'uh') from transcription.
+     * The remove_filler_words property.
      */
     @Generated
     private Boolean removeFillerWords;
 
     /*
-     * List of BCP-47 language codes for speech detection.
+     * The languages property.
      */
     @Generated
     private List<String> languages;
 
     /*
-     * Whether to automatically truncate the audio buffer when speech stops.
+     * The auto_truncate property.
      */
     @Generated
     private Boolean autoTruncate;
 
     /*
-     * Whether to automatically create a response when speech stops.
+     * The create_response property.
      */
     @Generated
     private Boolean createResponse;
 
     /*
-     * Whether to allow the user's speech to interrupt the assistant's response.
+     * The interrupt_response property.
      */
     @Generated
     private Boolean interruptResponse;
@@ -102,7 +102,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the threshold property: Activation threshold for VAD detection. Range: 0.0 to 1.0.
+     * Get the threshold property: The threshold property.
      *
      * @return the threshold value.
      */
@@ -112,7 +112,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the threshold property: Activation threshold for VAD detection. Range: 0.0 to 1.0.
+     * Set the threshold property: The threshold property.
      *
      * @param threshold the threshold value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -124,7 +124,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the prefixPaddingMs property: Amount of audio to include before speech is detected, in milliseconds.
+     * Get the prefixPaddingMs property: The prefix_padding_ms property.
      *
      * @return the prefixPaddingMs value.
      */
@@ -134,7 +134,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the prefixPaddingMs property: Amount of audio to include before speech is detected, in milliseconds.
+     * Set the prefixPaddingMs property: The prefix_padding_ms property.
      *
      * @param prefixPaddingMs the prefixPaddingMs value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -146,7 +146,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the silenceDurationMs property: Duration of silence required to end speech detection, in milliseconds.
+     * Get the silenceDurationMs property: The silence_duration_ms property.
      *
      * @return the silenceDurationMs value.
      */
@@ -156,7 +156,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the silenceDurationMs property: Duration of silence required to end speech detection, in milliseconds.
+     * Set the silenceDurationMs property: The silence_duration_ms property.
      *
      * @param silenceDurationMs the silenceDurationMs value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -168,7 +168,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the endOfUtteranceDetection property: Configuration for end-of-utterance detection.
+     * Get the endOfUtteranceDetection property: The end_of_utterance_detection property.
      *
      * @return the endOfUtteranceDetection value.
      */
@@ -178,7 +178,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the endOfUtteranceDetection property: Configuration for end-of-utterance detection.
+     * Set the endOfUtteranceDetection property: The end_of_utterance_detection property.
      *
      * @param endOfUtteranceDetection the endOfUtteranceDetection value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -190,7 +190,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the speechDurationMs property: Minimum speech duration in milliseconds to trigger detection.
+     * Get the speechDurationMs property: The speech_duration_ms property.
      *
      * @return the speechDurationMs value.
      */
@@ -200,7 +200,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the speechDurationMs property: Minimum speech duration in milliseconds to trigger detection.
+     * Set the speechDurationMs property: The speech_duration_ms property.
      *
      * @param speechDurationMs the speechDurationMs value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -212,7 +212,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the removeFillerWords property: Whether to remove filler words (e.g., 'um', 'uh') from transcription.
+     * Get the removeFillerWords property: The remove_filler_words property.
      *
      * @return the removeFillerWords value.
      */
@@ -222,7 +222,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the removeFillerWords property: Whether to remove filler words (e.g., 'um', 'uh') from transcription.
+     * Set the removeFillerWords property: The remove_filler_words property.
      *
      * @param removeFillerWords the removeFillerWords value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -234,7 +234,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the languages property: List of BCP-47 language codes for speech detection.
+     * Get the languages property: The languages property.
      *
      * @return the languages value.
      */
@@ -244,7 +244,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the languages property: List of BCP-47 language codes for speech detection.
+     * Set the languages property: The languages property.
      *
      * @param languages the languages value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -256,7 +256,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the autoTruncate property: Whether to automatically truncate the audio buffer when speech stops.
+     * Get the autoTruncate property: The auto_truncate property.
      *
      * @return the autoTruncate value.
      */
@@ -266,7 +266,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the autoTruncate property: Whether to automatically truncate the audio buffer when speech stops.
+     * Set the autoTruncate property: The auto_truncate property.
      *
      * @param autoTruncate the autoTruncate value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -278,7 +278,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the createResponse property: Whether to automatically create a response when speech stops.
+     * Get the createResponse property: The create_response property.
      *
      * @return the createResponse value.
      */
@@ -288,7 +288,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the createResponse property: Whether to automatically create a response when speech stops.
+     * Set the createResponse property: The create_response property.
      *
      * @param createResponse the createResponse value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.
@@ -300,7 +300,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Get the interruptResponse property: Whether to allow the user's speech to interrupt the assistant's response.
+     * Get the interruptResponse property: The interrupt_response property.
      *
      * @return the interruptResponse value.
      */
@@ -310,7 +310,7 @@ public final class AzureSemanticVadTurnDetectionMultilingual extends TurnDetecti
     }
 
     /**
-     * Set the interruptResponse property: Whether to allow the user's speech to interrupt the assistant's response.
+     * Set the interruptResponse property: The interrupt_response property.
      *
      * @param interruptResponse the interruptResponse value to set.
      * @return the AzureSemanticVadTurnDetectionMultilingual object itself.

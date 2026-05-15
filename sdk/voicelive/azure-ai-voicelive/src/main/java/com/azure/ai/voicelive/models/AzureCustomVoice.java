@@ -42,63 +42,43 @@ public final class AzureCustomVoice extends AzureVoice {
     private Double temperature;
 
     /*
-     * URL of a custom lexicon file for pronunciation customization.
+     * The custom_lexicon_url property.
      */
     @Generated
     private String customLexiconUri;
 
     /*
-     * Preferred locales in BCP-47 format that change the accents of languages.
-     * If not set, TTS uses the default accent for each language (e.g., American English for English,
-     * Mexican Spanish for Spanish). Setting this to `["en-GB", "es-ES"]` changes the English accent
-     * to British English and the Spanish accent to European Spanish, while TTS can still speak other
-     * languages like French or Chinese with their default accents.
+     * The prefer_locales property.
      */
     @Generated
     private List<String> preferLocales;
 
     /*
-     * Enforced locale in BCP-47 format for TTS output. If set, TTS will always use the specified
-     * locale to speak. For example, setting locale to `en-US` forces American English accent for all
-     * text content, even if the text is in another language, and TTS will output silence for
-     * unsupported languages (e.g., Chinese text with `en-US` locale). If not set, TTS automatically
-     * detects the language from the text content.
+     * The locale property.
      */
     @Generated
     private String locale;
 
     /*
-     * Speaking style for the voice (e.g., 'cheerful', 'sad').
+     * The style property.
      */
     @Generated
     private String style;
 
     /*
-     * Pitch adjustment for the voice output. Follows the same rules as the `pitch` attribute of the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-low`, `low`, `medium`, `high`, `x-high`, `default`),
-     * a relative change (e.g., `+10%`, `-5%`, `+50Hz`, `-2st`), or an absolute frequency (e.g., `200Hz`).
+     * The pitch property.
      */
     @Generated
     private String pitch;
 
     /*
-     * Speaking rate adjustment for the voice output. Follows the same rules as the `rate` attribute of
-     * the SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-slow`, `slow`, `medium`, `fast`, `x-fast`, `default`),
-     * a relative percentage (e.g., `+20%`, `-10%`), or a non-negative multiplier (e.g., `0.5`, `1.5`).
+     * The rate property.
      */
     @Generated
     private String rate;
 
     /*
-     * Volume adjustment for the voice output. Follows the same rules as the `volume` attribute of the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`silent`, `x-soft`, `soft`, `medium`, `loud`, `x-loud`, `default`),
-     * an absolute number from 0.0 to 100.0, or a relative change (e.g., `+10`, `-6dB`).
+     * The volume property.
      */
     @Generated
     private String volume;
@@ -169,7 +149,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the customLexiconUri property: URL of a custom lexicon file for pronunciation customization.
+     * Get the customLexiconUri property: The custom_lexicon_url property.
      *
      * @return the customLexiconUri value.
      */
@@ -179,7 +159,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the customLexiconUri property: URL of a custom lexicon file for pronunciation customization.
+     * Set the customLexiconUri property: The custom_lexicon_url property.
      *
      * @param customLexiconUri the customLexiconUri value to set.
      * @return the AzureCustomVoice object itself.
@@ -191,11 +171,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the preferLocales property: Preferred locales in BCP-47 format that change the accents of languages.
-     * If not set, TTS uses the default accent for each language (e.g., American English for English,
-     * Mexican Spanish for Spanish). Setting this to `["en-GB", "es-ES"]` changes the English accent
-     * to British English and the Spanish accent to European Spanish, while TTS can still speak other
-     * languages like French or Chinese with their default accents.
+     * Get the preferLocales property: The prefer_locales property.
      *
      * @return the preferLocales value.
      */
@@ -205,11 +181,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the preferLocales property: Preferred locales in BCP-47 format that change the accents of languages.
-     * If not set, TTS uses the default accent for each language (e.g., American English for English,
-     * Mexican Spanish for Spanish). Setting this to `["en-GB", "es-ES"]` changes the English accent
-     * to British English and the Spanish accent to European Spanish, while TTS can still speak other
-     * languages like French or Chinese with their default accents.
+     * Set the preferLocales property: The prefer_locales property.
      *
      * @param preferLocales the preferLocales value to set.
      * @return the AzureCustomVoice object itself.
@@ -221,12 +193,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the locale property: Enforced locale in BCP-47 format for TTS output. If set, TTS will always use the
-     * specified
-     * locale to speak. For example, setting locale to `en-US` forces American English accent for all
-     * text content, even if the text is in another language, and TTS will output silence for
-     * unsupported languages (e.g., Chinese text with `en-US` locale). If not set, TTS automatically
-     * detects the language from the text content.
+     * Get the locale property: The locale property.
      *
      * @return the locale value.
      */
@@ -236,12 +203,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the locale property: Enforced locale in BCP-47 format for TTS output. If set, TTS will always use the
-     * specified
-     * locale to speak. For example, setting locale to `en-US` forces American English accent for all
-     * text content, even if the text is in another language, and TTS will output silence for
-     * unsupported languages (e.g., Chinese text with `en-US` locale). If not set, TTS automatically
-     * detects the language from the text content.
+     * Set the locale property: The locale property.
      *
      * @param locale the locale value to set.
      * @return the AzureCustomVoice object itself.
@@ -253,7 +215,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the style property: Speaking style for the voice (e.g., 'cheerful', 'sad').
+     * Get the style property: The style property.
      *
      * @return the style value.
      */
@@ -263,7 +225,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the style property: Speaking style for the voice (e.g., 'cheerful', 'sad').
+     * Set the style property: The style property.
      *
      * @param style the style value to set.
      * @return the AzureCustomVoice object itself.
@@ -275,12 +237,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the pitch property: Pitch adjustment for the voice output. Follows the same rules as the `pitch` attribute of
-     * the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-low`, `low`, `medium`, `high`, `x-high`, `default`),
-     * a relative change (e.g., `+10%`, `-5%`, `+50Hz`, `-2st`), or an absolute frequency (e.g., `200Hz`).
+     * Get the pitch property: The pitch property.
      *
      * @return the pitch value.
      */
@@ -290,12 +247,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the pitch property: Pitch adjustment for the voice output. Follows the same rules as the `pitch` attribute of
-     * the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-low`, `low`, `medium`, `high`, `x-high`, `default`),
-     * a relative change (e.g., `+10%`, `-5%`, `+50Hz`, `-2st`), or an absolute frequency (e.g., `200Hz`).
+     * Set the pitch property: The pitch property.
      *
      * @param pitch the pitch value to set.
      * @return the AzureCustomVoice object itself.
@@ -307,12 +259,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the rate property: Speaking rate adjustment for the voice output. Follows the same rules as the `rate`
-     * attribute of
-     * the SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-slow`, `slow`, `medium`, `fast`, `x-fast`, `default`),
-     * a relative percentage (e.g., `+20%`, `-10%`), or a non-negative multiplier (e.g., `0.5`, `1.5`).
+     * Get the rate property: The rate property.
      *
      * @return the rate value.
      */
@@ -322,12 +269,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the rate property: Speaking rate adjustment for the voice output. Follows the same rules as the `rate`
-     * attribute of
-     * the SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`x-slow`, `slow`, `medium`, `fast`, `x-fast`, `default`),
-     * a relative percentage (e.g., `+20%`, `-10%`), or a non-negative multiplier (e.g., `0.5`, `1.5`).
+     * Set the rate property: The rate property.
      *
      * @param rate the rate value to set.
      * @return the AzureCustomVoice object itself.
@@ -339,12 +281,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the volume property: Volume adjustment for the voice output. Follows the same rules as the `volume` attribute
-     * of the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`silent`, `x-soft`, `soft`, `medium`, `loud`, `x-loud`, `default`),
-     * an absolute number from 0.0 to 100.0, or a relative change (e.g., `+10`, `-6dB`).
+     * Get the volume property: The volume property.
      *
      * @return the volume value.
      */
@@ -354,12 +291,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the volume property: Volume adjustment for the voice output. Follows the same rules as the `volume` attribute
-     * of the
-     * SSML `prosody` element (see
-     * https://learn.microsoft.com/azure/ai-services/speech-service/speech-synthesis-markup-voice#adjust-prosody).
-     * Typical values: a named level (`silent`, `x-soft`, `soft`, `medium`, `loud`, `x-loud`, `default`),
-     * an absolute number from 0.0 to 100.0, or a relative change (e.g., `+10`, `-6dB`).
+     * Set the volume property: The volume property.
      *
      * @param volume the volume value to set.
      * @return the AzureCustomVoice object itself.
@@ -464,13 +396,13 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /*
-     * URL of a custom text normalization endpoint.
+     * The custom_text_normalization_url property.
      */
     @Generated
     private String customTextNormalizationUrl;
 
     /**
-     * Get the customTextNormalizationUrl property: URL of a custom text normalization endpoint.
+     * Get the customTextNormalizationUrl property: The custom_text_normalization_url property.
      *
      * @return the customTextNormalizationUrl value.
      */
@@ -480,7 +412,7 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Set the customTextNormalizationUrl property: URL of a custom text normalization endpoint.
+     * Set the customTextNormalizationUrl property: The custom_text_normalization_url property.
      *
      * @param customTextNormalizationUrl the customTextNormalizationUrl value to set.
      * @return the AzureCustomVoice object itself.

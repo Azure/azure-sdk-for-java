@@ -70,7 +70,6 @@ public final class OutputTokenDetails implements JsonSerializable<OutputTokenDet
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("text_tokens", this.textTokens);
         jsonWriter.writeIntField("audio_tokens", this.audioTokens);
-        jsonWriter.writeNumberField("reasoning_tokens", this.reasoningTokens);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,7 +87,6 @@ public final class OutputTokenDetails implements JsonSerializable<OutputTokenDet
         return jsonReader.readObject(reader -> {
             int textTokens = 0;
             int audioTokens = 0;
-            Integer reasoningTokens = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,31 +94,11 @@ public final class OutputTokenDetails implements JsonSerializable<OutputTokenDet
                     textTokens = reader.getInt();
                 } else if ("audio_tokens".equals(fieldName)) {
                     audioTokens = reader.getInt();
-                } else if ("reasoning_tokens".equals(fieldName)) {
-                    reasoningTokens = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            OutputTokenDetails deserializedOutputTokenDetails = new OutputTokenDetails(textTokens, audioTokens);
-            deserializedOutputTokenDetails.reasoningTokens = reasoningTokens;
-            return deserializedOutputTokenDetails;
+            return new OutputTokenDetails(textTokens, audioTokens);
         });
-    }
-
-    /*
-     * Number of reasoning tokens generated in the output.
-     */
-    @Generated
-    private Integer reasoningTokens;
-
-    /**
-     * Get the reasoningTokens property: Number of reasoning tokens generated in the output.
-     *
-     * @return the reasoningTokens value.
-     */
-    @Generated
-    public Integer getReasoningTokens() {
-        return this.reasoningTokens;
     }
 }
