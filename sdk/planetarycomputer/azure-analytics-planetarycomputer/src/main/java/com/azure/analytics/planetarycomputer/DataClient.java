@@ -9,24 +9,16 @@ import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosai
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
 import com.azure.analytics.planetarycomputer.models.ColorMapNames;
-import com.azure.analytics.planetarycomputer.models.CropGeoJsonContentType;
 import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
-import com.azure.analytics.planetarycomputer.models.CropGeoJsonWithDimensionsContentType;
 import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.GetGeoJsonStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicWmtsCapabilitiesOptions;
-import com.azure.analytics.planetarycomputer.models.GetMosaicsTileContentType;
-import com.azure.analytics.planetarycomputer.models.GetPartContentType;
 import com.azure.analytics.planetarycomputer.models.GetPartOptions;
-import com.azure.analytics.planetarycomputer.models.GetPartWithDimensionsContentType;
-import com.azure.analytics.planetarycomputer.models.GetPreviewContentType;
 import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
-import com.azure.analytics.planetarycomputer.models.GetPreviewWithFormatContentType;
 import com.azure.analytics.planetarycomputer.models.GetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.GetTileContentType;
 import com.azure.analytics.planetarycomputer.models.GetTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetTileOptions;
 import com.azure.analytics.planetarycomputer.models.GetWmtsCapabilitiesOptions;
@@ -448,8 +440,6 @@ public final class DataClient {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -461,8 +451,8 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cropGeoJsonWithResponse(String collectionId, String itemId, String format,
-        String accept, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.cropGeoJsonWithResponse(collectionId, itemId, format, accept, body, requestOptions);
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.cropGeoJsonWithResponse(collectionId, itemId, format, body, requestOptions);
     }
 
     /**
@@ -556,8 +546,6 @@ public final class DataClient {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -569,9 +557,9 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId, int width,
-        int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int height, String format, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.cropGeoJsonWithDimensionsWithResponse(collectionId, itemId, width, height, format,
-            accept, body, requestOptions);
+            body, requestOptions);
     }
 
     /**
@@ -950,8 +938,6 @@ public final class DataClient {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -962,8 +948,8 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPartWithResponse(String collectionId, String itemId, double minx, double miny,
-        double maxx, double maxy, String format, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format, accept,
+        double maxx, double maxy, String format, RequestOptions requestOptions) {
+        return this.serviceClient.getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format,
             requestOptions);
     }
 
@@ -1044,8 +1030,6 @@ public final class DataClient {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1056,10 +1040,9 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPartWithDimensionsWithResponse(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, int width, int height, String format, String accept,
-        RequestOptions requestOptions) {
+        double miny, double maxx, double maxy, int width, int height, String format, RequestOptions requestOptions) {
         return this.serviceClient.getPartWithDimensionsWithResponse(collectionId, itemId, minx, miny, maxx, maxy, width,
-            height, format, accept, requestOptions);
+            height, format, requestOptions);
     }
 
     /**
@@ -1193,8 +1176,6 @@ public final class DataClient {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1204,9 +1185,9 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPreviewWithResponse(String collectionId, String itemId, String accept,
+    public Response<BinaryData> getPreviewWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getPreviewWithResponse(collectionId, itemId, accept, requestOptions);
+        return this.serviceClient.getPreviewWithResponse(collectionId, itemId, requestOptions);
     }
 
     /**
@@ -1280,8 +1261,6 @@ public final class DataClient {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1292,9 +1271,8 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPreviewWithFormatWithResponse(String collectionId, String itemId, String format,
-        String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getPreviewWithFormatWithResponse(collectionId, itemId, format, accept,
-            requestOptions);
+        RequestOptions requestOptions) {
+        return this.serviceClient.getPreviewWithFormatWithResponse(collectionId, itemId, format, requestOptions);
     }
 
     /**
@@ -1675,8 +1653,6 @@ public final class DataClient {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1687,9 +1663,9 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTileWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double z, double x, double y, double scale, String format, RequestOptions requestOptions) {
         return this.serviceClient.getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
-            accept, requestOptions);
+            requestOptions);
     }
 
     /**
@@ -2534,8 +2510,6 @@ public final class DataClient {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2546,8 +2520,8 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMosaicsTileWithResponse(String searchId, String tileMatrixSetId, double z, double x,
-        double y, double scale, String format, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format, accept,
+        double y, double scale, String format, RequestOptions requestOptions) {
+        return this.serviceClient.getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format,
             requestOptions);
     }
 
@@ -2834,7 +2808,6 @@ public final class DataClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for GeoJSON cropping including asset selection, terrain algorithms, and visual rendering.
      * @param body Request GeoJson body.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2846,7 +2819,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData cropGeoJson(String collectionId, String itemId, String format, CropGeoJsonOptions options,
-        Feature body, CropGeoJsonContentType accept) {
+        Feature body) {
         // Generated convenience method for cropGeoJsonWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -2921,8 +2894,8 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return cropGeoJsonWithResponse(collectionId, itemId, format, accept.toString(), BinaryData.fromObject(body),
-            requestOptions).getValue();
+        return cropGeoJsonWithResponse(collectionId, itemId, format, BinaryData.fromObject(body), requestOptions)
+            .getValue();
     }
 
     /**
@@ -2937,7 +2910,6 @@ public final class DataClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for GeoJSON cropping including asset selection, terrain algorithms, and visual rendering.
      * @param body Request GeoJson body.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2949,7 +2921,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData cropGeoJsonWithDimensions(String collectionId, String itemId, int width, int height,
-        String format, CropGeoJsonOptions options, Feature body, CropGeoJsonWithDimensionsContentType accept) {
+        String format, CropGeoJsonOptions options, Feature body) {
         // Generated convenience method for cropGeoJsonWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3024,7 +2996,7 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return cropGeoJsonWithDimensionsWithResponse(collectionId, itemId, width, height, format, accept.toString(),
+        return cropGeoJsonWithDimensionsWithResponse(collectionId, itemId, width, height, format,
             BinaryData.fromObject(body), requestOptions).getValue();
     }
 
@@ -3243,7 +3215,6 @@ public final class DataClient {
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for part generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3255,7 +3226,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getPart(String collectionId, String itemId, double minx, double miny, double maxx, double maxy,
-        String format, GetPartOptions options, GetPartContentType accept) {
+        String format, GetPartOptions options) {
         // Generated convenience method for getPartWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3334,8 +3305,7 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format, accept.toString(),
-            requestOptions).getValue();
+        return getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format, requestOptions).getValue();
     }
 
     /**
@@ -3353,7 +3323,6 @@ public final class DataClient {
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for part generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3365,8 +3334,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getPartWithDimensions(String collectionId, String itemId, double minx, double miny, double maxx,
-        double maxy, int width, int height, String format, GetPartOptions options,
-        GetPartWithDimensionsContentType accept) {
+        double maxy, int width, int height, String format, GetPartOptions options) {
         // Generated convenience method for getPartWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3446,7 +3414,7 @@ public final class DataClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getPartWithDimensionsWithResponse(collectionId, itemId, minx, miny, maxx, maxy, width, height, format,
-            accept.toString(), requestOptions).getValue();
+            requestOptions).getValue();
     }
 
     /**
@@ -3550,7 +3518,6 @@ public final class DataClient {
      * @param itemId STAC Item Identifier.
      * @param options Options for preview generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3561,8 +3528,7 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getPreview(String collectionId, String itemId, GetPreviewOptions options,
-        GetPreviewContentType accept) {
+    public BinaryData getPreview(String collectionId, String itemId, GetPreviewOptions options) {
         // Generated convenience method for getPreviewWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3645,7 +3611,7 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPreviewWithResponse(collectionId, itemId, accept.toString(), requestOptions).getValue();
+        return getPreviewWithResponse(collectionId, itemId, requestOptions).getValue();
     }
 
     /**
@@ -3658,7 +3624,6 @@ public final class DataClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for preview generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3669,8 +3634,8 @@ public final class DataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getPreviewWithFormat(String collectionId, String itemId, String format, GetPreviewOptions options,
-        GetPreviewWithFormatContentType accept) {
+    public BinaryData getPreviewWithFormat(String collectionId, String itemId, String format,
+        GetPreviewOptions options) {
         // Generated convenience method for getPreviewWithFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3753,8 +3718,7 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPreviewWithFormatWithResponse(collectionId, itemId, format, accept.toString(), requestOptions)
-            .getValue();
+        return getPreviewWithFormatWithResponse(collectionId, itemId, format, requestOptions).getValue();
     }
 
     /**
@@ -4024,7 +3988,6 @@ public final class DataClient {
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for tile generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4036,7 +3999,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTile(String collectionId, String itemId, String tileMatrixSetId, double z, double x, double y,
-        double scale, String format, GetTileOptions options, GetTileContentType accept) {
+        double scale, String format, GetTileOptions options) {
         // Generated convenience method for getTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -4119,8 +4082,8 @@ public final class DataClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, accept.toString(),
-            requestOptions).getValue();
+        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, requestOptions)
+            .getValue();
     }
 
     /**
@@ -4903,7 +4866,6 @@ public final class DataClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for mosaic tile generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4915,7 +4877,7 @@ public final class DataClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getMosaicsTile(String searchId, String tileMatrixSetId, double z, double x, double y,
-        double scale, String format, GetMosaicTileOptions options, GetMosaicsTileContentType accept) {
+        double scale, String format, GetMosaicTileOptions options) {
         // Generated convenience method for getMosaicsTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -5014,8 +4976,7 @@ public final class DataClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format, accept.toString(),
-            requestOptions).getValue();
+        return getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format, requestOptions).getValue();
     }
 
     /**

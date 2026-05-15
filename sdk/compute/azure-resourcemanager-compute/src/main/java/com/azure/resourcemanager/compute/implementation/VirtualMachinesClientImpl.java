@@ -1767,7 +1767,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes the properties of an AssessPatches result along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> assessPatchesWithResponseAsync(String resourceGroupName, String vmName) {
@@ -1803,7 +1804,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes the properties of an AssessPatches result along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> assessPatchesWithResponseAsync(String resourceGroupName, String vmName,
@@ -1838,7 +1840,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
@@ -1858,7 +1860,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
@@ -1878,7 +1880,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
@@ -1895,7 +1897,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
@@ -1911,7 +1913,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes the properties of an AssessPatches result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineAssessPatchesResultInner> assessPatchesAsync(String resourceGroupName, String vmName) {
@@ -1927,7 +1929,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes the properties of an AssessPatches result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineAssessPatchesResultInner> assessPatchesAsync(String resourceGroupName, String vmName,
@@ -1944,7 +1946,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineAssessPatchesResultInner assessPatches(String resourceGroupName, String vmName) {
@@ -1960,7 +1962,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineAssessPatchesResultInner assessPatches(String resourceGroupName, String vmName,
@@ -1977,7 +1979,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies the storage settings for the virtual machine disks along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> attachDetachDataDisksWithResponseAsync(String resourceGroupName,
@@ -2021,7 +2024,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies the storage settings for the virtual machine disks along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> attachDetachDataDisksWithResponseAsync(String resourceGroupName,
@@ -2063,7 +2067,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisksAsync(
@@ -2084,7 +2088,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisksAsync(
@@ -2105,7 +2109,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
@@ -2123,7 +2127,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
@@ -2140,7 +2144,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies the storage settings for the virtual machine disks on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmName,
@@ -2159,7 +2163,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies the storage settings for the virtual machine disks on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmName,
@@ -2177,7 +2181,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageProfile attachDetachDataDisks(String resourceGroupName, String vmName,
@@ -2195,7 +2199,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies the storage settings for the virtual machine disks.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageProfile attachDetachDataDisks(String resourceGroupName, String vmName,
@@ -2213,7 +2217,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return output of virtual machine capture operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> captureWithResponseAsync(String resourceGroupName, String vmName,
@@ -2258,7 +2263,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return output of virtual machine capture operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> captureWithResponseAsync(String resourceGroupName, String vmName,
@@ -2301,7 +2307,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>
@@ -2323,7 +2329,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>
@@ -2347,7 +2353,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>
@@ -2366,7 +2372,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
@@ -2384,7 +2390,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return output of virtual machine capture operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName,
@@ -2404,7 +2410,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return output of virtual machine capture operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName,
@@ -2423,7 +2429,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName,
@@ -2442,7 +2448,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName,
@@ -3082,7 +3088,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the result summary of an installation operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> installPatchesWithResponseAsync(String resourceGroupName, String vmName,
@@ -3128,7 +3135,8 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the result summary of an installation operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> installPatchesWithResponseAsync(String resourceGroupName, String vmName,
@@ -3171,7 +3179,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
@@ -3195,7 +3203,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
@@ -3219,7 +3227,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
@@ -3238,7 +3246,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInstallPatchesResultInner>, VirtualMachineInstallPatchesResultInner>
@@ -3256,7 +3264,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the result summary of an installation operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInstallPatchesResultInner> installPatchesAsync(String resourceGroupName, String vmName,
@@ -3275,7 +3283,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the result summary of an installation operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInstallPatchesResultInner> installPatchesAsync(String resourceGroupName, String vmName,
@@ -3293,7 +3301,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstallPatchesResultInner installPatches(String resourceGroupName, String vmName,
@@ -3311,7 +3319,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the result summary of an installation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineInstallPatchesResultInner installPatches(String resourceGroupName, String vmName,
