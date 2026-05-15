@@ -16,41 +16,40 @@ public final class InfrastructureNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InfrastructureNetwork model = BinaryData.fromString(
-            "{\"subnetMask\":\"r\",\"gateway\":\"ldgmfpgvmpip\",\"ipPools\":[{\"startingAddress\":\"haq\",\"endingAddress\":\"ss\"}],\"dnsServerConfig\":\"UseDnsServer\",\"dnsZones\":[{\"dnsZoneName\":\"dsrezpdrhneuyow\",\"dnsForwarder\":[\"wyt\"]},{\"dnsZoneName\":\"ib\",\"dnsForwarder\":[\"gpikpzimejza\",\"lfzxiavrmbzonoki\"]}],\"dnsServers\":[\"q\"],\"useDhcp\":false}")
+            "{\"subnetMask\":\"kdltfzxmhhvhg\",\"gateway\":\"eodkwobda\",\"ipPools\":[{\"startingAddress\":\"bqdxbx\",\"endingAddress\":\"kbogqxndlkzgx\"},{\"startingAddress\":\"ripl\",\"endingAddress\":\"odxun\"},{\"startingAddress\":\"ebxmubyynt\",\"endingAddress\":\"rbqtkoie\"}],\"dnsServerConfig\":\"UseDnsServer\",\"dnsZones\":[{\"dnsZoneName\":\"q\",\"dnsForwarder\":[\"tmuwlauwzi\",\"xbmp\",\"cjefuzmu\",\"pbttdum\"]}],\"dnsServers\":[\"pxebmnzbt\"],\"useDhcp\":true}")
             .toObject(InfrastructureNetwork.class);
-        Assertions.assertEquals("r", model.subnetMask());
-        Assertions.assertEquals("ldgmfpgvmpip", model.gateway());
-        Assertions.assertEquals("haq", model.ipPools().get(0).startingAddress());
-        Assertions.assertEquals("ss", model.ipPools().get(0).endingAddress());
+        Assertions.assertEquals("kdltfzxmhhvhg", model.subnetMask());
+        Assertions.assertEquals("eodkwobda", model.gateway());
+        Assertions.assertEquals("bqdxbx", model.ipPools().get(0).startingAddress());
+        Assertions.assertEquals("kbogqxndlkzgx", model.ipPools().get(0).endingAddress());
         Assertions.assertEquals(DnsServerConfig.USE_DNS_SERVER, model.dnsServerConfig());
-        Assertions.assertEquals("dsrezpdrhneuyow", model.dnsZones().get(0).dnsZoneName());
-        Assertions.assertEquals("wyt", model.dnsZones().get(0).dnsForwarder().get(0));
-        Assertions.assertEquals("q", model.dnsServers().get(0));
-        Assertions.assertFalse(model.useDhcp());
+        Assertions.assertEquals("q", model.dnsZones().get(0).dnsZoneName());
+        Assertions.assertEquals("tmuwlauwzi", model.dnsZones().get(0).dnsForwarder().get(0));
+        Assertions.assertEquals("pxebmnzbt", model.dnsServers().get(0));
+        Assertions.assertTrue(model.useDhcp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InfrastructureNetwork model
-            = new InfrastructureNetwork().withSubnetMask("r")
-                .withGateway("ldgmfpgvmpip")
-                .withIpPools(Arrays.asList(new IpPools().withStartingAddress("haq").withEndingAddress("ss")))
-                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
-                .withDnsZones(Arrays.asList(
-                    new DnsZones().withDnsZoneName("dsrezpdrhneuyow").withDnsForwarder(Arrays.asList("wyt")),
-                    new DnsZones().withDnsZoneName("ib")
-                        .withDnsForwarder(Arrays.asList("gpikpzimejza", "lfzxiavrmbzonoki"))))
-                .withDnsServers(Arrays.asList("q"))
-                .withUseDhcp(false);
+        InfrastructureNetwork model = new InfrastructureNetwork().withSubnetMask("kdltfzxmhhvhg")
+            .withGateway("eodkwobda")
+            .withIpPools(Arrays.asList(new IpPools().withStartingAddress("bqdxbx").withEndingAddress("kbogqxndlkzgx"),
+                new IpPools().withStartingAddress("ripl").withEndingAddress("odxun"),
+                new IpPools().withStartingAddress("ebxmubyynt").withEndingAddress("rbqtkoie")))
+            .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
+            .withDnsZones(Arrays.asList(new DnsZones().withDnsZoneName("q")
+                .withDnsForwarder(Arrays.asList("tmuwlauwzi", "xbmp", "cjefuzmu", "pbttdum"))))
+            .withDnsServers(Arrays.asList("pxebmnzbt"))
+            .withUseDhcp(true);
         model = BinaryData.fromObject(model).toObject(InfrastructureNetwork.class);
-        Assertions.assertEquals("r", model.subnetMask());
-        Assertions.assertEquals("ldgmfpgvmpip", model.gateway());
-        Assertions.assertEquals("haq", model.ipPools().get(0).startingAddress());
-        Assertions.assertEquals("ss", model.ipPools().get(0).endingAddress());
+        Assertions.assertEquals("kdltfzxmhhvhg", model.subnetMask());
+        Assertions.assertEquals("eodkwobda", model.gateway());
+        Assertions.assertEquals("bqdxbx", model.ipPools().get(0).startingAddress());
+        Assertions.assertEquals("kbogqxndlkzgx", model.ipPools().get(0).endingAddress());
         Assertions.assertEquals(DnsServerConfig.USE_DNS_SERVER, model.dnsServerConfig());
-        Assertions.assertEquals("dsrezpdrhneuyow", model.dnsZones().get(0).dnsZoneName());
-        Assertions.assertEquals("wyt", model.dnsZones().get(0).dnsForwarder().get(0));
-        Assertions.assertEquals("q", model.dnsServers().get(0));
-        Assertions.assertFalse(model.useDhcp());
+        Assertions.assertEquals("q", model.dnsZones().get(0).dnsZoneName());
+        Assertions.assertEquals("tmuwlauwzi", model.dnsZones().get(0).dnsForwarder().get(0));
+        Assertions.assertEquals("pxebmnzbt", model.dnsServers().get(0));
+        Assertions.assertTrue(model.useDhcp());
     }
 }
