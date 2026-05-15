@@ -33,11 +33,6 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
      */
     private OffsetDateTime lastSyncTimestamp;
 
-    /*
-     * CVM support details for edge device.
-     */
-    private ConfidentialVmProfile confidentialVmProfile;
-
     /**
      * Creates an instance of ReportedProperties class.
      */
@@ -105,26 +100,6 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
     }
 
     /**
-     * Get the confidentialVmProfile property: CVM support details for edge device.
-     * 
-     * @return the confidentialVmProfile value.
-     */
-    public ConfidentialVmProfile confidentialVmProfile() {
-        return this.confidentialVmProfile;
-    }
-
-    /**
-     * Set the confidentialVmProfile property: CVM support details for edge device.
-     * 
-     * @param confidentialVmProfile the confidentialVmProfile value to set.
-     * @return the ReportedProperties object itself.
-     */
-    ReportedProperties withConfidentialVmProfile(ConfidentialVmProfile confidentialVmProfile) {
-        this.confidentialVmProfile = confidentialVmProfile;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -155,8 +130,6 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
                 } else if ("lastSyncTimestamp".equals(fieldName)) {
                     deserializedReportedProperties.lastSyncTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("confidentialVmProfile".equals(fieldName)) {
-                    deserializedReportedProperties.confidentialVmProfile = ConfidentialVmProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
