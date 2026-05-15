@@ -28,10 +28,6 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
 - **Interim response on response.create**: `ResponseCreateParams.setInterimResponse(BinaryData)` lets callers attach interim response config to a single response request
 - Significantly improved Javadoc for `ServerVadTurnDetection`, `AzureCustomVoice`, `AzurePersonalVoice`, `AzureStandardVoice`, `AzureSemanticVadTurnDetection*`, and other model types
 
-### Breaking Changes
-
-- Removed `PersonalVoiceModels.PHOENIX_V2NEURAL` (no longer supported by the service). Use `PHOENIX_LATEST_NEURAL` or one of the new `DRAGON_*` / `MAI_VOICE_1` models instead.
-
 ### Other Changes
 
 - Updated default service API version to track the latest TypeSpec spec.
