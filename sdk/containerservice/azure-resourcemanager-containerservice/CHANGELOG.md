@@ -2,17 +2,11 @@
 
 ## 2.60.0 (2026-05-09)
 
-### Features Added
+### Other Changes
 
-* `models.AgentPoolArtifactStreamingProfile` was added
+#### Dependency Updates
 
-#### `models.OSSku` was modified
-
-* `AZURE_CONTAINER_LINUX` was added
-
-#### `models.ManagedClusterAgentPoolProfile` was modified
-
-* `withArtifactStreamingProfile(models.AgentPoolArtifactStreamingProfile)` was added
+- Updated `api-version` to `2026-03-01`.
 
 ## 2.59.1 (2026-05-05)
 
