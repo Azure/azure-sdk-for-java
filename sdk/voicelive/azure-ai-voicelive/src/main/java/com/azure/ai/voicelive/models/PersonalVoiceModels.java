@@ -60,4 +60,16 @@ public final class PersonalVoiceModels extends ExpandableStringEnum<PersonalVoic
     public static Collection<PersonalVoiceModels> values() {
         return values(PersonalVoiceModels.class);
     }
+
+    /**
+     * Use the latest Dragon HD Omni model.
+     */
+    @Generated
+    public static final PersonalVoiceModels DRAGON_HDOMNI_LATEST_NEURAL = fromString("DragonHDOmniLatestNeural");
+
+    /**
+     * Use the MAI-Voice-1 model.
+     */
+    @Generated
+    public static final PersonalVoiceModels MAI_VOICE_1 = fromString("MAI-Voice-1");
 }
