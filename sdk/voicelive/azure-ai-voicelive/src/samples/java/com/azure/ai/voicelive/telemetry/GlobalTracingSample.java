@@ -5,9 +5,15 @@ package com.azure.ai.voicelive.telemetry;
 
 import com.azure.ai.voicelive.VoiceLiveAsyncClient;
 import com.azure.ai.voicelive.VoiceLiveClientBuilder;
+import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
+import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
+import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
+import com.azure.ai.voicelive.models.InputTextContentPart;
 import com.azure.ai.voicelive.models.InteractionModality;
+import com.azure.ai.voicelive.models.SessionResponse;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
+import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -19,10 +25,14 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrating automatic tracing via {@code GlobalOpenTelemetry}.
@@ -88,31 +98,78 @@ public final class GlobalTracingSample {
 
         System.out.println("Starting voice session (automatic tracing)...");
 
+        // Multiple prompts → multiple round-trips → richer trace output.
+        List<String> prompts = Arrays.asList(
+            "Say hello in one short sentence.",
+            "Now name one color.",
+            "Now name one fruit."
+        );
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
+
         CountDownLatch done = new CountDownLatch(1);
 
         // 3. Run a short text-mode conversation — all operations are traced automatically.
         client.startSession("gpt-realtime")
-            // Send config and trigger a response, then continue with the same session.
-            .flatMap(session -> session.sendEvent(new ClientEventSessionUpdate(sessionOptions))
-                .then(session.startResponse())
-                .thenReturn(session))
-            // Stream server events until response.done, then close the session.
-            .flatMapMany(session -> session.receiveEvents()
-                .takeUntil(serverEvent -> serverEvent instanceof SessionUpdateResponseDone)
-                .concatWith(session.closeAsync().then(Mono.empty())))
+            // Send initial session configuration.
+            .flatMap(session -> {
+                sessionRef.set(session);
+                return session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).thenReturn(session);
+            })
+            // Send each prompt and request a response. Chaining sends sequentially produces
+            // multiple round-trips and richer trace output.
+            .flatMap(session -> {
+                Mono<Void> sendAll = Mono.empty();
+                for (String prompt : prompts) {
+                    UserMessageItem message = new UserMessageItem(
+                        Collections.singletonList(new InputTextContentPart(prompt)));
+                    sendAll = sendAll
+                        .then(session.sendEvent(new ClientEventConversationItemCreate().setItem(message)))
+                        .then(session.sendEvent(new ClientEventResponseCreate()));
+                }
+                return sendAll.thenReturn(session);
+            })
+            // Subscribe to the server event stream.
+            .flatMapMany(session -> session.receiveEvents())
             .subscribe(
-                serverEvent -> System.out.println("Event: " + serverEvent.getType()),
+                serverEvent -> {
+                    System.out.println("Event: " + serverEvent.getType());
+                    if (serverEvent instanceof SessionUpdateResponseDone) {
+                        SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();
+                        if (response.getUsage() != null) {
+                            System.out.println("  Total tokens: " + response.getUsage().getTotalTokens());
+                        }
+                    }
+                },
                 error -> {
                     System.err.println("Error: " + error.getMessage());
+                    cleanup(sessionRef);
                     done.countDown();
                 },
-                () -> done.countDown()
+                () -> {
+                    cleanup(sessionRef);
+                    done.countDown();
+                }
             );
 
-        done.await(30, TimeUnit.SECONDS);
+        done.await(60, TimeUnit.SECONDS);
+        cleanup(sessionRef);
 
         // 4. Flush remaining spans.
         tracerProvider.close();
+    }
+
+    /**
+     * Close the session asynchronously with a 5-second timeout.
+     */
+    private static void cleanup(AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
+        if (session != null) {
+            session.closeAsync()
+                .timeout(Duration.ofSeconds(5))
+                .subscribe(
+                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
+                    error -> { /* server may have already torn the WebSocket down */ });
+        }
     }
 
     private GlobalTracingSample() {
