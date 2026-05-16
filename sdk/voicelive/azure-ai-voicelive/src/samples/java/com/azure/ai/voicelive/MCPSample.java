@@ -139,7 +139,6 @@ public final class MCPSample {
         AtomicReference<String> activeMCPCallId = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Latch keeps main alive until the event stream completes (or an error occurs).
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -151,54 +150,28 @@ public final class MCPSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Start the session
+        // Start the session. Session lifetime is local to this reactive chain — the session is
+        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
+        // via flatMap, so no instance field or shared holder is needed.
         client.startSession(DEFAULT_MODEL)
-            // Configure the session with MCP tools.
-            .flatMap(session -> {
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
-                sessionRef.set(session);
-
-                AudioProcessor audioProcessor = new AudioProcessor(session);
-                audioProcessorRef.set(audioProcessor);
-
-                System.out.println("📤 Sending session configuration with MCP tools...");
-                ClientEventSessionUpdate sessionConfig = createSessionConfigWithMCPTools();
-                return session.sendEvent(sessionConfig).thenReturn(session);
+                audioProcessorRef.set(new AudioProcessor(session));
+                return configureSession(session)
+                    .thenMany(session.receiveEvents())
+                    .flatMap(event -> handleServerEvent(session, event, activeMCPCallId, audioProcessorRef.get()));
             })
-            // Start audio playback and install shutdown hook before listening for events.
-            .flatMap(session -> {
-                AudioProcessor audioProcessor = audioProcessorRef.get();
-                System.out.println();
-                printSeparator();
-                System.out.println("🎤 MCP VOICE ASSISTANT READY");
-                System.out.println("🎯 Available MCP Tools:");
-                System.out.println("  • deepwiki: Can search and read wiki structure");
-                System.out.println("  • azure_doc: Requires approval for tool calls");
-                System.out.println();
-                System.out.println("Try asking:");
-                System.out.println("  • 'Can you summary github repo azure sdk for java?'");
-                System.out.println("  • 'Can you summary azure docs about voice live?'");
-                System.out.println("Press Ctrl+C to exit");
-                printSeparator();
-                System.out.println();
-
-                audioProcessor.startPlayback();
-
-                return Mono.just(session);
-            })
-            // Subscribe to the server event stream and block until it completes.
-            .flatMapMany(session -> session.receiveEvents())
             .subscribe(
-                event -> handleServerEvent(sessionRef.get(), event, activeMCPCallId, audioProcessorRef.get()),
+                ignored -> { },
                 error -> {
                     System.err.println("❌ Error processing events: " + error.getMessage());
                     running.set(false);
-                    cleanupMCP(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 },
                 () -> {
                     System.out.println("✓ Event stream completed");
-                    cleanupMCP(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 }
             );
@@ -211,21 +184,20 @@ public final class MCPSample {
     }
 
     /**
-     * Cleanup audio processor and close session.
+     * Send the session configuration with MCP tools.
      */
-    private static void cleanupMCP(AtomicReference<AudioProcessor> audioProcessorRef,
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
+        System.out.println("📤 Sending session configuration with MCP tools...");
+        return session.sendEvent(createSessionConfigWithMCPTools()).then();
+    }
+
+    /**
+     * Cleanup audio processor.
+     */
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
         AudioProcessor processor = audioProcessorRef.getAndSet(null);
         if (processor != null) {
             processor.cleanup();
-        }
-        VoiceLiveSessionAsyncClient s = sessionRef.getAndSet(null);
-        if (s != null) {
-            try {
-                s.close();
-            } catch (Exception e) {
-                // Suppress errors during cleanup
-            }
         }
     }
 
@@ -274,9 +246,11 @@ public final class MCPSample {
     }
 
     /**
-     * Handle server events including MCP-specific events.
+     * Handle server events including MCP-specific events. Returns a {@link Mono} so any
+     * follow-up events sent back to the service stay inside the reactive chain instead of
+     * triggering nested subscribes.
      */
-    private static void handleServerEvent(
+    private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
         SessionUpdate event,
         AtomicReference<String> activeMCPCallId,
@@ -287,7 +261,21 @@ public final class MCPSample {
         if (event instanceof SessionUpdateSessionUpdated) {
             System.out.println("✅ Session ready");
             audioProcessor.startCapture();
-            System.out.println("🎤 Start speaking. Try asking about Azure documentation or wiki information.");
+            audioProcessor.startPlayback();
+
+            System.out.println();
+            printSeparator();
+            System.out.println("🎤 MCP VOICE ASSISTANT READY");
+            System.out.println("🎯 Available MCP Tools:");
+            System.out.println("  • deepwiki: Can search and read wiki structure");
+            System.out.println("  • azure_doc: Requires approval for tool calls");
+            System.out.println();
+            System.out.println("Try asking:");
+            System.out.println("  • 'Can you summary github repo azure sdk for java?'");
+            System.out.println("  • 'Can you summary azure docs about voice live?'");
+            System.out.println("Press Ctrl+C to exit");
+            printSeparator();
+            System.out.println();
 
         } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
             System.out.println("🎤 Listening...");
@@ -314,13 +302,13 @@ public final class MCPSample {
             handleOutputItemDone((SessionUpdateResponseOutputItemDone) event);
 
         } else if (event instanceof SessionUpdateConversationItemCreated) {
-            handleConversationItemCreated(session, (SessionUpdateConversationItemCreated) event, activeMCPCallId);
+            return handleConversationItemCreated(session, (SessionUpdateConversationItemCreated) event, activeMCPCallId);
 
         } else if (event instanceof ServerEventResponseMcpCallArgumentsDone) {
             handleMCPCallArgumentsDone((ServerEventResponseMcpCallArgumentsDone) event);
 
         } else if (event instanceof ServerEventResponseMcpCallCompleted) {
-            handleMCPCallCompleted(session, (ServerEventResponseMcpCallCompleted) event);
+            return handleMCPCallCompleted(session, (ServerEventResponseMcpCallCompleted) event);
 
         } else if (eventType == ServerEventType.RESPONSE_MCP_CALL_FAILED) {
             System.err.println("❌ MCP call failed");
@@ -328,6 +316,8 @@ public final class MCPSample {
         } else if (eventType == ServerEventType.ERROR) {
             System.err.println("❌ Error event received");
         }
+
+        return Mono.empty();
     }
 
     /**
@@ -359,13 +349,13 @@ public final class MCPSample {
     /**
      * Handle conversation item created events (MCP calls and approval requests).
      */
-    private static void handleConversationItemCreated(
+    private static Mono<Void> handleConversationItemCreated(
         VoiceLiveSessionAsyncClient session,
         SessionUpdateConversationItemCreated itemCreated,
         AtomicReference<String> activeMCPCallId
     ) {
         if (itemCreated.getItem() == null) {
-            return;
+            return Mono.empty();
         }
 
         ItemType itemType = itemCreated.getItem().getType();
@@ -384,14 +374,16 @@ public final class MCPSample {
             System.out.println("   Call ID: " + callId);
 
         } else if (itemType == ItemType.MCP_APPROVAL_REQUEST) {
-            handleMCPApprovalRequest(session, (ResponseMCPApprovalRequestItem) itemCreated.getItem());
+            return handleMCPApprovalRequest(session, (ResponseMCPApprovalRequestItem) itemCreated.getItem());
         }
+
+        return Mono.empty();
     }
 
     /**
      * Handle MCP approval request events.
      */
-    private static void handleMCPApprovalRequest(
+    private static Mono<Void> handleMCPApprovalRequest(
         VoiceLiveSessionAsyncClient session,
         ResponseMCPApprovalRequestItem approvalItem
     ) {
@@ -410,22 +402,10 @@ public final class MCPSample {
         // Get user approval
         boolean approved = getUserApproval();
 
-        // Send approval response
-        @SuppressWarnings("unused")
         MCPApprovalResponseRequestItem approvalResponse =
             new MCPApprovalResponseRequestItem(approvalId, approved);
 
-        session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse))
-            .subscribe(
-                noValueEmitted -> {
-                    if (approved) {
-                        System.out.println("✅ MCP call approved and response sent");
-                    } else {
-                        System.out.println("❌ MCP call denied and response sent");
-                    }
-                },
-                error -> System.err.println("❌ Error sending approval response: " + error.getMessage())
-            );
+        return session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse));
     }
 
     /**
@@ -460,7 +440,7 @@ public final class MCPSample {
     /**
      * Handle MCP call completed event.
      */
-    private static void handleMCPCallCompleted(
+    private static Mono<Void> handleMCPCallCompleted(
         VoiceLiveSessionAsyncClient session,
         ServerEventResponseMcpCallCompleted event
     ) {
@@ -469,11 +449,7 @@ public final class MCPSample {
         // Wait for output item done event to get the results
         // In a real implementation, you might want to collect the output
         // For this sample, we'll just trigger a new response
-        session.sendEvent(new ClientEventResponseCreate())
-            .subscribe(
-                noValueEmitted -> System.out.println("📤 New response created to process MCP output"),
-                error -> System.err.println("❌ Error creating response: " + error.getMessage())
-            );
+        return session.sendEvent(new ClientEventResponseCreate());
     }
 
     /**
@@ -494,7 +470,8 @@ public final class MCPSample {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
-        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        // volatile: shared between the reactor event thread (startCapture/Playback) and the
+        // audio capture/playback worker threads
         private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 

@@ -36,7 +36,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -57,8 +56,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p>When you run it, the sample creates an {@code AgentSessionConfig}, opens a realtime session,
  * sends the session configuration, waits for the service to report the session as ready, and then
- * starts full-duplex microphone / speaker streaming while also writing a simple conversation log to
- * the local {@code logs} directory.</p>
+ * starts full-duplex microphone / speaker streaming.</p>
  *
  * <p>Features demonstrated:</p>
  * <ul>
@@ -66,7 +64,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   <li>Real-time audio capture and playback using javax.sound.sampled</li>
  *   <li>Sequence number based audio packet system for proper interrupt handling</li>
  *   <li>Azure Deep Noise Suppression and Echo Cancellation for audio quality</li>
- *   <li>Conversation logging to file</li>
  *   <li>Graceful shutdown handling</li>
  * </ul>
  *
@@ -220,8 +217,7 @@ public class AgentV2Sample {
         private final AtomicBoolean running = new AtomicBoolean(false);
         private final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
-        // volatile: written by reactor thread (flatMap on startSession), read by shutdown-hook thread
-        private volatile VoiceLiveSessionAsyncClient session;
+        // volatile: shared between the reactor event thread and the audio worker threads
         private volatile AudioProcessor audioProcessor;
 
         AgentV2VoiceAssistant(String endpoint, AgentSessionConfig agentConfig, String voice) {
@@ -243,19 +239,15 @@ public class AgentV2Sample {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
-            // Connect using AgentSessionConfig
+            // Connect using AgentSessionConfig.
             client.startSession(agentConfig)
-                // Configure the session.
-                .flatMap(voiceLiveSession -> {
-                    this.session = voiceLiveSession;
+                .flatMapMany(voiceLiveSession -> {
                     System.out.println("Connected to VoiceLive service");
-
                     this.audioProcessor = new AudioProcessor(voiceLiveSession);
-
-                    return configureSession().thenReturn(voiceLiveSession);
+                    return configureSession(voiceLiveSession)
+                        .thenReturn(voiceLiveSession)
+                        .flatMapMany(VoiceLiveSessionAsyncClient::receiveEvents);
                 })
-                // Subscribe to the server event stream.
-                .flatMapMany(voiceLiveSession -> voiceLiveSession.receiveEvents())
                 .subscribe(
                     this::handleEvent,
                     error -> {
@@ -276,7 +268,7 @@ public class AgentV2Sample {
             }
         }
 
-        private Mono<Void> configureSession() {
+        private Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
             System.out.println("Setting up voice conversation session...");
             System.out.println("Enabling Azure Deep Noise Suppression");
             System.out.println("Enabling Echo Cancellation");
@@ -417,19 +409,7 @@ public class AgentV2Sample {
                     audioProcessor.shutdown();
                 }
 
-                try {
-                    if (session != null) {
-                        // Best-effort close: cap the wait so a hung server can't hang shutdown.
-                        session.closeAsync()
-                            .timeout(Duration.ofSeconds(5))
-                            .subscribe(
-                                ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
-                                error -> System.err.println("Error closing session: " + error.getMessage()));
-                    }
-                } finally {
-                    // Always release the latch so start()'s await() returns.
-                    shutdownLatch.countDown();
-                }
+                shutdownLatch.countDown();
             }
         }
     }
@@ -449,7 +429,8 @@ public class AgentV2Sample {
         private final AtomicInteger playbackBase = new AtomicInteger(0);
         private final AtomicBoolean running = new AtomicBoolean(false);
 
-        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        // volatile: shared between the reactor event thread (startCapture/Playback) and the
+        // audio capture/playback worker threads
         private volatile TargetDataLine inputLine;
         private volatile SourceDataLine outputLine;
         private volatile Thread captureThread;

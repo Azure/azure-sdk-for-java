@@ -25,14 +25,12 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrating automatic tracing via {@code GlobalOpenTelemetry}.
@@ -41,8 +39,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * automatically without adding manual tracing calls around each SDK operation.</p>
  *
  * <p>When you run it, the sample registers a simple console span exporter, opens a short text-only
- * VoiceLive session, waits for one model response to complete, closes the session, and then flushes
- * the spans so you can inspect the emitted telemetry immediately.</p>
+ * VoiceLive session, sends a few prompts back-to-back, prints each server event as it arrives, and
+ * then flushes the spans so you can inspect the emitted telemetry immediately.</p>
  *
  * <p>This sample registers a global OpenTelemetry instance with
  * {@code OpenTelemetrySdk.builder().buildAndRegisterGlobal()}. The VoiceLive client picks it
@@ -104,72 +102,65 @@ public final class GlobalTracingSample {
             "Now name one color.",
             "Now name one fruit."
         );
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         CountDownLatch done = new CountDownLatch(1);
 
         // 3. Run a short text-mode conversation — all operations are traced automatically.
+        //    Session lifetime is local to this reactive chain; the session is captured by the
+        //    lambda passed to flatMapMany and then threaded into per-event handling via flatMap,
+        //    so no instance field or shared holder is needed.
         client.startSession("gpt-realtime")
-            // Send initial session configuration.
-            .flatMap(session -> {
-                sessionRef.set(session);
-                return session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).thenReturn(session);
-            })
-            // Send each prompt and request a response. Chaining sends sequentially produces
-            // multiple round-trips and richer trace output.
-            .flatMap(session -> {
-                Mono<Void> sendAll = Mono.empty();
-                for (String prompt : prompts) {
-                    UserMessageItem message = new UserMessageItem(
-                        Collections.singletonList(new InputTextContentPart(prompt)));
-                    sendAll = sendAll
-                        .then(session.sendEvent(new ClientEventConversationItemCreate().setItem(message)))
-                        .then(session.sendEvent(new ClientEventResponseCreate()));
-                }
-                return sendAll.thenReturn(session);
-            })
-            // Subscribe to the server event stream.
-            .flatMapMany(session -> session.receiveEvents())
+            .flatMapMany(session -> configureSession(session, sessionOptions, prompts)
+                .thenMany(session.receiveEvents())
+                .flatMap(GlobalTracingSample::handleServerEvent))
             .subscribe(
-                serverEvent -> {
-                    System.out.println("Event: " + serverEvent.getType());
-                    if (serverEvent instanceof SessionUpdateResponseDone) {
-                        SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();
-                        if (response.getUsage() != null) {
-                            System.out.println("  Total tokens: " + response.getUsage().getTotalTokens());
-                        }
-                    }
-                },
+                ignored -> { },
                 error -> {
                     System.err.println("Error: " + error.getMessage());
-                    cleanup(sessionRef);
                     done.countDown();
                 },
-                () -> {
-                    cleanup(sessionRef);
-                    done.countDown();
-                }
+                done::countDown
             );
 
         done.await(60, TimeUnit.SECONDS);
-        cleanup(sessionRef);
 
         // 4. Flush remaining spans.
         tracerProvider.close();
     }
 
     /**
-     * Close the session asynchronously with a 5-second timeout.
+     * Send the session configuration followed by each prompt as a sequential chain.
      */
-    private static void cleanup(AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
-        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
-        if (session != null) {
-            session.closeAsync()
-                .timeout(Duration.ofSeconds(5))
-                .subscribe(
-                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
-                    error -> { /* server may have already torn the WebSocket down */ });
+    private static Mono<Void> configureSession(
+        VoiceLiveSessionAsyncClient session,
+        VoiceLiveSessionOptions sessionOptions,
+        List<String> prompts
+    ) {
+        Mono<Void> chain = session.sendEvent(new ClientEventSessionUpdate(sessionOptions));
+        for (String prompt : prompts) {
+            UserMessageItem message = new UserMessageItem(
+                Collections.singletonList(new InputTextContentPart(prompt)));
+            chain = chain
+                .then(session.sendEvent(new ClientEventConversationItemCreate().setItem(message)))
+                .then(session.sendEvent(new ClientEventResponseCreate()));
         }
+        return chain;
+    }
+
+    /**
+     * Handle a single server event. Returns {@link Mono#empty()} so per-event handling stays
+     * inside the reactive chain (no nested subscribe). This sample doesn't send any follow-up
+     * events from inside the handler.
+     */
+    private static Mono<Void> handleServerEvent(com.azure.ai.voicelive.models.SessionUpdate serverEvent) {
+        System.out.println("Event: " + serverEvent.getType());
+        if (serverEvent instanceof SessionUpdateResponseDone) {
+            SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();
+            if (response.getUsage() != null) {
+                System.out.println("  Total tokens: " + response.getUsage().getTotalTokens());
+            }
+        }
+        return Mono.empty();
     }
 
     private GlobalTracingSample() {

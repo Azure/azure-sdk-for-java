@@ -24,7 +24,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -120,38 +119,32 @@ public final class MicrophoneInputSample {
             .setInputAudioSamplingRate(SAMPLE_RATE);
 
         final AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        final AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Latch keeps main alive until the event stream completes (or an error occurs).
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
-        // Start session
+        // Start session. Session lifetime is local to this reactive chain; the session
+        // instance is captured only inside the flatMapMany lambda.
         client.startSession("gpt-realtime")
-            // Configure the session.
-            .flatMap(session -> {
-                sessionRef.set(session);
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started");
-                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent).thenReturn(session);
-            })
-            // Start microphone capture once the session is configured.
-            .flatMap(session -> {
                 AudioProcessor audioProcessor = new AudioProcessor(session);
                 audioProcessorRef.set(audioProcessor);
-                audioProcessor.startCapture();
-                return Mono.just(session);
+                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
+                return session.sendEvent(updateEvent)
+                    .then(Mono.fromRunnable(audioProcessor::startCapture))
+                    .thenReturn(session)
+                    .flatMapMany(VoiceLiveSessionAsyncClient::receiveEvents);
             })
-            // Subscribe to the server event stream.
-            .flatMapMany(session -> session.receiveEvents())
             .subscribe(
                 event -> handleEvent(event),
                 error -> {
                     System.err.println("Error: " + error.getMessage());
-                    cleanupMicrophoneInput(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 },
                 () -> {
-                    cleanupMicrophoneInput(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 }
             );
@@ -164,24 +157,13 @@ public final class MicrophoneInputSample {
     }
 
     /**
-     * Stop microphone capture and close the session asynchronously with a 5-second timeout. Safe
-     * to call from both the onError and onComplete handlers (idempotent via
-     * {@link AtomicReference#getAndSet(Object)}).
+     * Stop microphone capture. Safe to call from both the onError and onComplete handlers
+     * (idempotent via {@link AtomicReference#getAndSet(Object)}).
      */
-    private static void cleanupMicrophoneInput(AtomicReference<AudioProcessor> audioProcessorRef,
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
         AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
         if (audioProcessor != null) {
             audioProcessor.shutdown();
-        }
-        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
-        if (session != null) {
-            // Best-effort close: cap the wait so a hung server can't hang the JVM.
-            session.closeAsync()
-                .timeout(Duration.ofSeconds(5))
-                .subscribe(
-                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
-                    error -> { /* server may have already torn the WebSocket down */ });
         }
     }
 

@@ -34,7 +34,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -59,20 +58,19 @@ import java.util.concurrent.atomic.AtomicReference;
  * package. It combines session configuration, microphone capture, speaker playback, and interruption
  * handling in one place.</p>
  *
- * <p>When you run it, the sample opens a realtime session, configures the assistant, starts local
- * playback, waits for the session to be ready, and then begins streaming microphone audio while
- * playing the model's responses through your speakers.</p>
+ * <p>When you run it, the sample opens a realtime session, sends the session configuration, waits
+ * for the service to report the session as ready, and then starts full-duplex microphone capture
+ * and speaker playback.</p>
  *
  * <p>This sample demonstrates:</p>
  * <ul>
  *   <li>Real-time microphone audio capture</li>
  *   <li>Streaming audio to VoiceLive service</li>
- *   <li>Receiving and playing audio responses</li>
+ *   <li>Receiving and playing audio responses through speakers</li>
  *   <li>Voice Activity Detection (VAD) with interruption handling</li>
  *   <li>Multi-threaded audio processing</li>
  *   <li>Audio transcription with Whisper</li>
  *   <li>Noise reduction and echo cancellation</li>
- *   <li>Realtime audio playback through speakers</li>
  * </ul>
  *
  * <p><strong>Environment Variables Required:</strong></p>
@@ -142,12 +140,12 @@ public final class VoiceAssistantSample {
         private final AudioFormat audioFormat;
 
         // Audio capture components
-        // volatile: written by reactor thread (startCapture), read/closed by shutdown-hook thread
+        // volatile: shared between the reactor event thread (startCapture) and the audio capture worker thread
         private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
         // Audio playback components
-        // volatile: written by reactor thread (startPlayback), read/closed by shutdown-hook thread
+        // volatile: shared between the reactor event thread (startPlayback) and the audio playback worker thread
         private volatile SourceDataLine speaker;
         private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
@@ -458,51 +456,32 @@ public final class VoiceAssistantSample {
     private static void runVoiceAssistantWithClient(VoiceLiveAsyncClient client) {
         System.out.println("✓ VoiceLive client created");
 
-        // Configure session options for voice conversation
-        VoiceLiveSessionOptions sessionOptions = createVoiceSessionOptions();
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Latch keeps main alive until the event stream completes (or an error occurs).
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
-        // Execute the reactive workflow - start with just the model
+        // Start session. Session lifetime is local to this reactive chain — the session is
+        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
+        // via flatMap, so no instance field or shared holder is needed.
         client.startSession(DEFAULT_MODEL)
-            // Configure the session.
-            .flatMap(session -> {
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
-                sessionRef.set(session);
-
-                AudioProcessor audioProcessor = new AudioProcessor(session);
-                audioProcessorRef.set(audioProcessor);
-
-                System.out.println("📤 Sending session.update configuration...");
-                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent).thenReturn(session);
+                audioProcessorRef.set(new AudioProcessor(session));
+                return configureSession(session)
+                    .thenMany(session.receiveEvents())
+                    .flatMap(event -> handleServerEvent(event, audioProcessorRef.get()));
             })
-            // Start audio playback and install shutdown hook before listening for events.
-            .flatMap(session -> {
-                AudioProcessor audioProcessor = audioProcessorRef.get();
-                audioProcessor.startPlayback();
-
-                System.out.println("🎤 VOICE ASSISTANT READY");
-                System.out.println("Start speaking to begin conversation");
-                System.out.println("Press Ctrl+C to exit");
-
-                return Mono.just(session);
-            })
-            // Subscribe to the server event stream and block until it completes.
-            .flatMapMany(session -> session.receiveEvents())
             .subscribe(
-                event -> handleServerEvent(event, audioProcessorRef.get()),
+                ignored -> { },
                 error -> {
                     System.err.println("❌ Error receiving events: " + error.getMessage());
-                    cleanupVoiceAssistant(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 },
                 () -> {
                     System.out.println("✓ Event stream completed");
-                    cleanupVoiceAssistant(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 }
             );
@@ -515,22 +494,20 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Cleanup audio processor and close session asynchronously with a 5-second timeout.
+     * Send the session configuration for voice conversation.
      */
-    private static void cleanupVoiceAssistant(AtomicReference<AudioProcessor> audioProcessorRef,
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
+        System.out.println("📤 Sending session.update configuration...");
+        return session.sendEvent(new ClientEventSessionUpdate(createVoiceSessionOptions())).then();
+    }
+
+    /**
+     * Cleanup audio processor.
+     */
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
         AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
         if (audioProcessor != null) {
             audioProcessor.shutdown();
-        }
-        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
-        if (session != null) {
-            // Best-effort close: cap the wait so a hung server can't hang the JVM.
-            session.closeAsync()
-                .timeout(Duration.ofSeconds(5))
-                .subscribe(
-                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
-                    error -> { /* server may have already torn the WebSocket down */ });
         }
     }
 
@@ -571,28 +548,30 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Handle incoming server events
+     * Handle a single server event. Returns a {@link Mono} so the per-event handling stays
+     * inside the reactive chain (no nested subscribe). The voice assistant doesn't send any
+     * follow-up events, so handlers always return {@link Mono#empty()}.
      */
-    private static void handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
+    private static Mono<Void> handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
 
         try {
             if (eventType == ServerEventType.SESSION_CREATED) {
                 System.out.println("✓ Session created - initializing...");
-            } else if (eventType == ServerEventType.SESSION_UPDATED) {
-                System.out.println("✓ Session updated - starting microphone");
+            } else if (event instanceof SessionUpdateSessionUpdated) {
+                System.out.println("✓ Session updated - starting audio");
 
-                // Now that bufferObject() bug is fixed in generated code, we can access the typed class
-                if (event instanceof SessionUpdateSessionUpdated) {
-                    SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
+                // Print the full JSON representation
+                SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
+                System.out.println("📄 Session Updated Event (Full JSON):");
+                System.out.println(BinaryData.fromObject(sessionUpdated).toString());
 
-                    // Print the full JSON representation
-                    System.out.println("📄 Session Updated Event (Full JSON):");
-                    String eventJson = BinaryData.fromObject(sessionUpdated).toString();
-                    System.out.println(eventJson);
-                }
-
+                audioProcessor.startPlayback();
                 audioProcessor.startCapture();
+
+                System.out.println("🎤 VOICE ASSISTANT READY");
+                System.out.println("Start speaking to begin conversation");
+                System.out.println("Press Ctrl+C to exit");
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
                 System.out.println("🎤 Speech detected");
                 // Server handles interruption automatically with interruptResponse=true
@@ -600,30 +579,25 @@ public final class VoiceAssistantSample {
                 audioProcessor.skipPendingAudio();
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
                 System.out.println("🤔 Speech ended - processing...");
-            } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                // Handle audio response - extract and queue for playback
-                if (event instanceof SessionUpdateResponseAudioDelta) {
-                    SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
-                    byte[] audioData = audioEvent.getDelta();
-                    if (audioData != null && audioData.length > 0) {
-                        audioProcessor.queueAudio(audioData);
-                    }
+            } else if (event instanceof SessionUpdateResponseAudioDelta) {
+                SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
+                byte[] audioData = audioEvent.getDelta();
+                if (audioData != null && audioData.length > 0) {
+                    audioProcessor.queueAudio(audioData);
                 }
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
                 System.out.println("🎤 Ready for next input...");
             } else if (eventType == ServerEventType.RESPONSE_DONE) {
                 System.out.println("✅ Response complete");
-            } else if (eventType == ServerEventType.ERROR) {
-                if (event instanceof SessionUpdateError) {
-                    SessionUpdateError errorEvent = (SessionUpdateError) event;
-                    System.out.println("❌ VoiceLive error: " + errorEvent.getError().getMessage());
-                } else {
-                    System.out.println("❌ VoiceLive error occurred");
-                }
+            } else if (event instanceof SessionUpdateError) {
+                SessionUpdateError errorEvent = (SessionUpdateError) event;
+                System.out.println("❌ VoiceLive error: " + errorEvent.getError().getMessage());
             }
         } catch (Exception e) {
             System.err.println("❌ Error handling event: " + e.getMessage());
             e.printStackTrace();
         }
+
+        return Mono.empty();
     }
 }

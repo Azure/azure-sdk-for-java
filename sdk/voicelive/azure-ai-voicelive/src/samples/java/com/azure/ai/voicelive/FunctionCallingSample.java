@@ -42,7 +42,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -155,7 +154,6 @@ public final class FunctionCallingSample {
         System.out.println("Connecting to VoiceLive service...");
 
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
 
         // Track pending function calls: callId -> (functionName, previousItemId)
@@ -164,50 +162,28 @@ public final class FunctionCallingSample {
         // Latch keeps main alive until the event stream completes (or an error occurs).
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
-        // Start session
+        // Start session. Session lifetime is local to this reactive chain — the session is
+        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
+        // via flatMap, so no instance field or shared holder is needed.
         client.startSession(DEFAULT_MODEL)
-            // Configure the session with function tools.
-            .flatMap(session -> {
-                sessionRef.set(session);
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
-
-                AudioProcessor audioProcessor = new AudioProcessor(session);
-                audioProcessorRef.set(audioProcessor);
-
-                System.out.println("📤 Sending session configuration with function tools...");
-                ClientEventSessionUpdate sessionConfig = createSessionConfigWithFunctions();
-                return session.sendEvent(sessionConfig).thenReturn(session);
+                audioProcessorRef.set(new AudioProcessor(session));
+                return configureSession(session)
+                    .thenMany(session.receiveEvents())
+                    .flatMap(event -> handleServerEvent(session, event, audioProcessorRef.get(), pendingFunctionCalls));
             })
-            // Start audio playback and install shutdown hook before listening for events.
-            .flatMap(session -> {
-                AudioProcessor audioProcessor = audioProcessorRef.get();
-                audioProcessor.startPlayback();
-
-                String separator = new String(new char[70]).replace("\0", "=");
-                System.out.println("\n" + separator);
-                System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
-                System.out.println("Try saying:");
-                System.out.println("  • 'What's the current time?'");
-                System.out.println("  • 'What's the weather in Seattle?'");
-                System.out.println("  • 'What time is it in UTC?'");
-                System.out.println("Press Ctrl+C to exit");
-                System.out.println(separator + "\n");
-
-                return Mono.just(session);
-            })
-            // Subscribe to the server event stream and block until it completes.
-            .flatMapMany(session -> session.receiveEvents())
             .subscribe(
-                event -> handleServerEvent(sessionRef.get(), event, audioProcessorRef.get(), pendingFunctionCalls),
+                ignored -> { },
                 error -> {
                     System.err.println("Error processing events: " + error.getMessage());
                     running.set(false);
-                    cleanupFunctionCalling(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 },
                 () -> {
                     System.out.println("✓ Event stream completed");
-                    cleanupFunctionCalling(audioProcessorRef, sessionRef);
+                    shutdownAudio(audioProcessorRef);
                     completionLatch.countDown();
                 }
             );
@@ -220,22 +196,20 @@ public final class FunctionCallingSample {
     }
 
     /**
-     * Cleanup audio processor and close session asynchronously with a 5-second timeout.
+     * Send the session configuration with function tools.
      */
-    private static void cleanupFunctionCalling(AtomicReference<AudioProcessor> audioProcessorRef,
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef) {
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
+        System.out.println("📤 Sending session configuration with function tools...");
+        return session.sendEvent(createSessionConfigWithFunctions()).then();
+    }
+
+    /**
+     * Cleanup audio processor.
+     */
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
         AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
         if (audioProcessor != null) {
             audioProcessor.cleanup();
-        }
-        VoiceLiveSessionAsyncClient session = sessionRef.getAndSet(null);
-        if (session != null) {
-            // Best-effort close: cap the wait so a hung server can't hang the JVM.
-            session.closeAsync()
-                .timeout(Duration.ofSeconds(5))
-                .subscribe(
-                    ignored -> { /* Mono<Void>: no onNext values are ever emitted */ },
-                    error -> { /* server may have already torn the WebSocket down */ });
         }
     }
 
@@ -322,9 +296,11 @@ public final class FunctionCallingSample {
     }
 
     /**
-     * Handle server events in a single subscription.
+     * Handle a single server event. Returns a {@link Mono} so that any follow-up events sent back
+     * to the service (function-call results, response creation) stay inside the reactive chain
+     * instead of triggering a nested subscribe.
      */
-    private static void handleServerEvent(
+    private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
         SessionUpdate event,
         AudioProcessor audioProcessor,
@@ -335,7 +311,17 @@ public final class FunctionCallingSample {
         if (event instanceof SessionUpdateSessionUpdated) {
             System.out.println("✅ Session ready");
             audioProcessor.startCapture();
-            System.out.println("🎤 Start speaking. Say 'What's the time?' or 'What's the weather in Seattle?'");
+            audioProcessor.startPlayback();
+
+            String separator = new String(new char[70]).replace("\0", "=");
+            System.out.println("\n" + separator);
+            System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
+            System.out.println("Try saying:");
+            System.out.println("  • 'What's the current time?'");
+            System.out.println("  • 'What's the weather in Seattle?'");
+            System.out.println("  • 'What time is it in UTC?'");
+            System.out.println("Press Ctrl+C to exit");
+            System.out.println(separator + "\n");
 
         } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
             System.out.println("🎤 Listening...");
@@ -368,7 +354,7 @@ public final class FunctionCallingSample {
             String callId = argsDone.getCallId();
             String[] callMetadata = pendingFunctionCalls.remove(callId);
             if (callMetadata == null) {
-                return;
+                return Mono.empty();
             }
             String functionName = callMetadata[0];
             String previousItemId = callMetadata[1];
@@ -390,13 +376,11 @@ public final class FunctionCallingSample {
                 .setItem(output)
                 .setPreviousItemId(previousItemId);
 
-            session.sendEvent(createItem)
-                .then(session.sendEvent(new ClientEventResponseCreate()))
-                .subscribe(
-                    noValueEmitted -> System.out.println("🤖 Function result sent"),
-                    error -> System.err.println("❌ Failed to send function result: " + error.getMessage())
-                );
+            return session.sendEvent(createItem)
+                .then(session.sendEvent(new ClientEventResponseCreate()));
         }
+
+        return Mono.empty();
     }
 
     /**
@@ -483,7 +467,8 @@ public final class FunctionCallingSample {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
-        // volatile: written by reactor thread (startCapture/Playback), read/closed by shutdown-hook thread
+        // volatile: shared between the reactor event thread (startCapture/Playback) and the
+        // audio capture/playback worker threads
         private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
