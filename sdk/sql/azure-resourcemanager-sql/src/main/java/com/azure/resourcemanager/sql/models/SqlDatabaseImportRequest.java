@@ -98,8 +98,7 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
              * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithExecute
-                withManagedIdentity(String managedIdentityResourceId);
+            SqlDatabaseImportRequest.DefinitionStages.WithExecute withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**

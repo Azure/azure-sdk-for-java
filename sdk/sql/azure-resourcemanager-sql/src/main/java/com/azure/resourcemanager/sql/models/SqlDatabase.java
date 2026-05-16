@@ -607,8 +607,7 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
              * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
-                withManagedIdentity(String managedIdentityResourceId);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**

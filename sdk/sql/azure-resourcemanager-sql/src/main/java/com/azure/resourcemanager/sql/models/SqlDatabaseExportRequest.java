@@ -109,8 +109,7 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
              * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
              * @return next definition stage
              */
-            SqlDatabaseExportRequest.DefinitionStages.WithExecute
-                withManagedIdentity(String managedIdentityResourceId);
+            SqlDatabaseExportRequest.DefinitionStages.WithExecute withManagedIdentity(String managedIdentityResourceId);
         }
 
         /**

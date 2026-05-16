@@ -234,10 +234,9 @@ public interface SqlServer
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAdministratorLogin,
-        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithExternalActiveDirectoryAdministrator,
-        DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorPassword,
+        DefinitionStages.WithExternalActiveDirectoryAdministrator, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the storage account definition stages. */
