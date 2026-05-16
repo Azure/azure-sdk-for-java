@@ -31,7 +31,7 @@
 # BOM
 
 # PRLabel: %azure-sdk-bom
-/sdk/boms/azure-sdk-bom/                                           @jairmyree @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy @Azure/azure-java-sdk
+/sdk/boms/azure-sdk-bom/                                           @jairmyree @vcolin7 @alzimmermsft @jonathangiles @srnagar @Azure/azure-java-sdk
 
 # ServiceLabel: %azure-sdk-bom
 # AzureSdkOwners:                                                  @jairmyree @vcolin7 @alzimmermsft
@@ -51,22 +51,22 @@
 # ######## Core Libraries ########
 
 # PRLabel: %Azure.Core
-/sdk/core/                                                         @alzimmermsft @samvaity @srnagar @anuchandy @vcolin7 @jonathangiles @Azure/azure-java-sdk
+/sdk/core/                                                         @alzimmermsft @samvaity @srnagar @vcolin7 @jonathangiles @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core
 # AzureSdkOwners:                                                  @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.V2
-/sdk/core-v2/                                                      @alzimmermsft @samvaity @srnagar @anuchandy @vcolin7 @jonathangiles @Azure/azure-java-sdk
+/sdk/core-v2/                                                      @alzimmermsft @samvaity @srnagar @vcolin7 @jonathangiles @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.V2
 # AzureSdkOwners:                                                  @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                                         @anuchandy @conniey @Azure/azure-java-sdk
+/sdk/core/azure-core-amqp/                                         @conniey @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.AMQP
-# AzureSdkOwners:                                                  @anuchandy @conniey
+# AzureSdkOwners:                                                  @conniey
 
 # PRLabel: %OpenTelemetry
 /sdk/core/azure-core-tracing-opentelemetry/                        @trask @Azure/azure-java-sdk
@@ -209,7 +209,7 @@
 /sdk/healthinsights/                                               @koen-mertens @tomsft @Azure/azure-java-sdk
 
 # PRLabel: %Cognitive - Metrics Advisor
-/sdk/metricsadvisor/                                               @anuchandy @samvaity @Azure/azure-java-sdk
+/sdk/metricsadvisor/                                               @samvaity @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @samvaity
 # ServiceLabel: %Cognitive - Metrics Advisor

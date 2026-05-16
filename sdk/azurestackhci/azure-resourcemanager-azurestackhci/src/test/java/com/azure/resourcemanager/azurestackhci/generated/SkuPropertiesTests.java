@@ -12,14 +12,14 @@ public final class SkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"ajsvk\",\"publisherId\":\"mqozzkivy\",\"offerId\":\"rl\",\"content\":\"zji\",\"contentVersion\":\"qfhefkwabsol\",\"skuMappings\":[{\"catalogPlanId\":\"qlmgnlqxsjxt\",\"marketplaceSkuId\":\"exhvuqbozoolz\",\"marketplaceSkuVersions\":[\"arkuzl\",\"cnn\"]},{\"catalogPlanId\":\"snxawqyt\",\"marketplaceSkuId\":\"hd\",\"marketplaceSkuVersions\":[\"yckzex\"]}]}")
+            "{\"provisioningState\":\"mqozzkivy\",\"publisherId\":\"rl\",\"offerId\":\"zji\",\"content\":\"qfhefkwabsol\",\"contentVersion\":\"nqqlmgnl\",\"skuMappings\":[{\"catalogPlanId\":\"xtelexhvu\",\"marketplaceSkuId\":\"ozoolzq\",\"marketplaceSkuVersions\":[\"rkuz\",\"bc\"]},{\"catalogPlanId\":\"dtsnxawqytllhdyz\",\"marketplaceSkuId\":\"ckze\",\"marketplaceSkuVersions\":[\"akckywym\"]}]}")
             .toObject(SkuProperties.class);
-        Assertions.assertEquals("mqozzkivy", model.publisherId());
-        Assertions.assertEquals("rl", model.offerId());
-        Assertions.assertEquals("zji", model.content());
-        Assertions.assertEquals("qfhefkwabsol", model.contentVersion());
-        Assertions.assertEquals("qlmgnlqxsjxt", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("exhvuqbozoolz", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("arkuzl", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("rl", model.publisherId());
+        Assertions.assertEquals("zji", model.offerId());
+        Assertions.assertEquals("qfhefkwabsol", model.content());
+        Assertions.assertEquals("nqqlmgnl", model.contentVersion());
+        Assertions.assertEquals("xtelexhvu", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("ozoolzq", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("rkuz", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }
