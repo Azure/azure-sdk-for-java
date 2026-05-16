@@ -1517,6 +1517,14 @@
           "justification": "Output-only immutable models' constructors are now private."
         },
         {
+          "code": "java.method.addedToInterface",
+          "new" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\.(SqlDatabase|SqlDatabaseOperations|SqlDatabaseExportRequest|SqlDatabaseImportRequest)\\.DefinitionStages\\.(WithAuthentication|WithAuthenticationAfterElasticPool|WithAuthenticationTypeAndLoginPassword)(<ParentT>)?::withManagedIdentity\\(java\\.lang\\.String\\)"
+          },
+          "justification": "Adds user-assigned managed identity authentication option to SQL database import/export and creation fluent stages. These DefinitionStages interfaces are only meant to be implemented by the SDK itself."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
