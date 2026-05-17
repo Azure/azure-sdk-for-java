@@ -1,6 +1,6 @@
 # Release History
 
-## 12.20.0-beta.2 (Unreleased)
+## 12.20.0-beta.2 (Unreleased) 
 
 ### Features Added
 
