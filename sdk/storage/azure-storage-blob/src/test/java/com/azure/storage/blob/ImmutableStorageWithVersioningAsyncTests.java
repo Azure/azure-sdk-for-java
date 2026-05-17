@@ -173,16 +173,16 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 boolean found = false;
                 for (BlobItem blob : containerClient.listBlobs(options, null)) {
                     found = true;
-                    BlobClient baseClient = containerClient.getBlobClient(blob.getName());
+                    BlobClient rootBlobClient = containerClient.getBlobClient(blob.getName());
                     BlobClient targetClient;
 
                     if (blob.getSnapshot() != null) {
-                        targetClient = baseClient.getSnapshotClient(blob.getSnapshot());
+                        targetClient = rootBlobClient.getSnapshotClient(blob.getSnapshot());
                     } else if (!CoreUtils.isNullOrEmpty(blob.getVersionId())
                         && !Boolean.TRUE.equals(blob.isCurrentVersion())) {
-                        targetClient = baseClient.getVersionClient(blob.getVersionId());
+                        targetClient = rootBlobClient.getVersionClient(blob.getVersionId());
                     } else {
-                        targetClient = baseClient;
+                        targetClient = rootBlobClient;
                     }
 
                     // Unconditionally clear legal holds and immutability policies. Errors are
@@ -201,7 +201,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                         targetClient.deleteIfExists();
                     } catch (BlobStorageException e) {
                         if (e.getStatusCode() == 403) {
-                            baseClient.deleteIfExists();
+                            rootBlobClient.deleteIfExists();
                         }
                     }
                 }
