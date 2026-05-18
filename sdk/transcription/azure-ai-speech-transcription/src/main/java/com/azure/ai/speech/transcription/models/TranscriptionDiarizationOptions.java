@@ -30,13 +30,6 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     private Integer maxSpeakers;
 
     /**
-     * Creates an instance of TranscriptionDiarizationOptions class.
-     */
-    @Generated
-    public TranscriptionDiarizationOptions() {
-    }
-
-    /**
      * Get the enabled property: Enable speaker diarization. This is automatically set to true when maxSpeakers is
      * specified.
      *
@@ -78,8 +71,10 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        if (this.enabled != null) {
+            jsonWriter.writeBooleanField("enabled", this.enabled);
+        }
         if (this.maxSpeakers != null) {
-            jsonWriter.writeBooleanField("enabled", true);
             jsonWriter.writeNumberField("maxSpeakers", this.maxSpeakers);
         }
         return jsonWriter.writeEndObject();
@@ -97,7 +92,7 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     public static TranscriptionDiarizationOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionDiarizationOptions deserializedTranscriptionDiarizationOptions
-                = new TranscriptionDiarizationOptions();
+                = new TranscriptionDiarizationOptions(false);
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -111,5 +106,14 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
             }
             return deserializedTranscriptionDiarizationOptions;
         });
+    }
+
+    /**
+     * Creates an instance of TranscriptionDiarizationOptions class.
+     *
+     * @param enabled whether speaker diarization is enabled for this transcription request.
+     */
+    public TranscriptionDiarizationOptions(boolean enabled) {
+        this.enabled = enabled;
     }
 }

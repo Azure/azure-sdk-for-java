@@ -34,14 +34,14 @@ public final class TranscribeWithEnhancedModeTests extends TranscriptionClientTe
         List<TranscribedPhrase> responsePhrases = response.getPhrases();
         TranscribedPhrase responsePhrasesFirstItem = responsePhrases.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItem);
-        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffset());
+        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffsetInMs().toMillis());
         Assertions.assertEquals(320, responsePhrasesFirstItem.getDuration());
         Assertions.assertEquals("天气", responsePhrasesFirstItem.getText());
         List<TranscribedWord> responsePhrasesFirstItemWords = responsePhrasesFirstItem.getWords();
         TranscribedWord responsePhrasesFirstItemWordsFirstItem = responsePhrasesFirstItemWords.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItemWordsFirstItem);
         Assertions.assertEquals("天", responsePhrasesFirstItemWordsFirstItem.getText());
-        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getOffset());
+        Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getOffsetInMs().toMillis());
         Assertions.assertEquals(0, responsePhrasesFirstItemWordsFirstItem.getDuration());
         Assertions.assertEquals("zh-CN", responsePhrasesFirstItem.getLocale());
         Assertions.assertEquals(0.78983736, responsePhrasesFirstItem.getConfidence());
