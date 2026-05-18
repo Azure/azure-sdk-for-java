@@ -98,6 +98,11 @@ public class KnowledgeSourceTests extends SearchTestBase {
         searchIndexClient = setupIndex();
     }
 
+    @org.junit.jupiter.api.BeforeEach
+    public void setup() {
+        interceptorManager.addMatchers(new com.azure.core.test.models.BodilessMatcher());
+    }
+
     @AfterEach
     public void cleanup() {
         if (TEST_MODE != TestMode.PLAYBACK) {
