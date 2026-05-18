@@ -10,12 +10,18 @@
 
 ### Bugs Fixed
 
-- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
-  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
-  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
 - Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
 
 ### Other Changes
+
+- Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
+  `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
+  time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
+  against this value, falling back to `max-message-size` when the property is absent. Previously the
+  batch path used `max-message-size` directly, which on Premium large-message entities (link advertises
+  up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
+  Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
 
 ## 7.17.18 (2026-05-05)
 
