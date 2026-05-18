@@ -145,7 +145,7 @@ try {
     TranscriptionResult result = client.transcribe(options);
 
     // Process results
-    System.out.println("Duration: " + result.getDuration() + " ms");
+    System.out.println("Duration: " + result.getDuration().toMillis() + " ms");
     result.getCombinedPhrases().forEach(phrase -> {
         System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
     });
