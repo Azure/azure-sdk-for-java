@@ -373,6 +373,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPage() {
         StepVerifier
@@ -614,6 +615,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(IllegalArgumentException.class);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();

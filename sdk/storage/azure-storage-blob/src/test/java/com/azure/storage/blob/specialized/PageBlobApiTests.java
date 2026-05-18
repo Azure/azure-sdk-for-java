@@ -367,6 +367,7 @@ public class PageBlobApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPage() {
         Response<PageBlobItem> response
@@ -585,6 +586,7 @@ public class PageBlobApiTests extends BlobTestBase {
             () -> bc.uploadPagesFromUrl(null, bc.getBlobUrl(), (long) PageBlobClient.PAGE_BYTES));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();

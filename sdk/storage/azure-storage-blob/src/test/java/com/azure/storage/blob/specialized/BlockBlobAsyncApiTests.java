@@ -616,6 +616,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void commitBlockList() {
         String blockID = getBlockID();
@@ -951,6 +952,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL)).verifyError(BlobStorageException.class);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void upload() {
         StepVerifier

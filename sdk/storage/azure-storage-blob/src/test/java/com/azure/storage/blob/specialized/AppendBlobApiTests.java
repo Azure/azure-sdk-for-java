@@ -342,6 +342,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void appendBlockDefaults() {
         Response<AppendBlobItem> appendResponse = bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
