@@ -29,6 +29,18 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 - Add support for injecting a custom `RetryTemplate` from Spring context for advanced retry scenarios.
   [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
 
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Features Added
+
+- Support `AzurePipelinesCredential` in Azure Event Hubs for Kafka passwordless connection ([#49108](https://github.com/Azure/azure-sdk-for-java/pull/49108)). It only takes effect when all the following 4 environment variables exist at runtime:
+  - `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`
+  - `AZURESUBSCRIPTION_CLIENT_ID`
+  - `AZURESUBSCRIPTION_TENANT_ID`
+  - `SYSTEM_ACCESSTOKEN`
+
 ## 6.3.0 (2026-04-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)
