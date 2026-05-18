@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -521,9 +522,11 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings
         client.checkConfigurationSettings(new SettingSelector().setKeyFilter("prodDBConnection"))
-            .contextWrite(Context.of(key1, value1, key2, value2))
-            .subscribe(setting ->
-                System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+            .byPage()
+            .subscribe(page -> {
+                String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+                System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
+            });
         // END: com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings
     }
 

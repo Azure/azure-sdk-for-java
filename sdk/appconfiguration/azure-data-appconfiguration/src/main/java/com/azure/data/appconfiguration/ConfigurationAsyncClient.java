@@ -1065,9 +1065,11 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
      * <pre>
      * client.checkConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
-     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
-     *     .subscribe&#40;setting -&gt;
-     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+     *     .byPage&#40;&#41;
+     *     .subscribe&#40;page -&gt; &#123;
+     *         String eTag = page.getHeaders&#40;&#41;.getValue&#40;HttpHeaderName.ETAG&#41;;
+     *         System.out.printf&#40;&quot;Page ETag: %s, settings count: %d%n&quot;, eTag, page.getValue&#40;&#41;.size&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
      *

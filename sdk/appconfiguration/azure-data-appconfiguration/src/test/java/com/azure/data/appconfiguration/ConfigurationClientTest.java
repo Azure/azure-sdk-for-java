@@ -819,6 +819,34 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
+     * Verifies that we can check configuration settings with pagination and each page has an ETag.
+     */
+    @Disabled("Requires 200 settings to trigger pagination, prone to TOO_MANY_REQUESTS")
+    @Test
+    public void checkConfigurationSettingsWithPagination() {
+        final int numberExpected = 200;
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting
+                = new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix);
+            client.setConfigurationSetting(setting);
+        }
+
+        SettingSelector selector = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
+
+        // HEAD requests with pagination should return multiple pages, each with an ETag
+        List<String> pageTags = new ArrayList<>();
+        for (PagedResponse<ConfigurationSetting> page : client.checkConfigurationSettings(selector).iterableByPage()) {
+            assertNotNull(page.getHeaders());
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            assertNotNull(eTag);
+            pageTags.add(eTag);
+        }
+
+        // We should have more than one page
+        assertTrue(pageTags.size() > 1, "Expected multiple pages but got " + pageTags.size());
+    }
+
+    /**
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */

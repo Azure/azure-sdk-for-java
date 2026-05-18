@@ -1096,8 +1096,9 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector -->
      * <pre>
      * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-     * configurationClient.checkConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
-     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * configurationClient.checkConfigurationSettings&#40;settingSelector&#41;.iterableByPage&#40;&#41;.forEach&#40;page -&gt; &#123;
+     *     String eTag = page.getHeaders&#40;&#41;.getValue&#40;HttpHeaderName.ETAG&#41;;
+     *     System.out.printf&#40;&quot;Page ETag: %s, settings count: %d%n&quot;, eTag, page.getValue&#40;&#41;.size&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector -->
@@ -1127,8 +1128,9 @@ public final class ConfigurationClient {
      * <pre>
      * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * configurationClient.checkConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
-     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * configurationClient.checkConfigurationSettings&#40;settingSelector, ctx&#41;.iterableByPage&#40;&#41;.forEach&#40;page -&gt; &#123;
+     *     String eTag = page.getHeaders&#40;&#41;.getValue&#40;HttpHeaderName.ETAG&#41;;
+     *     System.out.printf&#40;&quot;Page ETag: %s, settings count: %d%n&quot;, eTag, page.getValue&#40;&#41;.size&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context -->

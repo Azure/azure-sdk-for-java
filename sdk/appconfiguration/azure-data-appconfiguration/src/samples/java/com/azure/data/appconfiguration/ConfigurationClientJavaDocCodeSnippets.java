@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.MatchConditions;
@@ -619,8 +620,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-        configurationClient.checkConfigurationSettings(settingSelector).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        configurationClient.checkConfigurationSettings(settingSelector).iterableByPage().forEach(page -> {
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
         });
         // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
     }
@@ -633,8 +635,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         Context ctx = new Context(key2, value2);
-        configurationClient.checkConfigurationSettings(settingSelector, ctx).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        configurationClient.checkConfigurationSettings(settingSelector, ctx).iterableByPage().forEach(page -> {
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
         });
         // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
     }
