@@ -777,7 +777,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
             = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
         KnowledgeSourceParams sourceParams
-            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setMaxOutputDocuments(3);
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setMaxOutputDocuments(100);
 
         KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
             .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
@@ -801,7 +801,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
                         .buildAsyncClient();
 
                 KnowledgeSourceParams sourceParams
-                    = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setMaxOutputDocuments(3);
+                    = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setMaxOutputDocuments(100);
 
                 KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
