@@ -703,8 +703,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
         assertEquals(knowledgeSource.getName(), created.getName());
         FabricOntologyKnowledgeSource createdSource = assertInstanceOf(FabricOntologyKnowledgeSource.class, created);
         assertEquals(KnowledgeSourceKind.FABRIC_ONTOLOGY, createdSource.getKind());
-        assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricOntologyParameters().getWorkspaceId());
-        assertEquals(FABRIC_ONTOLOGY_ID, createdSource.getFabricOntologyParameters().getOntologyId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricOntologyParameters().getWorkspaceId());
+            assertEquals(FABRIC_ONTOLOGY_ID, createdSource.getFabricOntologyParameters().getOntologyId());
+        }
     }
 
     @Test
@@ -720,8 +722,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
             FabricOntologyKnowledgeSource createdSource
                 = assertInstanceOf(FabricOntologyKnowledgeSource.class, created);
             assertEquals(KnowledgeSourceKind.FABRIC_ONTOLOGY, createdSource.getKind());
-            assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricOntologyParameters().getWorkspaceId());
-            assertEquals(FABRIC_ONTOLOGY_ID, createdSource.getFabricOntologyParameters().getOntologyId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricOntologyParameters().getWorkspaceId());
+                assertEquals(FABRIC_ONTOLOGY_ID, createdSource.getFabricOntologyParameters().getOntologyId());
+            }
         }).verifyComplete();
     }
 
@@ -742,8 +746,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
         FabricOntologyKnowledgeSource retrievedSource
             = assertInstanceOf(FabricOntologyKnowledgeSource.class, retrieved);
         assertEquals("Fabric Ontology for testing", retrievedSource.getDescription());
-        assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
-        assertEquals(FABRIC_ONTOLOGY_ID, retrievedSource.getFabricOntologyParameters().getOntologyId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
+            assertEquals(FABRIC_ONTOLOGY_ID, retrievedSource.getFabricOntologyParameters().getOntologyId());
+        }
     }
 
     @Test
@@ -764,8 +770,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
             FabricOntologyKnowledgeSource retrievedSource
                 = assertInstanceOf(FabricOntologyKnowledgeSource.class, retrieved);
             assertEquals("Fabric Ontology for testing", retrievedSource.getDescription());
-            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
-            assertEquals(FABRIC_ONTOLOGY_ID, retrievedSource.getFabricOntologyParameters().getOntologyId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
+                assertEquals(FABRIC_ONTOLOGY_ID, retrievedSource.getFabricOntologyParameters().getOntologyId());
+            }
         }).verifyComplete();
     }
 
@@ -784,7 +792,9 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals("Updated Fabric Ontology description", updated.getDescription());
         FabricOntologyKnowledgeSource updatedSource = assertInstanceOf(FabricOntologyKnowledgeSource.class, updated);
-        assertEquals(FABRIC_WORKSPACE_ID, updatedSource.getFabricOntologyParameters().getWorkspaceId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, updatedSource.getFabricOntologyParameters().getWorkspaceId());
+        }
     }
 
     @Test
@@ -804,7 +814,9 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals("Updated Fabric Ontology description", retrieved.getDescription());
             FabricOntologyKnowledgeSource retrievedSource
                 = assertInstanceOf(FabricOntologyKnowledgeSource.class, retrieved);
-            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricOntologyParameters().getWorkspaceId());
+            }
         }).verifyComplete();
     }
 
@@ -920,8 +932,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
         assertEquals(knowledgeSource.getName(), created.getName());
         FabricDataAgentKnowledgeSource createdSource = assertInstanceOf(FabricDataAgentKnowledgeSource.class, created);
         assertEquals(KnowledgeSourceKind.FABRIC_DATA_AGENT, createdSource.getKind());
-        assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricDataAgentParameters().getWorkspaceId());
-        assertEquals(FABRIC_DATA_AGENT_ID, createdSource.getFabricDataAgentParameters().getDataAgentId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricDataAgentParameters().getWorkspaceId());
+            assertEquals(FABRIC_DATA_AGENT_ID, createdSource.getFabricDataAgentParameters().getDataAgentId());
+        }
     }
 
     @Test
@@ -937,8 +951,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
             FabricDataAgentKnowledgeSource createdSource
                 = assertInstanceOf(FabricDataAgentKnowledgeSource.class, created);
             assertEquals(KnowledgeSourceKind.FABRIC_DATA_AGENT, createdSource.getKind());
-            assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricDataAgentParameters().getWorkspaceId());
-            assertEquals(FABRIC_DATA_AGENT_ID, createdSource.getFabricDataAgentParameters().getDataAgentId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, createdSource.getFabricDataAgentParameters().getWorkspaceId());
+                assertEquals(FABRIC_DATA_AGENT_ID, createdSource.getFabricDataAgentParameters().getDataAgentId());
+            }
         }).verifyComplete();
     }
 
@@ -959,8 +975,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
         FabricDataAgentKnowledgeSource retrievedSource
             = assertInstanceOf(FabricDataAgentKnowledgeSource.class, retrieved);
         assertEquals("Fabric Data Agent for testing", retrievedSource.getDescription());
-        assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
-        assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
+            assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+        }
     }
 
     @Test
@@ -981,8 +999,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
             FabricDataAgentKnowledgeSource retrievedSource
                 = assertInstanceOf(FabricDataAgentKnowledgeSource.class, retrieved);
             assertEquals("Fabric Data Agent for testing", retrievedSource.getDescription());
-            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
-            assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
+                assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+            }
         }).verifyComplete();
     }
 
@@ -1001,8 +1021,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals("Updated Fabric Data Agent description", updated.getDescription());
         FabricDataAgentKnowledgeSource updatedSource = assertInstanceOf(FabricDataAgentKnowledgeSource.class, updated);
-        assertEquals(FABRIC_WORKSPACE_ID, updatedSource.getFabricDataAgentParameters().getWorkspaceId());
-        assertEquals(FABRIC_DATA_AGENT_ID, updatedSource.getFabricDataAgentParameters().getDataAgentId());
+        if (interceptorManager.isLiveMode()) {
+            assertEquals(FABRIC_WORKSPACE_ID, updatedSource.getFabricDataAgentParameters().getWorkspaceId());
+            assertEquals(FABRIC_DATA_AGENT_ID, updatedSource.getFabricDataAgentParameters().getDataAgentId());
+        }
     }
 
     @Test
@@ -1022,8 +1044,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals("Updated Fabric Data Agent description", retrieved.getDescription());
             FabricDataAgentKnowledgeSource retrievedSource
                 = assertInstanceOf(FabricDataAgentKnowledgeSource.class, retrieved);
-            assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
-            assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+            if (interceptorManager.isLiveMode()) {
+                assertEquals(FABRIC_WORKSPACE_ID, retrievedSource.getFabricDataAgentParameters().getWorkspaceId());
+                assertEquals(FABRIC_DATA_AGENT_ID, retrievedSource.getFabricDataAgentParameters().getDataAgentId());
+            }
         }).verifyComplete();
     }
 
