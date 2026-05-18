@@ -586,7 +586,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadPageFromURLMD5() {
+    public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
@@ -595,8 +595,14 @@ public class PageBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas, null,
-            MessageDigest.getInstance("MD5").digest(data), null, null, null, null));
+        Response<PageBlobItem> response = destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(data), null, null, null, null);
+        byte[] expectedCrc64Content = Base64.getDecoder().decode(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(validateBasicHeaders(response.getHeaders()));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        assertArrayEquals(expectedCrc64Content, response.getValue().getContentCrc64());
     }
 
     @Test

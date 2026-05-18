@@ -627,7 +627,13 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .then(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas, null,
                 MessageDigest.getInstance("MD5").digest(data), null, null));
 
-        StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 201);
+            assertTrue(validateBasicHeaders(r.getHeaders()));
+            assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+            assertArrayEquals(Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64)),
+                r.getValue().getContentCrc64());
+        }).verifyComplete();
     }
 
     @Test

@@ -530,10 +530,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 null, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item
-                    = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                        hd.getXMsBlobSequenceNumber(), hd.getXMsVersion(), hd.getXMsContentCrc64());
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -722,10 +721,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item
-                    = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                        hd.getXMsBlobSequenceNumber(), hd.getXMsVersion(), hd.getXMsContentCrc64());
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
