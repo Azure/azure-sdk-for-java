@@ -4,8 +4,6 @@
 
 ### Features Added
 
-- Added `PageBlobItem.getContentCrc64()` to expose CRC64 values returned by page operations.
-
 ### Breaking Changes
 
 ### Bugs Fixed
