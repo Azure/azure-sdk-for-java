@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appconfiguration.models.ConfigurationResourceTy
  */
 public final class OperationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/CheckNameAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/CheckNameAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameAvailable.
@@ -29,7 +29,7 @@ public final class OperationsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/CheckNameNotAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/CheckNameNotAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameNotAvailable.

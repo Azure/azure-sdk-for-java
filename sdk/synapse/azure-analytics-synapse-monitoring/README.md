@@ -107,5 +107,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azsynapse_rest]: https://learn.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_synapse_cli_full]: https://learn.microsoft.com/cli/azure/synapse?view=azure-cli-latest
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 

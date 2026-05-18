@@ -302,7 +302,7 @@
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
-          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client|ClientBuilder)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
         },
         {
@@ -973,6 +973,32 @@
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.STANDARD",
           "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.CreatedByType",
+          "justification": "CreatedByType was a duplicate of com.azure.core.management.CreatedByType; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.SecurityPerimeterSystemData",
+          "justification": "SecurityPerimeterSystemData was a duplicate of com.azure.core.management.SystemData; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
         },
         {
           "code": "java.method.removed",

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class UpdatesPrepareSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Updates_Prepare.json
+     * x-ms-original-file: 2026-04-30/Updates_Prepare.json
      */
     /**
      * Sample code: Prepare Update.

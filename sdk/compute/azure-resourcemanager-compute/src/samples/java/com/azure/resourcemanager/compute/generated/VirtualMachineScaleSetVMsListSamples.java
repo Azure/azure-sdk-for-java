@@ -9,23 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetVMsListSamples {
     /*
-     * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithVirtualMachineResourceId.json
-     */
-    /**
-     * Sample code: List Vmss VMs with VirtualMachineResourceId.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        listVmssVMsWithVirtualMachineResourceId(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getVirtualMachineScaleSetVMs()
-            .list("resourceGroupname", "vmssName", null, null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_List_MinimumSet_Gen.
@@ -40,7 +24,7 @@ public final class VirtualMachineScaleSetVMsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVM_List_MaximumSet_Gen.
@@ -57,7 +41,7 @@ public final class VirtualMachineScaleSetVMsListSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithResiliencyView.json
+     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithResiliencyView.json
      */
     /**
      * Sample code: List Vmss VMs with ResilientVMDeletionStatus.
