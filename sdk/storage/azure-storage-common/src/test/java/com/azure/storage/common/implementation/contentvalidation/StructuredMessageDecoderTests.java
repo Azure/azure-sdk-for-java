@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
@@ -22,8 +23,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,13 +41,11 @@ public class StructuredMessageDecoderTests {
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer decodedPayload = decoder.decodeChunk(encodedData);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(encodedData);
 
         assertTrue(decoder.isComplete());
-        assertNotNull(decodedPayload);
-        byte[] decodedData = new byte[decodedPayload.remaining()];
-        decodedPayload.get(decodedData);
-        assertArrayEquals(originalData, decodedData);
+        assertFalse(decodedPayload.isEmpty());
+        assertArrayEquals(originalData, collectDecodedBytes(decodedPayload));
     }
 
     @Test
@@ -64,12 +61,12 @@ public class StructuredMessageDecoderTests {
             = ByteBuffer.wrap(encodedBytes, messageHeaderSplitPoint, encodedLength - messageHeaderSplitPoint);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer firstDecodedPayload = decoder.decodeChunk(chunk1);
-        assertNull(firstDecodedPayload);
+        List<ByteBuffer> firstDecodedPayload = decoder.decodeChunk(chunk1);
+        assertTrue(firstDecodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
 
-        ByteBuffer secondDecodedPayload = decoder.decodeChunk(chunk2);
-        assertNotNull(secondDecodedPayload);
+        List<ByteBuffer> secondDecodedPayload = decoder.decodeChunk(chunk2);
+        assertFalse(secondDecodedPayload.isEmpty());
         assertTrue(decoder.isComplete());
     }
 
@@ -86,13 +83,13 @@ public class StructuredMessageDecoderTests {
             = ByteBuffer.wrap(encodedBytes, segmentHeaderSplitPoint, encodedLength - segmentHeaderSplitPoint);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer firstDecodedPayload = decoder.decodeChunk(chunk1);
+        List<ByteBuffer> firstDecodedPayload = decoder.decodeChunk(chunk1);
         // Segment header is incomplete, so nothing is emitted yet.
-        assertNull(firstDecodedPayload);
+        assertTrue(firstDecodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
 
-        ByteBuffer secondDecodedPayload = decoder.decodeChunk(chunk2);
-        assertNotNull(secondDecodedPayload);
+        List<ByteBuffer> secondDecodedPayload = decoder.decodeChunk(chunk2);
+        assertFalse(secondDecodedPayload.isEmpty());
         assertTrue(decoder.isComplete());
     }
 
@@ -111,12 +108,8 @@ public class StructuredMessageDecoderTests {
             int len = Math.min(chunkSize, encodedLength - offset);
             ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, offset, len);
 
-            ByteBuffer decodedPayload = decoder.decodeChunk(chunk);
-            if (decodedPayload != null && decodedPayload.hasRemaining()) {
-                byte[] decodedBytes = new byte[decodedPayload.remaining()];
-                decodedPayload.get(decodedBytes);
-                output.write(decodedBytes, 0, decodedBytes.length);
-            }
+            List<ByteBuffer> decodedPayload = decoder.decodeChunk(chunk);
+            writeDecodedPayload(output, decodedPayload);
             if (decoder.isComplete()) {
                 break;
             }
@@ -133,13 +126,11 @@ public class StructuredMessageDecoderTests {
         int encodedLength = encodedData.remaining();
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer decodedPayload = decoder.decodeChunk(encodedData);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(encodedData);
 
         assertTrue(decoder.isComplete());
-        assertNotNull(decodedPayload);
-        byte[] decodedData = new byte[decodedPayload.remaining()];
-        decodedPayload.get(decodedData);
-        assertArrayEquals(originalData, decodedData);
+        assertFalse(decodedPayload.isEmpty());
+        assertArrayEquals(originalData, collectDecodedBytes(decodedPayload));
     }
 
     @Test
@@ -150,11 +141,11 @@ public class StructuredMessageDecoderTests {
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
         ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
-        ByteBuffer firstDecodedPayload = decoder.decodeChunk(emptyBuffer);
-        assertNull(firstDecodedPayload);
+        List<ByteBuffer> firstDecodedPayload = decoder.decodeChunk(emptyBuffer);
+        assertTrue(firstDecodedPayload.isEmpty());
         ByteBuffer dataBuffer = ByteBuffer.wrap(encodedBytes);
-        ByteBuffer decodedPayload = decoder.decodeChunk(dataBuffer);
-        assertNotNull(decodedPayload);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(dataBuffer);
+        assertFalse(decodedPayload.isEmpty());
         assertTrue(decoder.isComplete());
     }
 
@@ -173,18 +164,15 @@ public class StructuredMessageDecoderTests {
             = MESSAGE_HEADER_LENGTH + SEGMENT_HEADER_LENGTH + 1024 + StructuredMessageConstants.CRC64_LENGTH - 1;
         ByteBuffer chunk1 = ByteBuffer.wrap(encodedBytes, 0, segCrcAllButLast);
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
-        ByteBuffer firstDecodedPayload = decoder.decodeChunk(chunk1);
-        assertNull(firstDecodedPayload, "Decoder must not emit payload before segment CRC is validated");
+        List<ByteBuffer> firstDecodedPayload = decoder.decodeChunk(chunk1);
+        assertTrue(firstDecodedPayload.isEmpty(), "Decoder must not emit payload before segment CRC is validated");
         assertFalse(decoder.isComplete());
 
         ByteBuffer chunk2 = ByteBuffer.wrap(encodedBytes, segCrcAllButLast, encodedLength - segCrcAllButLast);
-        ByteBuffer emittedPayload = decoder.decodeChunk(chunk2);
-        assertNotNull(emittedPayload);
+        List<ByteBuffer> emittedPayload = decoder.decodeChunk(chunk2);
+        assertFalse(emittedPayload.isEmpty());
         assertTrue(decoder.isComplete());
-
-        byte[] decodedData = new byte[emittedPayload.remaining()];
-        emittedPayload.get(decodedData);
-        assertArrayEquals(originalData, decodedData);
+        assertArrayEquals(originalData, collectDecodedBytes(emittedPayload));
     }
 
     @Test
@@ -344,8 +332,8 @@ public class StructuredMessageDecoderTests {
         ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, 5);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
-        ByteBuffer decodedPayload = decoder.decodeChunk(chunk);
-        assertNull(decodedPayload);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(chunk);
+        assertTrue(decodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
     }
 
@@ -359,8 +347,8 @@ public class StructuredMessageDecoderTests {
         ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
-        ByteBuffer decodedPayload = decoder.decodeChunk(chunk);
-        assertNull(decodedPayload);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(chunk);
+        assertTrue(decodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
     }
 
@@ -374,8 +362,8 @@ public class StructuredMessageDecoderTests {
         ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
-        ByteBuffer decodedPayload = decoder.decodeChunk(chunk);
-        assertNull(decodedPayload);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(chunk);
+        assertTrue(decodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
     }
 
@@ -389,9 +377,9 @@ public class StructuredMessageDecoderTests {
         ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, 0, truncated);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
-        ByteBuffer decodedPayload = decoder.decodeChunk(chunk);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(chunk);
         // Segment payload has been released, but the message footer is still incomplete.
-        assertNotNull(decodedPayload);
+        assertFalse(decodedPayload.isEmpty());
         assertFalse(decoder.isComplete());
     }
 
@@ -408,13 +396,11 @@ public class StructuredMessageDecoderTests {
         System.arraycopy(noise, 0, padded, encodedBytes.length, extras);
         ByteBuffer buffer = ByteBuffer.wrap(padded);
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
-        ByteBuffer decodedPayload = decoder.decodeChunk(buffer);
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(buffer);
 
         assertTrue(decoder.isComplete());
-        assertNotNull(decodedPayload);
-        byte[] decodedData = new byte[decodedPayload.remaining()];
-        decodedPayload.get(decodedData);
-        assertArrayEquals(data, decodedData);
+        assertFalse(decodedPayload.isEmpty());
+        assertArrayEquals(data, collectDecodedBytes(decodedPayload));
         // Trailing bytes must not be consumed; buffer position stops at the declared message length.
         assertEquals(extras, buffer.remaining());
     }
@@ -500,6 +486,109 @@ public class StructuredMessageDecoderTests {
     }
 
     /**
+     * Multi-segment round-trip with CRC enabled. Exercises the per-segment CRC validation followed by the
+     * message-wide CRC concat fold: if the concat math is wrong the trailing message footer check would fail
+     * even though every individual segment CRC matched, so this test directly guards the concat optimization.
+     */
+    @Test
+    public void multipleSegmentsRoundTripWithCrc() {
+        // 16 segments of 1 KiB each. Small enough to feed in one chunk; large enough that there is meaningful
+        // CRC accumulation across segments.
+        int segmentSize = 1024;
+        int numSegments = 16;
+        byte[] originalData = getRandomData(segmentSize * numSegments);
+        ByteBuffer encoded = encodeToByteBuffer(originalData, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encoded.remaining());
+        List<ByteBuffer> decodedPayload = decoder.decodeChunk(encoded);
+
+        assertTrue(decoder.isComplete());
+        assertFalse(decodedPayload.isEmpty());
+        assertArrayEquals(originalData, collectDecodedBytes(decodedPayload));
+    }
+
+    /**
+     * Multi-segment round-trip with CRC where the decoder is fed many small chunks rather than the whole encoded
+     * blob at once. This ensures the per-segment CRC computation is correct when payload bytes for a single
+     * segment arrive split across many decodeChunk calls (the typical production wire pattern) and that the
+     * O(1) concat fold at each segment boundary still produces a matching message CRC at the end.
+     */
+    @Test
+    public void multipleSegmentsRoundTripWithCrcAcrossManyChunks() {
+        int segmentSize = 4 * 1024;
+        int numSegments = 8;
+        byte[] originalData = getRandomData(segmentSize * numSegments);
+        byte[] encodedBytes = encodeToBytes(originalData, segmentSize);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBytes.length);
+        ByteArrayOutputStream collected = new ByteArrayOutputStream();
+        int chunkSize = 137; // deliberately non-power-of-two and smaller than the segment so footers split
+
+        for (int offset = 0; offset < encodedBytes.length; offset += chunkSize) {
+            int len = Math.min(chunkSize, encodedBytes.length - offset);
+            ByteBuffer chunk = ByteBuffer.wrap(encodedBytes, offset, len);
+            writeDecodedPayload(collected, decoder.decodeChunk(chunk));
+        }
+
+        assertTrue(decoder.isComplete());
+        assertArrayEquals(originalData, collected.toByteArray());
+    }
+
+    /**
+     * Zero-copy emission: the decoder's per-segment backing array is sized to the exact segment payload length so
+     * the wrapped ByteBuffer's underlying array length matches segment size. Guards against accidental
+     * reintroduction of intermediate buffering (e.g. a growing {@code ByteArrayOutputStream} that hands off an
+     * oversized buffer).
+     */
+    @Test
+    public void singleSegmentEmissionIsExactSized() {
+        int segmentSize = 2 * 1024;
+        byte[] originalData = getRandomData(segmentSize);
+        ByteBuffer encoded = encodeToByteBuffer(originalData, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encoded.remaining());
+        List<ByteBuffer> decoded = decoder.decodeChunk(encoded);
+
+        assertEquals(1, decoded.size());
+        assertTrue(decoder.isComplete());
+        ByteBuffer payload = decoded.get(0);
+        assertTrue(payload.hasArray());
+        assertEquals(segmentSize, payload.remaining());
+        assertEquals(segmentSize, payload.array().length);
+        assertArrayEquals(originalData, collectDecodedBytes(decoded));
+    }
+
+    /**
+     * Segments larger than {@code Integer.MAX_VALUE} cannot be backed by a single Java array, so the decoder must
+     * reject them up front rather than blowing up at allocation time. The check lives in the segment-header parse;
+     * we forge a header that declares a too-large segment size and confirm the failure.
+     */
+    @Test
+    public void throwsOnSegmentSizeExceedingArrayLimit() {
+        // Build a forged 13-byte message header + 10-byte segment header where the segment claims a payload size
+        // larger than what a Java array can hold. Total message length is set so the segment-size check fires
+        // before any other validation.
+        long forgedSegmentSize = (long) Integer.MAX_VALUE; // > Integer.MAX_VALUE - 8 triggers the guard
+        int messageHeaderLength = MESSAGE_HEADER_LENGTH;
+        int segmentHeaderLength = SEGMENT_HEADER_LENGTH;
+        long forgedMessageLength = messageHeaderLength + segmentHeaderLength + forgedSegmentSize;
+
+        byte[] forged = new byte[messageHeaderLength + segmentHeaderLength];
+        ByteBuffer hdr = ByteBuffer.wrap(forged).order(ByteOrder.LITTLE_ENDIAN);
+        hdr.put((byte) StructuredMessageConstants.DEFAULT_MESSAGE_VERSION); // version
+        hdr.putLong(forgedMessageLength); // total message length
+        hdr.putShort((short) StructuredMessageFlags.NONE.getValue()); // flags
+        hdr.putShort((short) 1); // numSegments
+        hdr.putShort((short) 1); // segment number
+        hdr.putLong(forgedSegmentSize); // segment size
+
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(forgedMessageLength);
+        IllegalArgumentException ex
+            = assertThrows(IllegalArgumentException.class, () -> decoder.decodeChunk(ByteBuffer.wrap(forged)));
+        assertTrue(ex.getMessage().contains("exceeds the maximum supported segment size"));
+    }
+
+    /**
      * Multi-megabyte segment size  exercises per-segment length from the wire header,
      * not a fixed 4 MiB assumption.
      */
@@ -513,8 +602,7 @@ public class StructuredMessageDecoderTests {
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedLength);
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-        ByteBuffer decodedPayload = decoder.decodeChunk(encodedData);
-        output.write(decodedPayload.array(), 0, decodedPayload.remaining());
+        writeDecodedPayload(output, decoder.decodeChunk(encodedData));
 
         assertTrue(decoder.isComplete());
         assertArrayEquals(originalData, output.toByteArray());
@@ -545,6 +633,28 @@ public class StructuredMessageDecoderTests {
         byte[] result = new byte[size];
         ThreadLocalRandom.current().nextBytes(result);
         return result;
+    }
+
+    private static byte[] collectDecodedBytes(List<ByteBuffer> decoded) {
+        if (decoded.isEmpty()) {
+            return null;
+        }
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        for (ByteBuffer buffer : decoded) {
+            if (buffer != null && buffer.hasRemaining()) {
+                byte[] decodedBytes = new byte[buffer.remaining()];
+                buffer.get(decodedBytes);
+                output.write(decodedBytes, 0, decodedBytes.length);
+            }
+        }
+        return output.toByteArray();
+    }
+
+    private static void writeDecodedPayload(ByteArrayOutputStream output, List<ByteBuffer> decoded) {
+        byte[] bytes = collectDecodedBytes(decoded);
+        if (bytes != null) {
+            output.write(bytes, 0, bytes.length);
+        }
     }
 
 }

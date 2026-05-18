@@ -8,6 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CRC64_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.DEFAULT_MESSAGE_VERSION;
@@ -56,6 +59,13 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
  */
 public class StructuredMessageDecoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageDecoder.class);
+    private static final int CRC64_SCRATCH_BUFFER_SIZE = 64 * 1024;
+
+    /**
+     * Largest segment payload that can be backed by a single Java {@code byte[]}. Segments larger than this are
+     * rejected when the segment header is parsed.
+     */
+    private static final long MAX_SEGMENT_PAYLOAD_SIZE = (long) Integer.MAX_VALUE - 8;
 
     private long messageLength = -1;
     private StructuredMessageFlags flags;
@@ -74,9 +84,16 @@ public class StructuredMessageDecoder {
     // Holds bytes left over from a previous decodeChunk() call when the current chunk did not contain a full
     // header or footer.
     private final ByteArrayOutputStream pendingBytes = new ByteArrayOutputStream();
-    // Holds the payload bytes of the segment that is currently being decoded. These bytes are intentionally NOT
-    // emitted to the caller until the segment's CRC footer has been validated.
-    private final ByteArrayOutputStream currentSegmentBuffer = new ByteArrayOutputStream();
+    // Payload bytes for the current segment, copied incrementally from inbound wire buffers in chunk-sized arrays.
+    // Unlike pre-allocating {@code new byte[(int) segmentSize]}, this bounds retained memory to bytes read so far
+    // plus at most one live wire buffer (see {@link StorageContentValidationDecoderPolicy#decodeStream}).
+    private List<byte[]> segmentPayloadChunks;
+    private final byte[] crc64ScratchBuffer = new byte[CRC64_SCRATCH_BUFFER_SIZE];
+    // When more than one segment validates in a single decodeChunk() call, the first segment is held here while
+    // subsequent segments are queued in validatedOutput.
+    private ByteBuffer deferredEmission;
+    // Collects validated segment buffers when multiple segments complete in one decodeChunk() invocation.
+    private final List<ByteBuffer> validatedOutput = new ArrayList<>();
 
     /**
      * Constructs a new StructuredMessageDecoder.
@@ -148,8 +165,7 @@ public class StructuredMessageDecoder {
 
     /**
      * Reads the 10-byte header for the next segment (segment number + segment payload length) and resets
-     * per-segment state so {@link #tryReadSegmentContent(ByteBuffer)} can begin filling
-     * {@link #currentSegmentBuffer}.
+     * per-segment state so {@link #tryReadSegmentContent(ByteBuffer)} can begin filling segment payload chunks.
      *
      * <p>Validates that segments arrive in order and that the declared segment size leaves enough room in the
      * remaining message for any subsequent segment headers, payloads, footers, and the trailing message footer –
@@ -190,6 +206,10 @@ public class StructuredMessageDecoder {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(enrichExceptionMessage(
                 "Invalid segment size detected: " + segmentSize + " (max=" + maxSegmentSize + ")")));
         }
+        if (segmentSize > MAX_SEGMENT_PAYLOAD_SIZE) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                enrichExceptionMessage("Segment size " + segmentSize + " exceeds the maximum supported segment size")));
+        }
 
         // Commit: drop the 10 header bytes and set up per-segment state so payload accumulation can start fresh.
         consumeBytes(V1_SEGMENT_HEADER_LENGTH, buffer);
@@ -197,7 +217,7 @@ public class StructuredMessageDecoder {
         currentSegmentNumber = segmentNum;
         currentSegmentContentLength = segmentSize;
         currentSegmentContentOffset = 0;
-        currentSegmentBuffer.reset();
+        segmentPayloadChunks = new ArrayList<>();
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             // Reset only the per-segment running CRC; the message-wide running CRC keeps accumulating across all
@@ -210,8 +230,8 @@ public class StructuredMessageDecoder {
 
     /**
      * Pulls as many payload bytes as possible (bounded by what is still owed for the current segment) from the
-     * pending+buffer view into {@link #currentSegmentBuffer}, updating the running per-segment and per-message
-     * CRC64 values along the way.
+     * pending+buffer view into {@link #segmentPayload}, updating the running per-segment and per-message CRC64
+     * values along the way.
      *
      * <p>Bytes accumulated here are not yet emitted to the caller. They are released only after
      * {@link #tryReadSegmentFooter(ByteBuffer)} validates this segment's CRC. This is the mechanism that enforces
@@ -236,22 +256,26 @@ public class StructuredMessageDecoder {
         // Read the minimum of "what's available right now" and "what's still owed for this segment" so we never
         // accidentally consume the segment footer here.
         int toRead = (int) Math.min(available, remaining);
-        ByteBuffer combined = getCombinedBuffer(buffer);
+        byte[] chunk = new byte[toRead];
 
-        // Materialize the bytes into a fresh array so we can both feed the CRC64 calculator and stash them in the
-        // per-segment buffer in one pass.
-        byte[] content = new byte[toRead];
-        combined.get(content);
-        currentSegmentBuffer.write(content, 0, toRead);
-
-        if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            // Update both CRCs incrementally: the segment CRC will be checked at the segment footer, and the
-            // message CRC accumulates across every segment to be checked at the message footer.
-            segmentCrc64 = StorageCrc64Calculator.compute(content, segmentCrc64);
-            messageCrc64 = StorageCrc64Calculator.compute(content, messageCrc64);
+        if (pendingBytes.size() == 0) {
+            if (flags == StructuredMessageFlags.STORAGE_CRC64) {
+                updateCrc64sFromBuffer(buffer, toRead);
+            }
+            readIntoSegmentPayload(buffer, chunk, 0, toRead);
+        } else {
+            ByteBuffer combined = getCombinedBuffer(buffer);
+            if (flags == StructuredMessageFlags.STORAGE_CRC64) {
+                segmentCrc64 = StorageCrc64Calculator.compute(combined.array(),
+                    combined.arrayOffset() + combined.position(), toRead, segmentCrc64);
+                messageCrc64 = StorageCrc64Calculator.compute(combined.array(),
+                    combined.arrayOffset() + combined.position(), toRead, messageCrc64);
+            }
+            combined.get(chunk);
+            consumeBytes(toRead, buffer);
         }
+        segmentPayloadChunks.add(chunk);
 
-        consumeBytes(toRead, buffer);
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
 
@@ -299,30 +323,29 @@ public class StructuredMessageDecoder {
 
     /**
      * Decodes as much as possible from the given buffer and returns any fully validated
-     * payload bytes that are now safe to emit downstream.
+     * payload slices that are now safe to emit downstream.
      *
-     * <p>The returned buffer will only ever contain bytes from segments whose CRC (when
-     * enabled) has already been verified. If no segments have been fully validated by
-     * this invocation the method returns {@code null}. Callers distinguish "more bytes
-     * needed" from "stream complete" via {@link #isComplete()}.</p>
+     * <p>The returned buffers will only ever contain bytes from segments whose CRC (when
+     * enabled) has already been verified. If no segments have been fully
+     * validated by this invocation the method returns an empty list. Callers distinguish "more bytes needed"
+     * from "stream complete" via {@link #isComplete()}.</p>
      *
      * @param buffer The buffer containing encoded data.
-     * @return Validated payload bytes ready to emit, or {@code null} if none are ready.
+     * @return Validated payload slices ready to emit downstream; empty when none are ready yet.
      * @throws IllegalArgumentException if the input is malformed or a CRC64 check fails.
      */
-    public ByteBuffer decodeChunk(ByteBuffer buffer) {
+    public List<ByteBuffer> decodeChunk(ByteBuffer buffer) {
         // Decoder always reads little-endian; force the order on the caller's buffer so all our get() calls match
         // the wire format regardless of how the buffer was constructed.
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        // Output collected during this single invocation. Each segment whose CRC validates in this call is appended
-        // here and ultimately returned to the policy as one ByteBuffer.
-        ByteArrayOutputStream validatedOutput = new ByteArrayOutputStream();
+        validatedOutput.clear();
+        deferredEmission = null;
 
         // Step 1: parse the message header on the first chunk that has enough bytes for it. If this chunk doesn't,
         // bail out early.
         if (!tryReadMessageHeader(buffer)) {
-            return emptyOrNull(validatedOutput);
+            return finishDecodeChunk();
         }
 
         // Step 2: walk forward through the message until we either hit the end (messageOffset == messageLength) or
@@ -349,20 +372,12 @@ public class StructuredMessageDecoder {
 
             if (currentSegmentContentOffset == currentSegmentContentLength) {
                 // Segment payload fully buffered. Validate the CRC footer (if any). When the footer isn't fully
-                // available yet, break and resume on the next chunk – currentSegmentBuffer keeps its contents so
+                // available yet, break and resume on the next chunk – segmentPayloadChunks keeps its contents so
                 // we can still emit them on the call where the footer arrives.
                 if (!tryReadSegmentFooter(buffer)) {
                     break;
                 }
-                // Segment passed validation: it is now safe to release the buffered payload to the caller.
-                try {
-                    currentSegmentBuffer.writeTo(validatedOutput);
-                } catch (java.io.IOException e) {
-                    // ByteArrayOutputStream.writeTo(ByteArrayOutputStream) does not actually throw, but the
-                    // signature forces us to handle it.
-                    throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-                }
-                currentSegmentBuffer.reset();
+                releaseValidatedSegmentPayload();
                 segmentHeaderRead = false;
                 // Loop continues: either consume the next segment's header or the message footer.
             } else if (payloadRead == 0 && getAvailableBytes(buffer) == 0) {
@@ -371,7 +386,51 @@ public class StructuredMessageDecoder {
             }
         }
 
-        return emptyOrNull(validatedOutput);
+        return finishDecodeChunk();
+    }
+
+    /**
+     * Hands off validated segment bytes for emission. A single validated segment per {@link #decodeChunk(ByteBuffer)}
+     * is returned as one or more {@link ByteBuffer} views over the accumulated chunk arrays without consolidating
+     * them; when multiple segments validate in one call, their views are queued in {@link #validatedOutput}.
+     */
+    private void releaseValidatedSegmentPayload() {
+        List<byte[]> validatedChunks = segmentPayloadChunks;
+        segmentPayloadChunks = null;
+
+        if (deferredEmission == null && validatedOutput.isEmpty()) {
+            if (validatedChunks.size() == 1) {
+                deferredEmission = ByteBuffer.wrap(validatedChunks.get(0));
+            } else {
+                for (byte[] validatedChunk : validatedChunks) {
+                    validatedOutput.add(ByteBuffer.wrap(validatedChunk));
+                }
+            }
+        } else {
+            if (deferredEmission != null) {
+                validatedOutput.add(deferredEmission);
+                deferredEmission = null;
+            }
+            for (byte[] validatedChunk : validatedChunks) {
+                validatedOutput.add(ByteBuffer.wrap(validatedChunk));
+            }
+        }
+    }
+
+    private List<ByteBuffer> finishDecodeChunk() {
+        if (deferredEmission != null && validatedOutput.isEmpty()) {
+            return Collections.singletonList(deferredEmission);
+        }
+        if (validatedOutput.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (deferredEmission != null) {
+            List<ByteBuffer> combined = new ArrayList<>(validatedOutput.size() + 1);
+            combined.add(deferredEmission);
+            combined.addAll(validatedOutput);
+            return combined;
+        }
+        return new ArrayList<>(validatedOutput);
     }
 
     /**
@@ -475,18 +534,6 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Wraps {@code output} as a {@link ByteBuffer}, or returns {@code null} when no bytes were emitted in this
-     * pass. The {@code null} return distinguishes "no validated bytes ready in this chunk" (still need more input)
-     * from "stream complete" (which the caller checks via {@link #isComplete()}).
-     */
-    private static ByteBuffer emptyOrNull(ByteArrayOutputStream output) {
-        if (output.size() == 0) {
-            return null;
-        }
-        return ByteBuffer.wrap(output.toByteArray());
-    }
-
-    /**
      * Reports whether the decoder has finished consuming the entire structured message and validated everything it
      * was supposed to validate. Used by the pipeline policy to distinguish "stream ended cleanly" from "stream was
      * truncated".
@@ -507,7 +554,50 @@ public class StructuredMessageDecoder {
             && messageOffset == messageLength
             && pendingBytes.size() == 0
             && !segmentHeaderRead
-            && currentSegmentContentOffset == currentSegmentContentLength;
+            && currentSegmentContentOffset == currentSegmentContentLength
+            && segmentPayloadChunks == null;
+    }
+
+    /**
+     * Updates running CRC64 values from the next {@code readSize} bytes in {@code buffer}, mirroring
+     * {@link StructuredMessageEncoder#encodeSegmentContent(ByteBuffer)}.
+     */
+    private void updateCrc64sFromBuffer(ByteBuffer buffer, int readSize) {
+        if (buffer.hasArray()) {
+            int pos = buffer.arrayOffset() + buffer.position();
+            segmentCrc64 = StorageCrc64Calculator.compute(buffer.array(), pos, readSize, segmentCrc64);
+            messageCrc64 = StorageCrc64Calculator.compute(buffer.array(), pos, readSize, messageCrc64);
+        } else {
+            updateCrc64sWithoutAccessibleArray(buffer, readSize);
+        }
+    }
+
+    private void updateCrc64sWithoutAccessibleArray(ByteBuffer buffer, int readSize) {
+        ByteBuffer duplicate = buffer.duplicate();
+        duplicate.limit(duplicate.position() + readSize);
+
+        long nextSegmentCrc64 = segmentCrc64;
+        long nextMessageCrc64 = messageCrc64;
+
+        while (duplicate.hasRemaining()) {
+            int chunkSize = Math.min(duplicate.remaining(), crc64ScratchBuffer.length);
+            duplicate.get(crc64ScratchBuffer, 0, chunkSize);
+            nextSegmentCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, nextSegmentCrc64);
+            nextMessageCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, nextMessageCrc64);
+        }
+
+        segmentCrc64 = nextSegmentCrc64;
+        messageCrc64 = nextMessageCrc64;
+    }
+
+    private static void readIntoSegmentPayload(ByteBuffer src, byte[] dest, int destOffset, int length) {
+        if (src.hasArray()) {
+            int srcPos = src.position();
+            System.arraycopy(src.array(), src.arrayOffset() + srcPos, dest, destOffset, length);
+            src.position(srcPos + length);
+        } else {
+            src.get(dest, destOffset, length);
+        }
     }
 
     /**

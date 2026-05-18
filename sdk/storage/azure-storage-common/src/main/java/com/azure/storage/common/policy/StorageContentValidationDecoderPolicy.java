@@ -145,7 +145,11 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * appended so a truncated body raises an error instead of completing silently.
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, StructuredMessageDecoder decoder) {
-        return encodedFlux.concatMap(buffer -> decodeBuffer(buffer, decoder))
+        // limitRate(1) mirrors StorageContentValidationPolicy's upload path: process one wire buffer at a time so
+        // the decoder can copy only the current chunk into owned storage and release the inbound buffer before the
+        // next segment payload bytes arrive.
+        return encodedFlux.limitRate(1)
+            .concatMap(buffer -> decodeBuffer(buffer, decoder))
             .concatWith(Mono.defer(() -> handleStreamCompletion(decoder)));
     }
 
@@ -168,8 +172,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         }
 
         try {
-            ByteBuffer validated = decoder.decodeChunk(buffer);
-            return emitDecodedPayload(validated);
+            return Flux.fromIterable(decoder.decodeChunk(buffer));
         } catch (IllegalArgumentException e) {
             return Flux.error(new IOException("Failed to decode structured message: " + e.getMessage(), e));
         } catch (Exception e) {
@@ -191,13 +194,4 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         return Mono.empty();
     }
 
-    /**
-     * Wraps decoder output in a Flux.
-     */
-    private static Flux<ByteBuffer> emitDecodedPayload(ByteBuffer decodedPayload) {
-        if (decodedPayload == null || !decodedPayload.hasRemaining()) {
-            return Flux.empty();
-        }
-        return Flux.just(decodedPayload);
-    }
 }
