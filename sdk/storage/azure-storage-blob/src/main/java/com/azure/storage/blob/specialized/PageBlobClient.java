@@ -22,6 +22,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.PageBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalHeaders;

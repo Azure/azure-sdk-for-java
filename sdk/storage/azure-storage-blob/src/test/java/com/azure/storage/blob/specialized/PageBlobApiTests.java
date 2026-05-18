@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -372,9 +373,12 @@ public class PageBlobApiTests extends BlobTestBase {
             = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
                 new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
+        byte[] expectedContentCrc64 = Base64.getDecoder().decode(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
         assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        assertArrayEquals(expectedContentCrc64, response.getValue().getContentCrc64());
         assertEquals(0, response.getValue().getBlobSequenceNumber());
         assertTrue(response.getValue().isServerEncrypted());
     }
