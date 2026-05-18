@@ -1,14 +1,19 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.9.0-beta.2 (2026-05-18)
 
 ### Features Added
 
-### Breaking Changes
+#### `models.SubjectAlternativeNames` was modified
 
-### Bugs Fixed
+* `setIpAddresses(java.util.List)` was added
+* `getIpAddresses()` was added
+* `setUniformResourceIdentifiers(java.util.List)` was added
+* `getUniformResourceIdentifiers()` was added
 
-### Other Changes
+#### `CertificateServiceVersion` was modified
+
+* `V2025_07_01` was added
 
 ## 4.8.7 (2026-05-05)
 
