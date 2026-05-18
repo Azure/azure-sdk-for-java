@@ -29,11 +29,12 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -41,7 +42,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -51,12 +51,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Function calling sample demonstrating how to use VoiceLive with custom function tools.
+ *
+ * <p>Use this sample when you want the model to call your local business logic instead of only
+ * producing text or audio. It is the best sample for understanding how tool schemas, tool calls,
+ * and tool outputs fit into a realtime conversation.</p>
+ *
+ * <p>When you run it, the sample registers a small set of demo functions, waits for the model to
+ * request them, executes the matching Java method locally, sends the result back to the session,
+ * and then continues the conversation with the tool output in context.</p>
  *
  * <p>This sample shows how to:</p>
  * <ul>
@@ -67,11 +76,13 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>Process the AI's response after function execution</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -90,7 +101,6 @@ public final class FunctionCallingSample {
     // Service configuration
     private static final String DEFAULT_MODEL = "gpt-realtime";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
-    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
     // Audio format constants
     private static final int SAMPLE_RATE = 24000;
@@ -111,15 +121,9 @@ public final class FunctionCallingSample {
     public static void main(String[] args) {
         // Load configuration
         String endpoint = System.getenv(ENV_ENDPOINT);
-        String apiKey = System.getenv(ENV_API_KEY);
 
         if (endpoint == null || endpoint.isEmpty()) {
             System.err.println("Error: AZURE_VOICELIVE_ENDPOINT environment variable is not set.");
-            System.exit(1);
-        }
-
-        if (apiKey == null || apiKey.isEmpty()) {
-            System.err.println("Error: AZURE_VOICELIVE_API_KEY environment variable is not set.");
             System.exit(1);
         }
 
@@ -129,11 +133,10 @@ public final class FunctionCallingSample {
         System.out.println(separator);
 
         try {
-            // Create client
-            KeyCredential credential = new KeyCredential(apiKey);
+            // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
-                .credential(credential)
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
             runFunctionCallingSession(client);
@@ -151,80 +154,63 @@ public final class FunctionCallingSample {
         System.out.println("Connecting to VoiceLive service...");
 
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
-        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
         AtomicBoolean running = new AtomicBoolean(true);
 
         // Track pending function calls: callId -> (functionName, previousItemId)
         Map<String, String[]> pendingFunctionCalls = new ConcurrentHashMap<>();
 
-        // Start session
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
+        // Start session. Session lifetime is local to this reactive chain — the session is
+        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
+        // via flatMap, so no instance field or shared holder is needed.
         client.startSession(DEFAULT_MODEL)
-            .flatMap(session -> {
-                sessionRef.set(session);
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
-
-                // Create audio processor
-                AudioProcessor audioProcessor = new AudioProcessor(session);
-                audioProcessorRef.set(audioProcessor);
-
-                // Send session configuration with function tools, then listen for events.
-                System.out.println("📤 Sending session configuration with function tools...");
-                ClientEventSessionUpdate sessionConfig = createSessionConfigWithFunctions();
-                return session.sendEvent(sessionConfig)
-                    .doOnSuccess(v -> {
-                        System.out.println("✓ Session configured with function tools");
-
-                        // Start audio playback
-                        audioProcessor.startPlayback();
-
-                        String separator = new String(new char[70]).replace("\0", "=");
-                        System.out.println("\n" + separator);
-                        System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
-                        System.out.println("Try saying:");
-                        System.out.println("  • 'What's the current time?'");
-                        System.out.println("  • 'What's the weather in Seattle?'");
-                        System.out.println("  • 'What time is it in UTC?'");
-                        System.out.println("Press Ctrl+C to exit");
-                        System.out.println(separator + "\n");
-
-                        // Add shutdown hook
-                        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                            System.out.println("\n👋 Shutting down voice assistant...");
-                            running.set(false);
-                            audioProcessor.cleanup();
-                            try {
-                                session.closeAsync().block(Duration.ofSeconds(5));
-                            } catch (Exception e) {
-                                // Suppress errors during forced JVM shutdown
-                            }
-                        }));
-                    })
-                    .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleServerEvent(session, event, audioProcessor, pendingFunctionCalls))
-                        .doOnError(error -> {
-                            System.err.println("Error processing events: " + error.getMessage());
-                            running.set(false);
-                        })
-                        .doOnComplete(() -> System.out.println("✓ Event stream completed")))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
+                audioProcessorRef.set(new AudioProcessor(session));
+                return configureSession(session)
+                    .thenMany(session.receiveEvents())
+                    .flatMap(event -> handleServerEvent(session, event, audioProcessorRef.get(), pendingFunctionCalls));
             })
-            .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
-            .doFinally(signalType -> {
-                AudioProcessor audioProcessor = audioProcessorRef.get();
-                if (audioProcessor != null) {
-                    audioProcessor.cleanup();
+            .subscribe(
+                ignored -> { },
+                error -> {
+                    System.err.println("Error processing events: " + error.getMessage());
+                    running.set(false);
+                    shutdownAudio(audioProcessorRef);
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Event stream completed");
+                    shutdownAudio(audioProcessorRef);
+                    completionLatch.countDown();
                 }
-                VoiceLiveSessionAsyncClient s = sessionRef.get();
-                if (s != null) {
-                    try {
-                        s.close();
-                    } catch (Exception e) {
-                        // Suppress errors during cleanup
-                    }
-                }
-            })
-            .block();
+            );
+
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Send the session configuration with function tools.
+     */
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
+        System.out.println("📤 Sending session configuration with function tools...");
+        return session.sendEvent(createSessionConfigWithFunctions()).then();
+    }
+
+    /**
+     * Cleanup audio processor.
+     */
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
+        AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
+        if (audioProcessor != null) {
+            audioProcessor.cleanup();
+        }
     }
 
     /**
@@ -310,9 +296,11 @@ public final class FunctionCallingSample {
     }
 
     /**
-     * Handle server events in a single subscription.
+     * Handle a single server event. Returns a {@link Mono} so that any follow-up events sent back
+     * to the service (function-call results, response creation) stay inside the reactive chain
+     * instead of triggering a nested subscribe.
      */
-    private static void handleServerEvent(
+    private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
         SessionUpdate event,
         AudioProcessor audioProcessor,
@@ -323,7 +311,17 @@ public final class FunctionCallingSample {
         if (event instanceof SessionUpdateSessionUpdated) {
             System.out.println("✅ Session ready");
             audioProcessor.startCapture();
-            System.out.println("🎤 Start speaking. Say 'What's the time?' or 'What's the weather in Seattle?'");
+            audioProcessor.startPlayback();
+
+            String separator = new String(new char[70]).replace("\0", "=");
+            System.out.println("\n" + separator);
+            System.out.println("🎤 VOICE ASSISTANT WITH FUNCTION CALLING READY");
+            System.out.println("Try saying:");
+            System.out.println("  • 'What's the current time?'");
+            System.out.println("  • 'What's the weather in Seattle?'");
+            System.out.println("  • 'What time is it in UTC?'");
+            System.out.println("Press Ctrl+C to exit");
+            System.out.println(separator + "\n");
 
         } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
             System.out.println("🎤 Listening...");
@@ -343,9 +341,10 @@ public final class FunctionCallingSample {
             // A function call item was created — remember it so we can execute when arguments arrive.
             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
             if (itemCreated.getItem() != null && itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                ResponseFunctionCallItem fc = (ResponseFunctionCallItem) itemCreated.getItem();
-                System.out.println("🔧 Function call started: " + fc.getName());
-                pendingFunctionCalls.put(fc.getCallId(), new String[]{fc.getName(), fc.getId()});
+                ResponseFunctionCallItem functionCall = (ResponseFunctionCallItem) itemCreated.getItem();
+                System.out.println("🔧 Function call started: " + functionCall.getName());
+                pendingFunctionCalls.put(functionCall.getCallId(),
+                    new String[]{functionCall.getName(), functionCall.getId()});
             }
 
         } else if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
@@ -353,12 +352,12 @@ public final class FunctionCallingSample {
             SessionUpdateResponseFunctionCallArgumentsDone argsDone
                 = (SessionUpdateResponseFunctionCallArgumentsDone) event;
             String callId = argsDone.getCallId();
-            String[] meta = pendingFunctionCalls.remove(callId);
-            if (meta == null) {
-                return;
+            String[] callMetadata = pendingFunctionCalls.remove(callId);
+            if (callMetadata == null) {
+                return Mono.empty();
             }
-            String functionName = meta[0];
-            String previousItemId = meta[1];
+            String functionName = callMetadata[0];
+            String previousItemId = callMetadata[1];
             String arguments = argsDone.getArguments();
 
             System.out.println("📋 Function arguments: " + arguments);
@@ -377,11 +376,11 @@ public final class FunctionCallingSample {
                 .setItem(output)
                 .setPreviousItemId(previousItemId);
 
-            session.sendEvent(createItem)
-                .then(session.sendEvent(new ClientEventResponseCreate()))
-                .doOnSuccess(v -> System.out.println("🤖 Function result sent"))
-                .subscribe();
+            return session.sendEvent(createItem)
+                .then(session.sendEvent(new ClientEventResponseCreate()));
         }
+
+        return Mono.empty();
     }
 
     /**
@@ -468,12 +467,16 @@ public final class FunctionCallingSample {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat audioFormat;
 
-        private TargetDataLine microphone;
+        // volatile: shared between the reactor event thread (startCapture/Playback) and the
+        // audio capture/playback worker threads
+        private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
-        private SourceDataLine speaker;
-        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>();
+        private volatile SourceDataLine speaker;
+        private final BlockingQueue<byte[]> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
+        private volatile Thread captureThread;
+        private volatile Thread playbackThread;
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
             this.session = session;
@@ -493,16 +496,29 @@ public final class FunctionCallingSample {
                 isCapturing.set(true);
 
                 // Start capture thread
-                new Thread(() -> {
+                captureThread = new Thread(() -> {
                     byte[] buffer = new byte[CHUNK_SIZE];
                     while (isCapturing.get()) {
-                        int bytesRead = microphone.read(buffer, 0, buffer.length);
-                        if (bytesRead > 0) {
-                            byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                            session.sendInputAudio(BinaryData.fromBytes(audioData)).subscribe();
+                        try {
+                            int bytesRead = microphone.read(buffer, 0, buffer.length);
+                            if (bytesRead > 0) {
+                                byte[] audioData = Arrays.copyOf(buffer, bytesRead);
+                                session.sendInputAudio(BinaryData.fromBytes(audioData))
+                                    .subscribe(
+                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
+                                        error -> System.err.println("Error sending audio: " + error.getMessage())
+                                    );
+                            }
+                        } catch (Exception e) {
+                            if (isCapturing.get()) {
+                                System.err.println("Error capturing audio: " + e.getMessage());
+                            }
+                            break;
                         }
                     }
-                }, "AudioCapture").start();
+                }, "AudioCapture");
+                captureThread.setDaemon(true);
+                captureThread.start();
 
                 System.out.println("✅ Audio capture started");
             } catch (LineUnavailableException e) {
@@ -524,21 +540,24 @@ public final class FunctionCallingSample {
                 isPlaying.set(true);
 
                 // Start playback thread
-                new Thread(() -> {
+                playbackThread = new Thread(() -> {
                     while (isPlaying.get()) {
                         try {
-                            byte[] audioData = playbackQueue.poll();
-                            if (audioData != null) {
-                                speaker.write(audioData, 0, audioData.length);
-                            } else {
-                                Thread.sleep(10);
-                            }
+                            byte[] audioData = playbackQueue.take();
+                            speaker.write(audioData, 0, audioData.length);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                             break;
+                        } catch (Exception e) {
+                            if (isPlaying.get()) {
+                                System.err.println("Error playing audio: " + e.getMessage());
+                            }
+                            break;
                         }
                     }
-                }, "AudioPlayback").start();
+                }, "AudioPlayback");
+                playbackThread.setDaemon(true);
+                playbackThread.start();
 
                 System.out.println("✅ Audio playback started");
             } catch (LineUnavailableException e) {
@@ -553,7 +572,10 @@ public final class FunctionCallingSample {
 
         void queueAudio(byte[] audioData) {
             if (isPlaying.get()) {
-                playbackQueue.offer(audioData);
+                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+                if (!playbackQueue.offer(audioData)) {
+                    System.err.println("Warning: playback queue full, dropping audio chunk of " + audioData.length + " bytes");
+                }
             }
         }
 
@@ -564,12 +586,22 @@ public final class FunctionCallingSample {
             if (microphone != null) {
                 microphone.stop();
                 microphone.close();
+                microphone = null;
+            }
+            if (captureThread != null) {
+                captureThread.interrupt();
+                captureThread = null;
             }
 
             if (speaker != null) {
                 speaker.drain();
                 speaker.stop();
                 speaker.close();
+                speaker = null;
+            }
+            if (playbackThread != null) {
+                playbackThread.interrupt();
+                playbackThread = null;
             }
 
             playbackQueue.clear();
