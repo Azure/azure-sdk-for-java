@@ -15,6 +15,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.BlockBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
@@ -442,9 +443,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
+                BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             }));
     }
@@ -601,9 +602,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
+                BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -1178,9 +1179,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
+                BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }

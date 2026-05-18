@@ -625,8 +625,11 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null, null))).assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 HttpHeaders headers = r.getHeaders();
+                byte[] expectedCrc64Content = Base64.getDecoder().decode(headers.getValue(X_MS_CONTENT_CRC64));
+
                 validateBasicHeaders(headers);
                 assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                TestUtils.assertArraysEqual(expectedCrc64Content, r.getValue().getContentCrc64());
                 assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
             }).verifyComplete();
     }
@@ -956,7 +959,12 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 validateBasicHeaders(r.getHeaders());
+                byte[] expectedCrc64Content = Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+
                 assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+                assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                TestUtils.assertArraysEqual(Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64)),
+                    r.getValue().getContentCrc64());
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
             })
             .verifyComplete();
