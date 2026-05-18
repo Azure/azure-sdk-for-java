@@ -112,7 +112,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster updateSecretsLocations(String resourceGroupName, String clusterName, SecretsLocationsChangeRequest body);
 
@@ -126,7 +126,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster updateSecretsLocations(String resourceGroupName, String clusterName, SecretsLocationsChangeRequest body,
         Context context);
@@ -192,7 +192,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
@@ -207,38 +207,10 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
-
-    /**
-     * Changes ring of a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param changeRingRequest Change ring request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest);
-
-    /**
-     * Changes ring of a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param changeRingRequest Change ring request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Cluster changeRing(String resourceGroupName, String clusterName, ChangeRingRequest changeRingRequest,
-        Context context);
 
     /**
      * Trigger Log Collection on a cluster.
@@ -249,7 +221,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster triggerLogCollection(String resourceGroupName, String clusterName,
         LogCollectionRequest logCollectionRequest);
@@ -264,7 +236,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster triggerLogCollection(String resourceGroupName, String clusterName,
         LogCollectionRequest logCollectionRequest, Context context);
@@ -278,7 +250,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
         RemoteSupportRequest remoteSupportRequest);
@@ -293,7 +265,7 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cluster details.
      */
     Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
         RemoteSupportRequest remoteSupportRequest, Context context);

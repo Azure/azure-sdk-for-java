@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -1348,6 +1349,29 @@ public final class AgentPoolInner extends ProxyResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withGatewayProfile(gatewayProfile);
+        return this;
+    }
+
+    /**
+     * Get the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @return the artifactStreamingProfile value.
+     */
+    public AgentPoolArtifactStreamingProfile artifactStreamingProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactStreamingProfile();
+    }
+
+    /**
+     * Set the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @param artifactStreamingProfile the artifactStreamingProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withArtifactStreamingProfile(artifactStreamingProfile);
         return this;
     }
 
