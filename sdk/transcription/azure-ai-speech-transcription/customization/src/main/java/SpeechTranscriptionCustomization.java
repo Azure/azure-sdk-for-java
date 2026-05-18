@@ -99,38 +99,6 @@ public class SpeechTranscriptionCustomization extends Customization {
         logger.info("Removing TranscriptionContent.java from the public models package");
         customization.getRawEditor()
             .removeFile("src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent.java");
-
-        // Keep the package metadata JSON consistent with the actual published surface area: strip the
-        // TranscriptionContent crossLanguageDefinitions entry and the generatedFiles entry that point to
-        // the now-removed model. Without this, downstream tooling that reads the metadata sees a class
-        // that does not exist in the JAR.
-        logger.info("Removing TranscriptionContent entries from package metadata JSON");
-        String metadataPath = "src/main/resources/META-INF/azure-ai-speech-transcription_metadata.json";
-        try {
-            String metadata = customization.getRawEditor().getFileContent(metadataPath);
-            if (metadata != null) {
-                String updated = metadata
-                    // crossLanguageDefinitions entry (with optional trailing comma on either side).
-                    .replaceAll(
-                        ",\\s*\"com\\.azure\\.ai\\.speech\\.transcription\\.models\\.TranscriptionContent\"\\s*:\\s*\"[^\"]*\"",
-                        "")
-                    .replaceAll(
-                        "\"com\\.azure\\.ai\\.speech\\.transcription\\.models\\.TranscriptionContent\"\\s*:\\s*\"[^\"]*\"\\s*,",
-                        "")
-                    // generatedFiles entry.
-                    .replaceAll(
-                        ",\\s*\"src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent\\.java\"",
-                        "")
-                    .replaceAll(
-                        "\"src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent\\.java\"\\s*,",
-                        "");
-                if (!updated.equals(metadata)) {
-                    customization.getRawEditor().replaceFile(metadataPath, updated);
-                }
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to update package metadata JSON: " + e.getMessage());
-        }
     }
 
     /**
