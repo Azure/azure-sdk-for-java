@@ -89,10 +89,7 @@ public class StructuredMessageDecoder {
     // plus at most one live wire buffer (see {@link StorageContentValidationDecoderPolicy#decodeStream}).
     private List<byte[]> segmentPayloadChunks;
     private final byte[] crc64ScratchBuffer = new byte[CRC64_SCRATCH_BUFFER_SIZE];
-    // When more than one segment validates in a single decodeChunk() call, the first segment is held here while
-    // subsequent segments are queued in validatedOutput.
-    private ByteBuffer deferredEmission;
-    // Collects validated segment buffers when multiple segments complete in one decodeChunk() invocation.
+    // Validated payload buffers to emit from the current decodeChunk() invocation.
     private final List<ByteBuffer> validatedOutput = new ArrayList<>();
 
     /**
@@ -230,7 +227,7 @@ public class StructuredMessageDecoder {
 
     /**
      * Pulls as many payload bytes as possible (bounded by what is still owed for the current segment) from the
-     * pending+buffer view into {@link #segmentPayload}, updating the running per-segment and per-message CRC64
+     * pending+buffer view into segment payload chunks, updating the running per-segment and per-message CRC64
      * values along the way.
      *
      * <p>Bytes accumulated here are not yet emitted to the caller. They are released only after
@@ -266,10 +263,8 @@ public class StructuredMessageDecoder {
         } else {
             ByteBuffer combined = getCombinedBuffer(buffer);
             if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-                segmentCrc64 = StorageCrc64Calculator.compute(combined.array(),
-                    combined.arrayOffset() + combined.position(), toRead, segmentCrc64);
-                messageCrc64 = StorageCrc64Calculator.compute(combined.array(),
-                    combined.arrayOffset() + combined.position(), toRead, messageCrc64);
+                int offset = combined.arrayOffset() + combined.position();
+                updateCrc64sFromBytes(combined.array(), offset, toRead);
             }
             combined.get(chunk);
             consumeBytes(toRead, buffer);
@@ -340,7 +335,6 @@ public class StructuredMessageDecoder {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         validatedOutput.clear();
-        deferredEmission = null;
 
         // Step 1: parse the message header on the first chunk that has enough bytes for it. If this chunk doesn't,
         // bail out early.
@@ -390,45 +384,23 @@ public class StructuredMessageDecoder {
     }
 
     /**
-     * Hands off validated segment bytes for emission. A single validated segment per {@link #decodeChunk(ByteBuffer)}
-     * is returned as one or more {@link ByteBuffer} views over the accumulated chunk arrays without consolidating
-     * them; when multiple segments validate in one call, their views are queued in {@link #validatedOutput}.
+     * Hands off validated segment bytes for emission as {@link ByteBuffer} views over the accumulated chunk arrays
+     * without consolidating them into a single array.
      */
     private void releaseValidatedSegmentPayload() {
         List<byte[]> validatedChunks = segmentPayloadChunks;
         segmentPayloadChunks = null;
-
-        if (deferredEmission == null && validatedOutput.isEmpty()) {
-            if (validatedChunks.size() == 1) {
-                deferredEmission = ByteBuffer.wrap(validatedChunks.get(0));
-            } else {
-                for (byte[] validatedChunk : validatedChunks) {
-                    validatedOutput.add(ByteBuffer.wrap(validatedChunk));
-                }
-            }
-        } else {
-            if (deferredEmission != null) {
-                validatedOutput.add(deferredEmission);
-                deferredEmission = null;
-            }
-            for (byte[] validatedChunk : validatedChunks) {
-                validatedOutput.add(ByteBuffer.wrap(validatedChunk));
-            }
+        for (byte[] validatedChunk : validatedChunks) {
+            validatedOutput.add(ByteBuffer.wrap(validatedChunk));
         }
     }
 
     private List<ByteBuffer> finishDecodeChunk() {
-        if (deferredEmission != null && validatedOutput.isEmpty()) {
-            return Collections.singletonList(deferredEmission);
-        }
         if (validatedOutput.isEmpty()) {
             return Collections.emptyList();
         }
-        if (deferredEmission != null) {
-            List<ByteBuffer> combined = new ArrayList<>(validatedOutput.size() + 1);
-            combined.add(deferredEmission);
-            combined.addAll(validatedOutput);
-            return combined;
+        if (validatedOutput.size() == 1) {
+            return Collections.singletonList(validatedOutput.get(0));
         }
         return new ArrayList<>(validatedOutput);
     }
@@ -564,12 +536,15 @@ public class StructuredMessageDecoder {
      */
     private void updateCrc64sFromBuffer(ByteBuffer buffer, int readSize) {
         if (buffer.hasArray()) {
-            int pos = buffer.arrayOffset() + buffer.position();
-            segmentCrc64 = StorageCrc64Calculator.compute(buffer.array(), pos, readSize, segmentCrc64);
-            messageCrc64 = StorageCrc64Calculator.compute(buffer.array(), pos, readSize, messageCrc64);
+            updateCrc64sFromBytes(buffer.array(), buffer.arrayOffset() + buffer.position(), readSize);
         } else {
             updateCrc64sWithoutAccessibleArray(buffer, readSize);
         }
+    }
+
+    private void updateCrc64sFromBytes(byte[] array, int offset, int length) {
+        segmentCrc64 = StorageCrc64Calculator.compute(array, offset, length, segmentCrc64);
+        messageCrc64 = StorageCrc64Calculator.compute(array, offset, length, messageCrc64);
     }
 
     private void updateCrc64sWithoutAccessibleArray(ByteBuffer buffer, int readSize) {
