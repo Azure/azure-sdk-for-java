@@ -221,6 +221,16 @@ public class InferenceService implements AutoCloseable {
         List<String> documents,
         Map<String, Object> options) {
 
+        checkNotNull(rerankContext, "Rerank context cannot be null");
+        checkNotNull(documents, "Documents list cannot be null");
+
+        if (rerankContext.trim().isEmpty()) {
+            return Mono.error(new IllegalArgumentException("Rerank context cannot be empty"));
+        }
+        if (documents.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
+        }
+
         // Resolve the per-request timeout: options > default
         final Duration requestTimeout = resolveRequestTimeout(options);
 

@@ -40,7 +40,7 @@ public class InferenceServiceTest {
 
     private static final String MOCK_TOKEN = "mock-access-token";
     private static final String TEST_ENDPOINT = "https://test-inference.westus.dbinference.azure.com";
-    private static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
+    private static final String INFERENCE_ENDPOINT_PROPERTY = "azure.cosmos.semanticReranker.inferenceEndpoint";
 
     // Total calls expected for a fully-retried retryable failure: 1 initial + RETRY_MAX_ATTEMPTS retries
     private static final int TOTAL_CALLS_AFTER_EXHAUSTION = 1 + InferenceService.RETRY_MAX_ATTEMPTS;
