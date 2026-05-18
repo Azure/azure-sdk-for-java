@@ -34,14 +34,14 @@ public final class TranscribeAudioFileTests extends TranscriptionClientTestBase 
         List<TranscribedPhrase> responsePhrases = response.getPhrases();
         TranscribedPhrase responsePhrasesFirstItem = responsePhrases.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItem);
-        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffset());
+        Assertions.assertEquals(40, responsePhrasesFirstItem.getOffsetInMs().toMillis());
         Assertions.assertEquals(320, responsePhrasesFirstItem.getDuration());
         Assertions.assertEquals("Weather", responsePhrasesFirstItem.getText());
         List<TranscribedWord> responsePhrasesFirstItemWords = responsePhrasesFirstItem.getWords();
         TranscribedWord responsePhrasesFirstItemWordsFirstItem = responsePhrasesFirstItemWords.iterator().next();
         Assertions.assertNotNull(responsePhrasesFirstItemWordsFirstItem);
         Assertions.assertEquals("weather", responsePhrasesFirstItemWordsFirstItem.getText());
-        Assertions.assertEquals(40, responsePhrasesFirstItemWordsFirstItem.getOffset());
+        Assertions.assertEquals(40, responsePhrasesFirstItemWordsFirstItem.getOffsetInMs().toMillis());
         Assertions.assertEquals(320, responsePhrasesFirstItemWordsFirstItem.getDuration());
         Assertions.assertEquals("en-US", responsePhrasesFirstItem.getLocale());
         Assertions.assertEquals(0.78983736, responsePhrasesFirstItem.getConfidence());

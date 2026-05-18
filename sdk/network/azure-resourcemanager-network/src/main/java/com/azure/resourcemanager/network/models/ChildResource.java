@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -14,62 +14,32 @@ import java.io.IOException;
 /**
  * Proxy resource representation.
  */
-@Immutable
+@Fluent
 public class ChildResource extends ProxyResource {
+    /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    private String etag;
+
     /*
      * Resource ID.
      */
     private String id;
 
     /*
-     * Resource name.
-     */
-    private String name;
-
-    /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
 
     /**
      * Creates an instance of ChildResource class.
      */
     public ChildResource() {
-    }
-
-    /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: Resource name.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: Resource type.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
     }
 
     /**
@@ -93,6 +63,46 @@ public class ChildResource extends ProxyResource {
     }
 
     /**
+     * Get the id property: Resource ID.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource ID.
+     * 
+     * @param id the id value to set.
+     * @return the ChildResource object itself.
+     */
+    public ChildResource withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +116,7 @@ public class ChildResource extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,6 +126,7 @@ public class ChildResource extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ChildResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChildResource.
      */
     public static ChildResource fromJson(JsonReader jsonReader) throws IOException {
@@ -124,14 +136,14 @@ public class ChildResource extends ProxyResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedChildResource.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedChildResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedChildResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedChildResource.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedChildResource.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

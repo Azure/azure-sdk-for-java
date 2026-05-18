@@ -21,7 +21,7 @@ public class TilerPartsGetCroppedToBoundingBoxWidthByHeight {
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
         BinaryData response = dataClient.getPartWithDimensions("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.393,
             33.6798, -84.367, 33.7058, 256, 256, "png",
-            new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+            new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-part-with-dimensions.tiler-parts-get-cropped-to-bounding-box-width-by-height
     }
 }

@@ -540,6 +540,16 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      * {@inheritDoc}
      */
     @Override
+    public ManagedClusterAgentPoolProfile
+        withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+        super.withArtifactStreamingProfile(artifactStreamingProfile);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ManagedClusterAgentPoolProfile withVirtualMachinesProfile(VirtualMachinesProfile virtualMachinesProfile) {
         super.withVirtualMachinesProfile(virtualMachinesProfile);
         return this;
@@ -615,6 +625,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         if (gatewayProfile() != null) {
             gatewayProfile().validate();
         }
+        if (artifactStreamingProfile() != null) {
+            artifactStreamingProfile().validate();
+        }
         if (virtualMachinesProfile() != null) {
             virtualMachinesProfile().validate();
         }
@@ -688,6 +701,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeJsonField("securityProfile", securityProfile());
         jsonWriter.writeJsonField("gpuProfile", gpuProfile());
         jsonWriter.writeJsonField("gatewayProfile", gatewayProfile());
+        jsonWriter.writeJsonField("artifactStreamingProfile", artifactStreamingProfile());
         jsonWriter.writeJsonField("virtualMachinesProfile", virtualMachinesProfile());
         jsonWriter.writeArrayField("virtualMachineNodesStatus", virtualMachineNodesStatus(),
             (writer, element) -> writer.writeJson(element));
@@ -837,6 +851,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("gatewayProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withGatewayProfile(AgentPoolGatewayProfile.fromJson(reader));
+                } else if ("artifactStreamingProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile
+                        .withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile.fromJson(reader));
                 } else if ("virtualMachinesProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withVirtualMachinesProfile(VirtualMachinesProfile.fromJson(reader));
