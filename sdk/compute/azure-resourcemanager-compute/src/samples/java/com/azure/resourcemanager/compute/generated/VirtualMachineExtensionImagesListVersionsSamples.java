@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineExtensionImagesListVersionsSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
+     * 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.
@@ -21,13 +21,13 @@ public final class VirtualMachineExtensionImagesListVersionsSamples {
         com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachineExtensionImages()
-            .listVersionsWithResponse("aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa", null, null, null,
+            .listVersionsWithResponse("aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
+     * 2026-04-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.
@@ -39,6 +39,6 @@ public final class VirtualMachineExtensionImagesListVersionsSamples {
         manager.serviceClient()
             .getVirtualMachineExtensionImages()
             .listVersionsWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaaa", 22, "a", com.azure.core.util.Context.NONE);
+                "aaaaaaaaaaaaaaaaaaaaaaaaa", 22, "a", "properties", com.azure.core.util.Context.NONE);
     }
 }

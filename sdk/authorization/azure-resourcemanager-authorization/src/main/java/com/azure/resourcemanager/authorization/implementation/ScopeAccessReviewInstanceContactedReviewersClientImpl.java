@@ -70,7 +70,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewContactedReviewerListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @PathParam("id") String id,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -86,7 +86,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +125,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -163,7 +163,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +181,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.
@@ -200,7 +200,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +217,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.

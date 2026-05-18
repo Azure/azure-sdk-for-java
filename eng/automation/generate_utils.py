@@ -244,6 +244,11 @@ def compare_with_maven_package(
                 version=previous_version,
             )
         )
+        if r.status_code == 404:
+            logging.warning(
+                "[Changelog][Skip] previous version {0} not found on Maven (404)".format(previous_version)
+            )
+            return breaking, changelog, breaking_changes
         r.raise_for_status()
         old_jar_fd, old_jar = tempfile.mkstemp(".jar")
         try:
@@ -532,7 +537,6 @@ def generate_typespec_project(
     remove_before_regen: bool = False,
     group_id: str = None,
     api_version: str = None,
-    generate_beta_sdk: bool = True,
     version: str = None,  # SDK version
     disable_customization: bool = False,
     **kwargs,
@@ -610,10 +614,6 @@ def generate_typespec_project(
 
                 if remove_before_regen and group_id:
                     remove_generated_source_code(os.path.join(sdk_root, sdk_folder), f"{group_id}.{service}")
-                    _, current_version = set_or_increase_version(
-                        sdk_root, group_id, module, version=version, preview=generate_beta_sdk
-                    )
-                    emitter_options.append(f"package-version={current_version}")
                     if api_version:
                         emitter_options.append(f"api-version={api_version}")
 

@@ -19,8 +19,8 @@ libraries. You can learn about these shared features in the
 ## Code Generation
 
 Please do not edit any of the code that contains the code generation header at the beginning of the file. If you need 
-to update a swagger file or change the generator, you can regenerate by running the steps outlined in the 
-[swagger folder](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/swagger).
+to update the TypeSpec or change the generator, you can regenerate by following the configuration outlined in the 
+[tsp-location.yaml](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/tsp-location.yaml).
 
 ## Testing
 

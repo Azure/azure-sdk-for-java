@@ -30,7 +30,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OkResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 import java.nio.ByteBuffer;
@@ -224,12 +223,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OkResponse>, OkResponse> beginBmsPrepareDataMoveAsync(String vaultName,
-        String resourceGroupName, PrepareDataMoveRequest parameters) {
+    private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
-        return this.client.<OkResponse, OkResponse>getLroResult(mono, this.client.getHttpPipeline(), OkResponse.class,
-            OkResponse.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -244,11 +243,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsPrepareDataMove(String vaultName,
-        String resourceGroupName, PrepareDataMoveRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters) {
         Response<BinaryData> response = bmsPrepareDataMoveWithResponse(vaultName, resourceGroupName, parameters);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class,
-            Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -264,11 +262,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsPrepareDataMove(String vaultName,
-        String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters, Context context) {
         Response<BinaryData> response
             = bmsPrepareDataMoveWithResponse(vaultName, resourceGroupName, parameters, context);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -280,10 +278,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OkResponse> bmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+    private Mono<Void> bmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters) {
         return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -298,12 +296,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName,
-        PrepareDataMoveRequest parameters) {
-        return beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
+    public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
+        beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
     }
 
     /**
@@ -316,12 +312,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+    public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
         Context context) {
-        return beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
+        beginBmsPrepareDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
     }
 
     /**
@@ -396,12 +391,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OkResponse>, OkResponse> beginBmsTriggerDataMoveAsync(String vaultName,
-        String resourceGroupName, TriggerDataMoveRequest parameters) {
+    private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
-        return this.client.<OkResponse, OkResponse>getLroResult(mono, this.client.getHttpPipeline(), OkResponse.class,
-            OkResponse.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -416,11 +411,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsTriggerDataMove(String vaultName,
-        String resourceGroupName, TriggerDataMoveRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters) {
         Response<BinaryData> response = bmsTriggerDataMoveWithResponse(vaultName, resourceGroupName, parameters);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class,
-            Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -436,11 +430,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsTriggerDataMove(String vaultName,
-        String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters, Context context) {
         Response<BinaryData> response
             = bmsTriggerDataMoveWithResponse(vaultName, resourceGroupName, parameters, context);
-        return this.client.<OkResponse, OkResponse>getLroResult(response, OkResponse.class, OkResponse.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -452,10 +446,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OkResponse> bmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+    private Mono<Void> bmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters) {
         return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -470,12 +464,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName,
-        TriggerDataMoveRequest parameters) {
-        return beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
+    public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
+        beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters).getFinalResult();
     }
 
     /**
@@ -488,12 +480,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+    public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
         Context context) {
-        return beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
+        beginBmsTriggerDataMove(vaultName, resourceGroupName, parameters, context).getFinalResult();
     }
 
     /**

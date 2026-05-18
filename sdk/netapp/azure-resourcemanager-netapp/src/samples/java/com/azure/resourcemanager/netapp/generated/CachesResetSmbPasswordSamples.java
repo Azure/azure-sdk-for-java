@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class CachesResetSmbPasswordSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_ResetSmbPassword.json
+     * x-ms-original-file: 2026-01-01/Caches_ResetSmbPassword.json
      */
     /**
      * Sample code: Caches_ResetSmbPassword.
