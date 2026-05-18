@@ -12,15 +12,15 @@ public final class SnapshotInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotInner model = BinaryData.fromString(
-            "{\"properties\":{\"snapshotId\":\"cym\",\"created\":\"2021-09-08T08:41:54Z\",\"provisioningState\":\"psslqlfmm\"},\"location\":\"n\",\"id\":\"glzpswiydm\",\"name\":\"wyhzdx\",\"type\":\"sadbz\"}")
+            "{\"properties\":{\"snapshotId\":\"cffgdkzzewk\",\"created\":\"2021-02-28T03:19:05Z\",\"provisioningState\":\"crailvpn\"},\"location\":\"pfuflrw\",\"id\":\"hdlxyjrxsagafcn\",\"name\":\"hgw\",\"type\":\"apnedgfbcvkc\"}")
             .toObject(SnapshotInner.class);
-        Assertions.assertEquals("n", model.location());
+        Assertions.assertEquals("pfuflrw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotInner model = new SnapshotInner().withLocation("n");
+        SnapshotInner model = new SnapshotInner().withLocation("pfuflrw");
         model = BinaryData.fromObject(model).toObject(SnapshotInner.class);
-        Assertions.assertEquals("n", model.location());
+        Assertions.assertEquals("pfuflrw", model.location());
     }
 }

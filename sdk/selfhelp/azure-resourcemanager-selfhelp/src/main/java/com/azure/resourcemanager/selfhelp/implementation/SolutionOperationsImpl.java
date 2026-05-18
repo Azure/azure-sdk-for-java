@@ -30,12 +30,8 @@ public final class SolutionOperationsImpl implements SolutionOperations {
     public Response<SolutionResource> getWithResponse(String scope, String solutionResourceName, Context context) {
         Response<SolutionResourceInner> inner
             = this.serviceClient().getWithResponse(scope, solutionResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SolutionResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SolutionResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SolutionResource get(String scope, String solutionResourceName) {

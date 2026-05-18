@@ -3,14 +3,13 @@
 
 package com.azure.cosmos.benchmark.encryption;
 
-import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
+
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
@@ -20,8 +19,8 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     private CosmosQueryRequestOptions options;
     private int pageCount = 0;
 
-    public AsyncEncryptionQuerySinglePartitionMultiple(Configuration cfg) throws IOException {
-        super(cfg);
+    public AsyncEncryptionQuerySinglePartitionMultiple(TenantWorkloadConfig workloadCfg) throws IOException {
+        super(workloadCfg);
         options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
     }
@@ -38,11 +37,8 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
-        CosmosPagedFlux<PojoizedJson> obs = cosmosEncryptionAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class);
-
-        concurrencyControlSemaphore.acquire();
-
-        obs.byPage(10).subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+    protected Mono<FeedResponse<PojoizedJson>> performWorkload(long i) {
+        return cosmosEncryptionAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class)
+            .byPage(10).last();
     }
 }

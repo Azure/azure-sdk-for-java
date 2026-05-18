@@ -9,7 +9,7 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
  */
 public final class ArtifactsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Artifacts_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Artifacts_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Artifacts_Get.

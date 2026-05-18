@@ -33,12 +33,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .getParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
                 resourceType, resourceName, configurationAssignmentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment getParent(String resourceGroupName, String providerName, String resourceParentType,
@@ -60,12 +56,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .createOrUpdateParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
                 resourceType, resourceName, configurationAssignmentName, configurationAssignment, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment createOrUpdateParent(String resourceGroupName, String providerName,
@@ -87,12 +79,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .deleteParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
                 resourceType, resourceName, configurationAssignmentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment deleteParent(String resourceGroupName, String providerName,
@@ -130,12 +118,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment get(String resourceGroupName, String providerName, String resourceType,
@@ -155,12 +139,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName,
                 configurationAssignmentName, configurationAssignment, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment createOrUpdate(String resourceGroupName, String providerName, String resourceType,
@@ -180,12 +160,8 @@ public final class ConfigurationAssignmentsImpl implements ConfigurationAssignme
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .deleteWithResponse(resourceGroupName, providerName, resourceType, resourceName,
                 configurationAssignmentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigurationAssignment delete(String resourceGroupName, String providerName, String resourceType,

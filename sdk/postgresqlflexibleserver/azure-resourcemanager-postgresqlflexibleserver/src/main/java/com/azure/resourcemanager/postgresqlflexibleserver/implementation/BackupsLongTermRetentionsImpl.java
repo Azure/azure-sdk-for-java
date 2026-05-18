@@ -83,12 +83,8 @@ public final class BackupsLongTermRetentionsImpl implements BackupsLongTermReten
         String backupName, Context context) {
         Response<BackupsLongTermRetentionOperationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupsLongTermRetentionOperationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupsLongTermRetentionOperationImpl(inner.getValue(), this.manager()));
     }
 
     public BackupsLongTermRetentionOperation get(String resourceGroupName, String serverName, String backupName) {

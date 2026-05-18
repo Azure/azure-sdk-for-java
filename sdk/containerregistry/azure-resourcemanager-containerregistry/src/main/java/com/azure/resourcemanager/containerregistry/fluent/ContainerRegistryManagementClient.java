@@ -61,6 +61,20 @@ public interface ContainerRegistryManagementClient {
     RegistriesClient getRegistries();
 
     /**
+     * Gets the ArchivesClient object to access its operations.
+     * 
+     * @return the ArchivesClient object.
+     */
+    ArchivesClient getArchives();
+
+    /**
+     * Gets the ArchiveVersionsClient object to access its operations.
+     * 
+     * @return the ArchiveVersionsClient object.
+     */
+    ArchiveVersionsClient getArchiveVersions();
+
+    /**
      * Gets the CacheRulesClient object to access its operations.
      * 
      * @return the CacheRulesClient object.
@@ -108,6 +122,27 @@ public interface ContainerRegistryManagementClient {
      * @return the TokensClient object.
      */
     TokensClient getTokens();
+
+    /**
+     * Gets the ExportPipelinesClient object to access its operations.
+     * 
+     * @return the ExportPipelinesClient object.
+     */
+    ExportPipelinesClient getExportPipelines();
+
+    /**
+     * Gets the ImportPipelinesClient object to access its operations.
+     * 
+     * @return the ImportPipelinesClient object.
+     */
+    ImportPipelinesClient getImportPipelines();
+
+    /**
+     * Gets the PipelineRunsClient object to access its operations.
+     * 
+     * @return the PipelineRunsClient object.
+     */
+    PipelineRunsClient getPipelineRuns();
 
     /**
      * Gets the WebhooksClient object to access its operations.

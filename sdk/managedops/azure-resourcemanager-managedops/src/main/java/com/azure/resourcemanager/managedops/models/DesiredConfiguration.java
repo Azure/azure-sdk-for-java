@@ -34,12 +34,12 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
     /*
      * Desired enablement state of the Defender For Servers service.
      */
-    private DesiredConfigurationDefenderForServers defenderForServers;
+    private DesiredEnablementState defenderForServers;
 
     /*
      * Desired enablement state of the Defender Cloud Security Posture Management (CSPM) service.
      */
-    private DesiredConfigurationDefenderForServers defenderCspm;
+    private DesiredEnablementState defenderCspm;
 
     /**
      * Creates an instance of DesiredConfiguration class.
@@ -114,7 +114,7 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
      * 
      * @return the defenderForServers value.
      */
-    public DesiredConfigurationDefenderForServers defenderForServers() {
+    public DesiredEnablementState defenderForServers() {
         return this.defenderForServers;
     }
 
@@ -124,7 +124,7 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
      * @param defenderForServers the defenderForServers value to set.
      * @return the DesiredConfiguration object itself.
      */
-    public DesiredConfiguration withDefenderForServers(DesiredConfigurationDefenderForServers defenderForServers) {
+    public DesiredConfiguration withDefenderForServers(DesiredEnablementState defenderForServers) {
         this.defenderForServers = defenderForServers;
         return this;
     }
@@ -135,7 +135,7 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
      * 
      * @return the defenderCspm value.
      */
-    public DesiredConfigurationDefenderForServers defenderCspm() {
+    public DesiredEnablementState defenderCspm() {
         return this.defenderCspm;
     }
 
@@ -146,7 +146,7 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
      * @param defenderCspm the defenderCspm value to set.
      * @return the DesiredConfiguration object itself.
      */
-    public DesiredConfiguration withDefenderCspm(DesiredConfigurationDefenderForServers defenderCspm) {
+    public DesiredConfiguration withDefenderCspm(DesiredEnablementState defenderCspm) {
         this.defenderCspm = defenderCspm;
         return this;
     }
@@ -191,10 +191,10 @@ public final class DesiredConfiguration implements JsonSerializable<DesiredConfi
                     deserializedDesiredConfiguration.userAssignedManagedIdentityId = reader.getString();
                 } else if ("defenderForServers".equals(fieldName)) {
                     deserializedDesiredConfiguration.defenderForServers
-                        = DesiredConfigurationDefenderForServers.fromString(reader.getString());
+                        = DesiredEnablementState.fromString(reader.getString());
                 } else if ("defenderCspm".equals(fieldName)) {
                     deserializedDesiredConfiguration.defenderCspm
-                        = DesiredConfigurationDefenderForServers.fromString(reader.getString());
+                        = DesiredEnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

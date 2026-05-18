@@ -9,6 +9,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.ComparisonFilter;
+import com.openai.models.CompoundFilter;
 import java.io.IOException;
 import java.util.List;
 
@@ -99,28 +101,6 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Get the filters property: The filters property.
-     *
-     * @return the filters value.
-     */
-    @Generated
-    public BinaryData getFilters() {
-        return this.filters;
-    }
-
-    /**
-     * Set the filters property: The filters property.
-     *
-     * @param filters the filters value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setFilters(BinaryData filters) {
-        this.filters = filters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -136,6 +116,8 @@ public final class FileSearchTool extends Tool {
             jsonWriter.writeFieldName("filters");
             this.filters.writeTo(jsonWriter);
         }
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -156,6 +138,8 @@ public final class FileSearchTool extends Tool {
             Long maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
+            String name = null;
+            String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -169,6 +153,10 @@ public final class FileSearchTool extends Tool {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
                     filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -178,6 +166,8 @@ public final class FileSearchTool extends Tool {
             deserializedFileSearchTool.maxResults = maxResults;
             deserializedFileSearchTool.rankingOptions = rankingOptions;
             deserializedFileSearchTool.filters = filters;
+            deserializedFileSearchTool.name = name;
+            deserializedFileSearchTool.description = description;
             return deserializedFileSearchTool;
         });
     }
@@ -209,6 +199,114 @@ public final class FileSearchTool extends Tool {
     @Generated
     public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
+        return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    BinaryData getFilters() {
+        // AI Tooling: union type
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: The filters property.
+     *
+     * @param filters the filters value to set.
+     * @return the FileSearchTool object itself.
+     */
+    FileSearchTool setFilters(BinaryData filters) {
+        // AI Tooling: union type
+        this.filters = filters;
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link ComparisonFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link com.azure.core.util.BinaryData}.
+     *
+     * @param filter the openai-java ComparisonFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setComparisonFilter(ComparisonFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link CompoundFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link BinaryData}.
+     *
+     * @param filter the openai-java CompoundFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setCompoundFilter(CompoundFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the FileSearchTool object itself.
+     */
+    @Generated
+    public FileSearchTool setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

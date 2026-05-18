@@ -30,12 +30,8 @@ public final class ScheduledEventsImpl implements ScheduledEvents {
         String resourceType, String resourceName, String scheduledEventId, Context context) {
         Response<ScheduledEventApproveResponseInner> inner = this.serviceClient()
             .acknowledgeWithResponse(resourceGroupName, resourceType, resourceName, scheduledEventId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScheduledEventApproveResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScheduledEventApproveResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ScheduledEventApproveResponse acknowledge(String resourceGroupName, String resourceType, String resourceName,

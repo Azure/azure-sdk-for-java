@@ -54,12 +54,8 @@ public final class AvsVmVolumesImpl implements AvsVmVolumes {
         String volumeId, Context context) {
         Response<AvsVmVolumeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storagePoolName, avsVmId, volumeId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AvsVmVolumeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AvsVmVolumeImpl(inner.getValue(), this.manager()));
     }
 
     public AvsVmVolume get(String resourceGroupName, String storagePoolName, String avsVmId, String volumeId) {

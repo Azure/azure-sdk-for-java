@@ -33,12 +33,8 @@ public final class JobDefinitionsImpl implements JobDefinitions {
         String projectName, String jobDefinitionName, Context context) {
         Response<JobDefinitionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new JobDefinitionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new JobDefinitionImpl(inner.getValue(), this.manager()));
     }
 
     public JobDefinition get(String resourceGroupName, String storageMoverName, String projectName,
@@ -79,12 +75,8 @@ public final class JobDefinitionsImpl implements JobDefinitions {
         String projectName, String jobDefinitionName, Context context) {
         Response<JobRunResourceIdInner> inner = this.serviceClient()
             .startJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new JobRunResourceIdImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new JobRunResourceIdImpl(inner.getValue(), this.manager()));
     }
 
     public JobRunResourceId startJob(String resourceGroupName, String storageMoverName, String projectName,
@@ -102,12 +94,8 @@ public final class JobDefinitionsImpl implements JobDefinitions {
         String projectName, String jobDefinitionName, Context context) {
         Response<JobRunResourceIdInner> inner = this.serviceClient()
             .stopJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new JobRunResourceIdImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new JobRunResourceIdImpl(inner.getValue(), this.manager()));
     }
 
     public JobRunResourceId stopJob(String resourceGroupName, String storageMoverName, String projectName,

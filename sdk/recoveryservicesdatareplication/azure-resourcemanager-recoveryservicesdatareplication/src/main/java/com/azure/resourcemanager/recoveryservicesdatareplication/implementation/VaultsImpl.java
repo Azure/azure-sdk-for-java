@@ -31,12 +31,8 @@ public final class VaultsImpl implements Vaults {
         Context context) {
         Response<VaultModelInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vaultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VaultModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VaultModelImpl(inner.getValue(), this.manager()));
     }
 
     public VaultModel getByResourceGroup(String resourceGroupName, String vaultName) {

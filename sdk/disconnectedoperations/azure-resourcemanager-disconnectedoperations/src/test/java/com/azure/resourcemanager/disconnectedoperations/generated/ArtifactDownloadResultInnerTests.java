@@ -11,7 +11,7 @@ public final class ArtifactDownloadResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactDownloadResultInner model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"artifactOrder\":1825167031,\"title\":\"p\",\"description\":\"psalgbqux\",\"size\":2563543164314318183,\"downloadLink\":\"jgzjaoyfhrtx\",\"linkExpiry\":\"2021-10-04T14:10:08Z\"}")
+            "{\"provisioningState\":\"Failed\",\"artifactOrder\":396497881,\"title\":\"kfthwxmntei\",\"description\":\"aop\",\"size\":6710073677805963436,\"downloadLink\":\"jcmmxdcufufsrp\",\"linkExpiry\":\"2021-09-01T13:41:02Z\"}")
             .toObject(ArtifactDownloadResultInner.class);
     }
 }

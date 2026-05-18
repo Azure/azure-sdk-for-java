@@ -1,15 +1,24 @@
 ## Release History
 
-### 2.9.0-beta.1 (Unreleased)
+### 2.11.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.10.0 (2026-05-01)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.80.0`.
+  
+### 2.9.0 (2026-03-27)
+
+#### Features Added
+* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
 
 ### 2.8.0 (2026-01-26)
 

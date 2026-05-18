@@ -23,34 +23,16 @@ import java.util.Map;
 @Fluent
 public final class ContainersGetPropertiesHeaders {
     /*
-     * The x-ms-lease-status property.
+     * The x-ms-meta- property.
      */
     @Generated
-    private LeaseStatusType xMsLeaseStatus;
+    private Map<String, String> xMsMeta;
 
     /*
-     * The x-ms-version property.
+     * The ETag property.
      */
     @Generated
-    private String xMsVersion;
-
-    /*
-     * The x-ms-immutable-storage-with-versioning-enabled property.
-     */
-    @Generated
-    private Boolean xMsImmutableStorageWithVersioningEnabled;
-
-    /*
-     * The x-ms-lease-state property.
-     */
-    @Generated
-    private LeaseStateType xMsLeaseState;
-
-    /*
-     * The x-ms-deny-encryption-scope-override property.
-     */
-    @Generated
-    private Boolean xMsDenyEncryptionScopeOverride;
+    private String eTag;
 
     /*
      * The Last-Modified property.
@@ -59,16 +41,58 @@ public final class ContainersGetPropertiesHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-meta- property.
+     * The x-ms-lease-duration property.
      */
     @Generated
-    private Map<String, String> xMsMeta;
+    private LeaseDurationType xMsLeaseDuration;
+
+    /*
+     * The x-ms-lease-state property.
+     */
+    @Generated
+    private LeaseStateType xMsLeaseState;
+
+    /*
+     * The x-ms-lease-status property.
+     */
+    @Generated
+    private LeaseStatusType xMsLeaseStatus;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    @Generated
+    private String xMsClientRequestId;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
 
     /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-blob-public-access property.
+     */
+    @Generated
+    private PublicAccessType xMsBlobPublicAccess;
+
+    /*
+     * The x-ms-has-immutability-policy property.
+     */
+    @Generated
+    private Boolean xMsHasImmutabilityPolicy;
 
     /*
      * The x-ms-has-legal-hold property.
@@ -83,64 +107,40 @@ public final class ContainersGetPropertiesHeaders {
     private String xMsDefaultEncryptionScope;
 
     /*
-     * The ETag property.
+     * The x-ms-deny-encryption-scope-override property.
      */
     @Generated
-    private String eTag;
+    private Boolean xMsDenyEncryptionScopeOverride;
 
     /*
-     * The x-ms-has-immutability-policy property.
+     * The x-ms-immutable-storage-with-versioning-enabled property.
      */
     @Generated
-    private Boolean xMsHasImmutabilityPolicy;
+    private Boolean xMsImmutableStorageWithVersioningEnabled;
 
-    /*
-     * The x-ms-lease-duration property.
-     */
-    @Generated
-    private LeaseDurationType xMsLeaseDuration;
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
-    /*
-     * The x-ms-blob-public-access property.
-     */
-    @Generated
-    private PublicAccessType xMsBlobPublicAccess;
-
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
-     * The x-ms-client-request-id property.
-     */
-    @Generated
-    private String xMsClientRequestId;
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
 
     private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED
-        = HttpHeaderName.fromString("x-ms-immutable-storage-with-versioning-enabled");
+    private static final HttpHeaderName X_MS_BLOB_PUBLIC_ACCESS = HttpHeaderName.fromString("x-ms-blob-public-access");
 
-    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
-
-    private static final HttpHeaderName X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE
-        = HttpHeaderName.fromString("x-ms-deny-encryption-scope-override");
+    private static final HttpHeaderName X_MS_HAS_IMMUTABILITY_POLICY
+        = HttpHeaderName.fromString("x-ms-has-immutability-policy");
 
     private static final HttpHeaderName X_MS_HAS_LEGAL_HOLD = HttpHeaderName.fromString("x-ms-has-legal-hold");
 
     private static final HttpHeaderName X_MS_DEFAULT_ENCRYPTION_SCOPE
         = HttpHeaderName.fromString("x-ms-default-encryption-scope");
 
-    private static final HttpHeaderName X_MS_HAS_IMMUTABILITY_POLICY
-        = HttpHeaderName.fromString("x-ms-has-immutability-policy");
+    private static final HttpHeaderName X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE
+        = HttpHeaderName.fromString("x-ms-deny-encryption-scope-override");
 
-    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
-
-    private static final HttpHeaderName X_MS_BLOB_PUBLIC_ACCESS = HttpHeaderName.fromString("x-ms-blob-public-access");
+    private static final HttpHeaderName X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED
+        = HttpHeaderName.fromString("x-ms-immutable-storage-with-versioning-enabled");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -149,20 +149,18 @@ public final class ContainersGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
-        if (xMsLeaseStatus != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
-            this.xMsLeaseStatus = null;
+            this.lastModified = null;
         }
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String xMsImmutableStorageWithVersioningEnabled
-            = rawHeaders.getValue(X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED);
-        if (xMsImmutableStorageWithVersioningEnabled != null) {
-            this.xMsImmutableStorageWithVersioningEnabled
-                = Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
+        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         } else {
-            this.xMsImmutableStorageWithVersioningEnabled = null;
+            this.xMsLeaseDuration = null;
         }
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
@@ -170,23 +168,32 @@ public final class ContainersGetPropertiesHeaders {
         } else {
             this.xMsLeaseState = null;
         }
-        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue(X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE);
-        if (xMsDenyEncryptionScopeOverride != null) {
-            this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
+        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         } else {
-            this.xMsDenyEncryptionScopeOverride = null;
+            this.xMsLeaseStatus = null;
         }
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
+        }
+        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
+        } else {
+            this.xMsBlobPublicAccess = null;
+        }
+        String xMsHasImmutabilityPolicy = rawHeaders.getValue(X_MS_HAS_IMMUTABILITY_POLICY);
+        if (xMsHasImmutabilityPolicy != null) {
+            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
+        } else {
+            this.xMsHasImmutabilityPolicy = null;
         }
         String xMsHasLegalHold = rawHeaders.getValue(X_MS_HAS_LEGAL_HOLD);
         if (xMsHasLegalHold != null) {
@@ -195,27 +202,20 @@ public final class ContainersGetPropertiesHeaders {
             this.xMsHasLegalHold = null;
         }
         this.xMsDefaultEncryptionScope = rawHeaders.getValue(X_MS_DEFAULT_ENCRYPTION_SCOPE);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String xMsHasImmutabilityPolicy = rawHeaders.getValue(X_MS_HAS_IMMUTABILITY_POLICY);
-        if (xMsHasImmutabilityPolicy != null) {
-            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
+        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue(X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE);
+        if (xMsDenyEncryptionScopeOverride != null) {
+            this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
         } else {
-            this.xMsHasImmutabilityPolicy = null;
+            this.xMsDenyEncryptionScopeOverride = null;
         }
-        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
-        if (xMsLeaseDuration != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        String xMsImmutableStorageWithVersioningEnabled
+            = rawHeaders.getValue(X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED);
+        if (xMsImmutableStorageWithVersioningEnabled != null) {
+            this.xMsImmutableStorageWithVersioningEnabled
+                = Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
         } else {
-            this.xMsLeaseDuration = null;
+            this.xMsImmutableStorageWithVersioningEnabled = null;
         }
-        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
-        if (xMsBlobPublicAccess != null) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
-        } else {
-            this.xMsBlobPublicAccess = null;
-        }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
         rawHeaders.stream().forEach(header -> {
@@ -228,115 +228,46 @@ public final class ContainersGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsLeaseStatus property: The x-ms-lease-status property.
+     * Get the xMsMeta property: The x-ms-meta- property.
      * 
-     * @return the xMsLeaseStatus value.
+     * @return the xMsMeta value.
      */
     @Generated
-    public LeaseStatusType getXMsLeaseStatus() {
-        return this.xMsLeaseStatus;
+    public Map<String, String> getXMsMeta() {
+        return this.xMsMeta;
     }
 
     /**
-     * Set the xMsLeaseStatus property: The x-ms-lease-status property.
+     * Set the xMsMeta property: The x-ms-meta- property.
      * 
-     * @param xMsLeaseStatus the xMsLeaseStatus value to set.
+     * @param xMsMeta the xMsMeta value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
     @Generated
-    public ContainersGetPropertiesHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
-        this.xMsLeaseStatus = xMsLeaseStatus;
+    public ContainersGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
+        this.xMsMeta = xMsMeta;
         return this;
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the eTag property: The ETag property.
      * 
-     * @return the xMsVersion value.
+     * @return the eTag value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the eTag property: The ETag property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param eTag the eTag value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
     @Generated
-    public ContainersGetPropertiesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
-     * property.
-     * 
-     * @return the xMsImmutableStorageWithVersioningEnabled value.
-     */
-    @Generated
-    public Boolean isXMsImmutableStorageWithVersioningEnabled() {
-        return this.xMsImmutableStorageWithVersioningEnabled;
-    }
-
-    /**
-     * Set the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
-     * property.
-     * 
-     * @param xMsImmutableStorageWithVersioningEnabled the xMsImmutableStorageWithVersioningEnabled value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders
-        setXMsImmutableStorageWithVersioningEnabled(Boolean xMsImmutableStorageWithVersioningEnabled) {
-        this.xMsImmutableStorageWithVersioningEnabled = xMsImmutableStorageWithVersioningEnabled;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
-     * @return the xMsLeaseState value.
-     */
-    @Generated
-    public LeaseStateType getXMsLeaseState() {
-        return this.xMsLeaseState;
-    }
-
-    /**
-     * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
-     * @param xMsLeaseState the xMsLeaseState value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
-        this.xMsLeaseState = xMsLeaseState;
-        return this;
-    }
-
-    /**
-     * Get the xMsDenyEncryptionScopeOverride property: The x-ms-deny-encryption-scope-override property.
-     * 
-     * @return the xMsDenyEncryptionScopeOverride value.
-     */
-    @Generated
-    public Boolean isXMsDenyEncryptionScopeOverride() {
-        return this.xMsDenyEncryptionScopeOverride;
-    }
-
-    /**
-     * Set the xMsDenyEncryptionScopeOverride property: The x-ms-deny-encryption-scope-override property.
-     * 
-     * @param xMsDenyEncryptionScopeOverride the xMsDenyEncryptionScopeOverride value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsDenyEncryptionScopeOverride(Boolean xMsDenyEncryptionScopeOverride) {
-        this.xMsDenyEncryptionScopeOverride = xMsDenyEncryptionScopeOverride;
+    public ContainersGetPropertiesHeaders setETag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 
@@ -370,24 +301,134 @@ public final class ContainersGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsMeta property: The x-ms-meta- property.
+     * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
      * 
-     * @return the xMsMeta value.
+     * @return the xMsLeaseDuration value.
      */
     @Generated
-    public Map<String, String> getXMsMeta() {
-        return this.xMsMeta;
+    public LeaseDurationType getXMsLeaseDuration() {
+        return this.xMsLeaseDuration;
     }
 
     /**
-     * Set the xMsMeta property: The x-ms-meta- property.
+     * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
      * 
-     * @param xMsMeta the xMsMeta value to set.
+     * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
     @Generated
-    public ContainersGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
-        this.xMsMeta = xMsMeta;
+    public ContainersGetPropertiesHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
+        this.xMsLeaseDuration = xMsLeaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseState property: The x-ms-lease-state property.
+     * 
+     * @return the xMsLeaseState value.
+     */
+    @Generated
+    public LeaseStateType getXMsLeaseState() {
+        return this.xMsLeaseState;
+    }
+
+    /**
+     * Set the xMsLeaseState property: The x-ms-lease-state property.
+     * 
+     * @param xMsLeaseState the xMsLeaseState value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
+        this.xMsLeaseState = xMsLeaseState;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseStatus property: The x-ms-lease-status property.
+     * 
+     * @return the xMsLeaseStatus value.
+     */
+    @Generated
+    public LeaseStatusType getXMsLeaseStatus() {
+        return this.xMsLeaseStatus;
+    }
+
+    /**
+     * Set the xMsLeaseStatus property: The x-ms-lease-status property.
+     * 
+     * @param xMsLeaseStatus the xMsLeaseStatus value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
+        this.xMsLeaseStatus = xMsLeaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    @Generated
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -417,6 +458,50 @@ public final class ContainersGetPropertiesHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
+     * 
+     * @return the xMsBlobPublicAccess value.
+     */
+    @Generated
+    public PublicAccessType getXMsBlobPublicAccess() {
+        return this.xMsBlobPublicAccess;
+    }
+
+    /**
+     * Set the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
+     * 
+     * @param xMsBlobPublicAccess the xMsBlobPublicAccess value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsBlobPublicAccess(PublicAccessType xMsBlobPublicAccess) {
+        this.xMsBlobPublicAccess = xMsBlobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get the xMsHasImmutabilityPolicy property: The x-ms-has-immutability-policy property.
+     * 
+     * @return the xMsHasImmutabilityPolicy value.
+     */
+    @Generated
+    public Boolean isXMsHasImmutabilityPolicy() {
+        return this.xMsHasImmutabilityPolicy;
+    }
+
+    /**
+     * Set the xMsHasImmutabilityPolicy property: The x-ms-has-immutability-policy property.
+     * 
+     * @param xMsHasImmutabilityPolicy the xMsHasImmutabilityPolicy value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public ContainersGetPropertiesHeaders setXMsHasImmutabilityPolicy(Boolean xMsHasImmutabilityPolicy) {
+        this.xMsHasImmutabilityPolicy = xMsHasImmutabilityPolicy;
         return this;
     }
 
@@ -465,134 +550,49 @@ public final class ContainersGetPropertiesHeaders {
     }
 
     /**
-     * Get the eTag property: The ETag property.
+     * Get the xMsDenyEncryptionScopeOverride property: The x-ms-deny-encryption-scope-override property.
      * 
-     * @return the eTag value.
+     * @return the xMsDenyEncryptionScopeOverride value.
      */
     @Generated
-    public String getETag() {
-        return this.eTag;
+    public Boolean isXMsDenyEncryptionScopeOverride() {
+        return this.xMsDenyEncryptionScopeOverride;
     }
 
     /**
-     * Set the eTag property: The ETag property.
+     * Set the xMsDenyEncryptionScopeOverride property: The x-ms-deny-encryption-scope-override property.
      * 
-     * @param eTag the eTag value to set.
+     * @param xMsDenyEncryptionScopeOverride the xMsDenyEncryptionScopeOverride value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
     @Generated
-    public ContainersGetPropertiesHeaders setETag(String eTag) {
-        this.eTag = eTag;
+    public ContainersGetPropertiesHeaders setXMsDenyEncryptionScopeOverride(Boolean xMsDenyEncryptionScopeOverride) {
+        this.xMsDenyEncryptionScopeOverride = xMsDenyEncryptionScopeOverride;
         return this;
     }
 
     /**
-     * Get the xMsHasImmutabilityPolicy property: The x-ms-has-immutability-policy property.
+     * Get the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
      * 
-     * @return the xMsHasImmutabilityPolicy value.
+     * @return the xMsImmutableStorageWithVersioningEnabled value.
      */
     @Generated
-    public Boolean isXMsHasImmutabilityPolicy() {
-        return this.xMsHasImmutabilityPolicy;
+    public Boolean isXMsImmutableStorageWithVersioningEnabled() {
+        return this.xMsImmutableStorageWithVersioningEnabled;
     }
 
     /**
-     * Set the xMsHasImmutabilityPolicy property: The x-ms-has-immutability-policy property.
+     * Set the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
      * 
-     * @param xMsHasImmutabilityPolicy the xMsHasImmutabilityPolicy value to set.
+     * @param xMsImmutableStorageWithVersioningEnabled the xMsImmutableStorageWithVersioningEnabled value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
     @Generated
-    public ContainersGetPropertiesHeaders setXMsHasImmutabilityPolicy(Boolean xMsHasImmutabilityPolicy) {
-        this.xMsHasImmutabilityPolicy = xMsHasImmutabilityPolicy;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
-     * @return the xMsLeaseDuration value.
-     */
-    @Generated
-    public LeaseDurationType getXMsLeaseDuration() {
-        return this.xMsLeaseDuration;
-    }
-
-    /**
-     * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
-     * @param xMsLeaseDuration the xMsLeaseDuration value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
-        this.xMsLeaseDuration = xMsLeaseDuration;
-        return this;
-    }
-
-    /**
-     * Get the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
-     * 
-     * @return the xMsBlobPublicAccess value.
-     */
-    @Generated
-    public PublicAccessType getXMsBlobPublicAccess() {
-        return this.xMsBlobPublicAccess;
-    }
-
-    /**
-     * Set the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
-     * 
-     * @param xMsBlobPublicAccess the xMsBlobPublicAccess value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsBlobPublicAccess(PublicAccessType xMsBlobPublicAccess) {
-        this.xMsBlobPublicAccess = xMsBlobPublicAccess;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @return the xMsClientRequestId value.
-     */
-    @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    @Generated
-    public ContainersGetPropertiesHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public ContainersGetPropertiesHeaders
+        setXMsImmutableStorageWithVersioningEnabled(Boolean xMsImmutableStorageWithVersioningEnabled) {
+        this.xMsImmutableStorageWithVersioningEnabled = xMsImmutableStorageWithVersioningEnabled;
         return this;
     }
 }

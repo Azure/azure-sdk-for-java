@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPeerCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPeerCommandResponseInner model = BinaryData.fromString("{\"peerAcceptCommand\":\"hqjohxcrsbfova\"}")
-            .toObject(ClusterPeerCommandResponseInner.class);
-        Assertions.assertEquals("hqjohxcrsbfova", model.peerAcceptCommand());
+        ClusterPeerCommandResponseInner model
+            = BinaryData.fromString("{\"properties\":{\"clusterPeeringCommand\":\"agxti\",\"passphrase\":\"dxbx\"}}")
+                .toObject(ClusterPeerCommandResponseInner.class);
+        Assertions.assertEquals("agxti", model.properties().clusterPeeringCommand());
+        Assertions.assertEquals("dxbx", model.properties().passphrase());
     }
 }

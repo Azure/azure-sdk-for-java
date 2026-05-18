@@ -26,7 +26,7 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"replicationId\":\"ioqaqhvs\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"rxpdlcgqlsi\",\"remoteVolumeRegion\":\"jqfrddgamquh\",\"mirrorState\":\"Broken\",\"replicationCreationTime\":\"2021-03-08T11:00:11Z\",\"replicationDeletionTime\":\"2021-08-06T02:50:09Z\"}]}";
+            = "{\"value\":[{\"replicationId\":\"rytfmpcycil\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"ggn\",\"remoteVolumeRegion\":\"uztrksxwpndfcpf\",\"mirrorState\":\"Mirrored\",\"replicationCreationTime\":\"2021-05-17T18:52:51Z\",\"replicationDeletionTime\":\"2021-09-16T04:39:55Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,12 +36,12 @@ public final class VolumesListReplicationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("kpn", "zaapmudqmeqwi", "pibudqwyxebeybpm", "znrtffyaqit",
+            .listReplications("npbs", "vefloccsrmozihmi", "g", "wtxxpkyjcx",
                 new ListReplicationsRequest().withExclude(Exclude.NONE), com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
         Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("rxpdlcgqlsi", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("jqfrddgamquh", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals("ggn", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("uztrksxwpndfcpf", response.iterator().next().remoteVolumeRegion());
     }
 }

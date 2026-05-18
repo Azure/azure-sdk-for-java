@@ -30,12 +30,8 @@ public final class SchemaReferencesImpl implements SchemaReferences {
     public Response<SchemaReference> getWithResponse(String resourceUri, String schemaReferenceName, Context context) {
         Response<SchemaReferenceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, schemaReferenceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchemaReferenceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchemaReferenceImpl(inner.getValue(), this.manager()));
     }
 
     public SchemaReference get(String resourceUri, String schemaReferenceName) {

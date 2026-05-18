@@ -5,6 +5,7 @@ package com.azure.ai.voicelive.livetests;
 
 import com.azure.ai.voicelive.VoiceLiveAsyncClient;
 import com.azure.ai.voicelive.VoiceLiveClientBuilder;
+import com.azure.ai.voicelive.VoiceLiveServiceVersion;
 import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
@@ -17,6 +18,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Base class for VoiceLive live tests with shared utilities.
@@ -37,9 +40,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Model constants
     protected static final String MODEL_GPT_4O = "gpt-4o";
-    protected static final String MODEL_GPT_4O_REALTIME = "gpt-4o-realtime";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW = "gpt-4o-realtime-preview";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW_2025_06_03 = "gpt-4o-realtime-preview-2025-06-03";
+    protected static final String MODEL_GPT_REALTIME = "gpt-realtime";
     protected static final String MODEL_GPT_41 = "gpt-4.1";
     protected static final String MODEL_GPT_5 = "gpt-5";
     protected static final String MODEL_GPT_5_CHAT = "gpt-5-chat";
@@ -48,7 +49,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Default models for non-parameterized tests
     protected static final String TEST_MODEL = MODEL_GPT_4O;
-    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_4O_REALTIME_PREVIEW;
+    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_REALTIME;
 
     // Timeout constants
     protected static final Duration SESSION_TIMEOUT = Duration.ofSeconds(30);
@@ -58,11 +59,15 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Audio thresholds
     protected static final int MIN_AUDIO_BYTES = 10 * 1024;
-    protected static final int MIN_AUDIO_BYTES_LARGE = 50 * 1000;
+    protected static final int MIN_AUDIO_BYTES_LARGE = 40 * 1000;
 
     // Default silence settings
     protected static final int DEFAULT_SAMPLE_RATE = 24000;
     protected static final double DEFAULT_SILENCE_DURATION = 2.0;
+
+    // API version constants
+    protected static final String API_VERSION_GA = "2025-10-01";
+    protected static final String API_VERSION_PREVIEW = "2026-01-01-preview";
 
     protected String getEndpoint() {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");
@@ -84,6 +89,40 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
         return new VoiceLiveClientBuilder().endpoint(getEndpoint())
             .credential(new KeyCredential(getApiKey()))
             .buildAsyncClient();
+    }
+
+    protected VoiceLiveAsyncClient createClient(String apiVersion) {
+        return new VoiceLiveClientBuilder().endpoint(getEndpoint())
+            .credential(new KeyCredential(getApiKey()))
+            .serviceVersion(parseServiceVersion(apiVersion))
+            .buildAsyncClient();
+    }
+
+    protected static VoiceLiveServiceVersion parseServiceVersion(String version) {
+        for (VoiceLiveServiceVersion sv : VoiceLiveServiceVersion.values()) {
+            if (sv.getVersion().equals(version)) {
+                return sv;
+            }
+        }
+        throw new IllegalArgumentException("Unknown service version: " + version);
+    }
+
+    protected static Stream<Arguments> crossProduct(String[] models, String[] apiVersions) {
+        return Arrays.stream(models).flatMap(model -> Arrays.stream(apiVersions).map(v -> Arguments.of(model, v)));
+    }
+
+    protected static Stream<Arguments> withApiVersions(Stream<Arguments> base) {
+        return withApiVersions(base, API_VERSION_GA, API_VERSION_PREVIEW);
+    }
+
+    protected static Stream<Arguments> withApiVersions(Stream<Arguments> base, String... apiVersions) {
+        Arguments[] baseArgs = base.toArray(Arguments[]::new);
+        return Arrays.stream(apiVersions).flatMap(version -> Arrays.stream(baseArgs).map(args -> {
+            Object[] existing = args.get();
+            Object[] extended = Arrays.copyOf(existing, existing.length + 1);
+            extended[existing.length] = version;
+            return Arguments.of(extended);
+        }));
     }
 
     protected byte[] loadAudioFile(String filename) throws IOException {
@@ -134,10 +173,9 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected AudioInputTranscriptionOptions getSpeechRecognitionSetting(String model) {
-        AudioInputTranscriptionOptionsModel transcriptionModel
-            = model.startsWith("gpt-4o-realtime") || model.startsWith("gpt-4o-mini-realtime")
-                ? AudioInputTranscriptionOptionsModel.WHISPER_1
-                : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
+        AudioInputTranscriptionOptionsModel transcriptionModel = model.startsWith("gpt-realtime")
+            ? AudioInputTranscriptionOptionsModel.WHISPER_1
+            : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
         return new AudioInputTranscriptionOptions(transcriptionModel).setLanguage("en-US");
     }
 

@@ -33,12 +33,8 @@ public final class ApprovalsImpl implements Approvals {
     public Response<ApprovalResource> getWithResponse(String resourceUri, String approvalName, Context context) {
         Response<ApprovalResourceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, approvalName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApprovalResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApprovalResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ApprovalResource get(String resourceUri, String approvalName) {

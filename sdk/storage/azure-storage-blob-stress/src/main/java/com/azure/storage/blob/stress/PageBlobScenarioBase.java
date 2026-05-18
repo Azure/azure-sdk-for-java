@@ -6,6 +6,7 @@ package com.azure.storage.blob.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
@@ -14,18 +15,21 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
+    private static final ClientLogger LOGGER = new ClientLogger(PageBlobScenarioBase.class);
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final BlobServiceClient noFaultServiceClient;
     private final BlobContainerClient syncContainerClient;
@@ -72,8 +76,67 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
-        return asyncNoFaultContainerClient.deleteIfExists()
+        return cleanupContainerWithRetry()
+            .onErrorResume(error -> {
+                // Log cleanup failure but don't fail the overall test
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Container cleanup failed");
+
+                return Mono.empty();
+            })
             .then(super.globalCleanupAsync());
+    }
+
+    /**
+     * Enhanced cleanup with timeout and retry logic to ensure containers are properly destroyed.
+     */
+    private Mono<Void> cleanupContainerWithRetry() {
+        return asyncNoFaultContainerClient.deleteIfExists()
+            .then()  // Convert Mono<Boolean> to Mono<Void>
+            .timeout(Duration.ofSeconds(30))
+            .retry(3)
+            .onErrorResume(error -> {
+                // If container deletion fails, try to delete all blobs first then retry container deletion
+                return deleteAllBlobsInContainer()
+                    .then(asyncNoFaultContainerClient.deleteIfExists())
+                    .then()  // Convert Mono<Boolean> to Mono<Void>
+                    .timeout(Duration.ofSeconds(30))
+                    .onErrorResume(finalError -> {
+                        // Log the error but don't fail the test
+                        LOGGER.atWarning()
+                            .addKeyValue("error", finalError.getMessage())
+                            .log("Final container cleanup failed after retries");
+                        return Mono.empty();
+                    });
+            });
+    }
+
+    /**
+     * Delete all blobs in the container to help with cleanup.
+     */
+    private Mono<Void> deleteAllBlobsInContainer() {
+        return asyncNoFaultContainerClient.listBlobs()
+            .concatMap(blobItem ->
+                asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName())
+                    .deleteIfExists()
+                    .onErrorResume(error -> {
+                        // Log but continue - failures for individual blobs should not stop cleanup
+                        LOGGER.atWarning()
+                            .addKeyValue("blobName", blobItem.getName())
+                            .addKeyValue("error", error.getMessage())
+                            .log("Failed to delete blob during cleanup");
+                        return Mono.empty();
+                    }))
+            .then()
+            .timeout(Duration.ofSeconds(60))
+            .onErrorResume(error -> {
+                // Log but continue - some blobs might have been deleted
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Blob cleanup partially failed");
+                return Mono.empty();
+            });
     }
 
     @SuppressWarnings("try")
@@ -85,8 +148,14 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .onErrorResume(e -> Mono.empty());
+        return telemetryHelper.instrumentRunAsync(ctx ->
+        runInternalAsync(ctx)
+            .retryWhen(reactor.util.retry.Retry.max(3)
+                .filter(e -> !(Exceptions.unwrap(e)
+                    instanceof ContentMismatchException))))
+            .doOnError(e -> LOGGER.atError()
+                .addKeyValue("error", e.getMessage())
+                .log("Test operation failed after retries"));
     }
 
     protected abstract void runInternal(Context context) throws Exception;

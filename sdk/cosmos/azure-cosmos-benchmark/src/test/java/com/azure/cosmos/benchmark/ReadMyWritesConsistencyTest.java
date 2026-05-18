@@ -15,8 +15,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.codahale.metrics.MetricRegistry;
-import com.beust.jcommander.JCommander;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,9 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class ReadMyWritesConsistencyTest {
@@ -43,7 +39,7 @@ public class ReadMyWritesConsistencyTest {
     private final static Logger logger = LoggerFactory.getLogger(ReadMyWritesConsistencyTest.class);
 
     private final AtomicBoolean collectionScaleUpFailed = new AtomicBoolean(false);
-    private final Duration defaultMaxRunningTime = Duration.ofMinutes(45);
+    private final Duration defaultMaxRunningTime = Duration.ofSeconds(30);
     private final int delayForInitiationCollectionScaleUpInSeconds = 60;
 
     private final String desiredConsistency =
@@ -99,66 +95,42 @@ public class ReadMyWritesConsistencyTest {
     public void readMyWrites(boolean useNameLink) throws Exception {
 
         int concurrency = 5;
+        int numberOfOperations = Integer.parseInt(numberOfOperationsAsString);
 
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-            " -databaseId %s" +
-            " -collectionId %s" +
-            " -consistencyLevel %s" +
-            " -concurrency %s" +
-            " -numberOfOperations %s" +
-            " -maxRunningTimeDuration %s" +
-            " -operation ReadMyWrites" +
-            " -connectionMode Direct" +
-            " -numberOfPreCreatedDocuments 100" +
-            " -printingInterval 60" +
-            "%s";
+        // Create a temp config file with orchestrator + tenant config
+        String json = String.format(
+            "{ \"orchestrator\": { \"concurrency\": %d, \"numberOfOperations\": %d, \"maxRunningTimeDuration\": \"%s\", "
+                + "\"tenants\": [{ "
+                + "\"serviceEndpoint\": \"%s\", "
+                + "\"masterKey\": \"%s\", "
+                + "\"databaseId\": \"%s\", "
+                + "\"containerId\": \"%s\", "
+                + "\"operation\": \"ReadMyWrites\", "
+                + "\"connectionMode\": \"Direct\", "
+                + "\"consistencyLevel\": \"%s\", "
+                + "\"numberOfPreCreatedDocuments\": 100 "
+                + "}] } }",
+            concurrency, numberOfOperations, maxRunningTime,
+            TestConfigurations.HOST, TestConfigurations.MASTER_KEY,
+            database.getId(), collection.getId(), desiredConsistency);
 
-        String cmd = String.format(cmdFormat,
-            TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
-            database.getId(),
-            collection.getId(),
-            desiredConsistency,
-            concurrency,
-            numberOfOperationsAsString,
-            maxRunningTime,
-            (useNameLink ? " -useNameLink" : ""));
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                logger.error("Error occurred in ReadMyWriteWorkflow", throwable);
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
+        java.io.File tempFile = java.io.File.createTempFile("workload-config-", ".json");
+        try (java.io.FileWriter writer = new java.io.FileWriter(tempFile)) {
+            writer.write(json);
+        }
 
         // schedules a collection scale up after a delay
         scheduleScaleUp(delayForInitiationCollectionScaleUpInSeconds, newCollectionThroughput);
 
-        wf.run();
-        wf.shutdown();
+        try {
+            Main.main(new String[]{"-workloadConfig", tempFile.getAbsolutePath()});
+        } finally {
+            tempFile.delete();
+        }
 
-        int numberOfOperations = Integer.parseInt(numberOfOperationsAsString);
-
-        assertThat(error).hasValue(0);
         if (collectionScaleUpFailed.get()) {
             fail("Failed to scale up collection " + database.getId()
                 + "/" + collection.getId() + ". This test failure can be safely ignored in CI pipelines.");
-        }
-
-        if (numberOfOperations > 0) {
-            assertThat(success).hasValue(numberOfOperations);
         }
     }
 

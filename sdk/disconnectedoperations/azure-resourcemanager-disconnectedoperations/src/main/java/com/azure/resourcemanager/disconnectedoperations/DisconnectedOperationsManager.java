@@ -28,9 +28,11 @@ import com.azure.resourcemanager.disconnectedoperations.fluent.DisconnectedOpera
 import com.azure.resourcemanager.disconnectedoperations.implementation.ArtifactsImpl;
 import com.azure.resourcemanager.disconnectedoperations.implementation.DisconnectedOperationsImpl;
 import com.azure.resourcemanager.disconnectedoperations.implementation.DisconnectedOperationsManagementClientBuilder;
+import com.azure.resourcemanager.disconnectedoperations.implementation.HardwareSettingsImpl;
 import com.azure.resourcemanager.disconnectedoperations.implementation.ImagesImpl;
 import com.azure.resourcemanager.disconnectedoperations.models.Artifacts;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperations;
+import com.azure.resourcemanager.disconnectedoperations.models.HardwareSettings;
 import com.azure.resourcemanager.disconnectedoperations.models.Images;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -50,6 +52,8 @@ public final class DisconnectedOperationsManager {
     private Images images;
 
     private Artifacts artifacts;
+
+    private HardwareSettings hardwareSettings;
 
     private final DisconnectedOperationsManagementClient clientObject;
 
@@ -303,6 +307,18 @@ public final class DisconnectedOperationsManager {
             this.artifacts = new ArtifactsImpl(clientObject.getArtifacts(), this);
         }
         return artifacts;
+    }
+
+    /**
+     * Gets the resource collection API of HardwareSettings. It manages HardwareSetting.
+     * 
+     * @return Resource collection API of HardwareSettings.
+     */
+    public HardwareSettings hardwareSettings() {
+        if (this.hardwareSettings == null) {
+            this.hardwareSettings = new HardwareSettingsImpl(clientObject.getHardwareSettings(), this);
+        }
+        return hardwareSettings;
     }
 
     /**

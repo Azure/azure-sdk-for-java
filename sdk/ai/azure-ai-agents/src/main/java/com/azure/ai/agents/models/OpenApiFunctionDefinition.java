@@ -6,11 +6,14 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -195,6 +198,22 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
         this.name = name;
         this.spec = spec;
         this.auth = auth;
+    }
+
+    /**
+     * Reads an OpenAPI specification from a JSON file and returns it as a {@code Map<String, BinaryData>}
+     * suitable for the {@code spec} parameter of
+     * {@link #OpenApiFunctionDefinition(String, Map, OpenApiAuthDetails)}.
+     *
+     * @param path the path to the OpenAPI spec JSON file.
+     * @return the spec as a map of top-level keys to their serialized values.
+     * @throws IOException if the file cannot be read or parsed.
+     */
+    public static Map<String, BinaryData> readSpecFromFile(Path path) throws IOException {
+        try (JsonReader reader = JsonProviders.createReader(Files.readAllBytes(path))) {
+            return reader
+                .readMap(r -> r.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+        }
     }
 
     /*

@@ -12,10 +12,10 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"ejzanlfz\"},\"location\":\"av\",\"tags\":{\"gzpfrla\":\"zonokixrjqci\",\"indfpwpjyl\":\"szrnwo\"},\"id\":\"bt\",\"name\":\"h\",\"type\":\"lsj\"},{\"properties\":{\"provisioningState\":\"szfjvfbgofelja\"},\"location\":\"qmqhldvriii\",\"tags\":{\"hfkvtvsexsowuel\":\"al\",\"wws\":\"qhhahhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\",\"syqtfi\":\"grjguufzd\"},\"id\":\"whbotzingamv\",\"name\":\"phoszqz\",\"type\":\"dphqamv\"},{\"properties\":{\"provisioningState\":\"wynwcvtbvkayhm\"},\"location\":\"vyqia\",\"tags\":{\"npwzcjaes\":\"wp\",\"hwyg\":\"vvsccyajguq\",\"semdwzrmu\":\"lvdnkfx\",\"qvpsvuoymg\":\"apfcqdpsq\"},\"id\":\"celve\",\"name\":\"rypqlmfeo\",\"type\":\"erqwkyhkobopg\"}],\"nextLink\":\"dkow\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"wggytsbwtovvt\"},\"location\":\"einqf\",\"tags\":{\"knpirgnepttwq\":\"x\",\"mqnrojlpijnkr\":\"sniffc\",\"zronasxift\":\"frddhcrati\",\"zh\":\"zq\"},\"id\":\"tw\",\"name\":\"sgogczhonnxk\",\"type\":\"lgnyhmo\"},{\"properties\":{\"provisioningState\":\"kkgthr\"},\"location\":\"hxjbdhqxvc\",\"tags\":{\"shrnsvbuswdvz\":\"rpdsof\",\"rtkfawnopq\":\"ybycnunvj\",\"x\":\"ikyzirtxdy\",\"sewgioilqukr\":\"ejnt\"},\"id\":\"dxtqmieoxo\",\"name\":\"ggufhyaomtb\",\"type\":\"hhavgrvkffovjz\"}],\"nextLink\":\"jbibg\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("av", model.value().get(0).location());
-        Assertions.assertEquals("zonokixrjqci", model.value().get(0).tags().get("gzpfrla"));
-        Assertions.assertEquals("dkow", model.nextLink());
+        Assertions.assertEquals("einqf", model.value().get(0).location());
+        Assertions.assertEquals("x", model.value().get(0).tags().get("knpirgnepttwq"));
+        Assertions.assertEquals("jbibg", model.nextLink());
     }
 }
