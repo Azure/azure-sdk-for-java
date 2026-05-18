@@ -11,8 +11,7 @@ import com.azure.ai.voicelive.models.ItemType;
 import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
 import com.azure.ai.voicelive.models.MCPApprovalType;
 import com.azure.ai.voicelive.models.MCPServer;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
+import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
 import com.azure.ai.voicelive.models.ResponseMCPCallItem;
 import com.azure.ai.voicelive.models.ServerEventResponseMcpCallArgumentsDone;
@@ -224,7 +223,7 @@ public final class MCPSample {
                 + "You can use MCP tools to search for information when needed. "
                 + "When calling MCP tools, explain what you're doing and present the results naturally."
             )
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaNeural")))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -239,7 +238,7 @@ public final class MCPSample {
                 .setCreateResponse(true))
             .setTools(mcpTools)
             .setInputAudioTranscription(
-                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1)
+                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1).setLanguage("en")
             );
 
         return new ClientEventSessionUpdate(sessionOptions);
@@ -506,13 +505,16 @@ public final class MCPSample {
                             int bytesRead = microphone.read(buffer, 0, buffer.length);
                             if (bytesRead > 0) {
                                 byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                                // sendInputAudio returns a cold Mono - it must be subscribed
-                                // for the audio to actually be sent over the WebSocket.
-                                session.sendInputAudio(BinaryData.fromBytes(audioData))
-                                    .subscribe(
-                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
-                                        error -> System.err.println("Error sending audio: " + error.getMessage())
-                                    );
+                                // sendInputAudio returns a cold Mono. Block on this capture thread so
+                                // sends are serialized; otherwise fire-and-forget subscribes can flood
+                                // the WebSocket send sink and trigger FAIL_OVERFLOW.
+                                try {
+                                    session.sendInputAudio(BinaryData.fromBytes(audioData)).block();
+                                } catch (Exception sendError) {
+                                    if (isCapturing.get()) {
+                                        System.err.println("Error sending audio: " + sendError.getMessage());
+                                    }
+                                }
                             }
                         } catch (Exception e) {
                             if (isCapturing.get()) {
