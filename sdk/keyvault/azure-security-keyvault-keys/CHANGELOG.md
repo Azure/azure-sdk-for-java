@@ -1,15 +1,16 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.11.0-beta.1 (2026-05-18)
 
 ### Features Added
-- Added support for service version `2025-07-01`
 
-### Breaking Changes
+#### `cryptography.CryptographyServiceVersion` was modified
 
-### Bugs Fixed
+* `V2025_07_01` was added
 
-### Other Changes
+#### `KeyServiceVersion` was modified
+
+* `V2025_07_01` was added
 
 ## 4.10.7 (2026-05-05)
 
