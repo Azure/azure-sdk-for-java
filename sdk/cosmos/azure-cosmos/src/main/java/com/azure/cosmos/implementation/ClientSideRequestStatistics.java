@@ -744,6 +744,14 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().locationEndpointsContacted;
     }
 
+    public String getMostRecentlyContactedRegion() {
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            return StringUtils.EMPTY;
+        }
+
+        return this.regionsContactedWithContext.last().regionContacted;
+    }
+
     // ===== Hedging Detection API internal accessors =====
     //
     // appendRequestedRegion / appendRespondedRegion and the matching getters are the *only*

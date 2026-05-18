@@ -919,6 +919,19 @@ public class ImplementationBridgeHelpers {
             List<String> getRespondedRegionsInternal(CosmosDiagnostics cosmosDiagnostics);
 
             boolean isHedgingStartedInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            /**
+             * Returns the most-recently-recorded contacted region on the underlying
+             * {@link ClientSideRequestStatistics}, or {@code null} when no region has been
+             * recorded. Backed by a synchronized navigable set keyed on insertion timestamp —
+             * deterministic, no manual iteration, safe to call concurrently with writers.
+             * <p>
+             * Never returns the empty string — the underlying
+             * {@code ClientSideRequestStatistics.getMostRecentlyContactedRegion()} sentinel
+             * ({@link org.apache.commons.lang3.StringUtils#EMPTY}) is normalized to {@code null}
+             * here so callers have a single null-check at the call site.
+             */
+            String getMostRecentlyContactedRegion(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

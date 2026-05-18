@@ -205,4 +205,16 @@ public class HedgingDetectionUnitTests {
         assertThat(diagnostics.isHedgingStarted()).isTrue();
         assertThat(diagnostics.getRequestedRegions()).hasSize(writers * perWriter);
     }
+
+    @Test(groups = {"unit"})
+    public void getMostRecentlyContactedRegionReturnsNullWhenNoneRecorded() {
+        CosmosDiagnostics diagnostics = newDiagnostics();
+
+        assertThat(DIAG_ACCESSOR.getMostRecentlyContactedRegion(diagnostics)).isNull();
+    }
+
+    @Test(groups = {"unit"})
+    public void getMostRecentlyContactedRegionNullDiagnosticsIsNullSafe() {
+        assertThat(DIAG_ACCESSOR.getMostRecentlyContactedRegion(null)).isNull();
+    }
 }

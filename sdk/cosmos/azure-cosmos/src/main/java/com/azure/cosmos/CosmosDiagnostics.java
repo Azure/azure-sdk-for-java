@@ -673,6 +673,22 @@ public final class CosmosDiagnostics {
                     }
                     return cosmosDiagnostics.isHedgingStarted();
                 }
+
+                @Override
+                public String getMostRecentlyContactedRegion(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+                    ClientSideRequestStatistics stats = cosmosDiagnostics.clientSideRequestStatistics;
+                    if (stats == null) {
+                        return null;
+                    }
+                    String region = stats.getMostRecentlyContactedRegion();
+                    if (region == null || region.isEmpty()) {
+                        return null;
+                    }
+                    return region;
+                }
             });
     }
 

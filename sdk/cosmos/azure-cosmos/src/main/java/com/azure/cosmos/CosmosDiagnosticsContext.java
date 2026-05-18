@@ -464,9 +464,13 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * Returns the regions the SDK dispatched this operation to, aggregated across all
-     * per-operation {@link CosmosDiagnostics} children in observed order
-     * (FIFO traversal of the underlying {@code ConcurrentLinkedDeque}, matching the order used
-     * by {@link #getContactedRegionNames()}). The returned list is unmodifiable.
+     * per-operation {@link CosmosDiagnostics} children. Aggregation order is FIFO over the
+     * underlying {@code ConcurrentLinkedDeque} of children; within each child, the requested
+     * regions are appended in their own FIFO (insertion) order. The returned list is
+     * unmodifiable.
+     * <p>
+     * This ordering does <strong>not</strong> match {@link #getContactedRegionNames()}, which
+     * returns a sorted set keyed by region name.
      * <p>
      * Each entry reflects an actual SDK dispatch decision (post-threshold-delay,
      * post-non-cancellation for hedge arms). See

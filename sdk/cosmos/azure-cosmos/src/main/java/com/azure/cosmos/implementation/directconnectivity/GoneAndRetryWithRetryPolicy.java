@@ -97,30 +97,28 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
     }
 
     // Hedging Detection API: best-effort helper that appends a TRANSPORT_RETRY entry to the
-    // request's diagnostics. The region is the most-recently-contacted region on the request's
-    // ClientSideRequestStatistics (matching the retry-dispatch semantic). Silently no-ops when
-    // the request, diagnostics, or region cannot be resolved. NOTE: the PPCB / PPAF probe sites
-    // also need to surface a TRANSPORT_RETRY / CIRCUIT_BREAKER_PROBE hook — those depend on
-    // upstream PRs #45197 / #45267 / #46477 / #48421 (SE-005 / SE-012). When those land in the
-    // Java SDK, wire CIRCUIT_BREAKER_PROBE at the probe-issue site there.
+    // request's diagnostics. The region is resolved deterministically as the most-recently
+    // contacted region via the diagnostics bridge — that accessor reads
+    // `ClientSideRequestStatistics.regionsContactedWithContext.last()`, which is backed by a
+    // synchronized navigable set keyed on insertion timestamp (no manual iteration, no
+    // HashSet-iterator nondeterminism, no CME hazard). Silently no-ops when the request,
+    // diagnostics, or region cannot be resolved. NOTE: the PPCB / PPAF probe sites also need
+    // to surface a TRANSPORT_RETRY / CIRCUIT_BREAKER_PROBE hook — those depend on upstream PRs
+    // #45197 / #45267 / #46477 / #48421 (SE-005 / SE-012). When those land in the Java SDK,
+    // wire CIRCUIT_BREAKER_PROBE at the probe-issue site there.
     private static void recordTransportRetryRequestedRegion(RxDocumentServiceRequest request) {
         if (request == null || request.requestContext == null
             || request.requestContext.cosmosDiagnostics == null) {
             return;
         }
         try {
-            String regionName = null;
             CosmosDiagnostics diag = request.requestContext.cosmosDiagnostics;
-            // Region resolution: fall back to "FirstContactedRegion" if currently-pinned region
-            // is unknown at this layer.
-            if (!diag.getContactedRegionNames().isEmpty()) {
-                regionName = diag.getContactedRegionNames().iterator().next();
-            }
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+            String regionName = diagAcc.getMostRecentlyContactedRegion(diag);
             if (regionName == null || regionName.isEmpty()) {
                 return;
             }
-            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAcc =
-                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
             diagAcc.appendRequestedRegion(
                 diag,
                 new RequestedRegion(regionName, RequestedRegionReason.TRANSPORT_RETRY));
