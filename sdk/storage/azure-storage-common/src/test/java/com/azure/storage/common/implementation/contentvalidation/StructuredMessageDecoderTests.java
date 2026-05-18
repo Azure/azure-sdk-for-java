@@ -559,36 +559,6 @@ public class StructuredMessageDecoderTests {
     }
 
     /**
-     * Segments larger than {@code Integer.MAX_VALUE} cannot be backed by a single Java array, so the decoder must
-     * reject them up front rather than blowing up at allocation time. The check lives in the segment-header parse;
-     * we forge a header that declares a too-large segment size and confirm the failure.
-     */
-    @Test
-    public void throwsOnSegmentSizeExceedingArrayLimit() {
-        // Build a forged 13-byte message header + 10-byte segment header where the segment claims a payload size
-        // larger than what a Java array can hold. Total message length is set so the segment-size check fires
-        // before any other validation.
-        long forgedSegmentSize = (long) Integer.MAX_VALUE; // > Integer.MAX_VALUE - 8 triggers the guard
-        int messageHeaderLength = MESSAGE_HEADER_LENGTH;
-        int segmentHeaderLength = SEGMENT_HEADER_LENGTH;
-        long forgedMessageLength = messageHeaderLength + segmentHeaderLength + forgedSegmentSize;
-
-        byte[] forged = new byte[messageHeaderLength + segmentHeaderLength];
-        ByteBuffer hdr = ByteBuffer.wrap(forged).order(ByteOrder.LITTLE_ENDIAN);
-        hdr.put((byte) StructuredMessageConstants.DEFAULT_MESSAGE_VERSION); // version
-        hdr.putLong(forgedMessageLength); // total message length
-        hdr.putShort((short) StructuredMessageFlags.NONE.getValue()); // flags
-        hdr.putShort((short) 1); // numSegments
-        hdr.putShort((short) 1); // segment number
-        hdr.putLong(forgedSegmentSize); // segment size
-
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(forgedMessageLength);
-        IllegalArgumentException ex
-            = assertThrows(IllegalArgumentException.class, () -> decoder.decodeChunk(ByteBuffer.wrap(forged)));
-        assertTrue(ex.getMessage().contains("exceeds the maximum supported segment size"));
-    }
-
-    /**
      * Multi-megabyte segment size  exercises per-segment length from the wire header,
      * not a fixed 4 MiB assumption.
      */
