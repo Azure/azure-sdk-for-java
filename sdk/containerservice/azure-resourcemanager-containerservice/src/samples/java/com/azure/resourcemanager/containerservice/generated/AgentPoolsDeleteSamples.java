@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/AgentPoolsDelete.json
+     * x-ms-original-file: 2026-03-01/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.

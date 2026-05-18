@@ -3,6 +3,7 @@
 ## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for service version `2025-07-01`
 
 ### Breaking Changes
 

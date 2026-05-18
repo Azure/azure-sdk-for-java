@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/GetSku.json
+     * x-ms-original-file: 2026-04-30/GetSku.json
      */
     /**
      * Sample code: Get Sku.

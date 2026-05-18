@@ -37,7 +37,7 @@ com.azure:azure-data-sdk-parent;1.3.0;1.3.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-agents-persistent;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-ai-agents;2.0.1;2.1.0-beta.1
+com.azure:azure-ai-agents;2.0.1;2.1.0-beta.2
 com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
 com.azure:azure-ai-contentsafety;1.0.18;1.1.0-beta.1
 com.azure:azure-ai-contentunderstanding;1.0.0;1.1.0-beta.2
@@ -53,8 +53,8 @@ com.azure:azure-ai-openai-assistants;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-ai-openai-realtime;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai-stainless;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-projects;2.0.1;2.1.0-beta.1
-com.azure:azure-ai-speech-transcription;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-ai-projects;2.0.1;2.1.0-beta.2
+com.azure:azure-ai-speech-transcription;1.0.0-beta.3;1.0.0
 com.azure:azure-ai-textanalytics;5.5.13;5.6.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.1.9;2.0.0-beta.2
@@ -284,7 +284,7 @@ com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.8;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.57.1;2.58.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.10;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.55.2;2.56.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.59.1;2.60.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.60.0;2.61.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.54.3;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.8;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.8;2.54.0-beta.1
@@ -341,7 +341,7 @@ com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-avs;1.4.0;1.5.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.3;1.0.0-beta.4
@@ -387,7 +387,7 @@ com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;2.0.0;2
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-security;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-security;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0;1.1.0-beta.1
@@ -397,7 +397,7 @@ com.azure.resourcemanager:azure-resourcemanager-quota;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.5.0;1.6.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.5.0;1.6.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loadtesting;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0;1.1.0-beta.1
@@ -528,7 +528,7 @@ com.azure.resourcemanager:azure-resourcemanager-appnetwork;1.0.0-beta.1;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-servicegroups;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-horizondb;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-relationships;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-fileshares;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-fileshares;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-monitor-slis;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
