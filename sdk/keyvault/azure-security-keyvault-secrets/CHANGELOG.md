@@ -1,14 +1,26 @@
 # Release History
 
-## 4.11.0-beta.2 (Unreleased)
+## 4.11.0-beta.2 (2026-05-18)
 
 ### Features Added
 
-### Breaking Changes
+#### `models.SecretProperties` was modified
 
-### Bugs Fixed
+* `getPreviousVersion()` was added
 
-### Other Changes
+#### `SecretClient` was modified
+
+* `getSecretWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getSecret(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `SecretServiceVersion` was modified
+
+* `V2025_07_01` was added
+
+#### `SecretAsyncClient` was modified
+
+* `getSecret(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getSecretWithResponse(java.lang.String,java.lang.String,java.lang.String)` was added
 
 ## 4.10.7 (2026-05-05)
 
