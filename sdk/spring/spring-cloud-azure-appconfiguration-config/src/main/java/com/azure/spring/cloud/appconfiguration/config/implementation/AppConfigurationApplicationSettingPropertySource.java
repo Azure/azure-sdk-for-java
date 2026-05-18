@@ -69,7 +69,8 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
         replicaClient.getTracingInfo().resetAiConfigurationTracing();
 
-        List<String> labels = Arrays.asList(labelFilters);
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilters));
+
         // Reverse labels so they have the right priority order.
         Collections.reverse(labels);
 
@@ -116,7 +117,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      *
      * @param key Application Setting name
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
-     * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
     private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
@@ -155,7 +155,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         if (trimStrings != null) {
             for (String trim : trimStrings) {
                 if (key.startsWith(trim)) {
-                    return key.replaceFirst("^" + trim, "").replace('/', '.');
+                    return key.substring(trim.length()).replace('/', '.');
                 }
             }
         }

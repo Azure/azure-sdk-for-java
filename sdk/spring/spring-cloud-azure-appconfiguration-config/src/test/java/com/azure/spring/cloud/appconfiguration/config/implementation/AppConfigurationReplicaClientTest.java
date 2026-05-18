@@ -160,7 +160,7 @@ public class AppConfigurationReplicaClientTest {
     }
 
     @Test
-    public void listFeatureFlagsTest() {
+    public void listSettingsByPageTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock, new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
 
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
@@ -177,24 +177,24 @@ public class AppConfigurationReplicaClientTest {
             .thenReturn(new PagedIterable<>(pagedFlux));
 
         assertEquals(configurations,
-            client.listFeatureFlags(new SettingSelector(), contextMock).getConfigurationSettings());
+            client.listSettingsByPage(new SettingSelector(), contextMock).getConfigurationSettings());
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listFeatureFlags(new SettingSelector(), contextMock));
+        assertThrows(HttpResponseException.class, () -> client.listSettingsByPage(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -382,7 +382,7 @@ public class AppConfigurationReplicaClientTest {
             .thenReturn(new PagedIterable<>(pagedFlux));
 
         SettingSelector selector = new SettingSelector().setKeyFilter("*");
-        WatchedConfigurationSettings result = client.loadWatchedSettings(selector, contextMock);
+        WatchedConfigurationSettings result = client.listSettingsByPage(selector, contextMock);
 
         assertEquals(2, result.getConfigurationSettings().size());
         assertEquals("key1", result.getConfigurationSettings().get(0).getKey());
@@ -401,19 +401,19 @@ public class AppConfigurationReplicaClientTest {
         when(responseMock.getStatusCode()).thenReturn(429);
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class,
-            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -424,7 +424,7 @@ public class AppConfigurationReplicaClientTest {
             .thenThrow(new UncheckedIOException(new IOException("Network error")));
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
+            () -> client.listSettingsByPage(new SettingSelector(), contextMock));
     }
 
 }

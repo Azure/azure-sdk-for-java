@@ -364,7 +364,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     ResolvedConfiguration resolveConfiguration(SolutionTemplateParameter body);
 
@@ -376,7 +376,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     ResolvedConfiguration resolveConfiguration(SolutionTemplateParameter body, Context context);
 
@@ -387,7 +387,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion reviewSolutionVersion(SolutionTemplateParameter body);
 
@@ -399,7 +399,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion reviewSolutionVersion(SolutionTemplateParameter body, Context context);
 
@@ -410,7 +410,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion publishSolutionVersion(SolutionVersionParameter body);
 
@@ -422,7 +422,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion publishSolutionVersion(SolutionVersionParameter body, Context context);
 
@@ -433,7 +433,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion updateExternalValidationStatus(UpdateExternalValidationStatusParameter body);
 
@@ -445,7 +445,7 @@ public interface Target {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     SolutionVersion updateExternalValidationStatus(UpdateExternalValidationStatusParameter body, Context context);
 }

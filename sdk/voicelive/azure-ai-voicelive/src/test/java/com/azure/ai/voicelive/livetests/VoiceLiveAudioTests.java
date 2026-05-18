@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> audioParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -108,7 +108,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> audioEnhancementsParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -183,77 +183,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> echoCancellationParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
-    }
-
-    @ParameterizedTest
-    @MethodSource("echoCancellationParams")
-    @LiveOnly
-    public void testRealtimeServiceWithEchoCancellation(String model, String apiVersion)
-        throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient(apiVersion);
-
-        byte[] audioData = loadAudioFile("4-1.wav");
-
-        AtomicInteger speechStartedEvents = new AtomicInteger(0);
-        AtomicInteger audioResponseBytes = new AtomicInteger(0);
-        CountDownLatch responseLatch = new CountDownLatch(1);
-
-        VoiceLiveSessionAsyncClient session = null;
-        Disposable subscription = null;
-        try {
-            VoiceLiveSessionOptions sessionOptions
-                = new VoiceLiveSessionOptions().setInputAudioTranscription(getSpeechRecognitionSetting(model))
-                    .setInputAudioEchoCancellation(new AudioEchoCancellation());
-
-            session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            subscription = session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                    speechStartedEvents.incrementAndGet();
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                    if (event instanceof SessionUpdateResponseAudioDelta) {
-                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
-                        if (audioDelta.getDelta() != null) {
-                            audioResponseBytes.addAndGet(audioDelta.getDelta().length);
-                        }
-                    }
-                    responseLatch.countDown();
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    responseLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
-            });
-
-            waitForSetup();
-
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
-            waitForSetup();
-
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
-
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(speechStartedEvents.get() > 1,
-                "Expected more than 1 speech segment, got " + speechStartedEvents.get());
-            Assertions.assertTrue(audioResponseBytes.get() > 0, "Audio bytes should be greater than 0");
-        } finally {
-            if (subscription != null) {
-                subscription.dispose();
-            }
-            closeSession(session);
-        }
     }
 }

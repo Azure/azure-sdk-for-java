@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
@@ -247,5 +248,18 @@ public class Sample03_AnalyzeInvoiceAsyncTest extends ContentUnderstandingClient
                 + (content != null ? content.getClass().getSimpleName() : "null"));
         }
         // END:Assertion_ContentUnderstandingExtractInvoiceFieldsAsync
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInputAsync
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInputAsync
+
+        // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInputAsync
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("fields:"));
+        System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingInvoiceToLlmInputAsync
     }
 }

@@ -21,7 +21,7 @@ public class TilerPreviewsGetFormat {
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-preview-with-format.tiler-previews-get-format
         BinaryData response
             = dataClient.getPreviewWithFormat("naip-atl", "ga_m_3308421_se_16_060_20211114", "preview.jpeg",
-                new GetPreviewOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+                new GetPreviewOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-preview-with-format.tiler-previews-get-format
     }
 }

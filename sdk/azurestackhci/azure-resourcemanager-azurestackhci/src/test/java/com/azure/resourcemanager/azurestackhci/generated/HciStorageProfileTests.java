@@ -11,7 +11,7 @@ public final class HciStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciStorageProfile model = BinaryData.fromString(
-            "{\"poolableDisksCount\":3106144557754641608,\"disks\":[{\"id\":\"lizhceumoqodkad\",\"sizeInBytes\":\"yibngqladywrxwh\",\"type\":\"tlu\"},{\"id\":\"vadswzs\",\"sizeInBytes\":\"yemlowuowhlxln\",\"type\":\"rmouvb\"}]}")
+            "{\"poolableDisksCount\":5513165918276447064,\"disks\":[{\"id\":\"nictteajo\",\"sizeInBytes\":\"ygspnbonhpczykm\",\"type\":\"p\",\"model\":\"xqcsehch\",\"manufacturer\":\"ufmpqumqyjgy\",\"isSupported\":true}]}")
             .toObject(HciStorageProfile.class);
     }
 }

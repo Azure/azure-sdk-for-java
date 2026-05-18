@@ -648,7 +648,7 @@ public class SessionsMessagePumpIsolatedTest {
         return new SessionsMessagePump("identifier-1", "FQDN", "Orders", ServiceBusReceiveMode.PEEK_LOCK,
             instrumentation, sessionAcquirer, Duration.ZERO, sessionIdleTimeout, maxConcurrentSessions,
             concurrencyPerSession, 0, enableAutoDisposition, serializer, retryPolicy, processMessage, processError,
-            onTerminate);
+            onTerminate, Duration.ofSeconds(30));
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {
