@@ -18,11 +18,10 @@ import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Collections;
 
 import javax.sound.sampled.AudioFormat;
@@ -32,11 +31,20 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Sample demonstrating how to receive and play audio responses from VoiceLive service.
+ *
+ * <p>Use this sample when you want to understand downstream audio playback only. It is a good next
+ * step after the basic sample because it avoids microphone capture and focuses on speaker output.</p>
+ *
+ * <p>When you run it, the sample sends a fixed text prompt, asks the model to generate an audio
+ * response, and plays the returned PCM audio through your default speaker or headphones.</p>
  *
  * <p>This sample shows how to:</p>
  * <ul>
@@ -56,11 +64,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *   <li>{@link VoiceAssistantSample} - Complete voice assistant combining input and output</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>Audio Requirements:</strong></p>
  * Requires working speakers or headphones. Audio format is 24kHz, 16-bit PCM, mono.
@@ -80,6 +90,7 @@ public final class AudioPlaybackSample {
     private static final int CHANNELS = 1;            // Mono
     private static final int SAMPLE_SIZE_BITS = 16;   // 16-bit PCM
     private static final int CHUNK_SIZE = 1200;       // 50ms chunks
+    private static final long COMPLETION_TIMEOUT_SECONDS = 60;
 
     /**
      * Main method to run the audio playback sample.
@@ -87,12 +98,11 @@ public final class AudioPlaybackSample {
      * @param args Unused command line arguments
      */
     public static void main(String[] args) {
-        // Get credentials from environment variables
+        // Get endpoint from environment variable
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT environment variable");
             return;
         }
 
@@ -102,10 +112,10 @@ public final class AudioPlaybackSample {
             return;
         }
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Starting audio playback sample...");
@@ -123,53 +133,66 @@ public final class AudioPlaybackSample {
             .setInputAudioSamplingRate(SAMPLE_RATE);
 
         // Audio playback components
-        final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>();
+        final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>(1000);
         final AtomicBoolean isPlaying = new AtomicBoolean(false);
-        final SourceDataLine[] speakerRef = new SourceDataLine[1];
+        final AtomicReference<SourceDataLine> speakerRef = new AtomicReference<>();
+        final AtomicReference<Thread> playbackThreadRef = new AtomicReference<>();
 
-        // Start session
+        // Latch keeps main alive until the response completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
+        // Open a WebSocket session against the realtime model.
         client.startSession("gpt-realtime")
+            // Configure the session (voice, modalities, audio formats, instructions).
             .flatMap(session -> {
-                System.out.println("✓ Session started");
-
-                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> {
-                        System.out.println("\u2713 Session configured");
-                        // Start audio playback system
-                        startPlayback(audioQueue, isPlaying, speakerRef);
-                    })
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event, audioQueue))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
-                    .then(Mono.delay(Duration.ofMillis(500))) // Wait for session to be fully ready
-                    .flatMap(v -> {
-                        // Send a user message to trigger an audio response
-                        System.out.println("📤 Sending text message to trigger audio response...");
-                        InputTextContentPart textContent = new InputTextContentPart(
-                            "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
-                        UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
-                        ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
-                            .setItem(messageItem);
+                return session.sendEvent(updateEvent).thenReturn(session);
+            })
+            // Open the speaker line and start the playback worker thread before
+            // any audio deltas arrive, so chunks can be played as soon as they stream in.
+            .flatMap(session -> {
+                startPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
+                return Mono.just(session);
+            })
+            // Send a user message that prompts the model to produce a spoken reply.
+            .flatMap(session -> {
+                InputTextContentPart textContent = new InputTextContentPart(
+                    "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
+                UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
+                ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
+                    .setItem(messageItem);
+                return session.sendEvent(createEvent).thenReturn(session);
+            })
+            // Ask the model to start generating a response for the queued message.
+            .flatMap(session -> {
+                ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
+                return session.sendEvent(responseEvent).thenReturn(session);
+            })
+            // Subscribe to the server event stream (session.created, audio deltas, etc.).
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                // onNext: route each server event (audio chunks go to the playback queue).
+                event -> handleEvent(event, audioQueue, completionLatch),
+                // onError: log and release main so it can clean up and exit.
+                error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    completionLatch.countDown();
+                },
+                // onComplete: stream ended cleanly; release main.
+                completionLatch::countDown
+            );
 
-                        return session.sendEvent(createEvent);
-                    })
-                    .then(Mono.delay(Duration.ofMillis(100)))
-                    .flatMap(v -> {
-                        // Trigger response generation
-                        System.out.println("🎯 Triggering response generation...");
-                        ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
-                        return session.sendEvent(responseEvent);
-                    })
-                    .then(Mono.delay(Duration.ofSeconds(10))) // Wait for audio response
-                    .doFinally(signal -> System.out.println("\n✓ Sample completed - audio playback demonstrated"));
-            })
-            .doFinally(signalType -> {
-                // Cleanup
-                stopPlayback(audioQueue, isPlaying, speakerRef[0]);
-            })
-            .block(); // Block for demo purposes
+        try {
+            if (!completionLatch.await(COMPLETION_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+                System.err.println("Timed out waiting for audio response to complete.");
+            } else {
+                System.out.println("\n✓ Sample completed - audio playback demonstrated");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            stopPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
+        }
     }
 
     /**
@@ -193,8 +216,10 @@ public final class AudioPlaybackSample {
      * @param audioQueue Queue containing audio data to play
      * @param isPlaying Flag to control playback loop
      * @param speakerRef Reference to store the speaker line
+     * @param playbackThreadRef Reference to store the playback thread
      */
-    private static void startPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying, SourceDataLine[] speakerRef) {
+    private static void startPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
+        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
         try {
             AudioFormat format = new AudioFormat(
                 AudioFormat.Encoding.PCM_SIGNED,
@@ -211,7 +236,7 @@ public final class AudioPlaybackSample {
             speaker.open(format, CHUNK_SIZE * 4);
             speaker.start();
 
-            speakerRef[0] = speaker;
+            speakerRef.set(speaker);
             isPlaying.set(true);
 
             System.out.println("🔊 Audio playback started");
@@ -241,6 +266,7 @@ public final class AudioPlaybackSample {
                 }
             }, "AudioPlayback");
             playbackThread.setDaemon(true);
+            playbackThreadRef.set(playbackThread);
             playbackThread.start();
 
         } catch (LineUnavailableException e) {
@@ -253,11 +279,25 @@ public final class AudioPlaybackSample {
      *
      * @param audioQueue Queue containing audio data
      * @param isPlaying Flag to control playback loop
-     * @param speaker The speaker line to close
+     * @param speakerRef Reference to the speaker line to close
+     * @param playbackThreadRef Reference to the playback thread
      */
-    private static void stopPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying, SourceDataLine speaker) {
+    private static void stopPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
+        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
         isPlaying.set(false);
         audioQueue.offer(new byte[0]); // Shutdown signal
+
+        Thread playbackThread = playbackThreadRef.getAndSet(null);
+        if (playbackThread != null) {
+            playbackThread.interrupt();
+            try {
+                playbackThread.join(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        SourceDataLine speaker = speakerRef.getAndSet(null);
         if (speaker != null) {
             speaker.stop();
             speaker.close();
@@ -266,12 +306,15 @@ public final class AudioPlaybackSample {
     }
 
     /**
-     * Handle incoming server events.
+     * Handle incoming server events. Queues audio chunks for playback and signals completion
+     * when the response is finished or an error is reported.
      *
      * @param event The server event
      * @param audioQueue Queue to receive audio data
+     * @param completionLatch Latch to release when the response is complete or fails
      */
-    private static void handleEvent(SessionUpdate event, BlockingQueue<byte[]> audioQueue) {
+    private static void handleEvent(SessionUpdate event, BlockingQueue<byte[]> audioQueue,
+        CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {
@@ -284,14 +327,22 @@ public final class AudioPlaybackSample {
                 SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
                 byte[] audioData = audioEvent.getDelta();
                 if (audioData != null && audioData.length > 0) {
-                    audioQueue.offer(audioData);
-                    System.out.println("🔊 Received audio chunk: " + audioData.length + " bytes");
+                    if (!audioQueue.offer(audioData)) {
+                        System.err.println("Warning: audio queue full, dropping chunk of " + audioData.length + " bytes");
+                    } else {
+                        System.out.println("🔊 Received audio chunk: " + audioData.length + " bytes");
+                    }
                 }
             }
         } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
             System.out.println("✓ Audio response complete");
+        } else if (eventType == ServerEventType.RESPONSE_DONE) {
+            System.out.println("✓ Response complete");
+            completionLatch.countDown();
         } else if (eventType == ServerEventType.ERROR) {
-            System.err.println("❌ Error occurred in session " + ((SessionUpdateError) event).getError().getMessage());
+            System.err.println("❌ Error occurred in session "
+                + ((SessionUpdateError) event).getError().getMessage());
+            completionLatch.countDown();
         }
     }
 

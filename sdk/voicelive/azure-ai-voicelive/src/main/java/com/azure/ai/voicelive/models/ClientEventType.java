@@ -144,4 +144,10 @@ public final class ClientEventType extends ExpandableStringEnum<ClientEventType>
      */
     @Generated
     public static final ClientEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
+
+    /**
+     * Client request to clear the avatar output buffer.
+     */
+    @Generated
+    public static final ClientEventType OUTPUT_AUDIO_BUFFER_CLEAR = fromString("output_audio_buffer.clear");
 }
