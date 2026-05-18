@@ -58,9 +58,9 @@ public class SpeechTranscriptionCustomization extends Customization {
             // Rename getOffset() to getOffsetInMs() on TranscribedPhrase and TranscribedWord for clarity
             // (the underlying int value is in milliseconds).
             logger.info("Renaming TranscribedPhrase.getOffset() to getOffsetInMs()");
-            renameOffsetGetter(models, "TranscribedPhrase");
+            renameOffsetGetter(models, "TranscribedPhrase", "phrase");
             logger.info("Renaming TranscribedWord.getOffset() to getOffsetInMs()");
-            renameOffsetGetter(models, "TranscribedWord");
+            renameOffsetGetter(models, "TranscribedWord", "word");
 
             // Customize TranscriptionDiarizationOptions to properly serialize enabled field
             logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
@@ -99,6 +99,38 @@ public class SpeechTranscriptionCustomization extends Customization {
         logger.info("Removing TranscriptionContent.java from the public models package");
         customization.getRawEditor()
             .removeFile("src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent.java");
+
+        // Keep the package metadata JSON consistent with the actual published surface area: strip the
+        // TranscriptionContent crossLanguageDefinitions entry and the generatedFiles entry that point to
+        // the now-removed model. Without this, downstream tooling that reads the metadata sees a class
+        // that does not exist in the JAR.
+        logger.info("Removing TranscriptionContent entries from package metadata JSON");
+        String metadataPath = "src/main/resources/META-INF/azure-ai-speech-transcription_metadata.json";
+        try {
+            String metadata = customization.getRawEditor().getFileContent(metadataPath);
+            if (metadata != null) {
+                String updated = metadata
+                    // crossLanguageDefinitions entry (with optional trailing comma on either side).
+                    .replaceAll(
+                        ",\\s*\"com\\.azure\\.ai\\.speech\\.transcription\\.models\\.TranscriptionContent\"\\s*:\\s*\"[^\"]*\"",
+                        "")
+                    .replaceAll(
+                        "\"com\\.azure\\.ai\\.speech\\.transcription\\.models\\.TranscriptionContent\"\\s*:\\s*\"[^\"]*\"\\s*,",
+                        "")
+                    // generatedFiles entry.
+                    .replaceAll(
+                        ",\\s*\"src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent\\.java\"",
+                        "")
+                    .replaceAll(
+                        "\"src/main/java/com/azure/ai/speech/transcription/models/TranscriptionContent\\.java\"\\s*,",
+                        "");
+                if (!updated.equals(metadata)) {
+                    customization.getRawEditor().replaceFile(metadataPath, updated);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to update package metadata JSON: " + e.getMessage());
+        }
     }
 
     /**
@@ -150,8 +182,9 @@ public class SpeechTranscriptionCustomization extends Customization {
      *
      * @param packageCustomization the package customization
      * @param className the name of the class to customize
+     * @param subjectNoun the noun describing what the offset refers to (e.g. "phrase" or "word"), used in the JavaDoc.
      */
-    private void renameOffsetGetter(PackageCustomization packageCustomization, String className) {
+    private void renameOffsetGetter(PackageCustomization packageCustomization, String className, String subjectNoun) {
         packageCustomization.getClass(className).customizeAst(ast -> {
             ast.addImport("java.time.Duration");
             ast.getClassByName(className).ifPresent(clazz -> clazz.getMethodsByName("getOffset").forEach(method -> {
@@ -159,7 +192,7 @@ public class SpeechTranscriptionCustomization extends Customization {
                 method.setType("Duration");
                 method.setBody(parseBlock("{ return Duration.ofMillis(this.offset); }"));
                 method.setJavadocComment(
-                    new Javadoc(parseText("Get the offset property: The start offset of the phrase in milliseconds."))
+                    new Javadoc(parseText("Get the offset property: The start offset of the " + subjectNoun + " in milliseconds."))
                         .addBlockTag("return", "the offset value as Duration."));
             }));
         });
@@ -196,6 +229,18 @@ public class SpeechTranscriptionCustomization extends Customization {
                         + "if (this.enabled != null) { jsonWriter.writeBooleanField(\"enabled\", this.enabled); } "
                         + "if (this.maxSpeakers != null) { jsonWriter.writeNumberField(\"maxSpeakers\", this.maxSpeakers); } "
                         + "return jsonWriter.writeEndObject(); }")));
+
+                // Update the JavaDoc on the 'enabled' field and isEnabled() getter to reflect that the
+                // client no longer auto-enables diarization when maxSpeakers is set; callers must opt in
+                // explicitly via the new constructor.
+                clazz.getFieldByName("enabled").ifPresent(field -> field.setJavadocComment(
+                    new Javadoc(parseText("Whether speaker diarization is enabled for this transcription request. "
+                        + "Set via the constructor; callers must opt in explicitly even when maxSpeakers is specified."))));
+                clazz.getMethodsByName("isEnabled").forEach(method -> method.setJavadocComment(
+                    new Javadoc(parseText("Get the enabled property: whether speaker diarization is enabled for this "
+                        + "transcription request. The value is supplied via the constructor; the client does not "
+                        + "auto-enable diarization when maxSpeakers is specified."))
+                        .addBlockTag("return", "the enabled value.")));
 
                 // Rewrite fromJson() to construct via the new constructor (default to false; overwrite below).
                 clazz.getMethodsByName("fromJson")

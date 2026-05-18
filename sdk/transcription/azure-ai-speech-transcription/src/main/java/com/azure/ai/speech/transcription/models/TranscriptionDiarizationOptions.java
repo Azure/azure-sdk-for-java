@@ -17,8 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class TranscriptionDiarizationOptions implements JsonSerializable<TranscriptionDiarizationOptions> {
 
-    /*
-     * Enable speaker diarization. This is automatically set to true when maxSpeakers is specified.
+    /**
+     * Whether speaker diarization is enabled for this transcription request. Set via the constructor; callers must opt
+     * in explicitly even when maxSpeakers is specified.
      */
     @Generated
     private Boolean enabled;
@@ -30,8 +31,8 @@ public final class TranscriptionDiarizationOptions implements JsonSerializable<T
     private Integer maxSpeakers;
 
     /**
-     * Get the enabled property: Enable speaker diarization. This is automatically set to true when maxSpeakers is
-     * specified.
+     * Get the enabled property: whether speaker diarization is enabled for this transcription request. The value is
+     * supplied via the constructor; the client does not auto-enable diarization when maxSpeakers is specified.
      *
      * @return the enabled value.
      */
