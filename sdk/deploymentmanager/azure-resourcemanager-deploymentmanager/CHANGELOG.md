@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.3 (2026-05-18)
 
 ### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 2026-05-18. The Azure Deployment Manager service has been permanently retired. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## 1.0.0-beta.2 (2023-01-16)
 
