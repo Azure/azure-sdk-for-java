@@ -3,7 +3,7 @@
 ### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added beta `semanticRerank` API on `CosmosAsyncContainer` and `CosmosContainer` for semantic reranking of documents using the Azure Cosmos DB inference service. Requires AAD authentication (`TokenCredential`) and the `AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT` system property or environment variable to be set. Includes retry logic for transient failures (429, 500, 502, 503) with exponential backoff. - [PR 48258](https://github.com/Azure/azure-sdk-for-java/pull/48258)
+* Added beta `semanticRerank` API on `CosmosAsyncContainer` and `CosmosContainer` for semantic reranking of documents using the Azure Cosmos DB inference service. Requires AAD authentication (`TokenCredential`) and the inference endpoint to be configured via the `azure.cosmos.semanticReranker.inferenceEndpoint` system property or the `AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT` environment variable. Includes retry logic for transient failures (429, 500, 502, 503) with exponential backoff (the server-supplied `Retry-After` header is honoured on 429 responses when present). - [PR 48258](https://github.com/Azure/azure-sdk-for-java/pull/48258)
 
 #### Breaking Changes
 

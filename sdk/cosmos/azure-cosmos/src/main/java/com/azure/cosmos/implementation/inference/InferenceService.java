@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -18,7 +19,6 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SemanticRerankScore;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -63,9 +63,9 @@ public class InferenceService implements AutoCloseable {
         "cosmos-inference-java/" + HttpConstants.Versions.getSdkVersion();
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
-    // System property / environment variable name (single string used for both lookup mechanisms)
-    private static final String MAX_CONNECTION_LIMIT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
-    private static final String MAX_CONNECTION_LIMIT_VARIABLE = MAX_CONNECTION_LIMIT_PROPERTY;
+    // Following the convention used in Configs: system property is dot.notation; environment variable is UPPER_SNAKE_CASE.
+    private static final String MAX_CONNECTION_LIMIT_PROPERTY = "azure.cosmos.semanticReranker.inferenceService.maxConnectionLimit";
+    private static final String MAX_CONNECTION_LIMIT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
 
     // Option keys that callers can pass in the options map
     public static final String OPTION_TIMEOUT_SECONDS = "timeout_seconds";
@@ -428,6 +428,10 @@ public class InferenceService implements AutoCloseable {
                 try {
                     JsonNode rootNode = OBJECT_MAPPER.readTree(bodyString);
                     SemanticRerankResult result = new SemanticRerankResult();
+                    ImplementationBridgeHelpers.SemanticRerankResultHelper.SemanticRerankResultAccessor resultAccessor =
+                        ImplementationBridgeHelpers.SemanticRerankResultHelper.getSemanticRerankResultAccessor();
+                    ImplementationBridgeHelpers.SemanticRerankScoreHelper.SemanticRerankScoreAccessor scoreAccessor =
+                        ImplementationBridgeHelpers.SemanticRerankScoreHelper.getSemanticRerankScoreAccessor();
 
                     // Parse scores
                     if (rootNode.has("Scores")) {
@@ -440,20 +444,20 @@ public class InferenceService implements AutoCloseable {
                                 JsonNode indexNode = scoreNode.get("index");
                                 JsonNode scoreValNode = scoreNode.get("score");
                                 if (indexNode != null) {
-                                    ModelBridgeInternal.setSemanticRerankScoreIndex(score, indexNode.asInt());
+                                    scoreAccessor.setIndex(score, indexNode.asInt());
                                 }
                                 if (scoreValNode != null) {
-                                    ModelBridgeInternal.setSemanticRerankScoreScore(score, scoreValNode.asDouble());
+                                    scoreAccessor.setScore(score, scoreValNode.asDouble());
                                 }
 
                                 if (scoreNode.has("document")) {
-                                    ModelBridgeInternal.setSemanticRerankScoreDocument(score, scoreNode.get("document").asText());
+                                    scoreAccessor.setDocument(score, scoreNode.get("document").asText());
                                 }
 
                                 scores.add(score);
                             }
                         }
-                        ModelBridgeInternal.setSemanticRerankResultScores(result, scores);
+                        resultAccessor.setScores(result, scores);
                     }
 
                     // Parse latency
@@ -461,7 +465,7 @@ public class InferenceService implements AutoCloseable {
                         Map<String, Object> latency = new HashMap<>();
                         rootNode.get("latency").fields().forEachRemaining(
                             entry -> latency.put(entry.getKey(), entry.getValue().asDouble()));
-                        ModelBridgeInternal.setSemanticRerankResultLatency(result, latency);
+                        resultAccessor.setLatency(result, latency);
                     }
 
                     // Parse token usage
@@ -469,7 +473,7 @@ public class InferenceService implements AutoCloseable {
                         Map<String, Object> tokenUsage = new HashMap<>();
                         rootNode.get("token_usage").fields().forEachRemaining(
                             entry -> tokenUsage.put(entry.getKey(), entry.getValue().asInt()));
-                        ModelBridgeInternal.setSemanticRerankResultTokenUsage(result, tokenUsage);
+                        resultAccessor.setTokenUsage(result, tokenUsage);
                     }
 
                     if (logger.isDebugEnabled()) {

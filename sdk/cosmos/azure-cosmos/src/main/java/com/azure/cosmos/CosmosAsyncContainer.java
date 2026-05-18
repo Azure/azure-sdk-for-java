@@ -1974,30 +1974,19 @@ public class CosmosAsyncContainer {
      *                </ul>
      * @return A {@link Mono} emitting the {@link SemanticRerankResult}.
      */
-    @Beta(value = Beta.SinceVersion.V4_78_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<SemanticRerankResult> semanticRerank(
         String rerankContext,
         List<String> documents,
         Map<String, Object> options) {
 
-        if (rerankContext == null) {
-            return Mono.error(new IllegalArgumentException("Rerank context cannot be null"));
-        }
-        if (documents == null) {
-            return Mono.error(new IllegalArgumentException("Documents list cannot be null"));
-        }
-
-        if (rerankContext.trim().isEmpty()) {
-            return Mono.error(new IllegalArgumentException("Rerank context cannot be empty"));
-        }
-
-        if (documents.isEmpty()) {
-            return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
-        }
+        checkNotNull(rerankContext, "Argument 'rerankContext' must not be null.");
+        checkNotNull(documents, "Argument 'documents' must not be null.");
+        checkArgument(!rerankContext.trim().isEmpty(), "Argument 'rerankContext' must not be empty.");
+        checkArgument(!documents.isEmpty(), "Argument 'documents' must not be empty.");
 
         return this.database.getClient().getOrCreateInferenceService().semanticRerank(rerankContext, documents, options);
     }
-
 
     /**
      * Replaces an existing item in a container with a new item.

@@ -421,10 +421,11 @@ public class Configs {
     private static final String CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = "COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT";
     private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = 120;
 
-    // Inference service related configs
-    // Single source of truth: same name is used for both the system property and the environment variable lookup.
-    private static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
-    private static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = INFERENCE_ENDPOINT_PROPERTY;
+    // Inference service related configs.
+    // Following the convention used elsewhere in this file: the system property uses dot.notation
+    // and the environment variable uses UPPER_SNAKE_CASE.
+    private static final String INFERENCE_ENDPOINT_PROPERTY = "azure.cosmos.semanticReranker.inferenceEndpoint";
+    private static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
 
     private static final Object lockObject = new Object();
     private static Boolean cachedIsHostnameValidationDisabled = null;

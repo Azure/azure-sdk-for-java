@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.util.Beta;
 
 /**
  * Represents a single scored document in the semantic rerank result.
  */
-@Beta(value = Beta.SinceVersion.V4_78_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class SemanticRerankScore {
     private int index;
     private String document;
@@ -28,12 +29,7 @@ public final class SemanticRerankScore {
         return index;
     }
 
-    /**
-     * Sets the index of the document in the original input list.
-     *
-     * @param index the document index.
-     */
-    void setIndex(int index) {
+    private void setIndex(int index) {
         this.index = index;
     }
 
@@ -46,12 +42,7 @@ public final class SemanticRerankScore {
         return document;
     }
 
-    /**
-     * Sets the document text.
-     *
-     * @param document the document text.
-     */
-    void setDocument(String document) {
+    private void setDocument(String document) {
         this.document = document;
     }
 
@@ -64,12 +55,33 @@ public final class SemanticRerankScore {
         return score;
     }
 
-    /**
-     * Sets the semantic relevance score for this document.
-     *
-     * @param score the relevance score.
-     */
-    void setScore(double score) {
+    private void setScore(double score) {
         this.score = score;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.SemanticRerankScoreHelper.setSemanticRerankScoreAccessor(
+            new ImplementationBridgeHelpers.SemanticRerankScoreHelper.SemanticRerankScoreAccessor() {
+                @Override
+                public void setIndex(SemanticRerankScore score, int index) {
+                    score.setIndex(index);
+                }
+
+                @Override
+                public void setScore(SemanticRerankScore score, double scoreValue) {
+                    score.setScore(scoreValue);
+                }
+
+                @Override
+                public void setDocument(SemanticRerankScore score, String document) {
+                    score.setDocument(document);
+                }
+            }
+        );
+    }
+
+    static { initialize(); }
 }
