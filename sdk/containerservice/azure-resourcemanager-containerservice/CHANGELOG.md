@@ -1,14 +1,402 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.61.0-beta.1 (2026-05-18)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedClusterAgentPoolProfile` was modified
 
-### Other Changes
+* `nodeImageVersion()` was removed
+
+### Features Added
+
+* `models.AgentPoolBlueGreenUpgradeSettings` was added
+
+* `models.UpgradeStrategy` was added
+
+* `models.MeshMembershipProperties` was added
+
+* `models.SeccompDefault` was added
+
+* `models.ManagedClusterSecurityProfileImageIntegrity` was added
+
+* `models.MeshMembershipPrivateConnectProfile` was added
+
+* `models.ComponentsByRelease` was added
+
+* `models.VmState` was added
+
+* `models.ResourceSkuCosts` was added
+
+* `models.ManagedClusterSecurityProfileNodeRestriction` was added
+
+* `models.ResourceSkuRestrictionsType` was added
+
+* `models.MigStrategy` was added
+
+* `models.MachineOSProfileLinuxProfile` was added
+
+* `models.GuardrailsAvailableVersionsProperties` was added
+
+* `models.ManagedClusterSecurityProfileDefenderSecurityGating` was added
+
+* `models.ResourceSkuRestrictions` was added
+
+* `models.SchedulerInstanceProfile` was added
+
+* `models.MachineOSProfile` was added
+
+* `models.Operator` was added
+
+* `models.ClusterServiceLoadBalancerHealthProbeMode` was added
+
+* `models.ManagedClusterNATGatewayProfileOutboundIPs` was added
+
+* `models.ResourceSkuCapacity` was added
+
+* `models.JWTAuthenticatorExtraClaimMappingExpression` was added
+
+* `models.ContainerServiceNetworkProfileKubeProxyConfigIpvsConfig` was added
+
+* `models.GuardrailsSupport` was added
+
+* `models.SchedulerProfileSchedulerInstanceProfiles` was added
+
+* `models.ServiceAccountImagePullProfile` was added
+
+* `models.MachineBillingProfile` was added
+
+* `models.ResourceSkuRestrictionInfo` was added
+
+* `models.DriftAction` was added
+
+* `models.IdentityBindingProperties` was added
+
+* `models.NvidiaGPUProfile` was added
+
+* `models.SafeguardsSupport` was added
+
+* `models.ManagedClusterAzureMonitorProfileContainerInsights` was added
+
+* `models.KubeReserved` was added
+
+* `models.InfrastructureEncryption` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces` was added
+
+* `models.NodeDisruptionPolicy` was added
+
+* `models.SchedulerConfigMode` was added
+
+* `models.SchedulerProfile` was added
+
+* `models.ResourceSkuCapabilities` was added
+
+* `models.MachineKubernetesProfile` was added
+
+* `models.ManagedClusterHealthMonitorProfile` was added
+
+* `models.IdentityBindingOidcIssuerProfile` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` was added
+
+* `models.ContainerNetworkLogs` was added
+
+* `models.JWTAuthenticatorProperties` was added
+
+* `models.JWTAuthenticatorClaimMappings` was added
+
+* `models.ManagedClusterNATGatewayProfileOutboundIpPrefixes` was added
+
+* `models.SafeguardsAvailableVersionsProperties` was added
+
+* `models.MachineSecurityProfile` was added
+
+* `models.LabelSelectorRequirement` was added
+
+* `models.HardEvictionThreshold` was added
+
+* `models.ContainerServiceNetworkProfileKubeProxyConfig` was added
+
+* `models.ManagedClusterAzureMonitorProfileMetricsControlPlane` was added
+
+* `models.AgentPoolRecentlyUsedVersion` was added
+
+* `models.ResourceSkuLocationInfo` was added
+
+* `models.ControlPlaneScalingSize` was added
+
+* `models.MachineHardwareProfile` was added
+
+* `models.ResourceSkuRestrictionsReasonCode` was added
+
+* `models.IdentityBindingManagedIdentityProfile` was added
+
+* `models.JWTAuthenticatorIssuer` was added
+
+* `models.DriverType` was added
+
+* `models.ManagementMode` was added
+
+* `models.JWTAuthenticatorValidationRule` was added
+
+* `models.ManagedClusterPropertiesForSnapshot` was added
+
+* `models.ResourceSkuZoneDetails` was added
+
+* `models.MeshMembershipProvisioningState` was added
+
+* `models.ResourceSkuCapacityScaleType` was added
+
+* `models.PreparedImageSpecificationProfile` was added
+
+* `models.ManagedClusterIngressDefaultDomainProfile` was added
+
+* `models.IpvsScheduler` was added
+
+* `models.ManagedClusterIngressProfileApplicationLoadBalancer` was added
+
+* `models.LabelSelector` was added
+
+* `models.KubernetesResourceObjectEncryptionProfile` was added
+
+* `models.Component` was added
+
+* `models.JWTAuthenticatorClaimMappingExpression` was added
+
+* `models.MachineStatus` was added
+
+* `models.AutoScaleProfile` was added
+
+* `models.RebalanceLoadBalancersRequestBody` was added
+
+* `models.IdentityBindingProvisioningState` was added
+
+* `models.ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem` was added
+
+* `models.Mode` was added
+
+* `models.AgentPoolNetworkInterface` was added
+
+* `models.NodeDisruptionProfile` was added
+
+* `models.ManagedClusterControlPlaneScalingProfile` was added
+
+* `models.AddonAutoscaling` was added
+
+* `models.NetworkProfileForSnapshot` was added
+
+* `models.AgentPoolNetworkInterfaceType` was added
+
+* `models.JWTAuthenticatorProvisioningState` was added
+
+* `models.PodLinkLocalAccess` was added
+
+#### `models.ScaleProfile` was modified
+
+* `autoscale()` was added
+* `withAutoscale(java.util.List)` was added
+
+#### `models.ManagedClusterSecurityProfileDefender` was modified
+
+* `securityGating()` was added
+* `withSecurityGating(models.ManagedClusterSecurityProfileDefenderSecurityGating)` was added
+
+#### `models.ManagedClusterIngressProfile` was modified
+
+* `applicationLoadBalancer()` was added
+* `withApplicationLoadBalancer(models.ManagedClusterIngressProfileApplicationLoadBalancer)` was added
+
+#### `models.ContainerServiceNetworkProfile` was modified
+
+* `podLinkLocalAccess()` was added
+* `kubeProxyConfig()` was added
+* `withPodLinkLocalAccess(models.PodLinkLocalAccess)` was added
+* `withKubeProxyConfig(models.ContainerServiceNetworkProfileKubeProxyConfig)` was added
+
+#### `models.AgentPoolMode` was modified
+
+* `MACHINES` was added
+* `MANAGED_SYSTEM` was added
+
+#### `models.ManagedClusterHttpProxyConfig` was modified
+
+* `effectiveNoProxy()` was added
+
+#### `models.SnapshotType` was modified
+
+* `MANAGED_CLUSTER` was added
+
+#### `models.OutboundType` was modified
+
+* `MANAGED_NATGATEWAY_V2` was added
+
+#### `models.ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler` was modified
+
+* `addonAutoscaling()` was added
+* `withAddonAutoscaling(models.AddonAutoscaling)` was added
+
+#### `models.ManagedClusterAgentPoolProfile` was modified
+
+* `withUpgradeSettingsBlueGreen(models.AgentPoolBlueGreenUpgradeSettings)` was added
+* `withUpgradeStrategy(models.UpgradeStrategy)` was added
+* `withPreparedImageSpecificationProfile(models.PreparedImageSpecificationProfile)` was added
+* `withNodeInitializationTaints(java.util.List)` was added
+* `withNodeImageVersion(java.lang.String)` was added
+* `withEnableOSDiskFullCaching(java.lang.Boolean)` was added
+
+#### `models.ManagedClusterSecurityProfile` was modified
+
+* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
+* `withImageIntegrity(models.ManagedClusterSecurityProfileImageIntegrity)` was added
+* `kubernetesResourceObjectEncryptionProfile()` was added
+* `withServiceAccountImagePullProfile(models.ServiceAccountImagePullProfile)` was added
+* `nodeRestriction()` was added
+* `withNodeRestriction(models.ManagedClusterSecurityProfileNodeRestriction)` was added
+* `imageIntegrity()` was added
+* `serviceAccountImagePullProfile()` was added
+
+#### `models.ManagedClusterIngressProfileWebAppRouting` was modified
+
+* `defaultDomain()` was added
+* `withDefaultDomain(models.ManagedClusterIngressDefaultDomainProfile)` was added
+
+#### `models.ManagedClusterLoadBalancerProfile` was modified
+
+* `clusterServiceLoadBalancerHealthProbeMode()` was added
+* `withClusterServiceLoadBalancerHealthProbeMode(models.ClusterServiceLoadBalancerHealthProbeMode)` was added
+
+#### `models.PublicNetworkAccess` was modified
+
+* `SECURED_BY_PERIMETER` was added
+
+#### `models.AgentPoolSshAccess` was modified
+
+* `ENTRA_ID` was added
+
+#### `models.TransitEncryptionType` was modified
+
+* `M_TLS` was added
+
+#### `models.ManagedClusterPoolUpgradeProfileUpgradesItem` was modified
+
+* `isOutOfSupport()` was added
+
+#### `models.ManagedClusterAzureMonitorProfileMetrics` was modified
+
+* `withControlPlane(models.ManagedClusterAzureMonitorProfileMetricsControlPlane)` was added
+* `controlPlane()` was added
+
+#### `models.AgentPoolNetworkProfile` was modified
+
+* `secondaryNetworkInterfaces()` was added
+* `nodePublicIPPrefixIDs()` was added
+* `withSecondaryNetworkInterfaces(java.util.List)` was added
+* `withNodePublicIPPrefixIDs(java.util.List)` was added
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoring` was modified
+
+* `openTelemetryMetrics()` was added
+* `withOpenTelemetryLogsAndTraces(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces)` was added
+* `withOpenTelemetryMetrics(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics)` was added
+* `openTelemetryLogsAndTraces()` was added
+
+#### `models.ManagedClusterManagedOutboundIpProfile` was modified
+
+* `countIPv6()` was added
+* `withCountIPv6(java.lang.Integer)` was added
+
+#### `models.MachineNetworkProperties` was modified
+
+* `enableNodePublicIp()` was added
+* `withPodSubnetId(java.lang.String)` was added
+* `withVnetSubnetId(java.lang.String)` was added
+* `withNodePublicIpTags(java.util.List)` was added
+* `podSubnetId()` was added
+* `vnetSubnetId()` was added
+* `nodePublicIpTags()` was added
+* `withNodePublicIpPrefixId(java.lang.String)` was added
+* `nodePublicIpPrefixId()` was added
+* `withEnableNodePublicIp(java.lang.Boolean)` was added
+
+#### `models.WorkloadRuntime` was modified
+
+* `KATA_MSHV_VM_ISOLATION` was added
+
+#### `models.OSSku` was modified
+
+* `MARINER` was added
+* `FLATCAR` was added
+* `WINDOWS_ANNUAL` was added
+
+#### `models.AgentPoolUpgradeProfilePropertiesUpgradesItem` was modified
+
+* `isOutOfSupport()` was added
+
+#### `models.GpuProfile` was modified
+
+* `driverType()` was added
+* `nvidia()` was added
+* `withNvidia(models.NvidiaGPUProfile)` was added
+* `withDriverType(models.DriverType)` was added
+
+#### `models.AgentPoolUpgradeSettings` was modified
+
+* `withMaxBlockedNodes(java.lang.String)` was added
+* `maxBlockedNodes()` was added
+
+#### `models.ManagedClusterAzureMonitorProfile` was modified
+
+* `containerInsights()` was added
+* `withContainerInsights(models.ManagedClusterAzureMonitorProfileContainerInsights)` was added
+
+#### `models.ManagedClusterNatGatewayProfile` was modified
+
+* `outboundIpPrefixes()` was added
+* `withOutboundIpPrefixes(models.ManagedClusterNATGatewayProfileOutboundIpPrefixes)` was added
+* `outboundIps()` was added
+* `withOutboundIps(models.ManagedClusterNATGatewayProfileOutboundIPs)` was added
+
+#### `models.ManagedClusterPoolUpgradeProfile` was modified
+
+* `componentsByReleases()` was added
+
+#### `models.KubeletConfig` was modified
+
+* `withHardEvictionThreshold(models.HardEvictionThreshold)` was added
+* `hardEvictionThreshold()` was added
+* `withSeccompDefault(models.SeccompDefault)` was added
+* `seccompDefault()` was added
+* `kubeReserved()` was added
+* `withKubeReserved(models.KubeReserved)` was added
+
+#### `models.MachineProperties` was modified
+
+* `mode()` was added
+* `withHardware(models.MachineHardwareProfile)` was added
+* `status()` was added
+* `withOperatingSystem(models.MachineOSProfile)` was added
+* `hardware()` was added
+* `withLocalDNSProfile(models.LocalDnsProfile)` was added
+* `eTag()` was added
+* `withBilling(models.MachineBillingProfile)` was added
+* `operatingSystem()` was added
+* `withEvictionPolicy(models.ScaleSetEvictionPolicy)` was added
+* `withNetwork(models.MachineNetworkProperties)` was added
+* `kubernetes()` was added
+* `localDNSProfile()` was added
+* `billing()` was added
+* `nodeImageVersion()` was added
+* `priority()` was added
+* `withPriority(models.ScaleSetPriority)` was added
+* `security()` was added
+* `withMode(models.AgentPoolMode)` was added
+* `evictionPolicy()` was added
+* `tags()` was added
+* `withSecurity(models.MachineSecurityProfile)` was added
+* `withTags(java.util.Map)` was added
+* `provisioningState()` was added
+* `withKubernetes(models.MachineKubernetesProfile)` was added
 
 ## 2.60.0 (2026-05-09)
 
