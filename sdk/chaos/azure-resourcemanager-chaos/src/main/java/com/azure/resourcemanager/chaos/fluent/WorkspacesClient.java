@@ -109,7 +109,7 @@ public interface WorkspacesClient {
         Context context);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -124,7 +124,7 @@ public interface WorkspacesClient {
         WorkspaceUpdate properties);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -140,7 +140,7 @@ public interface WorkspacesClient {
         WorkspaceUpdate properties, Context context);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -154,7 +154,7 @@ public interface WorkspacesClient {
     WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdate properties);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.

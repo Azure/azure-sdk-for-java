@@ -11,7 +11,7 @@ import com.azure.resourcemanager.chaos.models.FixResourcePermissionsRequest;
 import com.azure.resourcemanager.chaos.models.PermissionsFix;
 import com.azure.resourcemanager.chaos.models.ScenarioConfiguration;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurationProperties;
-import com.azure.resourcemanager.chaos.models.ScenarioConfigurationsExecuteResponse;
+import com.azure.resourcemanager.chaos.models.ScenarioRun;
 import com.azure.resourcemanager.chaos.models.Validation;
 
 public final class ScenarioConfigurationImpl
@@ -136,14 +136,14 @@ public final class ScenarioConfigurationImpl
         return this;
     }
 
-    public ScenarioConfigurationsExecuteResponse executeWithResponse(Context context) {
+    public ScenarioRun execute() {
         return serviceManager.scenarioConfigurations()
-            .executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
+            .execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
     }
 
-    public void execute() {
-        serviceManager.scenarioConfigurations()
-            .execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+    public ScenarioRun execute(Context context) {
+        return serviceManager.scenarioConfigurations()
+            .execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
     }
 
     public Validation validate() {

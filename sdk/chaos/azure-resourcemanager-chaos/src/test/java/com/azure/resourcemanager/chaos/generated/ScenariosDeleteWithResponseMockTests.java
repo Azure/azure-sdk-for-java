@@ -27,8 +27,7 @@ public final class ScenariosDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.scenarios()
-            .deleteWithResponse("ofltfnnxrkadjfy", "nfmuiiiripf", "hykfkxbb", com.azure.core.util.Context.NONE);
+        manager.scenarios().deleteWithResponse("xhqf", "qkaye", "sxtlg", com.azure.core.util.Context.NONE);
 
     }
 }

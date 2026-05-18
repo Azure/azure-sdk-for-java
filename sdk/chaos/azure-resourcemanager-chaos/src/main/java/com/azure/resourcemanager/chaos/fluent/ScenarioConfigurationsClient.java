@@ -12,9 +12,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioConfigurationInner;
+import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.models.FixResourcePermissionsRequest;
 import com.azure.resourcemanager.chaos.models.PermissionsFix;
-import com.azure.resourcemanager.chaos.models.ScenarioConfigurationsExecuteResponse;
 import com.azure.resourcemanager.chaos.models.Validation;
 
 /**
@@ -227,15 +227,31 @@ public interface ScenarioConfigurationsClient {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
+        String workspaceName, String scenarioName, String scenarioConfigurationName);
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScenarioConfigurationsExecuteResponse executeWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
+        String workspaceName, String scenarioName, String scenarioConfigurationName, Context context);
 
     /**
      * Execute the scenario execution with the given scenario configuration.
@@ -247,9 +263,28 @@ public interface ScenarioConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void execute(String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName);
+    ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName);
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName, Context context);
 
     /**
      * Validate the given scenario configuration.

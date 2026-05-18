@@ -13,8 +13,6 @@ import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.models.ScenarioRun;
 import com.azure.resourcemanager.chaos.models.ScenarioRuns;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsCancelResponse;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
 
 public final class ScenarioRunsImpl implements ScenarioRuns {
     private static final ClientLogger LOGGER = new ClientLogger(ScenarioRunsImpl.class);
@@ -31,14 +29,10 @@ public final class ScenarioRunsImpl implements ScenarioRuns {
 
     public Response<ScenarioRun> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context) {
-        ScenarioRunsGetResponse inner
+        Response<ScenarioRunInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, scenarioName, runId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScenarioRunImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScenarioRunImpl(inner.getValue(), this.manager()));
     }
 
     public ScenarioRun get(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
@@ -63,13 +57,24 @@ public final class ScenarioRunsImpl implements ScenarioRuns {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioRunImpl(inner1, this.manager()));
     }
 
-    public ScenarioRunsCancelResponse cancelWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String runId, Context context) {
-        return this.serviceClient().cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId, context);
+    public ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
+        ScenarioRunInner inner = this.serviceClient().cancel(resourceGroupName, workspaceName, scenarioName, runId);
+        if (inner != null) {
+            return new ScenarioRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, workspaceName, scenarioName, runId);
+    public ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,
+        Context context) {
+        ScenarioRunInner inner
+            = this.serviceClient().cancel(resourceGroupName, workspaceName, scenarioName, runId, context);
+        if (inner != null) {
+            return new ScenarioRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private ScenarioRunsClient serviceClient() {

@@ -11,6 +11,6 @@ public final class EntraIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntraIdentity model
-            = BinaryData.fromString("{\"objectId\":\"ky\",\"tenantId\":\"cxcjxgry\"}").toObject(EntraIdentity.class);
+            = BinaryData.fromString("{\"objectId\":\"nlb\",\"tenantId\":\"jkwrusnkq\"}").toObject(EntraIdentity.class);
     }
 }

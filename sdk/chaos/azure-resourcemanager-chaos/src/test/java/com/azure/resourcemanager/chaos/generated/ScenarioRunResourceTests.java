@@ -10,6 +10,6 @@ import com.azure.resourcemanager.chaos.models.ScenarioRunResource;
 public final class ScenarioRunResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScenarioRunResource model = BinaryData.fromString("{\"id\":\"ze\"}").toObject(ScenarioRunResource.class);
+        ScenarioRunResource model = BinaryData.fromString("{\"id\":\"twk\"}").toObject(ScenarioRunResource.class);
     }
 }

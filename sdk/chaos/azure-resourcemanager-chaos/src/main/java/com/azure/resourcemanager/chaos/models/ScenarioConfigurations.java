@@ -106,14 +106,13 @@ public interface ScenarioConfigurations {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ScenarioConfigurationsExecuteResponse executeWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, Context context);
+    ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName);
 
     /**
      * Execute the scenario execution with the given scenario configuration.
@@ -122,11 +121,14 @@ public interface ScenarioConfigurations {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param scenarioConfigurationName Name of the scenario definition.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void execute(String resourceGroupName, String workspaceName, String scenarioName, String scenarioConfigurationName);
+    ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName, Context context);
 
     /**
      * Validate the given scenario configuration.

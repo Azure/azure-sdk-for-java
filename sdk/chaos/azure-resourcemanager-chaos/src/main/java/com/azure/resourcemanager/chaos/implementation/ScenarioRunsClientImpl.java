@@ -24,13 +24,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.implementation.models.ScenarioRunListResult;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsCancelResponse;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -67,9 +71,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     public interface ScenarioRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ScenarioRunsGetResponse> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<ScenarioRunInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId,
@@ -77,9 +81,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        ScenarioRunsGetResponse getSync(@HostParam("endpoint") String endpoint,
+        Response<ScenarioRunInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId,
@@ -107,7 +111,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ScenarioRunsCancelResponse> cancel(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId, Context context);
@@ -116,7 +120,7 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}/cancel")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        ScenarioRunsCancelResponse cancelSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId, Context context);
@@ -147,10 +151,10 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run on successful completion of {@link Mono}.
+     * @return a scenario run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScenarioRunsGetResponse> getWithResponseAsync(String resourceGroupName, String workspaceName,
+    private Mono<Response<ScenarioRunInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
         String scenarioName, String runId) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -188,11 +192,11 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run.
+     * @return a scenario run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScenarioRunsGetResponse getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
-        String runId, Context context) {
+    public Response<ScenarioRunInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String scenarioName, String runId, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, workspaceName, scenarioName, runId, accept, context);
@@ -348,10 +352,10 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScenarioRunsCancelResponse> cancelWithResponseAsync(String resourceGroupName, String workspaceName,
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String workspaceName,
         String scenarioName, String runId) {
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -369,12 +373,132 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
-        return cancelWithResponseAsync(resourceGroupName, workspaceName, scenarioName, runId)
-            .flatMap(ignored -> Mono.empty());
+    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
+        String runId) {
+        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> cancelWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
+        String runId, Context context) {
+        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, runId, context);
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancelAsync(String resourceGroupName,
+        String workspaceName, String scenarioName, String runId) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = cancelWithResponseAsync(resourceGroupName, workspaceName, scenarioName, runId);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScenarioRunInner.class, ScenarioRunInner.class, this.client.getContext());
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
+        String workspaceName, String scenarioName, String runId) {
+        Response<BinaryData> response = cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
+            ScenarioRunInner.class, Context.NONE);
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
+        String workspaceName, String scenarioName, String runId, Context context) {
+        Response<BinaryData> response
+            = cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId, context);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
+            ScenarioRunInner.class, context);
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ScenarioRunInner> cancelAsync(String resourceGroupName, String workspaceName, String scenarioName,
+        String runId) {
+        return beginCancelAsync(resourceGroupName, workspaceName, scenarioName, runId).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
+        return beginCancel(resourceGroupName, workspaceName, scenarioName, runId).getFinalResult();
     }
 
     /**
@@ -391,26 +515,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScenarioRunsCancelResponse cancelWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String runId, Context context) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, runId, context);
-    }
-
-    /**
-     * Cancel the currently running scenario execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param scenarioName Name of the scenario.
-     * @param runId The name of the ScenarioRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId) {
-        cancelWithResponse(resourceGroupName, workspaceName, scenarioName, runId, Context.NONE);
+    public ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,
+        Context context) {
+        return beginCancel(resourceGroupName, workspaceName, scenarioName, runId, context).getFinalResult();
     }
 
     /**

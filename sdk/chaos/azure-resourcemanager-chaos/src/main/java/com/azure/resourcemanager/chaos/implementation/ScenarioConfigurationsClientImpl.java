@@ -35,10 +35,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.ScenarioConfigurationsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioConfigurationInner;
+import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.implementation.models.ScenarioConfigurationListResult;
 import com.azure.resourcemanager.chaos.models.FixResourcePermissionsRequest;
 import com.azure.resourcemanager.chaos.models.PermissionsFix;
-import com.azure.resourcemanager.chaos.models.ScenarioConfigurationsExecuteResponse;
 import com.azure.resourcemanager.chaos.models.Validation;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -162,7 +162,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/execute")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ScenarioConfigurationsExecuteResponse> execute(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> execute(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
@@ -172,7 +172,7 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/execute")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        ScenarioConfigurationsExecuteResponse executeSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> executeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName,
@@ -837,11 +837,11 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScenarioConfigurationsExecuteResponse> executeWithResponseAsync(String resourceGroupName,
-        String workspaceName, String scenarioName, String scenarioConfigurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String resourceGroupName, String workspaceName,
+        String scenarioName, String scenarioConfigurationName) {
         return FluxUtil
             .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName,
@@ -859,13 +859,14 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> executeAsync(String resourceGroupName, String workspaceName, String scenarioName,
-        String scenarioConfigurationName) {
-        return executeWithResponseAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName)
-            .flatMap(ignored -> Mono.empty());
+    private Response<BinaryData> executeWithResponse(String resourceGroupName, String workspaceName,
+        String scenarioName, String scenarioConfigurationName) {
+        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
+            Context.NONE);
     }
 
     /**
@@ -879,10 +880,10 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScenarioConfigurationsExecuteResponse executeWithResponse(String resourceGroupName, String workspaceName,
+    private Response<BinaryData> executeWithResponse(String resourceGroupName, String workspaceName,
         String scenarioName, String scenarioConfigurationName, Context context) {
         return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName,
@@ -899,11 +900,115 @@ public final class ScenarioConfigurationsClientImpl implements ScenarioConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecuteAsync(String resourceGroupName,
+        String workspaceName, String scenarioName, String scenarioConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeWithResponseAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ScenarioRunInner.class, ScenarioRunInner.class, this.client.getContext());
+    }
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
+        String workspaceName, String scenarioName, String scenarioConfigurationName) {
+        Response<BinaryData> response
+            = executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
+            ScenarioRunInner.class, Context.NONE);
+    }
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginExecute(String resourceGroupName,
+        String workspaceName, String scenarioName, String scenarioConfigurationName, Context context) {
+        Response<BinaryData> response
+            = executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
+        return this.client.<ScenarioRunInner, ScenarioRunInner>getLroResult(response, ScenarioRunInner.class,
+            ScenarioRunInner.class, context);
+    }
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void execute(String resourceGroupName, String workspaceName, String scenarioName,
+    private Mono<ScenarioRunInner> executeAsync(String resourceGroupName, String workspaceName, String scenarioName,
         String scenarioConfigurationName) {
-        executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, Context.NONE);
+        return beginExecuteAsync(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName) {
+        return beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName).getFinalResult();
+    }
+
+    /**
+     * Execute the scenario execution with the given scenario configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param scenarioConfigurationName Name of the scenario definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScenarioRunInner execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName, Context context) {
+        return beginExecute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context)
+            .getFinalResult();
     }
 
     /**

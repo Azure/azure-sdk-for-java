@@ -7,10 +7,11 @@ package com.azure.resourcemanager.chaos.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsCancelResponse;
-import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
 
 /**
  * An instance of this class provides access to all the operations defined in ScenarioRunsClient.
@@ -27,10 +28,10 @@ public interface ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run.
+     * @return a scenario run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScenarioRunsGetResponse getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
+    Response<ScenarioRunInner> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context);
 
     /**
@@ -85,15 +86,31 @@ public interface ScenarioRunsClient {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param runId The name of the ScenarioRun.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
+        String workspaceName, String scenarioName, String runId);
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScenarioRunsCancelResponse cancelWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
-        String runId, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScenarioRunInner>, ScenarioRunInner> beginCancel(String resourceGroupName,
+        String workspaceName, String scenarioName, String runId, Context context);
 
     /**
      * Cancel the currently running scenario execution.
@@ -105,7 +122,25 @@ public interface ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId);
+    ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId);
+
+    /**
+     * Cancel the currently running scenario execution.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param scenarioName Name of the scenario.
+     * @param runId The name of the ScenarioRun.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScenarioRunInner cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,
+        Context context);
 }

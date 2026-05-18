@@ -11,11 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.chaos.fluent.ScenarioConfigurationsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioConfigurationInner;
+import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.models.FixResourcePermissionsRequest;
 import com.azure.resourcemanager.chaos.models.PermissionsFix;
 import com.azure.resourcemanager.chaos.models.ScenarioConfiguration;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurations;
-import com.azure.resourcemanager.chaos.models.ScenarioConfigurationsExecuteResponse;
+import com.azure.resourcemanager.chaos.models.ScenarioRun;
 import com.azure.resourcemanager.chaos.models.Validation;
 
 public final class ScenarioConfigurationsImpl implements ScenarioConfigurations {
@@ -74,15 +75,26 @@ public final class ScenarioConfigurationsImpl implements ScenarioConfigurations 
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioConfigurationImpl(inner1, this.manager()));
     }
 
-    public ScenarioConfigurationsExecuteResponse executeWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String scenarioConfigurationName, Context context) {
-        return this.serviceClient()
-            .executeWithResponse(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
+    public ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName) {
+        ScenarioRunInner inner
+            = this.serviceClient().execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+        if (inner != null) {
+            return new ScenarioRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void execute(String resourceGroupName, String workspaceName, String scenarioName,
-        String scenarioConfigurationName) {
-        this.serviceClient().execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName);
+    public ScenarioRun execute(String resourceGroupName, String workspaceName, String scenarioName,
+        String scenarioConfigurationName, Context context) {
+        ScenarioRunInner inner = this.serviceClient()
+            .execute(resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, context);
+        if (inner != null) {
+            return new ScenarioRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Validation validate(String resourceGroupName, String workspaceName, String scenarioName,

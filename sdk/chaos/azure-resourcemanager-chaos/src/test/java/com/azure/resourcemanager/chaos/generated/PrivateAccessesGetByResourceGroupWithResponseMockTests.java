@@ -22,7 +22,7 @@ public final class PrivateAccessesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Running\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"xnafbw\",\"ro\",\"htuov\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"rjtumghih\",\"name\":\"ve\",\"type\":\"mslclblyjxlt\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"scvsfxigctm\",\"tags\":{\"eukdqkkyih\":\"upbezqccydrt\"},\"id\":\"tg\",\"name\":\"qm\",\"type\":\"qzgwldoychil\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"dcgdzbenribca\",\"etzqd\",\"tjwfljhznamtua\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Running\"},\"id\":\"jj\",\"name\":\"cqtjzmi\",\"type\":\"vgbgatzuuvbxng\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"ggahtt\",\"tags\":{\"utlxjoqzasunwqrj\":\"wvajq\",\"uocnjrohmbpyr\":\"frgqhaohcm\"},\"id\":\"xameblydyvkfkm\",\"name\":\"ocxnehvsmtodl\",\"type\":\"pyapucygvoav\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrivateAccessesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateAccess response = manager.privateAccesses()
-            .getByResourceGroupWithResponse("vnynkb", "etnjuhpsprkz", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("qvapcohhoucq", "q", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("scvsfxigctm", response.location());
-        Assertions.assertEquals("upbezqccydrt", response.tags().get("eukdqkkyih"));
+        Assertions.assertEquals("ggahtt", response.location());
+        Assertions.assertEquals("wvajq", response.tags().get("utlxjoqzasunwqrj"));
         Assertions.assertEquals(PublicNetworkAccessOption.ENABLED, response.properties().publicNetworkAccess());
     }
 }

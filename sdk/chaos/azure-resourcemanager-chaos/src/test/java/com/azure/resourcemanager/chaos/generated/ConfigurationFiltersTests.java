@@ -13,22 +13,22 @@ public final class ConfigurationFiltersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationFilters model = BinaryData.fromString(
-            "{\"locations\":[\"aglqivbgkcvkh\",\"zvuqdflvon\",\"yp\"],\"zones\":[\"bcpzgpxtivh\",\"knidib\",\"qjxgpnrhgovfgp\"],\"physicalZones\":[\"mhha\",\"wjrmzvuporqzd\"]}")
+            "{\"locations\":[\"i\",\"xgvelfclduccbird\",\"vuwcobiegstmnin\",\"jizcilnghgs\"],\"zones\":[\"jtbxqmuluxlx\",\"zvners\",\"ycucrwnamikzeb\",\"qbsms\"],\"physicalZones\":[\"qgfuhokzru\"]}")
             .toObject(ConfigurationFilters.class);
-        Assertions.assertEquals("aglqivbgkcvkh", model.locations().get(0));
-        Assertions.assertEquals("bcpzgpxtivh", model.zones().get(0));
-        Assertions.assertEquals("mhha", model.physicalZones().get(0));
+        Assertions.assertEquals("i", model.locations().get(0));
+        Assertions.assertEquals("jtbxqmuluxlx", model.zones().get(0));
+        Assertions.assertEquals("qgfuhokzru", model.physicalZones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationFilters model
-            = new ConfigurationFilters().withLocations(Arrays.asList("aglqivbgkcvkh", "zvuqdflvon", "yp"))
-                .withZones(Arrays.asList("bcpzgpxtivh", "knidib", "qjxgpnrhgovfgp"))
-                .withPhysicalZones(Arrays.asList("mhha", "wjrmzvuporqzd"));
+        ConfigurationFilters model = new ConfigurationFilters()
+            .withLocations(Arrays.asList("i", "xgvelfclduccbird", "vuwcobiegstmnin", "jizcilnghgs"))
+            .withZones(Arrays.asList("jtbxqmuluxlx", "zvners", "ycucrwnamikzeb", "qbsms"))
+            .withPhysicalZones(Arrays.asList("qgfuhokzru"));
         model = BinaryData.fromObject(model).toObject(ConfigurationFilters.class);
-        Assertions.assertEquals("aglqivbgkcvkh", model.locations().get(0));
-        Assertions.assertEquals("bcpzgpxtivh", model.zones().get(0));
-        Assertions.assertEquals("mhha", model.physicalZones().get(0));
+        Assertions.assertEquals("i", model.locations().get(0));
+        Assertions.assertEquals("jtbxqmuluxlx", model.zones().get(0));
+        Assertions.assertEquals("qgfuhokzru", model.physicalZones().get(0));
     }
 }

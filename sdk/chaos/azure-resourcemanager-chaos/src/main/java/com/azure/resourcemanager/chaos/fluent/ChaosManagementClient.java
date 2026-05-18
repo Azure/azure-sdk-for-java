@@ -138,16 +138,16 @@ public interface ChaosManagementClient {
     ScenariosClient getScenarios();
 
     /**
-     * Gets the ScenarioRunsClient object to access its operations.
-     * 
-     * @return the ScenarioRunsClient object.
-     */
-    ScenarioRunsClient getScenarioRuns();
-
-    /**
      * Gets the ScenarioConfigurationsClient object to access its operations.
      * 
      * @return the ScenarioConfigurationsClient object.
      */
     ScenarioConfigurationsClient getScenarioConfigurations();
+
+    /**
+     * Gets the ScenarioRunsClient object to access its operations.
+     * 
+     * @return the ScenarioRunsClient object.
+     */
+    ScenarioRunsClient getScenarioRuns();
 }

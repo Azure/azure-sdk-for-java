@@ -23,7 +23,7 @@ public final class PrivateAccessesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"rweft\",\"wqejpmvsse\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"a\",\"name\":\"cxtczhupeukn\",\"type\":\"jduyyespydjfb\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"hhulrtywikdm\",\"tags\":{\"auacdixmxufrsr\":\"kuflgbh\",\"bvjhvefgwbmqj\":\"jqgdkfnozoeo\",\"ulpzealb\":\"hntasfaymx\",\"mbtsuahxsg\":\"qkyojwyvf\"},\"id\":\"jcmmzrrscub\",\"name\":\"wsdrnpxqwodif\",\"type\":\"jxcjrmmuabwib\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"antuygdhgaqipirp\",\"wrq\",\"fulopmjnlexwhcb\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"e\",\"name\":\"hu\",\"type\":\"uerct\"},{\"properties\":{\"groupIds\":[\"intqpbrlcyr\",\"uczkgofxyfsruc\",\"crrpcjttbstvje\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"vvf\",\"name\":\"oxmlghktuidv\",\"type\":\"ma\"},{\"properties\":{\"groupIds\":[\"wwexymzvlazipbh\",\"wvqsgny\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"vensrpm\",\"name\":\"yyvpkpatlb\",\"type\":\"jp\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"srfhf\",\"tags\":{\"qa\":\"mknbnxwcdommpv\",\"hajlfn\":\"zfgbrttuiaclkie\",\"b\":\"hiqfyuttdiy\"},\"id\":\"vnwsw\",\"name\":\"txkyctwwgzwxjlm\",\"type\":\"cvogygzyvne\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PrivateAccessesListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateAccess> response = manager.privateAccesses()
-            .listByResourceGroup("cecfehuwaoaguh", "cqlliz", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateAccess> response
+            = manager.privateAccesses().listByResourceGroup("unssxlghieegjl", "vvpa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhulrtywikdm", response.iterator().next().location());
-        Assertions.assertEquals("kuflgbh", response.iterator().next().tags().get("auacdixmxufrsr"));
-        Assertions.assertEquals(PublicNetworkAccessOption.ENABLED,
+        Assertions.assertEquals("srfhf", response.iterator().next().location());
+        Assertions.assertEquals("mknbnxwcdommpv", response.iterator().next().tags().get("qa"));
+        Assertions.assertEquals(PublicNetworkAccessOption.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

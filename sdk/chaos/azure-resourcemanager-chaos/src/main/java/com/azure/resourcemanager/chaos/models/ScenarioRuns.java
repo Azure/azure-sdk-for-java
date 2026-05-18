@@ -23,7 +23,7 @@ public interface ScenarioRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run.
+     * @return a scenario run along with {@link Response}.
      */
     Response<ScenarioRun> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context);
@@ -77,14 +77,12 @@ public interface ScenarioRuns {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param runId The name of the ScenarioRun.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ScenarioRunsCancelResponse cancelWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
-        String runId, Context context);
+    ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId);
 
     /**
      * Cancel the currently running scenario execution.
@@ -93,9 +91,12 @@ public interface ScenarioRuns {
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
      * @param runId The name of the ScenarioRun.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId);
+    ScenarioRun cancel(String resourceGroupName, String workspaceName, String scenarioName, String runId,
+        Context context);
 }

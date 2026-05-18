@@ -323,20 +323,6 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
-     * The ScenarioRunsClient object to access its operations.
-     */
-    private final ScenarioRunsClient scenarioRuns;
-
-    /**
-     * Gets the ScenarioRunsClient object to access its operations.
-     * 
-     * @return the ScenarioRunsClient object.
-     */
-    public ScenarioRunsClient getScenarioRuns() {
-        return this.scenarioRuns;
-    }
-
-    /**
      * The ScenarioConfigurationsClient object to access its operations.
      */
     private final ScenarioConfigurationsClient scenarioConfigurations;
@@ -348,6 +334,20 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      */
     public ScenarioConfigurationsClient getScenarioConfigurations() {
         return this.scenarioConfigurations;
+    }
+
+    /**
+     * The ScenarioRunsClient object to access its operations.
+     */
+    private final ScenarioRunsClient scenarioRuns;
+
+    /**
+     * Gets the ScenarioRunsClient object to access its operations.
+     * 
+     * @return the ScenarioRunsClient object.
+     */
+    public ScenarioRunsClient getScenarioRuns() {
+        return this.scenarioRuns;
     }
 
     /**
@@ -381,8 +381,8 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.workspaces = new WorkspacesClientImpl(this);
         this.discoveredResources = new DiscoveredResourcesClientImpl(this);
         this.scenarios = new ScenariosClientImpl(this);
-        this.scenarioRuns = new ScenarioRunsClientImpl(this);
         this.scenarioConfigurations = new ScenarioConfigurationsClientImpl(this);
+        this.scenarioRuns = new ScenarioRunsClientImpl(this);
     }
 
     /**

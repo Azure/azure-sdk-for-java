@@ -95,9 +95,9 @@ public final class ChaosManager {
 
     private Scenarios scenarios;
 
-    private ScenarioRuns scenarioRuns;
-
     private ScenarioConfigurations scenarioConfigurations;
+
+    private ScenarioRuns scenarioRuns;
 
     private final ChaosManagementClient clientObject;
 
@@ -471,18 +471,6 @@ public final class ChaosManager {
     }
 
     /**
-     * Gets the resource collection API of ScenarioRuns.
-     * 
-     * @return Resource collection API of ScenarioRuns.
-     */
-    public ScenarioRuns scenarioRuns() {
-        if (this.scenarioRuns == null) {
-            this.scenarioRuns = new ScenarioRunsImpl(clientObject.getScenarioRuns(), this);
-        }
-        return scenarioRuns;
-    }
-
-    /**
      * Gets the resource collection API of ScenarioConfigurations. It manages ScenarioConfiguration.
      * 
      * @return Resource collection API of ScenarioConfigurations.
@@ -493,6 +481,18 @@ public final class ChaosManager {
                 = new ScenarioConfigurationsImpl(clientObject.getScenarioConfigurations(), this);
         }
         return scenarioConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of ScenarioRuns.
+     * 
+     * @return Resource collection API of ScenarioRuns.
+     */
+    public ScenarioRuns scenarioRuns() {
+        if (this.scenarioRuns == null) {
+            this.scenarioRuns = new ScenarioRunsImpl(clientObject.getScenarioRuns(), this);
+        }
+        return scenarioRuns;
     }
 
     /**

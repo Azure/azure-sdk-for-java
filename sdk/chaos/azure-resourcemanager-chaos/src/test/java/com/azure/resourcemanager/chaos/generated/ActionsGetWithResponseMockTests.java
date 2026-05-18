@@ -20,7 +20,7 @@ public final class ActionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"canonicalId\":\"wnpqigtuujwouhd\",\"displayName\":\"s\",\"description\":\"rb\",\"actionName\":\"xsjybvitvqk\",\"version\":\"az\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"m\",\"requiredPermissions\":[\"ch\",\"zfnkfexlvxno\",\"kizvoa\"]},{\"targetType\":\"naqln\",\"requiredPermissions\":[\"guyxlyk\",\"phvxz\",\"wxh\"]},{\"targetType\":\"ejtlk\",\"requiredPermissions\":[\"onwivkcqhrxhxkn\",\"ccrmmk\",\"upijubyqjfkakfq\",\"rke\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"dudxjascowvfdjk\",\"dxphlk\",\"snmgzvyfi\"]},\"id\":\"kzuqnwsith\",\"name\":\"q\",\"type\":\"ly\"}";
+            = "{\"properties\":{\"canonicalId\":\"kkileplkc\",\"displayName\":\"knh\",\"description\":\"bbaedorvvm\",\"actionName\":\"loyg\",\"version\":\"gwumgxdgdhpa\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"ddvjsaqwotmmw\",\"requiredPermissions\":[\"olsrsxapt\",\"f\",\"excgjokjljnhvl\",\"jbekpeeksnbksdq\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"klxesl\",\"hhus\"]},\"id\":\"poq\",\"name\":\"avnwqj\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ActionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Action response
-            = manager.actions().getWithResponse("pl", "dbmairrhvhfnr", com.azure.core.util.Context.NONE).getValue();
+            = manager.actions().getWithResponse("syeipqd", "mjtgrqg", com.azure.core.util.Context.NONE).getValue();
 
     }
 }
