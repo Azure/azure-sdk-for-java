@@ -1,5 +1,13 @@
 [
   {
+    "current" : false,
+    "releaseStatus" : "PRERELEASE",
+    "snapshot" : false,
+    "supportStatus" : "SUPPORTED",
+    "spring-boot-version" : "4.1.0-RC1",
+    "spring-cloud-version" : "2025.1.1"
+  },
+  {
     "current" : true,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
