@@ -18,10 +18,11 @@ import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.ai.agents.models.SessionDirectoryListResponse;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.openai.client.OpenAIClient;
@@ -42,7 +43,6 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
-@Disabled("Hosted agent version provisioning failed with the current FOUNDRY_AGENT_CONTAINER_IMAGE.")
 public class HostedAgentContainerSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String REMOTE_FILE_PATH_1 = "/remote/data_file1.txt";
@@ -54,7 +54,6 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         return argumentsList.stream();
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionsSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -67,21 +66,27 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId());
+            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId(),
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
             Assertions.assertNotNull(fetched);
             Assertions.assertEquals(session.getAgentSessionId(), fetched.getAgentSessionId());
 
-            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName);
+            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName,
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null);
             Assertions.assertTrue(
                 sessions.stream().anyMatch(item -> session.getAgentSessionId().equals(item.getAgentSessionId())));
 
-            agentsClient.deleteSession(agentName, session.getAgentSessionId());
+            try {
+                agentsClient.deleteSession(agentName, session.getAgentSessionId(),
+                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+            } catch (ResourceNotFoundException ignored) {
+                // The session may already be deleted by the service.
+            }
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionFilesSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -122,7 +127,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         }
     }
 
-    @LiveOnly
+    @Disabled("Agent-scoped OpenAI Responses invocation returns 400: API version not supported.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void agentEndpointSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -151,7 +156,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
         }
     }
 
-    @LiveOnly
+    @Disabled("Agent-scoped OpenAI Responses invocation returns 400: API version not supported.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void sessionLogStreamSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
@@ -196,7 +201,11 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW);
     }
 
-    private static String getRequiredConfiguration(String name) {
+    private String getRequiredConfiguration(String name) {
+        if (getTestMode() == TestMode.PLAYBACK && "FOUNDRY_AGENT_CONTAINER_IMAGE".equals(name)) {
+            return "REDACTED";
+        }
+
         String value = Configuration.getGlobalConfiguration().get(name);
         Assertions.assertNotNull(value, name + " must be set.");
         return value;

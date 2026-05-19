@@ -6,6 +6,7 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -43,16 +44,19 @@ public class SessionsAsyncSample {
                 resourcesRef.set(resources);
                 AgentSessionResource session = resources.getSession();
 
-                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId())
+                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId(),
+                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(agentsAsyncClient.listSessions(agentName)
+                    .thenMany(agentsAsyncClient.listSessions(agentName,
+                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId())
+                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(),
+                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));
