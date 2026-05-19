@@ -245,18 +245,18 @@ public class StructuredMessageDecoder {
         ByteBuffer combined = getCombinedBuffer(buffer);
 
         // Materialize only this chunk so retained memory grows with bytes received, not the full declared segment size.
-        byte[] payloadCopy = new byte[toRead];
-        combined.get(payloadCopy);
+        byte[] content = new byte[toRead];
+        combined.get(content);
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             // Update both CRCs incrementally: the segment CRC will be checked at the segment footer, and the
             // message CRC accumulates across every segment to be checked at the message footer.
-            segmentCrc64 = StorageCrc64Calculator.compute(payloadCopy, 0, toRead, segmentCrc64);
-            messageCrc64 = StorageCrc64Calculator.compute(payloadCopy, 0, toRead, messageCrc64);
+            segmentCrc64 = StorageCrc64Calculator.compute(content, 0, toRead, segmentCrc64);
+            messageCrc64 = StorageCrc64Calculator.compute(content, 0, toRead, messageCrc64);
         }
 
         consumeBytes(toRead, buffer);
-        currentSegmentPayload.add(payloadCopy);
+        currentSegmentPayload.add(content);
 
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
