@@ -59,7 +59,6 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
  */
 public class StructuredMessageDecoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageDecoder.class);
-    private static final int CRC64_SCRATCH_BUFFER_SIZE = 64 * 1024;
 
     private long messageLength = -1;
     private StructuredMessageFlags flags;
@@ -82,7 +81,6 @@ public class StructuredMessageDecoder {
     // footer. Retained memory is bounded to bytes read so far plus at most one live wire buffer
     // (see {@link com.azure.storage.common.policy.StorageContentValidationDecoderPolicy}).
     private List<byte[]> pendingSegmentPayloadCopies;
-    private final byte[] crc64ScratchBuffer = new byte[CRC64_SCRATCH_BUFFER_SIZE];
     // Validated payload buffers to emit from the current decodeChunk() invocation.
     private final List<ByteBuffer> validatedOutput = new ArrayList<>();
 
@@ -217,8 +215,8 @@ public class StructuredMessageDecoder {
 
     /**
      * Pulls as many payload bytes as possible (bounded by what is still owed for the current segment) from the
-     * pending+buffer view into {@link #pendingSegmentPayloadCopies}, updating the running per-segment and per-message CRC64
-     * values along the way.
+     * pending+buffer view into {@link #pendingSegmentPayloadCopies}, updating the running per-segment and per-message
+     * CRC64 values along the way.
      *
      * <p>Bytes accumulated here are not yet emitted to the caller. They are released only after
      * {@link #tryReadSegmentFooter(ByteBuffer)} validates this segment's CRC. This is the mechanism that enforces
@@ -243,14 +241,20 @@ public class StructuredMessageDecoder {
         // Read the minimum of "what's available right now" and "what's still owed for this segment" so we never
         // accidentally consume the segment footer here.
         int toRead = (int) Math.min(available, remaining);
-        byte[] payloadCopy = new byte[toRead];
-
         // getCombinedBuffer() is a duplicate of the live buffer when pending is empty; otherwise pending + buffer.
         ByteBuffer combined = getCombinedBuffer(buffer);
-        if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            updateCrc64sFromBuffer(combined, toRead);
-        }
+
+        // Materialize the bytes into a fresh array so we can both feed the CRC64 calculator and stash them in the
+        // per-segment buffer in one pass.
+        byte[] payloadCopy = new byte[toRead];
         combined.get(payloadCopy);
+
+        if (flags == StructuredMessageFlags.STORAGE_CRC64) {
+            // Compute CRC64 directly from payloadCopy: combined.position() has already advanced past the payload
+            // bytes at this point, so re-reading from the buffer would compute over the wrong bytes.
+            updateCrc64sFromBytes(payloadCopy, 0, toRead);
+        }
+
         consumeBytes(toRead, buffer);
         pendingSegmentPayloadCopies.add(payloadCopy);
 
@@ -509,43 +513,16 @@ public class StructuredMessageDecoder {
             && messageOffset == messageLength
             && pendingBytes.size() == 0
             && !segmentHeaderRead
-            && currentSegmentContentOffset == currentSegmentContentLength
-            && pendingSegmentPayloadCopies == null;
+            && currentSegmentContentOffset == currentSegmentContentLength;
     }
 
     /**
-     * Updates running CRC64 values from the next {@code readSize} bytes in {@code buffer}, mirroring
+     * Updates running CRC64 values from the payload bytes, mirroring
      * {@link StructuredMessageEncoder#encodeSegmentContent(ByteBuffer)}.
      */
-    private void updateCrc64sFromBuffer(ByteBuffer buffer, int readSize) {
-        if (buffer.hasArray()) {
-            updateCrc64sFromBytes(buffer.array(), buffer.arrayOffset() + buffer.position(), readSize);
-        } else {
-            updateCrc64sWithoutAccessibleArray(buffer, readSize);
-        }
-    }
-
     private void updateCrc64sFromBytes(byte[] array, int offset, int length) {
         segmentCrc64 = StorageCrc64Calculator.compute(array, offset, length, segmentCrc64);
         messageCrc64 = StorageCrc64Calculator.compute(array, offset, length, messageCrc64);
-    }
-
-    private void updateCrc64sWithoutAccessibleArray(ByteBuffer buffer, int readSize) {
-        ByteBuffer duplicate = buffer.duplicate();
-        duplicate.limit(duplicate.position() + readSize);
-
-        long nextSegmentCrc64 = segmentCrc64;
-        long nextMessageCrc64 = messageCrc64;
-
-        while (duplicate.hasRemaining()) {
-            int chunkSize = Math.min(duplicate.remaining(), crc64ScratchBuffer.length);
-            duplicate.get(crc64ScratchBuffer, 0, chunkSize);
-            nextSegmentCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, nextSegmentCrc64);
-            nextMessageCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, nextMessageCrc64);
-        }
-
-        segmentCrc64 = nextSegmentCrc64;
-        messageCrc64 = nextMessageCrc64;
     }
 
     /**
