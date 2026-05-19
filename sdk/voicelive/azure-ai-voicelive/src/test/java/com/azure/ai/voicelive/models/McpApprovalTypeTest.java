@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link McpApprovalType}.
  */
-class MCPApprovalTypeTest {
+class McpApprovalTypeTest {
 
     @Test
     void testNeverApprovalType() {

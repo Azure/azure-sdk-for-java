@@ -79,7 +79,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.MCPSample" -Dexec.classpathScope=test
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.McpSample" -Dexec.classpathScope=test
  * }</pre>
  *
  * <p><strong>Try asking:</strong></p>
@@ -88,7 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>"Can you summarize Azure docs about VoiceLive?"</li>
  * </ul>
  */
-public final class MCPSample {
+public final class McpSample {
 
     // Service configuration
     private static final String DEFAULT_MODEL = "gpt-realtime";
@@ -100,7 +100,7 @@ public final class MCPSample {
     private static final int SAMPLE_SIZE_BITS = 16;
     private static final int CHUNK_SIZE = 1200;
 
-    private MCPSample() {
+    private McpSample() {
     }
 
     /**
@@ -119,7 +119,7 @@ public final class MCPSample {
         }
 
         try {
-            runMCPSample(endpoint);
+            runMcpSample(endpoint);
         } catch (Exception e) {
             System.err.println("❌ Error: " + e.getMessage());
             e.printStackTrace();
@@ -130,7 +130,7 @@ public final class MCPSample {
     /**
      * Run the MCP sample.
      */
-    private static void runMCPSample(String endpoint) {
+    private static void runMcpSample(String endpoint) {
         System.out.println("🔌 Connecting to VoiceLive API with MCP support...");
         System.out.println("📡 Endpoint: " + endpoint);
         System.out.println("🤖 Model: " + DEFAULT_MODEL);

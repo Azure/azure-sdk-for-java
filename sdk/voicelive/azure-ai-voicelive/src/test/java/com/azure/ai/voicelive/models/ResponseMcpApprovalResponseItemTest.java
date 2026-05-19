@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link ResponseMcpApprovalResponseItem}.
  */
-class ResponseMCPApprovalResponseItemTest {
+class ResponseMcpApprovalResponseItemTest {
 
     @Test
     void testFromJsonWithApprove() {
