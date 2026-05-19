@@ -1983,7 +1983,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reevaluateInaccessibleDatabaseStateWithResponseAsync(
@@ -2025,7 +2025,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reevaluateInaccessibleDatabaseStateWithResponseAsync(
@@ -2064,7 +2064,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner>
@@ -2086,7 +2086,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner>
@@ -2108,7 +2108,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginReevaluateInaccessibleDatabaseState(
@@ -2127,7 +2127,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginReevaluateInaccessibleDatabaseState(
@@ -2147,7 +2147,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
@@ -2167,7 +2167,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedDatabaseInner> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
@@ -2185,7 +2185,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner reevaluateInaccessibleDatabaseState(String resourceGroupName,
@@ -2203,7 +2203,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseInner reevaluateInaccessibleDatabaseState(String resourceGroupName,

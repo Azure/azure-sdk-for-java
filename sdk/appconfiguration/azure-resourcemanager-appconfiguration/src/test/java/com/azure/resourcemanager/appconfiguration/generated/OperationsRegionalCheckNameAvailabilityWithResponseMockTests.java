@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class OperationsRegionalCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testRegionalCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"message\":\"stkwqqtch\",\"reason\":\"lmfmtdaay\"}";
+        String responseStr = "{\"nameAvailable\":false,\"message\":\"lydzgk\",\"reason\":\"qeevt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class OperationsRegionalCheckNameAvailabilityWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailabilityStatus response = manager.operations()
-            .regionalCheckNameAvailabilityWithResponse("cjzkzivgvvcna",
-                new CheckNameAvailabilityParameters().withName("rhyrnxxmueed")
+            .regionalCheckNameAvailabilityWithResponse("uztcktyhjtqed",
+                new CheckNameAvailabilityParameters().withName("gzulwmmrqzzr")
                     .withType(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES),
                 com.azure.core.util.Context.NONE)
             .getValue();

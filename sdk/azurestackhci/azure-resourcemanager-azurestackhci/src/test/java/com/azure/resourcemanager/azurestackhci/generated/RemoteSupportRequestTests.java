@@ -15,19 +15,19 @@ public final class RemoteSupportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemoteSupportRequest model = BinaryData.fromString(
-            "{\"properties\":{\"accessLevel\":\"Diagnostics\",\"expirationTimeStamp\":\"2021-07-16T15:54:52Z\",\"remoteSupportType\":\"Enable\"}}")
+            "{\"properties\":{\"accessLevel\":\"DiagnosticsAndRepair\",\"expirationTimeStamp\":\"2021-09-23T00:43:42Z\",\"remoteSupportType\":\"Enable\"}}")
             .toObject(RemoteSupportRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T15:54:52Z"), model.properties().expirationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T00:43:42Z"), model.properties().expirationTimestamp());
         Assertions.assertEquals(RemoteSupportType.ENABLE, model.properties().remoteSupportType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemoteSupportRequest model = new RemoteSupportRequest().withProperties(
-            new RemoteSupportRequestProperties().withExpirationTimestamp(OffsetDateTime.parse("2021-07-16T15:54:52Z"))
+            new RemoteSupportRequestProperties().withExpirationTimestamp(OffsetDateTime.parse("2021-09-23T00:43:42Z"))
                 .withRemoteSupportType(RemoteSupportType.ENABLE));
         model = BinaryData.fromObject(model).toObject(RemoteSupportRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T15:54:52Z"), model.properties().expirationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T00:43:42Z"), model.properties().expirationTimestamp());
         Assertions.assertEquals(RemoteSupportType.ENABLE, model.properties().remoteSupportType());
     }
 }

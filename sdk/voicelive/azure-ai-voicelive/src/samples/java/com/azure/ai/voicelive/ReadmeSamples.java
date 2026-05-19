@@ -3,6 +3,7 @@
 
 package com.azure.ai.voicelive;
 
+import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
@@ -13,7 +14,12 @@ import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.FunctionCallOutputItem;
 import com.azure.ai.voicelive.models.ItemType;
+import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
+import com.azure.ai.voicelive.models.MCPApprovalType;
+import com.azure.ai.voicelive.models.MCPServer;
 import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
+import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
+import com.azure.ai.voicelive.models.SessionResponseItem;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
 import com.azure.ai.voicelive.models.AzurePersonalVoice;
@@ -30,6 +36,7 @@ import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.AzureKeyCredential;
@@ -54,7 +61,6 @@ import java.util.Arrays;
 public final class ReadmeSamples {
 
     private String endpoint = "https://your-resource.openai.azure.com/";
-    private String apiKey = "your-api-key";
 
     /**
      * Complete voice assistant sample from README
@@ -62,12 +68,11 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.voicelive.readme
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Configure session options for voice conversation
@@ -95,18 +100,15 @@ public final class ReadmeSamples {
             .setTurnDetection(turnDetection);
 
         // Start session and handle events
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
-                // Subscribe to receive server events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> handleEvent(event),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
-
-                // Send session configuration
+                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent).then(Mono.just(session));
+                return session.sendEvent(updateEvent)
+                    .thenMany(session.receiveEvents()
+                        .doOnNext(event -> handleEvent(event))
+                        .doOnError(error -> System.err.println("Error: " + error.getMessage())))
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.readme
@@ -156,23 +158,20 @@ public final class ReadmeSamples {
     public void simpleSession() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.simple.session
         // Start session with default options
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 System.out.println("Session started");
 
-                // Subscribe to receive events
-                session.receiveEvents()
-                    .subscribe(
-                        event -> System.out.println("Event: " + event.getType()),
-                        error -> System.err.println("Error: " + error.getMessage())
-                    );
-
-                return Mono.just(session);
+                // Listen for events.
+                return session.receiveEvents()
+                    .doOnNext(event -> System.out.println("Event: " + event.getType()))
+                    .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.simple.session
@@ -184,7 +183,7 @@ public final class ReadmeSamples {
     public void configureSessionOptions() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.configure.sessionoptions
@@ -215,7 +214,7 @@ public final class ReadmeSamples {
             .setTurnDetection(turnDetection);
 
         // Start session with options
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -234,10 +233,10 @@ public final class ReadmeSamples {
     public void sendAudioInput() throws IOException {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
 
         // BEGIN: com.azure.ai.voicelive.send.audioinput
         // Send audio chunk
@@ -263,10 +262,10 @@ public final class ReadmeSamples {
     public void handleEventTypes() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-4o-realtime-preview").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
 
         // BEGIN: com.azure.ai.voicelive.handle.eventtypes
         session.receiveEvents()
@@ -335,7 +334,7 @@ public final class ReadmeSamples {
             .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
         // Azure Personal Voice - requires speaker profile ID and model
-        // Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+        // Models: DRAGON_LATEST_NEURAL, DRAGON_HDOMNI_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, MAI_VOICE_1
         VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
             .setVoice(BinaryData.fromObject(
                 new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
@@ -348,7 +347,7 @@ public final class ReadmeSamples {
     public void functionCalling() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.functioncalling
@@ -363,10 +362,10 @@ public final class ReadmeSamples {
             .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
         // 3. Handle function call events
-        client.startSession("gpt-4o-realtime-preview")
+        client.startSession("gpt-realtime")
             .flatMap(session -> {
-                session.receiveEvents()
-                    .subscribe(event -> {
+                return session.receiveEvents()
+                    .doOnNext(event -> {
                         if (event instanceof SessionUpdateConversationItemCreated) {
                             SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
                             if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
@@ -387,19 +386,103 @@ public final class ReadmeSamples {
                                         .setItem(output)
                                         .setPreviousItemId(functionCall.getId());
 
-                                    session.sendEvent(createItem).subscribe();
-                                    session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                                    // Chain the two sends sequentially.
+                                    session.sendEvent(createItem)
+                                        .then(session.sendEvent(new ClientEventResponseCreate()))
+                                        .subscribe();
                                 } catch (Exception e) {
                                     System.err.println("Error executing function: " + e.getMessage());
                                 }
                             }
                         }
-                    });
-
-                return Mono.just(session);
+                    })
+                    .then();
             })
             .block();
         // END: com.azure.ai.voicelive.functioncalling
+    }
+
+    /**
+     * Tracing: automatic via GlobalOpenTelemetry
+     */
+    public void tracingAutomatic() {
+        // BEGIN: com.azure.ai.voicelive.tracing.automatic
+        // No special configuration needed — tracing is picked up from GlobalOpenTelemetry
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: com.azure.ai.voicelive.tracing.automatic
+    }
+
+    /**
+     * Sample for MCP tool integration
+     */
+    public void mcpToolIntegration() {
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
+
+        // BEGIN: com.azure.ai.voicelive.mcp
+        // Configure MCP servers as tools
+        MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+            .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
+            .setTools(Arrays.asList(mcpServer))
+            .setInstructions("You have access to external tools via MCP. Use them when asked.");
+
+        // Handle MCP approval requests in your event loop
+        session.receiveEvents()
+            .doOnNext(event -> {
+                if (event instanceof SessionUpdateResponseOutputItemDone) {
+                    SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
+                    SessionResponseItem item = itemDone.getItem();
+
+                    if (item instanceof ResponseMCPApprovalRequestItem) {
+                        // Approve the tool call
+                        ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
+                        MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                            approvalRequest.getId(), true);
+                        ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                            .setItem(approval);
+                        // Chain the two sends sequentially.
+                        session.sendEvent(createItem)
+                            .then(session.sendEvent(new ClientEventResponseCreate()))
+                            .subscribe();
+                    }
+                }
+            })
+            .subscribe();
+        // END: com.azure.ai.voicelive.mcp
+    }
+
+    /**
+     * Sample for Azure AI Foundry agent session
+     */
+    public void agentSession() {
+        // BEGIN: com.azure.ai.voicelive.agentsession
+        // Configure agent connection
+        AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
+            .setAgentVersion("1.0");
+
+        // Start session with agent config (uses DefaultAzureCredential)
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+        client.startSession(agentConfig)
+            .flatMap(session -> {
+                return session.receiveEvents()
+                    .doOnNext(event -> handleEvent(event))
+                    .then();
+            })
+            .block();
+        // END: com.azure.ai.voicelive.agentsession
     }
 
     // Helper methods

@@ -3,7 +3,7 @@
 
 
 > [!NOTE]  
-> Spring Cloud Azure 5.x is fully aligned with Spring Boot 3.x, version 6.x supports Spring Boot 3.5.x, and version 7.x is designed for Spring Boot 4. To take advantage of the latest features, performance improvements, and security updates, we strongly recommend upgrading. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
+> Spring Cloud Azure 5.x is fully aligned with Spring Boot 3.x, version 6.x supports Spring Boot 3.5.x, and version 7.x is designed for Spring Boot 4. To take advantage of the latest features, performance improvements, and security updates, we strongly recommend upgrading. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/spring/Spring-Versions-Mapping.md#which-version-of-spring-cloud-azure-should-i-use).
 
 # Spring Cloud Azure
 

@@ -874,6 +874,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
         options.setExcludedRegions(cosmosBulkExecutionOptions.getExcludedRegions());
         options.setKeywordIdentifiers(cosmosBulkExecutionOptions.getKeywordIdentifiers());
+        options.setEffectiveItemSerializer(this.effectiveItemSerializer);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             cosmosBulkExecutionOptions.getCosmosEndToEndLatencyPolicyConfig();

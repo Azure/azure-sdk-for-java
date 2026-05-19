@@ -5,6 +5,7 @@ package com.azure.ai.voicelive;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Objects;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -16,6 +17,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -25,6 +27,9 @@ import com.azure.core.util.logging.ClientLogger;
 public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceLiveClientBuilder>,
     KeyCredentialTrait<VoiceLiveClientBuilder>, EndpointTrait<VoiceLiveClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveClientBuilder.class);
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-voicelive.properties");
+    private static final String SDK_NAME = "azure-ai-voicelive";
+    private static final String SDK_VERSION = PROPERTIES.getOrDefault("version", "unknown");
 
     private URI endpoint;
     private KeyCredential keyCredential;

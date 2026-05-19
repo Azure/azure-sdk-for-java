@@ -1229,7 +1229,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixesWithResponseAsync(String resourceGroupName,
@@ -1267,7 +1268,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixesWithResponseAsync(String resourceGroupName,
@@ -1303,7 +1305,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
@@ -1323,7 +1325,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
@@ -1343,7 +1345,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
@@ -1360,7 +1362,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
@@ -1376,7 +1378,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName) {
@@ -1393,7 +1395,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName,
@@ -1410,7 +1412,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName) {
@@ -1426,7 +1428,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName,
@@ -1677,7 +1679,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response of an Azure Firewall Packet Capture Operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> packetCaptureOperationWithResponseAsync(String resourceGroupName,
@@ -1723,7 +1726,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response of an Azure Firewall Packet Capture Operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> packetCaptureOperationWithResponseAsync(String resourceGroupName,
@@ -1766,7 +1770,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
@@ -1790,7 +1794,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
@@ -1814,7 +1818,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
@@ -1833,7 +1837,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
@@ -1852,7 +1856,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response of an Azure Firewall Packet Capture Operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallPacketCaptureResponseInner> packetCaptureOperationAsync(String resourceGroupName,
@@ -1871,7 +1875,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response of an Azure Firewall Packet Capture Operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureFirewallPacketCaptureResponseInner> packetCaptureOperationAsync(String resourceGroupName,
@@ -1889,7 +1893,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName,
@@ -1907,7 +1911,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response of an Azure Firewall Packet Capture Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName,

@@ -138,6 +138,8 @@ public class ClientEvent implements JsonSerializable<ClientEvent> {
                     return ClientEventResponseCancel.fromJson(readerToUse.reset());
                 } else if ("conversation.item.retrieve".equals(discriminatorValue)) {
                     return ClientEventConversationItemRetrieve.fromJson(readerToUse.reset());
+                } else if ("output_audio_buffer.clear".equals(discriminatorValue)) {
+                    return ClientEventOutputAudioBufferClear.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
