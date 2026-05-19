@@ -21,7 +21,7 @@ public final class ProjectsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"u\",\"provisioningState\":\"Failed\"},\"id\":\"icslfaoq\",\"name\":\"piyylhalnswhccsp\",\"type\":\"kaivwit\"}";
+            = "{\"properties\":{\"description\":\"twitykhev\",\"provisioningState\":\"Failed\"},\"id\":\"dcpnmdyodnw\",\"name\":\"xltjcvnhltiu\",\"type\":\"cxnavv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,12 @@ public final class ProjectsCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Project response
-            = manager.projects().define("rdgrtw").withExistingStorageMover("gm", "zr").withDescription("u").create();
+        Project response = manager.projects()
+            .define("isxgfp")
+            .withExistingStorageMover("sfgytguslfead", "ygqukyhejh")
+            .withDescription("lppvksrpq")
+            .create();
 
-        Assertions.assertEquals("u", response.description());
+        Assertions.assertEquals("twitykhev", response.description());
     }
 }

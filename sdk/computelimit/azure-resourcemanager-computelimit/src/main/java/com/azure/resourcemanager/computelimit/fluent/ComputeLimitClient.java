@@ -66,4 +66,18 @@ public interface ComputeLimitClient {
      * @return the SharedLimitsClient object.
      */
     SharedLimitsClient getSharedLimits();
+
+    /**
+     * Gets the FeaturesClient object to access its operations.
+     * 
+     * @return the FeaturesClient object.
+     */
+    FeaturesClient getFeatures();
+
+    /**
+     * Gets the VmFamiliesClient object to access its operations.
+     * 
+     * @return the VmFamiliesClient object.
+     */
+    VmFamiliesClient getVmFamilies();
 }

@@ -21,7 +21,7 @@ public final class OffersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"myc\",\"publisherId\":\"r\",\"content\":\"cxzznnuife\",\"contentVersion\":\"ejeg\",\"skuMappings\":[{\"catalogPlanId\":\"guwrjm\",\"marketplaceSkuId\":\"vbtuqkxximwg\",\"marketplaceSkuVersions\":[\"dekotjgxieqfkyf\",\"iwvjaqupbyyn\"]},{\"catalogPlanId\":\"kpajbmgeume\",\"marketplaceSkuId\":\"jbxcbccwkqmtxa\",\"marketplaceSkuVersions\":[\"iscr\"]},{\"catalogPlanId\":\"lgftrqrejdaa\",\"marketplaceSkuId\":\"qimlda\",\"marketplaceSkuVersions\":[\"xlm\"]},{\"catalogPlanId\":\"fmuad\",\"marketplaceSkuId\":\"fsn\",\"marketplaceSkuVersions\":[\"iioshjgcz\",\"tybnxgztlcgctj\"]}]},\"id\":\"fjvmy\",\"name\":\"j\",\"type\":\"ebecuvlbefv\"}";
+            = "{\"properties\":{\"provisioningState\":\"qplwg\",\"publisherId\":\"m\",\"content\":\"wrjlvzkl\",\"contentVersion\":\"bgikyjtkakvlbi\",\"skuMappings\":[{\"catalogPlanId\":\"pzaptuosk\",\"marketplaceSkuId\":\"izjixwfgcd\",\"marketplaceSkuVersions\":[\"kcxwnujvqynvavi\",\"mdmuqoh\",\"ihraxqudd\",\"wjc\"]},{\"catalogPlanId\":\"brhlhpvzadb\",\"marketplaceSkuId\":\"nnin\",\"marketplaceSkuVersions\":[\"xrzfrmvztiucwvi\"]},{\"catalogPlanId\":\"lukh\",\"marketplaceSkuId\":\"cqx\",\"marketplaceSkuVersions\":[\"v\",\"a\"]},{\"catalogPlanId\":\"qcbpokstsinv\",\"marketplaceSkuId\":\"ovjyhd\",\"marketplaceSkuVersions\":[\"rdvcehqwhit\",\"nmxgnm\"]}]},\"id\":\"zbuwvorbalkjnbk\",\"name\":\"dhlltqstqkqsyg\",\"type\":\"iynecovagz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,14 @@ public final class OffersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Offer response = manager.offers()
-            .getWithResponse("pcqzg", "hotjec", "hmxvvl", "rskapbxwieexu", "aderltfokyk",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("nzuz", "bgk", "cscpiuzvkunh", "i", "juktirzkaugpucd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("r", response.publisherId());
-        Assertions.assertEquals("cxzznnuife", response.content());
-        Assertions.assertEquals("ejeg", response.contentVersion());
-        Assertions.assertEquals("guwrjm", response.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("vbtuqkxximwg", response.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("dekotjgxieqfkyf", response.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("m", response.publisherId());
+        Assertions.assertEquals("wrjlvzkl", response.content());
+        Assertions.assertEquals("bgikyjtkakvlbi", response.contentVersion());
+        Assertions.assertEquals("pzaptuosk", response.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("izjixwfgcd", response.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("kcxwnujvqynvavi", response.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

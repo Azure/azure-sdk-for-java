@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (2026-03-17)
+## 1.5.0 (2026-04-06)
 
 - Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -17,6 +17,8 @@
 * `models.TriggerType` was added
 
 * `models.Connection` was added
+
+* `models.SchedulerTime` was added
 
 * `models.AzureKeyVaultS3WithHmacCredentials` was added
 
@@ -52,8 +54,8 @@
 
 #### `models.EndpointBaseProperties` was modified
 
-* `withEndpointKind(models.EndpointKind)` was added
 * `endpointKind()` was added
+* `withEndpointKind(models.EndpointKind)` was added
 
 #### `models.AzureStorageNfsFileShareEndpointProperties` was modified
 
@@ -70,6 +72,8 @@
 #### `models.JobDefinitionUpdateParameters` was modified
 
 * `dataIntegrityValidation()` was added
+* `schedule()` was added
+* `withSchedule(models.ScheduleInfo)` was added
 * `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
 * `connections()` was added
 * `withConnections(java.util.List)` was added
@@ -80,28 +84,29 @@
 
 #### `models.JobDefinition` was modified
 
-* `connections()` was added
 * `dataIntegrityValidation()` was added
-* `schedule()` was added
 * `preservePermissions()` was added
+* `schedule()` was added
+* `connections()` was added
 
 #### `models.JobDefinition$Update` was modified
 
 * `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
 * `withConnections(java.util.List)` was added
+* `withSchedule(models.ScheduleInfo)` was added
 
 #### `models.JobRun` was modified
 
-* `warnings()` was added
 * `scheduledExecutionTime()` was added
 * `triggerType()` was added
+* `warnings()` was added
 
 #### `models.JobDefinition$Definition` was modified
 
 * `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
-* `withPreservePermissions(java.lang.Boolean)` was added
 * `withConnections(java.util.List)` was added
 * `withSchedule(models.ScheduleInfo)` was added
+* `withPreservePermissions(java.lang.Boolean)` was added
 
 #### `models.EndpointType` was modified
 

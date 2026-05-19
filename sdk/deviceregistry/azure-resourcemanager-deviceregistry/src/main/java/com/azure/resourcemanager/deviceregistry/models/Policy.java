@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.deviceregistry.models;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.PolicyInner;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of Policy.
@@ -36,20 +34,6 @@ public interface Policy {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     * 
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * Gets the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
@@ -62,20 +46,6 @@ public interface Policy {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the region of the resource.
-     * 
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     * 
-     * @return the name of the resource region.
-     */
-    String regionName();
 
     /**
      * Gets the name of the resource group.
@@ -94,8 +64,8 @@ public interface Policy {
     /**
      * The entirety of the Policy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
@@ -105,28 +75,7 @@ public interface Policy {
         /**
          * The first stage of the Policy definition.
          */
-        interface Blank extends WithLocation {
-        }
-
-        /**
-         * The stage of the Policy definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithParentResource withRegion(String location);
+        interface Blank extends WithParentResource {
         }
 
         /**
@@ -147,7 +96,7 @@ public interface Policy {
          * The stage of the Policy definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -162,19 +111,6 @@ public interface Policy {
              * @return the created resource.
              */
             Policy create(Context context);
-        }
-
-        /**
-         * The stage of the Policy definition allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -201,7 +137,7 @@ public interface Policy {
     /**
      * The template for Policy update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -222,19 +158,6 @@ public interface Policy {
      * The Policy update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the Policy update allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
-
         /**
          * The stage of the Policy update allowing to specify properties.
          */
@@ -263,4 +186,45 @@ public interface Policy {
      * @return the refreshed resource.
      */
     Policy refresh(Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revokeIssuer();
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revokeIssuer(Context context);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void activateBringYourOwnRoot(ActivateBringYourOwnRootRequest body);
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void activateBringYourOwnRoot(ActivateBringYourOwnRootRequest body, Context context);
 }

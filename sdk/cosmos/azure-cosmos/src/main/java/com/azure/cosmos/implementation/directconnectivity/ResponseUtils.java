@@ -27,7 +27,7 @@ class ResponseUtils {
                 return new StoreResponse(
                     endpoint,
                     httpClientResponse.statusCode(),
-                    HttpUtils.unescape(httpResponseHeaders.toMap()),
+                    httpResponseHeaders,
                     null,
                     0);
             }
@@ -35,7 +35,7 @@ class ResponseUtils {
             return new StoreResponse(
                 endpoint,
                 httpClientResponse.statusCode(),
-                HttpUtils.unescape(httpResponseHeaders.toMap()),
+                httpResponseHeaders,
                 new ByteBufInputStream(byteBufContent, true),
                 size);
         });

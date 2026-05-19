@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Common/ProtectedItem_Delete.json
+     * x-ms-original-file: 2026-01-31-preview/Common/ProtectedItem_Delete.json
      */
     /**
      * Sample code: Delete Protection from Azure Virtual Machine.

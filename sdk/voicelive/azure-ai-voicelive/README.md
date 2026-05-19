@@ -27,7 +27,7 @@ Use the Azure VoiceLive client library for Java to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-voicelive</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,20 +36,9 @@ Use the Azure VoiceLive client library for Java to:
 
 To interact with the Azure VoiceLive service, you'll need to create an instance of the [VoiceLiveAsyncClient][voicelive_client_async] using [VoiceLiveClientBuilder][voicelive_client_builder]. The client supports two authentication methods:
 
-#### Authenticate with API Key
+#### Authenticate with Microsoft Entra ID (recommended)
 
-Get your Azure VoiceLive API key from the Azure Portal:
-
-```java com.azure.ai.voicelive.authentication.apikey
-VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-    .endpoint("https://your-resource.openai.azure.com/")
-    .credential(new AzureKeyCredential("your-api-key"))
-    .buildAsyncClient();
-```
-
-#### Authenticate with Azure AD (Token Credential)
-
-Azure SDK for Java supports Azure Identity, making it easy to use Microsoft identity platform for authentication.
+Azure SDK for Java supports Azure Identity, making it easy to use Microsoft identity platform for authentication. This is the recommended approach for production workloads — it works with managed identity in Azure, and falls back to developer credentials (Azure CLI, Visual Studio Code, etc.) locally.
 
 First, add the Azure Identity package:
 
@@ -63,7 +52,7 @@ First, add the Azure Identity package:
 ```
 [//]: # ({x-version-update-end})
 
-Then create a client with DefaultAzureCredential:
+Then create a client with `DefaultAzureCredential`:
 
 ```java com.azure.ai.voicelive.authentication.defaultcredential
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -73,13 +62,24 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .buildAsyncClient();
 ```
 
-For development and testing, you can use Azure CLI credentials:
+For development and testing, you can also use Azure CLI credentials directly:
 
 ```java com.azure.ai.voicelive.authentication.azurecli
 TokenCredential credential = new AzureCliCredentialBuilder().build();
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint("https://your-resource.openai.azure.com/")
     .credential(credential)
+    .buildAsyncClient();
+```
+
+#### Authenticate with API Key
+
+For quick local experimentation you can authenticate with a static API key from the Azure Portal. API keys cannot be scoped per-user and are harder to rotate, so prefer `DefaultAzureCredential` for production.
+
+```java com.azure.ai.voicelive.authentication.apikey
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint("https://your-resource.openai.azure.com/")
+    .credential(new AzureKeyCredential("your-api-key"))
     .buildAsyncClient();
 ```
 
@@ -126,6 +126,9 @@ The following sections provide code snippets for common scenarios:
 * [Handle event types](#handle-event-types)
 * [Voice configuration](#voice-configuration)
 * [Function calling](#function-calling)
+* [MCP tool integration](#mcp-tool-integration)
+* [Azure AI Foundry agent session](#azure-ai-foundry-agent-session)
+* [Telemetry and tracing](#telemetry-and-tracing)
 * [Complete voice assistant with microphone](#complete-voice-assistant-with-microphone)
 
 ### Focused Sample Files
@@ -138,8 +141,9 @@ For easier learning, explore these focused samples in order:
    - Basic event handling
 
 2. **AuthenticationMethodsSample.java** - Learn authentication options
-   - API Key authentication (default)
-   - Token Credential authentication with DefaultAzureCredential
+   - Token Credential authentication with `DefaultAzureCredential` (recommended)
+   - API key authentication with `KeyCredential` (convenient for local testing)
+   - All other samples in this package use `DefaultAzureCredential`
 
 3. **MicrophoneInputSample.java** - Add audio input capability
    - Real-time microphone audio capture
@@ -166,6 +170,23 @@ For easier learning, explore these focused samples in order:
    - Execute functions locally and return results
    - Continue conversation with function results
 
+7. **telemetry/GlobalTracingSample.java** - Automatic tracing via GlobalOpenTelemetry
+   - Zero builder configuration — uses `buildAndRegisterGlobal()`
+   - Also works with OTel Java agent (`-javaagent:opentelemetry-javaagent.jar`)
+
+8. **MCPSample.java** - Model Context Protocol (MCP) tool integration
+   - Configure MCP servers for external tool access
+   - Handle MCP call events and tool execution
+   - Handle MCP approval requests for tool calls
+   - Process MCP call results and continue conversations
+
+9. **AgentV2Sample.java** - Azure AI Foundry agent session
+   - Connect directly to an Azure AI Foundry agent via AgentSessionConfig
+   - Real-time audio capture and playback
+   - Sequence number based audio for interrupt handling
+   - Azure noise suppression and echo cancellation
+   - Conversation logging to file
+
 > **Note:** To run audio samples (AudioPlaybackSample, MicrophoneInputSample, VoiceAssistantSample, FunctionCallingSample):
 > ```bash
 > mvn exec:java -Dexec.mainClass=com.azure.ai.voicelive.FunctionCallingSample -Dexec.classpathScope=test
@@ -178,18 +199,15 @@ Create a basic voice assistant session:
 
 ```java com.azure.ai.voicelive.simple.session
 // Start session with default options
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
         System.out.println("Session started");
 
-        // Subscribe to receive events
-        session.receiveEvents()
-            .subscribe(
-                event -> System.out.println("Event: " + event.getType()),
-                error -> System.err.println("Error: " + error.getMessage())
-            );
-
-        return Mono.just(session);
+        // Listen for events.
+        return session.receiveEvents()
+            .doOnNext(event -> System.out.println("Event: " + event.getType()))
+            .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+            .then();
     })
     .block();
 ```
@@ -226,7 +244,7 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setTurnDetection(turnDetection);
 
 // Start session with options
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
         // Send session configuration
         ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -330,7 +348,7 @@ VoiceLiveSessionOptions options2 = new VoiceLiveSessionOptions()
     .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
 // Azure Personal Voice - requires speaker profile ID and model
-// Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+// Models: DRAGON_LATEST_NEURAL, DRAGON_HDOMNI_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, MAI_VOICE_1
 VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
     .setVoice(BinaryData.fromObject(
         new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
@@ -352,10 +370,10 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
 // 3. Handle function call events
-client.startSession("gpt-4o-realtime-preview")
+client.startSession("gpt-realtime")
     .flatMap(session -> {
-        session.receiveEvents()
-            .subscribe(event -> {
+        return session.receiveEvents()
+            .doOnNext(event -> {
                 if (event instanceof SessionUpdateConversationItemCreated) {
                     SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
                     if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
@@ -376,16 +394,17 @@ client.startSession("gpt-4o-realtime-preview")
                                 .setItem(output)
                                 .setPreviousItemId(functionCall.getId());
 
-                            session.sendEvent(createItem).subscribe();
-                            session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                            // Chain the two sends sequentially.
+                            session.sendEvent(createItem)
+                                .then(session.sendEvent(new ClientEventResponseCreate()))
+                                .subscribe();
                         } catch (Exception e) {
                             System.err.println("Error executing function: " + e.getMessage());
                         }
                     }
                 }
-            });
-
-        return Mono.just(session);
+            })
+            .then();
     })
     .block();
 ```
@@ -397,6 +416,148 @@ client.startSession("gpt-4o-realtime-preview")
 * Results are sent back to continue the conversation
 * See `FunctionCallingSample.java` for a complete working example
 
+### MCP tool integration
+
+Use [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers to give the AI access to external tools during a voice session. The service calls the MCP server directly — your code only needs to handle approval requests when required:
+
+```java com.azure.ai.voicelive.mcp
+// Configure MCP servers as tools
+MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+    .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+
+VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
+    .setTools(Arrays.asList(mcpServer))
+    .setInstructions("You have access to external tools via MCP. Use them when asked.");
+
+// Handle MCP approval requests in your event loop
+session.receiveEvents()
+    .doOnNext(event -> {
+        if (event instanceof SessionUpdateResponseOutputItemDone) {
+            SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
+            SessionResponseItem item = itemDone.getItem();
+
+            if (item instanceof ResponseMCPApprovalRequestItem) {
+                // Approve the tool call
+                ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
+                MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                    approvalRequest.getId(), true);
+                ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                    .setItem(approval);
+                // Chain the two sends sequentially.
+                session.sendEvent(createItem)
+                    .then(session.sendEvent(new ClientEventResponseCreate()))
+                    .subscribe();
+            }
+        }
+    })
+    .subscribe();
+```
+
+> See `MCPSample.java` for a complete working example with MCP server configuration.
+
+### Azure AI Foundry agent session
+
+Connect directly to an Azure AI Foundry agent using `AgentSessionConfig`. The agent becomes the primary responder for the voice session:
+
+```java com.azure.ai.voicelive.agentsession
+// Configure agent connection
+AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
+    .setAgentVersion("1.0");
+
+// Start session with agent config (uses DefaultAzureCredential)
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
+
+client.startSession(agentConfig)
+    .flatMap(session -> {
+        return session.receiveEvents()
+            .doOnNext(event -> handleEvent(event))
+            .then();
+    })
+    .block();
+```
+
+> See `AgentV2Sample.java` for a full implementation with audio capture, playback, and conversation logging.
+
+### Telemetry and tracing
+
+The SDK has built-in [OpenTelemetry](https://opentelemetry.io/) tracing that emits spans for every WebSocket operation. When no OpenTelemetry SDK is present, all tracing calls are automatically no-op with zero performance impact.
+
+#### Automatic tracing (recommended)
+
+The SDK defaults to `GlobalOpenTelemetry.getOrNoop()` —
+tracing is automatically active when a global OpenTelemetry instance exists (e.g., via the
+[OpenTelemetry Java agent](https://opentelemetry.io/docs/languages/java/automatic/) or
+`OpenTelemetrySdk.builder().buildAndRegisterGlobal()`), and is a zero-cost no-op otherwise:
+
+```java com.azure.ai.voicelive.tracing.automatic
+// No special configuration needed — tracing is picked up from GlobalOpenTelemetry
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
+```
+
+#### Content recording
+
+By default, message payloads are not recorded in spans for privacy. Enable content recording via environment variable:
+
+```bash
+# Enable content recording (no code changes needed):
+OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
+# (legacy fallback) AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=true
+```
+
+#### Span structure
+
+When tracing is active, the following span hierarchy is emitted for each voice session:
+
+```
+connect gpt-4o-realtime-preview        ← session lifetime span
+├── send session.update                 ← one span per sent event
+├── send input_audio_buffer.append
+├── send response.create
+├── recv session.created                ← one span per received event
+├── recv session.updated
+├── recv response.audio.delta
+├── recv response.done                  ← includes token usage attributes
+├── recv rate_limits.updated            ← rate limit info
+└── close
+```
+
+**Common attributes** (on all spans): `gen_ai.system`, `gen_ai.operation.name`, `gen_ai.provider.name`, `gen_ai.request.model`, `az.namespace`, `server.address`, `server.port`
+
+**Session-level attributes** (on the connect span, flushed at session close):
+- `gen_ai.voice.session_id` — Voice session ID
+- `gen_ai.voice.input_audio_format` / `gen_ai.voice.output_audio_format` — Audio formats (e.g., `pcm16`)
+- `gen_ai.voice.input_sample_rate` — Input audio sampling rate (Hz)
+- `gen_ai.voice.turn_count` — Completed response turns
+- `gen_ai.voice.interruption_count` — User interruptions
+- `gen_ai.voice.audio_bytes_sent` / `gen_ai.voice.audio_bytes_received` — Audio payload bytes
+- `gen_ai.voice.first_token_latency_ms` — Time to first audio response
+- `gen_ai.conversation.id` — Conversation ID
+- `gen_ai.response.id` / `gen_ai.response.finish_reasons` — Last response metadata
+- `gen_ai.system_instructions` / `gen_ai.request.temperature` / `gen_ai.request.max_output_tokens` / `gen_ai.request.tools` — Session config from `session.update`
+- `gen_ai.agent.name` / `gen_ai.agent.id` / `gen_ai.agent.version` / `gen_ai.agent.project_name` / `gen_ai.agent.thread_id` — Agent metadata (when using `AgentSessionConfig`)
+
+> See `telemetry/GlobalTracingSample.java` for a complete tracing example.
+>
+> **Run the telemetry sample** to see tracing in action:
+> ```bash
+> mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.telemetry.GlobalTracingSample" -Dexec.classpathScope=test
+> ```
+>
+> Sample output:
+> ```
+> 'send session.update' : {gen_ai.operation.name=send, gen_ai.voice.event_type=session.update, ...}
+> 'recv session.created' : {gen_ai.operation.name=recv, gen_ai.voice.event_type=session.created, ...}
+> 'recv response.done'   : {gen_ai.usage.input_tokens=100, gen_ai.usage.output_tokens=50, ...}
+> 'close'                : {gen_ai.operation.name=close, ...}
+> 'connect gpt-realtime' : {gen_ai.voice.session_id=..., gen_ai.voice.turn_count=1, ...}
+> ```
+
 ### Complete voice assistant with microphone
 
 A full example demonstrating real-time microphone input and audio playback:
@@ -404,12 +565,11 @@ A full example demonstrating real-time microphone input and audio playback:
 <!-- BEGIN: com.azure.ai.voicelive.readme -->
 ```java
 String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-// Create the VoiceLive client
+// Create the VoiceLive client using DefaultAzureCredential (Entra ID).
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
 // Configure session options for voice conversation
@@ -442,7 +602,7 @@ client.startSession("gpt-4o-realtime-preview")
         // Subscribe to receive server events
         session.receiveEvents()
             .subscribe(
-                event -> handleEvent(event, session),
+                event -> handleEvent(event),
                 error -> System.err.println("Error: " + error.getMessage())
             );
 

@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed Netty ByteBuf leak in `GatewayServerErrorInjector` fault injection delay paths under HTTP/2. - See [PR 48880](https://github.com/Azure/azure-sdk-for-java/pull/48880)
 
 #### Other Changes
 

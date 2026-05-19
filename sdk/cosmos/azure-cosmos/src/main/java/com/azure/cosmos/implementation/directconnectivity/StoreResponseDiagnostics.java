@@ -24,12 +24,11 @@ import java.util.Set;
  * This represents diagnostics from store response OR from cosmos exception
  */
 public class StoreResponseDiagnostics {
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     final static Logger logger = LoggerFactory.getLogger(StoreResponseDiagnostics.class);
-    private final static ImplementationBridgeHelpers
-        .CosmosExceptionHelper
-        .CosmosExceptionAccessor cosmosExceptionAccessor = ImplementationBridgeHelpers
-        .CosmosExceptionHelper
-        .getCosmosExceptionAccessor();
 
     private final String partitionKeyRangeId;
     private final String sessionTokenAsString;
@@ -113,15 +112,15 @@ public class StoreResponseDiagnostics {
         this.requestTimeline = BridgeInternal.getRequestTimeline(e);
         this.channelAcquisitionTimeline = BridgeInternal.getChannelAcqusitionTimeline(e);
         this.rntbdEndpointStatistics = BridgeInternal.getServiceEndpointStatistics(e);
-        this.rntbdChannelStatistics = cosmosExceptionAccessor.getRntbdChannelStatistics(e);
+        this.rntbdChannelStatistics = cosmosExceptionAccessor().getRntbdChannelStatistics(e);
         this.rntbdRequestLength = BridgeInternal.getRntbdRequestLength(e);
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
-        this.replicaStatusList = cosmosExceptionAccessor.getReplicaStatusList(e);
-        this.faultInjectionRuleId = cosmosExceptionAccessor.getFaultInjectionRuleId(e);
-        this.faultInjectionEvaluationResults = cosmosExceptionAccessor.getFaultInjectionEvaluationResults(e);
-        Uri requestUri = cosmosExceptionAccessor.getRequestUri(e);
+        this.replicaStatusList = cosmosExceptionAccessor().getReplicaStatusList(e);
+        this.faultInjectionRuleId = cosmosExceptionAccessor().getFaultInjectionRuleId(e);
+        this.faultInjectionEvaluationResults = cosmosExceptionAccessor().getFaultInjectionEvaluationResults(e);
+        Uri requestUri = cosmosExceptionAccessor().getRequestUri(e);
         if (requestUri != null) {
             this.endpoint = requestUri.getURIAsString();
         } else {

@@ -14,40 +14,34 @@ public final class DeploymentSettingStorageNetworksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingStorageNetworks model = BinaryData.fromString(
-            "{\"name\":\"lmfmtdaay\",\"networkAdapterName\":\"v\",\"vlanId\":\"gpiohgwxrtfudxe\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"qagvrvm\",\"ipv4Address\":\"k\",\"subnetMask\":\"ghimdblx\"},{\"physicalNode\":\"imfnjhfjx\",\"ipv4Address\":\"szkkfoqre\",\"subnetMask\":\"kzikfjawneaivxwc\"},{\"physicalNode\":\"lpcirelsf\",\"ipv4Address\":\"enwabfatk\",\"subnetMask\":\"dxbjhwuaanozj\"},{\"physicalNode\":\"ph\",\"ipv4Address\":\"ulpjr\",\"subnetMask\":\"ag\"}]}")
+            "{\"name\":\"ph\",\"networkAdapterName\":\"ulpjr\",\"vlanId\":\"ag\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"mjwosytx\",\"ipv4Address\":\"cskfcktqumiekk\",\"subnetMask\":\"zikhl\"},{\"physicalNode\":\"jhdgqggebdunyga\",\"ipv4Address\":\"idb\",\"subnetMask\":\"atpxl\"}]}")
             .toObject(DeploymentSettingStorageNetworks.class);
-        Assertions.assertEquals("lmfmtdaay", model.name());
-        Assertions.assertEquals("v", model.networkAdapterName());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.vlanId());
-        Assertions.assertEquals("qagvrvm", model.storageAdapterIpInfo().get(0).physicalNode());
-        Assertions.assertEquals("k", model.storageAdapterIpInfo().get(0).ipv4Address());
-        Assertions.assertEquals("ghimdblx", model.storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals("ph", model.name());
+        Assertions.assertEquals("ulpjr", model.networkAdapterName());
+        Assertions.assertEquals("ag", model.vlanId());
+        Assertions.assertEquals("mjwosytx", model.storageAdapterIpInfo().get(0).physicalNode());
+        Assertions.assertEquals("cskfcktqumiekk", model.storageAdapterIpInfo().get(0).ipv4Address());
+        Assertions.assertEquals("zikhl", model.storageAdapterIpInfo().get(0).subnetMask());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentSettingStorageNetworks model = new DeploymentSettingStorageNetworks().withName("lmfmtdaay")
-            .withNetworkAdapterName("v")
-            .withVlanId("gpiohgwxrtfudxe")
+        DeploymentSettingStorageNetworks model = new DeploymentSettingStorageNetworks().withName("ph")
+            .withNetworkAdapterName("ulpjr")
+            .withVlanId("ag")
             .withStorageAdapterIpInfo(Arrays.asList(
-                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("qagvrvm")
-                    .withIpv4Address("k")
-                    .withSubnetMask("ghimdblx"),
-                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("imfnjhfjx")
-                    .withIpv4Address("szkkfoqre")
-                    .withSubnetMask("kzikfjawneaivxwc"),
-                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("lpcirelsf")
-                    .withIpv4Address("enwabfatk")
-                    .withSubnetMask("dxbjhwuaanozj"),
-                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("ph")
-                    .withIpv4Address("ulpjr")
-                    .withSubnetMask("ag")));
+                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("mjwosytx")
+                    .withIpv4Address("cskfcktqumiekk")
+                    .withSubnetMask("zikhl"),
+                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("jhdgqggebdunyga")
+                    .withIpv4Address("idb")
+                    .withSubnetMask("atpxl")));
         model = BinaryData.fromObject(model).toObject(DeploymentSettingStorageNetworks.class);
-        Assertions.assertEquals("lmfmtdaay", model.name());
-        Assertions.assertEquals("v", model.networkAdapterName());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.vlanId());
-        Assertions.assertEquals("qagvrvm", model.storageAdapterIpInfo().get(0).physicalNode());
-        Assertions.assertEquals("k", model.storageAdapterIpInfo().get(0).ipv4Address());
-        Assertions.assertEquals("ghimdblx", model.storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals("ph", model.name());
+        Assertions.assertEquals("ulpjr", model.networkAdapterName());
+        Assertions.assertEquals("ag", model.vlanId());
+        Assertions.assertEquals("mjwosytx", model.storageAdapterIpInfo().get(0).physicalNode());
+        Assertions.assertEquals("cskfcktqumiekk", model.storageAdapterIpInfo().get(0).ipv4Address());
+        Assertions.assertEquals("zikhl", model.storageAdapterIpInfo().get(0).subnetMask());
     }
 }

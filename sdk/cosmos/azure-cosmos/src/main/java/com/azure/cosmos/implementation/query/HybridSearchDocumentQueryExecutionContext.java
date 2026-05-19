@@ -52,15 +52,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQueryExecutionContextBase<Document> {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(HybridSearchDocumentQueryExecutionContext.class);
-
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
 
     private static final String FORMATTABLE_TOTAL_DOCUMENT_COUNT = "{documentdb-formattablehybridsearchquery-totaldocumentcount}";
     private static final String FORMATTABLE_TOTAL_WORD_COUNT = "{documentdb-formattablehybridsearchquery-totalwordcount-%d}";
@@ -243,7 +243,6 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             this.hybridSearchSchedulingStopwatch);
     }
 
-
     @Override
     public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
         return this.hybridObservable.transformDeferred(new HybridSearchQueryResultToPageTransformer(tracker,
@@ -285,7 +284,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 .window(maxPageSize).map(Flux::collectList)
                 .flatMap(resultListObs -> resultListObs, 1)
                 .map(hybridSearchQueryResults -> {
-                    FeedResponse<HybridSearchQueryResult<Document>> feedResponse = feedResponseAccessor.createFeedResponse(
+                    FeedResponse<HybridSearchQueryResult<Document>> feedResponse = feedResponseAccessor().createFeedResponse(
                         hybridSearchQueryResults,
                         headerResponse(tracker.getAndResetCharge()),
                         null
@@ -311,7 +310,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                         false,
                         false,
                         feedOfHybridSearchQueryResults.getCosmosDiagnostics());
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    diagAccessor().addClientSideDiagnosticsToFeed(
                         feedResponse.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
@@ -323,7 +322,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                         false,
                         false,
                         null);
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    diagAccessor().addClientSideDiagnosticsToFeed(
                         frp.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return Flux.just(frp);
             }));

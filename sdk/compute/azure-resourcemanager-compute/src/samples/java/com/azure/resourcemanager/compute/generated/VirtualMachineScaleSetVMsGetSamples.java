@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsGetSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
+     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get VM scale set VM with VMSizeProperties.
@@ -25,7 +25,7 @@ public final class VirtualMachineScaleSetVMsGetSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
+     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
      */
     /**
      * Sample code: Get VM scale set VM with ResiliencyView.
@@ -39,7 +39,7 @@ public final class VirtualMachineScaleSetVMsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
+     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
      */
     /**
      * Sample code: Get VM scale set VM with UserData.
