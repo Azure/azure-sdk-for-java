@@ -269,7 +269,14 @@ public class InferenceService implements AutoCloseable {
 
                 } catch (IOException e) {
                     logger.error("Failed to serialize request payload", e);
-                    return Mono.error(BridgeInternal.createCosmosException(500, "Failed to serialize semantic rerank request"));
+                    // Use BadRequestException (400) + CUSTOM_SERIALIZER_EXCEPTION sub-status — same
+                    // pattern as the response-parse path below. 400 is not in RETRYABLE_STATUS_CODES,
+                    // so withRetry will not waste attempts on a deterministic serialization failure.
+                    BadRequestException badRequest = new BadRequestException(
+                        "Failed to serialize semantic rerank request: " + e.getMessage(), e);
+                    BridgeInternal.setSubStatusCode(badRequest,
+                        HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+                    return Mono.error(badRequest);
                 }
             })
             .as(this::withRetry)

@@ -8,6 +8,9 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Semantic rerank: serialization failures are now surfaced as a typed `BadRequestException` (HTTP 400, sub-status `CUSTOM_SERIALIZER_EXCEPTION`) instead of a generic `500`, so the SDK retry policy does not retry deterministic payload failures. - [PR 48258](https://github.com/Azure/azure-sdk-for-java/pull/48258)
+* Semantic rerank: the synchronous `CosmosContainer.semanticRerank` API now applies `timeout_seconds` as a whole-operation deadline and maps Reactor's blocking timeout to `RequestTimeoutException` (HTTP 408), matching the typed `CosmosException` contract callers expect. - [PR 48258](https://github.com/Azure/azure-sdk-for-java/pull/48258)
+* Semantic rerank: fixed a race between `CosmosAsyncClient.close()` and lazy initialization of the inference HTTP client that could leak a Netty event-loop group and pooled connections if a `semanticRerank` call arrived while another thread was closing the client. `close()` now sets a `closed` flag, atomically transfers the reference, and any late-arriving instance is torn down. - [PR 48258](https://github.com/Azure/azure-sdk-for-java/pull/48258)
 
 #### Other Changes
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)

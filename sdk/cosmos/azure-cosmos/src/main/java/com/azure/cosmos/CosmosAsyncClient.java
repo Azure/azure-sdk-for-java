@@ -123,6 +123,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
     private final AtomicReference<InferenceService> inferenceService = new AtomicReference<>();
+    private volatile boolean closed;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -312,6 +313,9 @@ public final class CosmosAsyncClient implements Closeable {
      * @throws IllegalStateException if the client was built with key-based auth instead of AAD.
      */
     InferenceService getOrCreateInferenceService() {
+        if (this.closed) {
+            throw new IllegalStateException("CosmosAsyncClient has been closed.");
+        }
         if (this.tokenCredential == null) {
             throw new IllegalStateException(
                 "Semantic reranking requires AAD authentication. "
@@ -325,6 +329,15 @@ public final class CosmosAsyncClient implements Closeable {
             if (!this.inferenceService.compareAndSet(null, newSvc)) {
                 // Another thread already set the instance; close the losing one to prevent resource leak
                 newSvc.close();
+            } else if (this.closed) {
+                // close() ran concurrently and already saw a null reference; ensure the late-arriving
+                // instance we just published is torn down so we don't leak the Netty event-loop group
+                // and pooled connections held by the underlying HttpClient.
+                InferenceService leaked = this.inferenceService.getAndSet(null);
+                if (leaked != null) {
+                    leaked.close();
+                }
+                throw new IllegalStateException("CosmosAsyncClient has been closed.");
             }
         }
         return this.inferenceService.get();
@@ -598,10 +611,15 @@ public final class CosmosAsyncClient implements Closeable {
      */
     @Override
     public void close() {
+        // Set the closed flag BEFORE reading the inference reference. getOrCreateInferenceService()
+        // re-checks this flag after publishing a new instance and tears it down if it raced with us,
+        // so the combination of (closed = true) + getAndSet(null) here guarantees that any
+        // InferenceService that is ever published is also closed exactly once.
+        this.closed = true;
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
-        InferenceService svc = this.inferenceService.get();
+        InferenceService svc = this.inferenceService.getAndSet(null);
         if (svc != null) {
             svc.close();
         }

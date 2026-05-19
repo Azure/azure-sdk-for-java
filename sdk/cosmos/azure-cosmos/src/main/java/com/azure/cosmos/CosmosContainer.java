@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.inference.InferenceService;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -333,7 +334,16 @@ public class CosmosContainer {
             }
         }
         try {
-            return semanticRerankResultMono.block(blockTimeout);
+            // Apply the same timeout semantics on the sync wrapper that InferenceService applies per
+            // HTTP attempt: convert a timeout to a typed RequestTimeoutException (408) instead of
+            // letting Reactor's raw RuntimeException("Timeout on blocking read") leak to the caller.
+            final Duration timeout = blockTimeout;
+            return semanticRerankResultMono
+                .timeout(timeout)
+                .onErrorMap(java.util.concurrent.TimeoutException.class,
+                    t -> new RequestTimeoutException(
+                        "Semantic rerank request timed out after " + timeout, (java.net.URI) null))
+                .block(timeout);
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -1075,6 +1085,15 @@ public class CosmosContainer {
      * <p><strong>Timeout:</strong> This method blocks with a default timeout of 120 seconds.
      * To override, pass {@code "timeout_seconds"} (as a {@link Number}) in the {@code options} map,
      * for example: {@code options.put("timeout_seconds", 30)}.
+     *
+     * <p><strong>Sync vs async timeout semantics:</strong> on the async API
+     * ({@code CosmosAsyncContainer.semanticRerank}) {@code timeout_seconds} is applied per HTTP attempt,
+     * so the total wall-clock can stretch across retries and backoff. On this sync API the same value
+     * is also applied as the {@link Mono#timeout(java.time.Duration) whole-operation deadline}
+     * around the inner {@link Mono}, so the call returns once the overall budget elapses regardless of
+     * how many retries the async path would otherwise perform. When the budget elapses the sync API
+     * surfaces a {@link CosmosException} with status {@code 408 Request Timeout} rather than a raw
+     * Reactor {@link RuntimeException}.
      *
      * @param rerankContext The query or context string used to score documents.
      * @param documents The list of document strings to rerank.
