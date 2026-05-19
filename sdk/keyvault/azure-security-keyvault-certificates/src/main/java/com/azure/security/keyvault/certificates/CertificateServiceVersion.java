@@ -67,6 +67,6 @@ public enum CertificateServiceVersion implements ServiceVersion {
      * @return The latest {@link CertificateServiceVersion}.
      */
     public static CertificateServiceVersion getLatest() {
-        return V2026_03_01_PREVIEW;
+        return V2025_07_01;
     }
 }

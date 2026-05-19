@@ -125,7 +125,7 @@ public class CertificatesCustomizations extends Customization {
             .setType("CertificateServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link CertificateServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V2026_03_01_PREVIEW; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/certificates/CertificateServiceVersion.java",

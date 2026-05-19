@@ -571,7 +571,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
     @MethodSource("getPlatformManagedTestParameters")
     public void createCertificateWithPlatformManagedPolicy(HttpClient httpClient,
         CertificateServiceVersion serviceVersion) {
@@ -589,7 +589,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
     @MethodSource("getPlatformManagedTestParameters")
     public void updateCertificateWithPlatformManagedPolicy(HttpClient httpClient,
         CertificateServiceVersion serviceVersion) {

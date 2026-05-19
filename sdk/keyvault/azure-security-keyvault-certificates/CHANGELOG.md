@@ -8,8 +8,9 @@
   `getPlatformManaged()` / `setPlatformManaged(PlatformManaged)` methods on `models.CertificatePolicy`. This allows
   callers to configure a certificate whose lifecycle is managed by the Key Vault platform on the caller's behalf
   (e.g. `new PlatformManaged("serverAuth").setMetadata(...)`).
-- Added `CertificateServiceVersion.V2026_03_01_PREVIEW` and changed `CertificateServiceVersion.getLatest()` to return
-  this new version. Clients that do not pin a service version will now target the `2026-03-01-preview` API.
+- Added `CertificateServiceVersion.V2026_03_01_PREVIEW`. The default service version (returned by
+  `CertificateServiceVersion.getLatest()`) remains `V2025_07_01`; opt into the new preview API explicitly via
+  `CertificateClientBuilder.serviceVersion(CertificateServiceVersion.V2026_03_01_PREVIEW)`.
 
 #### `models.SubjectAlternativeNames` was modified
 
