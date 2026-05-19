@@ -477,7 +477,7 @@ public class AgentV2Sample {
 
                     // sendInputAudio returns a cold Mono - it must be subscribed for the
                     // audio to actually be sent over the WebSocket.
-                    session.sendInputAudio(audioData)
+                    session.sendInputAudio(BinaryData.fromBytes(audioData))
                         .subscribe(
                             noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
                             error -> System.err.println("Error sending audio: " + error.getMessage())

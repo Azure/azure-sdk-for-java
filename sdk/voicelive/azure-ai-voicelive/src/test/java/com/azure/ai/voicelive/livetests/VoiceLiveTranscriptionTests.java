@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.Disposable;
@@ -92,8 +93,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -168,8 +169,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 

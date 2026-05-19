@@ -94,8 +94,8 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);
 
@@ -171,7 +171,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             Thread.sleep(10000);
             collectingEvents.set(false);

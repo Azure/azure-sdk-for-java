@@ -16,6 +16,7 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.TurnDetection;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -111,7 +112,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             // Python: _wait_for_event(conn, {RESPONSE_AUDIO_DELTA}, 30)
             boolean received = audioDeltaLatch.await(30, TimeUnit.SECONDS);
@@ -209,8 +210,8 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             // Python uses _collect_event which collects events over a timeout period
             Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
@@ -329,9 +330,10 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
             // Python: _get_trailing_silence_bytes(duration_s=0.5)
-            session.sendInputAudio(getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, 0.5)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, 0.5)))
+                .block(SEND_TIMEOUT);
 
             // Python: _collect_event(conn, event_type=ServerEventType.RESPONSE_DONE)
             Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);

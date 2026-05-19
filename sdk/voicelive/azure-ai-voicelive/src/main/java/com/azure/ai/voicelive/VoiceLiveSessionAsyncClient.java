@@ -5,6 +5,7 @@ package com.azure.ai.voicelive;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Objects;
@@ -493,14 +494,18 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     // ============================================================================
 
     /**
-     * Transmits audio data from a byte array.
+     * Transmits audio data from BinaryData.
      *
      * @param audio The audio data to transmit.
      * @return A Mono that completes when the audio is sent.
      * @throws IllegalStateException if another audio stream is already being sent.
      */
-    public Mono<Void> sendInputAudio(byte[] audio) {
+    public Mono<Void> sendInputAudio(BinaryData audio) {
         Objects.requireNonNull(audio, "'audio' cannot be null");
+        return sendInputAudioInternal(audio.toBytes());
+    }
+
+    private Mono<Void> sendInputAudioInternal(byte[] audio) {
         throwIfNotConnected();
 
         if (!isSendingAudioStream.compareAndSet(false, true)) {
@@ -512,18 +517,6 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
         ClientEventInputAudioBufferAppend appendCommand = new ClientEventInputAudioBufferAppend(base64Audio);
 
         return sendEvent(appendCommand).doFinally(signal -> isSendingAudioStream.set(false));
-    }
-
-    /**
-     * Transmits audio data from BinaryData.
-     *
-     * @param audio The audio data to transmit.
-     * @return A Mono that completes when the audio is sent.
-     * @throws IllegalStateException if another audio stream is already being sent.
-     */
-    public Mono<Void> sendInputAudio(BinaryData audio) {
-        Objects.requireNonNull(audio, "'audio' cannot be null");
-        return sendInputAudio(audio.toBytes());
     }
 
     /**
@@ -696,7 +689,12 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     }
 
     /**
-     * Retrieves an item from the conversation.
+     * Sends a request to retrieve an item from the conversation.
+     * <p>
+     * This method only sends the retrieval request; the requested item is delivered
+     * asynchronously by the service as a server event on the {@link #receiveEvents()} stream.
+     * Subscribe to {@link #receiveEvents()} to observe the response.
+     * </p>
      *
      * @param itemId The ID of the item to retrieve.
      * @return A Mono that completes when the retrieval request is sent.
@@ -734,18 +732,26 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      *
      * @param itemId The ID of the item up to which to truncate the conversation.
      * @param contentIndex The content index within the item to truncate to.
-     * @param audioEndMilliseconds Inclusive duration up to which audio is truncated (in milliseconds).
+     * @param audioEnd Inclusive duration up to which audio is truncated. May be {@code null} or
+     *                 {@link Duration#ZERO} to indicate no audio truncation.
      * @return A Mono that completes when the conversation is truncated.
-     * @throws IllegalArgumentException if itemId is null or empty.
+     * @throws IllegalArgumentException if itemId is null or empty, or audioEnd is negative.
      */
-    public Mono<Void> truncateConversation(String itemId, int contentIndex, int audioEndMilliseconds) {
+    public Mono<Void> truncateConversation(String itemId, int contentIndex, Duration audioEnd) {
         if (itemId == null || itemId.isEmpty()) {
             return Mono.error(new IllegalArgumentException("'itemId' cannot be null or empty"));
         }
+        if (audioEnd != null && audioEnd.isNegative()) {
+            return Mono.error(new IllegalArgumentException("'audioEnd' cannot be negative"));
+        }
         throwIfNotConnected();
 
+        long millis = audioEnd == null ? 0L : audioEnd.toMillis();
+        if (millis > Integer.MAX_VALUE) {
+            return Mono.error(new IllegalArgumentException("'audioEnd' exceeds the maximum supported value"));
+        }
         ClientEventConversationItemTruncate truncateEvent
-            = new ClientEventConversationItemTruncate(itemId, contentIndex, audioEndMilliseconds);
+            = new ClientEventConversationItemTruncate(itemId, contentIndex, (int) millis);
         return sendEvent(truncateEvent);
     }
 
@@ -758,7 +764,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * @throws IllegalArgumentException if itemId is null or empty.
      */
     public Mono<Void> truncateConversation(String itemId, int contentIndex) {
-        return truncateConversation(itemId, contentIndex, 0);
+        return truncateConversation(itemId, contentIndex, Duration.ZERO);
     }
 
     // ============================================================================

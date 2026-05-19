@@ -138,7 +138,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             // Send audio and response.create() in tight succession to beat server VAD.
             // With gpt-realtime, the default server VAD detects speech, auto-commits the
             // buffer and triggers its own response before a delayed response.create() arrives.
-            session.sendInputAudio(audioData)
+            session.sendInputAudio(BinaryData.fromBytes(audioData))
                 .then(session.sendEvent(new ClientEventResponseCreate()))
                 .block(SEND_TIMEOUT);
 
@@ -233,8 +233,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean done = responseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(done, "Should receive response done event");
@@ -351,8 +351,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             waitForSetup();
 
             // Send audio + trailing silence
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             // Wait for RESPONSE_DONE that contains the function call.
             // This ensures all interleaved audio_transcript events from the same response
@@ -499,8 +499,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptionsNoTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean phase1Done = phase1Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(phase1Done, "Phase 1: Should receive audio transcript done event");
@@ -527,8 +527,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptionsWithTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean phase2Done = phase2Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(phase2Done, "Phase 2: Should receive function call after adding tools");

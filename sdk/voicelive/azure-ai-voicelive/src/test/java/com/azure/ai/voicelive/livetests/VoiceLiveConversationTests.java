@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -101,8 +102,8 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(outputReceived, "Should receive output item done event");
@@ -193,15 +194,15 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(outputReceived, "Should receive output item done event");
             Assertions.assertNotNull(outputItemId.get(), "Output item ID should not be null");
 
             // Truncate the conversation item at 1000ms
-            session.truncateConversation(outputItemId.get(), 0, 1000).block(SEND_TIMEOUT);
+            session.truncateConversation(outputItemId.get(), 0, Duration.ofMillis(1000)).block(SEND_TIMEOUT);
 
             boolean truncated = truncateLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(truncated, "Should receive conversation item truncated event");

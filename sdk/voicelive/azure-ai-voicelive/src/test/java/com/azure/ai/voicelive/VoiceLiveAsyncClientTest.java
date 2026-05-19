@@ -13,8 +13,11 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -72,6 +75,15 @@ class VoiceLiveAsyncClientTest {
     void testStartSessionWithNullOptions() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> client.startSession((String) null));
+    }
+
+    @Test
+    void testStartSessionWithoutModel() {
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> result = client.startSession();
+            assertNotNull(result);
+        });
     }
 
     @Test
@@ -152,15 +164,6 @@ class VoiceLiveAsyncClientTest {
     }
 
     @Test
-    void testStartSessionWithoutModel() {
-        // Test that startSession() without parameters works
-        assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession();
-            assertNotNull(sessionMono);
-        });
-    }
-
-    @Test
     void testStartSessionWithAgentConfig() {
         // Arrange
         AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project");
@@ -222,6 +225,47 @@ class VoiceLiveAsyncClientTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> client.startSession((AgentSessionConfig) null, requestOptions));
+    }
+
+    @Test
+    void testToQueryParametersWithRequiredOnly() {
+        AgentSessionConfig config = new AgentSessionConfig("my-agent", "my-project");
+
+        Map<String, String> params = VoiceLiveAsyncClient.toQueryParameters(config);
+
+        assertEquals(2, params.size());
+        assertEquals("my-agent", params.get("agent-name"));
+        assertEquals("my-project", params.get("agent-project-name"));
+    }
+
+    @Test
+    void testToQueryParametersWithAllOptions() {
+        AgentSessionConfig config = new AgentSessionConfig("my-agent", "my-project").setAgentVersion("2.0")
+            .setConversationId("conversation-xyz")
+            .setAuthenticationIdentityClientId("auth-client-id")
+            .setFoundryResourceOverride("override-resource");
+
+        Map<String, String> params = VoiceLiveAsyncClient.toQueryParameters(config);
+
+        assertEquals(6, params.size());
+        assertEquals("my-agent", params.get("agent-name"));
+        assertEquals("my-project", params.get("agent-project-name"));
+        assertEquals("2.0", params.get("agent-version"));
+        assertEquals("conversation-xyz", params.get("conversation-id"));
+        assertEquals("auth-client-id", params.get("agent-authentication-identity-client-id"));
+        assertEquals("override-resource", params.get("foundry-resource-override"));
+    }
+
+    @Test
+    void testToQueryParametersExcludesEmptyOptionalValues() {
+        AgentSessionConfig config
+            = new AgentSessionConfig("my-agent", "my-project").setAgentVersion("").setConversationId("");
+
+        Map<String, String> params = VoiceLiveAsyncClient.toQueryParameters(config);
+
+        assertEquals(2, params.size());
+        assertFalse(params.containsKey("agent-version"));
+        assertFalse(params.containsKey("conversation-id"));
     }
 
 }

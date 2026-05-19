@@ -54,6 +54,19 @@ public final class VoiceLiveAsyncClient {
     }
 
     /**
+     * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication using the default
+     * service-side model configuration.
+     *
+     * @return A Mono containing the connected VoiceLiveSessionAsyncClient.
+     */
+    public Mono<VoiceLiveSessionAsyncClient> startSession() {
+        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null)).flatMap(wsEndpoint -> {
+            VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, null);
+            return session.connect(additionalHeaders).thenReturn(session);
+        });
+    }
+
+    /**
      * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication.
      *
      * @param model The model to use for the session.
@@ -65,19 +78,6 @@ public final class VoiceLiveAsyncClient {
 
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, model)).flatMap(wsEndpoint -> {
             VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, model, null);
-            return session.connect(additionalHeaders).thenReturn(session);
-        });
-    }
-
-    /**
-     * Starts a new VoiceLiveSessionAsyncClient for real-time voice communication without specifying a model.
-     * The model can be provided via custom query parameters or through the endpoint URL if required by the service.
-     *
-     * @return A Mono containing the connected VoiceLiveSessionAsyncClient.
-     */
-    public Mono<VoiceLiveSessionAsyncClient> startSession() {
-        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null)).flatMap(wsEndpoint -> {
-            VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, null);
             return session.connect(additionalHeaders).thenReturn(session);
         });
     }
@@ -139,7 +139,7 @@ public final class VoiceLiveAsyncClient {
     public Mono<VoiceLiveSessionAsyncClient> startSession(AgentSessionConfig agentConfig) {
         Objects.requireNonNull(agentConfig, "'agentConfig' cannot be null");
 
-        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, agentConfig.toQueryParameters()))
+        return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, null, toQueryParameters(agentConfig)))
             .flatMap(wsEndpoint -> {
                 VoiceLiveSessionAsyncClient session = createSessionClient(wsEndpoint, null, agentConfig);
                 return session.connect(additionalHeaders).thenReturn(session);
@@ -165,7 +165,7 @@ public final class VoiceLiveAsyncClient {
         Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
 
         // Merge agent config params with custom query params (custom params take precedence)
-        Map<String, String> mergedParams = new LinkedHashMap<>(agentConfig.toQueryParameters());
+        Map<String, String> mergedParams = new LinkedHashMap<>(toQueryParameters(agentConfig));
         if (requestOptions.getCustomQueryParameters() != null) {
             mergedParams.putAll(requestOptions.getCustomQueryParameters());
         }
@@ -194,6 +194,29 @@ public final class VoiceLiveAsyncClient {
         } else {
             return new VoiceLiveSessionAsyncClient(wsEndpoint, tokenCredential, voiceLiveTracer, agentSessionConfig);
         }
+    }
+
+    /**
+     * Converts an {@link AgentSessionConfig} to a map of WebSocket query parameters.
+     */
+    static Map<String, String> toQueryParameters(AgentSessionConfig agentConfig) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("agent-name", agentConfig.getAgentName());
+        params.put("agent-project-name", agentConfig.getProjectName());
+        if (agentConfig.getAgentVersion() != null && !agentConfig.getAgentVersion().isEmpty()) {
+            params.put("agent-version", agentConfig.getAgentVersion());
+        }
+        if (agentConfig.getConversationId() != null && !agentConfig.getConversationId().isEmpty()) {
+            params.put("conversation-id", agentConfig.getConversationId());
+        }
+        if (agentConfig.getAuthenticationIdentityClientId() != null
+            && !agentConfig.getAuthenticationIdentityClientId().isEmpty()) {
+            params.put("agent-authentication-identity-client-id", agentConfig.getAuthenticationIdentityClientId());
+        }
+        if (agentConfig.getFoundryResourceOverride() != null && !agentConfig.getFoundryResourceOverride().isEmpty()) {
+            params.put("foundry-resource-override", agentConfig.getFoundryResourceOverride());
+        }
+        return params;
     }
 
     /**

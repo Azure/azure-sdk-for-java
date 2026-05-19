@@ -155,8 +155,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 }
             }
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes(8000, 2.0)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(8000, 2.0))).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -263,8 +263,9 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                     "Expected sampling rate " + samplingRate + ", got " + actualSamplingRate);
             }
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes(samplingRate, 2.0)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(samplingRate, 2.0)))
+                .block(SEND_TIMEOUT);
 
             boolean speechStarted = speechStartedLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(speechStarted, "Should receive speech started event");
@@ -351,8 +352,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -427,8 +428,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
