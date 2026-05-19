@@ -33,6 +33,12 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     private Map<String, String> metadata;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -83,6 +89,17 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
     }
 
     /**
@@ -190,7 +207,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
                     senderCommunicationIdentifier, composeTime, type, version, messageBody);
             deserializedAcsChatMessageReceivedEventData.transactionId = transactionId;
             deserializedAcsChatMessageReceivedEventData.senderDisplayName = senderDisplayName;
-            deserializedAcsChatMessageReceivedEventData.setSequenceId(sequenceId);
+            deserializedAcsChatMessageReceivedEventData.sequenceId = sequenceId;
             deserializedAcsChatMessageReceivedEventData.metadata = metadata;
             return deserializedAcsChatMessageReceivedEventData;
         });

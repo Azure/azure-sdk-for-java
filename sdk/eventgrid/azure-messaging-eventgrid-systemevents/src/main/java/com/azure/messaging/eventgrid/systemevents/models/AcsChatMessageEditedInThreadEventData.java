@@ -39,6 +39,12 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
     private final OffsetDateTime editTime;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -99,6 +105,17 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
     @Generated
     public OffsetDateTime getEditTime() {
         return this.editTime;
+    }
+
+    /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
     }
 
     /**
@@ -208,7 +225,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
                     composeTime, type, version, messageBody, editTime);
             deserializedAcsChatMessageEditedInThreadEventData.transactionId = transactionId;
             deserializedAcsChatMessageEditedInThreadEventData.senderDisplayName = senderDisplayName;
-            deserializedAcsChatMessageEditedInThreadEventData.setSequenceId(sequenceId);
+            deserializedAcsChatMessageEditedInThreadEventData.sequenceId = sequenceId;
             deserializedAcsChatMessageEditedInThreadEventData.metadata = metadata;
             return deserializedAcsChatMessageEditedInThreadEventData;
         });

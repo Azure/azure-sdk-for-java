@@ -34,6 +34,12 @@ public final class AcsChatTypingIndicatorReceivedInThreadEventData extends AcsCh
     private Map<String, String> metadata;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -82,6 +88,17 @@ public final class AcsChatTypingIndicatorReceivedInThreadEventData extends AcsCh
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
+    }
+
+    /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
     }
 
     /**
@@ -185,7 +202,7 @@ public final class AcsChatTypingIndicatorReceivedInThreadEventData extends AcsCh
                     senderCommunicationIdentifier, composeTime, type, version, messageBody);
             deserializedAcsChatTypingIndicatorReceivedInThreadEventData.transactionId = transactionId;
             deserializedAcsChatTypingIndicatorReceivedInThreadEventData.senderDisplayName = senderDisplayName;
-            deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setSequenceId(sequenceId);
+            deserializedAcsChatTypingIndicatorReceivedInThreadEventData.sequenceId = sequenceId;
             deserializedAcsChatTypingIndicatorReceivedInThreadEventData.metadata = metadata;
             return deserializedAcsChatTypingIndicatorReceivedInThreadEventData;
         });
