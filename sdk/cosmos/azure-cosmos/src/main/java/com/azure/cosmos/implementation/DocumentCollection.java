@@ -496,7 +496,14 @@ public final class DocumentCollection extends Resource {
     public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
         this.cosmosGlobalSecondaryIndexDefinition = value;
-        // Write under both property names so the service can accept either
+        // Intentionally dual-write the definition under both the new ("globalSecondaryIndexDefinition")
+        // and the legacy ("materializedViewDefinition") wire-format property names. The Cosmos DB service
+        // transitioned the property name during the rollout of the GSI feature: older gateway/back-end
+        // versions only recognize the legacy materialized-view name, while newer ones expect the new
+        // GSI name. Writing both keys keeps the SDK forward- and backward-compatible across server
+        // versions. This is the only setter in DocumentCollection that writes the same payload under two
+        // keys and exists solely for that transitional compatibility — remove the legacy write once all
+        // supported service versions accept the new property name.
         this.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION, value);
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
     }

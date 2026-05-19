@@ -397,7 +397,7 @@ public final class CosmosContainerProperties {
      *
      * @return the CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosGlobalSecondaryIndexDefinition getCosmosGlobalSecondaryIndexDefinition() {
+    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
         return this.documentCollection.getGlobalSecondaryIndexDefinition();
     }
 
@@ -409,13 +409,13 @@ public final class CosmosContainerProperties {
      * <pre>{@code
      * CosmosGlobalSecondaryIndexDefinition gsiDef =
      *     new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
-     * containerProperties.setCosmosGlobalSecondaryIndexDefinition(gsiDef);
+     * containerProperties.setGlobalSecondaryIndexDefinition(gsiDef);
      * }</pre>
      *
      * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setCosmosGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+    public CosmosContainerProperties setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         this.documentCollection.setGlobalSecondaryIndexDefinition(value);
         return this;
     }

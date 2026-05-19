@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexBuildStatus;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -64,7 +65,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             // Create a GSI container derived from the source
             String gsiContainerId = "gsi-view-" + UUID.randomUUID();
             CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-            gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+            gsiContainerDef.setGlobalSecondaryIndexDefinition(
                 new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
 
             CosmosContainerResponse createResponse = database.createContainer(gsiContainerDef).block();
@@ -74,8 +75,9 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(createResponse.getProperties().getId()).isEqualTo(gsiContainerId);
 
             // Verify the GSI definition is present in the response
-            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
+            assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
             assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
@@ -97,7 +99,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         // Create GSI container
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+        gsiContainerDef.setGlobalSecondaryIndexDefinition(
             new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
@@ -110,8 +112,9 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(readResponse.getProperties()).isNotNull();
             assertThat(readResponse.getProperties().getId()).isEqualTo(gsiContainerId);
 
-            CosmosGlobalSecondaryIndexDefinition gsiDef = readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = readResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
+            assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
             assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
@@ -133,7 +136,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         // Create GSI container
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+        gsiContainerDef.setGlobalSecondaryIndexDefinition(
             new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
@@ -176,7 +179,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             gsiContainerDef.setIndexingPolicy(indexingPolicy);
 
             // Set GSI definition
-            gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+            gsiContainerDef.setGlobalSecondaryIndexDefinition(
                 new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
 
             CosmosContainerResponse createResponse = database.createContainer(
@@ -187,8 +190,9 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(createResponse.getProperties().getIndexingPolicy().getIndexingMode())
                 .isEqualTo(IndexingMode.CONSISTENT);
 
-            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
+            assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
             assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
@@ -210,7 +214,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         // Create GSI container
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+        gsiContainerDef.setGlobalSecondaryIndexDefinition(
             new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
@@ -234,8 +238,9 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
                 .isEqualTo(IndexingMode.CONSISTENT);
 
             // Verify GSI definition is preserved after replace
-            CosmosGlobalSecondaryIndexDefinition gsiDef = replaceResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = replaceResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
+            assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
             assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
         } finally {
             safeDeleteAllCollections(database);
@@ -256,7 +261,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
         // Create GSI container
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+        gsiContainerDef.setGlobalSecondaryIndexDefinition(
             new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
         database.createContainer(gsiContainerDef).block();
 
@@ -264,17 +269,15 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosAsyncContainer gsiContainer = database.getContainer(gsiContainerId);
             CosmosContainerResponse readResponse = gsiContainer.read().block();
 
-            CosmosGlobalSecondaryIndexDefinition gsiDef = readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = readResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
 
             // The status field may be populated by the server after creation
-            // (e.g. "Initializing" or similar). The public gateway does not
-            // always surface this field, so we only verify the accessor works
-            // without asserting a specific value.
-            String status = gsiDef.getStatus();
-            if (status != null) {
-                assertThat(status).isNotEmpty();
-            }
+            // (e.g. INITIALIZED, BUILDING, ACTIVE). The public gateway does not
+            // always surface this field, so we only verify the accessor returns
+            // a non-null value (UNKNOWN when absent) without asserting a specific status.
+            CosmosGlobalSecondaryIndexBuildStatus status = gsiDef.getStatus();
+            assertThat(status).isNotNull();
         } finally {
             safeDeleteAllCollections(database);
         }
@@ -295,7 +298,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosContainerResponse readResponse = container.read().block();
 
             assertThat(readResponse).isNotNull();
-            assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
+            assertThat(readResponse.getProperties().getGlobalSecondaryIndexDefinition()).isNull();
         } finally {
             safeDeleteAllCollections(database);
         }
@@ -322,14 +325,14 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             // Create a GSI container derived from the source
             String gsiContainerId = "gsi-view-" + UUID.randomUUID();
             CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-            gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+            gsiContainerDef.setGlobalSecondaryIndexDefinition(
                 new CosmosGlobalSecondaryIndexDefinition(sourceContainerId, GSI_QUERY_DEFINITION));
 
             CosmosContainerResponse createResponse = database.createContainer(gsiContainerDef).block();
 
             // Verify the GSI definition in the response has the correct source RID
             assertThat(createResponse).isNotNull();
-            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition();
+            CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
             assertThat(gsiDef.getSourceContainerRid())
                 .as("sourceContainerRid should be resolved to the source container's RID")
@@ -352,7 +355,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
         String gsiContainerId = "gsi-view-" + UUID.randomUUID();
         CosmosContainerProperties gsiContainerDef = new CosmosContainerProperties(gsiContainerId, "/customerId");
-        gsiContainerDef.setCosmosGlobalSecondaryIndexDefinition(
+        gsiContainerDef.setGlobalSecondaryIndexDefinition(
             new CosmosGlobalSecondaryIndexDefinition(nonExistentSourceId, GSI_QUERY_DEFINITION));
 
         try {
@@ -391,7 +394,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(createResponse.getProperties().getId()).isEqualTo(containerId);
 
             // Verify no GSI definition or views are present
-            assertThat(createResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
+            assertThat(createResponse.getProperties().getGlobalSecondaryIndexDefinition()).isNull();
 
             // Read the container back and verify the same
             CosmosAsyncContainer container = database.getContainer(containerId);
@@ -399,7 +402,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
 
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getProperties().getId()).isEqualTo(containerId);
-            assertThat(readResponse.getProperties().getCosmosGlobalSecondaryIndexDefinition()).isNull();
+            assertThat(readResponse.getProperties().getGlobalSecondaryIndexDefinition()).isNull();
         } finally {
             safeDeleteAllCollections(database);
         }

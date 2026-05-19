@@ -37,11 +37,11 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @throws IllegalArgumentException if {@code sourceContainerId} or {@code definition} is {@code null} or empty.
      */
     public CosmosGlobalSecondaryIndexDefinition(String sourceContainerId, String definition) {
-        if (sourceContainerId == null || sourceContainerId.isEmpty()) {
-            throw new IllegalArgumentException("sourceContainerId cannot be null or empty");
+        if (sourceContainerId == null || sourceContainerId.trim().isEmpty()) {
+            throw new IllegalArgumentException("sourceContainerId cannot be null, empty, or blank");
         }
-        if (definition == null || definition.isEmpty()) {
-            throw new IllegalArgumentException("definition cannot be null or empty");
+        if (definition == null || definition.trim().isEmpty()) {
+            throw new IllegalArgumentException("definition cannot be null, empty, or blank");
         }
         this.jsonSerializable = new JsonSerializable();
         this.jsonSerializable.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID, sourceContainerId);
@@ -82,12 +82,15 @@ public final class CosmosGlobalSecondaryIndexDefinition {
 
     /**
      * Gets the build status of the GlobalSecondaryIndex as returned by the server.
-     * This is a read-only field populated from server responses.
+     * This is a read-only field populated from server responses. When the status field is
+     * absent from the server response, or the server returns a value that this SDK version
+     * does not recognize, {@link CosmosGlobalSecondaryIndexBuildStatus#UNKNOWN} is returned.
      *
      * @return the GlobalSecondaryIndex build status.
      */
-    public String getStatus() {
-        return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_STATUS);
+    public CosmosGlobalSecondaryIndexBuildStatus getStatus() {
+        return CosmosGlobalSecondaryIndexBuildStatus.fromString(
+            this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_STATUS));
     }
 
     /**

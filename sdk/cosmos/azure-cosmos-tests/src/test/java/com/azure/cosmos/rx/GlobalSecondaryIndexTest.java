@@ -6,6 +6,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexBuildStatus;
 import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -46,9 +47,9 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition definition =
             new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
 
-        containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition);
+        containerProperties.setGlobalSecondaryIndexDefinition(definition);
 
-        CosmosGlobalSecondaryIndexDefinition retrieved = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition retrieved = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(retrieved).isNotNull();
         assertThat(retrieved.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(retrieved.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
@@ -59,7 +60,7 @@ public class GlobalSecondaryIndexTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        assertThatThrownBy(() -> containerProperties.setCosmosGlobalSecondaryIndexDefinition(null))
+        assertThatThrownBy(() -> containerProperties.setGlobalSecondaryIndexDefinition(null))
             .isInstanceOf(NullPointerException.class)
             .hasMessageContaining("cosmosGlobalSecondaryIndexDefinition cannot be null");
     }
@@ -100,7 +101,7 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition definition =
             new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId FROM c");
 
-        assertThat(containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition))
+        assertThat(containerProperties.setGlobalSecondaryIndexDefinition(definition))
             .isSameAs(containerProperties);
     }
 
@@ -121,7 +122,7 @@ public class GlobalSecondaryIndexTest {
             .getCosmosGlobalSecondaryIndexDefinitionAccessor()
             .setSourceCollectionRid(definition, "TughAMEOdUI=");
 
-        containerProperties.setCosmosGlobalSecondaryIndexDefinition(definition);
+        containerProperties.setGlobalSecondaryIndexDefinition(definition);
 
         // Serialize via DocumentCollection.toJson() which calls populatePropertyBag()
         String json = ModelBridgeInternal.getResource(containerProperties).toJson();
@@ -157,12 +158,13 @@ public class GlobalSecondaryIndexTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
-        assertThat(definition.getStatus()).isNull();
+        // No status field in the JSON, so the accessor returns UNKNOWN.
+        assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.UNKNOWN);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -179,10 +181,11 @@ public class GlobalSecondaryIndexTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
-        assertThat(definition.getStatus()).isEqualTo("Initialized");
+        // "Initialized" is not a value this SDK version recognizes, so it maps to UNKNOWN.
+        assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.UNKNOWN);
     }
 
     // -------------------------------------------------------------------------
@@ -204,12 +207,12 @@ public class GlobalSecondaryIndexTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
         assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
-        assertThat(definition.getStatus()).isEqualTo("Active");
+        assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.ACTIVE);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -232,7 +235,7 @@ public class GlobalSecondaryIndexTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerId())
             .as("New wire format should take precedence when both are present")
@@ -253,7 +256,7 @@ public class GlobalSecondaryIndexTest {
             .getCosmosGlobalSecondaryIndexDefinitionAccessor()
             .setSourceCollectionRid(definition, "TughAMEOdUI=");
 
-        original.setCosmosGlobalSecondaryIndexDefinition(definition);
+        original.setGlobalSecondaryIndexDefinition(definition);
 
         // Serialize via DocumentCollection.toJson()
         String json = ModelBridgeInternal.getResource(original).toJson();
@@ -261,7 +264,7 @@ public class GlobalSecondaryIndexTest {
         // Deserialize back using the same path as server responses
         CosmosContainerProperties deserialized = fromJson(json);
 
-        CosmosGlobalSecondaryIndexDefinition deserializedDef = deserialized.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition deserializedDef = deserialized.getGlobalSecondaryIndexDefinition();
         assertThat(deserializedDef).isNotNull();
         assertThat(deserializedDef.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(deserializedDef.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
@@ -294,7 +297,7 @@ public class GlobalSecondaryIndexTest {
         CosmosContainerProperties containerProperties = fromJson(json);
 
         // The GSI definition itself should be non-null (the JSON node exists)
-        CosmosGlobalSecondaryIndexDefinition gsiDef = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
+        CosmosGlobalSecondaryIndexDefinition gsiDef = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(gsiDef).isNotNull();
         assertThat(gsiDef.getDefinition()).isEqualTo("SELECT c.customerId FROM c");
 

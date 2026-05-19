@@ -1397,27 +1397,33 @@ public class CosmosAsyncDatabase {
         RequestOptions nonNullRequestOptions =
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
 
-        CosmosGlobalSecondaryIndexDefinition gsiDefinition = containerProperties.getCosmosGlobalSecondaryIndexDefinition();
-        Mono<Void> ridResolution;
-        if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
-            ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
-                .read( new CosmosContainerRequestOptions(), context)
-                .flatMap(sourceContainerResponse -> {
-                    String rid = sourceContainerResponse.getProperties().getResourceId();
-                    ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
-                        .getCosmosGlobalSecondaryIndexDefinitionAccessor()
-                        .setSourceCollectionRid(gsiDefinition, rid);
-                    return Mono.empty();
-                });
-        } else {
-            ridResolution = Mono.empty();
-        }
+        Mono<CosmosContainerResponse> responseMono = Mono.defer(() -> {
+            // Re-read the GSI definition from containerProperties at subscription time so that any
+            // mutations the caller made between Mono construction and subscription are honored
+            // consistently across RID resolution and the create-collection call.
+            CosmosGlobalSecondaryIndexDefinition gsiDefinition =
+                containerProperties.getGlobalSecondaryIndexDefinition();
+            Mono<Void> ridResolution;
+            if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
+                ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
+                    .read(new CosmosContainerRequestOptions(), context)
+                    .flatMap(sourceContainerResponse -> {
+                        String rid = sourceContainerResponse.getProperties().getResourceId();
+                        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+                            .getCosmosGlobalSecondaryIndexDefinitionAccessor()
+                            .setSourceCollectionRid(gsiDefinition, rid);
+                        return Mono.empty();
+                    });
+            } else {
+                ridResolution = Mono.empty();
+            }
 
-        Mono<CosmosContainerResponse> responseMono = ridResolution
-            .then(Mono.defer(() -> getDocClientWrapper()
-                .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
-                    nonNullRequestOptions)
-                .map(ModelBridgeInternal::createCosmosContainerResponse).single()));
+            return ridResolution
+                .then(getDocClientWrapper()
+                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                        nonNullRequestOptions)
+                    .map(ModelBridgeInternal::createCosmosContainerResponse).single());
+        });
 
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
