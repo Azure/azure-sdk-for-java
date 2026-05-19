@@ -1,5 +1,6 @@
 # Release History
 ## 7.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 4.1.0-RC1 and Spring Cloud dependencies version to 2025.1.1
 Upgrade Spring Boot dependencies version to 4.0.6 and Spring Cloud dependencies version to 2025.1.1
 
 ### Spring Cloud Azure Autoconfigure
