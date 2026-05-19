@@ -124,14 +124,19 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
+     * @return true for a 2xx response to a GET request, the only response shape that carries a body we
+     * can decode. 206 (Partial Content) on retried range downloads is included.
+     */
+    private static boolean isDownloadResponse(HttpResponse response) {
+        return response.getRequest().getHttpMethod() == HttpMethod.GET && response.getStatusCode() / 100 == 2;
+    }
+
+    /**
      * @return true when the response is one we should decode: a 2xx GET with a positive, parseable
-     * {@code Content-Length}. 206 (Partial Content) on retried range downloads is included.
+     * {@code Content-Length}.
      */
     private static boolean isEligibleDownload(HttpResponse response, Long contentLength) {
-        return response.getRequest().getHttpMethod() == HttpMethod.GET
-            && response.getStatusCode() / 100 == 2
-            && contentLength != null
-            && contentLength > 0;
+        return isDownloadResponse(response) && contentLength != null && contentLength > 0;
     }
 
     /**
@@ -170,6 +175,10 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             return Flux.fromIterable(decoder.decodeChunk(buffer));
         } catch (IllegalArgumentException e) {
             return Flux.error(new IOException("Failed to decode structured message: " + e.getMessage(), e));
+        } catch (Exception e) {
+            // Anything not foreseen by the decoder, log it.
+            LOGGER.error("Failed to decode structured message chunk: " + e.getMessage(), e);
+            return Flux.error(new IOException("Failed to decode structured message chunk: " + e.getMessage(), e));
         }
     }
 
