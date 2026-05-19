@@ -214,6 +214,12 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     return FabricDataAgentKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else if ("fabricOntology".equals(discriminatorValue)) {
                     return FabricOntologyKnowledgeSourceParams.fromJson(readerToUse.reset());
+                } else if ("mcpServer".equals(discriminatorValue)) {
+                    return McpServerKnowledgeSourceParams.fromJson(readerToUse.reset());
+                } else if ("file".equals(discriminatorValue)) {
+                    return FileKnowledgeSourceParams.fromJson(readerToUse.reset());
+                } else if ("indexedSql".equals(discriminatorValue)) {
+                    return IndexedSqlKnowledgeSourceParams.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

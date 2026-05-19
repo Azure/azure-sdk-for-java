@@ -32,6 +32,7 @@ import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -4685,5 +4686,157 @@ public final class SearchIndexClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listIndexStatsSummary(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String name, BinaryData file,
+        RequestOptions requestOptions) {
+        return this.serviceClient.uploadKnowledgeSourceFileWithResponse(name, file, requestOptions);
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Files request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> hiddenGeneratedListKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSourceFiles(name, requestOptions);
+    }
+
+    /**
+     * Deletes a file from a File knowledge source and removes all indexed content derived from it.
+     *
+     * @param fileId The unique identifier of the file to delete.
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteKnowledgeSourceFileWithResponse(fileId, name, requestOptions);
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     *
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KnowledgeSourceFile hiddenGeneratedUploadKnowledgeSourceFile(String name, BinaryData file) {
+        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(name, file, requestOptions).getValue()
+            .toObject(KnowledgeSourceFile.class);
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Files request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSourceFile> listKnowledgeSourceFiles(String name) {
+        // Generated convenience method for listKnowledgeSourceFiles
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listKnowledgeSourceFiles(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeSourceFile.class));
+    }
+
+    /**
+     * Deletes a file from a File knowledge source and removes all indexed content derived from it.
+     *
+     * @param fileId The unique identifier of the file to delete.
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeSourceFile(String fileId, String name) {
+        // Generated convenience method for deleteKnowledgeSourceFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteKnowledgeSourceFileWithResponse(fileId, name, requestOptions).getValue();
     }
 }

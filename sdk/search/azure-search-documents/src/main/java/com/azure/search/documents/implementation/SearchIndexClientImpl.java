@@ -758,6 +758,68 @@ public final class SearchIndexClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
 
+        @Post("/knowledgesources('{sourceName}')/files")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> uploadKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("sourceName") String name, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
+
+        @Post("/knowledgesources('{sourceName}')/files")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> uploadKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("sourceName") String name, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listKnowledgeSourceFiles(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+
+        @Get("/knowledgesources('{sourceName}')/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listKnowledgeSourceFilesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+
+        @Delete("/knowledgesources('{sourceName}')/files('{fileId}')")
+        @ExpectedResponses({ 204, 404 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, @PathParam("sourceName") String name, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/knowledgesources('{sourceName}')/files('{fileId}')")
+        @ExpectedResponses({ 204, 404 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, @PathParam("sourceName") String name, RequestOptions requestOptions,
+            Context context);
+
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -7542,6 +7604,262 @@ public final class SearchIndexClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         return service.getKnowledgeSourceStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             name, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponseAsync(String name, BinaryData file,
+        RequestOptions requestOptions) {
+        final String contentType = "application/octet-stream";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.uploadKnowledgeSourceFile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, name, accept, file, requestOptions, context));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String name, BinaryData file,
+        RequestOptions requestOptions) {
+        final String contentType = "application/octet-stream";
+        final String accept = "application/json";
+        return service.uploadKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, name, accept, file, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Files request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listKnowledgeSourceFilesSinglePageAsync(String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(context -> service.listKnowledgeSourceFiles(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), accept, name, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), null, null));
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Files request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listKnowledgeSourceFilesAsync(String name, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listKnowledgeSourceFilesSinglePageAsync(name, requestOptions));
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Files request along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listKnowledgeSourceFilesSinglePage(String name, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res = service.listKnowledgeSourceFilesSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, name, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), null, null);
+    }
+
+    /**
+     * Lists all files in a File knowledge source.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Files request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listKnowledgeSourceFiles(String name, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listKnowledgeSourceFilesSinglePage(name, requestOptions));
+    }
+
+    /**
+     * Deletes a file from a File knowledge source and removes all indexed content derived from it.
+     * 
+     * @param fileId The unique identifier of the file to delete.
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteKnowledgeSourceFileWithResponseAsync(String fileId, String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil.withContext(context -> service.deleteKnowledgeSourceFile(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), fileId, accept, name, requestOptions, context));
+    }
+
+    /**
+     * Deletes a file from a File knowledge source and removes all indexed content derived from it.
+     * 
+     * @param fileId The unique identifier of the file to delete.
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeSourceFileWithResponse(String fileId, String name,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return service.deleteKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), fileId,
+            accept, name, requestOptions, Context.NONE);
     }
 
     /**

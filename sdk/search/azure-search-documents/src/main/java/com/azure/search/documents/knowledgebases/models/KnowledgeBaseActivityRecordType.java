@@ -120,4 +120,22 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
      */
     @Generated
     public static final KnowledgeBaseActivityRecordType MODEL_ANSWER_SYNTHESIS = fromString("modelAnswerSynthesis");
+
+    /**
+     * MCP server retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MCP_SERVER = fromString("mcpServer");
+
+    /**
+     * File retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType FILE = fromString("file");
+
+    /**
+     * Indexed SQL retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType INDEXED_SQL = fromString("indexedSql");
 }

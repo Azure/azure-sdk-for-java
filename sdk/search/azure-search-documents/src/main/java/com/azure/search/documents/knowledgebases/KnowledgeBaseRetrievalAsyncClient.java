@@ -171,7 +171,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -195,7 +195,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {

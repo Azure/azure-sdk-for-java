@@ -96,4 +96,22 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
      */
     @Generated
     public static final KnowledgeBaseReferenceType FABRIC_ONTOLOGY = fromString("fabricOntology");
+
+    /**
+     * MCP server document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType MCP_SERVER = fromString("mcpServer");
+
+    /**
+     * File document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType FILE = fromString("file");
+
+    /**
+     * Indexed SQL document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType INDEXED_SQL = fromString("indexedSql");
 }
