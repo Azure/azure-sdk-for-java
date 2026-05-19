@@ -53,14 +53,15 @@ public class SessionFilesAsyncSample {
                 String sessionId = resources.getSession().getAgentSessionId();
 
                 return sessionFilesAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                    BinaryData.fromString("Sample session file 1."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+                    BinaryData.fromString("Sample session file 1."),
+                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(sessionFilesAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
                         BinaryData.fromString("Sample session file 2."),
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW))
+                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(sessionFilesAsyncClient.getSessionFiles(agentName, sessionId, "/remote",
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW))
+                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(files -> {
                         System.out.println("Listing session files for the session at path '/remote'...");
                         for (SessionDirectoryEntry entry : files.getEntries()) {
@@ -69,7 +70,7 @@ public class SessionFilesAsyncSample {
                         }
                     })
                     .then(sessionFilesAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW))
+                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(downloaded -> {
                         System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
                         String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
@@ -78,12 +79,12 @@ public class SessionFilesAsyncSample {
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
                         return sessionFilesAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false);
+                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
                     }))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
                         return sessionFilesAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false);
+                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
                     }));
             });
 

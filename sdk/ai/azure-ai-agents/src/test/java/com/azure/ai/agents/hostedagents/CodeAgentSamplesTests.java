@@ -65,7 +65,7 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             Assertions.assertNotNull(agent.getVersions().getLatest());
 
             BinaryData downloadedCode
-                = agentsClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                = agentsClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
             Assertions.assertNotNull(downloadedCode);
             Assertions.assertTrue(downloadedCode.toBytes().length > 0);
 
@@ -109,7 +109,8 @@ public class CodeAgentSamplesTests extends ClientTestBase {
                 Assertions.assertNotNull(agent.getVersions());
                 Assertions.assertNotNull(agent.getVersions().getLatest());
 
-                return agentsAsyncClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                return agentsAsyncClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW,
+                    null);
             })
             .flatMap(downloadedCode -> {
                 Assertions.assertNotNull(downloadedCode);

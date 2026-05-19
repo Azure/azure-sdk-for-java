@@ -60,7 +60,7 @@ public class CodeAgentSample {
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
             BinaryData downloadedCode = agentsClient.downloadAgentCode(agentName,
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
             Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
             Files.write(downloadPath, downloadedCode.toBytes());
             System.out.println("Downloaded code package path: " + downloadPath);

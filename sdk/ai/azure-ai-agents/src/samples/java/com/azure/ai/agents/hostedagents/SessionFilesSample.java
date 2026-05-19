@@ -49,16 +49,18 @@ public class SessionFilesSample {
             String sessionId = resources.getSession().getAgentSessionId();
 
             sessionFilesClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                BinaryData.fromString("Sample session file 1."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+                BinaryData.fromString("Sample session file 1."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
+                null);
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_1);
 
             sessionFilesClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                BinaryData.fromString("Sample session file 2."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+                BinaryData.fromString("Sample session file 2."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
+                null);
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_2);
 
             System.out.println("Listing session files for the session at path '/remote'...");
             SessionDirectoryListResponse files = sessionFilesClient.getSessionFiles(agentName, sessionId, "/remote",
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
             for (SessionDirectoryEntry entry : files.getEntries()) {
                 System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(), entry.getSize(),
                     entry.isDirectory());
@@ -66,17 +68,17 @@ public class SessionFilesSample {
 
             System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
             BinaryData downloaded = sessionFilesClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
             String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
             System.out.printf("Session file content (%s):%n%s%n", REMOTE_FILE_PATH_1, fileContent);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
             sessionFilesClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false);
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
             sessionFilesClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false);
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }

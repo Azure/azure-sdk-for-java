@@ -58,7 +58,7 @@ public class CodeAgentAsyncSample {
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
                     .then(agentsAsyncClient.downloadAgentCode(agentName,
-                        AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW))
+                        AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null))
                     .flatMap(downloadedCode -> writeDownloadedCode(agentName, downloadedCode))
 
                     // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
