@@ -49,7 +49,7 @@ public class InferenceServiceTest {
     private HttpClient mockHttpClient;
     private MockedStatic<HttpClient> httpClientStaticMock;
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"unit"})
     public void setUp() {
         // Set the inference endpoint system property required by InferenceService constructor
         System.setProperty(INFERENCE_ENDPOINT_PROPERTY, TEST_ENDPOINT);
@@ -68,7 +68,7 @@ public class InferenceServiceTest {
             .thenReturn(mockHttpClient);
     }
 
-    @AfterMethod
+    @AfterMethod(groups = {"unit"})
     public void tearDown() {
         System.clearProperty(INFERENCE_ENDPOINT_PROPERTY);
         if (httpClientStaticMock != null) {
