@@ -355,7 +355,7 @@ public class StructuredMessageDecoder {
 
             if (currentSegmentContentOffset == currentSegmentContentLength) {
                 // Segment payload fully buffered. Validate the CRC footer (if any). When the footer isn't fully
-                // available yet, break and resume on the next chunk – currentSegmentPayloadCopies keeps its contents so
+                // available yet, break and resume on the next chunk – currentSegmentPayload keeps its contents so
                 // we can still emit them on the call where the footer arrives.
                 if (!tryReadSegmentFooter(buffer)) {
                     break;
@@ -389,10 +389,14 @@ public class StructuredMessageDecoder {
         if (validatedOutput.isEmpty()) {
             return Collections.emptyList();
         }
+        List<ByteBuffer> result;
         if (validatedOutput.size() == 1) {
-            return Collections.singletonList(validatedOutput.get(0));
+            result = Collections.singletonList(validatedOutput.get(0));
+        } else {
+            result = new ArrayList<>(validatedOutput);
         }
-        return new ArrayList<>(validatedOutput);
+        validatedOutput.clear();
+        return result;
     }
 
     /**

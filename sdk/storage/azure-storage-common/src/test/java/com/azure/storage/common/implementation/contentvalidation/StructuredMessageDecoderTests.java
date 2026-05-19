@@ -535,10 +535,11 @@ public class StructuredMessageDecoderTests {
     }
 
     /**
-     * Zero-copy emission: the decoder's per-segment backing array is sized to the exact segment payload length so
-     * the wrapped ByteBuffer's underlying array length matches segment size. Guards against accidental
-     * reintroduction of intermediate buffering (e.g. a growing {@code ByteArrayOutputStream} that hands off an
-     * oversized buffer).
+      * Verifies that emitted payload buffers are exact-sized for the copied payload they contain and do not expose
+      * an oversized backing array. In this single-segment scenario the decoder emits one buffer whose backing
+      * array length matches the payload length, guarding against accidental reintroduction of intermediate
+      * buffering (for example, a growing {@code ByteArrayOutputStream} that hands off a larger-than-needed
+      * buffer).
      */
     @Test
     public void singleSegmentEmissionIsExactSized() {
