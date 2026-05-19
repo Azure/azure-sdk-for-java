@@ -77,10 +77,10 @@ public class StructuredMessageDecoder {
     // Holds bytes left over from a previous decodeChunk() call when the current chunk did not contain a full
     // header or footer.
     private final ByteArrayOutputStream pendingBytes = new ByteArrayOutputStream();
-    // Payload copies for the current segment, one per inbound wire buffer. Allocated incrementally (not pre-sized to
-    // the full segment length) so peak heap stays near bytes received so far plus at most one live wire buffer.
+    // Payload for the current segment, one per inbound wire buffer. Not pre-sized to the full segment length,
+    // avoiding unnecessary heap spikes.
     // These bytes are intentionally NOT emitted until the segment's CRC footer has been validated.
-    private List<byte[]> currentSegmentPayloadCopies;
+    private List<byte[]> currentSegmentPayload;
     // Validated payload buffers to emit from the current decodeChunk() invocation.
     private final List<ByteBuffer> validatedOutput = new ArrayList<>();
 
@@ -155,7 +155,7 @@ public class StructuredMessageDecoder {
     /**
      * Reads the 10-byte header for the next segment (segment number + segment payload length) and resets
      * per-segment state so {@link #tryReadSegmentContent(ByteBuffer)} can begin filling
-     * {@link #currentSegmentPayloadCopies}.
+     * {@link #currentSegmentPayload}.
      *
      * <p>Validates that segments arrive in order and that the declared segment size leaves enough room in the
      * remaining message for any subsequent segment headers, payloads, footers, and the trailing message footer –
@@ -203,7 +203,7 @@ public class StructuredMessageDecoder {
         currentSegmentNumber = segmentNum;
         currentSegmentContentLength = segmentSize;
         currentSegmentContentOffset = 0;
-        currentSegmentPayloadCopies = new ArrayList<>();
+        currentSegmentPayload = new ArrayList<>();
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             // Reset only the per-segment running CRC; the message-wide running CRC keeps accumulating across all
@@ -216,7 +216,7 @@ public class StructuredMessageDecoder {
 
     /**
      * Pulls as many payload bytes as possible (bounded by what is still owed for the current segment) from the
-     * pending+buffer view into {@link #currentSegmentPayloadCopies}, updating the running per-segment and per-message
+     * pending+buffer view into {@link #currentSegmentPayload}, updating the running per-segment and per-message
      * CRC64 values along the way.
      *
      * <p>Bytes accumulated here are not yet emitted to the caller. They are released only after
@@ -256,7 +256,7 @@ public class StructuredMessageDecoder {
         }
 
         consumeBytes(toRead, buffer);
-        currentSegmentPayloadCopies.add(payloadCopy);
+        currentSegmentPayload.add(payloadCopy);
 
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
@@ -378,8 +378,8 @@ public class StructuredMessageDecoder {
      * without consolidating them into a single array.
      */
     private void releaseValidatedSegmentPayload() {
-        List<byte[]> validatedCopies = currentSegmentPayloadCopies;
-        currentSegmentPayloadCopies = null;
+        List<byte[]> validatedCopies = currentSegmentPayload;
+        currentSegmentPayload = null;
         for (byte[] validatedCopy : validatedCopies) {
             validatedOutput.add(ByteBuffer.wrap(validatedCopy));
         }
