@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Unit tests for {@link McpServer}.
  */
-class MCPServerTest {
+class McpServerTest {
 
     private static final String TEST_SERVER_LABEL = "test-server";
     private static final String TEST_SERVER_URL = "http://localhost:8080";

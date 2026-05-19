@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Unit tests for {@link ResponseMcpApprovalRequestItem}.
  */
-class ResponseMCPApprovalRequestItemTest {
+class ResponseMcpApprovalRequestItemTest {
 
     @Test
     void testFromJsonWithRequiredFields() {

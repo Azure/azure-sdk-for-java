@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link ResponseMcpListToolItem}.
  */
-class ResponseMCPListToolItemTest {
+class ResponseMcpListToolItemTest {
 
     @Test
     void testFromJsonWithEmptyTools() {
