@@ -579,7 +579,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -603,7 +603,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -624,7 +624,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -646,7 +646,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -665,7 +665,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -684,7 +684,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -704,7 +704,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -722,7 +722,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -738,7 +738,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.

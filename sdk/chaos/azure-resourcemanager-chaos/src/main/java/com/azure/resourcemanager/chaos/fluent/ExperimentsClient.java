@@ -110,7 +110,7 @@ public interface ExperimentsClient {
         Context context);
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -125,7 +125,7 @@ public interface ExperimentsClient {
         String experimentName, ExperimentUpdate properties);
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -141,7 +141,7 @@ public interface ExperimentsClient {
         String experimentName, ExperimentUpdate properties, Context context);
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.
@@ -155,7 +155,7 @@ public interface ExperimentsClient {
     ExperimentInner update(String resourceGroupName, String experimentName, ExperimentUpdate properties);
 
     /**
-     * Update an experiment.
+     * The operation to update an experiment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param experimentName String that represents a Experiment resource name.

@@ -33,6 +33,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.implementation.models.ScenarioRunListResult;
+import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -71,9 +72,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     public interface ScenarioRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScenarioRunInner>> get(@HostParam("endpoint") String endpoint,
+        Mono<ScenarioRunsGetResponse> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId,
@@ -81,9 +82,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ScenarioRunInner> getSync(@HostParam("endpoint") String endpoint,
+        ScenarioRunsGetResponse getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("scenarioName") String scenarioName, @PathParam("runId") String runId,
@@ -144,6 +145,12 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     /**
      * Get a scenario run.
      * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
@@ -151,10 +158,13 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run along with {@link Response} on successful completion of {@link Mono}.
+     * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScenarioRunInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+    private Mono<ScenarioRunsGetResponse> getWithResponseAsync(String resourceGroupName, String workspaceName,
         String scenarioName, String runId) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -165,6 +175,12 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     /**
      * Get a scenario run.
      * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
@@ -172,7 +188,10 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run on successful completion of {@link Mono}.
+     * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScenarioRunInner> getAsync(String resourceGroupName, String workspaceName, String scenarioName,
@@ -184,6 +203,12 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
     /**
      * Get a scenario run.
      * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
@@ -192,11 +217,14 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run along with {@link Response}.
+     * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScenarioRunInner> getWithResponse(String resourceGroupName, String workspaceName,
-        String scenarioName, String runId, Context context) {
+    public ScenarioRunsGetResponse getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
+        String runId, Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, workspaceName, scenarioName, runId, accept, context);
@@ -204,6 +232,12 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
 
     /**
      * Get a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -213,6 +247,9 @@ public final class ScenarioRunsClientImpl implements ScenarioRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScenarioRunInner get(String resourceGroupName, String workspaceName, String scenarioName, String runId) {

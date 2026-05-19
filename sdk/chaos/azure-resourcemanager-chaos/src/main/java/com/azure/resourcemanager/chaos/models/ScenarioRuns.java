@@ -15,6 +15,12 @@ public interface ScenarioRuns {
     /**
      * Get a scenario run.
      * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
      * @param scenarioName Name of the scenario.
@@ -23,13 +29,22 @@ public interface ScenarioRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run along with {@link Response}.
+     * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     Response<ScenarioRun> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context);
 
     /**
      * Get a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -39,6 +54,9 @@ public interface ScenarioRuns {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     ScenarioRun get(String resourceGroupName, String workspaceName, String scenarioName, String runId);
 

@@ -480,7 +480,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -504,7 +504,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -525,7 +525,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -547,7 +547,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -566,7 +566,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -585,7 +585,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -605,7 +605,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -623,7 +623,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -639,7 +639,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Update a Workspace.
+     * The operation to update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.

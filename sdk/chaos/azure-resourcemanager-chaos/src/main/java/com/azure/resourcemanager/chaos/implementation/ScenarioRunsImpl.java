@@ -13,6 +13,7 @@ import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 import com.azure.resourcemanager.chaos.models.ScenarioRun;
 import com.azure.resourcemanager.chaos.models.ScenarioRuns;
+import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
 
 public final class ScenarioRunsImpl implements ScenarioRuns {
     private static final ClientLogger LOGGER = new ClientLogger(ScenarioRunsImpl.class);
@@ -29,10 +30,14 @@ public final class ScenarioRunsImpl implements ScenarioRuns {
 
     public Response<ScenarioRun> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context) {
-        Response<ScenarioRunInner> inner
+        ScenarioRunsGetResponse inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, scenarioName, runId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ScenarioRunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ScenarioRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ScenarioRun get(String resourceGroupName, String workspaceName, String scenarioName, String runId) {

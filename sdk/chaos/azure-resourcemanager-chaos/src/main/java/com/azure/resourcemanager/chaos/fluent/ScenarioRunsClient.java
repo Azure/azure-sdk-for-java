@@ -7,11 +7,11 @@ package com.azure.resourcemanager.chaos.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
+import com.azure.resourcemanager.chaos.models.ScenarioRunsGetResponse;
 
 /**
  * An instance of this class provides access to all the operations defined in ScenarioRunsClient.
@@ -19,6 +19,12 @@ import com.azure.resourcemanager.chaos.fluent.models.ScenarioRunInner;
 public interface ScenarioRunsClient {
     /**
      * Get a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -28,14 +34,23 @@ public interface ScenarioRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scenario run along with {@link Response}.
+     * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScenarioRunInner> getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
+    ScenarioRunsGetResponse getWithResponse(String resourceGroupName, String workspaceName, String scenarioName,
         String runId, Context context);
 
     /**
      * Get a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location). While the run is in
+     * progress the service returns 202 with a Location header pointing back to
+     * this URL; clients must keep polling until they receive 200, which carries
+     * the final ScenarioRun body.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -45,6 +60,9 @@ public interface ScenarioRunsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a scenario run.
+     * 
+     * This endpoint is also the polling target for ScenarioConfigurations.execute
+     * and ScenarioRuns.cancel (final-state-via: location).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScenarioRunInner get(String resourceGroupName, String workspaceName, String scenarioName, String runId);
