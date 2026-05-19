@@ -78,8 +78,7 @@ public class StructuredMessageDecoder {
     // header or footer.
     private final ByteArrayOutputStream pendingBytes = new ByteArrayOutputStream();
     // Payload copies for the current segment, one per inbound wire buffer processed while awaiting the segment CRC
-    // footer. Retained memory is bounded to bytes read so far plus at most one live wire buffer
-    // (see {@link com.azure.storage.common.policy.StorageContentValidationDecoderPolicy}).
+    // footer. Retained memory is bounded to bytes read so far plus at most one live wire buffer.
     private List<byte[]> pendingSegmentPayloadCopies;
     // Validated payload buffers to emit from the current decodeChunk() invocation.
     private final List<ByteBuffer> validatedOutput = new ArrayList<>();
@@ -241,7 +240,6 @@ public class StructuredMessageDecoder {
         // Read the minimum of "what's available right now" and "what's still owed for this segment" so we never
         // accidentally consume the segment footer here.
         int toRead = (int) Math.min(available, remaining);
-        // getCombinedBuffer() is a duplicate of the live buffer when pending is empty; otherwise pending + buffer.
         ByteBuffer combined = getCombinedBuffer(buffer);
 
         // Materialize the bytes into a fresh array so we can both feed the CRC64 calculator and stash them in the
@@ -250,9 +248,10 @@ public class StructuredMessageDecoder {
         combined.get(payloadCopy);
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
-            // Compute CRC64 directly from payloadCopy: combined.position() has already advanced past the payload
-            // bytes at this point, so re-reading from the buffer would compute over the wrong bytes.
-            updateCrc64sFromBytes(payloadCopy, 0, toRead);
+            // Update both CRCs incrementally: the segment CRC will be checked at the segment footer, and the
+            // message CRC accumulates across every segment to be checked at the message footer.
+            segmentCrc64 = StorageCrc64Calculator.compute(payloadCopy, 0, toRead, segmentCrc64);
+            messageCrc64 = StorageCrc64Calculator.compute(payloadCopy, 0, toRead, messageCrc64);
         }
 
         consumeBytes(toRead, buffer);
@@ -305,15 +304,15 @@ public class StructuredMessageDecoder {
 
     /**
      * Decodes as much as possible from the given buffer and returns any fully validated
-     * payload slices that are now safe to emit downstream.
+     * payload bytes that are now safe to emit downstream.
      *
      * <p>The returned buffers will only ever contain bytes from segments whose CRC (when
-     * enabled) has already been verified. If no segments have been fully
-     * validated by this invocation the method returns an empty list. Callers distinguish "more bytes needed"
-     * from "stream complete" via {@link #isComplete()}.</p>
+     * enabled) has already been verified. If no segments have been fully validated by 
+     * this invocation the method returns an empty list. Callers distinguish "more bytes 
+     * needed" from "stream complete" via {@link #isComplete()}.</p>
      *
      * @param buffer The buffer containing encoded data.
-     * @return Validated payload slices ready to emit downstream; empty when none are ready yet.
+     * @return Validated payload bytes ready to emit downstream; empty when none are ready yet.
      * @throws IllegalArgumentException if the input is malformed or a CRC64 check fails.
      */
     public List<ByteBuffer> decodeChunk(ByteBuffer buffer) {
@@ -321,6 +320,8 @@ public class StructuredMessageDecoder {
         // the wire format regardless of how the buffer was constructed.
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
+        // Output collected during this single invocation. Each segment whose CRC validates in this call is appended
+        // here and ultimately returned to the policy as one or more ByteBuffers.
         validatedOutput.clear();
 
         // Step 1: parse the message header on the first chunk that has enough bytes for it. If this chunk doesn't,
@@ -358,6 +359,7 @@ public class StructuredMessageDecoder {
                 if (!tryReadSegmentFooter(buffer)) {
                     break;
                 }
+                // Segment passed validation: it is now safe to release the buffered payload to the caller.
                 releaseValidatedSegmentPayload();
                 segmentHeaderRead = false;
                 // Loop continues: either consume the next segment's header or the message footer.
@@ -514,15 +516,6 @@ public class StructuredMessageDecoder {
             && pendingBytes.size() == 0
             && !segmentHeaderRead
             && currentSegmentContentOffset == currentSegmentContentLength;
-    }
-
-    /**
-     * Updates running CRC64 values from the payload bytes, mirroring
-     * {@link StructuredMessageEncoder#encodeSegmentContent(ByteBuffer)}.
-     */
-    private void updateCrc64sFromBytes(byte[] array, int offset, int length) {
-        segmentCrc64 = StorageCrc64Calculator.compute(array, offset, length, segmentCrc64);
-        messageCrc64 = StorageCrc64Calculator.compute(array, offset, length, messageCrc64);
     }
 
     /**
