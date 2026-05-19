@@ -15,7 +15,7 @@
 
 #### `SecretServiceVersion` was modified
 
-* `V2025_07_01` was added
+* `V2026_03_01_PREVIEW` was added
 
 #### `SecretAsyncClient` was modified
 
