@@ -6,10 +6,12 @@
 
 #### `cryptography.CryptographyServiceVersion` was modified
 
+* `V2026_03_01_PREVIEW` was added
 * `V2025_07_01` was added
 
 #### `KeyServiceVersion` was modified
 
+* `V2026_03_01_PREVIEW` was added
 * `V2025_07_01` was added
 
 ## 4.10.7 (2026-05-05)

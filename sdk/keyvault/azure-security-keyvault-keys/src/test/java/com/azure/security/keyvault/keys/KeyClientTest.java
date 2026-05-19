@@ -207,6 +207,24 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getKeyWith20260301PreviewServiceVersion(HttpClient httpClient) {
+        createKeyClient(httpClient, KeyServiceVersion.V2026_03_01_PREVIEW);
+
+        getKeyRunner((keyToSetAndGet) -> {
+            keyClient.createKey(keyToSetAndGet);
+
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
+
+            assertKeyEquals(keyToSetAndGet, retrievedKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+            }
+        });
+    }
+
     /**
      * Tests that a specific version of the key can be retrieved.
      */
