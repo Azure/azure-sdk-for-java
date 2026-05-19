@@ -65,10 +65,10 @@
 
 * `NetworkSecurityPerimeterConfigurationPropertiesProfile()` was changed to private access
 * `withDiagnosticSettingsVersion(java.lang.Float)` was removed
-* `withAccessRulesVersion(java.lang.Float)` was removed
 * `withAccessRules(java.util.List)` was removed
-* `withEnabledLogCategories(java.util.List)` was removed
+* `withAccessRulesVersion(java.lang.Float)` was removed
 * `withName(java.lang.String)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
 
 #### `models.FileServiceUsageProperties` was modified
 
@@ -82,20 +82,20 @@
 
 * `Endpoints()` was changed to private access
 * `withInternetEndpoints(models.StorageAccountInternetEndpoints)` was removed
-* `withIpv6Endpoints(models.StorageAccountIpv6Endpoints)` was removed
 * `withMicrosoftEndpoints(models.StorageAccountMicrosoftEndpoints)` was removed
+* `withIpv6Endpoints(models.StorageAccountIpv6Endpoints)` was removed
 
 #### `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was modified
 
 * `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ImmutabilityPolicyProperties` was modified
 
 * `ImmutabilityPolicyProperties()` was changed to private access
-* `withImmutabilityPeriodSinceCreationInDays(java.lang.Integer)` was removed
 * `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
+* `withImmutabilityPeriodSinceCreationInDays(java.lang.Integer)` was removed
 * `withAllowProtectedAppendWrites(java.lang.Boolean)` was removed
 
 #### `models.AccountUsageElements` was modified
@@ -111,8 +111,8 @@
 #### `models.StorageAccountIpv6Endpoints` was modified
 
 * `StorageAccountIpv6Endpoints()` was changed to private access
-* `withInternetEndpoints(models.StorageAccountInternetEndpoints)` was removed
 * `withMicrosoftEndpoints(models.StorageAccountMicrosoftEndpoints)` was removed
+* `withInternetEndpoints(models.StorageAccountInternetEndpoints)` was removed
 
 #### `models.StorageAccountMicrosoftEndpoints` was modified
 
@@ -133,9 +133,9 @@
 #### `models.NetworkSecurityPerimeter` was modified
 
 * `NetworkSecurityPerimeter()` was changed to private access
-* `withPerimeterGuid(java.lang.String)` was removed
 * `withLocation(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
+* `withPerimeterGuid(java.lang.String)` was removed
 
 #### `models.GeoReplicationStats` was modified
 
@@ -164,15 +164,15 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 * `withUnit(java.lang.String)` was removed
-* `withAggregationType(java.lang.String)` was removed
-* `withCategory(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withDimensions(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
 * `withDisplayDescription(java.lang.String)` was removed
 * `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
 
 #### `models.NspAccessRule` was modified
 
@@ -191,8 +191,8 @@
 #### `models.NspAccessRuleProperties` was modified
 
 * `NspAccessRuleProperties()` was changed to private access
-* `withSubscriptions(java.util.List)` was removed
 * `withAddressPrefixes(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
 * `withDirection(models.NspAccessRuleDirection)` was removed
 
 #### `models.FileShareLimits` was modified
@@ -202,9 +202,9 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withProvider(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
 
 #### `models.NspAccessRulePropertiesSubscriptionsItem` was modified
@@ -252,17 +252,19 @@
 #### `models.UpdateHistoryProperty` was modified
 
 * `UpdateHistoryProperty()` was changed to private access
-* `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
 * `withAllowProtectedAppendWrites(java.lang.Boolean)` was removed
+* `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
 
 #### `models.ProvisioningIssueProperties` was modified
 
 * `ProvisioningIssueProperties()` was changed to private access
+* `withDescription(java.lang.String)` was removed
 * `withIssueType(models.IssueType)` was removed
 * `withSeverity(models.Severity)` was removed
-* `withDescription(java.lang.String)` was removed
 
 ### Features Added
+
+* `models.StorageConnectorSourceUpdate` was added
 
 * `models.DataShareSource` was added
 
@@ -286,7 +288,11 @@
 
 * `models.StorageConnectorConnection` was added
 
+* `models.ManagedIdentityAuthPropertiesUpdate` was added
+
 * `models.StorageDataShareAccessPolicy` was added
+
+* `models.StorageDataSharePropertiesUpdate` was added
 
 * `models.ObjectReplicationPolicyPropertiesTagsReplication` was added
 
@@ -294,19 +300,31 @@
 
 * `models.StorageConnectorDataSourceType` was added
 
+* `models.StorageConnectorAuthPropertiesUpdate` was added
+
+* `models.StorageConnectorPropertiesUpdate` was added
+
 * `models.StorageDataShareAsset` was added
 
 * `models.TestExistingConnectionRequest` was added
 
 * `models.NativeDataSharingProvisioningState` was added
 
+* `models.TrackedResourceUpdate` was added
+
 * `models.ManagedIdentityAuthProperties` was added
 
+* `models.DataShareUpdate` was added
+
 * `models.StaticWebsite` was added
+
+* `models.DataShareSourceUpdate` was added
 
 * `models.StorageDataCollaborationPolicyProperties` was added
 
 * `models.ServiceSharedKeyAccessProperties` was added
+
+* `models.ConnectorUpdate` was added
 
 * `models.DataShareConnection` was added
 
@@ -322,8 +340,8 @@
 
 * `allowSharedKeyAccessForServices()` was added
 * `withAllowSharedKeyAccessForServices(models.StorageAccountSharedKeyAccessProperties)` was added
-* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
 * `dataCollaborationPolicyProperties()` was added
+* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
 
 #### `models.AllowedCopyScope` was modified
 
@@ -339,10 +357,10 @@
 
 #### `models.StorageAccountCreateParameters` was modified
 
-* `allowSharedKeyAccessForServices()` was added
 * `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
 * `dataCollaborationPolicyProperties()` was added
 * `withAllowSharedKeyAccessForServices(models.StorageAccountSharedKeyAccessProperties)` was added
+* `allowSharedKeyAccessForServices()` was added
 
 ## 2.55.5 (2026-05-05)
 
