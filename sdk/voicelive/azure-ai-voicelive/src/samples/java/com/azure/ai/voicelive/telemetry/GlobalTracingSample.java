@@ -152,7 +152,7 @@ public final class GlobalTracingSample {
      * inside the reactive chain (no nested subscribe). This sample doesn't send any follow-up
      * events from inside the handler.
      */
-    private static Mono<Void> handleServerEvent(com.azure.ai.voicelive.models.SessionUpdate serverEvent) {
+    private static Mono<Void> handleServerEvent(com.azure.ai.voicelive.models.SessionServerEvent serverEvent) {
         System.out.println("Event: " + serverEvent.getType());
         if (serverEvent instanceof SessionUpdateResponseDone) {
             SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();

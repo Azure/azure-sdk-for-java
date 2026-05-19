@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.azure.ai.voicelive.implementation.VoiceLiveTracer;
 import com.azure.ai.voicelive.models.AgentSessionConfig;
-import com.azure.ai.voicelive.models.ClientEvent;
+import com.azure.ai.voicelive.models.SessionClientEvent;
 import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventConversationItemDelete;
 import com.azure.ai.voicelive.models.ClientEventConversationItemRetrieve;
@@ -32,7 +32,7 @@ import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionAvatarConnect;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.ConversationRequestItem;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -111,7 +111,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     private final Sinks.Many<WebSocketFrame> sendSink = Sinks.many().multicast().onBackpressureBuffer();
 
     // Cached shared events flux — ensures tracing fires only once per event regardless of subscriber count
-    private volatile Flux<SessionUpdate> sharedEventsFlux;
+    private volatile Flux<SessionServerEvent> sharedEventsFlux;
 
     // WebSocket connection state management
     private final AtomicReference<WebsocketInbound> inboundRef = new AtomicReference<>();
@@ -364,7 +364,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * @param event The client event to send.
      * @return A Mono that completes when the command is sent.
      */
-    public Mono<Void> sendEvent(ClientEvent event) {
+    public Mono<Void> sendEvent(SessionClientEvent event) {
         Objects.requireNonNull(event, "'event' cannot be null");
         throwIfNotConnected();
 
@@ -408,10 +408,10 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     }
 
     /**
-     * Receives parsed events from the service as strongly-typed SessionUpdate objects.
+     * Receives parsed events from the service as strongly-typed SessionServerEvent objects.
      * <p>
      * This method provides a higher-level alternative to {@link #receive()} by automatically
-     * parsing the raw BinaryData into the appropriate SessionUpdate subclass based on the
+     * parsing the raw BinaryData into the appropriate SessionServerEvent subclass based on the
      * event type. This enables type-safe event handling and better developer experience.
      * </p>
      * <p>
@@ -419,11 +419,11 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * to operate even if unknown event types are received.
      * </p>
      *
-     * @return A Flux of SessionUpdate objects representing parsed server events.
+     * @return A Flux of SessionServerEvent objects representing parsed server events.
      */
-    public Flux<SessionUpdate> receiveEvents() {
+    public Flux<SessionServerEvent> receiveEvents() {
         throwIfNotConnected();
-        Flux<SessionUpdate> result = sharedEventsFlux;
+        Flux<SessionServerEvent> result = sharedEventsFlux;
         if (result == null) {
             synchronized (this) {
                 result = sharedEventsFlux;
@@ -469,21 +469,21 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     }
 
     /**
-     * Parses raw BinaryData into a SessionUpdate object.
+     * Parses raw BinaryData into a SessionServerEvent object.
      * <p>
      * The generated code now uses JsonReaderHelper to avoid bufferObject() issues.
-     * This method simply delegates to SessionUpdate.fromJson() for polymorphic deserialization.
+     * This method simply delegates to SessionServerEvent.fromJson() for polymorphic deserialization.
      * </p>
      *
      * @param data The raw binary data from the service.
-     * @return A Mono containing the parsed SessionUpdate, or empty if parsing fails.
+     * @return A Mono containing the parsed SessionServerEvent, or empty if parsing fails.
      */
-    private Mono<SessionUpdate> parseToSessionUpdate(BinaryData data) {
+    private Mono<SessionServerEvent> parseToSessionUpdate(BinaryData data) {
         return Mono.fromCallable(() -> {
             try {
-                return SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(data.toString()));
+                return SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(data.toString()));
             } catch (IOException e) {
-                LOGGER.atError().addKeyValue("error", e.getMessage()).log("Failed to parse SessionUpdate");
+                LOGGER.atError().addKeyValue("error", e.getMessage()).log("Failed to parse SessionServerEvent");
                 return null;
             }
         }).filter(Objects::nonNull);

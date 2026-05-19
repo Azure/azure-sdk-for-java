@@ -422,8 +422,8 @@ Use [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers to 
 
 ```java com.azure.ai.voicelive.mcp
 // Configure MCP servers as tools
-MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
-    .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+McpServer mcpServer = new McpServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+    .setRequireApproval(BinaryData.fromObject(McpApprovalType.ALWAYS));
 
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setTools(Arrays.asList(mcpServer))
@@ -436,10 +436,10 @@ session.receiveEvents()
             SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
             SessionResponseItem item = itemDone.getItem();
 
-            if (item instanceof ResponseMCPApprovalRequestItem) {
+            if (item instanceof ResponseMcpApprovalRequestItem) {
                 // Approve the tool call
-                ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
-                MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                ResponseMcpApprovalRequestItem approvalRequest = (ResponseMcpApprovalRequestItem) item;
+                McpApprovalResponseRequestItem approval = new McpApprovalResponseRequestItem(
                     approvalRequest.getId(), true);
                 ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
                     .setItem(approval);

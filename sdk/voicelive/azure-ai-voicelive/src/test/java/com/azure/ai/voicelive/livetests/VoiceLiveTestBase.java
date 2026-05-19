@@ -11,7 +11,7 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.test.TestProxyTestBase;
@@ -164,7 +164,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
         return getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, DEFAULT_SILENCE_DURATION);
     }
 
-    protected void handleError(SessionUpdate event) {
+    protected void handleError(SessionServerEvent event) {
         if (event instanceof SessionUpdateError) {
             SessionUpdateError errorEvent = (SessionUpdateError) event;
             System.err.println(

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link ResponseMCPListToolItem}.
+ * Unit tests for {@link ResponseMcpListToolItem}.
  */
 class ResponseMCPListToolItemTest {
 
@@ -24,7 +24,7 @@ class ResponseMCPListToolItemTest {
             + "\"tools\":[]," + "\"server_label\":\"test-server\"" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertNotNull(item);
@@ -45,7 +45,7 @@ class ResponseMCPListToolItemTest {
             + "    \"input_schema\":{\"type\":\"object\"}" + "  }" + "]" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertNotNull(item);
@@ -54,7 +54,7 @@ class ResponseMCPListToolItemTest {
         assertNotNull(item.getTools());
         assertEquals(2, item.getTools().size());
 
-        List<MCPTool> tools = item.getTools();
+        List<McpTool> tools = item.getTools();
         assertEquals("get_weather", tools.get(0).getName());
         assertEquals("Get weather information", tools.get(0).getDescription());
         assertEquals("send_email", tools.get(1).getName());
@@ -68,7 +68,7 @@ class ResponseMCPListToolItemTest {
             + "\"tools\":[]," + "\"server_label\":\"test\"" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertEquals(ItemType.MCP_LIST_TOOLS, item.getType());
@@ -84,13 +84,13 @@ class ResponseMCPListToolItemTest {
             + "]" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(originalJson).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(originalJson).toObject(ResponseMcpListToolItem.class);
         String serializedJson = BinaryData.fromObject(item).toString();
 
         // Assert
         assertNotNull(serializedJson);
-        ResponseMCPListToolItem deserializedItem
-            = BinaryData.fromString(serializedJson).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem deserializedItem
+            = BinaryData.fromString(serializedJson).toObject(ResponseMcpListToolItem.class);
         assertEquals(item.getId(), deserializedItem.getId());
         assertEquals(item.getServerLabel(), deserializedItem.getServerLabel());
         assertEquals(item.getTools().size(), deserializedItem.getTools().size());
@@ -108,12 +108,12 @@ class ResponseMCPListToolItemTest {
             + "      \"required\":[\"query\"]" + "    }" + "  }" + "]" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertNotNull(item);
         assertEquals(1, item.getTools().size());
-        MCPTool tool = item.getTools().get(0);
+        McpTool tool = item.getTools().get(0);
         assertEquals("search", tool.getName());
         assertEquals("Search for items", tool.getDescription());
         assertNotNull(tool.getInputSchema());
@@ -129,12 +129,12 @@ class ResponseMCPListToolItemTest {
                 + "    \"annotations\":{\"version\":\"1.0\",\"author\":\"test\"}" + "  }" + "]" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertNotNull(item);
         assertEquals(1, item.getTools().size());
-        MCPTool tool = item.getTools().get(0);
+        McpTool tool = item.getTools().get(0);
         assertEquals("annotated_tool", tool.getName());
         assertNotNull(tool.getAnnotations());
     }
@@ -151,7 +151,7 @@ class ResponseMCPListToolItemTest {
             + "  {\"name\":\"tool5\",\"input_schema\":{\"type\":\"object\"}}" + "]" + "}";
 
         // Act
-        ResponseMCPListToolItem item = BinaryData.fromString(json).toObject(ResponseMCPListToolItem.class);
+        ResponseMcpListToolItem item = BinaryData.fromString(json).toObject(ResponseMcpListToolItem.class);
 
         // Assert
         assertEquals(5, item.getTools().size());

@@ -8,12 +8,12 @@ import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ItemType;
-import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
-import com.azure.ai.voicelive.models.MCPApprovalType;
-import com.azure.ai.voicelive.models.MCPServer;
+import com.azure.ai.voicelive.models.McpApprovalResponseRequestItem;
+import com.azure.ai.voicelive.models.McpApprovalType;
+import com.azure.ai.voicelive.models.McpServer;
 import com.azure.ai.voicelive.models.AzureStandardVoice;
-import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
-import com.azure.ai.voicelive.models.ResponseMCPCallItem;
+import com.azure.ai.voicelive.models.ResponseMcpApprovalRequestItem;
+import com.azure.ai.voicelive.models.ResponseMcpCallItem;
 import com.azure.ai.voicelive.models.ServerEventResponseMcpCallArgumentsDone;
 import com.azure.ai.voicelive.models.ServerEventResponseMcpCallCompleted;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
@@ -21,7 +21,7 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionResponseItem;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
@@ -145,7 +145,7 @@ public final class MCPSample {
         // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+            .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
@@ -207,13 +207,13 @@ public final class MCPSample {
         // Define MCP servers as tools
         List<VoiceLiveToolDefinition> mcpTools = Arrays.asList(
             // DeepWiki MCP server - no approval required
-            new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+            new McpServer("deepwiki", "https://mcp.deepwiki.com/mcp")
                 .setAllowedTools(Arrays.asList("read_wiki_structure", "ask_question"))
-                .setRequireApproval(BinaryData.fromObject(MCPApprovalType.NEVER)),
+                .setRequireApproval(BinaryData.fromObject(McpApprovalType.NEVER)),
 
             // Azure documentation MCP server - approval always required
-            new MCPServer("azure_doc", "https://learn.microsoft.com/api/mcp")
-                .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS))
+            new McpServer("azure_doc", "https://learn.microsoft.com/api/mcp")
+                .setRequireApproval(BinaryData.fromObject(McpApprovalType.ALWAYS))
         );
 
         // Create session options
@@ -251,7 +251,7 @@ public final class MCPSample {
      */
     private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
-        SessionUpdate event,
+        SessionServerEvent event,
         AtomicReference<String> activeMCPCallId,
         AudioProcessor audioProcessor
     ) {
@@ -325,7 +325,7 @@ public final class MCPSample {
     private static void handleOutputItemDone(SessionUpdateResponseOutputItemDone event) {
         SessionResponseItem item = event.getItem();
         if (item != null && item.getType() == ItemType.MCP_CALL) {
-            ResponseMCPCallItem mcpCallItem = (ResponseMCPCallItem) item;
+            ResponseMcpCallItem mcpCallItem = (ResponseMcpCallItem) item;
             String output = mcpCallItem.getOutput();
 
             if (output != null && !output.isEmpty()) {
@@ -363,7 +363,7 @@ public final class MCPSample {
             System.out.println("📋 MCP list tools requested: id=" + itemCreated.getItem().getId());
 
         } else if (itemType == ItemType.MCP_CALL) {
-            ResponseMCPCallItem mcpCallItem = (ResponseMCPCallItem) itemCreated.getItem();
+            ResponseMcpCallItem mcpCallItem = (ResponseMcpCallItem) itemCreated.getItem();
             String callId = mcpCallItem.getId();
             activeMCPCallId.set(callId);
 
@@ -373,7 +373,7 @@ public final class MCPSample {
             System.out.println("   Call ID: " + callId);
 
         } else if (itemType == ItemType.MCP_APPROVAL_REQUEST) {
-            return handleMCPApprovalRequest(session, (ResponseMCPApprovalRequestItem) itemCreated.getItem());
+            return handleMCPApprovalRequest(session, (ResponseMcpApprovalRequestItem) itemCreated.getItem());
         }
 
         return Mono.empty();
@@ -384,7 +384,7 @@ public final class MCPSample {
      */
     private static Mono<Void> handleMCPApprovalRequest(
         VoiceLiveSessionAsyncClient session,
-        ResponseMCPApprovalRequestItem approvalItem
+        ResponseMcpApprovalRequestItem approvalItem
     ) {
         String approvalId = approvalItem.getId();
         String serverLabel = approvalItem.getServerLabel();
@@ -401,8 +401,8 @@ public final class MCPSample {
         // Get user approval
         boolean approved = getUserApproval();
 
-        MCPApprovalResponseRequestItem approvalResponse =
-            new MCPApprovalResponseRequestItem(approvalId, approved);
+        McpApprovalResponseRequestItem approvalResponse =
+            new McpApprovalResponseRequestItem(approvalId, approved);
 
         return session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse));
     }

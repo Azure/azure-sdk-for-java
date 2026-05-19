@@ -15,7 +15,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
@@ -550,7 +550,7 @@ public final class VoiceAssistantSample {
      * inside the reactive chain (no nested subscribe). The voice assistant doesn't send any
      * follow-up events, so handlers always return {@link Mono#empty()}.
      */
-    private static Mono<Void> handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
+    private static Mono<Void> handleServerEvent(SessionServerEvent event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
 
         try {

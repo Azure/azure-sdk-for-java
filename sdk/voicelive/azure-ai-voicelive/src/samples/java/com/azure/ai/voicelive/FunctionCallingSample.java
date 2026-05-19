@@ -23,7 +23,7 @@ import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDone;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
@@ -301,7 +301,7 @@ public final class FunctionCallingSample {
      */
     private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
-        SessionUpdate event,
+        SessionServerEvent event,
         AudioProcessor audioProcessor,
         Map<String, String[]> pendingFunctionCalls
     ) {

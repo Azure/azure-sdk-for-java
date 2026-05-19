@@ -133,7 +133,8 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-NancyNeural")))
-                .setAnimation(new AnimationOptions().setOutputs(Arrays.asList(AnimationOutputType.VISEME_ID)))
+                .setAnimationOptions(
+                    new AnimationOptions().setOutputTypes(Arrays.asList(AnimationOutputType.VISEME_ID)))
                 .setOutputAudioTimestampTypes(Arrays.asList(AudioTimestampType.WORD));
 
             session = client.startSession(model).block(SESSION_TIMEOUT);

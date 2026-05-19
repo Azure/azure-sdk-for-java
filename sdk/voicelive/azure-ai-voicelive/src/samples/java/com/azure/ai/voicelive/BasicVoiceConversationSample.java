@@ -9,7 +9,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputTextContentPart;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
@@ -160,7 +160,7 @@ public final class BasicVoiceConversationSample {
      * Handle incoming server events: print text deltas as they stream, and release the latch when
      * the response is complete or an error occurs.
      */
-    private static void handleEvent(SessionUpdate event, CountDownLatch completionLatch) {
+    private static void handleEvent(SessionServerEvent event, CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {

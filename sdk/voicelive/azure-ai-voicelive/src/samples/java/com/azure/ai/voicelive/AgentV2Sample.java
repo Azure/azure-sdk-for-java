@@ -17,7 +17,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDone;
@@ -235,7 +235,7 @@ public class AgentV2Sample {
             // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
-                .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+                .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
@@ -313,7 +313,7 @@ public class AgentV2Sample {
             return session.sendEvent(sessionUpdate).then();
         }
 
-        private void handleEvent(SessionUpdate event) {
+        private void handleEvent(SessionServerEvent event) {
             ServerEventType eventType = event.getType();
 
             if (eventType == ServerEventType.SESSION_UPDATED) {

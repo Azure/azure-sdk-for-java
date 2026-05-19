@@ -14,11 +14,11 @@ import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.FunctionCallOutputItem;
 import com.azure.ai.voicelive.models.ItemType;
-import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
-import com.azure.ai.voicelive.models.MCPApprovalType;
-import com.azure.ai.voicelive.models.MCPServer;
+import com.azure.ai.voicelive.models.McpApprovalResponseRequestItem;
+import com.azure.ai.voicelive.models.McpApprovalType;
+import com.azure.ai.voicelive.models.McpServer;
 import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
-import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
+import com.azure.ai.voicelive.models.ResponseMcpApprovalRequestItem;
 import com.azure.ai.voicelive.models.SessionResponseItem;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
@@ -33,7 +33,7 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.PersonalVoiceModels;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
@@ -428,8 +428,8 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.voicelive.mcp
         // Configure MCP servers as tools
-        MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
-            .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+        McpServer mcpServer = new McpServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+            .setRequireApproval(BinaryData.fromObject(McpApprovalType.ALWAYS));
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
             .setTools(Arrays.asList(mcpServer))
@@ -442,10 +442,10 @@ public final class ReadmeSamples {
                     SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
                     SessionResponseItem item = itemDone.getItem();
 
-                    if (item instanceof ResponseMCPApprovalRequestItem) {
+                    if (item instanceof ResponseMcpApprovalRequestItem) {
                         // Approve the tool call
-                        ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
-                        MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                        ResponseMcpApprovalRequestItem approvalRequest = (ResponseMcpApprovalRequestItem) item;
+                        McpApprovalResponseRequestItem approval = new McpApprovalResponseRequestItem(
                             approvalRequest.getId(), true);
                         ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
                             .setItem(approval);
@@ -504,7 +504,7 @@ public final class ReadmeSamples {
         // Implementation for playing audio
     }
 
-    private void handleEvent(SessionUpdate event) {
+    private void handleEvent(SessionServerEvent event) {
         // Implementation for handling events
     }
 }
