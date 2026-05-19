@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -577,9 +578,11 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
+        byte[] expectedContentMd5 = MessageDigest.getInstance("MD5").digest(data);
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
@@ -588,10 +591,17 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<AppendBlobItem>> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
             .then(destURL.create())
-            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-                MessageDigest.getInstance("MD5").digest(data), null, null));
+            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null, expectedContentMd5, null,
+                null));
 
-        StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 201);
+            validateBasicHeaders(r.getHeaders());
+            assertArrayEquals(expectedContentMd5, r.getValue().getContentMd5());
+            String contentCrc64 = r.getHeaders().getValue(X_MS_CONTENT_CRC64);
+            assertNotNull(contentCrc64);
+            assertArrayEquals(Base64.getDecoder().decode(contentCrc64), r.getValue().getContentCrc64());
+        }).verifyComplete();
     }
 
     @Test

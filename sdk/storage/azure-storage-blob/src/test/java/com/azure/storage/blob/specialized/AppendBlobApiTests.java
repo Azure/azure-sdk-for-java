@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -564,9 +565,11 @@ public class AppendBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, 2 * 1024, downloadStream.toByteArray(), 0, 1024);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
-    public void appendBlockFromURLMD5() {
+    public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
+        byte[] expectedContentMd5 = MessageDigest.getInstance("MD5").digest(data);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);
 
         AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
@@ -574,9 +577,15 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        assertDoesNotThrow(() -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
-            MessageDigest.getInstance("MD5").digest(data), null, null, null, Context.NONE));
+        Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+            expectedContentMd5, null, null, null, Context.NONE);
 
+        assertResponseStatusCode(response, 201);
+        validateBasicHeaders(response.getHeaders());
+        assertArrayEquals(expectedContentMd5, response.getValue().getContentMd5());
+        String contentCrc64 = response.getHeaders().getValue(X_MS_CONTENT_CRC64);
+        assertNotNull(contentCrc64);
+        assertArrayEquals(Base64.getDecoder().decode(contentCrc64), response.getValue().getContentCrc64());
     }
 
     @Test

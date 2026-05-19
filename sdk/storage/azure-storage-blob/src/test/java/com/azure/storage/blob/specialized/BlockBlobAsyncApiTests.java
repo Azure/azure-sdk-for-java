@@ -965,8 +965,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
                 assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
                 assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
-                TestUtils.assertArraysEqual(Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64)),
-                    r.getValue().getContentCrc64());
+                TestUtils.assertArraysEqual(expectedCrc64Content, r.getValue().getContentCrc64());
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
             })
             .verifyComplete();
@@ -2469,7 +2468,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2501,6 +2500,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             assertNotNull(blockBlobItem);
             assertNotNull(blockBlobItem.getETag());
             assertNotNull(blockBlobItem.getLastModified());
+            assertNotNull(blockBlobItem.getContentCrc64());
         }).verifyComplete();
 
         StepVerifier.create(blobAsyncClient.getProperties()).assertNext(r -> {

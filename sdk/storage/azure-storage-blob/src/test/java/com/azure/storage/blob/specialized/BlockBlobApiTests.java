@@ -1514,6 +1514,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem);
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
+        assertNotNull(blockBlobItem.getContentMd5());
+        assertNotNull(blockBlobItem.getContentCrc64());
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
         assertEquals("en-GB", destinationProperties.getContentLanguage());
         assertEquals("text", destinationProperties.getContentType());
