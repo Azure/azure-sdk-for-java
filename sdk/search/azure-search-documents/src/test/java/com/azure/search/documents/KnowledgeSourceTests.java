@@ -13,11 +13,22 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.AzureBlobKnowledgeSource;
+import com.azure.search.documents.indexes.models.AzureBlobKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSource;
 import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSource;
 import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
+import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
+import com.azure.search.documents.indexes.models.ContentColumnMapping;
+import com.azure.search.documents.indexes.models.EmbeddingColumnMapping;
+import com.azure.search.documents.indexes.models.FileKnowledgeSource;
+import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSource;
+import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
@@ -47,6 +58,8 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -64,6 +77,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
@@ -84,6 +98,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class KnowledgeSourceTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME = "shared-knowledge-source-index";
+    private static final String BLOB_CONNECTION_STRING = "ResourceId=/subscriptions/" + SUBSCRIPTION_ID
+        + "/resourceGroups/" + RESOURCE_GROUP + "/providers/Microsoft.Storage/storageAccounts/" + STORAGE_ACCOUNT_NAME;
     private static SearchIndexClient searchIndexClient;
 
     @BeforeAll
@@ -1648,6 +1664,585 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals(McpServerToolInclusionMode.ALWAYS, deserializedTool2.getInclusionMode());
             assertEquals(500, deserializedTool2.getMaxOutputTokens());
         }
+    }
+
+    @Test
+    public void createFileKnowledgeSourceMinimalSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        assertEquals(knowledgeSource.getName(), created.getName());
+        FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.FILE, createdSource.getKind());
+        assertNotNull(createdSource.getFileParameters());
+    }
+
+    @Test
+    public void createFileKnowledgeSourceMinimalAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            assertEquals(knowledgeSource.getName(), created.getName());
+            FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+            assertEquals(KnowledgeSourceKind.FILE, createdSource.getKind());
+            assertNotNull(createdSource.getFileParameters());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createFileKnowledgeSourceWithIngestionParamsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("File KS with embedding model");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+        assertEquals("File KS with embedding model", createdSource.getDescription());
+        assertNotNull(createdSource.getFileParameters().getIngestionParameters());
+    }
+
+    @Test
+    public void createFileKnowledgeSourceWithIngestionParamsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("File KS with embedding model");
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+            assertEquals("File KS with embedding model", createdSource.getDescription());
+            assertNotNull(createdSource.getFileParameters().getIngestionParameters());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void getFileKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource
+            = new FileKnowledgeSource(randomKnowledgeSourceName(), params).setDescription("File KS for get test");
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
+        assertEquals(knowledgeSource.getName(), retrieved.getName());
+        FileKnowledgeSource retrievedSource = assertInstanceOf(FileKnowledgeSource.class, retrieved);
+        assertEquals("File KS for get test", retrievedSource.getDescription());
+        assertEquals(KnowledgeSourceKind.FILE, retrievedSource.getKind());
+    }
+
+    @Test
+    public void getFileKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource
+            = new FileKnowledgeSource(randomKnowledgeSourceName(), params).setDescription("File KS for get test");
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()))).assertNext(retrieved -> {
+                assertEquals(knowledgeSource.getName(), retrieved.getName());
+                FileKnowledgeSource retrievedSource = assertInstanceOf(FileKnowledgeSource.class, retrieved);
+                assertEquals("File KS for get test", retrievedSource.getDescription());
+                assertEquals(KnowledgeSourceKind.FILE, retrievedSource.getKind());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void updateFileKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        knowledgeSource.setDescription("Updated File KS description");
+        KnowledgeSource updated = searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+
+        assertEquals("Updated File KS description", updated.getDescription());
+        FileKnowledgeSource updatedSource = assertInstanceOf(FileKnowledgeSource.class, updated);
+        assertEquals(KnowledgeSourceKind.FILE, updatedSource.getKind());
+    }
+
+    @Test
+    public void updateFileKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        Mono<KnowledgeSource> createUpdateAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient
+                .createOrUpdateKnowledgeSource(created.setDescription("Updated File KS description")))
+            .flatMap(updated -> searchIndexClient.getKnowledgeSource(updated.getName()));
+
+        StepVerifier.create(createUpdateAndGetMono).assertNext(retrieved -> {
+            assertEquals("Updated File KS description", retrieved.getDescription());
+            FileKnowledgeSource retrievedSource = assertInstanceOf(FileKnowledgeSource.class, retrieved);
+            assertEquals(KnowledgeSourceKind.FILE, retrievedSource.getKind());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void deleteFileKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
+        assertNotNull(retrieved);
+
+        searchIndexClient.deleteKnowledgeSource(knowledgeSource.getName());
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> searchIndexClient.getKnowledgeSource(knowledgeSource.getName()));
+        assertEquals(404, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void deleteFileKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
+
+        StepVerifier.create(createAndGetMono)
+            .assertNext(retrieved -> assertEquals(knowledgeSource.getName(), retrieved.getName()))
+            .verifyComplete();
+
+        StepVerifier.create(searchIndexClient.deleteKnowledgeSource(knowledgeSource.getName())).verifyComplete();
+
+        StepVerifier.create(searchIndexClient.getKnowledgeSource(knowledgeSource.getName()))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceMinimalSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        assertEquals(knowledgeSource.getName(), created.getName());
+        IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.INDEXED_SQL, createdSource.getKind());
+        assertNotNull(createdSource.getIndexedSqlParameters());
+        assertEquals("dbo.Hotels", createdSource.getIndexedSqlParameters().getTableOrView());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceMinimalAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            assertEquals(knowledgeSource.getName(), created.getName());
+            IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+            assertEquals(KnowledgeSourceKind.INDEXED_SQL, createdSource.getKind());
+            assertNotNull(createdSource.getIndexedSqlParameters());
+            assertEquals("dbo.Hotels", createdSource.getIndexedSqlParameters().getTableOrView());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithContentColumnsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(Arrays.asList(new ContentColumnMapping("title", "Title", "Edm.String"),
+            new ContentColumnMapping("body", "Description", "Edm.String")));
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("SQL KS with content columns");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+        assertEquals("SQL KS with content columns", createdSource.getDescription());
+        assertNotNull(createdSource.getIndexedSqlParameters().getContentColumns());
+        assertEquals(2, createdSource.getIndexedSqlParameters().getContentColumns().size());
+        assertEquals("title", createdSource.getIndexedSqlParameters().getContentColumns().get(0).getName());
+        assertEquals("Title", createdSource.getIndexedSqlParameters().getContentColumns().get(0).getSourceField());
+        assertEquals("Edm.String",
+            createdSource.getIndexedSqlParameters().getContentColumns().get(0).getSearchFieldType());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithContentColumnsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(Arrays.asList(new ContentColumnMapping("title", "Title", "Edm.String"),
+            new ContentColumnMapping("body", "Description", "Edm.String")));
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("SQL KS with content columns");
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+            assertEquals("SQL KS with content columns", createdSource.getDescription());
+            assertNotNull(createdSource.getIndexedSqlParameters().getContentColumns());
+            assertEquals(2, createdSource.getIndexedSqlParameters().getContentColumns().size());
+            assertEquals("title", createdSource.getIndexedSqlParameters().getContentColumns().get(0).getName());
+            assertEquals("Title", createdSource.getIndexedSqlParameters().getContentColumns().get(0).getSourceField());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithEmbeddingColumnsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(
+            Collections.singletonList(new ContentColumnMapping("description", "Description", "Edm.String")));
+        params.setEmbeddingColumns(
+            Collections.singletonList(new EmbeddingColumnMapping("descriptionVector", "Description")));
+        params.setIngestionParameters(new KnowledgeSourceIngestionParameters()
+            .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                    .setDeploymentName("text-embedding-3-large")
+                    .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+        assertNotNull(createdSource.getIndexedSqlParameters().getEmbeddingColumns());
+        assertEquals(1, createdSource.getIndexedSqlParameters().getEmbeddingColumns().size());
+        assertEquals("descriptionVector",
+            createdSource.getIndexedSqlParameters().getEmbeddingColumns().get(0).getName());
+        assertEquals("Description",
+            createdSource.getIndexedSqlParameters().getEmbeddingColumns().get(0).getSourceField());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithEmbeddingColumnsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(
+            Collections.singletonList(new ContentColumnMapping("description", "Description", "Edm.String")));
+        params.setEmbeddingColumns(
+            Collections.singletonList(new EmbeddingColumnMapping("descriptionVector", "Description")));
+        params.setIngestionParameters(new KnowledgeSourceIngestionParameters()
+            .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                    .setDeploymentName("text-embedding-3-large")
+                    .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+            assertNotNull(createdSource.getIndexedSqlParameters().getEmbeddingColumns());
+            assertEquals(1, createdSource.getIndexedSqlParameters().getEmbeddingColumns().size());
+            assertEquals("descriptionVector",
+                createdSource.getIndexedSqlParameters().getEmbeddingColumns().get(0).getName());
+            assertEquals("Description",
+                createdSource.getIndexedSqlParameters().getEmbeddingColumns().get(0).getSourceField());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithHighWaterMarkSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.HotelsView");
+        params.setHighWaterMarkColumnName("RowVersion");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+        assertEquals("RowVersion", createdSource.getIndexedSqlParameters().getHighWaterMarkColumnName());
+        assertEquals("dbo.HotelsView", createdSource.getIndexedSqlParameters().getTableOrView());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void createIndexedSqlKnowledgeSourceWithHighWaterMarkAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.HotelsView");
+        params.setHighWaterMarkColumnName("RowVersion");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            IndexedSqlKnowledgeSource createdSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, created);
+            assertEquals("RowVersion", createdSource.getIndexedSqlParameters().getHighWaterMarkColumnName());
+            assertEquals("dbo.HotelsView", createdSource.getIndexedSqlParameters().getTableOrView());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void getIndexedSqlKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(
+            Collections.singletonList(new ContentColumnMapping("hotelName", "HotelName", "Edm.String")));
+        IndexedSqlKnowledgeSource knowledgeSource
+            = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params).setDescription("SQL KS for get test");
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
+        assertEquals(knowledgeSource.getName(), retrieved.getName());
+        IndexedSqlKnowledgeSource retrievedSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, retrieved);
+        assertEquals("SQL KS for get test", retrievedSource.getDescription());
+        assertEquals("dbo.Hotels", retrievedSource.getIndexedSqlParameters().getTableOrView());
+        assertNotNull(retrievedSource.getIndexedSqlParameters().getContentColumns());
+        assertEquals("hotelName", retrievedSource.getIndexedSqlParameters().getContentColumns().get(0).getName());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void getIndexedSqlKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        params.setContentColumns(
+            Collections.singletonList(new ContentColumnMapping("hotelName", "HotelName", "Edm.String")));
+        IndexedSqlKnowledgeSource knowledgeSource
+            = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params).setDescription("SQL KS for get test");
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()))).assertNext(retrieved -> {
+                assertEquals(knowledgeSource.getName(), retrieved.getName());
+                IndexedSqlKnowledgeSource retrievedSource
+                    = assertInstanceOf(IndexedSqlKnowledgeSource.class, retrieved);
+                assertEquals("SQL KS for get test", retrievedSource.getDescription());
+                assertEquals("dbo.Hotels", retrievedSource.getIndexedSqlParameters().getTableOrView());
+                assertNotNull(retrievedSource.getIndexedSqlParameters().getContentColumns());
+                assertEquals("hotelName",
+                    retrievedSource.getIndexedSqlParameters().getContentColumns().get(0).getName());
+            }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void updateIndexedSqlKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        knowledgeSource.setDescription("Updated SQL KS description");
+        KnowledgeSource updated = searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+
+        assertEquals("Updated SQL KS description", updated.getDescription());
+        IndexedSqlKnowledgeSource updatedSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, updated);
+        assertEquals("dbo.Hotels", updatedSource.getIndexedSqlParameters().getTableOrView());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void updateIndexedSqlKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        Mono<KnowledgeSource> createUpdateAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient
+                .createOrUpdateKnowledgeSource(created.setDescription("Updated SQL KS description")))
+            .flatMap(updated -> searchIndexClient.getKnowledgeSource(updated.getName()));
+
+        StepVerifier.create(createUpdateAndGetMono).assertNext(retrieved -> {
+            assertEquals("Updated SQL KS description", retrieved.getDescription());
+            IndexedSqlKnowledgeSource retrievedSource = assertInstanceOf(IndexedSqlKnowledgeSource.class, retrieved);
+            assertEquals("dbo.Hotels", retrievedSource.getIndexedSqlParameters().getTableOrView());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void deleteIndexedSqlKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
+        assertNotNull(retrieved);
+
+        searchIndexClient.deleteKnowledgeSource(knowledgeSource.getName());
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> searchIndexClient.getKnowledgeSource(knowledgeSource.getName()));
+        assertEquals(404, exception.getResponse().getStatusCode());
+    }
+
+    @Disabled("Requires a real Azure SQL database connection")
+    @Test
+    public void deleteIndexedSqlKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        IndexedSqlKnowledgeSourceParameters params = new IndexedSqlKnowledgeSourceParameters(
+            "Server=tcp:fakeserver.database.windows.net,1433;Database=testdb;User ID=reader;Password=fakePass;",
+            "dbo.Hotels");
+        IndexedSqlKnowledgeSource knowledgeSource = new IndexedSqlKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
+
+        StepVerifier.create(createAndGetMono)
+            .assertNext(retrieved -> assertEquals(knowledgeSource.getName(), retrieved.getName()))
+            .verifyComplete();
+
+        StepVerifier.create(searchIndexClient.deleteKnowledgeSource(knowledgeSource.getName())).verifyComplete();
+
+        StepVerifier.create(searchIndexClient.getKnowledgeSource(knowledgeSource.getName()))
+            .verifyError(HttpResponseException.class);
+    }
+
+    // ---------------------------------------------------------------
+    // Blob Knowledge Source with Sensitivity Labels tests
+    // ---------------------------------------------------------------
+
+    @Disabled("Requires a real Azure Blob Storage account accessible by the search service's managed identity")
+    @Test
+    public void createBlobKnowledgeSourceWithSensitivityLabelsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        AzureBlobKnowledgeSourceParameters blobParams
+            = new AzureBlobKnowledgeSourceParameters(BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME)
+                .setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                        new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                            .setDeploymentName("text-embedding-3-large")
+                            .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))
+                    .setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE,
+                        KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
+        AzureBlobKnowledgeSource knowledgeSource
+            = new AzureBlobKnowledgeSource(randomKnowledgeSourceName(), blobParams);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        assertEquals(knowledgeSource.getName(), created.getName());
+        AzureBlobKnowledgeSource createdSource = assertInstanceOf(AzureBlobKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.AZURE_BLOB, createdSource.getKind());
+        assertNotNull(createdSource.getAzureBlobParameters());
+        assertNotNull(createdSource.getAzureBlobParameters().getIngestionParameters());
+        assertNotNull(createdSource.getAzureBlobParameters().getIngestionParameters().getIngestionPermissionOptions());
+        assertTrue(createdSource.getAzureBlobParameters()
+            .getIngestionParameters()
+            .getIngestionPermissionOptions()
+            .contains(KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
+    }
+
+    @Disabled("Requires a real Azure Blob Storage account accessible by the search service's managed identity")
+    @Test
+    public void createBlobKnowledgeSourceWithSensitivityLabelsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        AzureBlobKnowledgeSourceParameters blobParams
+            = new AzureBlobKnowledgeSourceParameters(BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME)
+                .setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                        new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                            .setDeploymentName("text-embedding-3-large")
+                            .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))
+                    .setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE,
+                        KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
+        AzureBlobKnowledgeSource knowledgeSource
+            = new AzureBlobKnowledgeSource(randomKnowledgeSourceName(), blobParams);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            assertEquals(knowledgeSource.getName(), created.getName());
+            AzureBlobKnowledgeSource createdSource = assertInstanceOf(AzureBlobKnowledgeSource.class, created);
+            assertEquals(KnowledgeSourceKind.AZURE_BLOB, createdSource.getKind());
+            assertNotNull(createdSource.getAzureBlobParameters());
+            assertNotNull(createdSource.getAzureBlobParameters().getIngestionParameters());
+            assertNotNull(
+                createdSource.getAzureBlobParameters().getIngestionParameters().getIngestionPermissionOptions());
+            assertTrue(createdSource.getAzureBlobParameters()
+                .getIngestionParameters()
+                .getIngestionPermissionOptions()
+                .contains(KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
+        }).verifyComplete();
     }
 
     private String randomKnowledgeSourceName() {

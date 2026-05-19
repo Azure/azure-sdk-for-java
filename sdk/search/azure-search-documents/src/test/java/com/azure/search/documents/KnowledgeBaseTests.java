@@ -19,8 +19,11 @@ import com.azure.json.JsonReader;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.AzureBlobKnowledgeSource;
+import com.azure.search.documents.indexes.models.AzureBlobKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
+import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSource;
 import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSource;
@@ -39,13 +42,21 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalAsyncClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
+import com.azure.search.documents.knowledgebases.models.AzureBlobKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FabricDataAgentKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FabricOntologyKnowledgeSourceParams;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAzureBlobReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedOneLakeReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSharePointReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceParams;
+import com.azure.search.documents.knowledgebases.models.PurviewSensitivityLabelInfo;
 import com.azure.search.documents.knowledgebases.models.SearchIndexKnowledgeSourceParams;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -75,6 +86,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -975,6 +987,371 @@ public class KnowledgeBaseTests extends SearchTestBase {
         return TestHelpers.getTestTokenCredential()
             .getTokenSync(new TokenRequestContext().addScopes("https://search.azure.com/.default"))
             .getToken();
+    }
+
+    @Test
+    public void retrievalResultDeserializesWithSensitivityLabels() throws IOException {
+        String json = "{"
+            + "\"response\":[{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"Answer text.\"}]}],"
+            + "\"references\":[" + "  {\"type\":\"azureBlob\",\"id\":\"0\",\"activitySource\":1,"
+            + "   \"blobUrl\":\"https://contoso.blob.core.windows.net/docs/file1.pdf\"," + "   \"rerankerScore\":3.8,"
+            + "   \"searchSensitivityLabelInfo\":{"
+            + "     \"sensitivityLabelId\":\"3a4f2b91-c7d8-4e12-9f01-ab34cd56ef78\","
+            + "     \"displayName\":\"Confidential\"," + "     \"isEncrypted\":false," + "     \"priority\":2,"
+            + "     \"color\":\"#FF0000\"," + "     \"toolTip\":\"Confidential content\"" + "   }},"
+            + "  {\"type\":\"searchIndex\",\"id\":\"1\",\"activitySource\":1,"
+            + "   \"indexName\":\"my-index\",\"documentKey\":\"doc-123\"," + "   \"rerankerScore\":3.5,"
+            + "   \"searchSensitivityLabelInfo\":{"
+            + "     \"sensitivityLabelId\":\"9c8b7a61-5d4e-43f2-b123-98fedcba4321\","
+            + "     \"displayName\":\"Highly Confidential\"," + "     \"isEncrypted\":true," + "     \"priority\":0,"
+            + "     \"color\":\"#800080\"," + "     \"toolTip\":\"Highly confidential\"" + "   }},"
+            + "  {\"type\":\"indexedOneLake\",\"id\":\"2\",\"activitySource\":1,"
+            + "   \"searchSensitivityLabelInfo\":{" + "     \"sensitivityLabelId\":\"aaa-bbb-ccc\","
+            + "     \"displayName\":\"Internal\"," + "     \"isEncrypted\":false," + "     \"priority\":3" + "   }},"
+            + "  {\"type\":\"indexedSharePoint\",\"id\":\"3\",\"activitySource\":1,"
+            + "   \"searchSensitivityLabelInfo\":{" + "     \"sensitivityLabelId\":\"ddd-eee-fff\","
+            + "     \"displayName\":\"Public\"," + "     \"isEncrypted\":false," + "     \"priority\":4" + "   }}"
+            + "]," + "\"responseSensitivityLabelInfo\":{"
+            + "  \"sensitivityLabelId\":\"9c8b7a61-5d4e-43f2-b123-98fedcba4321\","
+            + "  \"displayName\":\"Highly Confidential\"," + "  \"isEncrypted\":true," + "  \"priority\":0,"
+            + "  \"color\":\"#800080\"," + "  \"toolTip\":\"Highly confidential\"" + "}" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            KnowledgeBaseRetrievalResult result = KnowledgeBaseRetrievalResult.fromJson(reader);
+
+            // Verify response-level sensitivity label
+            PurviewSensitivityLabelInfo responseLabel = result.getResponseSensitivityLabelInfo();
+            assertNotNull(responseLabel);
+            assertEquals("9c8b7a61-5d4e-43f2-b123-98fedcba4321", responseLabel.getSensitivityLabelId());
+            assertEquals("Highly Confidential", responseLabel.getDisplayName());
+            assertEquals(true, responseLabel.isEncrypted());
+            assertEquals(Integer.valueOf(0), responseLabel.getPriority());
+            assertEquals("#800080", responseLabel.getColor());
+            assertEquals("Highly confidential", responseLabel.getToolTip());
+
+            // Verify azureBlob reference label
+            assertNotNull(result.getReferences());
+            assertEquals(4, result.getReferences().size());
+
+            KnowledgeBaseAzureBlobReference blobRef
+                = assertInstanceOf(KnowledgeBaseAzureBlobReference.class, result.getReferences().get(0));
+            PurviewSensitivityLabelInfo blobLabel = blobRef.getSearchSensitivityLabelInfo();
+            assertNotNull(blobLabel);
+            assertEquals("3a4f2b91-c7d8-4e12-9f01-ab34cd56ef78", blobLabel.getSensitivityLabelId());
+            assertEquals("Confidential", blobLabel.getDisplayName());
+            assertEquals(false, blobLabel.isEncrypted());
+            assertEquals(Integer.valueOf(2), blobLabel.getPriority());
+            assertEquals("#FF0000", blobLabel.getColor());
+
+            // Verify searchIndex reference label
+            KnowledgeBaseSearchIndexReference indexRef
+                = assertInstanceOf(KnowledgeBaseSearchIndexReference.class, result.getReferences().get(1));
+            PurviewSensitivityLabelInfo indexLabel = indexRef.getSearchSensitivityLabelInfo();
+            assertNotNull(indexLabel);
+            assertEquals("9c8b7a61-5d4e-43f2-b123-98fedcba4321", indexLabel.getSensitivityLabelId());
+            assertEquals("Highly Confidential", indexLabel.getDisplayName());
+            assertEquals(true, indexLabel.isEncrypted());
+
+            // Verify indexedOneLake reference label
+            KnowledgeBaseIndexedOneLakeReference oneLakeRef
+                = assertInstanceOf(KnowledgeBaseIndexedOneLakeReference.class, result.getReferences().get(2));
+            PurviewSensitivityLabelInfo oneLakeLabel = oneLakeRef.getSearchSensitivityLabelInfo();
+            assertNotNull(oneLakeLabel);
+            assertEquals("aaa-bbb-ccc", oneLakeLabel.getSensitivityLabelId());
+            assertEquals("Internal", oneLakeLabel.getDisplayName());
+
+            // Verify indexedSharePoint reference label
+            KnowledgeBaseIndexedSharePointReference spRef
+                = assertInstanceOf(KnowledgeBaseIndexedSharePointReference.class, result.getReferences().get(3));
+            PurviewSensitivityLabelInfo spLabel = spRef.getSearchSensitivityLabelInfo();
+            assertNotNull(spLabel);
+            assertEquals("ddd-eee-fff", spLabel.getSensitivityLabelId());
+            assertEquals("Public", spLabel.getDisplayName());
+        }
+    }
+
+    @Test
+    public void retrievalResultDeserializesWithoutSensitivityLabels() throws IOException {
+        String json = "{"
+            + "\"response\":[{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"Answer.\"}]}],"
+            + "\"references\":[" + "  {\"type\":\"azureBlob\",\"id\":\"0\",\"activitySource\":1,"
+            + "   \"blobUrl\":\"https://contoso.blob.core.windows.net/docs/file1.pdf\"," + "   \"rerankerScore\":3.8},"
+            + "  {\"type\":\"searchIndex\",\"id\":\"1\",\"activitySource\":1,"
+            + "   \"indexName\":\"my-index\",\"documentKey\":\"doc-123\"," + "   \"rerankerScore\":3.5}" + "]" + "}";
+
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            KnowledgeBaseRetrievalResult result = KnowledgeBaseRetrievalResult.fromJson(reader);
+
+            // No response-level label
+            assertNull(result.getResponseSensitivityLabelInfo());
+
+            // No per-reference labels
+            KnowledgeBaseAzureBlobReference blobRef
+                = assertInstanceOf(KnowledgeBaseAzureBlobReference.class, result.getReferences().get(0));
+            assertNull(blobRef.getSearchSensitivityLabelInfo());
+
+            KnowledgeBaseSearchIndexReference indexRef
+                = assertInstanceOf(KnowledgeBaseSearchIndexReference.class, result.getReferences().get(1));
+            assertNull(indexRef.getSearchSensitivityLabelInfo());
+        }
+    }
+
+    @Test
+    public void createKnowledgeBaseWithCorsOptionsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        CorsOptions corsOptions = new CorsOptions("https://myapp.example.com").setMaxAgeInSeconds(600L);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setCorsOptions(corsOptions);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertEquals(knowledgeBase.getName(), created.getName());
+        assertNotNull(created.getCorsOptions());
+        assertEquals(1, created.getCorsOptions().getAllowedOrigins().size());
+        assertEquals("https://myapp.example.com", created.getCorsOptions().getAllowedOrigins().get(0));
+        assertEquals(600L, created.getCorsOptions().getMaxAgeInSeconds());
+    }
+
+    @Test
+    public void createKnowledgeBaseWithCorsOptionsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        CorsOptions corsOptions = new CorsOptions("https://myapp.example.com").setMaxAgeInSeconds(600L);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setCorsOptions(corsOptions);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
+            assertNotNull(created.getCorsOptions());
+            assertEquals(1, created.getCorsOptions().getAllowedOrigins().size());
+            assertEquals("https://myapp.example.com", created.getCorsOptions().getAllowedOrigins().get(0));
+            assertEquals(600L, created.getCorsOptions().getMaxAgeInSeconds());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createKnowledgeBaseWithCorsWildcardSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        CorsOptions corsOptions = new CorsOptions("*");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setCorsOptions(corsOptions);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertNotNull(created.getCorsOptions());
+        assertEquals(1, created.getCorsOptions().getAllowedOrigins().size());
+        assertEquals("*", created.getCorsOptions().getAllowedOrigins().get(0));
+    }
+
+    @Test
+    public void createKnowledgeBaseWithCorsWildcardAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        CorsOptions corsOptions = new CorsOptions("*");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setCorsOptions(corsOptions);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
+            assertNotNull(created.getCorsOptions());
+            assertEquals(1, created.getCorsOptions().getAllowedOrigins().size());
+            assertEquals("*", created.getCorsOptions().getAllowedOrigins().get(0));
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createKnowledgeBaseWithoutCorsOptionsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertEquals(knowledgeBase.getName(), created.getName());
+        assertNull(created.getCorsOptions());
+    }
+
+    @Test
+    public void createKnowledgeBaseWithoutCorsOptionsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
+            assertNull(created.getCorsOptions());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createKnowledgeBaseWithEnableImageServingSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableImageServing(true);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertEquals(knowledgeBase.getName(), created.getName());
+        assertEquals(1, created.getKnowledgeSources().size());
+        KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+        assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+        assertEquals(true, createdRef.isEnableImageServing());
+    }
+
+    @Test
+    public void createKnowledgeBaseWithEnableImageServingAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableImageServing(true);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBase> createMono = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        StepVerifier.create(createMono).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
+            assertEquals(1, created.getKnowledgeSources().size());
+            KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+            assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+            assertEquals(true, createdRef.isEnableImageServing());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void retrievalWithEnableImageServingSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableImageServing(true);
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Show me architecture diagrams."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+    }
+
+    @Test
+    public void retrievalWithEnableImageServingAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+
+                KnowledgeSourceParams sourceParams
+                    = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableImageServing(true);
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("Show me architecture diagrams."))
+                    .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires an Azure Blob Knowledge Source - shared test KS is searchIndex kind")
+    @Test
+    public void retrievalWithBlobKnowledgeSourceEnableImageServingSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+
+        // Create a blob KS
+        AzureBlobKnowledgeSourceParameters blobKsParams = new AzureBlobKnowledgeSourceParameters(
+            "ResourceId=/subscriptions/" + SUBSCRIPTION_ID + "/resourceGroups/" + RESOURCE_GROUP
+                + "/providers/Microsoft.Storage/storageAccounts/" + STORAGE_ACCOUNT_NAME,
+            BLOB_CONTAINER_NAME).setIngestionParameters(
+                new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                    .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        String blobKsName = testResourceNamer.randomName("blob-ks-", 63).toLowerCase();
+        AzureBlobKnowledgeSource blobKs = new AzureBlobKnowledgeSource(blobKsName, blobKsParams);
+        searchIndexClient.createKnowledgeSource(blobKs);
+
+        // Create KB referencing the blob KS
+        KnowledgeSourceReference blobRef = new KnowledgeSourceReference(blobKsName).setEnableImageServing(true);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), blobRef).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        // Retrieve with AzureBlobKnowledgeSourceParams
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        AzureBlobKnowledgeSourceParams blobRetrieveParams = new AzureBlobKnowledgeSourceParams(blobKsName);
+        blobRetrieveParams.setEnableImageServing(true);
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Show me images from documents."))
+            .setKnowledgeSourceParams(Collections.singletonList(blobRetrieveParams));
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+    }
+
+    @Disabled("Requires an Azure Blob Knowledge Source - shared test KS is searchIndex kind")
+    @Test
+    public void retrievalWithBlobKnowledgeSourceEnableImageServingAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+
+        // Create a blob KS
+        AzureBlobKnowledgeSourceParameters blobKsParams = new AzureBlobKnowledgeSourceParameters(
+            "ResourceId=/subscriptions/" + SUBSCRIPTION_ID + "/resourceGroups/" + RESOURCE_GROUP
+                + "/providers/Microsoft.Storage/storageAccounts/" + STORAGE_ACCOUNT_NAME,
+            BLOB_CONTAINER_NAME).setIngestionParameters(
+                new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                    .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        String blobKsName = testResourceNamer.randomName("blob-ks-", 63).toLowerCase();
+        AzureBlobKnowledgeSource blobKs = new AzureBlobKnowledgeSource(blobKsName, blobKsParams);
+
+        Mono<KnowledgeBaseRetrievalResult> pipeline
+            = searchIndexClient.createKnowledgeSource(blobKs).flatMap(createdKs -> {
+                KnowledgeSourceReference blobRef = new KnowledgeSourceReference(blobKsName).setEnableImageServing(true);
+                KnowledgeBase knowledgeBase
+                    = new KnowledgeBase(randomKnowledgeBaseName(), blobRef).setModels(KNOWLEDGE_BASE_MODEL);
+                return searchIndexClient.createKnowledgeBase(knowledgeBase);
+            }).flatMap(createdKb -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(createdKb.getName())
+                        .buildAsyncClient();
+
+                AzureBlobKnowledgeSourceParams blobRetrieveParams = new AzureBlobKnowledgeSourceParams(blobKsName);
+                blobRetrieveParams.setEnableImageServing(true);
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("Show me images from documents."))
+                    .setKnowledgeSourceParams(Collections.singletonList(blobRetrieveParams));
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(pipeline).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+        }).verifyComplete();
     }
 
     private String randomKnowledgeBaseName() {
