@@ -427,6 +427,26 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     }
 
     /**
+     * Get the platform managed certificate configuration.
+     *
+     * @return the platform managed certificate configuration.
+     */
+    public PlatformManaged getPlatformManaged() {
+        return impl.getPlatformManaged();
+    }
+
+    /**
+     * Set the platform managed certificate configuration.
+     *
+     * @param platformManaged the platform managed certificate configuration.
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setPlatformManaged(PlatformManaged platformManaged) {
+        impl.setPlatformManaged(platformManaged);
+        return this;
+    }
+
+    /**
      * Set the lifetime actions
      * @param actions the lifetime actions to set.
      * @return the updated certificate policy object itself.

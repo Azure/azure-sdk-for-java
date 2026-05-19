@@ -34,6 +34,7 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
+import com.azure.security.keyvault.certificates.models.PlatformManaged;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
@@ -285,6 +286,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     void updateCertificatePolicyRunner(Consumer<String> testRunner) {
         testRunner.accept(testResourceNamer.randomName(TEST_CERTIFICATE_NAME, 25));
+    }
+
+    void platformManagedCertificatePolicyRunner(Consumer<String> testRunner) {
+        testRunner.accept(testResourceNamer.randomName("platformManagedCert", 25));
     }
 
     @Test
@@ -568,6 +573,12 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .setLifetimeActions(new LifetimeAction(CertificatePolicyAction.AUTO_RENEW).setDaysBeforeExpiry(40));
     }
 
+    static CertificatePolicy setupPlatformManagedPolicy() {
+        return CertificatePolicy.getDefault()
+            .setPlatformManaged(
+                new PlatformManaged("serverAuth").setMetadata(Collections.singletonMap("source", "java-sdk-test")));
+    }
+
     static void assertPolicy(CertificatePolicy expected, CertificatePolicy actual) {
         assertEquals(expected.getKeyType(), actual.getKeyType());
         assertEquals(expected.getContentType(), actual.getContentType());
@@ -581,6 +592,14 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getValidityInMonths(), actual.getValidityInMonths());
         assertEquals(expected.getLifetimeActions().size(), actual.getLifetimeActions().size());
         assertEquals(expected.getKeyUsage().size(), actual.getKeyUsage().size());
+    }
+
+    static void assertPlatformManagedPolicy(CertificatePolicy expected, CertificatePolicy actual) {
+        assertNotNull(actual);
+        assertNotNull(actual.getPlatformManaged());
+        assertEquals(expected.getPlatformManaged().getCertificateUsage(),
+            actual.getPlatformManaged().getCertificateUsage());
+        assertEquals(expected.getPlatformManaged().getMetadata(), actual.getPlatformManaged().getMetadata());
     }
 
     static void assertCertificate(KeyVaultCertificate expected, KeyVaultCertificate actual) {
@@ -640,6 +659,17 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         getHttpClients().forEach(httpClient -> Arrays.stream(CertificateServiceVersion.values())
             .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
             .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+
+        return argumentsList.stream();
+    }
+
+    static Stream<Arguments> getPlatformManagedTestParameters() {
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        if (shouldServiceVersionBeTested(CertificateServiceVersion.V2026_03_01_PREVIEW)) {
+            getHttpClients().forEach(httpClient -> argumentsList
+                .add(Arguments.of(httpClient, CertificateServiceVersion.V2026_03_01_PREVIEW)));
+        }
 
         return argumentsList.stream();
     }

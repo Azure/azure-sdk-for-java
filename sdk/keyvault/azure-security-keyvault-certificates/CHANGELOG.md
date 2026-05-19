@@ -4,6 +4,13 @@
 
 ### Features Added
 
+- Added support for platform-managed certificates via the new `models.PlatformManaged` type and the
+  `getPlatformManaged()` / `setPlatformManaged(PlatformManaged)` methods on `models.CertificatePolicy`. This allows
+  callers to configure a certificate whose lifecycle is managed by the Key Vault platform on the caller's behalf
+  (e.g. `new PlatformManaged("serverAuth").setMetadata(...)`).
+- Added `CertificateServiceVersion.V2026_03_01_PREVIEW` and changed `CertificateServiceVersion.getLatest()` to return
+  this new version. Clients that do not pin a service version will now target the `2026-03-01-preview` API.
+
 #### `models.SubjectAlternativeNames` was modified
 
 * `setIpAddresses(java.util.List)` was added
@@ -13,7 +20,7 @@
 
 #### `CertificateServiceVersion` was modified
 
-* `V2025_07_01` was added
+* `V2026_03_01_PREVIEW` was added
 
 ## 4.8.7 (2026-05-05)
 
