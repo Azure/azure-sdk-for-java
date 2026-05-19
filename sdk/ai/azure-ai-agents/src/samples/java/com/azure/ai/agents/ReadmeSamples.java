@@ -5,10 +5,12 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.SessionLogEvent;
+import com.azure.core.util.IterableStream;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
@@ -31,6 +33,12 @@ public final class ReadmeSamples {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
+
+        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+
+        String agentName = "my-agent";
+        String agentVersion = "0.1.0";
+        String sessionId = "my-session-id";
 
         // BEGIN: com.azure.ai.agents.create_prompt_agent
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
@@ -80,5 +88,27 @@ public final class ReadmeSamples {
 
         Response result = client.responses().create(responseRequest);
         // END: com.azure.ai.agents.openai_official_library
+
+        // BEGIN: com.azure.ai.agents.session_logs_async
+        agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+            .take(100)
+            .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
+            .blockLast();
+        // END: com.azure.ai.agents.session_logs_async
+
+        // BEGIN: com.azure.ai.agents.session_logs_sync
+        IterableStream<SessionLogEvent> sessionLogs =
+            agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+
+        int logsRead = 0;
+        for (SessionLogEvent event : sessionLogs) {
+            System.out.printf("[%s] %s%n", event.getEvent(), event.getData());
+
+            // Session log streams are long-lived; connection is closed on client disconnection
+            if (++logsRead == 100) {
+                break;
+            }
+        }
+        // END: com.azure.ai.agents.session_logs_sync
     }
 }

@@ -61,16 +61,6 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
     }
 
     /**
-     * Get the offset property: The start offset of the word in milliseconds.
-     *
-     * @return the offset value.
-     */
-    @Generated
-    public int getOffset() {
-        return this.offset;
-    }
-
-    /**
      * Get the duration property: The duration in milliseconds.
      *
      * @return the duration value as Duration.
@@ -123,5 +113,15 @@ public final class TranscribedWord implements JsonSerializable<TranscribedWord> 
             }
             return new TranscribedWord(text, offset, duration);
         });
+    }
+
+    /**
+     * Get the offset property: The start offset of the word.
+     *
+     * @return the offset value as Duration.
+     */
+    @Generated
+    public Duration getOffset() {
+        return Duration.ofMillis(this.offset);
     }
 }

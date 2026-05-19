@@ -14,8 +14,6 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.ClusterSdnProperties;
-import com.azure.resourcemanager.azurestackhci.models.ConfidentialVmProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
@@ -58,11 +56,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Unique, immutable resource id.
      */
     private String cloudId;
-
-    /*
-     * The ring to which this cluster belongs to.
-     */
-    private String ring;
 
     /*
      * Endpoint configured for management from the Azure portal.
@@ -175,16 +168,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private ClusterPattern clusterPattern;
 
     /*
-     * Represents the Confidential Virtual Machine (CVM) support intent and current status for the cluster resource.
-     */
-    private ConfidentialVmProperties confidentialVmProperties;
-
-    /*
-     * Software Defined Networking Properties of the cluster
-     */
-    private ClusterSdnProperties sdnProperties;
-
-    /*
      * Local Availability Zone information for HCI cluster
      */
     private List<LocalAvailabilityZones> localAvailabilityZones;
@@ -242,15 +225,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      */
     public String cloudId() {
         return this.cloudId;
-    }
-
-    /**
-     * Get the ring property: The ring to which this cluster belongs to.
-     * 
-     * @return the ring value.
-     */
-    public String ring() {
-        return this.ring;
     }
 
     /**
@@ -564,25 +538,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the confidentialVmProperties property: Represents the Confidential Virtual Machine (CVM) support intent and
-     * current status for the cluster resource.
-     * 
-     * @return the confidentialVmProperties value.
-     */
-    public ConfidentialVmProperties confidentialVmProperties() {
-        return this.confidentialVmProperties;
-    }
-
-    /**
-     * Get the sdnProperties property: Software Defined Networking Properties of the cluster.
-     * 
-     * @return the sdnProperties value.
-     */
-    public ClusterSdnProperties sdnProperties() {
-        return this.sdnProperties;
-    }
-
-    /**
      * Get the localAvailabilityZones property: Local Availability Zone information for HCI cluster.
      * 
      * @return the localAvailabilityZones value.
@@ -667,8 +622,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                         = ConnectivityStatus.fromString(reader.getString());
                 } else if ("cloudId".equals(fieldName)) {
                     deserializedClusterProperties.cloudId = reader.getString();
-                } else if ("ring".equals(fieldName)) {
-                    deserializedClusterProperties.ring = reader.getString();
                 } else if ("cloudManagementEndpoint".equals(fieldName)) {
                     deserializedClusterProperties.cloudManagementEndpoint = reader.getString();
                 } else if ("aadClientId".equals(fieldName)) {
@@ -720,10 +673,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.secretsLocations = secretsLocations;
                 } else if ("clusterPattern".equals(fieldName)) {
                     deserializedClusterProperties.clusterPattern = ClusterPattern.fromString(reader.getString());
-                } else if ("confidentialVmProperties".equals(fieldName)) {
-                    deserializedClusterProperties.confidentialVmProperties = ConfidentialVmProperties.fromJson(reader);
-                } else if ("sdnProperties".equals(fieldName)) {
-                    deserializedClusterProperties.sdnProperties = ClusterSdnProperties.fromJson(reader);
                 } else if ("localAvailabilityZones".equals(fieldName)) {
                     List<LocalAvailabilityZones> localAvailabilityZones
                         = reader.readArray(reader1 -> LocalAvailabilityZones.fromJson(reader1));

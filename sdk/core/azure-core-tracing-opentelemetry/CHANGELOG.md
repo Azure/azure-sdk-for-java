@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.64 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.63 (2026-04-28)
 
 ### Bugs Fixed

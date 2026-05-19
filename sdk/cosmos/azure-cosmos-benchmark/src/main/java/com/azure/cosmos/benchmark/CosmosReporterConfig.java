@@ -3,10 +3,16 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Configuration for Cosmos DB metrics reporting destination.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CosmosReporterConfig {
+
     private final String serviceEndpoint;
     private final String masterKey;
     private final String database;
@@ -15,20 +21,26 @@ public class CosmosReporterConfig {
     private final String branchName;
     private final String commitId;
 
-    public CosmosReporterConfig(String serviceEndpoint, String masterKey,
-                                String database, String container,
-                                String testVariationName, String branchName, String commitId) {
+    @JsonCreator
+    public CosmosReporterConfig(
+        @JsonProperty(value = "serviceEndpoint", required = true) String serviceEndpoint,
+        @JsonProperty(value = "masterKey", required = true) String masterKey,
+        @JsonProperty(value = "database", required = true) String database,
+        @JsonProperty(value = "container", required = true) String container,
+        @JsonProperty("testVariationName") String testVariationName,
+        @JsonProperty("branchName") String branchName,
+        @JsonProperty("commitId") String commitId) {
         if (serviceEndpoint == null || serviceEndpoint.isEmpty()) {
-            throw new IllegalArgumentException("Cosmos reporter requires 'serviceEndpoint' to be set");
+            throw new IllegalArgumentException("serviceEndpoint must not be null or empty");
         }
         if (masterKey == null || masterKey.isEmpty()) {
-            throw new IllegalArgumentException("Cosmos reporter requires 'masterKey' to be set");
+            throw new IllegalArgumentException("masterKey must not be null or empty");
         }
         if (database == null || database.isEmpty()) {
-            throw new IllegalArgumentException("Cosmos reporter requires 'database' to be set");
+            throw new IllegalArgumentException("database must not be null or empty");
         }
         if (container == null || container.isEmpty()) {
-            throw new IllegalArgumentException("Cosmos reporter requires 'container' to be set");
+            throw new IllegalArgumentException("container must not be null or empty");
         }
         this.serviceEndpoint = serviceEndpoint;
         this.masterKey = masterKey;

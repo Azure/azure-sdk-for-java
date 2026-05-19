@@ -1,5 +1,15 @@
 # Release History
 
+## 1.7.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.7.0-beta.1 (2026-04-24)
 
 - Azure Resource Manager Recovery Services Backup client library for Java. This package contains Microsoft Azure SDK for Recovery Services Backup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package api-version 2026-01-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

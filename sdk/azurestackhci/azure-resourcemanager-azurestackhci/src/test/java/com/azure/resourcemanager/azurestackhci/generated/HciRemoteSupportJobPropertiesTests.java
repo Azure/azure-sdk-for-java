@@ -16,25 +16,25 @@ public final class HciRemoteSupportJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciRemoteSupportJobProperties model = BinaryData.fromString(
-            "{\"jobType\":\"RemoteSupport\",\"accessLevel\":\"DiagnosticsAndRepair\",\"expirationTimestamp\":\"2021-06-17T12:23:54Z\",\"type\":\"Enable\",\"reportedProperties\":{\"percentComplete\":273663954,\"validationStatus\":{\"status\":\"xousxauzl\",\"steps\":[{\"name\":\"mwohqfzizvuxmmkj\",\"description\":\"thnwpzte\",\"fullStepIndex\":\"vmribiat\",\"startTimeUtc\":\"plucfotangcfhnyk\",\"endTimeUtc\":\"ugswvx\",\"status\":\"mzqwmvtxnjmxmcu\",\"steps\":[{},{}],\"exception\":[\"vclx\",\"npdkv\",\"fabuiyjibu\"]},{\"name\":\"hdugneiknpg\",\"description\":\"gjiuqhibto\",\"fullStepIndex\":\"pqwjedm\",\"startTimeUtc\":\"r\",\"endTimeUtc\":\"g\",\"status\":\"pkt\",\"steps\":[{},{}],\"exception\":[\"mqpzoyhlfbcgw\"]}]},\"deploymentStatus\":{\"status\":\"oxoebqi\",\"steps\":[{\"name\":\"nwjfu\",\"description\":\"lafcbahh\",\"fullStepIndex\":\"pofoi\",\"startTimeUtc\":\"w\",\"endTimeUtc\":\"ilkmk\",\"status\":\"olvdnd\",\"steps\":[{}],\"exception\":[\"gphuartvtiu\",\"yefchnm\",\"ahmnxhkxjqirw\"]},{\"name\":\"eooxffifh\",\"description\":\"rsnewmozqvbubqma\",\"fullStepIndex\":\"sycxhxzgaz\",\"startTimeUtc\":\"abo\",\"endTimeUtc\":\"vmfqhppubo\",\"status\":\"epdfgkmtdherng\",\"steps\":[{}],\"exception\":[\"ahokqtobkauxofsh\",\"phwpnulaiywzej\"]}]},\"nodeSettings\":{\"state\":\"slwkojpl\",\"createdAt\":\"2021-02-07T17:05:05Z\",\"updatedAt\":\"2021-04-09T10:06:59Z\",\"connectionStatus\":\"wrpqafgfugsnnf\",\"connectionErrorMessage\":\"et\"},\"sessionDetails\":[{\"sessionId\":\"oc\",\"sessionStartTime\":\"2021-10-29T02:50:04Z\",\"sessionEndTime\":\"2021-07-27T01:52:33Z\",\"accessLevel\":\"None\",\"transcriptLocation\":\"xrjvzuyturmlm\"},{\"sessionId\":\"wolba\",\"sessionStartTime\":\"2021-07-06T06:01Z\",\"sessionEndTime\":\"2021-04-01T11:02:42Z\",\"accessLevel\":\"None\",\"transcriptLocation\":\"szonwpngajinn\"},{\"sessionId\":\"jawrtmjfjmyc\",\"sessionStartTime\":\"2021-06-25T01:17:09Z\",\"sessionEndTime\":\"2021-07-27T15:44:21Z\",\"accessLevel\":\"DiagnosticsAndRepair\",\"transcriptLocation\":\"ovne\"},{\"sessionId\":\"enlusfn\",\"sessionStartTime\":\"2021-06-11T07:28:09Z\",\"sessionEndTime\":\"2021-11-01T20:24:07Z\",\"accessLevel\":\"DiagnosticsAndRepair\",\"transcriptLocation\":\"dcqtjvidttge\"}]},\"deploymentMode\":\"Deploy\",\"provisioningState\":\"DisableInProgress\",\"jobId\":\"jtcvuwkasizies\",\"startTimeUtc\":\"2021-08-07T10:18:40Z\",\"endTimeUtc\":\"2021-01-13T15:50:24Z\",\"status\":\"Scheduled\"}")
+            "{\"jobType\":\"RemoteSupport\",\"accessLevel\":\"None\",\"expirationTimestamp\":\"2021-03-23T11:52:12Z\",\"type\":\"Revoke\",\"reportedProperties\":{\"percentComplete\":544551306,\"validationStatus\":{\"status\":\"kpbz\",\"steps\":[{\"name\":\"ljhah\",\"description\":\"echndbnwieholew\",\"fullStepIndex\":\"iuubwefqsf\",\"startTimeUtc\":\"aqtferr\",\"endTimeUtc\":\"ex\",\"status\":\"mfxapjwogqqno\",\"steps\":[{},{},{},{}],\"exception\":[\"dabtqwp\",\"yawbzasqbu\",\"ljgkyex\"]},{\"name\":\"guyaip\",\"description\":\"sdaultxij\",\"fullStepIndex\":\"mfqwa\",\"startTimeUtc\":\"nqnm\",\"endTimeUtc\":\"ngz\",\"status\":\"qxtbjwgnyf\",\"steps\":[{},{},{}],\"exception\":[\"vtuikzhajq\",\"lcfhmlrqryxy\"]},{\"name\":\"nzrdpsovwxz\",\"description\":\"tgoe\",\"fullStepIndex\":\"bbabp\",\"startTimeUtc\":\"vf\",\"endTimeUtc\":\"kvntjlrigjkskyri\",\"status\":\"vzidsxwaab\",\"steps\":[{},{}],\"exception\":[\"ygznmmaxrizk\",\"obgop\",\"lhslnelxieixyn\"]}]},\"deploymentStatus\":{\"status\":\"ecwcrojphslhcawj\",\"steps\":[{\"name\":\"dwfmvigorqjb\",\"description\":\"zhraglkafh\",\"fullStepIndex\":\"qjujeickpzvcp\",\"startTimeUtc\":\"mxelnwcltyjed\",\"endTimeUtc\":\"xm\",\"status\":\"mkqscaz\",\"steps\":[{},{},{}],\"exception\":[\"z\",\"puamwabzxr\",\"xcushs\",\"haivm\"]}]},\"nodeSettings\":{\"state\":\"sflvgsgzwywakoih\",\"createdAt\":\"2021-01-04T00:33:47Z\",\"updatedAt\":\"2021-02-04T00:10:52Z\",\"connectionStatus\":\"lmljhlnymzotq\",\"connectionErrorMessage\":\"yuzcbmqqvxmvw\"},\"sessionDetails\":[{\"sessionId\":\"yxonsupe\",\"sessionStartTime\":\"2021-09-05T01:45:37Z\",\"sessionEndTime\":\"2021-08-29T22:01:49Z\",\"accessLevel\":\"DiagnosticsAndRepair\",\"transcriptLocation\":\"vsqltnzoibgsxg\"}]},\"deploymentMode\":\"Validate\",\"provisioningState\":\"Disconnected\",\"jobId\":\"nmpqoxwdofdb\",\"startTimeUtc\":\"2020-12-26T13:10:46Z\",\"endTimeUtc\":\"2021-09-08T01:58:43Z\",\"status\":\"DeploymentInProgress\"}")
             .toObject(HciRemoteSupportJobProperties.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.deploymentMode());
-        Assertions.assertEquals(RemoteSupportAccessLevel.DIAGNOSTICS_AND_REPAIR, model.accessLevel());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T12:23:54Z"), model.expirationTimestamp());
-        Assertions.assertEquals(RemoteSupportType.ENABLE, model.type());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.deploymentMode());
+        Assertions.assertEquals(RemoteSupportAccessLevel.NONE, model.accessLevel());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T11:52:12Z"), model.expirationTimestamp());
+        Assertions.assertEquals(RemoteSupportType.REVOKE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HciRemoteSupportJobProperties model
-            = new HciRemoteSupportJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
-                .withAccessLevel(RemoteSupportAccessLevel.DIAGNOSTICS_AND_REPAIR)
-                .withExpirationTimestamp(OffsetDateTime.parse("2021-06-17T12:23:54Z"))
-                .withType(RemoteSupportType.ENABLE);
+            = new HciRemoteSupportJobProperties().withDeploymentMode(DeploymentMode.VALIDATE)
+                .withAccessLevel(RemoteSupportAccessLevel.NONE)
+                .withExpirationTimestamp(OffsetDateTime.parse("2021-03-23T11:52:12Z"))
+                .withType(RemoteSupportType.REVOKE);
         model = BinaryData.fromObject(model).toObject(HciRemoteSupportJobProperties.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.deploymentMode());
-        Assertions.assertEquals(RemoteSupportAccessLevel.DIAGNOSTICS_AND_REPAIR, model.accessLevel());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T12:23:54Z"), model.expirationTimestamp());
-        Assertions.assertEquals(RemoteSupportType.ENABLE, model.type());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.deploymentMode());
+        Assertions.assertEquals(RemoteSupportAccessLevel.NONE, model.accessLevel());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T11:52:12Z"), model.expirationTimestamp());
+        Assertions.assertEquals(RemoteSupportType.REVOKE, model.type());
     }
 }

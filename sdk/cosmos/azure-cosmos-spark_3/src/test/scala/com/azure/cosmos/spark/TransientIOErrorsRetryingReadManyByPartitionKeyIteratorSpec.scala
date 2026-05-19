@@ -108,15 +108,16 @@ class TransientIOErrorsRetryingReadManyByPartitionKeyIteratorSpec extends UnitSp
 
   "Continuation token" should "be passed to factory on retry" in {
 
-    val pageCount = 30
+    val pageCount = 10
+    val errorInjectedAfterPage = 5
     val capturedContinuationTokens = new java.util.concurrent.CopyOnWriteArrayList[String]()
-    val transientErrorCount = new AtomicLong(0)
+    val errorInjected = new AtomicLong(0)
 
     val iterator = new TransientIOErrorsRetryingReadManyByPartitionKeyIterator[SparkRowItem](
       continuationToken => {
         capturedContinuationTokens.add(continuationToken)
-        generateMockedCosmosPagedFlux(
-          continuationToken, pageCount, 0.15, transientErrorCount, injectEmptyPages = false)
+        generateMockedCosmosPagedFluxWithDeterministicError(
+          continuationToken, pageCount, errorInjectedAfterPage, errorInjected)
       },
       pageSize,
       1,
@@ -127,16 +128,15 @@ class TransientIOErrorsRetryingReadManyByPartitionKeyIteratorSpec extends UnitSp
 
     drainAll(iterator)
 
-    transientErrorCount.get > 0 shouldEqual true
+    errorInjected.get shouldEqual 1
 
     // First call should have null continuation token (start from beginning)
     capturedContinuationTokens.get(0) shouldEqual null
 
-    // Subsequent retry calls should have non-null continuation tokens
-    // (resume from last committed page)
-    val retryTokens = capturedContinuationTokens.asScala.drop(1)
-    retryTokens should not be empty
-    retryTokens.foreach(_ should not be null)
+    // Retry call should have non-null continuation token
+    // (resume from last committed page before the error)
+    capturedContinuationTokens.size shouldEqual 2
+    capturedContinuationTokens.get(1) should not be null
   }
 
   "Non-transient errors" should "not be retried and propagate immediately" in {

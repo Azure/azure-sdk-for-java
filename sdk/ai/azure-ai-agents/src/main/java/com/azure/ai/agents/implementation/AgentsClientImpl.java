@@ -109,6 +109,34 @@ public final class AgentsClientImpl {
     }
 
     /**
+     * The ToolboxesImpl object to access its operations.
+     */
+    private final ToolboxesImpl toolboxes;
+
+    /**
+     * Gets the ToolboxesImpl object to access its operations.
+     * 
+     * @return the ToolboxesImpl object.
+     */
+    public ToolboxesImpl getToolboxes() {
+        return this.toolboxes;
+    }
+
+    /**
+     * The AgentSessionFilesImpl object to access its operations.
+     */
+    private final AgentSessionFilesImpl agentSessionFiles;
+
+    /**
+     * Gets the AgentSessionFilesImpl object to access its operations.
+     * 
+     * @return the AgentSessionFilesImpl object.
+     */
+    public AgentSessionFilesImpl getAgentSessionFiles() {
+        return this.agentSessionFiles;
+    }
+
+    /**
      * Initializes an instance of AgentsClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
@@ -158,5 +186,7 @@ public final class AgentsClientImpl {
         this.serviceVersion = serviceVersion;
         this.agents = new AgentsImpl(this);
         this.memoryStores = new MemoryStoresImpl(this);
+        this.toolboxes = new ToolboxesImpl(this);
+        this.agentSessionFiles = new AgentSessionFilesImpl(this);
     }
 }

@@ -10,6 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.models.ExtensionFeatureMetadata;
+import com.azure.resourcemanager.compute.models.ReleaseCategory;
+import com.azure.resourcemanager.compute.models.RunProfile;
+import com.azure.resourcemanager.compute.models.UrgencyLevel;
 import java.io.IOException;
 
 /**
@@ -44,6 +48,31 @@ public final class VirtualMachineExtensionImageProperties
      * Whether the handler can support multiple extensions.
      */
     private Boolean supportsMultipleExtensions;
+
+    /*
+     * Summary of changes or updates in this extension version.
+     */
+    private String releaseNotes;
+
+    /*
+     * Categorizes the type of change introduced (e.g., BugFix, SecurityFix, CompatibilityUpdate, NewFeature, Other).
+     */
+    private ReleaseCategory releaseCategory;
+
+    /*
+     * Indicates the urgency level for applying this extension update.
+     */
+    private UrgencyLevel urgencyLevel;
+
+    /*
+     * Specifies when and how the extension should be executed.
+     */
+    private RunProfile runProfile;
+
+    /*
+     * A nested object that holds additional metadata in a flexible property bag.
+     */
+    private ExtensionFeatureMetadata extensionFeatureMetadata;
 
     /**
      * Creates an instance of VirtualMachineExtensionImageProperties class.
@@ -100,6 +129,53 @@ public final class VirtualMachineExtensionImageProperties
     }
 
     /**
+     * Get the releaseNotes property: Summary of changes or updates in this extension version.
+     * 
+     * @return the releaseNotes value.
+     */
+    public String releaseNotes() {
+        return this.releaseNotes;
+    }
+
+    /**
+     * Get the releaseCategory property: Categorizes the type of change introduced (e.g., BugFix, SecurityFix,
+     * CompatibilityUpdate, NewFeature, Other).
+     * 
+     * @return the releaseCategory value.
+     */
+    public ReleaseCategory releaseCategory() {
+        return this.releaseCategory;
+    }
+
+    /**
+     * Get the urgencyLevel property: Indicates the urgency level for applying this extension update.
+     * 
+     * @return the urgencyLevel value.
+     */
+    public UrgencyLevel urgencyLevel() {
+        return this.urgencyLevel;
+    }
+
+    /**
+     * Get the runProfile property: Specifies when and how the extension should be executed.
+     * 
+     * @return the runProfile value.
+     */
+    public RunProfile runProfile() {
+        return this.runProfile;
+    }
+
+    /**
+     * Get the extensionFeatureMetadata property: A nested object that holds additional metadata in a flexible property
+     * bag.
+     * 
+     * @return the extensionFeatureMetadata value.
+     */
+    public ExtensionFeatureMetadata extensionFeatureMetadata() {
+        return this.extensionFeatureMetadata;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -119,6 +195,9 @@ public final class VirtualMachineExtensionImageProperties
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property handlerSchema in model VirtualMachineExtensionImageProperties"));
+        }
+        if (extensionFeatureMetadata() != null) {
+            extensionFeatureMetadata().validate();
         }
     }
 
@@ -167,6 +246,20 @@ public final class VirtualMachineExtensionImageProperties
                 } else if ("supportsMultipleExtensions".equals(fieldName)) {
                     deserializedVirtualMachineExtensionImageProperties.supportsMultipleExtensions
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("releaseNotes".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageProperties.releaseNotes = reader.getString();
+                } else if ("releaseCategory".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageProperties.releaseCategory
+                        = ReleaseCategory.fromString(reader.getString());
+                } else if ("urgencyLevel".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageProperties.urgencyLevel
+                        = UrgencyLevel.fromString(reader.getString());
+                } else if ("runProfile".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageProperties.runProfile
+                        = RunProfile.fromString(reader.getString());
+                } else if ("extensionFeatureMetadata".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageProperties.extensionFeatureMetadata
+                        = ExtensionFeatureMetadata.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

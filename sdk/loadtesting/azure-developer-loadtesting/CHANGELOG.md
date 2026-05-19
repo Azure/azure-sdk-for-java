@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.0.29 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+
 ## 1.2.0-beta.1 (2026-03-06)
 
 Updated the client library to use API Version 2025-11-01-preview. This adds all the capabilities that were introduced until this API version.

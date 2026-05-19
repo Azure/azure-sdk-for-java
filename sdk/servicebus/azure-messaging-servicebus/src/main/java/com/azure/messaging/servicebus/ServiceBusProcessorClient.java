@@ -9,16 +9,19 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcesso
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -203,6 +206,36 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private Disposable monitorDisposable;
     private boolean wasStopped = false;
     private final ServiceBusProcessor processorV2;
+    // V1 handler tracking for graceful shutdown (not used in V2 path).
+    private final AtomicInteger activeV1HandlerCount = new AtomicInteger(0);
+    private final Object v1DrainLock = new Object();
+    private final ThreadLocal<Boolean> isV1HandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    private volatile boolean v1Closing;
+    // True while close() is between snapshotting state and finishing cleanup. Used to prevent
+    // start()/stop()/restartMessageReceiver() from racing with an in-progress shutdown - close()
+    // releases the instance monitor across the drain wait so other lifecycle methods could
+    // otherwise interleave and create state that close() then tears down. start() may be invoked
+    // again after close() returns to begin a new processing cycle (the flag is cleared in close()'s
+    // finally block).
+    private final AtomicBoolean v1CloseInProgress = new AtomicBoolean(false);
+    // Same gate as v1CloseInProgress but for the V2 path. close() releases the instance monitor
+    // before delegating to processorV2.close() (whose internal drain blocks for in-flight handler
+    // settlement). Without this gate, a concurrent start()/stop() call could acquire the outer
+    // monitor during the drain window and call processorV2.start(), leaving the inner processor
+    // running after the outer close() returns.
+    private final AtomicBoolean v2CloseInProgress = new AtomicBoolean(false);
+    // Most-recent identifier captured from the V1 asyncClient. Lets getIdentifier() return a
+    // stable value during/after close() without lazy-creating a fresh receiver that close() would
+    // not dispose. Refreshed every time getIdentifier() observes a live asyncClient and once more
+    // by close() before nulling it.
+    private volatile String cachedV1Identifier;
+    // Namespace + entity path captured from the V1 asyncClient. Used by handleError() so that
+    // processError can be invoked even after asyncClient has been nulled by close() cleanup -
+    // e.g. a re-entrant close() called from within processMessage that completes after the
+    // calling handler throws. Without these, handleError() would NPE on asyncClient.get() and
+    // silently swallow the user's exception.
+    private volatile String cachedV1FullyQualifiedNamespace;
+    private volatile String cachedV1EntityPath;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -231,8 +264,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.subscriptionName = subscriptionName;
         if (processorOptions.isV2()) {
             final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
-            this.processorV2
-                = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
+            this.processorV2 = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError,
+                concurrencyPerSession, processorOptions.getDrainTimeout());
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -269,7 +302,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             final int concurrency = this.processorOptions.getMaxConcurrentCalls();
             final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
             this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency,
-                enableAutoDisposition);
+                enableAutoDisposition, processorOptions.getDrainTimeout());
             this.tracer = null;
         } else {
             this.processorV2 = null;
@@ -293,13 +326,29 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized void start() {
         if (processorV2 != null) {
+            if (v2CloseInProgress.get()) {
+                // close() is mid-shutdown on the V2 path - don't restart processorV2 underneath
+                // it. Caller can retry start() once close() has returned.
+                LOGGER.info("Processor close() is in progress; ignoring start() call.");
+                return;
+            }
             processorV2.start();
+            return;
+        }
+        if (v1CloseInProgress.get()) {
+            // close() is mid-shutdown - it has set isRunning=false and will tear down state when
+            // the drain returns. Refuse to start so we don't create resources that close() then
+            // immediately discards. Caller can retry start() once close() has returned.
+            LOGGER.info("Processor close() is in progress; ignoring start() call.");
             return;
         }
         if (isRunning.getAndSet(true)) {
             LOGGER.info("Processor is already running");
             return;
         }
+
+        // Reset shutdown-only state so the processor can restart after a close() cycle.
+        v1Closing = false;
 
         if (wasStopped) {
             wasStopped = false;
@@ -321,7 +370,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         // (parallel scheduler backing Flux.interval), so that we don't block any of the parallel threads.
         if (monitorDisposable == null) {
             monitorDisposable = Schedulers.boundedElastic().schedulePeriodically(() -> {
-                if (this.asyncClient.get().isConnectionClosed()) {
+                // Snapshot asyncClient before dereferencing - close() nulls the field after
+                // disposing this monitor, but a tick already in flight can still race past
+                // monitorDisposable.dispose() and observe asyncClient == null.
+                final ServiceBusReceiverAsyncClient currentClient = this.asyncClient.get();
+                if (currentClient == null) {
+                    return;
+                }
+                if (currentClient.isConnectionClosed()) {
                     restartMessageReceiver(null);
                 }
             }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
@@ -334,7 +390,17 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized void stop() {
         if (processorV2 != null) {
+            if (v2CloseInProgress.get()) {
+                LOGGER.info("Processor close() is in progress; ignoring stop() call.");
+                return;
+            }
             processorV2.stop();
+            return;
+        }
+        if (v1CloseInProgress.get()) {
+            // close() has already set isRunning=false and is draining. A concurrent stop() would
+            // be a no-op against the same state and could confuse the wasStopped semantics.
+            LOGGER.info("Processor close() is in progress; ignoring stop() call.");
             return;
         }
         wasStopped = true;
@@ -344,23 +410,98 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      * Stops message processing and closes the processor. The receiving links and sessions are closed and calling
      * {@link #start()} will create a new processing cycle with new links and new sessions.
+     *
+     * <p>This method blocks while waiting for in-flight message handlers to complete (up to the configured
+     * drain timeout, default 30 seconds) before cancelling subscriptions and closing the underlying client.
+     * This ensures handlers can finish message settlement without encountering a disposed receiver. Callers
+     * should avoid invoking {@code close()} on latency-sensitive threads. If the drain timeout expires, the
+     * processor proceeds with shutdown regardless.</p>
+     *
+     * <p>When {@code close()} is invoked from within a {@code processMessage} callback, the drain
+     * logic waits only for other concurrent message handlers to complete. The calling handler is not included
+     * in the in-flight drain threshold to avoid self-deadlock, so shutdown may proceed (including cancelling
+     * subscriptions and closing the underlying client) while that callback is still executing or settling its
+     * message. The configured drain timeout continues to apply to the handlers that are being awaited.</p>
+     *
+     * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/45716">Issue #45716</a>
      */
     @Override
-    public synchronized void close() {
-        if (processorV2 != null) {
-            processorV2.close();
+    public void close() {
+        final ServiceBusProcessor v2Snapshot;
+        final Duration drainTimeout;
+        final boolean wonV2Close;
+
+        // Snapshot state and mark the processor as closing while holding the monitor, but RELEASE
+        // the monitor before performing the blocking drain. Holding the monitor across the drain
+        // would stall shutdown for the full drain timeout if any in-flight handler calls a
+        // synchronized accessor (isRunning(), getIdentifier()) on this client: the handler would
+        // block on the monitor while close() is waiting for that handler to finish.
+        synchronized (this) {
+            v2Snapshot = processorV2;
+            if (v2Snapshot == null) {
+                // Only the first concurrent close() takes ownership of the V1 shutdown. Subsequent
+                // close() calls return early so they do not race with the owner's cleanup (e.g.
+                // they could otherwise re-enter sync2 after start() created fresh state and dispose
+                // those resources). The processor still gets closed - the owner finishes the work.
+                if (!v1CloseInProgress.compareAndSet(false, true)) {
+                    return;
+                }
+                isRunning.set(false);
+                v1Closing = true;
+                drainTimeout = processorOptions.getDrainTimeout();
+                wonV2Close = false;
+            } else {
+                // V2 path: claim ownership symmetrically so concurrent start()/stop() return early
+                // and a second concurrent close() returns immediately rather than re-invoking
+                // processorV2.close() while the owner is still draining.
+                wonV2Close = v2CloseInProgress.compareAndSet(false, true);
+                drainTimeout = null;
+            }
+        }
+
+        if (v2Snapshot != null) {
+            if (!wonV2Close) {
+                return;
+            }
+            try {
+                // V2 path: drain happens inside processorV2.close(). Invoked outside the monitor
+                // so handlers calling isRunning()/getIdentifier() during drain do not stall shutdown.
+                v2Snapshot.close();
+            } finally {
+                v2CloseInProgress.set(false);
+            }
             return;
         }
-        isRunning.set(false);
-        receiverSubscriptions.keySet().forEach(Subscription::cancel);
-        receiverSubscriptions.clear();
-        if (monitorDisposable != null) {
-            monitorDisposable.dispose();
-            monitorDisposable = null;
-        }
-        if (asyncClient.get() != null) {
-            asyncClient.get().close();
-            asyncClient.set(null);
+
+        try {
+            // V1 path: drain in-flight message handlers BEFORE cancelling subscriptions.
+            // Cancelling subscriptions triggers Reactor's publishOn worker disposal, which interrupts
+            // handler threads. Draining first ensures handlers can complete message settlement
+            // before the underlying client is closed.
+            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+            drainV1Handlers(drainTimeout);
+
+            // Re-acquire the monitor for the (non-blocking) cleanup so it does not race with
+            // start()/restartMessageReceiver(). Concurrent close() calls remain safe: every step
+            // below is guarded by a null check or operates on already-cleared collections.
+            synchronized (this) {
+                receiverSubscriptions.keySet().forEach(Subscription::cancel);
+                receiverSubscriptions.clear();
+                if (monitorDisposable != null) {
+                    monitorDisposable.dispose();
+                    monitorDisposable = null;
+                }
+                if (asyncClient.get() != null) {
+                    // Capture the identifier before disposing so a later getIdentifier() call can
+                    // return the same value without lazy-creating a fresh receiver.
+                    cachedV1Identifier = asyncClient.get().getIdentifier();
+                    asyncClient.get().close();
+                    asyncClient.set(null);
+                }
+            }
+        } finally {
+            // Clear the in-progress flag last so a subsequent start() can begin a fresh cycle.
+            v1CloseInProgress.set(false);
         }
     }
 
@@ -410,17 +551,47 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     /**
      * Gets the identifier of the instance of {@link ServiceBusProcessorClient}.
      *
-     * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient}.
+     * <p>The identifier is captured from the underlying receiver as soon as one exists. After
+     * {@link #close() close()} returns, this method continues to return the identifier of the
+     * receiver that was active before shutdown so callers (logs, diagnostics) get a stable value.</p>
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient},
+     *     or {@code null} if no identifier is available yet. {@code null} can be returned in two
+     *     cases: (1) on the V2 path before the first call to {@link #start() start()} has created
+     *     the underlying processor, and (2) on the V1 path when {@link #close() close()} is in
+     *     progress on a brand-new processor that has never been started (so no identifier was
+     *     ever cached). In all other cases - while running, after {@code start()}, during/after
+     *     {@code close()} on a previously-started processor - this method returns a non-null
+     *     identifier.
      */
     public synchronized String getIdentifier() {
         if (processorV2 != null) {
             return processorV2.getIdentifier();
         }
-        if (asyncClient.get() == null) {
-            asyncClient.set(createNewReceiver());
+        final ServiceBusReceiverAsyncClient current = asyncClient.get();
+        if (current != null) {
+            // Live client - refresh the cache and return its identifier.
+            cachedV1Identifier = current.getIdentifier();
+            return cachedV1Identifier;
         }
-
-        return asyncClient.get().getIdentifier();
+        if (cachedV1Identifier != null) {
+            // The processor was started at some point and we captured the identifier. Return it
+            // without lazy-creating a new receiver - otherwise a getIdentifier() call during
+            // close()'s drain window or after close() returned would leak a receiver that the
+            // shutdown path is no longer responsible for.
+            return cachedV1Identifier;
+        }
+        if (v1CloseInProgress.get()) {
+            // First-ever call but close() is mid-shutdown and never had a chance to cache.
+            // Don't create a receiver close() won't dispose; return null - the V2 path also
+            // returns null when no identifier is available, keeping the API contract consistent.
+            return null;
+        }
+        // First call before any start() - preserve the lazy-init behavior so getIdentifier()
+        // returns a non-null identifier even before the processor is started.
+        asyncClient.set(createNewReceiver());
+        cachedV1Identifier = asyncClient.get().getIdentifier();
+        return cachedV1Identifier;
     }
 
     private synchronized void receiveMessages() {
@@ -430,6 +601,21 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
+        // Cache the namespace + entity path so handleError() works even after close() has nulled
+        // asyncClient (re-entrant close from within processMessage). Refreshed on every receive
+        // cycle so a restart against a different builder picks up new values.
+        cachedV1FullyQualifiedNamespace = receiverClient.getFullyQualifiedNamespace();
+        cachedV1EntityPath = receiverClient.getEntityPath();
+        // Cache the receive mode so the onNext hot-path reads a primitive instead of walking the
+        // receiver options each call. PEEK_LOCK is safe to skip during drain (broker still owns
+        // the lock and will redeliver any message we drop). RECEIVE_AND_DELETE is not - the broker
+        // has already removed the message before delivery, so dropping it here would lose it
+        // permanently. Only PEEK_LOCK takes the drain-aware fast path. When the client cannot
+        // report a receive mode (test mocks that didn't stub getReceiverOptions()) default to the
+        // safer no-skip behavior so messages cannot be dropped silently.
+        final ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
+        final boolean skipDuringDrain
+            = receiverOptions != null && receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
         CoreSubscriber<ServiceBusMessageContext>[] subscribers
@@ -449,36 +635,67 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage() != null
-                        ? serviceBusMessageContext.getMessage().getContext()
-                        : Context.NONE;
-                    Exception exception = null;
-                    AutoCloseable scope = tracer.makeSpanCurrent(span);
+                    // Errors must always flow to the user's processError callback even during
+                    // shutdown - they don't touch the receiver and the application has the right
+                    // to know what failed before close completes. Only message dispatches take
+                    // the drain-aware fast path: avoids counting skip-path invocations against
+                    // the drain so a busy upstream cannot keep activeV1HandlerCount > 0 while
+                    // close() is waiting. The skip is gated on PEEK_LOCK only - in
+                    // RECEIVE_AND_DELETE the broker has already removed the message, so dropping
+                    // it here would lose it permanently.
+                    final boolean isErrorContext = serviceBusMessageContext.hasError();
+                    if (!isErrorContext && v1Closing && skipDuringDrain) {
+                        LOGGER.verbose("Skipping V1 handler execution (early), processor is closing.");
+                        return;
+                    }
+                    activeV1HandlerCount.incrementAndGet();
+                    isV1HandlerThread.set(Boolean.TRUE);
                     try {
-                        if (serviceBusMessageContext.hasError()) {
-                            handleError(serviceBusMessageContext.getThrowable());
-                        } else {
-                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
-                                = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
-
-                            try {
-                                processMessage.accept(serviceBusReceivedMessageContext);
-                            } catch (Exception ex) {
-                                handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-
-                                if (!processorOptions.isDisableAutoComplete()) {
-                                    LOGGER.warning("Error when processing message. Abandoning message.", ex);
-                                    abandonMessage(serviceBusMessageContext, receiverClient);
-                                }
-                                exception = ex;
-                            }
+                        if (!isErrorContext && v1Closing && skipDuringDrain) {
+                            // v1Closing may have flipped between the early check above and this
+                            // point (a check-then-act race). Race-loser invocations still skip
+                            // work; the increment is balanced by the decrement in finally.
+                            LOGGER.verbose("Skipping V1 handler execution, processor is closing.");
+                            return;
                         }
-                        if (isRunning.get()) {
-                            LOGGER.verbose("Requesting 1 more message from upstream");
-                            subscription.request(1);
+                        Context span = serviceBusMessageContext.getMessage() != null
+                            ? serviceBusMessageContext.getMessage().getContext()
+                            : Context.NONE;
+                        Exception exception = null;
+                        AutoCloseable scope = tracer.makeSpanCurrent(span);
+                        try {
+                            if (isErrorContext) {
+                                handleError(serviceBusMessageContext.getThrowable());
+                            } else {
+                                ServiceBusReceivedMessageContext serviceBusReceivedMessageContext
+                                    = new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+
+                                try {
+                                    processMessage.accept(serviceBusReceivedMessageContext);
+                                } catch (Exception ex) {
+                                    handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
+
+                                    if (!processorOptions.isDisableAutoComplete()) {
+                                        LOGGER.warning("Error when processing message. Abandoning message.", ex);
+                                        abandonMessage(serviceBusMessageContext, receiverClient);
+                                    }
+                                    exception = ex;
+                                }
+                            }
+                            if (isRunning.get()) {
+                                LOGGER.verbose("Requesting 1 more message from upstream");
+                                subscription.request(1);
+                            }
+                        } finally {
+                            tracer.endSpan(exception, span, scope);
                         }
                     } finally {
-                        tracer.endSpan(exception, span, scope);
+                        isV1HandlerThread.remove();
+                        if (activeV1HandlerCount.decrementAndGet() <= 1) {
+                            synchronized (v1DrainLock) {
+                                v1DrainLock.notifyAll();
+                            }
+                        }
                     }
                 }
 
@@ -526,9 +743,24 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private void handleError(Throwable throwable) {
         try {
-            ServiceBusReceiverAsyncClient client = asyncClient.get();
-            final String fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
-            final String entityPath = client.getEntityPath();
+            // Read the cached values so processError still fires after asyncClient has been
+            // nulled by close() cleanup - e.g. a re-entrant close() from within processMessage
+            // that completes before the calling handler throws. Falls back to the live client
+            // when the cache hasn't been populated yet (first-ever error before any receive
+            // cycle), and only then to defaults so the error context is never NPE-suppressed.
+            String fullyQualifiedNamespace = cachedV1FullyQualifiedNamespace;
+            String entityPath = cachedV1EntityPath;
+            if (fullyQualifiedNamespace == null || entityPath == null) {
+                final ServiceBusReceiverAsyncClient client = asyncClient.get();
+                if (client != null) {
+                    if (fullyQualifiedNamespace == null) {
+                        fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
+                    }
+                    if (entityPath == null) {
+                        entityPath = client.getEntityPath();
+                    }
+                }
+            }
             processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception ex) {
             LOGGER.verbose("Error from error handler. Ignoring error.", ex);
@@ -536,6 +768,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private synchronized void restartMessageReceiver(Subscription requester) {
+        if (v1CloseInProgress.get()) {
+            // Connection monitor or onError fallback fired during shutdown; don't recreate the
+            // receiver - close() is about to dispose it anyway.
+            return;
+        }
         if (!isRunning()) {
             return;
         }
@@ -554,5 +791,57 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         return this.receiverBuilder == null
             ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
             : this.receiverBuilder.buildAsyncClientForProcessor();
+    }
+
+    /**
+     * Wait for in-flight V1 message handlers to complete, up to the specified timeout.
+     * Called during V1 close to ensure graceful shutdown before disposing the underlying client.
+     *
+     * <p><strong>Re-entrant semantics:</strong> when invoked from within a V1 message handler
+     * (e.g. the user calls {@link #close() close()} inside their {@code processMessage}
+     * callback), this method waits only for <em>other</em> concurrent handlers and excludes the
+     * calling handler from the wait condition - waiting for the calling handler to finish would
+     * self-deadlock. In that case, this method may return while the calling handler is still
+     * executing or settling its message.</p>
+     *
+     * @param timeout the maximum time to wait for handlers to complete.
+     */
+    private void drainV1Handlers(Duration timeout) {
+        v1Closing = true;
+        final int threshold;
+        if (isV1HandlerThread.get()) {
+            // Re-entrant call from within a V1 message handler (e.g., user called close() inside processMessage).
+            // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+            // wait for OTHER concurrent handlers to finish settlement before cancelling subscriptions
+            // and closing the underlying client.
+            threshold = 1;
+            if (activeV1HandlerCount.get() <= threshold) {
+                return;
+            }
+            LOGGER.info("drainV1Handlers called from within a V1 message handler (re-entrant). "
+                + "Waiting for {} other active handler(s) to complete.", activeV1HandlerCount.get() - 1);
+        } else {
+            threshold = 0;
+        }
+        final long deadline = System.nanoTime() + timeout.toNanos();
+        synchronized (v1DrainLock) {
+            while (activeV1HandlerCount.get() > threshold) {
+                final long remainingNanos = deadline - System.nanoTime();
+                if (remainingNanos <= 0) {
+                    LOGGER.warning("V1 drain timeout expired with {} active handlers still running.",
+                        activeV1HandlerCount.get());
+                    return;
+                }
+                try {
+                    final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                    final int nanos = (int) (remainingNanos % 1_000_000);
+                    v1DrainLock.wait(millis, nanos);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOGGER.warning("V1 drain interrupted while waiting for in-flight handlers.");
+                    return;
+                }
+            }
+        }
     }
 }
