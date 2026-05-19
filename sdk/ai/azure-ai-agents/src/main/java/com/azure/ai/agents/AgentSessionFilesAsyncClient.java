@@ -249,57 +249,6 @@ public final class AgentSessionFilesAsyncClient {
     }
 
     /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     path: String (Required)
-     *     entries (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             size: long (Required)
-     *             is_directory: boolean (Required)
-     *             modified_time: long (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from listing a directory in a session sandbox along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listSessionFilesWithResponse(String agentName, String agentSessionId, String path,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
-    }
-
-    /**
      * Upload a file to the session sandbox via binary stream.
      * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
      *
@@ -371,65 +320,6 @@ public final class AgentSessionFilesAsyncClient {
     }
 
     /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> listSessionFiles(String agentName, String agentSessionId, String path,
-        AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
-        // Generated convenience method for listSessionFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
-    }
-
-    /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> listSessionFiles(String agentName, String agentSessionId, String path) {
-        // Generated convenience method for listSessionFilesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
-    }
-
-    /**
      * Delete a file or directory from the session sandbox.
      * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
      *
@@ -465,5 +355,115 @@ public final class AgentSessionFilesAsyncClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
         return deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List files and directories at a given path in the session sandbox.
+     * Returns only the immediate children of the specified directory (non-recursive).
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     path: String (Required)
+     *     entries (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             size: long (Required)
+     *             is_directory: boolean (Required)
+     *             modified_time: long (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from listing a directory in a session sandbox along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSessionFilesWithResponse(String agentName, String agentSessionId, String path,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
+    }
+
+    /**
+     * List files and directories at a given path in the session sandbox.
+     * Returns only the immediate children of the specified directory (non-recursive).
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path,
+        AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
+        // Generated convenience method for getSessionFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
+    }
+
+    /**
+     * List files and directories at a given path in the session sandbox.
+     * Returns only the immediate children of the specified directory (non-recursive).
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path) {
+        // Generated convenience method for getSessionFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
     }
 }
