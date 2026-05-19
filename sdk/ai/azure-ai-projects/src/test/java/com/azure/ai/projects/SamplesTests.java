@@ -9,7 +9,6 @@ import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Assertions;
@@ -30,26 +29,27 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class SamplesTests extends ClientTestBase {
     private static final String SAMPLE_SKILL_NAME = "java-sample-skill-package-test";
+    private static final String SAMPLE_SKILL_ASYNC_NAME = "java-sample-skill-package-async-test";
     private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
         = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) throws IOException {
         SkillsClient skillsClient = getClientBuilder(httpClient, serviceVersion).buildSkillsClient();
+        String skillName = SAMPLE_SKILL_NAME;
 
         try {
-            skillsClient.deleteSkill(SAMPLE_SKILL_NAME);
+            skillsClient.deleteSkill(skillName);
         } catch (ResourceNotFoundException ignored) {
             // The sample skill does not already exist.
         }
 
         SkillDetails imported = null;
         try {
-            imported = skillsClient.createSkillFromPackage(createSkillPackage());
+            imported = skillsClient.createSkillFromPackage(createSkillPackage(skillName));
             Assertions.assertNotNull(imported);
-            Assertions.assertEquals(SAMPLE_SKILL_NAME, imported.getName());
+            Assertions.assertEquals(skillName, imported.getName());
             Assertions.assertTrue(imported.isBlobPresent());
 
             SkillDetails fetched = skillsClient.getSkill(imported.getName());
@@ -64,28 +64,28 @@ public class SamplesTests extends ClientTestBase {
             Files.write(downloadPath, downloaded.toBytes());
             Assertions.assertTrue(Files.size(downloadPath) > 0);
         } finally {
-            String skillName = imported == null ? SAMPLE_SKILL_NAME : imported.getName();
+            String importedSkillName = imported == null ? skillName : imported.getName();
             try {
-                skillsClient.deleteSkill(skillName);
+                skillsClient.deleteSkill(importedSkillName);
             } catch (ResourceNotFoundException ignored) {
                 // The skill may not have been created.
             }
         }
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
         SkillsAsyncClient skillsAsyncClient = getClientBuilder(httpClient, serviceVersion).buildSkillsAsyncClient();
+        String skillName = SAMPLE_SKILL_ASYNC_NAME;
 
-        StepVerifier.create(skillsAsyncClient.deleteSkill(SAMPLE_SKILL_NAME)
+        StepVerifier.create(skillsAsyncClient.deleteSkill(skillName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> reactor.core.publisher.Mono.empty())
-            .then(skillsAsyncClient.createSkillFromPackage(createSkillPackage()))
+            .then(skillsAsyncClient.createSkillFromPackage(createSkillPackage(skillName)))
             .flatMap(imported -> {
                 Assertions.assertNotNull(imported);
-                Assertions.assertEquals(SAMPLE_SKILL_NAME, imported.getName());
+                Assertions.assertEquals(skillName, imported.getName());
                 Assertions.assertTrue(imported.isBlobPresent());
 
                 return skillsAsyncClient.getSkill(imported.getName()).doOnNext(fetched -> {
@@ -98,7 +98,7 @@ public class SamplesTests extends ClientTestBase {
             })).verifyComplete();
     }
 
-    @LiveOnly
+    @Disabled("The live service returns 400: API operation not supported for token authentication.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
@@ -120,7 +120,7 @@ public class SamplesTests extends ClientTestBase {
         }
     }
 
-    @LiveOnly
+    @Disabled("The live service returns 400: API operation not supported for token authentication.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
@@ -137,7 +137,6 @@ public class SamplesTests extends ClientTestBase {
             .then()).verifyComplete();
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
@@ -158,7 +157,6 @@ public class SamplesTests extends ClientTestBase {
         }
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
@@ -175,13 +173,13 @@ public class SamplesTests extends ClientTestBase {
         Assertions.assertNotNull(sawModel);
     }
 
-    @Disabled("Requires FOUNDRY_MODEL_NAME and creates a long-running preview data generation job.")
+    @Disabled("Data generation live validation is blocked by 400: API operation not supported for token authentication; "
+        + "the create flow is also a long-running preview operation.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationCreateGetCancelDeleteSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
-        Assertions.fail(
-            "Enable after providing FOUNDRY_MODEL_NAME and deciding whether to record this long-running preview flow.");
+        Assertions.fail("Enable after token-auth support is available for data generation jobs.");
     }
 
     @Disabled("Requires FOUNDRY_MODEL_ASSET_NAME, FOUNDRY_MODEL_ASSET_VERSION, and FOUNDRY_MODEL_BLOB_URI.")
@@ -192,14 +190,16 @@ public class SamplesTests extends ClientTestBase {
         Assertions.fail("Enable after providing model asset environment variables.");
     }
 
-    private static BinaryData createSkillPackage() throws IOException {
-        String skillMarkdown = "---\n" + "name: " + SAMPLE_SKILL_NAME + "\n"
+    private static BinaryData createSkillPackage(String skillName) throws IOException {
+        String skillMarkdown = "---\n" + "name: " + skillName + "\n"
             + "description: Answers product support questions using company policy and product guidance.\n" + "---\n\n"
             + "You help answer product support questions using company policy and product guidance.\n";
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            zipOutputStream.putNextEntry(new ZipEntry(SAMPLE_SKILL_NAME + "/SKILL.md"));
+            ZipEntry skillEntry = new ZipEntry(skillName + "/SKILL.md");
+            skillEntry.setTime(0);
+            zipOutputStream.putNextEntry(skillEntry);
             zipOutputStream.write(skillMarkdown.getBytes(StandardCharsets.UTF_8));
             zipOutputStream.closeEntry();
         }

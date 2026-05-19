@@ -15,7 +15,6 @@ import com.azure.ai.agents.models.ToolboxSearchPreviewTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -39,7 +38,6 @@ public class ToolboxSamplesTests extends ClientTestBase {
         return argumentsList.stream();
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void toolboxSearchToolboxSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -73,7 +71,6 @@ public class ToolboxSamplesTests extends ClientTestBase {
         }
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void toolboxesAsyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
