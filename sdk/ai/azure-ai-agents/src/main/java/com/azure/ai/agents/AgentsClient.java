@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
+import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -22,6 +23,7 @@ import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
@@ -38,6 +40,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
 import java.util.Map;
 
@@ -2315,6 +2318,41 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSessions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
+     * {@link SessionLogEvent} values.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion,
+        String sessionId) {
+        RequestOptions requestOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
+            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
+        return getSessionLogStream(agentName, agentVersion, sessionId, requestOptions);
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
+     * {@link SessionLogEvent} values.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
+        RequestOptions requestOptions) {
+        return new IterableStream<>(SessionLogStreamHelper
+            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions).getValue()
+                .toFluxByteBuffer()));
     }
 
     /**
