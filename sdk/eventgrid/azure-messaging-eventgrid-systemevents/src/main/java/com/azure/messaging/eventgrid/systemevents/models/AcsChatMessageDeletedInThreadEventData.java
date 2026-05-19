@@ -26,12 +26,6 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
     private final OffsetDateTime deleteTime;
 
     /*
-     * The Sequence id of the message
-     */
-    @Generated
-    private Long sequenceId;
-
-    /*
      * The display name of the sender
      */
     @Generated
@@ -70,17 +64,6 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
     @Generated
     public OffsetDateTime getDeleteTime() {
         return this.deleteTime;
-    }
-
-    /**
-     * Get the sequenceId property: The Sequence id of the message.
-     *
-     * @return the sequenceId value.
-     */
-    @Generated
-    @Override
-    public Long getSequenceId() {
-        return this.sequenceId;
     }
 
     /**
@@ -183,7 +166,7 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
                     composeTime, type, version, deleteTime);
             deserializedAcsChatMessageDeletedInThreadEventData.transactionId = transactionId;
             deserializedAcsChatMessageDeletedInThreadEventData.senderDisplayName = senderDisplayName;
-            deserializedAcsChatMessageDeletedInThreadEventData.sequenceId = sequenceId;
+            deserializedAcsChatMessageDeletedInThreadEventData.setSequenceId(sequenceId);
             return deserializedAcsChatMessageDeletedInThreadEventData;
         });
     }

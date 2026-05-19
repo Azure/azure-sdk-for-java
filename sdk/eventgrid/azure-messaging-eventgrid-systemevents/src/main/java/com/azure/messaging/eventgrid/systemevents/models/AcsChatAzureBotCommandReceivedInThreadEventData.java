@@ -34,12 +34,6 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
     private Map<String, String> metadata;
 
     /*
-     * The Sequence id of the message
-     */
-    @Generated
-    private Long sequenceId;
-
-    /*
      * The display name of the sender
      */
     @Generated
@@ -88,17 +82,6 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
-    }
-
-    /**
-     * Get the sequenceId property: The Sequence id of the message.
-     *
-     * @return the sequenceId value.
-     */
-    @Generated
-    @Override
-    public Long getSequenceId() {
-        return this.sequenceId;
     }
 
     /**
@@ -202,7 +185,7 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
                     senderCommunicationIdentifier, composeTime, type, version, messageBody);
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.transactionId = transactionId;
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.senderDisplayName = senderDisplayName;
-            deserializedAcsChatAzureBotCommandReceivedInThreadEventData.sequenceId = sequenceId;
+            deserializedAcsChatAzureBotCommandReceivedInThreadEventData.setSequenceId(sequenceId);
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.metadata = metadata;
             return deserializedAcsChatAzureBotCommandReceivedInThreadEventData;
         });
