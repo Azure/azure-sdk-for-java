@@ -99,8 +99,9 @@ public class ModelsAsyncSample {
             .setDescription("Model version created by the Azure AI Projects Java SDK sample.");
 
         return MODELS_ASYNC_CLIENT.createModelVersionAsync(modelName, modelVersion, modelVersionDefinition)
-            .doOnSuccess(unused -> System.out.printf("Started model version creation: %s/%s%n", modelName,
-                modelVersion));
+            .doOnSuccess(response -> System.out.printf("Started model version creation: %s/%s%n", modelName,
+                modelVersion))
+            .then();
 
         // END:com.azure.ai.projects.ModelsAsyncSample.createModelVersionAsync
     }
