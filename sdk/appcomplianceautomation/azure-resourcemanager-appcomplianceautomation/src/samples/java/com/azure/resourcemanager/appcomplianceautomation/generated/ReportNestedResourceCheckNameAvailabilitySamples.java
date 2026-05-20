@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 /**
- * Samples for Report CheckNameAvailability.
+ * Samples for Report NestedResourceCheckNameAvailability.
  */
-public final class ReportCheckNameAvailabilitySamples {
+public final class ReportNestedResourceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
      * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Snapshot_Check_Name_Availability.json
@@ -19,7 +19,8 @@ public final class ReportCheckNameAvailabilitySamples {
      */
     public static void reportSnapshotCheckNameAvailability(
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,7 +34,8 @@ public final class ReportCheckNameAvailabilitySamples {
      */
     public static void reportEvidenceCheckNameAvailability(
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -47,6 +49,7 @@ public final class ReportCheckNameAvailabilitySamples {
      */
     public static void reportWebhookCheckNameAvailability(
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
     }
 }

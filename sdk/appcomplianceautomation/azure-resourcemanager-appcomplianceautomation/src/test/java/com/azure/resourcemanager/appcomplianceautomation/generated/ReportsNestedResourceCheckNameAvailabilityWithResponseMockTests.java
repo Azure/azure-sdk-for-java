@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ReportsCheckNameAvailabilityWithResponseMockTests {
+public final class ReportsNestedResourceCheckNameAvailabilityWithResponseMockTests {
     @Test
-    public void testCheckNameAvailabilityWithResponse() throws Exception {
+    public void testNestedResourceCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"xynl\"}";
 
         HttpClient httpClient
@@ -32,7 +32,7 @@ public final class ReportsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.reports()
-            .checkNameAvailabilityWithResponse("maxriz",
+            .nestedResourceCheckNameAvailabilityWithResponse("maxriz",
                 new CheckNameAvailabilityRequest().withName("obgop").withType("hsln"), com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -183,18 +183,20 @@ public final class ReportsClientImpl implements ReportsClient {
         @Post("/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("reportName") String reportName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CheckNameAvailabilityRequest body, Context context);
+        Mono<Response<CheckNameAvailabilityResponseInner>> nestedResourceCheckNameAvailability(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("reportName") String reportName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CheckNameAvailabilityRequest body,
+            Context context);
 
         @Post("/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<CheckNameAvailabilityResponseInner> checkNameAvailabilitySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("reportName") String reportName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CheckNameAvailabilityRequest body, Context context);
+        Response<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilitySync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("reportName") String reportName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CheckNameAvailabilityRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.AppComplianceAutomation/reports/{reportName}/fix")
@@ -1126,12 +1128,12 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(String reportName,
-        CheckNameAvailabilityRequest body) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        nestedResourceCheckNameAvailabilityWithResponseAsync(String reportName, CheckNameAvailabilityRequest body) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+            .withContext(context -> service.nestedResourceCheckNameAvailability(this.client.getEndpoint(),
                 this.client.getApiVersion(), reportName, contentType, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1147,9 +1149,9 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the check availability result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(String reportName,
+    private Mono<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilityAsync(String reportName,
         CheckNameAvailabilityRequest body) {
-        return checkNameAvailabilityWithResponseAsync(reportName, body)
+        return nestedResourceCheckNameAvailabilityWithResponseAsync(reportName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1165,12 +1167,12 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String reportName,
-        CheckNameAvailabilityRequest body, Context context) {
+    public Response<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilityWithResponse(
+        String reportName, CheckNameAvailabilityRequest body, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.checkNameAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(), reportName,
-            contentType, accept, body, context);
+        return service.nestedResourceCheckNameAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            reportName, contentType, accept, body, context);
     }
 
     /**
@@ -1184,9 +1186,9 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(String reportName,
+    public CheckNameAvailabilityResponseInner nestedResourceCheckNameAvailability(String reportName,
         CheckNameAvailabilityRequest body) {
-        return checkNameAvailabilityWithResponse(reportName, body, Context.NONE).getValue();
+        return nestedResourceCheckNameAvailabilityWithResponse(reportName, body, Context.NONE).getValue();
     }
 
     /**

@@ -172,7 +172,7 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String reportName,
+    Response<CheckNameAvailabilityResponse> nestedResourceCheckNameAvailabilityWithResponse(String reportName,
         CheckNameAvailabilityRequest body, Context context);
 
     /**
@@ -185,7 +185,8 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result.
      */
-    CheckNameAvailabilityResponse checkNameAvailability(String reportName, CheckNameAvailabilityRequest body);
+    CheckNameAvailabilityResponse nestedResourceCheckNameAvailability(String reportName,
+        CheckNameAvailabilityRequest body);
 
     /**
      * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,

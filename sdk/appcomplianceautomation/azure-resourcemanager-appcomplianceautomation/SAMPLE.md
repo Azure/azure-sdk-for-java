@@ -24,13 +24,13 @@
 
 ## Report
 
-- [CheckNameAvailability](#report_checknameavailability)
 - [CreateOrUpdate](#report_createorupdate)
 - [Delete](#report_delete)
 - [Fix](#report_fix)
 - [Get](#report_get)
 - [GetScopingQuestions](#report_getscopingquestions)
 - [List](#report_list)
+- [NestedResourceCheckNameAvailability](#report_nestedresourcechecknameavailability)
 - [SyncCertRecord](#report_synccertrecord)
 - [Update](#report_update)
 - [Verify](#report_verify)
@@ -344,58 +344,6 @@ public final class ProviderActionsTriggerEvaluationSamples {
 }
 ```
 
-### Report_CheckNameAvailability
-
-```java
-
-/**
- * Samples for Report CheckNameAvailability.
- */
-public final class ReportCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file:
-     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Snapshot_Check_Name_Availability.json
-     */
-    /**
-     * Sample code: Report_SnapshotCheckNameAvailability.
-     * 
-     * @param manager Entry point to AppComplianceAutomationManager.
-     */
-    public static void reportSnapshotCheckNameAvailability(
-        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Evidence_Check_Name_Availability.json
-     */
-    /**
-     * Sample code: Report_EvidenceCheckNameAvailability.
-     * 
-     * @param manager Entry point to AppComplianceAutomationManager.
-     */
-    public static void reportEvidenceCheckNameAvailability(
-        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Webhook_Check_Name_Availability.json
-     */
-    /**
-     * Sample code: Report_WebhookCheckNameAvailability.
-     * 
-     * @param manager Entry point to AppComplianceAutomationManager.
-     */
-    public static void reportWebhookCheckNameAvailability(
-        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
-        manager.reports().checkNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Report_CreateOrUpdate
 
 ```java
@@ -527,6 +475,61 @@ public final class ReportListSamples {
         manager.reports()
             .list("1", 100, null, null, null, "00000000-0000-0000-0000-000000000000",
                 "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Report_NestedResourceCheckNameAvailability
+
+```java
+
+/**
+ * Samples for Report NestedResourceCheckNameAvailability.
+ */
+public final class ReportNestedResourceCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file:
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Snapshot_Check_Name_Availability.json
+     */
+    /**
+     * Sample code: Report_SnapshotCheckNameAvailability.
+     * 
+     * @param manager Entry point to AppComplianceAutomationManager.
+     */
+    public static void reportSnapshotCheckNameAvailability(
+        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Evidence_Check_Name_Availability.json
+     */
+    /**
+     * Sample code: Report_EvidenceCheckNameAvailability.
+     * 
+     * @param manager Entry point to AppComplianceAutomationManager.
+     */
+    public static void reportEvidenceCheckNameAvailability(
+        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Webhook_Check_Name_Availability.json
+     */
+    /**
+     * Sample code: Report_WebhookCheckNameAvailability.
+     * 
+     * @param manager Entry point to AppComplianceAutomationManager.
+     */
+    public static void reportWebhookCheckNameAvailability(
+        com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager manager) {
+        manager.reports()
+            .nestedResourceCheckNameAvailabilityWithResponse("reportABC", null, com.azure.core.util.Context.NONE);
     }
 }
 ```

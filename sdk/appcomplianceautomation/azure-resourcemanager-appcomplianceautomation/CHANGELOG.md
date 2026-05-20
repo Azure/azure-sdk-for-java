@@ -30,11 +30,6 @@
 
 * `validate()` was removed
 
-#### `models.Reports` was modified
-
-* `nestedResourceCheckNameAvailability(java.lang.String,models.CheckNameAvailabilityRequest)` was removed
-* `nestedResourceCheckNameAvailabilityWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was removed
-
 #### `models.ControlFamily` was modified
 
 * `ControlFamily()` was changed to private access
@@ -198,8 +193,8 @@
 * `Responsibility()` was changed to private access
 * `withTotalResourceCount(java.lang.Integer)` was removed
 * `withEvidenceFiles(java.util.List)` was removed
-* `withFailedResourceCount(java.lang.Integer)` was removed
 * `validate()` was removed
+* `withFailedResourceCount(java.lang.Integer)` was removed
 
 #### `models.ReportProperties` was modified
 
@@ -209,13 +204,6 @@
 
 * `Recommendation()` was changed to private access
 * `validate()` was removed
-
-### Features Added
-
-#### `models.Reports` was modified
-
-* `checkNameAvailability(java.lang.String,models.CheckNameAvailabilityRequest)` was added
-* `checkNameAvailabilityWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was added
 
 ## 1.0.0 (2024-06-27)
 

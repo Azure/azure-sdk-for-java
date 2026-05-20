@@ -309,7 +309,7 @@ public interface ReportsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String reportName,
+    Response<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilityWithResponse(String reportName,
         CheckNameAvailabilityRequest body, Context context);
 
     /**
@@ -323,7 +323,8 @@ public interface ReportsClient {
      * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(String reportName, CheckNameAvailabilityRequest body);
+    CheckNameAvailabilityResponseInner nestedResourceCheckNameAvailability(String reportName,
+        CheckNameAvailabilityRequest body);
 
     /**
      * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,

@@ -129,16 +129,18 @@ public final class ReportsImpl implements Reports {
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String reportName,
+    public Response<CheckNameAvailabilityResponse> nestedResourceCheckNameAvailabilityWithResponse(String reportName,
         CheckNameAvailabilityRequest body, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
-            = this.serviceClient().checkNameAvailabilityWithResponse(reportName, body, context);
+            = this.serviceClient().nestedResourceCheckNameAvailabilityWithResponse(reportName, body, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(String reportName, CheckNameAvailabilityRequest body) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(reportName, body);
+    public CheckNameAvailabilityResponse nestedResourceCheckNameAvailability(String reportName,
+        CheckNameAvailabilityRequest body) {
+        CheckNameAvailabilityResponseInner inner
+            = this.serviceClient().nestedResourceCheckNameAvailability(reportName, body);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
