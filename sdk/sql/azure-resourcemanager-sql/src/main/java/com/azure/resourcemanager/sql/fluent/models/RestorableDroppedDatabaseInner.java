@@ -28,9 +28,9 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     private RestorableDroppedDatabaseProperties innerProperties;
 
     /*
-     * Resource tags.
+     * The name and tier of the SKU.
      */
-    private Map<String, String> tags;
+    private Sku sku;
 
     /*
      * Resource location.
@@ -38,9 +38,9 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     private String location;
 
     /*
-     * The name and tier of the SKU.
+     * Resource tags.
      */
-    private Sku sku;
+    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -78,12 +78,12 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the sku property: The name and tier of the SKU.
      * 
-     * @return the tags value.
+     * @return the sku value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public Sku sku() {
+        return this.sku;
     }
 
     /**
@@ -96,12 +96,12 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the sku property: The name and tier of the SKU.
+     * Get the tags property: Resource tags.
      * 
-     * @return the sku value.
+     * @return the tags value.
      */
-    public Sku sku() {
-        return this.sku;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
@@ -227,9 +227,9 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -259,13 +259,13 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedRestorableDroppedDatabaseInner.innerProperties
                         = RestorableDroppedDatabaseProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.sku = Sku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedRestorableDroppedDatabaseInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedRestorableDroppedDatabaseInner.location = reader.getString();
-                } else if ("sku".equals(fieldName)) {
-                    deserializedRestorableDroppedDatabaseInner.sku = Sku.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedRestorableDroppedDatabaseInner.systemData = SystemData.fromJson(reader);
                 } else {
