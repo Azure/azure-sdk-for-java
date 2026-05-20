@@ -575,26 +575,9 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
 
     /**
      * Appends audio data to an ongoing input turn.
-     *
-     * @param turnId The ID of the turn this audio is part of.
-     * @param audio The audio data to append.
-     * @return A Mono that completes when the audio is appended.
-     * @throws IllegalArgumentException if turnId is null or empty, or audio is null.
-     */
-    public Mono<Void> appendAudioToTurn(String turnId, byte[] audio) {
-        if (turnId == null || turnId.isEmpty()) {
-            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
-        }
-        Objects.requireNonNull(audio, "'audio' cannot be null");
-        throwIfNotConnected();
-
-        String base64Audio = Base64.getEncoder().encodeToString(audio);
-        ClientEventInputAudioTurnAppend appendCommand = new ClientEventInputAudioTurnAppend(turnId, base64Audio);
-        return sendEvent(appendCommand);
-    }
-
-    /**
-     * Appends audio data to an ongoing input turn.
+     * <p>
+     * To append a raw byte array, wrap it with {@link BinaryData#fromBytes(byte[])}.
+     * </p>
      *
      * @param turnId The ID of the turn this audio is part of.
      * @param audio The audio data to append.
@@ -602,8 +585,15 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * @throws IllegalArgumentException if turnId is null or empty, or audio is null.
      */
     public Mono<Void> appendAudioToTurn(String turnId, BinaryData audio) {
+        if (turnId == null || turnId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
+        }
         Objects.requireNonNull(audio, "'audio' cannot be null");
-        return appendAudioToTurn(turnId, audio.toBytes());
+        throwIfNotConnected();
+
+        String base64Audio = Base64.getEncoder().encodeToString(audio.toBytes());
+        ClientEventInputAudioTurnAppend appendCommand = new ClientEventInputAudioTurnAppend(turnId, base64Audio);
+        return sendEvent(appendCommand);
     }
 
     /**
