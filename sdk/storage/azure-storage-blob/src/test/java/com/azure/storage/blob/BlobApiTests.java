@@ -465,6 +465,10 @@ public class BlobApiTests extends BlobTestBase {
         assertNotNull(headers.isServerEncrypted());
         assertNull(headers.getBlobContentMD5());
         assertNotNull(headers.getCreationTime());
+        assertEquals(AccessTier.SMART, headers.getAccessTier());
+        assertNotNull(headers.getSmartAccessTier());
+        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
+        assertTrue(headers.isAccessTierInferred());
         //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
@@ -540,6 +544,10 @@ public class BlobApiTests extends BlobTestBase {
         assertNull(headers.getBlobCommittedBlockCount());
         assertNotNull(headers.isServerEncrypted());
         assertNull(headers.getBlobContentMD5());
+        assertEquals(AccessTier.SMART, headers.getAccessTier());
+        assertNotNull(headers.getSmartAccessTier());
+        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
+        assertTrue(headers.isAccessTierInferred());
         //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 

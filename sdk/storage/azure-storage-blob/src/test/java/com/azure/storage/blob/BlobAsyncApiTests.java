@@ -1229,6 +1229,24 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void getPropertiesSmartAccessTierProperties() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(DATA.getDefaultFlux()).setTier(AccessTier.SMART);
+
+        StepVerifier.create(bc.uploadWithResponse(options).then(bc.getPropertiesWithResponse(null))).assertNext(r -> {
+            BlobProperties properties = r.getValue();
+
+            assertEquals(AccessTier.SMART, properties.getAccessTier());
+            assertNotNull(properties.getSmartAccessTier());
+            assertNotNull(properties.getAccessTierChangeTime());
+            // Currently null because isAccessTierInferred is not implemented in properties; just in headers
+            assertNull(properties.isAccessTierInferred());
+        }).verifyComplete();
+    }
+
     @Test
     public void getPropertiesMin() {
         assertAsyncResponseStatusCode(bc.getPropertiesWithResponse(null), 200);
