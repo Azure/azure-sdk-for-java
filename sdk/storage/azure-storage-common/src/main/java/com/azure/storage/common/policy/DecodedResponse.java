@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,19 +27,30 @@ import java.nio.charset.Charset;
 class DecodedResponse extends HttpResponse {
     private final HttpResponse originalResponse;
     private final Flux<ByteBuffer> decodedBody;
+    private final HttpHeaders adjustedHeaders;
 
     /**
      * Wraps {@code httpResponse} with a body backed by {@code decodedBody}.
      *
-     * @param httpResponse The original response from the storage service. Its request, status code, and headers
-     * are preserved verbatim.
-     * @param decodedBody The Flux of CRC-validated, framing-stripped payload bytes produced by the decoder
-     * pipeline.
+     * <p>{@code Content-Length} is overridden to {@code decodedContentLength} so callers see the size of the bytes
+     * they will actually read. The original wire size is preserved in {@code x-ms-original-content-length}.</p>
+     *
+     * @param httpResponse The original response from the storage service.
+     * @param decodedBody The Flux of CRC-validated, framing-stripped payload bytes produced by the decoder pipeline.
+     * @param originalContentLength The wire size of the encoded structured message body.
+     * @param decodedContentLength The size of the decoded payload that callers will consume.
      */
-    DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
+    DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody, long originalContentLength,
+        long decodedContentLength) {
         super(httpResponse.getRequest());
         this.originalResponse = httpResponse;
         this.decodedBody = decodedBody;
+        HttpHeaders headers = new HttpHeaders();
+        httpResponse.getHeaders().stream().forEach(h -> headers.set(h.getName(), h.getValue()));
+        headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(decodedContentLength));
+        headers.set(Constants.HeaderConstants.ORIGINAL_CONTENT_LENGTH_HEADER_NAME,
+            String.valueOf(originalContentLength));
+        this.adjustedHeaders = headers;
     }
 
     @Override
@@ -49,12 +61,12 @@ class DecodedResponse extends HttpResponse {
     @Override
     @SuppressWarnings("deprecation")
     public String getHeaderValue(String name) {
-        return originalResponse.getHeaderValue(name);
+        return adjustedHeaders.getValue(name);
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return originalResponse.getHeaders();
+        return adjustedHeaders;
     }
 
     @Override

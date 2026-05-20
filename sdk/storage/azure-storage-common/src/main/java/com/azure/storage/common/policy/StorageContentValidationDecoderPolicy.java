@@ -73,11 +73,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             // Confirm the service actually honored our structured-body request before we hand the body to the decoder.
             validateStructuredMessageHeaders(httpResponse);
 
+            Long decodedContentLength = getStructuredContentLength(httpResponse.getHeaders());
+
             // Fresh decoder per response so retries each get a clean state machine.
             StructuredMessageDecoder decoder = new StructuredMessageDecoder(contentLength);
 
             Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoder);
-            return new DecodedResponse(httpResponse, decodedStream);
+            // decodedContentLength is guaranteed non-null here: validateStructuredMessageHeaders confirmed its presence.
+            return new DecodedResponse(httpResponse, decodedStream, contentLength, decodedContentLength);
         });
     }
 
@@ -118,6 +121,22 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 return Long.parseLong(value);
             } catch (NumberFormatException e) {
                 // Header invalid; treat as not eligible.
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Reads {@code x-ms-structured-content-length} as a {@code Long}, returning {@code null} if missing or
+     * unparseable.
+     */
+    private static Long getStructuredContentLength(HttpHeaders headers) {
+        String value = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+        if (value != null) {
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                // Malformed header; fall through to null.
             }
         }
         return null;
