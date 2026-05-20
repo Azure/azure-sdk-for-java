@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0 (2026-05-20)
 
 - Azure Resource Manager App Compliance Automation client library for Java. This package contains Microsoft Azure SDK for App Compliance Automation Management SDK. App Compliance Automation Tool for Microsoft 365 API spec. Package api-version 2024-06-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
