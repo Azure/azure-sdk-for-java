@@ -465,10 +465,6 @@ public class BlobApiTests extends BlobTestBase {
         assertNotNull(headers.isServerEncrypted());
         assertNull(headers.getBlobContentMD5());
         assertNotNull(headers.getCreationTime());
-        assertEquals(AccessTier.SMART, headers.getAccessTier());
-        assertNotNull(headers.getSmartAccessTier());
-        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
-        assertTrue(headers.isAccessTierInferred());
         //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
@@ -544,11 +540,33 @@ public class BlobApiTests extends BlobTestBase {
         assertNull(headers.getBlobCommittedBlockCount());
         assertNotNull(headers.isServerEncrypted());
         assertNull(headers.getBlobContentMD5());
+        //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadSmartAccessTierHeaders() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        BlobDownloadResponse response = bc.downloadWithResponse(stream, null, null, null, false, null, null);
+        ByteBuffer body = ByteBuffer.wrap(stream.toByteArray());
+
+        assertEquals(DATA.getDefaultData(), body);
+        assertSmartAccessTierHeaders(response.getDeserializedHeaders());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadContentSmartAccessTierHeaders() {
+        BlobDownloadContentResponse response = bc.downloadContentWithResponse(null, null, null, null);
+
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), response.getValue().toBytes());
+        assertSmartAccessTierHeaders(response.getDeserializedHeaders());
+    }
+
+    private static void assertSmartAccessTierHeaders(BlobDownloadHeaders headers) {
         assertEquals(AccessTier.SMART, headers.getAccessTier());
         assertNotNull(headers.getSmartAccessTier());
-        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
         assertTrue(headers.isAccessTierInferred());
-        //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
     @Test
