@@ -343,9 +343,25 @@ public class AppendBlobApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void appendBlockDefaults() {
+        Response<AppendBlobItem> appendResponse = bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, null, null, null);
+
+        ByteArrayOutputStream downloadStream = new ByteArrayOutputStream();
+        bc.downloadStream(downloadStream);
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), downloadStream.toByteArray());
+
+        validateBasicHeaders(appendResponse.getHeaders());
+        assertNotNull(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        assertNotNull(appendResponse.getValue().getBlobAppendOffset());
+        assertNotNull(appendResponse.getValue().getBlobCommittedBlockCount());
+        assertEquals(1, bc.getProperties().getCommittedBlockCount());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void appendBlockDefaultsWithCrc64() {
         Response<AppendBlobItem> appendResponse = bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null);
 
@@ -565,9 +581,24 @@ public class AppendBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, 2 * 1024, downloadStream.toByteArray(), 0, 1024);
     }
 
+    @Test
+    public void appendBlockFromURLMD5() {
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertDoesNotThrow(() -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+            MessageDigest.getInstance("MD5").digest(data), null, null, null, Context.NONE));
+
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
-    public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
+    public void appendBlockFromUrlMd5Crc64() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
         byte[] expectedContentMd5 = MessageDigest.getInstance("MD5").digest(data);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);

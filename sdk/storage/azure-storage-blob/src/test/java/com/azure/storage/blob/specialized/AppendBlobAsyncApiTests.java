@@ -349,9 +349,25 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void appendBlockDefaults() {
+        StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null))
+            .assertNext(r -> {
+                validateBasicHeaders(r.getHeaders());
+                assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                assertNotNull(r.getValue().getBlobAppendOffset());
+                assertNotNull(r.getValue().getBlobCommittedBlockCount());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void appendBlockDefaultsWithCrc64() {
         StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null))
             .assertNext(r -> {
                 validateBasicHeaders(r.getHeaders());
@@ -578,9 +594,26 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
+        byte[] data = getRandomByteArray(1024);
+
+        AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+
+        Mono<Response<AppendBlobItem>> response = bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length)
+            .then(destURL.create())
+            .then(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest(data), null, null));
+
+        StepVerifier.create(response).expectNextCount(1).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void appendBlockFromUrlMd5Crc64() throws NoSuchAlgorithmException {
         byte[] data = getRandomByteArray(1024);
         byte[] expectedContentMd5 = MessageDigest.getInstance("MD5").digest(data);
 
