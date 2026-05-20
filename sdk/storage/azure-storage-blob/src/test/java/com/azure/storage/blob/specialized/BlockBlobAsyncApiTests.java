@@ -616,9 +616,25 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void commitBlockList() {
+        String blockID = getBlockID();
+        List<String> ids = Collections.singletonList(blockID);
+
+        StepVerifier.create(blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null, null))).assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                HttpHeaders headers = r.getHeaders();
+
+                validateBasicHeaders(headers);
+                assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void commitBlockListCrc64() {
         String blockID = getBlockID();
         List<String> ids = Collections.singletonList(blockID);
 
@@ -955,6 +971,26 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void upload() {
+        StepVerifier
+            .create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+                null, null, null, null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                validateBasicHeaders(r.getHeaders());
+
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadReturnsCrc64Content() {
         StepVerifier
             .create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
                 null, null, null, null))

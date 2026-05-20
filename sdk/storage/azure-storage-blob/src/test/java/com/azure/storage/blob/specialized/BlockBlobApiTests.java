@@ -533,9 +533,25 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(null, null, GARBAGE_ETAG, null), Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void commitBlockList() {
+        String blockID = getBlockID();
+        blockBlobClient.stageBlock(blockID, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        List<String> ids = Collections.singletonList(blockID);
+
+        Response<BlockBlobItem> response
+            = blockBlobClient.commitBlockListWithResponse(ids, null, null, null, null, null, null);
+        HttpHeaders headers = response.getHeaders();
+
+        assertResponseStatusCode(response, 201);
+        validateBasicHeaders(headers);
+        assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+        assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void commitBlockListCrc64() {
         String blockID = getBlockID();
         blockBlobClient.stageBlock(blockID, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         List<String> ids = Collections.singletonList(blockID);
@@ -834,9 +850,24 @@ public class BlockBlobApiTests extends BlobTestBase {
             () -> blockBlobClient.listBlocks(BlockListType.ALL).getCommittedBlocks().iterator().hasNext());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void upload() {
+        Response<BlockBlobItem> response = blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        blockBlobClient.downloadStream(outStream);
+        TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+
+        validateBasicHeaders(response.getHeaders());
+        assertNotNull(response.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadReturnsCrc64Content() {
         Response<BlockBlobItem> response = blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
 
