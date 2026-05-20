@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,22 +16,11 @@ import java.util.List;
  * The storage datashare properties.
  */
 @Fluent
-public final class StorageDataShareProperties implements JsonSerializable<StorageDataShareProperties> {
-    /*
-     * System-generated GUID identifier for the Storage DataShare. Not a valid input parameter when creating.
-     */
-    private String dataShareIdentifier;
-
+public final class StorageDataSharePropertiesUpdate implements JsonSerializable<StorageDataSharePropertiesUpdate> {
     /*
      * Arbitrary description of this Data Share. Max 250 characters.
      */
     private String description;
-
-    /*
-     * The DataShare URI to be shared with the consumer.
-     * URI Format - 'azds://<location>:<dataShareName>:<dataShareIdentifier>'.
-     */
-    private String dataShareUri;
 
     /*
      * List of access policies that specify the permission allowed to a managed identity.
@@ -53,25 +41,10 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
      */
     private List<StorageDataShareAsset> assets;
 
-    /*
-     * Represents the provisioning state of the storage datashare.
-     */
-    private NativeDataSharingProvisioningState provisioningState;
-
     /**
-     * Creates an instance of StorageDataShareProperties class.
+     * Creates an instance of StorageDataSharePropertiesUpdate class.
      */
-    public StorageDataShareProperties() {
-    }
-
-    /**
-     * Get the dataShareIdentifier property: System-generated GUID identifier for the Storage DataShare. Not a valid
-     * input parameter when creating.
-     * 
-     * @return the dataShareIdentifier value.
-     */
-    public String dataShareIdentifier() {
-        return this.dataShareIdentifier;
+    public StorageDataSharePropertiesUpdate() {
     }
 
     /**
@@ -87,21 +60,11 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
      * Set the description property: Arbitrary description of this Data Share. Max 250 characters.
      * 
      * @param description the description value to set.
-     * @return the StorageDataShareProperties object itself.
+     * @return the StorageDataSharePropertiesUpdate object itself.
      */
-    public StorageDataShareProperties withDescription(String description) {
+    public StorageDataSharePropertiesUpdate withDescription(String description) {
         this.description = description;
         return this;
-    }
-
-    /**
-     * Get the dataShareUri property: The DataShare URI to be shared with the consumer.
-     * URI Format - 'azds://&lt;location&gt;:&lt;dataShareName&gt;:&lt;dataShareIdentifier&gt;'.
-     * 
-     * @return the dataShareUri value.
-     */
-    public String dataShareUri() {
-        return this.dataShareUri;
     }
 
     /**
@@ -129,9 +92,9 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
      * If provided with a non-null value, the existing access policies are replaced with the specified list.
      * 
      * @param accessPolicies the accessPolicies value to set.
-     * @return the StorageDataShareProperties object itself.
+     * @return the StorageDataSharePropertiesUpdate object itself.
      */
-    public StorageDataShareProperties withAccessPolicies(List<StorageDataShareAccessPolicy> accessPolicies) {
+    public StorageDataSharePropertiesUpdate withAccessPolicies(List<StorageDataShareAccessPolicy> accessPolicies) {
         this.accessPolicies = accessPolicies;
         return this;
     }
@@ -157,20 +120,11 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
      * If provided with a non-null value, the existing assets are replaced with the specified list.
      * 
      * @param assets the assets value to set.
-     * @return the StorageDataShareProperties object itself.
+     * @return the StorageDataSharePropertiesUpdate object itself.
      */
-    public StorageDataShareProperties withAssets(List<StorageDataShareAsset> assets) {
+    public StorageDataSharePropertiesUpdate withAssets(List<StorageDataShareAsset> assets) {
         this.assets = assets;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Represents the provisioning state of the storage datashare.
-     * 
-     * @return the provisioningState value.
-     */
-    public NativeDataSharingProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -179,23 +133,13 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (accessPolicies() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property accessPolicies in model StorageDataShareProperties"));
-        } else {
+        if (accessPolicies() != null) {
             accessPolicies().forEach(e -> e.validate());
         }
-        if (assets() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property assets in model StorageDataShareProperties"));
-        } else {
+        if (assets() != null) {
             assets().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageDataShareProperties.class);
 
     /**
      * {@inheritDoc}
@@ -203,52 +147,45 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("accessPolicies", this.accessPolicies,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("assets", this.assets, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of StorageDataShareProperties from the JsonReader.
+     * Reads an instance of StorageDataSharePropertiesUpdate from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StorageDataShareProperties if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the StorageDataShareProperties.
+     * @return An instance of StorageDataSharePropertiesUpdate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageDataSharePropertiesUpdate.
      */
-    public static StorageDataShareProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static StorageDataSharePropertiesUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StorageDataShareProperties deserializedStorageDataShareProperties = new StorageDataShareProperties();
+            StorageDataSharePropertiesUpdate deserializedStorageDataSharePropertiesUpdate
+                = new StorageDataSharePropertiesUpdate();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("accessPolicies".equals(fieldName)) {
+                if ("description".equals(fieldName)) {
+                    deserializedStorageDataSharePropertiesUpdate.description = reader.getString();
+                } else if ("accessPolicies".equals(fieldName)) {
                     List<StorageDataShareAccessPolicy> accessPolicies
                         = reader.readArray(reader1 -> StorageDataShareAccessPolicy.fromJson(reader1));
-                    deserializedStorageDataShareProperties.accessPolicies = accessPolicies;
+                    deserializedStorageDataSharePropertiesUpdate.accessPolicies = accessPolicies;
                 } else if ("assets".equals(fieldName)) {
                     List<StorageDataShareAsset> assets
                         = reader.readArray(reader1 -> StorageDataShareAsset.fromJson(reader1));
-                    deserializedStorageDataShareProperties.assets = assets;
-                } else if ("dataShareIdentifier".equals(fieldName)) {
-                    deserializedStorageDataShareProperties.dataShareIdentifier = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedStorageDataShareProperties.description = reader.getString();
-                } else if ("dataShareUri".equals(fieldName)) {
-                    deserializedStorageDataShareProperties.dataShareUri = reader.getString();
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStorageDataShareProperties.provisioningState
-                        = NativeDataSharingProvisioningState.fromString(reader.getString());
+                    deserializedStorageDataSharePropertiesUpdate.assets = assets;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedStorageDataShareProperties;
+            return deserializedStorageDataSharePropertiesUpdate;
         });
     }
 }
