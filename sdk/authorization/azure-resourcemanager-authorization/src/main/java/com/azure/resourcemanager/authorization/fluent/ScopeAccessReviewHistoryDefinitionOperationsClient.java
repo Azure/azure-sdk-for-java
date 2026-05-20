@@ -20,7 +20,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +35,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +50,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @param context The context to associate with this operation.
@@ -66,7 +66,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Create a scheduled or one-time Access Review History Definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param properties Access review history definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +81,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,7 +94,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +107,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +121,7 @@ public interface ScopeAccessReviewHistoryDefinitionOperationsClient {
     /**
      * Delete an access review history definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

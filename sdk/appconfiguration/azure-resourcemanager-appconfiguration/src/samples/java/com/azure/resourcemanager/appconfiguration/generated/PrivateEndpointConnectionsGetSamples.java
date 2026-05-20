@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_GetConnection.

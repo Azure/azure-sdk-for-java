@@ -27,12 +27,12 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
-import com.azure.resourcemanager.containerservice.models.NodeCustomizationProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PodIpAllocationMode;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PreparedImageSpecificationProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
@@ -680,6 +680,20 @@ public final class AgentPoolInner extends ProxyResource {
      */
     public String nodeImageVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().nodeImageVersion();
+    }
+
+    /**
+     * Set the nodeImageVersion property: The version of node image.
+     * 
+     * @param nodeImageVersion the nodeImageVersion value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNodeImageVersion(nodeImageVersion);
+        return this;
     }
 
     /**
@@ -1583,27 +1597,28 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Get the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
+     * Get the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
      * 
-     * @return the nodeCustomizationProfile value.
+     * @return the preparedImageSpecificationProfile value.
      */
-    public NodeCustomizationProfile nodeCustomizationProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().nodeCustomizationProfile();
+    public PreparedImageSpecificationProfile preparedImageSpecificationProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().preparedImageSpecificationProfile();
     }
 
     /**
-     * Set the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
+     * Set the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
      * 
-     * @param nodeCustomizationProfile the nodeCustomizationProfile value to set.
+     * @param preparedImageSpecificationProfile the preparedImageSpecificationProfile value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
+    public AgentPoolInner
+        withPreparedImageSpecificationProfile(PreparedImageSpecificationProfile preparedImageSpecificationProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
-        this.innerProperties().withNodeCustomizationProfile(nodeCustomizationProfile);
+        this.innerProperties().withPreparedImageSpecificationProfile(preparedImageSpecificationProfile);
         return this;
     }
 

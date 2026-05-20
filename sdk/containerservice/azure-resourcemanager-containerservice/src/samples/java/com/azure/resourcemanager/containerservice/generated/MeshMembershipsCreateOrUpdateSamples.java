@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerservice.models.MeshMembershipPropertie
  */
 public final class MeshMembershipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MeshMemberships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/MeshMemberships_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update Mesh Membership.

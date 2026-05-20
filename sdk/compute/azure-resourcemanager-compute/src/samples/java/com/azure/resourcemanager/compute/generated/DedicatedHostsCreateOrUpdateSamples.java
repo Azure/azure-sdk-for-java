@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class DedicatedHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host .

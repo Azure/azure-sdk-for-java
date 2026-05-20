@@ -4,13 +4,35 @@
 
 ### Features Added
 
-- Added `listSessions()` and `listSessions(OffsetDateTime updatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages; the `updatedAfter` overload returns sessions whose state was updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation, exposing parity with Track 1's `IMessageSessionEntity.getMessageSessions()`. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
+- Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
+- Added `listSessions()` and `listSessions(OffsetDateTime updatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages; the `updatedAfter` overload returns sessions whose state was updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
+
 ### Other Changes
+
+- Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
+  `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
+  time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
+  against this value, falling back to `max-message-size` when the property is absent. Previously the
+  batch path used `max-message-size` directly, which on Premium large-message entities (link advertises
+  up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
+  Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
+## 7.17.18 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
 
 ## 7.17.17 (2026-01-29)
 

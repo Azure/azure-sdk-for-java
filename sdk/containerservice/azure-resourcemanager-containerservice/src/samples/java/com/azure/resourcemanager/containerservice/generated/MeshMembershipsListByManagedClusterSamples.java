@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MeshMembershipsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/MeshMemberships_ListByManagedCluster.json
+     * x-ms-original-file: 2026-03-02-preview/MeshMemberships_ListByManagedCluster.json
      */
     /**
      * Sample code: List Mesh Memberships by Managed Cluster.

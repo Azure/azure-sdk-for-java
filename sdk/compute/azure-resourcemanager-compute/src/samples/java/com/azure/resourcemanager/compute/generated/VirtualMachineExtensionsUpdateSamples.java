@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public final class VirtualMachineExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachineExtension_Update.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Update.json
      */
     /**
      * Sample code: Update VM extension.

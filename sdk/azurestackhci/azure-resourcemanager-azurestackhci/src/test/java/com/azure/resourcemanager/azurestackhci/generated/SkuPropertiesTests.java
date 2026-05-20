@@ -12,14 +12,14 @@ public final class SkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"ygvfltgvdihoyn\",\"publisherId\":\"xwetwkdrcyrucpc\",\"offerId\":\"nuzdqumo\",\"content\":\"odnaienhqhskndn\",\"contentVersion\":\"qkaadlknw\",\"skuMappings\":[{\"catalogPlanId\":\"n\",\"marketplaceSkuId\":\"op\",\"marketplaceSkuVersions\":[\"i\",\"cnrly\",\"nucaephblkwqpat\"]},{\"catalogPlanId\":\"qsdtcjbctvivuzq\",\"marketplaceSkuId\":\"tuowogtgitsqh\",\"marketplaceSkuVersions\":[\"rzcdbanf\"]},{\"catalogPlanId\":\"ds\",\"marketplaceSkuId\":\"mxeatkdbmwnrdjy\",\"marketplaceSkuVersions\":[\"bnaomhjrmkuhmax\"]},{\"catalogPlanId\":\"alfihcjmobcancd\",\"marketplaceSkuId\":\"xqcwgax\",\"marketplaceSkuVersions\":[\"aknokzwjjzrl\",\"ixldzyyfy\",\"pqsixymmp\"]}]}")
+            "{\"provisioningState\":\"mqozzkivy\",\"publisherId\":\"rl\",\"offerId\":\"zji\",\"content\":\"qfhefkwabsol\",\"contentVersion\":\"nqqlmgnl\",\"skuMappings\":[{\"catalogPlanId\":\"xtelexhvu\",\"marketplaceSkuId\":\"ozoolzq\",\"marketplaceSkuVersions\":[\"rkuz\",\"bc\"]},{\"catalogPlanId\":\"dtsnxawqytllhdyz\",\"marketplaceSkuId\":\"ckze\",\"marketplaceSkuVersions\":[\"akckywym\"]}]}")
             .toObject(SkuProperties.class);
-        Assertions.assertEquals("xwetwkdrcyrucpc", model.publisherId());
-        Assertions.assertEquals("nuzdqumo", model.offerId());
-        Assertions.assertEquals("odnaienhqhskndn", model.content());
-        Assertions.assertEquals("qkaadlknw", model.contentVersion());
-        Assertions.assertEquals("n", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("op", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("i", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("rl", model.publisherId());
+        Assertions.assertEquals("zji", model.offerId());
+        Assertions.assertEquals("qfhefkwabsol", model.content());
+        Assertions.assertEquals("nqqlmgnl", model.contentVersion());
+        Assertions.assertEquals("xtelexhvu", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("ozoolzq", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("rkuz", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

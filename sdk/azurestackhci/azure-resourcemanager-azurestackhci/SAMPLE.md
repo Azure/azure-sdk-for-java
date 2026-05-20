@@ -96,12 +96,18 @@
 - [List](#updatesummariesoperation_list)
 - [Put](#updatesummariesoperation_put)
 
+## UpdateSummariesOperationGroup
+
+- [CheckHealth](#updatesummariesoperationgroup_checkhealth)
+- [CheckUpdates](#updatesummariesoperationgroup_checkupdates)
+
 ## Updates
 
 - [Delete](#updates_delete)
 - [Get](#updates_get)
 - [List](#updates_list)
 - [Post](#updates_post)
+- [Prepare](#updates_prepare)
 - [Put](#updates_put)
 
 ## ValidatedSolutionRecipes
@@ -116,7 +122,7 @@
  */
 public final class ArcSettingsConsentAndInstallDefaultExtensionsSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ConsentAndInstallDefaultExtensions.json
+     * x-ms-original-file: 2026-04-30/ConsentAndInstallDefaultExtensions.json
      */
     /**
      * Sample code: Consent And Install Default Extensions.
@@ -140,7 +146,7 @@ public final class ArcSettingsConsentAndInstallDefaultExtensionsSamples {
  */
 public final class ArcSettingsCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutArcSetting.json
+     * x-ms-original-file: 2026-04-30/PutArcSetting.json
      */
     /**
      * Sample code: Create ArcSetting.
@@ -161,7 +167,7 @@ public final class ArcSettingsCreateSamples {
  */
 public final class ArcSettingsCreateIdentitySamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateArcIdentity.json
+     * x-ms-original-file: 2026-04-30/CreateArcIdentity.json
      */
     /**
      * Sample code: Create Arc Identity.
@@ -182,7 +188,7 @@ public final class ArcSettingsCreateIdentitySamples {
  */
 public final class ArcSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteArcSetting.json
+     * x-ms-original-file: 2026-04-30/DeleteArcSetting.json
      */
     /**
      * Sample code: Delete ArcSetting.
@@ -203,7 +209,7 @@ public final class ArcSettingsDeleteSamples {
  */
 public final class ArcSettingsGeneratePasswordSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GeneratePassword.json
+     * x-ms-original-file: 2026-04-30/GeneratePassword.json
      */
     /**
      * Sample code: Generate Password.
@@ -225,7 +231,7 @@ public final class ArcSettingsGeneratePasswordSamples {
  */
 public final class ArcSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetArcSetting.json
+     * x-ms-original-file: 2026-04-30/GetArcSetting.json
      */
     /**
      * Sample code: Get ArcSetting.
@@ -246,7 +252,7 @@ public final class ArcSettingsGetSamples {
  */
 public final class ArcSettingsInitializeDisableProcessSamples {
     /*
-     * x-ms-original-file: 2026-02-01/InitializeDisableProcess.json
+     * x-ms-original-file: 2026-04-30/InitializeDisableProcess.json
      */
     /**
      * Sample code: Trigger ARC Disable.
@@ -268,7 +274,7 @@ public final class ArcSettingsInitializeDisableProcessSamples {
  */
 public final class ArcSettingsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListArcSettingsByCluster.json
+     * x-ms-original-file: 2026-04-30/ListArcSettingsByCluster.json
      */
     /**
      * Sample code: List ArcSetting resources by HCI Cluster.
@@ -294,7 +300,7 @@ import java.util.Arrays;
  */
 public final class ArcSettingsReconcileSamples {
     /*
-     * x-ms-original-file: 2026-02-01/reconcileArcSettings.json
+     * x-ms-original-file: 2026-04-30/reconcileArcSettings.json
      */
     /**
      * Sample code: Reconcile Arc Settings.
@@ -327,7 +333,7 @@ import java.util.Arrays;
  */
 public final class ArcSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PatchArcSetting.json
+     * x-ms-original-file: 2026-04-30/PatchArcSetting.json
      */
     /**
      * Sample code: Patch ArcSetting.
@@ -360,7 +366,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersConfigureRemoteSupportSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ConfigureRemoteSupport.json
+     * x-ms-original-file: 2026-04-30/ConfigureRemoteSupport.json
      */
     /**
      * Sample code: Configure Remote Support.
@@ -388,7 +394,7 @@ import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType
  */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateCluster.json
+     * x-ms-original-file: 2026-04-30/CreateCluster.json
      */
     /**
      * Sample code: Create cluster.
@@ -417,7 +423,7 @@ public final class ClustersCreateSamples {
  */
 public final class ClustersCreateIdentitySamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateClusterIdentity.json
+     * x-ms-original-file: 2026-04-30/CreateClusterIdentity.json
      */
     /**
      * Sample code: Create cluster Identity.
@@ -438,7 +444,7 @@ public final class ClustersCreateIdentitySamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteCluster.json
+     * x-ms-original-file: 2026-04-30/DeleteCluster.json
      */
     /**
      * Sample code: Delete cluster.
@@ -463,7 +469,7 @@ import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceIntent;
  */
 public final class ClustersExtendSoftwareAssuranceBenefitSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ExtendSoftwareAssuranceBenefit.json
+     * x-ms-original-file: 2026-04-30/ExtendSoftwareAssuranceBenefit.json
      */
     /**
      * Sample code: Create cluster Identity.
@@ -488,7 +494,7 @@ public final class ClustersExtendSoftwareAssuranceBenefitSamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetCluster.json
+     * x-ms-original-file: 2026-04-30/GetCluster.json
      */
     /**
      * Sample code: Get cluster.
@@ -509,7 +515,7 @@ public final class ClustersGetByResourceGroupSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListClustersBySubscription.json
+     * x-ms-original-file: 2026-04-30/ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.
@@ -531,7 +537,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListClustersByResourceGroup.json
+     * x-ms-original-file: 2026-04-30/ListClustersByResourceGroup.json
      */
     /**
      * Sample code: List clusters in a given resource group.
@@ -557,7 +563,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersTriggerLogCollectionSamples {
     /*
-     * x-ms-original-file: 2026-02-01/TriggerLogCollection.json
+     * x-ms-original-file: 2026-04-30/TriggerLogCollection.json
      */
     /**
      * Sample code: Trigger Log Collection.
@@ -591,7 +597,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/UpdateCluster.json
+     * x-ms-original-file: 2026-04-30/UpdateCluster.json
      */
     /**
      * Sample code: Update cluster.
@@ -639,7 +645,7 @@ import java.util.Arrays;
  */
 public final class ClustersUpdateSecretsLocationsSamples {
     /*
-     * x-ms-original-file: 2026-02-01/Clusters_UpdateSecretsLocations.json
+     * x-ms-original-file: 2026-04-30/Clusters_UpdateSecretsLocations.json
      */
     /**
      * Sample code: Update secrets locations for a Cluster.
@@ -670,7 +676,7 @@ import java.util.Arrays;
  */
 public final class ClustersUploadCertificateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/UploadCertificate.json
+     * x-ms-original-file: 2026-04-30/UploadCertificate.json
      */
     /**
      * Sample code: Upload certificate.
@@ -712,8 +718,13 @@ import com.azure.resourcemanager.azurestackhci.models.NetworkController;
 import com.azure.resourcemanager.azurestackhci.models.Observability;
 import com.azure.resourcemanager.azurestackhci.models.OperationType;
 import com.azure.resourcemanager.azurestackhci.models.OptionalServices;
+import com.azure.resourcemanager.azurestackhci.models.OverprovisioningRatio;
 import com.azure.resourcemanager.azurestackhci.models.PhysicalNodes;
 import com.azure.resourcemanager.azurestackhci.models.QosPolicyOverrides;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterIPConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterProperties;
+import com.azure.resourcemanager.azurestackhci.models.SanClusterNetworkConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanNetworks;
 import com.azure.resourcemanager.azurestackhci.models.SbeCredentials;
 import com.azure.resourcemanager.azurestackhci.models.SbeDeploymentInfo;
 import com.azure.resourcemanager.azurestackhci.models.SbePartnerInfo;
@@ -721,6 +732,10 @@ import com.azure.resourcemanager.azurestackhci.models.SbePartnerProperties;
 import com.azure.resourcemanager.azurestackhci.models.ScaleUnits;
 import com.azure.resourcemanager.azurestackhci.models.SdnIntegration;
 import com.azure.resourcemanager.azurestackhci.models.Storage;
+import com.azure.resourcemanager.azurestackhci.models.StorageS2dConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageSanConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
+import com.azure.resourcemanager.azurestackhci.models.VolumeType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -729,15 +744,15 @@ import java.util.Arrays;
  */
 public final class DeploymentSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutDeploymentSettingsWithADLess.json
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings_StorageS2D.json
      */
     /**
-     * Sample code: Create Deployment Settings Without Active Directory Integration.
+     * Sample code: Create Deployment Settings with S2D Storage.
      * 
      * @param manager Entry point to AzureStackHciManager.
      */
-    public static void createDeploymentSettingsWithoutActiveDirectoryIntegration(
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void
+        createDeploymentSettingsWithS2DStorage(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
         manager.deploymentSettings()
             .define("default")
             .withExistingCluster("test-rg", "myCluster")
@@ -768,119 +783,10 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
                                 .withWitnessPath("Cloud")
                                 .withCloudAccountName("myasestoragacct")
                                 .withAzureServiceEndpoint("core.windows.net"))
-                            .withIdentityProvider(IdentityProvider.LOCAL_IDENTITY)
-                            .withStorage(new Storage().withConfigurationMode("Express"))
-                            .withNamingPrefix("ms169")
-                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
-                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
-                                .withSubnetMask("255.255.248.0")
-                                .withGateway("255.255.248.0")
-                                .withIpPools(Arrays.asList(
-                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
-                                .withDnsZones(Arrays.asList(new DnsZones().withDnsZoneName("contoso.com")
-                                    .withDnsForwarder(Arrays.asList("192.168.1.1"))))))
-                            .withPhysicalNodes(Arrays.asList(
-                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
-                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
-                            .withHostNetwork(new DeploymentSettingHostNetwork()
-                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
-                                    .withTrafficType(Arrays.asList("Compute", "Management"))
-                                    .withAdapter(Arrays.asList("Port2"))
-                                    .withOverrideVirtualSwitchConfiguration(false)
-                                    .withVirtualSwitchConfigurationOverrides(
-                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
-                                            .withLoadBalancingAlgorithm("HyperVPort"))
-                                    .withOverrideQosPolicy(false)
-                                    .withQosPolicyOverrides(
-                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
-                                            .withPriorityValue8021ActionSmb("3")
-                                            .withBandwidthPercentageSmb("50"))
-                                    .withOverrideAdapterProperty(false)
-                                    .withAdapterPropertyOverrides(
-                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
-                                            .withNetworkDirect("Enabled")
-                                            .withNetworkDirectTechnology("iWARP"))))
-                                .withStorageNetworks(
-                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
-                                        .withNetworkAdapterName("Port3")
-                                        .withVlanId("5")
-                                        .withStorageAdapterIpInfo(Arrays.asList(
-                                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
-                                                .withIpv4Address("10.57.48.60")
-                                                .withSubnetMask("255.255.248.0")))))
-                                .withStorageConnectivitySwitchless(true)
-                                .withEnableStorageAutoIp(false))
-                            .withSdnIntegration(new SdnIntegration().withNetworkController(
-                                new NetworkController().withMacAddressPoolStart("00-0D-3A-1B-C7-21")
-                                    .withMacAddressPoolStop("00-0D-3A-1B-C7-29")
-                                    .withNetworkVirtualizationEnabled(true)))
-                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
-                            .withSecretsLocation("fakeTokenPlaceholder")
-                            .withSecrets(Arrays.asList(
-                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
-                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
-                                    .withSecretLocation("fakeTokenPlaceholder"),
-                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
-                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
-                                    .withSecretLocation("fakeTokenPlaceholder")))
-                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
-                        .withSbePartnerInfo(new SbePartnerInfo()
-                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
-                                .withFamily("Gen5")
-                                .withPublisher("Contoso")
-                                .withSbeManifestSource("default")
-                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
-                            .withPartnerProperties(
-                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
-                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
-                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
-                            .withCredentialList(
-                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
-                                    .withEceSecretName("fakeTokenPlaceholder")
-                                    .withSecretLocation("fakeTokenPlaceholder")))))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-02-01/PutDeploymentSettings.json
-     */
-    /**
-     * Sample code: Create Deployment Settings.
-     * 
-     * @param manager Entry point to AzureStackHciManager.
-     */
-    public static void createDeploymentSettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.deploymentSettings()
-            .define("default")
-            .withExistingCluster("test-rg", "myCluster")
-            .withArcNodeResourceIds(Arrays.asList(
-                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
-                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
-            .withDeploymentMode(DeploymentMode.DEPLOY)
-            .withOperationType(OperationType.CLUSTER_PROVISIONING)
-            .withDeploymentConfiguration(
-                new DeploymentConfiguration().withVersion("string")
-                    .withScaleUnits(Arrays.asList(new ScaleUnits()
-                        .withDeploymentData(new DeploymentData()
-                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
-                                .withDrtmProtection(true)
-                                .withDriftControlEnforced(true)
-                                .withCredentialGuardEnforced(false)
-                                .withSmbSigningEnforced(true)
-                                .withSmbClusterEncryption(false)
-                                .withSideChannelMitigationEnforced(true)
-                                .withBitlockerBootVolume(true)
-                                .withBitlockerDataVolumes(true)
-                                .withWdacEnforced(true))
-                            .withObservability(new Observability().withStreamingDataClient(true)
-                                .withEuLocation(false)
-                                .withEpisodicDataUpload(true))
-                            .withCluster(new DeploymentCluster().withName("testHCICluster")
-                                .withWitnessType("Cloud")
-                                .withWitnessPath("Cloud")
-                                .withCloudAccountName("myasestoragacct")
-                                .withAzureServiceEndpoint("core.windows.net"))
-                            .withStorage(new Storage().withConfigurationMode("Express"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
                             .withNamingPrefix("ms169")
                             .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
                             .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
@@ -921,10 +827,388 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
                                                 .withSubnetMask("255.255.248.0")))))
                                 .withStorageConnectivitySwitchless(true)
                                 .withEnableStorageAutoIp(false))
+                            .withIsManagementCluster(true)
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettingsWithADLess.json
+     */
+    /**
+     * Sample code: Create Deployment Settings Without Active Directory Integration.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void createDeploymentSettingsWithoutActiveDirectoryIntegration(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withIdentityProvider(IdentityProvider.LOCAL_IDENTITY)
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsZones(Arrays.asList(new DnsZones().withDnsZoneName("contoso.com")
+                                    .withDnsForwarder(Arrays.asList("192.168.1.1"))))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
                             .withSdnIntegration(new SdnIntegration().withNetworkController(
                                 new NetworkController().withMacAddressPoolStart("00-0D-3A-1B-C7-21")
                                     .withMacAddressPoolStop("00-0D-3A-1B-C7-29")
                                     .withNetworkVirtualizationEnabled(true)))
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings.json
+     */
+    /**
+     * Sample code: Create Deployment Settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void createDeploymentSettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
+                                .withDnsServers(Arrays.asList("10.57.50.90"))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
+                            .withSdnIntegration(new SdnIntegration().withNetworkController(
+                                new NetworkController().withMacAddressPoolStart("00-0D-3A-1B-C7-21")
+                                    .withMacAddressPoolStop("00-0D-3A-1B-C7-29")
+                                    .withNetworkVirtualizationEnabled(true)))
+                            .withIsManagementCluster(true)
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-30/PutDeploymentSettings_StorageSAN.json
+     */
+    /**
+     * Sample code: Create Deployment Settings with SAN Storage.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        createDeploymentSettingsWithSANStorage(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.SAN)
+                                .withSan(new StorageSanConfig().withInfraVolLunId("PURE1234567890ABCDEF")
+                                    .withInfraPerfLunId("PURE0987654321MNOPQR")))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
+                                .withDnsServers(Arrays.asList("10.57.50.90"))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
                             .withIsManagementCluster(true)
                             .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
                             .withSecretsLocation("fakeTokenPlaceholder")
@@ -963,7 +1247,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
  */
 public final class DeploymentSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteDeploymentSettings.json
+     * x-ms-original-file: 2026-04-30/DeleteDeploymentSettings.json
      */
     /**
      * Sample code: Delete Deployment Settings.
@@ -984,7 +1268,7 @@ public final class DeploymentSettingsDeleteSamples {
  */
 public final class DeploymentSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetDeploymentSettings.json
+     * x-ms-original-file: 2026-04-30/GetDeploymentSettings.json
      */
     /**
      * Sample code: Get Deployment Settings.
@@ -1006,7 +1290,7 @@ public final class DeploymentSettingsGetSamples {
  */
 public final class DeploymentSettingsListByClustersSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListDeploymentSettingsByCluster.json
+     * x-ms-original-file: 2026-04-30/ListDeploymentSettingsByCluster.json
      */
     /**
      * Sample code: List Deployment Settings.
@@ -1034,7 +1318,7 @@ import java.time.OffsetDateTime;
  */
 public final class EdgeDeviceJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
+     * x-ms-original-file: 2026-04-30/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
      */
     /**
      * Sample code: EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.
@@ -1055,7 +1339,7 @@ public final class EdgeDeviceJobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
+     * x-ms-original-file: 2026-04-30/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
      */
     /**
      * Sample code: EdgeDeviceJobs_CreateOrUpdate_CollectLog.
@@ -1084,7 +1368,7 @@ public final class EdgeDeviceJobsCreateOrUpdateSamples {
  */
 public final class EdgeDeviceJobsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_Delete.json
+     * x-ms-original-file: 2026-04-30/EdgeDeviceJobs_Delete.json
      */
     /**
      * Sample code: EdgeDeviceJobs_Delete.
@@ -1108,7 +1392,7 @@ public final class EdgeDeviceJobsDeleteSamples {
  */
 public final class EdgeDeviceJobsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_Get_RemoteSupport.json
+     * x-ms-original-file: 2026-04-30/EdgeDeviceJobs_Get_RemoteSupport.json
      */
     /**
      * Sample code: EdgeDeviceJobs_Get_RemoteSupport.
@@ -1133,7 +1417,7 @@ public final class EdgeDeviceJobsGetSamples {
  */
 public final class EdgeDeviceJobsListByEdgeDeviceSamples {
     /*
-     * x-ms-original-file: 2026-02-01/EdgeDeviceJobs_ListByEdgeDevice.json
+     * x-ms-original-file: 2026-04-30/EdgeDeviceJobs_ListByEdgeDevice.json
      */
     /**
      * Sample code: EdgeDeviceJobs_ListByEdgeDevice.
@@ -1164,7 +1448,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateHciEdgeDevice.json
+     * x-ms-original-file: 2026-04-30/CreateHciEdgeDevice.json
      */
     /**
      * Sample code: Create HCI Edge Device.
@@ -1199,7 +1483,7 @@ public final class EdgeDevicesCreateOrUpdateSamples {
  */
 public final class EdgeDevicesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteEdgeDevices.json
+     * x-ms-original-file: 2026-04-30/DeleteEdgeDevices.json
      */
     /**
      * Sample code: Delete Edge Devices.
@@ -1223,7 +1507,7 @@ public final class EdgeDevicesDeleteSamples {
  */
 public final class EdgeDevicesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetEdgeDevices.json
+     * x-ms-original-file: 2026-04-30/GetEdgeDevices.json
      */
     /**
      * Sample code: Get Edge Device.
@@ -1247,7 +1531,7 @@ public final class EdgeDevicesGetSamples {
  */
 public final class EdgeDevicesListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListEdgeDevices.json
+     * x-ms-original-file: 2026-04-30/ListEdgeDevices.json
      */
     /**
      * Sample code: List Edge Devices.
@@ -1274,7 +1558,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesValidateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ValidateEdgeDevices.json
+     * x-ms-original-file: 2026-04-30/ValidateEdgeDevices.json
      */
     /**
      * Sample code: Validate Edge Devices.
@@ -1307,7 +1591,7 @@ import java.io.IOException;
  */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutExtension.json
+     * x-ms-original-file: 2026-04-30/PutExtension.json
      */
     /**
      * Sample code: Create Arc Extension.
@@ -1340,7 +1624,7 @@ public final class ExtensionsCreateSamples {
  */
 public final class ExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteExtension.json
+     * x-ms-original-file: 2026-04-30/DeleteExtension.json
      */
     /**
      * Sample code: Delete Arc Extension.
@@ -1362,7 +1646,7 @@ public final class ExtensionsDeleteSamples {
  */
 public final class ExtensionsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetExtension.json
+     * x-ms-original-file: 2026-04-30/GetExtension.json
      */
     /**
      * Sample code: Get ArcSettings Extension.
@@ -1385,7 +1669,7 @@ public final class ExtensionsGetSamples {
  */
 public final class ExtensionsListByArcSettingSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListExtensionsByArcSetting.json
+     * x-ms-original-file: 2026-04-30/ListExtensionsByArcSetting.json
      */
     /**
      * Sample code: List Extensions under ArcSetting resource.
@@ -1413,7 +1697,7 @@ import java.io.IOException;
  */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PatchExtension.json
+     * x-ms-original-file: 2026-04-30/PatchExtension.json
      */
     /**
      * Sample code: Update Arc Extension.
@@ -1448,7 +1732,7 @@ import com.azure.resourcemanager.azurestackhci.models.ExtensionUpgradeParameters
  */
 public final class ExtensionsUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-02-01/Extensions_Upgrade.json
+     * x-ms-original-file: 2026-04-30/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.
@@ -1471,7 +1755,7 @@ public final class ExtensionsUpgradeSamples {
  */
 public final class OffersGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetOffer.json
+     * x-ms-original-file: 2026-04-30/GetOffer.json
      */
     /**
      * Sample code: Get Offer.
@@ -1493,7 +1777,7 @@ public final class OffersGetSamples {
  */
 public final class OffersListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListOffersByCluster.json
+     * x-ms-original-file: 2026-04-30/ListOffersByCluster.json
      */
     /**
      * Sample code: List Offer resources by HCI Cluster.
@@ -1515,7 +1799,7 @@ public final class OffersListByClusterSamples {
  */
 public final class OffersListByPublisherSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListOffersByPublisher.json
+     * x-ms-original-file: 2026-04-30/ListOffersByPublisher.json
      */
     /**
      * Sample code: List Offer resources by publisher for the HCI Cluster.
@@ -1537,7 +1821,7 @@ public final class OffersListByPublisherSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/Operations_List.json
+     * x-ms-original-file: 2026-04-30/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.
@@ -1561,7 +1845,7 @@ import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
  */
 public final class SecuritySettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutSecuritySettings.json
+     * x-ms-original-file: 2026-04-30/PutSecuritySettings.json
      */
     /**
      * Sample code: Create Security Settings.
@@ -1588,7 +1872,7 @@ public final class SecuritySettingsCreateOrUpdateSamples {
  */
 public final class SecuritySettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteSecuritySettings.json
+     * x-ms-original-file: 2026-04-30/DeleteSecuritySettings.json
      */
     /**
      * Sample code: Delete Security Settings.
@@ -1609,7 +1893,7 @@ public final class SecuritySettingsDeleteSamples {
  */
 public final class SecuritySettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetSecuritySettings.json
+     * x-ms-original-file: 2026-04-30/GetSecuritySettings.json
      */
     /**
      * Sample code: Get Security Settings.
@@ -1630,7 +1914,7 @@ public final class SecuritySettingsGetSamples {
  */
 public final class SecuritySettingsListByClustersSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListSecuritySettingsByCluster.json
+     * x-ms-original-file: 2026-04-30/ListSecuritySettingsByCluster.json
      */
     /**
      * Sample code: List Security Settings.
@@ -1651,7 +1935,7 @@ public final class SecuritySettingsListByClustersSamples {
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetSku.json
+     * x-ms-original-file: 2026-04-30/GetSku.json
      */
     /**
      * Sample code: Get Sku.
@@ -1674,7 +1958,7 @@ public final class SkusGetSamples {
  */
 public final class SkusListByOfferSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListSkusByOffer.json
+     * x-ms-original-file: 2026-04-30/ListSkusByOffer.json
      */
     /**
      * Sample code: List SKU resources by offer for the HCI Cluster.
@@ -1697,7 +1981,7 @@ public final class SkusListByOfferSamples {
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteUpdateRuns.json
+     * x-ms-original-file: 2026-04-30/DeleteUpdateRuns.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1720,7 +2004,7 @@ public final class UpdateRunsDeleteSamples {
  */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetUpdateRuns.json
+     * x-ms-original-file: 2026-04-30/GetUpdateRuns.json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
@@ -1744,7 +2028,7 @@ public final class UpdateRunsGetSamples {
  */
 public final class UpdateRunsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListUpdateRuns.json
+     * x-ms-original-file: 2026-04-30/ListUpdateRuns.json
      */
     /**
      * Sample code: List Update runs under cluster resource.
@@ -1771,7 +2055,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutUpdateRuns.json
+     * x-ms-original-file: 2026-04-30/PutUpdateRuns.json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
@@ -1813,7 +2097,7 @@ public final class UpdateRunsPutSamples {
  */
 public final class UpdateSummariesOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteUpdateSummaries.json
+     * x-ms-original-file: 2026-04-30/DeleteUpdateSummaries.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1834,7 +2118,7 @@ public final class UpdateSummariesOperationDeleteSamples {
  */
 public final class UpdateSummariesOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetUpdateSummaries.json
+     * x-ms-original-file: 2026-04-30/GetUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.
@@ -1856,7 +2140,7 @@ public final class UpdateSummariesOperationGetSamples {
  */
 public final class UpdateSummariesOperationListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListUpdateSummaries.json
+     * x-ms-original-file: 2026-04-30/ListUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.
@@ -1882,7 +2166,7 @@ import java.time.OffsetDateTime;
  */
 public final class UpdateSummariesOperationPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutUpdateSummaries.json
+     * x-ms-original-file: 2026-04-30/PutUpdateSummaries.json
      */
     /**
      * Sample code: Put Update summaries under cluster resource.
@@ -1904,6 +2188,67 @@ public final class UpdateSummariesOperationPutSamples {
 }
 ```
 
+### UpdateSummariesOperationGroup_CheckHealth
+
+```java
+/**
+ * Samples for UpdateSummariesOperationGroup CheckHealth.
+ */
+public final class UpdateSummariesOperationGroupCheckHealthSamples {
+    /*
+     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckHealth.json
+     */
+    /**
+     * Sample code: Check health of UpdateSummaries.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        checkHealthOfUpdateSummaries(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups().checkHealth("testrg", "testcluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### UpdateSummariesOperationGroup_CheckUpdates
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.CheckUpdatesRequest;
+
+/**
+ * Samples for UpdateSummariesOperationGroup CheckUpdates.
+ */
+public final class UpdateSummariesOperationGroupCheckUpdatesSamples {
+    /*
+     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckUpdates.json
+     */
+    /**
+     * Sample code: Check for updates.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void checkForUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups()
+            .checkUpdates("testrg", "testcluster", new CheckUpdatesRequest(), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckUpdates_MaximumSet.json
+     */
+    /**
+     * Sample code: Check for specific update by name.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        checkForSpecificUpdateByName(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups()
+            .checkUpdates("testrg", "testcluster", new CheckUpdatesRequest().withUpdateName("Microsoft4.2203.2.32"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Updates_Delete
 
 ```java
@@ -1912,7 +2257,7 @@ public final class UpdateSummariesOperationPutSamples {
  */
 public final class UpdatesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeleteUpdates.json
+     * x-ms-original-file: 2026-04-30/DeleteUpdates.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1933,7 +2278,7 @@ public final class UpdatesDeleteSamples {
  */
 public final class UpdatesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetUpdates.json
+     * x-ms-original-file: 2026-04-30/GetUpdates.json
      */
     /**
      * Sample code: Get a specific update.
@@ -1955,7 +2300,7 @@ public final class UpdatesGetSamples {
  */
 public final class UpdatesListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ListUpdates.json
+     * x-ms-original-file: 2026-04-30/ListUpdates.json
      */
     /**
      * Sample code: List available updates.
@@ -1976,7 +2321,7 @@ public final class UpdatesListSamples {
  */
 public final class UpdatesPostSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PostUpdates.json
+     * x-ms-original-file: 2026-04-30/PostUpdates.json
      */
     /**
      * Sample code: List available updates.
@@ -1985,6 +2330,27 @@ public final class UpdatesPostSamples {
      */
     public static void listAvailableUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
         manager.updates().post("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Updates_Prepare
+
+```java
+/**
+ * Samples for Updates Prepare.
+ */
+public final class UpdatesPrepareSamples {
+    /*
+     * x-ms-original-file: 2026-04-30/Updates_Prepare.json
+     */
+    /**
+     * Sample code: Prepare Update.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void prepareUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updates().prepare("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2004,7 +2370,7 @@ import java.util.Arrays;
  */
 public final class UpdatesPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PutUpdates.json
+     * x-ms-original-file: 2026-04-30/PutUpdates.json
      */
     /**
      * Sample code: Put a specific update.
@@ -2046,7 +2412,7 @@ public final class UpdatesPutSamples {
  */
 public final class ValidatedSolutionRecipesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ValidatedSolutionRecipes_Get.json
+     * x-ms-original-file: 2026-04-30/ValidatedSolutionRecipes_Get.json
      */
     /**
      * Sample code: ValidatedSolutionRecipes_Get.
@@ -2068,7 +2434,7 @@ public final class ValidatedSolutionRecipesGetSamples {
  */
 public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
+     * x-ms-original-file: 2026-04-30/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
      */
     /**
      * Sample code: ValidatedSolutionRecipes_ListBySubscriptionLocationResource.

@@ -1820,6 +1820,25 @@ public final class ServiceBusClientBuilder
         }
 
         /**
+         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
+         * When {@link ServiceBusProcessorClient#close()} is called, the processor will wait up to this duration
+         * for handlers that are currently processing messages to finish before shutting down. This ensures
+         * that messages being processed can complete settlement (complete, abandon, etc.) without encountering
+         * a disposed receiver.
+         *
+         * <p>If not specified, defaults to 30 seconds.</p>
+         *
+         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws NullPointerException if {@code drainTimeout} is null.
+         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder drainTimeout(Duration drainTimeout) {
+            processorClientOptions.setDrainTimeout(drainTimeout);
+            return this;
+        }
+
+        /**
          * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
          * {@link ServiceBusReceivedMessageContext#complete() completed}. If an error happens when
          * the message is processed, it is {@link ServiceBusReceivedMessageContext#abandon()
@@ -2121,7 +2140,7 @@ public final class ServiceBusClientBuilder
 
         SessionsMessagePump buildPumpForProcessor(ClientLogger logger,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            int concurrencyPerSession) {
+            int concurrencyPerSession, Duration drainTimeout) {
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
@@ -2165,7 +2184,7 @@ public final class ServiceBusClientBuilder
             return new SessionsMessagePump(clientIdentifier, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout,
                 maxConcurrentSessions, concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
-                retryPolicy, processMessage, processError, onTerminate);
+                retryPolicy, processMessage, processError, onTerminate, drainTimeout);
         }
 
         /**
@@ -2552,6 +2571,25 @@ public final class ServiceBusClientBuilder
                     .logExceptionAsError(new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
+            return this;
+        }
+
+        /**
+         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
+         * When {@link ServiceBusProcessorClient#close()} is called, the processor will wait up to this duration
+         * for handlers that are currently processing messages to finish before shutting down. This ensures
+         * that messages being processed can complete settlement (complete, abandon, etc.) without encountering
+         * a disposed receiver.
+         *
+         * <p>If not specified, defaults to 30 seconds.</p>
+         *
+         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         * @throws NullPointerException if {@code drainTimeout} is null.
+         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
+         */
+        public ServiceBusProcessorClientBuilder drainTimeout(Duration drainTimeout) {
+            processorClientOptions.setDrainTimeout(drainTimeout);
             return this;
         }
 

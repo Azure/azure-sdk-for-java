@@ -194,6 +194,28 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
                     return ServerEventResponseMcpCallCompleted.fromJson(readerToUse.reset());
                 } else if ("response.mcp_call.failed".equals(discriminatorValue)) {
                     return ServerEventResponseMcpCallFailed.fromJson(readerToUse.reset());
+                } else if ("session.avatar.switch_to_speaking".equals(discriminatorValue)) {
+                    return ServerEventSessionAvatarSwitchToSpeaking.fromJson(readerToUse.reset());
+                } else if ("session.avatar.switch_to_idle".equals(discriminatorValue)) {
+                    return ServerEventSessionAvatarSwitchToIdle.fromJson(readerToUse.reset());
+                } else if ("response.video.delta".equals(discriminatorValue)) {
+                    return ServerEventResponseVideoDelta.fromJson(readerToUse.reset());
+                } else if ("response.web_search_call.searching".equals(discriminatorValue)) {
+                    return ServerEventResponseWebSearchCallSearching.fromJson(readerToUse.reset());
+                } else if ("response.web_search_call.in_progress".equals(discriminatorValue)) {
+                    return ServerEventResponseWebSearchCallInProgress.fromJson(readerToUse.reset());
+                } else if ("response.web_search_call.completed".equals(discriminatorValue)) {
+                    return ServerEventResponseWebSearchCallCompleted.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.searching".equals(discriminatorValue)) {
+                    return ServerEventResponseFileSearchCallSearching.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.in_progress".equals(discriminatorValue)) {
+                    return ServerEventResponseFileSearchCallInProgress.fromJson(readerToUse.reset());
+                } else if ("response.file_search_call.completed".equals(discriminatorValue)) {
+                    return ServerEventResponseFileSearchCallCompleted.fromJson(readerToUse.reset());
+                } else if ("output_audio_buffer.cleared".equals(discriminatorValue)) {
+                    return ServerEventOutputAudioBufferCleared.fromJson(readerToUse.reset());
+                } else if ("response.audio_transcript.annotation.added".equals(discriminatorValue)) {
+                    return ServerEventResponseAudioTranscriptAnnotationAdded.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

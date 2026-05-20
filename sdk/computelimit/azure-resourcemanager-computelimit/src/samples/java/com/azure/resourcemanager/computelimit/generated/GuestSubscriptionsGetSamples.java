@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class GuestSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-15/GuestSubscriptions_Get.json
+     * x-ms-original-file: 2026-04-30/GuestSubscriptions_Get.json
      */
     /**
      * Sample code: Get a guest subscription.

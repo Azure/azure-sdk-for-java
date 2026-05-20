@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersGetSafeguardsVersionsSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/GetSafeguardsVersions.json
+     * x-ms-original-file: 2026-03-02-preview/GetSafeguardsVersions.json
      */
     /**
      * Sample code: Get Safeguards available versions.

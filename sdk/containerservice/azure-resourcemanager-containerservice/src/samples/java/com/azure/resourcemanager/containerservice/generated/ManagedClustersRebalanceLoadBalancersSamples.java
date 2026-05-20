@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ManagedClustersRebalanceLoadBalancersSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/LoadBalancers_Rebalance.json
+     * x-ms-original-file: 2026-03-02-preview/LoadBalancers_Rebalance.json
      */
     /**
      * Sample code: Rebalance Load Balancers of a Managed Cluster.

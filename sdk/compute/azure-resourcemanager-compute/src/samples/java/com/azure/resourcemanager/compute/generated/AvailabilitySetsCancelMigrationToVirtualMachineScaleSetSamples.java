@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class AvailabilitySetsCancelMigrationToVirtualMachineScaleSetSamples {
     /*
      * x-ms-original-file:
-     * 2025-04-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
+     * 2025-11-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
      */
     /**
      * Sample code: AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.

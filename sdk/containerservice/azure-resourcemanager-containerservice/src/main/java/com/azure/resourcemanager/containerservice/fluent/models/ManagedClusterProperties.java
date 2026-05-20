@@ -22,6 +22,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterBootstrapProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterControlPlaneScalingProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHealthMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHostedSystemProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterStatus;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.NodeDisruptionProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.SchedulerProfile;
@@ -177,6 +179,14 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
      */
     private KubernetesSupportPlan supportPlan;
+
+    /*
+     * Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all
+     * AKS-managed components, such as the node operating system, addons, and [managed containerized
+     * components](https://aka.ms/aks/components/docs). See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more
+     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled.
+     */
+    private Boolean enableFips;
 
     /*
      * Enable namespace as Azure resource. The default value is false. It can be enabled/disabled on creation and
@@ -321,6 +331,17 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      * Health monitor profile for the managed cluster.
      */
     private ManagedClusterHealthMonitorProfile healthMonitorProfile;
+
+    /*
+     * Profile for providing scaled and performance guaranteed control plane capacity to deliver consistent performance
+     * under high workload. Requires Kubernetes version 1.33.0 or later.
+     */
+    private ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile;
+
+    /*
+     * Node disruption profile for a managed cluster.
+     */
+    private NodeDisruptionProfile nodeDisruptionProfile;
 
     /*
      * Contains read-only information about the Managed Cluster.
@@ -729,6 +750,34 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
+        return this;
+    }
+
+    /**
+     * Get the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled.
+     * 
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.enableFips;
+    }
+
+    /**
+     * Set the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled.
+     * 
+     * @param enableFips the enableFips value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withEnableFips(Boolean enableFips) {
+        this.enableFips = enableFips;
         return this;
     }
 
@@ -1293,6 +1342,51 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @return the controlPlaneScalingProfile value.
+     */
+    public ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile() {
+        return this.controlPlaneScalingProfile;
+    }
+
+    /**
+     * Set the controlPlaneScalingProfile property: Profile for providing scaled and performance guaranteed control
+     * plane capacity to deliver consistent performance under high workload. Requires Kubernetes version 1.33.0 or
+     * later.
+     * 
+     * @param controlPlaneScalingProfile the controlPlaneScalingProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties
+        withControlPlaneScalingProfile(ManagedClusterControlPlaneScalingProfile controlPlaneScalingProfile) {
+        this.controlPlaneScalingProfile = controlPlaneScalingProfile;
+        return this;
+    }
+
+    /**
+     * Get the nodeDisruptionProfile property: Node disruption profile for a managed cluster.
+     * 
+     * @return the nodeDisruptionProfile value.
+     */
+    public NodeDisruptionProfile nodeDisruptionProfile() {
+        return this.nodeDisruptionProfile;
+    }
+
+    /**
+     * Set the nodeDisruptionProfile property: Node disruption profile for a managed cluster.
+     * 
+     * @param nodeDisruptionProfile the nodeDisruptionProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withNodeDisruptionProfile(NodeDisruptionProfile nodeDisruptionProfile) {
+        this.nodeDisruptionProfile = nodeDisruptionProfile;
+        return this;
+    }
+
+    /**
      * Get the status property: Contains read-only information about the Managed Cluster.
      * 
      * @return the status value.
@@ -1422,6 +1516,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (healthMonitorProfile() != null) {
             healthMonitorProfile().validate();
         }
+        if (controlPlaneScalingProfile() != null) {
+            controlPlaneScalingProfile().validate();
+        }
+        if (nodeDisruptionProfile() != null) {
+            nodeDisruptionProfile().validate();
+        }
         if (status() != null) {
             status().validate();
         }
@@ -1449,6 +1549,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
+        jsonWriter.writeBooleanField("enableFIPS", this.enableFips);
         jsonWriter.writeBooleanField("enableNamespaceResources", this.enableNamespaceResources);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
@@ -1478,6 +1579,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("schedulerProfile", this.schedulerProfile);
         jsonWriter.writeJsonField("hostedSystemProfile", this.hostedSystemProfile);
         jsonWriter.writeJsonField("healthMonitorProfile", this.healthMonitorProfile);
+        jsonWriter.writeJsonField("controlPlaneScalingProfile", this.controlPlaneScalingProfile);
+        jsonWriter.writeJsonField("nodeDisruptionProfile", this.nodeDisruptionProfile);
         jsonWriter.writeJsonField("status", this.status);
         return jsonWriter.writeEndObject();
     }
@@ -1550,6 +1653,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
+                } else if ("enableFIPS".equals(fieldName)) {
+                    deserializedManagedClusterProperties.enableFips = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableNamespaceResources".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableNamespaceResources
                         = reader.getNullable(JsonReader::getBoolean);
@@ -1624,6 +1729,11 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("healthMonitorProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.healthMonitorProfile
                         = ManagedClusterHealthMonitorProfile.fromJson(reader);
+                } else if ("controlPlaneScalingProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.controlPlaneScalingProfile
+                        = ManagedClusterControlPlaneScalingProfile.fromJson(reader);
+                } else if ("nodeDisruptionProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.nodeDisruptionProfile = NodeDisruptionProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterProperties.status = ManagedClusterStatus.fromJson(reader);
                 } else {

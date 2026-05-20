@@ -26,12 +26,12 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
-import com.azure.resourcemanager.containerservice.models.NodeCustomizationProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PodIpAllocationMode;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PreparedImageSpecificationProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
@@ -413,9 +413,9 @@ public class ManagedClusterAgentPoolProfileProperties
     private LocalDnsProfile localDnsProfile;
 
     /*
-     * Settings to determine the node customization used to provision nodes in a pool.
+     * Settings to determine the prepared image specification used to provision nodes in a pool.
      */
-    private NodeCustomizationProfile nodeCustomizationProfile;
+    private PreparedImageSpecificationProfile preparedImageSpecificationProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -950,7 +950,7 @@ public class ManagedClusterAgentPoolProfileProperties
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
+    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
         this.nodeImageVersion = nodeImageVersion;
         return this;
     }
@@ -1768,25 +1768,25 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
+     * Get the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
      * 
-     * @return the nodeCustomizationProfile value.
+     * @return the preparedImageSpecificationProfile value.
      */
-    public NodeCustomizationProfile nodeCustomizationProfile() {
-        return this.nodeCustomizationProfile;
+    public PreparedImageSpecificationProfile preparedImageSpecificationProfile() {
+        return this.preparedImageSpecificationProfile;
     }
 
     /**
-     * Set the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
+     * Set the preparedImageSpecificationProfile property: Settings to determine the prepared image specification used
+     * to provision nodes in a pool.
      * 
-     * @param nodeCustomizationProfile the nodeCustomizationProfile value to set.
+     * @param preparedImageSpecificationProfile the preparedImageSpecificationProfile value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
     public ManagedClusterAgentPoolProfileProperties
-        withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
-        this.nodeCustomizationProfile = nodeCustomizationProfile;
+        withPreparedImageSpecificationProfile(PreparedImageSpecificationProfile preparedImageSpecificationProfile) {
+        this.preparedImageSpecificationProfile = preparedImageSpecificationProfile;
         return this;
     }
 
@@ -1844,8 +1844,8 @@ public class ManagedClusterAgentPoolProfileProperties
         if (localDnsProfile() != null) {
             localDnsProfile().validate();
         }
-        if (nodeCustomizationProfile() != null) {
-            nodeCustomizationProfile().validate();
+        if (preparedImageSpecificationProfile() != null) {
+            preparedImageSpecificationProfile().validate();
         }
     }
 
@@ -1878,6 +1878,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeStringField("nodeImageVersion", this.nodeImageVersion);
         jsonWriter.writeStringField("upgradeStrategy",
             this.upgradeStrategy == null ? null : this.upgradeStrategy.toString());
         jsonWriter.writeBooleanField("enableOSDiskFullCaching", this.enableOSDiskFullCaching);
@@ -1920,7 +1921,7 @@ public class ManagedClusterAgentPoolProfileProperties
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", this.status);
         jsonWriter.writeJsonField("localDNSProfile", this.localDnsProfile);
-        jsonWriter.writeJsonField("nodeCustomizationProfile", this.nodeCustomizationProfile);
+        jsonWriter.writeJsonField("preparedImageSpecificationProfile", this.preparedImageSpecificationProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -2100,9 +2101,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("localDNSProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.localDnsProfile
                         = LocalDnsProfile.fromJson(reader);
-                } else if ("nodeCustomizationProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfileProperties.nodeCustomizationProfile
-                        = NodeCustomizationProfile.fromJson(reader);
+                } else if ("preparedImageSpecificationProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.preparedImageSpecificationProfile
+                        = PreparedImageSpecificationProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

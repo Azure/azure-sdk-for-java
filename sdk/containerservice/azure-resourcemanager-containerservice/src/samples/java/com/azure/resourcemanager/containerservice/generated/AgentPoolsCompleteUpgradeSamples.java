@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsCompleteUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/AgentPoolsCompleteUpgrade.json
+     * x-ms-original-file: 2026-03-02-preview/AgentPoolsCompleteUpgrade.json
      */
     /**
      * Sample code: Complete agent pool upgrade.

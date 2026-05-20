@@ -74,7 +74,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewScheduleDefinitionInner>> getById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -82,7 +82,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewScheduleDefinitionInner>> createOrUpdateById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AccessReviewScheduleDefinitionProperties properties, Context context);
@@ -92,7 +92,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteById(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("scheduleDefinitionId") String scheduleDefinitionId, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -100,7 +100,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewScheduleDefinitionListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -108,8 +108,8 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> stop(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("scope") String scope, @PathParam("scheduleDefinitionId") String scheduleDefinitionId,
-            Context context);
+            @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam("scheduleDefinitionId") String scheduleDefinitionId, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -123,7 +123,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -155,7 +155,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +186,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,7 +201,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +218,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get single access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +272,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @param context The context to associate with this operation.
@@ -311,7 +311,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,7 +329,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @param context The context to associate with this operation.
@@ -347,7 +347,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Create or Update access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param properties Access review schedule definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +364,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,7 +393,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,7 +423,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,7 +438,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,7 +454,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Delete access review schedule definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,7 +468,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -499,7 +499,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -531,7 +531,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -548,7 +548,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -563,7 +563,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -582,7 +582,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -597,7 +597,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Get access review schedule definitions.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
      * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
      * assigned to the calling user to review are returned.
@@ -615,7 +615,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -645,7 +645,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,7 +674,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -689,7 +689,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,7 +705,7 @@ public final class ScopeAccessReviewScheduleDefinitionsClientImpl
     /**
      * Stop access review definition.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

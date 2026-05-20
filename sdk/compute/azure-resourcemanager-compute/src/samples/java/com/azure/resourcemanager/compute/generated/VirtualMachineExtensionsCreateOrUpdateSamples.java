@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.
@@ -63,7 +63,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.

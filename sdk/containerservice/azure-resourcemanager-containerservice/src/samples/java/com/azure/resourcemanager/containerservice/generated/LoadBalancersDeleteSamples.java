@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class LoadBalancersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/LoadBalancers_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/LoadBalancers_Delete.json
      */
     /**
      * Sample code: Delete a Load Balancer.
