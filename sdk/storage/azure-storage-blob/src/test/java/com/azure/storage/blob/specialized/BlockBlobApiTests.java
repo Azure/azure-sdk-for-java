@@ -1553,6 +1553,27 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(AccessTier.COOL, destinationProperties.getAccessTier());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadFromUrlMaxReturnsCrc64() throws NoSuchAlgorithmException {
+        BlobClient sourceBlob
+            = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options
+            = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setContentMd5(sourceBlobMD5);
+        Response<BlockBlobItem> response = blockBlobClient.uploadFromUrlWithResponse(options, null, null);
+        String contentCrc64 = response.getHeaders().getValue(X_MS_CONTENT_CRC64);
+        BlockBlobItem blockBlobItem = response.getValue();
+
+        assertNotNull(contentCrc64);
+        assertNotNull(blockBlobItem);
+        TestUtils.assertArraysEqual(Base64.getDecoder().decode(contentCrc64), blockBlobItem.getContentCrc64());
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromWithInvalidSourceMD5() throws NoSuchAlgorithmException {
