@@ -15,13 +15,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 /**
- * {@link HttpResponse} wrapper that exposes a decoded body stream while preserving the request, status code, and
- * headers of the original response.
+ * {@link HttpResponse} wrapper that exposes a decoded body stream while preserving the request and status code of
+ * the original response.
  *
  * <p>The policy hands this class a Flux that already represents validated, framing-stripped bytes (produced by the
  * decoder pipeline). This class's only job is to make that Flux look like the body of the original
- * {@link HttpResponse}. Status code, headers, and request remain identical to the underlying response so callers
- * cannot distinguish a validated download from a normal one – the validation is transparent.</p>
+ * {@link HttpResponse}. {@code Content-Length} is overridden to the decoded payload size so it matches what callers
+ * will actually read; all other headers are forwarded verbatim. The validation is transparent to callers.</p>
  */
 class DecodedResponse extends HttpResponse {
     private final HttpResponse originalResponse;
@@ -77,7 +77,7 @@ class DecodedResponse extends HttpResponse {
     @Override
     public Mono<String> getBodyAsString() {
         return getBodyAsByteArray()
-            .map(b -> CoreUtils.bomAwareToString(b, originalResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+            .map(b -> CoreUtils.bomAwareToString(b, adjustedHeaders.getValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

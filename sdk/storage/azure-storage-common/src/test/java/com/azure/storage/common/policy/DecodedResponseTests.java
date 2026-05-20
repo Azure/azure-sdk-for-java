@@ -217,11 +217,10 @@ public class DecodedResponseTests {
     public void contentLengthIsOverriddenToDecodedSize() {
         long wireSize = 500L;
         long decodedSize = 300L;
-        HttpHeaders h = new HttpHeaders()
-            .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(wireSize))
+        HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(wireSize))
             .set(CUSTOM_HEADER, "preserve-me");
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]),
-            decodedSize);
+        DecodedResponse wrapper
+            = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]), decodedSize);
 
         assertEquals(String.valueOf(decodedSize), wrapper.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         assertEquals("preserve-me", wrapper.getHeaders().getValue(CUSTOM_HEADER));

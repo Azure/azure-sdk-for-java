@@ -70,14 +70,9 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 return httpResponse;
             }
 
-            // Confirm the service actually honored our structured-body request before we hand the body to the decoder.
-            validateStructuredMessageHeaders(httpResponse);
-
-            Long decodedContentLength = getStructuredContentLength(httpResponse.getHeaders());
-            if (decodedContentLength == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "x-ms-structured-content-length header is present but could not be parsed as a long."));
-            }
+            // Confirm the service honored our structured-body request and parse the decoded length in one step,
+            // failing fast with a consistent error if either header is absent or unparseable.
+            long decodedContentLength = validateAndGetDecodedContentLength(httpResponse);
 
             // Fresh decoder per response so retries each get a clean state machine.
             StructuredMessageDecoder decoder = new StructuredMessageDecoder(contentLength);
@@ -98,11 +93,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
-     * Verifies the response acknowledges the structured-body request: presence of the
-     * {@code x-ms-structured-body} header and the {@code x-ms-structured-content-length} 
-     * header. If either is missing, the service is sending us a normal body and we must not run the decoder over it.
+     * Verifies the response acknowledges the structured-body request ({@code x-ms-structured-body} present) and
+     * parses {@code x-ms-structured-content-length} in one step. Throws with a consistent error message if either
+     * header is absent or the length value is not parseable as a {@code long}, matching the fail-fast behaviour
+     * used for other validation failures.
+     *
+     * @return the decoded payload size declared by the service.
      */
-    private void validateStructuredMessageHeaders(HttpResponse httpResponse) {
+    private long validateAndGetDecodedContentLength(HttpResponse httpResponse) {
         String structuredBody
             = httpResponse.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
         String structuredContentLength
@@ -110,6 +108,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
         if (structuredBody == null || structuredContentLength == null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Structured message was requested but the response did not acknowledge it."));
+        }
+        try {
+            return Long.parseLong(structuredContentLength);
+        } catch (NumberFormatException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("x-ms-structured-content-length header value '"
+                + structuredContentLength + "' could not be parsed as a long.", e));
         }
     }
 
@@ -124,22 +128,6 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 return Long.parseLong(value);
             } catch (NumberFormatException e) {
                 // Header invalid; treat as not eligible.
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Reads {@code x-ms-structured-content-length} as a {@code Long}, returning {@code null} if missing or
-     * unparseable.
-     */
-    private static Long getStructuredContentLength(HttpHeaders headers) {
-        String value = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-        if (value != null) {
-            try {
-                return Long.parseLong(value);
-            } catch (NumberFormatException e) {
-                // Malformed header; fall through to null.
             }
         }
         return null;
