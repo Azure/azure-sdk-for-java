@@ -1,14 +1,289 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-05-20)
 
-### Features Added
+- Azure Resource Manager Api Center client library for Java. This package contains Microsoft Azure SDK for Api Center Management SDK. Azure API Center Resource Provider. Package api-version 2024-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.ServiceListResult` was removed
+
+#### `models.DeploymentListResult` was removed
+
+#### `models.ApiListResult` was removed
+
+#### `models.ApiVersionListResult` was removed
+
+#### `models.WorkspaceListResult` was removed
+
+#### `models.EnvironmentListResult` was removed
+
+#### `models.MetadataSchemaListResult` was removed
+
+#### `models.ApiDefinitionListResult` was removed
+
+#### `models.MetadataSchemaExportRequest` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.WorkspacesGetHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.ApiSpecImportRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentProperties` was modified
+
+* `withCustomProperties(java.lang.Object)` was removed
+* `validate()` was removed
+* `java.lang.Object customProperties()` -> `models.CustomProperties customProperties()`
+
+#### `models.EnvironmentProperties` was modified
+
+* `validate()` was removed
+* `java.lang.Object customProperties()` -> `models.CustomProperties customProperties()`
+* `withCustomProperties(java.lang.Object)` was removed
+
+#### `models.ApiProperties` was modified
+
+* `java.lang.Object customProperties()` -> `models.CustomProperties customProperties()`
+* `validate()` was removed
+* `withCustomProperties(java.lang.Object)` was removed
+
+#### `models.ApiDefinitionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentServer` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentsCreateOrUpdateHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.ApiDefinitionsGetHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ApiDefinitionsCreateOrUpdateHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.EnvironmentServer` was modified
+
+* `validate()` was removed
+
+#### `models.License` was modified
+
+* `validate()` was removed
+
+#### `models.ApisCreateOrUpdateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.TermsOfService` was modified
+
+* `validate()` was removed
+
+#### `models.Onboarding` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ServiceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ApisGetHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.WorkspacesCreateOrUpdateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.WorkspaceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExternalDocumentation` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MetadataSchemasCreateOrUpdateHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.MetadataSchemasGetHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.EnvironmentsCreateOrUpdateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.Contact` was modified
+
+* `validate()` was removed
+
+#### `ApiCenterManager` was modified
+
+* `fluent.AzureApiCenter serviceClient()` -> `fluent.ApiCenterManagementClient serviceClient()`
+
+#### `models.ApiVersionsGetHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.EnvironmentsGetHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DeploymentsGetHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.MetadataSchemaProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApiVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApiDefinitionPropertiesSpecification` was modified
+
+* `ApiDefinitionPropertiesSpecification()` was changed to private access
+* `withVersion(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ApiVersionsCreateOrUpdateHeaders` was modified
+
+* `validate()` was removed
+* `withEtag(java.lang.String)` was removed
+
+#### `models.MetadataAssignment` was modified
+
+* `validate()` was removed
+
+#### `models.ApiSpecImportRequestSpecification` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ApiSource` was added
+
+* `models.ApiSourceLinkState` was added
+
+* `models.ApiSourcesGetResponse` was added
+
+* `models.ServiceUpdateProperties` was added
+
+* `models.ApiSourcesGetHeaders` was added
+
+* `models.ApiSourceProperties` was added
+
+* `models.ImportSpecificationOptions` was added
+
+* `models.ApiSourcesCreateOrUpdateResponse` was added
+
+* `models.CustomProperties` was added
+
+* `models.ApiSource$Definition` was added
+
+* `models.DeletedServiceProperties` was added
+
+* `models.ApiSourcesCreateOrUpdateHeaders` was added
+
+* `models.DeletedServicesGetByResourceGroupHeaders` was added
+
+* `models.DeletedServices` was added
+
+* `models.DeletedService` was added
+
+* `models.DeletedServicesGetByResourceGroupResponse` was added
+
+* `models.AzureApiManagementSource` was added
+
+* `models.LinkState` was added
+
+* `models.ApiSource$DefinitionStages` was added
+
+* `models.ApiSource$UpdateStages` was added
+
+* `models.ApiSources` was added
+
+* `models.ApiSource$Update` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withCustomProperties(models.CustomProperties)` was added
+
+#### `models.EnvironmentProperties` was modified
+
+* `withCustomProperties(models.CustomProperties)` was added
+
+#### `models.ApiProperties` was modified
+
+* `withCustomProperties(models.CustomProperties)` was added
+
+#### `models.ServiceUpdate` was modified
+
+* `withProperties(models.ServiceUpdateProperties)` was added
+* `properties()` was added
+
+#### `models.Service$Update` was modified
+
+* `withProperties(models.ServiceUpdateProperties)` was added
+
+#### `models.ServiceProperties` was modified
+
+* `restore()` was added
+* `withRestore(java.lang.Boolean)` was added
+
+#### `ApiCenterManager` was modified
+
+* `apiSources()` was added
+* `deletedServices()` was added
 
 ## 1.1.0 (2024-12-13)
 
