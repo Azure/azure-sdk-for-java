@@ -21,6 +21,5 @@
     <module>azure-resourcemanager-monitor</module>
     <module>azure-resourcemanager-monitor-slis</module>
     <module>azure-resourcemanager-monitor-workspaces</module>
-    <module>azure-resourcemanager-monitoraccounts</module>
   </modules>
 </project>

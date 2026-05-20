@@ -530,7 +530,6 @@ com.azure.resourcemanager:azure-resourcemanager-horizondb;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-relationships;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fileshares;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-monitor-slis;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-monitoraccounts;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-monitor-workspaces;1.0.0;1.0.0
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
