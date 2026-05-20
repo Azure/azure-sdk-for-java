@@ -301,11 +301,6 @@ public final class BlobsDownloadHeaders {
     @Generated
     private byte[] xMsContentCrc64;
 
-    /*
-     * The x-ms-original-content-length property.
-     */
-    private Long xMsOriginalContentLength;
-
     private static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
 
     private static final HttpHeaderName X_MS_OR_POLICY_ID = HttpHeaderName.fromString("x-ms-or-policy-id");
@@ -373,9 +368,6 @@ public final class BlobsDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-structured-content-length");
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-
-    private static final HttpHeaderName X_MS_ORIGINAL_CONTENT_LENGTH
-        = HttpHeaderName.fromString("x-ms-original-content-length");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -542,12 +534,6 @@ public final class BlobsDownloadHeaders {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         } else {
             this.xMsContentCrc64 = null;
-        }
-        String xMsOriginalContentLength = rawHeaders.getValue(X_MS_ORIGINAL_CONTENT_LENGTH);
-        if (xMsOriginalContentLength != null) {
-            this.xMsOriginalContentLength = Long.parseLong(xMsOriginalContentLength);
-        } else {
-            this.xMsOriginalContentLength = null;
         }
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
         Map<String, String> xMsOrHeaderCollection = new LinkedHashMap<>();
@@ -1617,26 +1603,6 @@ public final class BlobsDownloadHeaders {
     @Generated
     public BlobsDownloadHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
-        return this;
-    }
-
-    /**
-     * Get the xMsOriginalContentLength property: The wire size of the encoded structured message body before decoding.
-     *
-     * @return the xMsOriginalContentLength value.
-     */
-    public Long getXMsOriginalContentLength() {
-        return this.xMsOriginalContentLength;
-    }
-
-    /**
-     * Set the xMsOriginalContentLength property: The wire size of the encoded structured message body before decoding.
-     *
-     * @param xMsOriginalContentLength the xMsOriginalContentLength value to set.
-     * @return the BlobsDownloadHeaders object itself.
-     */
-    public BlobsDownloadHeaders setXMsOriginalContentLength(Long xMsOriginalContentLength) {
-        this.xMsOriginalContentLength = xMsOriginalContentLength;
         return this;
     }
 }

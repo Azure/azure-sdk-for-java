@@ -74,13 +74,16 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             validateStructuredMessageHeaders(httpResponse);
 
             Long decodedContentLength = getStructuredContentLength(httpResponse.getHeaders());
+            if (decodedContentLength == null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "x-ms-structured-content-length header is present but could not be parsed as a long."));
+            }
 
             // Fresh decoder per response so retries each get a clean state machine.
             StructuredMessageDecoder decoder = new StructuredMessageDecoder(contentLength);
 
             Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoder);
-            // decodedContentLength is guaranteed non-null here: validateStructuredMessageHeaders confirmed its presence.
-            return new DecodedResponse(httpResponse, decodedStream, contentLength, decodedContentLength);
+            return new DecodedResponse(httpResponse, decodedStream, decodedContentLength);
         });
     }
 

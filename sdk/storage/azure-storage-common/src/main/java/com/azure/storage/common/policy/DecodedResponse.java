@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -33,23 +32,19 @@ class DecodedResponse extends HttpResponse {
      * Wraps {@code httpResponse} with a body backed by {@code decodedBody}.
      *
      * <p>{@code Content-Length} is overridden to {@code decodedContentLength} so callers see the size of the bytes
-     * they will actually read. The original wire size is preserved in {@code x-ms-original-content-length}.</p>
+     * they will actually read from the decoded payload, not the larger wire size of the structured message.</p>
      *
      * @param httpResponse The original response from the storage service.
      * @param decodedBody The Flux of CRC-validated, framing-stripped payload bytes produced by the decoder pipeline.
-     * @param originalContentLength The wire size of the encoded structured message body.
      * @param decodedContentLength The size of the decoded payload that callers will consume.
      */
-    DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody, long originalContentLength,
-        long decodedContentLength) {
+    DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody, long decodedContentLength) {
         super(httpResponse.getRequest());
         this.originalResponse = httpResponse;
         this.decodedBody = decodedBody;
         HttpHeaders headers = new HttpHeaders();
         httpResponse.getHeaders().stream().forEach(h -> headers.set(h.getName(), h.getValue()));
         headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(decodedContentLength));
-        headers.set(Constants.HeaderConstants.ORIGINAL_CONTENT_LENGTH_HEADER_NAME,
-            String.valueOf(originalContentLength));
         this.adjustedHeaders = headers;
     }
 

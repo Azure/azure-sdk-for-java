@@ -264,11 +264,6 @@ public final class Constants {
         public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
             = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
 
-        public static final String ORIGINAL_CONTENT_LENGTH = "x-ms-original-content-length";
-
-        public static final HttpHeaderName ORIGINAL_CONTENT_LENGTH_HEADER_NAME
-            = HttpHeaderName.fromString(ORIGINAL_CONTENT_LENGTH);
-
         /**
          * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
          *

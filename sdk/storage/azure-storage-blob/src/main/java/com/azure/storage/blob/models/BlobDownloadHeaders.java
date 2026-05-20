@@ -1045,24 +1045,4 @@ public final class BlobDownloadHeaders {
         return this;
     }
 
-    /**
-     * Get the originalContentLength property: The wire size of the encoded structured message body before decoding.
-     * Only present when content validation is active and the response was decoded transparently.
-     *
-     * @return the originalContentLength value.
-     */
-    public Long getOriginalContentLength() {
-        return internalHeaders.getXMsOriginalContentLength();
-    }
-
-    /**
-     * Set the originalContentLength property: The wire size of the encoded structured message body before decoding.
-     *
-     * @param originalContentLength the originalContentLength value to set.
-     * @return the BlobDownloadHeaders object itself.
-     */
-    public BlobDownloadHeaders setOriginalContentLength(Long originalContentLength) {
-        internalHeaders.setXMsOriginalContentLength(originalContentLength);
-        return this;
-    }
 }

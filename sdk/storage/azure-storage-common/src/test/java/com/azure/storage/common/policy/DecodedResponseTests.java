@@ -10,7 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -65,7 +64,7 @@ public class DecodedResponseTests {
         HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "100").set(CUSTOM_HEADER, "value");
         MockHttpResponse original = mockResponse(206, h, bytes("encoded"));
 
-        DecodedResponse wrapper = new DecodedResponse(original, fluxOf(bytes("decoded")), 100L, 80L);
+        DecodedResponse wrapper = new DecodedResponse(original, fluxOf(bytes("decoded")), 80L);
 
         assertSame(original.getRequest(), wrapper.getRequest());
         assertEquals(206, wrapper.getStatusCode());
@@ -77,7 +76,7 @@ public class DecodedResponseTests {
     @Test
     public void getHeaderValueByStringReturnsHeaderValue() {
         HttpHeaders h = headers(CUSTOM_HEADER, "value");
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]), 0L, 0L);
+        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]), 0L);
 
         assertEquals("value", wrapper.getHeaderValue(CUSTOM_HEADER.getCaseInsensitiveName()));
         assertNull(wrapper.getHeaderValue("nonexistent"));
@@ -87,7 +86,7 @@ public class DecodedResponseTests {
     public void getBodyReturnsDecodedFlux() {
         byte[] decoded = bytes("decoded body");
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L);
 
         StepVerifier.create(wrapper.getBody().reduce(new ByteArrayOutputStream(), (sink, buf) -> {
             byte[] copy = new byte[buf.remaining()];
@@ -101,7 +100,7 @@ public class DecodedResponseTests {
     public void getBodyAsByteArrayReturnsDecodedBytes() {
         byte[] decoded = bytes("decoded body");
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L);
 
         StepVerifier.create(wrapper.getBodyAsByteArray())
             .expectNextMatches(b -> Arrays.equals(decoded, b))
@@ -114,7 +113,7 @@ public class DecodedResponseTests {
         // BOM nor a Content-Type charset parameter is present. This test pins the "no headers, no BOM" path.
         String text = "héllo wörld – ✓";
         DecodedResponse wrapper = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]),
-            fluxOf(text.getBytes(StandardCharsets.UTF_8)), 0L, 0L);
+            fluxOf(text.getBytes(StandardCharsets.UTF_8)), 0L);
 
         StepVerifier.create(wrapper.getBodyAsString()).expectNext(text).verifyComplete();
     }
@@ -127,7 +126,7 @@ public class DecodedResponseTests {
         String text = "ümlaut";
         byte[] iso = text.getBytes(StandardCharsets.ISO_8859_1);
         HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/plain; charset=ISO-8859-1");
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(iso), 0L, 0L);
+        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(iso), 0L);
 
         StepVerifier.create(wrapper.getBodyAsString()).expectNext(text).verifyComplete();
     }
@@ -143,7 +142,7 @@ public class DecodedResponseTests {
         System.arraycopy(bom, 0, withBom, 0, bom.length);
         System.arraycopy(payload, 0, withBom, bom.length, payload.length);
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(withBom), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(withBom), 0L);
 
         StepVerifier.create(wrapper.getBodyAsString()).expectNext(text).verifyComplete();
     }
@@ -153,7 +152,7 @@ public class DecodedResponseTests {
         String text = "ümlaut";
         byte[] latin1 = text.getBytes(StandardCharsets.ISO_8859_1);
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(latin1), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), new byte[0]), fluxOf(latin1), 0L);
 
         StepVerifier.create(wrapper.getBodyAsString(StandardCharsets.ISO_8859_1)).expectNext(text).verifyComplete();
     }
@@ -163,7 +162,7 @@ public class DecodedResponseTests {
         // Base getBodyAsInputStream() routes through getBodyAsByteArray(), so the override is exercised end-to-end.
         byte[] decoded = bytes("decoded stream");
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L);
 
         try (InputStream stream = wrapper.getBodyAsInputStream().block()) {
             assertNotNull(stream);
@@ -175,7 +174,7 @@ public class DecodedResponseTests {
     public void inheritedWriteBodyToWritesDecodedBytes() throws IOException {
         byte[] decoded = bytes("write me");
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L);
 
         ByteArrayOutputStream sink = new ByteArrayOutputStream();
         try (WritableByteChannel channel = Channels.newChannel(sink)) {
@@ -189,7 +188,7 @@ public class DecodedResponseTests {
     public void inheritedBufferReturnsResponseBackedByDecodedBytes() {
         byte[] decoded = bytes("buffered");
         DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L, 0L);
+            = new DecodedResponse(mockResponse(200, new HttpHeaders(), bytes("encoded")), fluxOf(decoded), 0L);
 
         HttpResponse buffered = wrapper.buffer();
         assertNotNull(buffered);
@@ -204,10 +203,10 @@ public class DecodedResponseTests {
         // must contain the decoded payload, not the original wire body. A divergent Content-Length header is set
         // to make the wire vs decoded distinction explicit and guard against regressions in header forwarding.
         byte[] decoded = bytes("decoded payload");
-        long originalSize = decoded.length + 32;
-        HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(originalSize));
-        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, bytes("encoded wire body")), fluxOf(decoded),
-            originalSize, decoded.length);
+        long decodedSize = decoded.length;
+        HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(decodedSize + 32));
+        DecodedResponse wrapper
+            = new DecodedResponse(mockResponse(200, h, bytes("encoded wire body")), fluxOf(decoded), decodedSize);
 
         BinaryData data = wrapper.getBodyAsBinaryData();
         assertNotNull(data);
@@ -215,19 +214,18 @@ public class DecodedResponseTests {
     }
 
     @Test
-    public void contentLengthIsOverriddenToDecodedSizeAndOriginalIsPreserved() {
-        long originalSize = 500L;
+    public void contentLengthIsOverriddenToDecodedSize() {
+        long wireSize = 500L;
         long decodedSize = 300L;
-        HttpHeaders h = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(originalSize))
+        HttpHeaders h = new HttpHeaders()
+            .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(wireSize))
             .set(CUSTOM_HEADER, "preserve-me");
-        DecodedResponse wrapper
-            = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]), originalSize, decodedSize);
+        DecodedResponse wrapper = new DecodedResponse(mockResponse(200, h, new byte[0]), fluxOf(new byte[0]),
+            decodedSize);
 
         assertEquals(String.valueOf(decodedSize), wrapper.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-        assertEquals(String.valueOf(originalSize),
-            wrapper.getHeaders().getValue(Constants.HeaderConstants.ORIGINAL_CONTENT_LENGTH_HEADER_NAME));
         assertEquals("preserve-me", wrapper.getHeaders().getValue(CUSTOM_HEADER));
-        // Deprecated getHeaderValue must reflect the same overrides.
+        // Deprecated getHeaderValue must reflect the same override.
         assertEquals(String.valueOf(decodedSize),
             wrapper.getHeaderValue(HttpHeaderName.CONTENT_LENGTH.getCaseInsensitiveName()));
     }
