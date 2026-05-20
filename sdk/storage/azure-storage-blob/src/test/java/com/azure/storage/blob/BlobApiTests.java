@@ -32,12 +32,14 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.Block;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -89,6 +91,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -567,6 +570,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(AccessTier.SMART, headers.getAccessTier());
         assertNotNull(headers.getSmartAccessTier());
         assertTrue(headers.isAccessTierInferred());
+        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
     }
 
     @Test
