@@ -1596,7 +1596,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     *
+     * 
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */

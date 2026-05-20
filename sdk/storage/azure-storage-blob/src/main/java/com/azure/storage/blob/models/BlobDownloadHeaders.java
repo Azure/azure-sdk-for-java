@@ -1044,5 +1044,4 @@ public final class BlobDownloadHeaders {
         internalHeaders.setXMsCreationTime(creationTime);
         return this;
     }
-
 }
