@@ -18,6 +18,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
@@ -40,6 +44,7 @@ import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetRangeListNextHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesReleaseLeaseHeaders;
@@ -57,6 +62,7 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePropertySemantics;
+import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.OwnerCopyMode;
@@ -1511,6 +1517,54 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-target-file") String targetFile,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<FilesGetRangeListNextHeaders, ShareFileRangeList>> getRangeListNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<ShareFileRangeList>> getRangeListNextNoCustomHeaders(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        ResponseBase<FilesGetRangeListNextHeaders, ShareFileRangeList> getRangeListNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<ShareFileRangeList> getRangeListNextNoCustomHeadersSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -6566,16 +6620,21 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
-        String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults) {
+    public Mono<PagedResponse<FileRange>> getRangeListSinglePageAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+        Boolean supportRename, String marker, Integer maxresults) {
+        final String comp = "rangelist";
+        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
-                timeout, range, leaseId, supportRename, marker, maxresults, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .withContext(context -> service.getRangeList(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
+                prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
 
     /**
@@ -6607,19 +6666,21 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
-        String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults, Context context) {
+    public Mono<PagedResponse<FileRange>> getRangeListSinglePageAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return service
             .getRangeList(this.client.getUrl(), shareName, fileName, comp, sharesnapshot, prevsharesnapshot, timeout,
                 this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
     }
 
     /**
@@ -6650,16 +6711,16 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges on successful completion of {@link Mono}.
+     * @return the list of file ranges as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileRange> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
         String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
         Integer maxresults) {
-        return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename, marker, maxresults)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return new PagedFlux<>(
+            () -> getRangeListSinglePageAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
+                leaseId, supportRename, marker, maxresults),
+            nextLink -> getRangeListNextSinglePageAsync(nextLink, range, leaseId, supportRename));
     }
 
     /**
@@ -6691,16 +6752,16 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges on successful completion of {@link Mono}.
+     * @return the list of file ranges as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileRange> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
         String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
         Integer maxresults, Context context) {
-        return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename, marker, maxresults, context)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return new PagedFlux<>(
+            () -> getRangeListSinglePageAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
+                leaseId, supportRename, marker, maxresults, context),
+            nextLink -> getRangeListNextSinglePageAsync(nextLink, range, leaseId, supportRename, context));
     }
 
     /**
@@ -6731,16 +6792,22 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
-        String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+    public Mono<PagedResponse<FileRange>> getRangeListNoCustomHeadersSinglePageAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, String marker, Integer maxresults) {
+        final String comp = "rangelist";
+        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> getRangeListNoCustomHeadersWithResponseAsync(shareName, fileName, sharesnapshot,
-                prevsharesnapshot, timeout, range, leaseId, supportRename, marker, maxresults, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .withContext(context -> service.getRangeListNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
+                sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, marker, maxresults,
+                accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null));
     }
 
     /**
@@ -6772,11 +6839,11 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link Response} on successful completion of {@link Mono}.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
-        String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+    public Mono<PagedResponse<FileRange>> getRangeListNoCustomHeadersSinglePageAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
@@ -6784,7 +6851,49 @@ public final class FilesImpl {
             .getRangeListNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null));
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileRange> getRangeListNoCustomHeadersAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+        Boolean supportRename, String marker, Integer maxresults) {
+        return new PagedFlux<>(
+            () -> getRangeListNoCustomHeadersSinglePageAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
+                timeout, range, leaseId, supportRename, marker, maxresults),
+            nextLink -> getRangeListNextSinglePageAsync(nextLink, range, leaseId, supportRename));
     }
 
     /**
@@ -6816,21 +6925,16 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link ResponseBase}.
+     * @return the list of file ranges as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(String shareName,
-        String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileRange> getRangeListNoCustomHeadersAsync(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, String marker, Integer maxresults, Context context) {
-        try {
-            final String comp = "rangelist";
-            final String accept = "application/xml";
-            return service.getRangeListSync(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
-                prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context);
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
+        return new PagedFlux<>(
+            () -> getRangeListNoCustomHeadersSinglePageAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
+                timeout, range, leaseId, supportRename, marker, maxresults, context),
+            nextLink -> getRangeListNextSinglePageAsync(nextLink, range, leaseId, supportRename, context));
     }
 
     /**
@@ -6861,15 +6965,21 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges.
+     * @return the list of file ranges along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareFileRangeList getRangeList(String shareName, String fileName, String sharesnapshot,
+    public PagedResponse<FileRange> getRangeListSinglePage(String shareName, String fileName, String sharesnapshot,
         String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
         Integer maxresults) {
         try {
-            return getRangeListWithResponse(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-                leaseId, supportRename, marker, maxresults, Context.NONE).getValue();
+            final String comp = "rangelist";
+            final String accept = "application/xml";
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> res = service.getRangeListSync(
+                this.client.getUrl(), shareName, fileName, comp, sharesnapshot, prevsharesnapshot, timeout,
+                this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, Context.NONE);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -6904,22 +7014,283 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges along with {@link Response}.
+     * @return the list of file ranges along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareFileRangeList> getRangeListNoCustomHeadersWithResponse(String shareName, String fileName,
+    public PagedResponse<FileRange> getRangeListSinglePage(String shareName, String fileName, String sharesnapshot,
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults, Context context) {
+        try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> res = service.getRangeListSync(
+                this.client.getUrl(), shareName, fileName, comp, sharesnapshot, prevsharesnapshot, timeout,
+                this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FileRange> getRangeList(String shareName, String fileName, String sharesnapshot,
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
+        return new PagedIterable<>(
+            () -> getRangeListSinglePage(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range, leaseId,
+                supportRename, marker, maxresults),
+            nextLink -> getRangeListNextSinglePage(nextLink, range, leaseId, supportRename));
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FileRange> getRangeList(String shareName, String fileName, String sharesnapshot,
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults, Context context) {
+        return new PagedIterable<>(
+            () -> getRangeListSinglePage(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range, leaseId,
+                supportRename, marker, maxresults, context),
+            nextLink -> getRangeListNextSinglePage(nextLink, range, leaseId, supportRename, context));
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNoCustomHeadersSinglePage(String shareName, String fileName,
+        String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
+        Boolean supportRename, String marker, Integer maxresults) {
+        try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
+            Response<ShareFileRangeList> res = service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName,
+                fileName, comp, sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, marker, maxresults,
+                accept, Context.NONE);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNoCustomHeadersSinglePage(String shareName, String fileName,
         String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, String marker, Integer maxresults, Context context) {
         try {
             final String comp = "rangelist";
             final String accept = "application/xml";
-            return service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
-                sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
+            Response<ShareFileRangeList> res = service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName,
+                fileName, comp, sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, marker, maxresults,
                 accept, context);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FileRange> getRangeListNoCustomHeaders(String shareName, String fileName, String sharesnapshot,
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
+        return new PagedIterable<>(
+            () -> getRangeListNoCustomHeadersSinglePage(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout,
+                range, leaseId, supportRename, marker, maxresults),
+            nextLink -> getRangeListNextSinglePage(nextLink, range, leaseId, supportRename));
+    }
+
+    /**
+     * Returns the list of valid ranges for a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present,
+     * specifies the previous snapshot.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FileRange> getRangeListNoCustomHeaders(String shareName, String fileName, String sharesnapshot,
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults, Context context) {
+        return new PagedIterable<>(
+            () -> getRangeListNoCustomHeadersSinglePage(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout,
+                range, leaseId, supportRename, marker, maxresults, context),
+            nextLink -> getRangeListNextSinglePage(nextLink, range, leaseId, supportRename, context));
     }
 
     /**
@@ -9861,6 +10232,248 @@ public final class FilesImpl {
             return service.createHardLinkNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, restype,
                 timeout, this.client.getVersion(), fileTypeConstant, requestId, leaseId, targetFile,
                 this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileRange>> getRangeListNextSinglePageAsync(String nextLink, String range, String leaseId,
+        Boolean supportRename) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.getRangeListNext(nextLink, this.client.getUrl(), this.client.getVersion(),
+                range, leaseId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename,
+                accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileRange>> getRangeListNextSinglePageAsync(String nextLink, String range, String leaseId,
+        Boolean supportRename, Context context) {
+        final String accept = "application/xml";
+        return service
+            .getRangeListNext(nextLink, this.client.getUrl(), this.client.getVersion(), range, leaseId,
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileRange>> getRangeListNextNoCustomHeadersSinglePageAsync(String nextLink, String range,
+        String leaseId, Boolean supportRename) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.getRangeListNextNoCustomHeaders(nextLink, this.client.getUrl(),
+                this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileRange>> getRangeListNextNoCustomHeadersSinglePageAsync(String nextLink, String range,
+        String leaseId, Boolean supportRename, Context context) {
+        final String accept = "application/xml";
+        return service
+            .getRangeListNextNoCustomHeaders(nextLink, this.client.getUrl(), this.client.getVersion(), range, leaseId,
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNextSinglePage(String nextLink, String range, String leaseId,
+        Boolean supportRename) {
+        try {
+            final String accept = "application/xml";
+            ResponseBase<FilesGetRangeListNextHeaders, ShareFileRangeList> res = service.getRangeListNextSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, accept, Context.NONE);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNextSinglePage(String nextLink, String range, String leaseId,
+        Boolean supportRename, Context context) {
+        try {
+            final String accept = "application/xml";
+            ResponseBase<FilesGetRangeListNextHeaders, ShareFileRangeList> res = service.getRangeListNextSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, accept, context);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNextNoCustomHeadersSinglePage(String nextLink, String range,
+        String leaseId, Boolean supportRename) {
+        try {
+            final String accept = "application/xml";
+            Response<ShareFileRangeList> res = service.getRangeListNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, accept, Context.NONE);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items.
+     * @param range Specifies the range of bytes over which to list ranges, inclusively.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param supportRename This header is allowed only when PrevShareSnapshot query parameter is set. Determines
+     * whether the changed ranges for a file that has been renamed or moved between the target snapshot (or the live
+     * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
+     * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
+     * default value is false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<FileRange> getRangeListNextNoCustomHeadersSinglePage(String nextLink, String range,
+        String leaseId, Boolean supportRename, Context context) {
+        try {
+            final String accept = "application/xml";
+            Response<ShareFileRangeList> res = service.getRangeListNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), supportRename, accept, context);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRanges(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
