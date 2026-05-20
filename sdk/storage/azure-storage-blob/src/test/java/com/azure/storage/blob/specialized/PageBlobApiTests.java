@@ -367,9 +367,22 @@ public class PageBlobApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPage() {
+        Response<PageBlobItem> response
+            = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(validateBasicHeaders(response.getHeaders()));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        assertEquals(0, response.getValue().getBlobSequenceNumber());
+        assertTrue(response.getValue().isServerEncrypted());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadPageCrc64() {
         Response<PageBlobItem> response
             = bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
                 new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
@@ -586,9 +599,27 @@ public class PageBlobApiTests extends BlobTestBase {
             () -> bc.uploadPagesFromUrl(null, bc.getBlobUrl(), (long) PageBlobClient.PAGE_BYTES));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+        PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destURL.create(PageBlobClient.PAGE_BYTES);
+        byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        bc.uploadPages(pageRange, new ByteArrayInputStream(data));
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<PageBlobItem> response = destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(data), null, null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(validateBasicHeaders(response.getHeaders()));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadPageFromURLMD5AndCrc64() throws NoSuchAlgorithmException {
         PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destURL.create(PageBlobClient.PAGE_BYTES);
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);

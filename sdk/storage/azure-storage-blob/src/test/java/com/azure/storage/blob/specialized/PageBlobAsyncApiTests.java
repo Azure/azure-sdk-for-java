@@ -373,9 +373,24 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPage() {
+        StepVerifier
+            .create(bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+                Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                assertTrue(validateBasicHeaders(r.getHeaders()));
+                assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                assertEquals(0, r.getValue().getBlobSequenceNumber());
+                assertTrue(r.getValue().isServerEncrypted());
+            })
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadPageCrc64() {
         StepVerifier
             .create(bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
                 Flux.just(ByteBuffer.wrap(getRandomByteArray(PageBlobClient.PAGE_BYTES))), null, null))
@@ -615,9 +630,25 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(IllegalArgumentException.class);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+        PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+        byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+
+        Mono<Response<PageBlobItem>> response = destURL.create(PageBlobClient.PAGE_BYTES)
+            .then(bc.uploadPages(pageRange, Flux.just(ByteBuffer.wrap(data))))
+            .then(destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest(data), null, null));
+
+        StepVerifier.create(response).expectNextCount(1).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadPageFromURLMD5AndCrc64() throws NoSuchAlgorithmException {
         PageBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -632,7 +663,6 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response).assertNext(r -> {
             assertResponseStatusCode(r, 201);
             assertTrue(validateBasicHeaders(r.getHeaders()));
-            assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
             assertArrayEquals(Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64)),
                 r.getValue().getContentCrc64());
         }).verifyComplete();
