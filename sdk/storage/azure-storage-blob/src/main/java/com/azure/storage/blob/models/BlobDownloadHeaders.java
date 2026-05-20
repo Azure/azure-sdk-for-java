@@ -146,10 +146,6 @@ public final class BlobDownloadHeaders {
     /**
      * Get the contentLength property: The number of bytes present in the response body.
      *
-     * <p>When content validation is enabled, the storage client transparently decodes the structured message
-     * framing before returning the response. In that case this value reflects the size of the decoded payload
-     * that callers will actually read — not the larger wire size of the encoded message.</p>
-     *
      * @return the contentLength value.
      */
     public Long getContentLength() {
