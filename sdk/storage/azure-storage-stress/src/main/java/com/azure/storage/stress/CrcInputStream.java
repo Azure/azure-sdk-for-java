@@ -53,6 +53,13 @@ public class CrcInputStream extends InputStream {
             head.put((byte) b);
         }
         length++;
+        // Emit as soon as the expected size has been delivered so that consumers (such as the
+        // Storage SDK upload path) that stop reading once they have the exact number of bytes
+        // they asked for do not leave the Sinks.One waiting on a never-arriving EOF read.
+        // Repeat emissions are no-ops because tryEmitValue returns FAIL_TERMINATED.
+        if (size > 0 && length >= size) {
+            emitContentInfo();
+        }
         return b;
     }
 
@@ -69,6 +76,11 @@ public class CrcInputStream extends InputStream {
             head.put(buf, off, Math.min(read, head.remaining()));
         }
         length += read;
+        // See note in read(): emit once the consumer has been handed all the bytes it requested
+        // so the sink is guaranteed to complete even if the consumer never reads past EOF.
+        if (size > 0 && length >= size) {
+            emitContentInfo();
+        }
         return read;
     }
 
@@ -134,6 +146,12 @@ public class CrcInputStream extends InputStream {
             inputStream.close();
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            // Defensive: terminate the sink so any consumer still waiting on getContentInfo()
+            // does not hang in cases where the stream was closed before being fully read
+            // (for example after an upload failure that aborted the request body subscription).
+            // This is a no-op when the sink has already emitted.
+            emitContentInfo();
         }
     }
 
