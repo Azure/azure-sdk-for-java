@@ -18,14 +18,6 @@ import java.io.IOException;
 public final class Dimension implements JsonSerializable<Dimension> {
 
     /*
-     * Stable identifier for this dimension (snake_case, e.g., `correct_resolution`). Required. Provided by the user
-     * when manually creating a rubric evaluator or during human-in-the-loop review of a generated set; the generation
-     * pipeline produces an initial value the user can edit. Editable when saving new versions.
-     */
-    @Generated
-    private final String dimensionId;
-
-    /*
      * What this dimension measures (e.g., 'Correctly identifies the user's reservation intent and pursues the
      * appropriate workflow').
      */
@@ -50,28 +42,15 @@ public final class Dimension implements JsonSerializable<Dimension> {
     /**
      * Creates an instance of Dimension class.
      *
-     * @param dimensionId the dimensionId value to set.
+     * @param id the id value to set.
      * @param description the description value to set.
      * @param weight the weight value to set.
      */
     @Generated
-    public Dimension(String dimensionId, String description, int weight) {
-        this.dimensionId = dimensionId;
+    public Dimension(String id, String description, int weight) {
+        this.id = id;
         this.description = description;
         this.weight = weight;
-    }
-
-    /**
-     * Get the dimensionId property: Stable identifier for this dimension (snake_case, e.g., `correct_resolution`).
-     * Required. Provided by the user when manually creating a rubric evaluator or during human-in-the-loop review of a
-     * generated set; the generation pipeline produces an initial value the user can edit. Editable when saving new
-     * versions.
-     *
-     * @return the dimensionId value.
-     */
-    @Generated
-    public String getDimensionId() {
-        return this.dimensionId;
     }
 
     /**
@@ -129,7 +108,7 @@ public final class Dimension implements JsonSerializable<Dimension> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dimension_id", this.dimensionId);
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeIntField("weight", this.weight);
         jsonWriter.writeBooleanField("always_applicable", this.alwaysApplicable);
@@ -148,15 +127,15 @@ public final class Dimension implements JsonSerializable<Dimension> {
     @Generated
     public static Dimension fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String dimensionId = null;
+            String id = null;
             String description = null;
             int weight = 0;
             Boolean alwaysApplicable = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("dimension_id".equals(fieldName)) {
-                    dimensionId = reader.getString();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("weight".equals(fieldName)) {
@@ -167,9 +146,29 @@ public final class Dimension implements JsonSerializable<Dimension> {
                     reader.skipChildren();
                 }
             }
-            Dimension deserializedDimension = new Dimension(dimensionId, description, weight);
+            Dimension deserializedDimension = new Dimension(id, description, weight);
             deserializedDimension.alwaysApplicable = alwaysApplicable;
             return deserializedDimension;
         });
+    }
+
+    /*
+     * Stable identifier for this dimension (snake_case, e.g., `correct_resolution`). Required. Provided by the user
+     * when manually creating a rubric evaluator or during human-in-the-loop review of a generated set; the generation
+     * pipeline produces an initial value the user can edit. Editable when saving new versions.
+     */
+    @Generated
+    private final String id;
+
+    /**
+     * Get the id property: Stable identifier for this dimension (snake_case, e.g., `correct_resolution`). Required.
+     * Provided by the user when manually creating a rubric evaluator or during human-in-the-loop review of a generated
+     * set; the generation pipeline produces an initial value the user can edit. Editable when saving new versions.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
     }
 }

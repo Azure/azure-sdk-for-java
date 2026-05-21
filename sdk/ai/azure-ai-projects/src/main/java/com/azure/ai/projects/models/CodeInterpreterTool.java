@@ -34,16 +34,6 @@ public final class CodeInterpreterTool extends Tool {
     private final BinaryData container;
 
     /**
-     * Creates an instance of CodeInterpreterTool class.
-     *
-     * @param container the container value to set.
-     */
-    @Generated
-    public CodeInterpreterTool(BinaryData container) {
-        this.container = container;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -108,5 +98,15 @@ public final class CodeInterpreterTool extends Tool {
             deserializedCodeInterpreterTool.type = type;
             return deserializedCodeInterpreterTool;
         });
+    }
+
+    /**
+     * Creates an instance of CodeInterpreterTool class.
+     *
+     * @param container the container value to set.
+     */
+    @Generated
+    public CodeInterpreterTool(BinaryData container) {
+        this.container = container;
     }
 }

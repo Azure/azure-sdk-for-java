@@ -44,16 +44,6 @@ public final class CustomToolParam extends Tool {
     private CustomToolParamFormat format;
 
     /**
-     * Creates an instance of CustomToolParam class.
-     *
-     * @param name the name value to set.
-     */
-    @Generated
-    public CustomToolParam(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -169,5 +159,15 @@ public final class CustomToolParam extends Tool {
             deserializedCustomToolParam.format = format;
             return deserializedCustomToolParam;
         });
+    }
+
+    /**
+     * Creates an instance of CustomToolParam class.
+     *
+     * @param name the name value to set.
+     */
+    @Generated
+    public CustomToolParam(String name) {
+        this.name = name;
     }
 }

@@ -47,20 +47,6 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
     private final BinaryData value;
 
     /**
-     * Creates an instance of ComparisonFilter class.
-     *
-     * @param type the type value to set.
-     * @param key the key value to set.
-     * @param value the value value to set.
-     */
-    @Generated
-    public ComparisonFilter(FileSearchToolFiltersType type, String key, BinaryData value) {
-        this.type = type;
-        this.key = key;
-        this.value = value;
-    }
-
-    /**
      * Get the type property: Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `nin`.
      * - `eq`: equals
      * - `ne`: not equal
@@ -143,5 +129,19 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
             }
             return new ComparisonFilter(type, key, value);
         });
+    }
+
+    /**
+     * Creates an instance of ComparisonFilter class.
+     *
+     * @param type the type value to set.
+     * @param key the key value to set.
+     * @param value the value value to set.
+     */
+    @Generated
+    public ComparisonFilter(FileSearchToolFiltersType type, String key, BinaryData value) {
+        this.type = type;
+        this.key = key;
+        this.value = value;
     }
 }

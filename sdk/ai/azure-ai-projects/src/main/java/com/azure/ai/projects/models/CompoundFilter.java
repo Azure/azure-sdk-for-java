@@ -34,18 +34,6 @@ public final class CompoundFilter implements JsonSerializable<CompoundFilter> {
     private final List<BinaryData> filters;
 
     /**
-     * Creates an instance of CompoundFilter class.
-     *
-     * @param type the type value to set.
-     * @param filters the filters value to set.
-     */
-    @Generated
-    public CompoundFilter(FileSearchToolFiltersType1 type, List<BinaryData> filters) {
-        this.type = type;
-        this.filters = filters;
-    }
-
-    /**
      * Get the type property: Type of operation: `and` or `or`.
      *
      * @return the type value.
@@ -111,5 +99,17 @@ public final class CompoundFilter implements JsonSerializable<CompoundFilter> {
             }
             return new CompoundFilter(type, filters);
         });
+    }
+
+    /**
+     * Creates an instance of CompoundFilter class.
+     *
+     * @param type the type value to set.
+     * @param filters the filters value to set.
+     */
+    @Generated
+    public CompoundFilter(FileSearchToolFiltersType1 type, List<BinaryData> filters) {
+        this.type = type;
+        this.filters = filters;
     }
 }

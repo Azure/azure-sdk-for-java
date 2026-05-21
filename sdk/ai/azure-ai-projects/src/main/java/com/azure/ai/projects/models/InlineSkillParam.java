@@ -41,20 +41,6 @@ public final class InlineSkillParam extends ContainerSkill {
     private final InlineSkillSourceParam source;
 
     /**
-     * Creates an instance of InlineSkillParam class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param source the source value to set.
-     */
-    @Generated
-    public InlineSkillParam(String name, String description, InlineSkillSourceParam source) {
-        this.name = name;
-        this.description = description;
-        this.source = source;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -144,5 +130,19 @@ public final class InlineSkillParam extends ContainerSkill {
             deserializedInlineSkillParam.type = type;
             return deserializedInlineSkillParam;
         });
+    }
+
+    /**
+     * Creates an instance of InlineSkillParam class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param source the source value to set.
+     */
+    @Generated
+    public InlineSkillParam(String name, String description, InlineSkillSourceParam source) {
+        this.name = name;
+        this.description = description;
+        this.source = source;
     }
 }

@@ -90,16 +90,6 @@ public final class MCPTool extends Tool {
     private BinaryData requireApproval;
 
     /**
-     * Creates an instance of MCPTool class.
-     *
-     * @param serverLabel the serverLabel value to set.
-     */
-    @Generated
-    public MCPTool(String serverLabel) {
-        this.serverLabel = serverLabel;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -386,5 +376,15 @@ public final class MCPTool extends Tool {
             deserializedMCPTool.requireApproval = requireApproval;
             return deserializedMCPTool;
         });
+    }
+
+    /**
+     * Creates an instance of MCPTool class.
+     *
+     * @param serverLabel the serverLabel value to set.
+     */
+    @Generated
+    public MCPTool(String serverLabel) {
+        this.serverLabel = serverLabel;
     }
 }

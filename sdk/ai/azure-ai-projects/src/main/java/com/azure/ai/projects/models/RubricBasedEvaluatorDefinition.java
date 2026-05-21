@@ -28,7 +28,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
 
     /*
      * The set of dimensions — the scoring blueprint used by the LLM judge. Quality evaluators include a non-editable
-     * residual dimension with dimension_id 'general_quality' (always_applicable: true); safety evaluators include
+     * residual dimension with id 'general_quality' (always_applicable: true); safety evaluators include
      * 'general_policy_compliance'. Both use the same Dimension structure.
      */
     @Generated
@@ -66,8 +66,8 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
 
     /**
      * Get the dimensions property: The set of dimensions — the scoring blueprint used by the LLM judge. Quality
-     * evaluators include a non-editable residual dimension with dimension_id 'general_quality' (always_applicable:
-     * true); safety evaluators include 'general_policy_compliance'. Both use the same Dimension structure.
+     * evaluators include a non-editable residual dimension with id 'general_quality' (always_applicable: true); safety
+     * evaluators include 'general_policy_compliance'. Both use the same Dimension structure.
      *
      * @return the dimensions value.
      */

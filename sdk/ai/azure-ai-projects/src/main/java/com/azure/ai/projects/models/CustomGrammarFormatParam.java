@@ -37,18 +37,6 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
     private final String definition;
 
     /**
-     * Creates an instance of CustomGrammarFormatParam class.
-     *
-     * @param syntax the syntax value to set.
-     * @param definition the definition value to set.
-     */
-    @Generated
-    public CustomGrammarFormatParam(GrammarSyntax1 syntax, String definition) {
-        this.syntax = syntax;
-        this.definition = definition;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -125,5 +113,17 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
             deserializedCustomGrammarFormatParam.type = type;
             return deserializedCustomGrammarFormatParam;
         });
+    }
+
+    /**
+     * Creates an instance of CustomGrammarFormatParam class.
+     *
+     * @param syntax the syntax value to set.
+     * @param definition the definition value to set.
+     */
+    @Generated
+    public CustomGrammarFormatParam(GrammarSyntax1 syntax, String definition) {
+        this.syntax = syntax;
+        this.definition = definition;
     }
 }

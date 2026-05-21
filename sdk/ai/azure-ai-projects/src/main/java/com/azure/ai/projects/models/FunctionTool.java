@@ -52,20 +52,6 @@ public final class FunctionTool extends Tool {
     private final Boolean strict;
 
     /**
-     * Creates an instance of FunctionTool class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     * @param strict the strict value to set.
-     */
-    @Generated
-    public FunctionTool(String name, Map<String, BinaryData> parameters, Boolean strict) {
-        this.name = name;
-        this.parameters = parameters;
-        this.strict = strict;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -189,5 +175,19 @@ public final class FunctionTool extends Tool {
             deserializedFunctionTool.description = description;
             return deserializedFunctionTool;
         });
+    }
+
+    /**
+     * Creates an instance of FunctionTool class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     * @param strict the strict value to set.
+     */
+    @Generated
+    public FunctionTool(String name, Map<String, BinaryData> parameters, Boolean strict) {
+        this.name = name;
+        this.parameters = parameters;
+        this.strict = strict;
     }
 }

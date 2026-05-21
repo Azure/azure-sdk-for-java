@@ -37,20 +37,6 @@ public final class ContainerNetworkPolicyDomainSecretParam
     private final String value;
 
     /**
-     * Creates an instance of ContainerNetworkPolicyDomainSecretParam class.
-     *
-     * @param domain the domain value to set.
-     * @param name the name value to set.
-     * @param value the value value to set.
-     */
-    @Generated
-    public ContainerNetworkPolicyDomainSecretParam(String domain, String name, String value) {
-        this.domain = domain;
-        this.name = name;
-        this.value = value;
-    }
-
-    /**
      * Get the domain property: The domain associated with the secret.
      *
      * @return the domain value.
@@ -123,5 +109,19 @@ public final class ContainerNetworkPolicyDomainSecretParam
             }
             return new ContainerNetworkPolicyDomainSecretParam(domain, name, value);
         });
+    }
+
+    /**
+     * Creates an instance of ContainerNetworkPolicyDomainSecretParam class.
+     *
+     * @param domain the domain value to set.
+     * @param name the name value to set.
+     * @param value the value value to set.
+     */
+    @Generated
+    public ContainerNetworkPolicyDomainSecretParam(String domain, String name, String value) {
+        this.domain = domain;
+        this.name = name;
+        this.value = value;
     }
 }
