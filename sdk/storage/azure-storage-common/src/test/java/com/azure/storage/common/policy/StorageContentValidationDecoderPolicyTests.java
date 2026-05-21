@@ -102,10 +102,10 @@ public class StorageContentValidationDecoderPolicyTests {
         }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
-        HttpResponse response = pipeline.send(request, Context.NONE).block();
-
-        assertNotNull(response);
-        assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
+            assertNotNull(response);
+            assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        }
     }
 
     @Test
