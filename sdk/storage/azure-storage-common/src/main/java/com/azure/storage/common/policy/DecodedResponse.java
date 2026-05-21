@@ -42,8 +42,7 @@ class DecodedResponse extends HttpResponse {
         super(httpResponse.getRequest());
         this.originalResponse = httpResponse;
         this.decodedBody = decodedBody;
-        HttpHeaders headers = new HttpHeaders();
-        httpResponse.getHeaders().stream().forEach(h -> headers.set(h.getName(), h.getValue()));
+        HttpHeaders headers = new HttpHeaders(httpResponse.getHeaders());
         headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(decodedContentLength));
         this.adjustedHeaders = headers;
     }
