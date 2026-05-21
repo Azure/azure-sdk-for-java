@@ -1,5 +1,21 @@
 # Release History
 
+## 2.62.1 (2026-05-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-containerservice` from `2.59.1` to version `2.60.0`.
+- Upgraded `azure-resourcemanager-compute` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-eventhubs` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-storage-file-share` from `12.29.3` to version `12.30.0`.
+- Upgraded `azure-resourcemanager-sql` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-appservice` from `2.55.2` to version `2.55.3`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.5` to version `2.56.0`.
+- Upgraded `azure-resourcemanager-containerinstance` from `2.53.10` to version `2.53.11`.
+
+
 ## 2.62.0 (2026-05-08)
 
 ### azure-resourcemanager-compute
