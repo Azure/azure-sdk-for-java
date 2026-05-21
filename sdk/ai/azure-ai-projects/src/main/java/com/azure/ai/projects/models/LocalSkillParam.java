@@ -36,20 +36,6 @@ public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> 
     private final String path;
 
     /**
-     * Creates an instance of LocalSkillParam class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param path the path value to set.
-     */
-    @Generated
-    public LocalSkillParam(String name, String description, String path) {
-        this.name = name;
-        this.description = description;
-        this.path = path;
-    }
-
-    /**
      * Get the name property: The name of the skill.
      *
      * @return the name value.
@@ -122,5 +108,19 @@ public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> 
             }
             return new LocalSkillParam(name, description, path);
         });
+    }
+
+    /**
+     * Creates an instance of LocalSkillParam class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param path the path value to set.
+     */
+    @Generated
+    public LocalSkillParam(String name, String description, String path) {
+        this.name = name;
+        this.description = description;
+        this.path = path;
     }
 }

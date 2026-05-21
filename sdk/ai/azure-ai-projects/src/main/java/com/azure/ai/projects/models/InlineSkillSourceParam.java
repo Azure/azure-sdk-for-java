@@ -36,16 +36,6 @@ public final class InlineSkillSourceParam implements JsonSerializable<InlineSkil
     private final String data;
 
     /**
-     * Creates an instance of InlineSkillSourceParam class.
-     *
-     * @param data the data value to set.
-     */
-    @Generated
-    public InlineSkillSourceParam(String data) {
-        this.data = data;
-    }
-
-    /**
      * Get the type property: The type of the inline skill source. Must be `base64`.
      *
      * @return the type value.
@@ -112,5 +102,15 @@ public final class InlineSkillSourceParam implements JsonSerializable<InlineSkil
             }
             return new InlineSkillSourceParam(data);
         });
+    }
+
+    /**
+     * Creates an instance of InlineSkillSourceParam class.
+     *
+     * @param data the data value to set.
+     */
+    @Generated
+    public InlineSkillSourceParam(String data) {
+        this.data = data;
     }
 }

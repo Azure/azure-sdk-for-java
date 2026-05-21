@@ -30,18 +30,6 @@ public final class HybridSearchOptions implements JsonSerializable<HybridSearchO
     private final int textWeight;
 
     /**
-     * Creates an instance of HybridSearchOptions class.
-     *
-     * @param embeddingWeight the embeddingWeight value to set.
-     * @param textWeight the textWeight value to set.
-     */
-    @Generated
-    public HybridSearchOptions(int embeddingWeight, int textWeight) {
-        this.embeddingWeight = embeddingWeight;
-        this.textWeight = textWeight;
-    }
-
-    /**
      * Get the embeddingWeight property: The weight of the embedding in the reciprocal ranking fusion.
      *
      * @return the embeddingWeight value.
@@ -100,5 +88,17 @@ public final class HybridSearchOptions implements JsonSerializable<HybridSearchO
             }
             return new HybridSearchOptions(embeddingWeight, textWeight);
         });
+    }
+
+    /**
+     * Creates an instance of HybridSearchOptions class.
+     *
+     * @param embeddingWeight the embeddingWeight value to set.
+     * @param textWeight the textWeight value to set.
+     */
+    @Generated
+    public HybridSearchOptions(int embeddingWeight, int textWeight) {
+        this.embeddingWeight = embeddingWeight;
+        this.textWeight = textWeight;
     }
 }

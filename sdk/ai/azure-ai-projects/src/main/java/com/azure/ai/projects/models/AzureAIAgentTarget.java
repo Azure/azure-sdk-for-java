@@ -42,16 +42,6 @@ public final class AzureAIAgentTarget extends Target {
     private List<ToolDescription> toolDescriptions;
 
     /**
-     * Creates an instance of AzureAIAgentTarget class.
-     *
-     * @param name the name value to set.
-     */
-    @Generated
-    public AzureAIAgentTarget(String name) {
-        this.name = name;
-    }
-
-    /**
      * Get the type property: The type of target.
      *
      * @return the type value.
@@ -203,5 +193,15 @@ public final class AzureAIAgentTarget extends Target {
     public AzureAIAgentTarget setTools(List<Tool> tools) {
         this.tools = tools;
         return this;
+    }
+
+    /**
+     * Creates an instance of AzureAIAgentTarget class.
+     *
+     * @param name the name value to set.
+     */
+    @Generated
+    public AzureAIAgentTarget(String name) {
+        this.name = name;
     }
 }

@@ -29,16 +29,6 @@ public final class FunctionShellToolParamEnvironmentContainerReferenceParam exte
     private final String containerId;
 
     /**
-     * Creates an instance of FunctionShellToolParamEnvironmentContainerReferenceParam class.
-     *
-     * @param containerId the containerId value to set.
-     */
-    @Generated
-    public FunctionShellToolParamEnvironmentContainerReferenceParam(String containerId) {
-        this.containerId = containerId;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -103,5 +93,15 @@ public final class FunctionShellToolParamEnvironmentContainerReferenceParam exte
             deserializedFunctionShellToolParamEnvironmentContainerReferenceParam.type = type;
             return deserializedFunctionShellToolParamEnvironmentContainerReferenceParam;
         });
+    }
+
+    /**
+     * Creates an instance of FunctionShellToolParamEnvironmentContainerReferenceParam class.
+     *
+     * @param containerId the containerId value to set.
+     */
+    @Generated
+    public FunctionShellToolParamEnvironmentContainerReferenceParam(String containerId) {
+        this.containerId = containerId;
     }
 }

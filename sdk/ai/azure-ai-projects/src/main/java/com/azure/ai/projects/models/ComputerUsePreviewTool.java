@@ -44,20 +44,6 @@ public final class ComputerUsePreviewTool extends Tool {
     private final int displayHeight;
 
     /**
-     * Creates an instance of ComputerUsePreviewTool class.
-     *
-     * @param environment the environment value to set.
-     * @param displayWidth the displayWidth value to set.
-     * @param displayHeight the displayHeight value to set.
-     */
-    @Generated
-    public ComputerUsePreviewTool(ComputerEnvironment environment, int displayWidth, int displayHeight) {
-        this.environment = environment;
-        this.displayWidth = displayWidth;
-        this.displayHeight = displayHeight;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -148,5 +134,19 @@ public final class ComputerUsePreviewTool extends Tool {
             deserializedComputerUsePreviewTool.type = type;
             return deserializedComputerUsePreviewTool;
         });
+    }
+
+    /**
+     * Creates an instance of ComputerUsePreviewTool class.
+     *
+     * @param environment the environment value to set.
+     * @param displayWidth the displayWidth value to set.
+     * @param displayHeight the displayHeight value to set.
+     */
+    @Generated
+    public ComputerUsePreviewTool(ComputerEnvironment environment, int displayWidth, int displayHeight) {
+        this.environment = environment;
+        this.displayWidth = displayWidth;
+        this.displayHeight = displayHeight;
     }
 }

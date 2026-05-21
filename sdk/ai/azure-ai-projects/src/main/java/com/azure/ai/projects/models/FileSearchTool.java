@@ -52,16 +52,6 @@ public final class FileSearchTool extends Tool {
     private BinaryData filters;
 
     /**
-     * Creates an instance of FileSearchTool class.
-     *
-     * @param vectorStoreIds the vectorStoreIds value to set.
-     */
-    @Generated
-    public FileSearchTool(List<String> vectorStoreIds) {
-        this.vectorStoreIds = vectorStoreIds;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -210,5 +200,15 @@ public final class FileSearchTool extends Tool {
             deserializedFileSearchTool.filters = filters;
             return deserializedFileSearchTool;
         });
+    }
+
+    /**
+     * Creates an instance of FileSearchTool class.
+     *
+     * @param vectorStoreIds the vectorStoreIds value to set.
+     */
+    @Generated
+    public FileSearchTool(List<String> vectorStoreIds) {
+        this.vectorStoreIds = vectorStoreIds;
     }
 }

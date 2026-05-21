@@ -36,16 +36,6 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
     private List<ContainerNetworkPolicyDomainSecretParam> domainSecrets;
 
     /**
-     * Creates an instance of ContainerNetworkPolicyAllowlistParam class.
-     *
-     * @param allowedDomains the allowedDomains value to set.
-     */
-    @Generated
-    public ContainerNetworkPolicyAllowlistParam(List<String> allowedDomains) {
-        this.allowedDomains = allowedDomains;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -139,5 +129,15 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
             deserializedContainerNetworkPolicyAllowlistParam.domainSecrets = domainSecrets;
             return deserializedContainerNetworkPolicyAllowlistParam;
         });
+    }
+
+    /**
+     * Creates an instance of ContainerNetworkPolicyAllowlistParam class.
+     *
+     * @param allowedDomains the allowedDomains value to set.
+     */
+    @Generated
+    public ContainerNetworkPolicyAllowlistParam(List<String> allowedDomains) {
+        this.allowedDomains = allowedDomains;
     }
 }

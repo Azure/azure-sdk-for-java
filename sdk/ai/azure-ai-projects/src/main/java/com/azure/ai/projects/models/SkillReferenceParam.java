@@ -35,16 +35,6 @@ public final class SkillReferenceParam extends ContainerSkill {
     private String version;
 
     /**
-     * Creates an instance of SkillReferenceParam class.
-     *
-     * @param skillId the skillId value to set.
-     */
-    @Generated
-    public SkillReferenceParam(String skillId) {
-        this.skillId = skillId;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -133,5 +123,15 @@ public final class SkillReferenceParam extends ContainerSkill {
             deserializedSkillReferenceParam.version = version;
             return deserializedSkillReferenceParam;
         });
+    }
+
+    /**
+     * Creates an instance of SkillReferenceParam class.
+     *
+     * @param skillId the skillId value to set.
+     */
+    @Generated
+    public SkillReferenceParam(String skillId) {
+        this.skillId = skillId;
     }
 }
