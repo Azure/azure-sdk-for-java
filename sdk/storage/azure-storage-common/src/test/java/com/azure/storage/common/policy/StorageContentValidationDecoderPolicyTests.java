@@ -1,131 +1,184 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.policy;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+  package com.azure.storage.common.policy;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
+  import com.azure.core.http.HttpClient;
+  import com.azure.core.http.HttpHeaderName;
+  import com.azure.core.http.HttpHeaders;
+  import com.azure.core.http.HttpMethod;
+  import com.azure.core.http.HttpPipeline;
+  import com.azure.core.http.HttpPipelineBuilder;
+  import com.azure.core.http.HttpRequest;
+  import com.azure.core.http.HttpResponse;
+  import com.azure.core.test.http.MockHttpResponse;
+  import com.azure.core.util.Context;
+  import com.azure.core.util.FluxUtil;
+  import com.azure.storage.common.implementation.Constants;
+  import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
+  import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
+  import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
+  import org.junit.jupiter.api.Test;
+  import org.junit.jupiter.params.ParameterizedTest;
+  import org.junit.jupiter.params.provider.Arguments;
+  import org.junit.jupiter.params.provider.MethodSource;
+  import reactor.core.publisher.Flux;
+  import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+  import java.io.IOException;
+  import java.nio.ByteBuffer;
+  import java.util.Objects;
+  import java.util.concurrent.ThreadLocalRandom;
+  import java.util.concurrent.atomic.AtomicReference;
+  import java.util.stream.Stream;
 
-public class StorageContentValidationDecoderPolicyTests {
+  import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+  import static org.junit.jupiter.api.Assertions.assertEquals;
+  import static org.junit.jupiter.api.Assertions.assertNotNull;
+  import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    private static HttpRequest getRequest() {
-        try {
-            return new HttpRequest(HttpMethod.GET, new URL("http://example.com/blob"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+  /**
+   * Tests {@link StorageContentValidationDecoderPolicy} together with {@link StructuredMessageEncoder} /
+   * wire-format payloads so the reactive decode path matches what the blob download pipeline uses.
+   */
+  public class StorageContentValidationDecoderPolicyTests {
 
-    private static byte[] encodeToBytes(byte[] data, int segmentSize, StructuredMessageFlags flags) throws IOException {
-        StructuredMessageEncoder encoder = new StructuredMessageEncoder(data.length, segmentSize, flags);
-        Flux<ByteBuffer> flux = encoder.encode(ByteBuffer.wrap(data));
-        ByteBuffer encoded
-            = ByteBuffer.wrap(Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(flux).block()));
-        byte[] bytes = new byte[encoded.remaining()];
-        encoded.get(bytes);
-        return bytes;
-    }
+      /**
+       * End-to-end through the policy: encoded body uses multi-megabyte segment payload lengths (not the default
+       * 4 MiB framing only); decoded flux must match the original bytes.
+       */
+      @ParameterizedTest
+      @MethodSource("segmentPayloadSizeAndTotalPayloadSizeSupplier")
+      public void decodesDynamicallySizedSegmentStructuredMessageThroughPipeline(int segmentPayloadSize,
+          int totalPayloadSize) throws IOException {
+          byte[] originalData = new byte[totalPayloadSize];
+          ThreadLocalRandom.current().nextBytes(originalData);
 
-    @Test
-    public void contentLengthIsOverriddenToDecodedSizeWhenDecodingApplied() throws IOException {
-        byte[] payload = new byte[64];
-        ThreadLocalRandom.current().nextBytes(payload);
+          byte[] encodedBytes
+              = encodeStructuredMessageWireBytes(originalData, segmentPayloadSize, StructuredMessageFlags.STORAGE_CRC64);
 
-        byte[] encoded = encodeToBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
-        long encodedLen = encoded.length;
-        long decodedLen = payload.length;
+          AtomicReference<HttpRequest> requestAfterPolicies = new AtomicReference<>();
+          HttpClient httpClient = request -> {
+              requestAfterPolicies.set(request);
+              HttpHeaders headers = structuredDownloadResponseHeaders(encodedBytes.length, totalPayloadSize);
+              return Mono.just(new MockHttpResponse(request, 200, headers, encodedBytes));
+          };
 
-        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen))
-            .set(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME,
-                StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE)
-            .set(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(decodedLen));
+          HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
+              context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+              return next.process();
+          }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded)))
-            .build();
+          HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+          try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
+              assertNotNull(response);
+              assertTrue(response instanceof DecodedResponse);
+              byte[] decoded = Objects.requireNonNull(response.getBodyAsByteArray().block());
+              assertArrayEquals(originalData, decoded);
+          }
 
-        Context ctx = new Context(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
-        HttpResponse response = pipeline.send(getRequest(), ctx).block();
+          HttpRequest sent = requestAfterPolicies.get();
+          assertNotNull(sent);
+          assertEquals(StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE,
+              sent.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
+      }
 
-        assertNotNull(response);
-        assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-    }
+      @Test
+      public void contentLengthIsOverriddenToDecodedSizeWhenDecodingApplied() throws IOException {
+          byte[] payload = new byte[64];
+          ThreadLocalRandom.current().nextBytes(payload);
 
-    @Test
-    public void contentLengthMatchesActualDecodedBodySize() throws IOException {
-        byte[] payload = new byte[128];
-        ThreadLocalRandom.current().nextBytes(payload);
+          byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+          long encodedLen = encoded.length;
+          long decodedLen = payload.length;
 
-        byte[] encoded = encodeToBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
-        long encodedLen = encoded.length;
-        long decodedLen = payload.length;
+          HttpClient httpClient = request -> Mono.just(
+              new MockHttpResponse(request, 200, structuredDownloadResponseHeaders(encodedLen, decodedLen), encoded));
 
-        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen))
-            .set(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME,
-                StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE)
-            .set(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(decodedLen));
+          HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
+              context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+              return next.process();
+          }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded)))
-            .build();
+          HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+          HttpResponse response = pipeline.send(request, Context.NONE).block();
 
-        Context ctx = new Context(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
-        HttpResponse response = pipeline.send(getRequest(), ctx).block();
+          assertNotNull(response);
+          assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+      }
 
-        assertNotNull(response);
-        assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+      @Test
+      public void contentLengthMatchesActualDecodedBodySize() throws IOException {
+          byte[] payload = new byte[128];
+          ThreadLocalRandom.current().nextBytes(payload);
 
-        // Consume the body and verify it matches the original payload — the reported Content-Length
-        // must equal the actual number of bytes produced by the decoder.
-        byte[] body = Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(response.getBody()).block());
-        assertEquals(decodedLen, body.length);
-        assertArrayEquals(payload, body);
-    }
+          byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+          long encodedLen = encoded.length;
+          long decodedLen = payload.length;
 
-    @Test
-    public void contentLengthIsUnchangedWhenDecodingNotApplied() throws IOException {
-        byte[] payload = new byte[64];
-        ThreadLocalRandom.current().nextBytes(payload);
+          HttpClient httpClient = request -> Mono.just(
+              new MockHttpResponse(request, 200, structuredDownloadResponseHeaders(encodedLen, decodedLen), encoded));
 
-        byte[] encoded = encodeToBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
-        long encodedLen = encoded.length;
+          HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
+              context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+              return next.process();
+          }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
 
-        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen));
+          HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+          try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
+              assertNotNull(response);
+              assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded)))
-            .build();
+              byte[] body = Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(response.getBody()).block());
+              assertEquals(decodedLen, body.length);
+              assertArrayEquals(payload, body);
+          }
+      }
 
-        // No decoding context flag set — policy should pass the response through unchanged.
-        HttpResponse response = pipeline.send(getRequest()).block();
+      @Test
+      public void contentLengthIsUnchangedWhenDecodingNotApplied() throws IOException {
+          byte[] payload = new byte[64];
+          ThreadLocalRandom.current().nextBytes(payload);
 
-        assertNotNull(response);
-        assertEquals(String.valueOf(encodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-    }
-}
+          byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+          long encodedLen = encoded.length;
+
+          HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen));
+          HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded));
+
+          HttpPipeline pipeline = new HttpPipelineBuilder()
+              .policies(new StorageContentValidationDecoderPolicy())
+              .httpClient(httpClient)
+              .build();
+
+          HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+          HttpResponse response = pipeline.send(request, Context.NONE).block();
+
+          assertNotNull(response);
+          assertEquals(String.valueOf(encodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+      }
+
+      private static Stream<Arguments> segmentPayloadSizeAndTotalPayloadSizeSupplier() {
+          return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1), // larger than 4 MiB
+              Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), // smaller than 4 MiB, but not KB
+              Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 1024));
+      }
+
+      private static HttpHeaders structuredDownloadResponseHeaders(long contentLength, long structuredContentLength) {
+          HttpHeaders headers = new HttpHeaders();
+          headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+          headers.set(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME,
+              StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE);
+          headers.set(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME,
+              String.valueOf(structuredContentLength));
+          return headers;
+      }
+
+      private static byte[] encodeStructuredMessageWireBytes(byte[] originalData, int segmentLength,
+          StructuredMessageFlags flags) throws IOException {
+          StructuredMessageEncoder encoder = new StructuredMessageEncoder(originalData.length, segmentLength, flags);
+          Flux<ByteBuffer> flux = encoder.encode(ByteBuffer.wrap(originalData));
+          return Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(flux).block());
+      }
+  }

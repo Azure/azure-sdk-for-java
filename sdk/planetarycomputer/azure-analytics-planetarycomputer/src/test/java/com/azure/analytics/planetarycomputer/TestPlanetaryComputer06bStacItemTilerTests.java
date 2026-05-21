@@ -132,8 +132,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         CropGeoJsonOptions options
             = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData
-            = dataClient.cropGeoJson(collectionId, itemId, "png", options, feature, CropGeoJsonContentType.IMAGE_PNG);
+        BinaryData imageData = dataClient.cropGeoJson(collectionId, itemId, "png", options, feature);
 
         byte[] imageBytes = imageData.toBytes();
         System.out.println("Image size: " + imageBytes.length + " bytes");

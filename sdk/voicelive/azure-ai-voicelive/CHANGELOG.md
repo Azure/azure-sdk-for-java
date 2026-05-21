@@ -1,10 +1,50 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (Unreleased)
+
+This is the first General Availability (GA) release of the Azure VoiceLive client library for Java.
 
 ### Features Added
 
-### Breaking Changes
+- **Avatar voice synchronization** for video avatars:
+  - New `AzureVoiceType.AVATAR_VOICE_SYNC` and `AzureAvatarVoiceSyncVoice` class
+  - New server events `ServerEventSessionAvatarSwitchToSpeaking` / `ServerEventSessionAvatarSwitchToIdle`
+  - New `ServerEventResponseVideoDelta` for streaming avatar video frames
+  - New `ClientEventOutputAudioBufferClear` (`output_audio_buffer.clear`) and `ServerEventOutputAudioBufferCleared` (`output_audio_buffer.cleared`) for clearing the avatar output audio buffer
+- **Web search and file search tool calls**:
+  - New `ItemType.WEB_SEARCH_CALL`, `ItemType.FILE_SEARCH_CALL`
+  - New `ResponseWebSearchCallItem` (with `ResponseWebSearchCallItemStatus`) and `ResponseFileSearchCallItem` (with `ResponseFileSearchCallItemStatus`, plus `FileSearchResult` results)
+  - New lifecycle server events: `ServerEventResponseWebSearchCall{Searching,InProgress,Completed}` and `ServerEventResponseFileSearchCall{Searching,InProgress,Completed}`
+- **Transcription enhancements**:
+  - New transcription models on `AudioInputTranscriptionOptionsModel`: `GPT_4O_TRANSCRIBE_DIARIZE`, `MAI_TRANSCRIBE_1`
+  - New `TranscriptionPhrase` and `TranscriptionWord` types with timing/confidence information
+  - `SessionUpdateConversationItemInputAudioTranscriptionCompleted` now exposes `getLogprobs()` and `getPhrases()`
+  - New `ServerEventResponseAudioTranscriptAnnotationAdded` event
+- **Session include options and metadata**:
+  - New `SessionIncludeOption` expandable enum for opting into additional response payloads (e.g. logprobs, phrases, file-search results)
+  - `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse` now expose `include` (`List<SessionIncludeOption>`) and `metadata` (`Map<String,String>`, up to 16 entries)
+- **Personal voice models**: added `PersonalVoiceModels.DRAGON_HDOMNI_LATEST_NEURAL` and `MAI_VOICE_1`
+- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokens()` exposes reasoning token counts
+- **Interim response on response.create**: `ResponseCreateParams.setInterimResponse(BinaryData)` lets callers attach interim response config to a single response request
+- Significantly improved Javadoc for `ServerVadTurnDetection`, `AzureCustomVoice`, `AzurePersonalVoice`, `AzureStandardVoice`, `AzureSemanticVadTurnDetection*`, and other model types
+
+### Other Changes
+
+- Updated default service API version to track the latest TypeSpec spec.
+
+## 1.0.0-beta.6 (2026-05-01)
+
+### Features Added
+
+- Added built-in OpenTelemetry tracing support for voice sessions following GenAI Semantic Conventions:
+  - Defaults to `GlobalOpenTelemetry.getOrNoop()` for automatic Java agent detection with zero-cost no-op fallback
+  - Emits spans for `connect`, `send`, `recv`, and `close` operations with Python-aligned VoiceLive telemetry semantics
+  - Session-level counters: turn count, interruption count, audio bytes sent/received, first token latency, MCP call/list-tools counts
+  - Tracks response and item hierarchy IDs (`response_id`, `conversation_id`, `item_id`, `call_id`, `previous_item_id`, `output_index`) on send/recv spans
+  - Captures agent/session config attributes on connect spans (`gen_ai.agent.*`, `gen_ai.system_instructions`, `gen_ai.request.*`)
+  - Adds OpenTelemetry metrics (`gen_ai.client.operation.duration`, `gen_ai.client.token.usage`) with provider/server/model dimensions
+  - Content recording controlled via `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` environment variable (with legacy `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` fallback)
+- Added `GlobalTracingSample.java` demonstrating OpenTelemetry integration
 
 ### Bugs Fixed
 

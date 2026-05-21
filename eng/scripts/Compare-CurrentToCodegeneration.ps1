@@ -176,9 +176,17 @@ $generateScript = {
           throw
         }
       } finally {
-        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-          Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
-        }
+        # Sort by descending path length so deepest TempTypeSpecFiles copies are
+        # removed first. An outer TempTypeSpecFiles can contain nested copies inside
+        # node_modules/@azure-tools/<emitter>/TempTypeSpecFiles; without sorting,
+        # the recursive removal of an outer match can wipe a path that a later
+        # iteration still expects to exist. SilentlyContinue covers the residual
+        # cross-root race where deletion order alone is not enough.
+        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory |
+          Sort-Object -Property { $_.FullName.Length } -Descending |
+          ForEach-Object {
+            Remove-Item -Path $_.FullName -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+          }
       }
 
       # Update code snippets before comparing the diff

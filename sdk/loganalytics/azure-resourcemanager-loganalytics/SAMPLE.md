@@ -161,9 +161,7 @@
  */
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesAvailableServiceTiers.json
+     * x-ms-original-file: 2025-07-01/WorkspacesAvailableServiceTiers.json
      */
     /**
      * Sample code: AvailableServiceTiers.
@@ -190,9 +188,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersCreate.json
+     * x-ms-original-file: 2025-07-01/ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
@@ -231,9 +227,7 @@ public final class ClustersCreateOrUpdateSamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersDelete.json
+     * x-ms-original-file: 2025-07-01/ClustersDelete.json
      */
     /**
      * Sample code: ClustersDelete.
@@ -254,9 +248,7 @@ public final class ClustersDeleteSamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersGet.json
+     * x-ms-original-file: 2025-07-01/ClustersGet.json
      */
     /**
      * Sample code: ClustersGet.
@@ -278,9 +270,7 @@ public final class ClustersGetByResourceGroupSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersSubscriptionList.json
+     * x-ms-original-file: 2025-07-01/ClustersSubscriptionList.json
      */
     /**
      * Sample code: ClustersSubscriptionList.
@@ -301,9 +291,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.
@@ -334,9 +322,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/ClustersUpdate.json
+     * x-ms-original-file: 2025-07-01/ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
@@ -385,9 +371,7 @@ import java.util.Arrays;
  */
 public final class DataExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataExportCreateOrUpdate.json
+     * x-ms-original-file: 2025-07-01/DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.
@@ -414,9 +398,7 @@ public final class DataExportsCreateOrUpdateSamples {
  */
 public final class DataExportsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataExportDelete.json
+     * x-ms-original-file: 2025-07-01/DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.
@@ -438,9 +420,7 @@ public final class DataExportsDeleteSamples {
  */
 public final class DataExportsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataExportGet.json
+     * x-ms-original-file: 2025-07-01/DataExportGet.json
      */
     /**
      * Sample code: DataExportGet.
@@ -461,9 +441,7 @@ public final class DataExportsGetSamples {
  */
 public final class DataExportsListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataExportListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/DataExportListByWorkspace.json
      */
     /**
      * Sample code: DataExportGet.
@@ -489,9 +467,7 @@ import java.io.IOException;
  */
 public final class DataSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataSourcesCreate.json
+     * x-ms-original-file: 2025-07-01/DataSourcesCreate.json
      */
     /**
      * Sample code: DataSourcesCreate.
@@ -505,7 +481,7 @@ public final class DataSourcesCreateOrUpdateSamples {
             .withExistingWorkspace("OIAutoRest5123", "AzTest9724")
             .withProperties(SerializerFactory.createDefaultManagementSerializerAdapter()
                 .deserialize(
-                    "{\"LinkedResourceId\":\"/subscriptions/00000000-0000-0000-0000-00000000000/providers/microsoft.insights/eventtypes/management\"}",
+                    "{\"LinkedResourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management\"}",
                     Object.class, SerializerEncoding.JSON))
             .withKind(DataSourceKind.AZURE_ACTIVITY_LOG)
             .create();
@@ -521,9 +497,7 @@ public final class DataSourcesCreateOrUpdateSamples {
  */
 public final class DataSourcesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataSourcesDelete.json
+     * x-ms-original-file: 2025-07-01/DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.
@@ -545,9 +519,7 @@ public final class DataSourcesDeleteSamples {
  */
 public final class DataSourcesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataSourcesGet.json
+     * x-ms-original-file: 2025-07-01/DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.
@@ -569,9 +541,7 @@ public final class DataSourcesGetSamples {
  */
 public final class DataSourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/DataSourcesListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/DataSourcesListByWorkspace.json
      */
     /**
      * Sample code: DataSourcesListByWorkspace.
@@ -594,9 +564,7 @@ public final class DataSourcesListByWorkspaceSamples {
  */
 public final class DeletedWorkspacesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesSubscriptionList.json
+     * x-ms-original-file: 2025-07-01/WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -617,9 +585,7 @@ public final class DeletedWorkspacesListSamples {
  */
 public final class DeletedWorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/WorkspacesListByResourceGroupForDeleted.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -640,9 +606,7 @@ public final class DeletedWorkspacesListByResourceGroupSamples {
  */
 public final class GatewaysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesGatewaysDelete.json
+     * x-ms-original-file: 2025-07-01/WorkspacesGatewaysDelete.json
      */
     /**
      * Sample code: DeleteGateways.
@@ -651,7 +615,7 @@ public final class GatewaysDeleteSamples {
      */
     public static void deleteGateways(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.gateways()
-            .deleteWithResponse("OIAutoRest5123", "aztest5048", "00000000-0000-0000-0000-00000000000",
+            .deleteWithResponse("OIAutoRest5123", "aztest5048", "00000000-0000-0000-0000-000000000000",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -665,9 +629,7 @@ public final class GatewaysDeleteSamples {
  */
 public final class IntelligencePacksDisableSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesDisableIntelligencePack.json
+     * x-ms-original-file: 2025-07-01/WorkspacesDisableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksDisable.
@@ -689,9 +651,7 @@ public final class IntelligencePacksDisableSamples {
  */
 public final class IntelligencePacksEnableSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesEnableIntelligencePack.json
+     * x-ms-original-file: 2025-07-01/WorkspacesEnableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksEnable.
@@ -713,9 +673,7 @@ public final class IntelligencePacksEnableSamples {
  */
 public final class IntelligencePacksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesListIntelligencePacks.json
+     * x-ms-original-file: 2025-07-01/WorkspacesListIntelligencePacks.json
      */
     /**
      * Sample code: IntelligencePacksList.
@@ -736,9 +694,7 @@ public final class IntelligencePacksListSamples {
  */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedServicesCreate.json
+     * x-ms-original-file: 2025-07-01/LinkedServicesCreate.json
      */
     /**
      * Sample code: LinkedServicesCreate.
@@ -750,7 +706,7 @@ public final class LinkedServicesCreateOrUpdateSamples {
             .define("Cluster")
             .withExistingWorkspace("mms-eus", "TestLinkWS")
             .withWriteAccessResourceId(
-                "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/clusters/testcluster")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/clusters/testcluster")
             .create();
     }
 }
@@ -764,9 +720,7 @@ public final class LinkedServicesCreateOrUpdateSamples {
  */
 public final class LinkedServicesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedServicesDelete.json
+     * x-ms-original-file: 2025-07-01/LinkedServicesDelete.json
      */
     /**
      * Sample code: LinkedServicesDelete.
@@ -787,9 +741,7 @@ public final class LinkedServicesDeleteSamples {
  */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedServicesGet.json
+     * x-ms-original-file: 2025-07-01/LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.
@@ -810,9 +762,7 @@ public final class LinkedServicesGetSamples {
  */
 public final class LinkedServicesListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedServicesListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/LinkedServicesListByWorkspace.json
      */
     /**
      * Sample code: LinkedServicesListByWorkspace.
@@ -837,9 +787,7 @@ import java.util.Arrays;
  */
 public final class LinkedStorageAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedStorageAccountsCreate.json
+     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsCreate.json
      */
     /**
      * Sample code: LinkedStorageAccountsCreate.
@@ -851,8 +799,8 @@ public final class LinkedStorageAccountsCreateOrUpdateSamples {
             .define(DataSourceType.CUSTOM_LOGS)
             .withExistingWorkspace("mms-eus", "testLinkStorageAccountsWS")
             .withStorageAccountIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageA",
-                "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageB"))
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageA",
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageB"))
             .create();
     }
 }
@@ -868,9 +816,7 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
  */
 public final class LinkedStorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedStorageAccountsDelete.json
+     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: LinkedStorageAccountsDelete.
@@ -895,9 +841,7 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
  */
 public final class LinkedStorageAccountsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedStorageAccountsGet.json
+     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsGet.json
      */
     /**
      * Sample code: LinkedStorageAccountsGet.
@@ -920,9 +864,7 @@ public final class LinkedStorageAccountsGetSamples {
  */
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/LinkedStorageAccountsListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsListByWorkspace.json
      */
     /**
      * Sample code: Gets list of linked storage accounts on a workspace.
@@ -945,9 +887,7 @@ public final class LinkedStorageAccountsListByWorkspaceSamples {
  */
 public final class ManagementGroupsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesListManagementGroups.json
+     * x-ms-original-file: 2025-07-01/WorkspacesListManagementGroups.json
      */
     /**
      * Sample code: WorkspacesListManagementGroups.
@@ -969,9 +909,7 @@ public final class ManagementGroupsListSamples {
  */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/OperationStatusesGet.json
+     * x-ms-original-file: 2025-07-01/OperationStatusesGet.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -993,9 +931,7 @@ public final class OperationStatusesGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/OperationsListByTenant.json
+     * x-ms-original-file: 2025-07-01/OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -1016,9 +952,7 @@ public final class OperationsListSamples {
  */
 public final class QueriesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesDelete.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesDelete.json
      */
     /**
      * Sample code: QueryDelete.
@@ -1041,9 +975,7 @@ public final class QueriesDeleteSamples {
  */
 public final class QueriesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesGet.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesGet.json
      */
     /**
      * Sample code: QueryGet.
@@ -1066,9 +998,7 @@ public final class QueriesGetSamples {
  */
 public final class QueriesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesList.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesList.json
      */
     /**
      * Sample code: QueryList.
@@ -1094,9 +1024,7 @@ import java.util.Map;
  */
 public final class QueriesPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesPut.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesPut.json
      */
     /**
      * Sample code: QueryPut.
@@ -1144,9 +1072,7 @@ import java.util.Map;
  */
 public final class QueriesSearchSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesSearch.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesSearch.json
      */
     /**
      * Sample code: QuerySearch.
@@ -1191,9 +1117,7 @@ import java.util.Map;
  */
 public final class QueriesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackQueriesUpdate.json
+     * x-ms-original-file: 2025-07-01/QueryPackQueriesUpdate.json
      */
     /**
      * Sample code: QueryPatch.
@@ -1240,9 +1164,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksCreate.json
+     * x-ms-original-file: 2025-07-01/QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
@@ -1258,9 +1180,7 @@ public final class QueryPacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksUpdate.json
+     * x-ms-original-file: 2025-07-01/QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.
@@ -1302,9 +1222,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksCreateNoName.json
+     * x-ms-original-file: 2025-07-01/QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
@@ -1318,9 +1236,7 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPackUpdateNoName.json
+     * x-ms-original-file: 2025-07-01/QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.
@@ -1356,9 +1272,7 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
  */
 public final class QueryPacksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksDelete.json
+     * x-ms-original-file: 2025-07-01/QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.
@@ -1380,9 +1294,7 @@ public final class QueryPacksDeleteSamples {
  */
 public final class QueryPacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksGet.json
+     * x-ms-original-file: 2025-07-01/QueryPacksGet.json
      */
     /**
      * Sample code: QueryPackGet.
@@ -1404,9 +1316,7 @@ public final class QueryPacksGetByResourceGroupSamples {
  */
 public final class QueryPacksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksList.json
+     * x-ms-original-file: 2025-07-01/QueryPacksList.json
      */
     /**
      * Sample code: QueryPacksList.
@@ -1427,9 +1337,7 @@ public final class QueryPacksListSamples {
  */
 public final class QueryPacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/QueryPacksListByResourceGroup.json
      */
     /**
      * Sample code: QueryPackListByResourceGroup.
@@ -1455,9 +1363,7 @@ import java.util.Map;
  */
 public final class QueryPacksUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/QueryPacksUpdateTagsOnly.json
+     * x-ms-original-file: 2025-07-01/QueryPacksUpdateTagsOnly.json
      */
     /**
      * Sample code: QueryPackUpdateTagsOnly.
@@ -1496,9 +1402,7 @@ import java.util.Arrays;
  */
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesSavedSearchesCreateOrUpdate.json
+     * x-ms-original-file: 2025-07-01/WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.
@@ -1507,7 +1411,7 @@ public final class SavedSearchesCreateOrUpdateSamples {
      */
     public static void savedSearchCreateOrUpdate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.savedSearches()
-            .define("00000000-0000-0000-0000-00000000000")
+            .define("00000000-0000-0000-0000-000000000000")
             .withExistingWorkspace("TestRG", "TestWS")
             .withCategory("Saved Search Test Category")
             .withDisplayName("Create or Update Saved Search Test")
@@ -1529,9 +1433,7 @@ public final class SavedSearchesCreateOrUpdateSamples {
  */
 public final class SavedSearchesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesDeleteSavedSearches.json
+     * x-ms-original-file: 2025-07-01/WorkspacesDeleteSavedSearches.json
      */
     /**
      * Sample code: SavedSearchesDelete.
@@ -1540,7 +1442,7 @@ public final class SavedSearchesDeleteSamples {
      */
     public static void savedSearchesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.savedSearches()
-            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-000000000000",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1554,9 +1456,7 @@ public final class SavedSearchesDeleteSamples {
  */
 public final class SavedSearchesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesSavedSearchesGet.json
+     * x-ms-original-file: 2025-07-01/WorkspacesSavedSearchesGet.json
      */
     /**
      * Sample code: SavedSearchesGet.
@@ -1565,7 +1465,7 @@ public final class SavedSearchesGetSamples {
      */
     public static void savedSearchesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.savedSearches()
-            .getWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+            .getWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-000000000000",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1579,9 +1479,7 @@ public final class SavedSearchesGetSamples {
  */
 public final class SavedSearchesListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SavedSearchesListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/SavedSearchesListByWorkspace.json
      */
     /**
      * Sample code: SavedSearchesList.
@@ -1602,9 +1500,7 @@ public final class SavedSearchesListByWorkspaceSamples {
  */
 public final class SchemaGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SavedSearchesGetSchema.json
+     * x-ms-original-file: 2025-07-01/SavedSearchesGetSchema.json
      */
     /**
      * Sample code: WorkspacesGetSchema.
@@ -1625,9 +1521,7 @@ public final class SchemaGetSamples {
  */
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesGetSharedKeys.json
+     * x-ms-original-file: 2025-07-01/WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.
@@ -1648,9 +1542,7 @@ public final class SharedKeysOperationGetSharedKeysSamples {
  */
 public final class SharedKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesRegenerateSharedKeys.json
+     * x-ms-original-file: 2025-07-01/WorkspacesRegenerateSharedKeys.json
      */
     /**
      * Sample code: RegenerateSharedKeys.
@@ -1674,9 +1566,7 @@ import java.util.Arrays;
  */
 public final class StorageInsightConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/StorageInsightsCreateOrUpdate.json
+     * x-ms-original-file: 2025-07-01/StorageInsightsCreateOrUpdate.json
      */
     /**
      * Sample code: StorageInsightsCreate.
@@ -1705,9 +1595,7 @@ public final class StorageInsightConfigsCreateOrUpdateSamples {
  */
 public final class StorageInsightConfigsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/StorageInsightsDelete.json
+     * x-ms-original-file: 2025-07-01/StorageInsightsDelete.json
      */
     /**
      * Sample code: StorageInsightsDelete.
@@ -1729,9 +1617,7 @@ public final class StorageInsightConfigsDeleteSamples {
  */
 public final class StorageInsightConfigsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/StorageInsightsGet.json
+     * x-ms-original-file: 2025-07-01/StorageInsightsGet.json
      */
     /**
      * Sample code: StorageInsightsGet.
@@ -1753,9 +1639,7 @@ public final class StorageInsightConfigsGetSamples {
  */
 public final class StorageInsightConfigsListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/StorageInsightsListByWorkspace.json
+     * x-ms-original-file: 2025-07-01/StorageInsightsListByWorkspace.json
      */
     /**
      * Sample code: StorageInsightsList.
@@ -1781,9 +1665,7 @@ import java.time.OffsetDateTime;
  */
 public final class SummaryLogsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsUpsert.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsUpsert.json
      */
     /**
      * Sample code: SummaryLogsUpsert.
@@ -1813,9 +1695,7 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
  */
 public final class SummaryLogsOperationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsDelete.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsDelete.json
      */
     /**
      * Sample code: SummaryLogsDelete.
@@ -1837,9 +1717,7 @@ public final class SummaryLogsOperationDeleteSamples {
  */
 public final class SummaryLogsOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsGet.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsGet.json
      */
     /**
      * Sample code: SummaryLogsGet.
@@ -1861,9 +1739,7 @@ public final class SummaryLogsOperationGetSamples {
  */
 public final class SummaryLogsOperationListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsList.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsList.json
      */
     /**
      * Sample code: SummaryLogsListByWorkspace.
@@ -1889,9 +1765,7 @@ import java.time.OffsetDateTime;
  */
 public final class SummaryLogsOperationRetryBinSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsRetryBin.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsRetryBin.json
      */
     /**
      * Sample code: SummaryLogsRetryBin.
@@ -1916,9 +1790,7 @@ public final class SummaryLogsOperationRetryBinSamples {
  */
 public final class SummaryLogsOperationStartSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsStart.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsStart.json
      */
     /**
      * Sample code: SummaryLogsStart.
@@ -1940,9 +1812,7 @@ public final class SummaryLogsOperationStartSamples {
  */
 public final class SummaryLogsOperationStopSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/SummaryLogsStop.json
+     * x-ms-original-file: 2025-07-01/SummaryLogsStop.json
      */
     /**
      * Sample code: SummaryLogsStop.
@@ -1964,9 +1834,7 @@ public final class SummaryLogsOperationStopSamples {
  */
 public final class TablesCancelSearchSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesSearchCancel.json
+     * x-ms-original-file: 2025-07-01/TablesSearchCancel.json
      */
     /**
      * Sample code: TablesSearchCancel.
@@ -1994,9 +1862,7 @@ import java.util.Arrays;
  */
 public final class TablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesUpsert.json
+     * x-ms-original-file: 2025-07-01/TablesUpsertForTable.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -2024,9 +1890,7 @@ public final class TablesCreateOrUpdateSamples {
  */
 public final class TablesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesDelete.json
+     * x-ms-original-file: 2025-07-01/TablesDelete.json
      */
     /**
      * Sample code: TablesDelete.
@@ -2047,9 +1911,7 @@ public final class TablesDeleteSamples {
  */
 public final class TablesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesGet.json
+     * x-ms-original-file: 2025-07-01/TablesGet.json
      */
     /**
      * Sample code: TablesGet.
@@ -2071,9 +1933,7 @@ public final class TablesGetSamples {
  */
 public final class TablesListByWorkspaceSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesList.json
+     * x-ms-original-file: 2025-07-01/TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
@@ -2094,9 +1954,7 @@ public final class TablesListByWorkspaceSamples {
  */
 public final class TablesMigrateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesMigrate.json
+     * x-ms-original-file: 2025-07-01/TablesMigrate.json
      */
     /**
      * Sample code: TablesMigrate.
@@ -2124,9 +1982,7 @@ import java.util.Arrays;
  */
 public final class TablesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/TablesUpsert.json
+     * x-ms-original-file: 2025-07-01/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -2155,9 +2011,7 @@ public final class TablesUpdateSamples {
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesListUsages.json
+     * x-ms-original-file: 2025-07-01/WorkspacesListUsages.json
      */
     /**
      * Sample code: UsagesList.
@@ -2178,9 +2032,7 @@ public final class UsagesListSamples {
  */
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesPurgeOperation.json
+     * x-ms-original-file: 2025-07-01/WorkspacesPurgeOperation.json
      */
     /**
      * Sample code: WorkspacePurgeOperation.
@@ -2207,9 +2059,7 @@ import java.util.Arrays;
  */
 public final class WorkspacePurgePurgeSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesPurgeResourceId.json
+     * x-ms-original-file: 2025-07-01/WorkspacesPurgeResourceId.json
      */
     /**
      * Sample code: WorkspacePurgeResourceId.
@@ -2227,9 +2077,7 @@ public final class WorkspacePurgePurgeSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesPurge.json
+     * x-ms-original-file: 2025-07-01/WorkspacesPurge.json
      */
     /**
      * Sample code: WorkspacePurge.
@@ -2261,9 +2109,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesCreate.json
+     * x-ms-original-file: 2025-07-01/WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
@@ -2303,9 +2149,7 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesDelete.json
+     * x-ms-original-file: 2025-07-01/WorkspacesDelete.json
      */
     /**
      * Sample code: WorkspacesDelete.
@@ -2326,9 +2170,7 @@ public final class WorkspacesDeleteSamples {
  */
 public final class WorkspacesFailbackSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesFailback.json
+     * x-ms-original-file: 2025-07-01/WorkspacesFailback.json
      */
     /**
      * Sample code: WorkspacesFailover.
@@ -2349,9 +2191,7 @@ public final class WorkspacesFailbackSamples {
  */
 public final class WorkspacesFailoverSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesFailover.json
+     * x-ms-original-file: 2025-07-01/WorkspacesFailover.json
      */
     /**
      * Sample code: WorkspacesFailover.
@@ -2372,9 +2212,7 @@ public final class WorkspacesFailoverSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesGet.json
+     * x-ms-original-file: 2025-07-01/WorkspacesGet.json
      */
     /**
      * Sample code: WorkspaceGet.
@@ -2396,9 +2234,7 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesGetNspSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/NSPForWorkspaces_Get.json
+     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_Get.json
      */
     /**
      * Sample code: Get NSP config by name for Scheduled Query Rule.
@@ -2422,9 +2258,7 @@ public final class WorkspacesGetNspSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesSubscriptionList.json
+     * x-ms-original-file: 2025-07-01/WorkspacesSubscriptionListForWorkSpace.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -2445,9 +2279,7 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -2468,9 +2300,7 @@ public final class WorkspacesListByResourceGroupSamples {
  */
 public final class WorkspacesListNspSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/NSPForWorkspaces_List.json
+     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_List.json
      */
     /**
      * Sample code: List NSP configs by Scheduled Query Rule.
@@ -2492,9 +2322,7 @@ public final class WorkspacesListNspSamples {
  */
 public final class WorkspacesReconcileNspSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/NSPForWorkspaces_Reconcile.json
+     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_Reconcile.json
      */
     /**
      * Sample code: Reconcile NSP config for Scheduled Query Rule.
@@ -2522,9 +2350,7 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
-     * 07-01/examples/WorkspacesUpdate.json
+     * x-ms-original-file: 2025-07-01/WorkspacesUpdate.json
      */
     /**
      * Sample code: WorkspacesPatch.

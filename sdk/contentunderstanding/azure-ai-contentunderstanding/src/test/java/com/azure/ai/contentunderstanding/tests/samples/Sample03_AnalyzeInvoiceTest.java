@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSource;
@@ -245,5 +246,22 @@ public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestB
                 + (content != null ? content.getClass().getSimpleName() : "null"));
         }
         // END:Assertion_ContentUnderstandingExtractInvoiceFields
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInput
+        // The fields above can also be packaged into a single LLM-ready text block.
+        // toLlmInput renders all extracted fields as YAML front matter followed by
+        // the markdown body, so an LLM can consume both structured data and document text
+        // in one shot. For advanced options, see Sample_Advanced_ToLlmInput.
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInput
+
+        // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInput
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("fields:"));
+        System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingInvoiceToLlmInput
     }
 }

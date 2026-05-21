@@ -523,4 +523,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
-[unit_test]: https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing
+[unit_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md
