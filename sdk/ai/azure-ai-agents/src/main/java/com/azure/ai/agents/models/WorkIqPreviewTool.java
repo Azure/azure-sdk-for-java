@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * A WorkIQ server-side tool.
@@ -100,6 +101,7 @@ public final class WorkIqPreviewTool extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +121,7 @@ public final class WorkIqPreviewTool extends Tool {
             ToolType type = ToolType.WORK_IQ_PREVIEW;
             String name = null;
             String description = null;
+            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -130,6 +133,8 @@ public final class WorkIqPreviewTool extends Tool {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -138,6 +143,7 @@ public final class WorkIqPreviewTool extends Tool {
             deserializedWorkIqPreviewTool.type = type;
             deserializedWorkIqPreviewTool.name = name;
             deserializedWorkIqPreviewTool.description = description;
+            deserializedWorkIqPreviewTool.toolConfigs = toolConfigs;
             return deserializedWorkIqPreviewTool;
         });
     }
@@ -166,5 +172,39 @@ public final class WorkIqPreviewTool extends Tool {
     @Generated
     public String getProjectConnectionId() {
         return this.projectConnectionId;
+    }
+
+    /*
+     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the WorkIqPreviewTool object itself.
+     */
+    @Generated
+    public WorkIqPreviewTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
     }
 }

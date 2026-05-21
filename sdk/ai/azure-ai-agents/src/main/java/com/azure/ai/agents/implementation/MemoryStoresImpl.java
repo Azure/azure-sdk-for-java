@@ -292,7 +292,7 @@ public final class MemoryStoresImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
             RequestOptions requestOptions, Context context);
 
-        @Post("/memory_stores/{name}/memories")
+        @Post("/memory_stores/{name}/items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -304,7 +304,7 @@ public final class MemoryStoresImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
             RequestOptions requestOptions, Context context);
 
-        @Post("/memory_stores/{name}/memories")
+        @Post("/memory_stores/{name}/items")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -316,7 +316,7 @@ public final class MemoryStoresImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
             RequestOptions requestOptions, Context context);
 
-        @Post("/memory_stores/{name}/memories/{memory_id}")
+        @Post("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -329,7 +329,7 @@ public final class MemoryStoresImpl {
             @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
             Context context);
 
-        @Post("/memory_stores/{name}/memories/{memory_id}")
+        @Post("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -342,7 +342,7 @@ public final class MemoryStoresImpl {
             @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
             Context context);
 
-        @Get("/memory_stores/{name}/memories/{memory_id}")
+        @Get("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -353,7 +353,7 @@ public final class MemoryStoresImpl {
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/memory_stores/{name}/memories/{memory_id}")
+        @Get("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -364,7 +364,7 @@ public final class MemoryStoresImpl {
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/memory_stores/{name}/memories")
+        @Post("/memory_stores/{name}/items:list")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -373,9 +373,10 @@ public final class MemoryStoresImpl {
         Mono<Response<BinaryData>> listMemories(@HostParam("endpoint") String endpoint,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Get("/memory_stores/{name}/memories")
+        @Post("/memory_stores/{name}/items:list")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -384,9 +385,10 @@ public final class MemoryStoresImpl {
         Response<BinaryData> listMemoriesSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Delete("/memory_stores/{name}/memories/{memory_id}")
+        @Delete("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -397,7 +399,7 @@ public final class MemoryStoresImpl {
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Delete("/memory_stores/{name}/memories/{memory_id}")
+        @Delete("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -433,7 +435,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -493,7 +495,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -548,7 +550,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -605,7 +607,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -648,7 +650,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -688,7 +690,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -747,7 +749,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -809,7 +811,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -864,7 +866,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -924,7 +926,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -959,7 +961,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -990,7 +992,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -1900,7 +1902,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
@@ -1946,7 +1948,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
@@ -2243,6 +2245,8 @@ public final class MemoryStoresImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2259,6 +2263,16 @@ public final class MemoryStoresImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2274,6 +2288,7 @@ public final class MemoryStoresImpl {
      * </pre>
      * 
      * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2283,12 +2298,13 @@ public final class MemoryStoresImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMemoriesSinglePageAsync(String name, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listMemoriesSinglePageAsync(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMemories(this.client.getEndpoint(), foundryFeatures, name,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -2299,6 +2315,8 @@ public final class MemoryStoresImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2315,6 +2333,16 @@ public final class MemoryStoresImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2330,6 +2358,7 @@ public final class MemoryStoresImpl {
      * </pre>
      * 
      * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2338,8 +2367,9 @@ public final class MemoryStoresImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMemoriesAsync(String name, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listMemoriesSinglePageAsync(name, requestOptions));
+    public PagedFlux<BinaryData> listMemoriesAsync(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listMemoriesSinglePageAsync(name, listMemoriesRequest, requestOptions));
     }
 
     /**
@@ -2348,6 +2378,8 @@ public final class MemoryStoresImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2364,6 +2396,16 @@ public final class MemoryStoresImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2379,6 +2421,7 @@ public final class MemoryStoresImpl {
      * </pre>
      * 
      * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2387,11 +2430,12 @@ public final class MemoryStoresImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listMemoriesSinglePage(String name, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listMemoriesSinglePage(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -2402,6 +2446,8 @@ public final class MemoryStoresImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2418,6 +2464,16 @@ public final class MemoryStoresImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2433,6 +2489,7 @@ public final class MemoryStoresImpl {
      * </pre>
      * 
      * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2441,8 +2498,9 @@ public final class MemoryStoresImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMemories(String name, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listMemoriesSinglePage(name, requestOptions));
+    public PagedIterable<BinaryData> listMemories(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listMemoriesSinglePage(name, listMemoriesRequest, requestOptions));
     }
 
     /**
@@ -2452,8 +2510,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
-     *     name: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     memory_id: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -2486,8 +2543,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory.deleted) (Required)
-     *     name: String (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     memory_id: String (Required)
      *     deleted: boolean (Required)
      * }

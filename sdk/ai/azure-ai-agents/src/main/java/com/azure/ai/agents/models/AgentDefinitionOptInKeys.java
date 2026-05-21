@@ -19,11 +19,6 @@ public enum AgentDefinitionOptInKeys {
     WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),
 
     /**
-     * Enum value ContainerAgents=V1Preview.
-     */
-    CONTAINER_AGENTS_V1_PREVIEW("ContainerAgents=V1Preview"),
-
-    /**
      * Enum value AgentEndpoints=V1Preview.
      */
     AGENT_ENDPOINT_V1_PREVIEW("AgentEndpoints=V1Preview"),

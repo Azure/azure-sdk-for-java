@@ -18,16 +18,10 @@ import java.io.IOException;
 public final class DeleteMemoryResponse implements JsonSerializable<DeleteMemoryResponse> {
 
     /*
-     * The object type. Always 'memory.deleted'.
+     * The object type. Always 'memory_store.item.deleted'.
      */
     @Generated
     private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_DELETED;
-
-    /*
-     * The name of the memory store.
-     */
-    @Generated
-    private final String name;
 
     /*
      * The unique ID of the deleted memory item.
@@ -42,37 +36,13 @@ public final class DeleteMemoryResponse implements JsonSerializable<DeleteMemory
     private final boolean deleted;
 
     /**
-     * Creates an instance of DeleteMemoryResponse class.
-     *
-     * @param name the name value to set.
-     * @param memoryId the memoryId value to set.
-     * @param deleted the deleted value to set.
-     */
-    @Generated
-    private DeleteMemoryResponse(String name, String memoryId, boolean deleted) {
-        this.name = name;
-        this.memoryId = memoryId;
-        this.deleted = deleted;
-    }
-
-    /**
-     * Get the object property: The object type. Always 'memory.deleted'.
+     * Get the object property: The object type. Always 'memory_store.item.deleted'.
      *
      * @return the object value.
      */
     @Generated
     public MemoryStoreObjectType getObject() {
         return this.object;
-    }
-
-    /**
-     * Get the name property: The name of the memory store.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
     }
 
     /**
@@ -103,7 +73,6 @@ public final class DeleteMemoryResponse implements JsonSerializable<DeleteMemory
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("memory_id", this.memoryId);
         jsonWriter.writeBooleanField("deleted", this.deleted);
         return jsonWriter.writeEndObject();
@@ -121,15 +90,12 @@ public final class DeleteMemoryResponse implements JsonSerializable<DeleteMemory
     @Generated
     public static DeleteMemoryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
             String memoryId = null;
             boolean deleted = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("memory_id".equals(fieldName)) {
+                if ("memory_id".equals(fieldName)) {
                     memoryId = reader.getString();
                 } else if ("deleted".equals(fieldName)) {
                     deleted = reader.getBoolean();
@@ -137,7 +103,19 @@ public final class DeleteMemoryResponse implements JsonSerializable<DeleteMemory
                     reader.skipChildren();
                 }
             }
-            return new DeleteMemoryResponse(name, memoryId, deleted);
+            return new DeleteMemoryResponse(memoryId, deleted);
         });
+    }
+
+    /**
+     * Creates an instance of DeleteMemoryResponse class.
+     *
+     * @param memoryId the memoryId value to set.
+     * @param deleted the deleted value to set.
+     */
+    @Generated
+    private DeleteMemoryResponse(String memoryId, boolean deleted) {
+        this.memoryId = memoryId;
+        this.deleted = deleted;
     }
 }
