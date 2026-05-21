@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SessionLogAsyncTest extends ClientTestBase {
     private static final String AGENT_NAME = "MySessionHostedAgent3";
     private static final String AGENT_VERSION = "16";
-    private static final String ISOLATION_KEY = "sse-validation";
     private static final String SESSION_ID = "sse-validation-record-async";
 
     @RecordWithoutRequestBody
@@ -42,7 +41,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
 
         deleteSession(client);
         AgentSessionResource session = client
-            .createSessionWithResponse(AGENT_NAME, ISOLATION_KEY,
+            .createSessionWithResponse(AGENT_NAME,
                 BinaryData.fromObject(new com.azure.ai.agents.implementation.models.CreateSessionRequest(
                     new VersionRefIndicator(AGENT_VERSION)).setAgentSessionId(SESSION_ID)),
                 featureOptions)
@@ -78,8 +77,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     }
 
     private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
-        return client
-            .deleteSession(AGENT_NAME, SESSION_ID, ISOLATION_KEY, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+        return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
             .onErrorResume(error -> Mono.empty());
     }
 

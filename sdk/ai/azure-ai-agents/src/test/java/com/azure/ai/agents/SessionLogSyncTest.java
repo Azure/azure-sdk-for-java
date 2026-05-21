@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 public class SessionLogSyncTest extends ClientTestBase {
     private static final String AGENT_NAME = "MySessionHostedAgent3";
     private static final String AGENT_VERSION = "16";
-    private static final String ISOLATION_KEY = "sse-validation";
     private static final String SESSION_ID = "sse-validation-record-sync";
 
     @RecordWithoutRequestBody
@@ -47,7 +46,7 @@ public class SessionLogSyncTest extends ClientTestBase {
 
         deleteSession(client);
         AgentSessionResource session = client
-            .createSessionWithResponse(AGENT_NAME, ISOLATION_KEY,
+            .createSessionWithResponse(AGENT_NAME,
                 BinaryData.fromObject(new com.azure.ai.agents.implementation.models.CreateSessionRequest(
                     new VersionRefIndicator(AGENT_VERSION)).setAgentSessionId(SESSION_ID)),
                 featureOptions)
@@ -88,8 +87,7 @@ public class SessionLogSyncTest extends ClientTestBase {
 
     private static void deleteSession(AgentsClient client) {
         try {
-            client.deleteSession(AGENT_NAME, SESSION_ID, ISOLATION_KEY,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
+            client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW);
         } catch (RuntimeException ignored) {
             // Cleanup best effort.
         }
