@@ -3,6 +3,14 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
@@ -24,16 +32,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -49,7 +47,6 @@ public class Utility {
     public static final String NAME = "name";
     public static final String PARAMETERS = "parameters";
     public static final String URI = "uri";
-    private static final String AFTER_TAG = "after=";
 
     /**
      * Represents any value in Etag.
@@ -217,34 +214,9 @@ public class Utility {
         return tagsFilters;
     }
 
-    // Parse the 'after' query parameter value from the Link header.
-    // Link header format: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
-    private static String parseAfterParam(String linkHeader) {
-        String nextLink = parseNextLink(linkHeader);
-        if (nextLink == null) {
-            return null;
-        }
-        int queryStart = nextLink.indexOf('?');
-        if (queryStart == -1) {
-            return null;
-        }
-        for (String param : nextLink.substring(queryStart + 1).split("&")) {
-            if (param.startsWith(AFTER_TAG)) {
-                try {
-                    return URLDecoder.decode(param.substring(AFTER_TAG.length()), StandardCharsets.UTF_8.name());
-                } catch (java.io.UnsupportedEncodingException e) {
-                    // UTF-8 is always supported
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return null;
-    }
-
     // Convert a HEAD response to a PagedResponse with empty items.
-    public static PagedResponse<ConfigurationSetting>
-        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
-        String continuationToken = parseAfterParam(response.getHeaders().getValue(HttpHeaderName.LINK));
+    public static PagedResponse<ConfigurationSetting>  toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+        String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             Collections.emptyList(), continuationToken, null);
     }
@@ -257,7 +229,7 @@ public class Utility {
             return Mono.error(error);
         }
 
-        String continuationToken = parseAfterParam(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
         if (httpResponse.getStatusCode() == 304) {
             return Mono.just(new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                 httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null));
@@ -274,7 +246,7 @@ public class Utility {
             throw logger.logExceptionAsError(error);
         }
 
-        String continuationToken = parseAfterParam(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
         if (httpResponse.getStatusCode() == 304) {
             return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                 httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null);
