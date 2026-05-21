@@ -144,8 +144,8 @@ public class TranscriptionClientJavaDocCodeSnippets {
         if (result.getPhrases() != null) {
             result.getPhrases().forEach(phrase -> {
                 System.out.printf("Phrase (%.2f-%.2fs): %s%n",
-                    phrase.getOffsetInMs().toMillis() / 1000.0,
-                    (phrase.getOffsetInMs().toMillis() + phrase.getDuration().toMillis()) / 1000.0,
+                    phrase.getOffset().toMillis() / 1000.0,
+                    (phrase.getOffset().toMillis() + phrase.getDuration().toMillis()) / 1000.0,
                     phrase.getText());
 
                 // Get word-level timing information
@@ -153,7 +153,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
                     phrase.getWords().forEach(word -> {
                         System.out.printf("  Word: \"%s\" at %.2fs%n",
                             word.getText(),
-                            word.getOffsetInMs().toMillis() / 1000.0);
+                            word.getOffset().toMillis() / 1000.0);
                     });
                 }
             });

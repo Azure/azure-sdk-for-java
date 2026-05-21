@@ -81,6 +81,26 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
      */
     private Integer podMaxPids;
 
+    /*
+     * Specifies the default seccomp profile applied to all workloads. If not specified, 'Unconfined' will be used by
+     * default.
+     */
+    private SeccompDefault seccompDefault;
+
+    /*
+     * Kube-reserved values for kubelet. When a value is not set, the system-computed default based on VM size is used.
+     * See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on computed defaults. Only
+     * applicable for Linux nodepools.
+     */
+    private KubeReserved kubeReserved;
+
+    /*
+     * Hard eviction thresholds for kubelet. When a threshold is not set, the system default is used. See [AKS node
+     * resource reservations](https://aka.ms/aks/nodereservations) for details on computed defaults. Only applicable for
+     * Linux nodepools.
+     */
+    private HardEvictionThreshold hardEvictionThreshold;
+
     /**
      * Creates an instance of KubeletConfig class.
      */
@@ -332,11 +352,87 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     }
 
     /**
+     * Get the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
+     * specified, 'Unconfined' will be used by default.
+     * 
+     * @return the seccompDefault value.
+     */
+    public SeccompDefault seccompDefault() {
+        return this.seccompDefault;
+    }
+
+    /**
+     * Set the seccompDefault property: Specifies the default seccomp profile applied to all workloads. If not
+     * specified, 'Unconfined' will be used by default.
+     * 
+     * @param seccompDefault the seccompDefault value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withSeccompDefault(SeccompDefault seccompDefault) {
+        this.seccompDefault = seccompDefault;
+        return this;
+    }
+
+    /**
+     * Get the kubeReserved property: Kube-reserved values for kubelet. When a value is not set, the system-computed
+     * default based on VM size is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for
+     * details on computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @return the kubeReserved value.
+     */
+    public KubeReserved kubeReserved() {
+        return this.kubeReserved;
+    }
+
+    /**
+     * Set the kubeReserved property: Kube-reserved values for kubelet. When a value is not set, the system-computed
+     * default based on VM size is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for
+     * details on computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @param kubeReserved the kubeReserved value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withKubeReserved(KubeReserved kubeReserved) {
+        this.kubeReserved = kubeReserved;
+        return this;
+    }
+
+    /**
+     * Get the hardEvictionThreshold property: Hard eviction thresholds for kubelet. When a threshold is not set, the
+     * system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on
+     * computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @return the hardEvictionThreshold value.
+     */
+    public HardEvictionThreshold hardEvictionThreshold() {
+        return this.hardEvictionThreshold;
+    }
+
+    /**
+     * Set the hardEvictionThreshold property: Hard eviction thresholds for kubelet. When a threshold is not set, the
+     * system default is used. See [AKS node resource reservations](https://aka.ms/aks/nodereservations) for details on
+     * computed defaults. Only applicable for Linux nodepools.
+     * 
+     * @param hardEvictionThreshold the hardEvictionThreshold value to set.
+     * @return the KubeletConfig object itself.
+     */
+    public KubeletConfig withHardEvictionThreshold(HardEvictionThreshold hardEvictionThreshold) {
+        this.hardEvictionThreshold = hardEvictionThreshold;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (kubeReserved() != null) {
+            kubeReserved().validate();
+        }
+        if (hardEvictionThreshold() != null) {
+            hardEvictionThreshold().validate();
+        }
     }
 
     /**
@@ -357,6 +453,10 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
         jsonWriter.writeNumberField("containerLogMaxSizeMB", this.containerLogMaxSizeMB);
         jsonWriter.writeNumberField("containerLogMaxFiles", this.containerLogMaxFiles);
         jsonWriter.writeNumberField("podMaxPids", this.podMaxPids);
+        jsonWriter.writeStringField("seccompDefault",
+            this.seccompDefault == null ? null : this.seccompDefault.toString());
+        jsonWriter.writeJsonField("kubeReserved", this.kubeReserved);
+        jsonWriter.writeJsonField("hardEvictionThreshold", this.hardEvictionThreshold);
         return jsonWriter.writeEndObject();
     }
 
@@ -398,6 +498,12 @@ public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
                     deserializedKubeletConfig.containerLogMaxFiles = reader.getNullable(JsonReader::getInt);
                 } else if ("podMaxPids".equals(fieldName)) {
                     deserializedKubeletConfig.podMaxPids = reader.getNullable(JsonReader::getInt);
+                } else if ("seccompDefault".equals(fieldName)) {
+                    deserializedKubeletConfig.seccompDefault = SeccompDefault.fromString(reader.getString());
+                } else if ("kubeReserved".equals(fieldName)) {
+                    deserializedKubeletConfig.kubeReserved = KubeReserved.fromJson(reader);
+                } else if ("hardEvictionThreshold".equals(fieldName)) {
+                    deserializedKubeletConfig.hardEvictionThreshold = HardEvictionThreshold.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

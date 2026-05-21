@@ -57,7 +57,7 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes agent-session operations (`createSession`, `getSession`, `deleteSession`, `listSessions`, `getSessionLogStreamWithResponse`).
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes agent-session operations (`createSession`, `getSession`, `deleteSession`, `listSessions`, `getSessionLogStream`, `getSessionLogStreamWithResponse`).
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
 - `ToolboxesClient` / `ToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
@@ -636,6 +636,42 @@ return responsesAsyncClient.createStreamingAzureResponse(
 ```
 
 See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
+
+### Stream hosted agent session logs
+
+Hosted agent session logs can be streamed as `SessionLogEvent` values after a session has been created. The `data` property contains the log payload as an opaque string.
+
+Session log streams are long-lived and may remain open until the client cancels or the session ends. Bound the stream with `take`, `timeout`, by disposing the subscription, or by breaking iteration when appropriate.
+
+#### Synchronous session log streaming
+
+The synchronous session log method returns `IterableStream<SessionLogEvent>`, which can be consumed with a standard for-each loop:
+
+```java com.azure.ai.agents.session_logs_sync
+IterableStream<SessionLogEvent> sessionLogs =
+    agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+
+int logsRead = 0;
+for (SessionLogEvent event : sessionLogs) {
+    System.out.printf("[%s] %s%n", event.getEvent(), event.getData());
+
+    // Session log streams are long-lived; connection is closed on client disconnection
+    if (++logsRead == 100) {
+        break;
+    }
+}
+```
+
+#### Asynchronous session log streaming
+
+The asynchronous session log method returns `Flux<SessionLogEvent>`, integrating naturally with Reactor pipelines:
+
+```java com.azure.ai.agents.session_logs_async
+agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+    .take(100)
+    .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
+    .blockLast();
+```
 
 ---
 
