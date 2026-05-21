@@ -39,11 +39,6 @@ public enum FoundryFeaturesOptInKeys {
     ROUTINES_V1_PREVIEW("Routines=V1Preview"),
 
     /**
-     * Enum value Toolboxes=V1Preview.
-     */
-    TOOLBOXES_V1_PREVIEW("Toolboxes=V1Preview"),
-
-    /**
      * Enum value Skills=V1Preview.
      */
     SKILLS_V1_PREVIEW("Skills=V1Preview"),

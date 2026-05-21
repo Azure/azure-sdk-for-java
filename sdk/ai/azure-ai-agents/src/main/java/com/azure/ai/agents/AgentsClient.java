@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.AgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
 import com.azure.ai.agents.implementation.MultipartFormDataHelper;
 import com.azure.ai.agents.implementation.SessionLogStreamHelper;
+import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
@@ -22,9 +23,16 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AgentsPagedResultOptimizationCandidate;
+import com.azure.ai.agents.models.CandidateDeployConfig;
+import com.azure.ai.agents.models.CandidateResults;
 import com.azure.ai.agents.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.OptimizationCandidate;
+import com.azure.ai.agents.models.OptimizationJob;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
@@ -159,7 +167,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -451,7 +459,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -615,7 +623,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1770,7 +1778,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1836,7 +1844,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2177,7 +2185,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2220,7 +2228,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2511,7 +2519,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2627,7 +2635,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2741,7 +2749,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2827,7 +2835,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2863,7 +2871,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2923,7 +2931,7 @@ public final class AgentsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2968,7 +2976,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content,
+    AgentDetails createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content,
         AgentDefinitionOptInKeys foundryFeatures) {
         // Generated convenience method for createAgentFromCodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -3007,8 +3015,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgentFromCode(String agentName, String codeZipSha256,
-        CreateAgentFromCodeContent content) {
+    AgentDetails createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content) {
         // Generated convenience method for createAgentFromCodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createAgentFromCodeWithResponse(agentName, codeZipSha256,
@@ -3446,5 +3453,1880 @@ public final class AgentsClient {
         }
         return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
+    }
+
+    /**
+     * Creates an agent optimization job.
+     *
+     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
+     *             model: String (Optional)
+     *             system_prompt: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         dataset (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 query: String (Required)
+     *                 ground_truth: String (Optional)
+     *                 criteria (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         instruction: String (Required)
+     *                     }
+     *                 ]
+     *                 eval_results (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         type: String (Optional)
+     *                         score: double (Required)
+     *                         passed: boolean (Required)
+     *                         sample (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                         status: String(completed/errored/skipped) (Optional)
+     *                         metric: String (Optional)
+     *                         label: String (Optional)
+     *                         threshold: Double (Optional)
+     *                         reason: String (Optional)
+     *                         properties (Optional): {
+     *                             String: String (Required)
+     *                         }
+     *                          (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                     }
+     *                 ]
+     *                 response_items (Optional): [
+     *                     BinaryData (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         train_dataset_reference (Optional): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         criteria (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             strategies (Optional): [
+     *                 String(instruction/model/skill) (Optional)
+     *             ]
+     *             budget: Integer (Optional)
+     *             max_iterations: Integer (Optional)
+     *             tasks_per_iteration: Integer (Optional)
+     *             max_reflection_tasks: Integer (Optional)
+     *             min_improvement: Double (Optional)
+     *             pass_threshold: Double (Optional)
+     *             improvement_threshold: Double (Optional)
+     *             mode: String(optimize) (Optional)
+     *             eval_model: String (Optional)
+     *             reflection_model: String (Optional)
+     *             task_timeout_seconds: Long (Optional)
+     *             keep_versions: Boolean (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): (recursive schema, see config above)
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         pareto_frontier (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         validation_score (Optional): (recursive schema, see validation_score above)
+     *         options (Optional): (recursive schema, see options above)
+     *         sample_size: Integer (Optional)
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         all_strategies_failed: Boolean (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
+     *     progress (Optional): {
+     *         current_strategy: String(instruction/model/skill) (Required)
+     *         current_iteration: int (Required)
+     *         tasks_completed: int (Required)
+     *         tasks_total: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
+     *             model: String (Optional)
+     *             system_prompt: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         dataset (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 query: String (Required)
+     *                 ground_truth: String (Optional)
+     *                 criteria (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         instruction: String (Required)
+     *                     }
+     *                 ]
+     *                 eval_results (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         type: String (Optional)
+     *                         score: double (Required)
+     *                         passed: boolean (Required)
+     *                         sample (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                         status: String(completed/errored/skipped) (Optional)
+     *                         metric: String (Optional)
+     *                         label: String (Optional)
+     *                         threshold: Double (Optional)
+     *                         reason: String (Optional)
+     *                         properties (Optional): {
+     *                             String: String (Required)
+     *                         }
+     *                          (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                     }
+     *                 ]
+     *                 response_items (Optional): [
+     *                     BinaryData (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         train_dataset_reference (Optional): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         criteria (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             strategies (Optional): [
+     *                 String(instruction/model/skill) (Optional)
+     *             ]
+     *             budget: Integer (Optional)
+     *             max_iterations: Integer (Optional)
+     *             tasks_per_iteration: Integer (Optional)
+     *             max_reflection_tasks: Integer (Optional)
+     *             min_improvement: Double (Optional)
+     *             pass_threshold: Double (Optional)
+     *             improvement_threshold: Double (Optional)
+     *             mode: String(optimize) (Optional)
+     *             eval_model: String (Optional)
+     *             reflection_model: String (Optional)
+     *             task_timeout_seconds: Long (Optional)
+     *             keep_versions: Boolean (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): (recursive schema, see config above)
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         pareto_frontier (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         validation_score (Optional): (recursive schema, see validation_score above)
+     *         options (Optional): (recursive schema, see options above)
+     *         sample_size: Integer (Optional)
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         all_strategies_failed: Boolean (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
+     *     progress (Optional): {
+     *         current_strategy: String(instruction/model/skill) (Required)
+     *         current_iteration: int (Required)
+     *         tasks_completed: int (Required)
+     *         tasks_total: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+        return this.serviceClient.createOptimizationJobWithResponse(job, requestOptions);
+    }
+
+    /**
+     * Get info about an agent optimization job.
+     *
+     * Get an optimization job by id. Emits `Retry-After` while the job is non-terminal.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
+     *             model: String (Optional)
+     *             system_prompt: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         dataset (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 query: String (Required)
+     *                 ground_truth: String (Optional)
+     *                 criteria (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         instruction: String (Required)
+     *                     }
+     *                 ]
+     *                 eval_results (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         type: String (Optional)
+     *                         score: double (Required)
+     *                         passed: boolean (Required)
+     *                         sample (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                         status: String(completed/errored/skipped) (Optional)
+     *                         metric: String (Optional)
+     *                         label: String (Optional)
+     *                         threshold: Double (Optional)
+     *                         reason: String (Optional)
+     *                         properties (Optional): {
+     *                             String: String (Required)
+     *                         }
+     *                          (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                     }
+     *                 ]
+     *                 response_items (Optional): [
+     *                     BinaryData (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         train_dataset_reference (Optional): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         criteria (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             strategies (Optional): [
+     *                 String(instruction/model/skill) (Optional)
+     *             ]
+     *             budget: Integer (Optional)
+     *             max_iterations: Integer (Optional)
+     *             tasks_per_iteration: Integer (Optional)
+     *             max_reflection_tasks: Integer (Optional)
+     *             min_improvement: Double (Optional)
+     *             pass_threshold: Double (Optional)
+     *             improvement_threshold: Double (Optional)
+     *             mode: String(optimize) (Optional)
+     *             eval_model: String (Optional)
+     *             reflection_model: String (Optional)
+     *             task_timeout_seconds: Long (Optional)
+     *             keep_versions: Boolean (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): (recursive schema, see config above)
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         pareto_frontier (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         validation_score (Optional): (recursive schema, see validation_score above)
+     *         options (Optional): (recursive schema, see options above)
+     *         sample_size: Integer (Optional)
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         all_strategies_failed: Boolean (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
+     *     progress (Optional): {
+     *         current_strategy: String(instruction/model/skill) (Required)
+     *         current_iteration: int (Required)
+     *         tasks_completed: int (Required)
+     *         tasks_total: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return info about an agent optimization job.
+     *
+     * Get an optimization job by id along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationJobWithResponse(jobId, requestOptions);
+    }
+
+    /**
+     * Returns a list of agent optimization jobs.
+     *
+     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
+     *             model: String (Optional)
+     *             system_prompt: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         dataset (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 query: String (Required)
+     *                 ground_truth: String (Optional)
+     *                 criteria (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         instruction: String (Required)
+     *                     }
+     *                 ]
+     *                 eval_results (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         type: String (Optional)
+     *                         score: double (Required)
+     *                         passed: boolean (Required)
+     *                         sample (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                         status: String(completed/errored/skipped) (Optional)
+     *                         metric: String (Optional)
+     *                         label: String (Optional)
+     *                         threshold: Double (Optional)
+     *                         reason: String (Optional)
+     *                         properties (Optional): {
+     *                             String: String (Required)
+     *                         }
+     *                          (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                     }
+     *                 ]
+     *                 response_items (Optional): [
+     *                     BinaryData (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         train_dataset_reference (Optional): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         criteria (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             strategies (Optional): [
+     *                 String(instruction/model/skill) (Optional)
+     *             ]
+     *             budget: Integer (Optional)
+     *             max_iterations: Integer (Optional)
+     *             tasks_per_iteration: Integer (Optional)
+     *             max_reflection_tasks: Integer (Optional)
+     *             min_improvement: Double (Optional)
+     *             pass_threshold: Double (Optional)
+     *             improvement_threshold: Double (Optional)
+     *             mode: String(optimize) (Optional)
+     *             eval_model: String (Optional)
+     *             reflection_model: String (Optional)
+     *             task_timeout_seconds: Long (Optional)
+     *             keep_versions: Boolean (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): (recursive schema, see config above)
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         pareto_frontier (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         validation_score (Optional): (recursive schema, see validation_score above)
+     *         options (Optional): (recursive schema, see options above)
+     *         sample_size: Integer (Optional)
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         all_strategies_failed: Boolean (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
+     *     progress (Optional): {
+     *         current_strategy: String(instruction/model/skill) (Required)
+     *         current_iteration: int (Required)
+     *         tasks_completed: int (Required)
+     *         tasks_total: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listOptimizationJobs(RequestOptions requestOptions) {
+        return this.serviceClient.listOptimizationJobs(requestOptions);
+    }
+
+    /**
+     * Cancels an agent optimization job.
+     *
+     * Request cancellation. Idempotent on terminal states.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
+     *             model: String (Optional)
+     *             system_prompt: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         dataset (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 query: String (Required)
+     *                 ground_truth: String (Optional)
+     *                 criteria (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         instruction: String (Required)
+     *                     }
+     *                 ]
+     *                 eval_results (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         type: String (Optional)
+     *                         score: double (Required)
+     *                         passed: boolean (Required)
+     *                         sample (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                         status: String(completed/errored/skipped) (Optional)
+     *                         metric: String (Optional)
+     *                         label: String (Optional)
+     *                         threshold: Double (Optional)
+     *                         reason: String (Optional)
+     *                         properties (Optional): {
+     *                             String: String (Required)
+     *                         }
+     *                          (Optional): {
+     *                             String: BinaryData (Required)
+     *                         }
+     *                     }
+     *                 ]
+     *                 response_items (Optional): [
+     *                     BinaryData (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         train_dataset_reference (Optional): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         criteria (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             strategies (Optional): [
+     *                 String(instruction/model/skill) (Optional)
+     *             ]
+     *             budget: Integer (Optional)
+     *             max_iterations: Integer (Optional)
+     *             tasks_per_iteration: Integer (Optional)
+     *             max_reflection_tasks: Integer (Optional)
+     *             min_improvement: Double (Optional)
+     *             pass_threshold: Double (Optional)
+     *             improvement_threshold: Double (Optional)
+     *             mode: String(optimize) (Optional)
+     *             eval_model: String (Optional)
+     *             reflection_model: String (Optional)
+     *             task_timeout_seconds: Long (Optional)
+     *             keep_versions: Boolean (Optional)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): (recursive schema, see config above)
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         pareto_frontier (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         validation_score (Optional): (recursive schema, see validation_score above)
+     *         options (Optional): (recursive schema, see options above)
+     *         sample_size: Integer (Optional)
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         all_strategies_failed: Boolean (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
+     *     progress (Optional): {
+     *         current_strategy: String(instruction/model/skill) (Required)
+     *         current_iteration: int (Required)
+     *         tasks_completed: int (Required)
+     *         tasks_total: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelOptimizationJobWithResponse(jobId, requestOptions);
+    }
+
+    /**
+     * Deletes an agent optimization job.
+     *
+     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteOptimizationJobWithResponse(jobId, requestOptions);
+    }
+
+    /**
+     * Returns a list of candidates for an optimization job.
+     *
+     * List candidates produced by a job.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     data (Required): [
+     *          (Required){
+     *             candidate_id: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Optional)
+     *                 model: String (Optional)
+     *                 system_prompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         description: String (Optional)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             rationale: String (Required)
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
+     *                  (Required){
+     *                     task_name: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     composite_score: double (Required)
+     *                     tokens: int (Required)
+     *                     duration_seconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     error_message: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     run_id: String (Optional)
+     *                 }
+     *             ]
+     *             is_pareto_optimal: boolean (Required)
+     *             sample_avg_score: Double (Optional)
+     *             sample_size: Integer (Optional)
+     *             evaluation_type: String (Optional)
+     *             strategy: String(instruction/model/skill) (Optional)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
+     *         }
+     *     ]
+     *     first_id: String (Optional)
+     *     last_id: String (Optional)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The optimization job id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listOptimizationCandidatesWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.listOptimizationCandidatesWithResponse(jobId, requestOptions);
+    }
+
+    /**
+     * Get a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Optional)
+     *     name: String (Required)
+     *     config (Required): {
+     *         agent_name: String (Required)
+     *         agent_version: String (Optional)
+     *         model: String (Optional)
+     *         system_prompt: String (Optional)
+     *         skills (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 description: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     mutations (Required): {
+     *         String: BinaryData (Required)
+     *     }
+     *     rationale: String (Required)
+     *     avg_score: double (Required)
+     *     avg_tokens: double (Required)
+     *     pass_rate: double (Required)
+     *     task_scores (Required): [
+     *          (Required){
+     *             task_name: String (Required)
+     *             query: String (Optional)
+     *             scores (Required): {
+     *                 String: double (Required)
+     *             }
+     *             composite_score: double (Required)
+     *             tokens: int (Required)
+     *             duration_seconds: double (Required)
+     *             passed: boolean (Required)
+     *             error_message: String (Optional)
+     *             rationales (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             response: String (Optional)
+     *             run_id: String (Optional)
+     *         }
+     *     ]
+     *     is_pareto_optimal: boolean (Required)
+     *     sample_avg_score: Double (Optional)
+     *     sample_size: Integer (Optional)
+     *     evaluation_type: String (Optional)
+     *     strategy: String(instruction/model/skill) (Optional)
+     *     eval_id: String (Optional)
+     *     eval_run_id: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions);
+    }
+
+    /**
+     * Get candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     instructions: String (Optional)
+     *     model: String (Optional)
+     *     temperature: Double (Optional)
+     *     skills (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationCandidateConfigWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions);
+    }
+
+    /**
+     * Get candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     results (Required): [
+     *          (Required){
+     *             task_name: String (Required)
+     *             query: String (Optional)
+     *             scores (Required): {
+     *                 String: double (Required)
+     *             }
+     *             composite_score: double (Required)
+     *             tokens: int (Required)
+     *             duration_seconds: double (Required)
+     *             passed: boolean (Required)
+     *             error_message: String (Optional)
+     *             rationales (Optional): {
+     *                 String: String (Required)
+     *             }
+     *             response: String (Optional)
+     *             run_id: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationCandidateResultsWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions);
+    }
+
+    /**
+     * Creates an agent optimization job.
+     *
+     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
+     *
+     * @param job The job to create.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
+     * unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob createOptimizationJob(OptimizationJob job, FoundryFeaturesOptInKeys foundryFeatures,
+        String operationId) {
+        // Generated convenience method for createOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (operationId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
+        }
+        return createOptimizationJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
+            .toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Creates an agent optimization job.
+     *
+     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
+     *
+     * @param job The job to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob createOptimizationJob(OptimizationJob job) {
+        // Generated convenience method for createOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOptimizationJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue()
+            .toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Get info about an agent optimization job.
+     *
+     * Get an optimization job by id. Emits `Retry-After` while the job is non-terminal.
+     *
+     * @param jobId The ID of the job.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return info about an agent optimization job.
+     *
+     * Get an optimization job by id.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob getOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Get info about an agent optimization job.
+     *
+     * Get an optimization job by id. Emits `Retry-After` while the job is non-terminal.
+     *
+     * @param jobId The ID of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return info about an agent optimization job.
+     *
+     * Get an optimization job by id.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob getOptimizationJob(String jobId) {
+        // Generated convenience method for getOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Returns a list of agent optimization jobs.
+     *
+     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     *
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param status Filter to jobs in this lifecycle state.
+     * @param agentName Filter to jobs targeting this agent name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OptimizationJob> listOptimizationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+        PageOrder order, String after, String before, JobStatus status, String agentName) {
+        // Generated convenience method for listOptimizationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        return serviceClient.listOptimizationJobs(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(OptimizationJob.class));
+    }
+
+    /**
+     * Returns a list of agent optimization jobs.
+     *
+     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OptimizationJob> listOptimizationJobs() {
+        // Generated convenience method for listOptimizationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listOptimizationJobs(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(OptimizationJob.class));
+    }
+
+    /**
+     * Cancels an agent optimization job.
+     *
+     * Request cancellation. Idempotent on terminal states.
+     *
+     * @param jobId The ID of the job to cancel.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob cancelOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for cancelOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return cancelOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Cancels an agent optimization job.
+     *
+     * Request cancellation. Idempotent on terminal states.
+     *
+     * @param jobId The ID of the job to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
+     * (instructions, model, skills) to maximize evaluation scores.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationJob cancelOptimizationJob(String jobId) {
+        // Generated convenience method for cancelOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelOptimizationJobWithResponse(jobId, requestOptions).getValue().toObject(OptimizationJob.class);
+    }
+
+    /**
+     * Deletes an agent optimization job.
+     *
+     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     *
+     * @param jobId The ID of the job to delete.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for deleteOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        deleteOptimizationJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes an agent optimization job.
+     *
+     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     *
+     * @param jobId The ID of the job to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteOptimizationJob(String jobId) {
+        // Generated convenience method for deleteOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteOptimizationJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Returns a list of candidates for an optimization job.
+     *
+     * List candidates produced by a job.
+     *
+     * @param jobId The optimization job id.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentsPagedResultOptimizationCandidate listOptimizationCandidates(String jobId,
+        FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listOptimizationCandidatesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listOptimizationCandidatesWithResponse(jobId, requestOptions).getValue()
+            .toObject(AgentsPagedResultOptimizationCandidate.class);
+    }
+
+    /**
+     * Returns a list of candidates for an optimization job.
+     *
+     * List candidates produced by a job.
+     *
+     * @param jobId The optimization job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentsPagedResultOptimizationCandidate listOptimizationCandidates(String jobId) {
+        // Generated convenience method for listOptimizationCandidatesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listOptimizationCandidatesWithResponse(jobId, requestOptions).getValue()
+            .toObject(AgentsPagedResultOptimizationCandidate.class);
+    }
+
+    /**
+     * Get a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationCandidate getOptimizationCandidate(String jobId, String candidateId,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(OptimizationCandidate.class);
+    }
+
+    /**
+     * Get a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a candidate by id.
+     *
+     * Get a single candidate manifest and aggregated evaluation summary.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OptimizationCandidate getOptimizationCandidate(String jobId, String candidateId) {
+        // Generated convenience method for getOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(OptimizationCandidate.class);
+    }
+
+    /**
+     * Get candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CandidateDeployConfig getOptimizationCandidateConfig(String jobId, String candidateId,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getOptimizationCandidateConfigWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(CandidateDeployConfig.class);
+    }
+
+    /**
+     * Get candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return candidate deploy config.
+     *
+     * Get the candidate's deploy config JSON.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CandidateDeployConfig getOptimizationCandidateConfig(String jobId, String candidateId) {
+        // Generated convenience method for getOptimizationCandidateConfigWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(CandidateDeployConfig.class);
+    }
+
+    /**
+     * Get candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CandidateResults getOptimizationCandidateResults(String jobId, String candidateId,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getOptimizationCandidateResultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(CandidateResults.class);
+    }
+
+    /**
+     * Get candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return candidate evaluation results.
+     *
+     * Get full per-task evaluation results for a candidate.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CandidateResults getOptimizationCandidateResults(String jobId, String candidateId) {
+        // Generated convenience method for getOptimizationCandidateResultsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions).getValue()
+            .toObject(CandidateResults.class);
     }
 }

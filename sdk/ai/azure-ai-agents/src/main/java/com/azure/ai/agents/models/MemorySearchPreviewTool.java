@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * A tool for integrating memories into the agent.
@@ -121,6 +122,7 @@ public final class MemorySearchPreviewTool extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("search_options", this.searchOptions);
         jsonWriter.writeNumberField("update_delay", this.updateDelaySeconds);
         return jsonWriter.writeEndObject();
@@ -143,6 +145,7 @@ public final class MemorySearchPreviewTool extends Tool {
             ToolType type = ToolType.MEMORY_SEARCH_PREVIEW;
             String name = null;
             String description = null;
+            Map<String, ToolConfig> toolConfigs = null;
             MemorySearchOptions searchOptions = null;
             Integer updateDelaySeconds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -158,6 +161,8 @@ public final class MemorySearchPreviewTool extends Tool {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else if ("search_options".equals(fieldName)) {
                     searchOptions = MemorySearchOptions.fromJson(reader);
                 } else if ("update_delay".equals(fieldName)) {
@@ -171,6 +176,7 @@ public final class MemorySearchPreviewTool extends Tool {
             deserializedMemorySearchPreviewTool.type = type;
             deserializedMemorySearchPreviewTool.name = name;
             deserializedMemorySearchPreviewTool.description = description;
+            deserializedMemorySearchPreviewTool.toolConfigs = toolConfigs;
             deserializedMemorySearchPreviewTool.searchOptions = searchOptions;
             deserializedMemorySearchPreviewTool.updateDelaySeconds = updateDelaySeconds;
             return deserializedMemorySearchPreviewTool;
@@ -260,6 +266,40 @@ public final class MemorySearchPreviewTool extends Tool {
     @Generated
     public MemorySearchPreviewTool setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /*
+     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the MemorySearchPreviewTool object itself.
+     */
+    @Generated
+    public MemorySearchPreviewTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

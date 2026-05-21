@@ -34,7 +34,7 @@ public final class ProceduralMemoryItem extends MemoryItem {
      * @param content the content value to set.
      */
     @Generated
-    private ProceduralMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
+    public ProceduralMemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
         super(memoryId, updatedAt, scope, content);
     }
 
