@@ -175,10 +175,10 @@
 # ServiceLabel: %Azure.Identity
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk
+/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk @lilinvictorms @iwang2 @xingwu1
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris
+# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @lilinvictorms
 
 # PRLabel: %clientcore
 /sdk/clientcore/                                                   @alzimmermsft @jonathangiles @samvaity @srnagar @vcolin7 @Azure/azure-java-sdk
