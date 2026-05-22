@@ -5007,4 +5007,23 @@ public final class SearchIndexAsyncClient {
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
     }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync(knowledgeBase.getName(),
+            BinaryData.fromObject(knowledgeBase), requestOptions), KnowledgeBase.class);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync(knowledgeSource.getName(),
+            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
 }

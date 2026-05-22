@@ -58,6 +58,10 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+
+        // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
+        // that mirror what the sync client already has as hand-written methods.
+        addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -189,6 +193,42 @@ public class SearchCustomizations extends Customization {
             for (String methodName : Arrays.asList("getNextLink", "getNextPageParameters")) {
                 clazz.getMethodsByName(methodName).forEach(MethodDeclaration::setModifiers);
             }
+        }));
+    }
+
+    // Adds public convenience methods to SearchIndexAsyncClient for knowledge base and knowledge source
+    // createOrUpdate operations. The sync client has equivalent hand-written wrappers, but the async client
+    // only has package-private generated convenience methods after hideWithResponseBinaryDataApis runs.
+    private static void addAsyncKnowledgeBaseConvenienceMethods(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Add: public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase)
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {\n"
+                    + "    return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);\n"
+                    + "}\n"));
+
+            // Add: public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(
+            //          KnowledgeBase knowledgeBase, RequestOptions requestOptions)
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse("
+                    + "KnowledgeBase knowledgeBase, RequestOptions requestOptions) {\n"
+                    + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync("
+                    + "knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions), "
+                    + "KnowledgeBase.class);\n"
+                    + "}\n"));
+
+            // Add: public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(
+            //          KnowledgeSource knowledgeSource, RequestOptions requestOptions)
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse("
+                    + "KnowledgeSource knowledgeSource, RequestOptions requestOptions) {\n"
+                    + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync("
+                    + "knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions), "
+                    + "KnowledgeSource.class);\n"
+                    + "}\n"));
         }));
     }
 }
