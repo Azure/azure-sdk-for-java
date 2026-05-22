@@ -4,6 +4,8 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
+import com.openai.core.http.HttpResponseFor;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import org.junit.jupiter.api.Disabled;
@@ -15,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ResponsesTests extends ClientTestBase {
+
+    private static final String CREATE_RESPONSE_BODY
+        = "{\"input\":\"Hello, how can you help me?\",\"model\":\"gpt-4o\"}";
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -58,5 +63,44 @@ public class ResponsesTests extends ClientTestBase {
 
         // Deletion - currently returning 500
         //        client.getOpenAIClient().delete(createdResponse.id());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void basicCRUDOperationsWithResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion)
+        throws InterruptedException {
+        ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
+
+        // Creation
+        HttpResponseFor<Response> rawResponse
+            = client.createResponseWithResponse(BinaryData.fromString(CREATE_RESPONSE_BODY), null);
+
+        assertNotNull(rawResponse);
+        Response createdResponse = rawResponse.parse();
+        assertNotNull(createdResponse);
+        assertNotNull(createdResponse.id());
+
+        // Retrieval - currently returning 500
+        //        HttpResponseFor<Response> retrievedRaw = client.getResponseWithResponse(createdResponse.id(), null);
+        //        assertNotNull(retrievedRaw);
+        //        Response retrievedResponse = retrievedRaw.parse();
+        //        assertNotNull(retrievedResponse);
+        //        assertNotNull(retrievedResponse.id());
+
+        // Cancel - will have to look into the async tests for this
+        //        HttpResponseFor<Response> cancelableRaw = client.createResponseWithResponse(
+        //            BinaryData.fromString("{\"previous_response_id\":\"" + createdResponse.previousResponseId().orElse(null)
+        //                + "\",\"input\":\"Tell me a long story about a chicken trying to cross the road.\","
+        //                + "\"reasoning\":{\"effort\":\"high\"},\"background\":true}"),
+        //            null);
+        //        HttpResponseFor<Response> cancellationRaw
+        //            = client.cancelResponseWithResponse(cancelableRaw.parse().id(), null);
+        //        assertNotNull(cancellationRaw);
+        //        Response cancellationResponse = cancellationRaw.parse();
+        //        assertNotNull(cancellationResponse);
+        //        assertNotNull(cancellationResponse.id());
+
+        // Deletion - currently returning 500
+        //        client.deleteResponseWithResponse(createdResponse.id(), null);
     }
 }
