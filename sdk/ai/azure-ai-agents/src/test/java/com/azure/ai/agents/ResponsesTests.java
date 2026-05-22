@@ -5,102 +5,126 @@ package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
+import com.openai.core.http.HttpResponse;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
-import org.junit.jupiter.api.Disabled;
+import com.openai.models.responses.ResponseStatus;
+import com.openai.models.responses.inputitems.InputItemListPage;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ResponsesTests extends ClientTestBase {
 
     private static final String CREATE_RESPONSE_BODY
         = "{\"input\":\"Hello, how can you help me?\",\"model\":\"gpt-4o\"}";
 
+    private static final String CREATE_BACKGROUND_RESPONSE_BODY
+        = "{\"input\":\"Tell me a very long story about a chicken trying to cross the road.\","
+            + "\"model\":\"gpt-4o\",\"background\":true}";
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion)
-        throws InterruptedException {
+    public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
 
-        ResponseCreateParams responsesRequest
-            = new ResponseCreateParams.Builder().input("Hello, how can you help me?").model("gpt-4o").build();
-
-        // Creation
-        Response createdResponse = client.getResponseService().create(responsesRequest);
-
+        // create
+        ResponseCreateParams createRequest
+            = ResponseCreateParams.builder().input("Hello, how can you help me?").model("gpt-4o").build();
+        Response createdResponse = client.getResponseService().create(createRequest);
         assertNotNull(createdResponse);
         assertNotNull(createdResponse.id());
 
-        // Retrieval - currently returning 500
-        //        Response retrievedResponse = client.getOpenAIClient().retrieve(createdResponse.id());
-        //
-        //        assertNotNull(retrievedResponse);
-        //        assertNotNull(retrievedResponse.id());
+        // retrieve
+        Response retrievedResponse = client.getResponseService().retrieve(createdResponse.id());
+        assertNotNull(retrievedResponse);
+        assertEquals(createdResponse.id(), retrievedResponse.id());
 
-        // Cancel - will have to look into the async tests for this
-        //        Response cancelableResponse = client.getOpenAIClient().create(
-        //                ResponseCreateParams.builder().previousResponseId(createdResponse.previousResponseId())
-        //                    .input("Tell me a long story about a chicken trying to cross the road.")
-        //                    .reasoning(Reasoning.builder().effort(ReasoningEffort.HIGH).build())
-        //                    .background(true)
-        //                    .build());
-        //        Response cancelationResponse = client.getOpenAIClient().cancel(cancelableResponse.id());
-        //
-        //        assertNotNull(cancelationResponse);
-        //        assertNotNull(cancelationResponse.id());
+        // input items
+        InputItemListPage inputItems = client.getResponseService().inputItems().list(createdResponse.id());
+        assertNotNull(inputItems);
+        assertNotNull(inputItems.data());
+        assertFalse(inputItems.data().isEmpty());
 
-        // Input items - currently returning 500
-        //        InputItemListPage itemList = client.getOpenAIClient().inputItems().list(createdResponse.id());
-        //
-        //        assertNotNull(itemList);
-        //        assertNotNull(itemList.data());
-        //        assertFalse(itemList.data().isEmpty());
-
-        // Deletion - currently returning 500
-        //        client.getOpenAIClient().delete(createdResponse.id());
+        // delete
+        client.getResponseService().delete(createdResponse.id());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void basicCRUDOperationsWithResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion)
-        throws InterruptedException {
+    public void cancelBackgroundResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
 
-        // Creation
-        HttpResponseFor<Response> rawResponse
-            = client.createResponseWithResponse(BinaryData.fromString(CREATE_RESPONSE_BODY), null);
+        ResponseCreateParams createRequest = ResponseCreateParams.builder()
+            .input("Tell me a very long story about a chicken trying to cross the road.")
+            .model("gpt-4o")
+            .background(true)
+            .build();
+        Response backgroundResponse = client.getResponseService().create(createRequest);
+        assertNotNull(backgroundResponse);
+        assertNotNull(backgroundResponse.id());
 
-        assertNotNull(rawResponse);
-        Response createdResponse = rawResponse.parse();
+        Response cancelledResponse = client.getResponseService().cancel(backgroundResponse.id());
+        assertNotNull(cancelledResponse);
+        assertEquals(backgroundResponse.id(), cancelledResponse.id());
+        assertTrue(cancelledResponse.status().isPresent());
+        ResponseStatus status = cancelledResponse.status().get();
+        // Background responses may finish between create and cancel; accept either terminal state.
+        assertTrue(status.equals(ResponseStatus.CANCELLED) || status.equals(ResponseStatus.COMPLETED),
+            "Expected CANCELLED or COMPLETED status but was " + status);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void basicCRUDOperationsWithResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
+
+        // create
+        HttpResponseFor<Response> createdRaw
+            = client.createResponseWithResponse(BinaryData.fromString(CREATE_RESPONSE_BODY), null);
+        assertNotNull(createdRaw);
+        Response createdResponse = createdRaw.parse();
         assertNotNull(createdResponse);
         assertNotNull(createdResponse.id());
 
-        // Retrieval - currently returning 500
-        //        HttpResponseFor<Response> retrievedRaw = client.getResponseWithResponse(createdResponse.id(), null);
-        //        assertNotNull(retrievedRaw);
-        //        Response retrievedResponse = retrievedRaw.parse();
-        //        assertNotNull(retrievedResponse);
-        //        assertNotNull(retrievedResponse.id());
+        // retrieve
+        HttpResponseFor<Response> retrievedRaw = client.getResponseWithResponse(createdResponse.id(), null);
+        assertNotNull(retrievedRaw);
+        Response retrievedResponse = retrievedRaw.parse();
+        assertNotNull(retrievedResponse);
+        assertEquals(createdResponse.id(), retrievedResponse.id());
 
-        // Cancel - will have to look into the async tests for this
-        //        HttpResponseFor<Response> cancelableRaw = client.createResponseWithResponse(
-        //            BinaryData.fromString("{\"previous_response_id\":\"" + createdResponse.previousResponseId().orElse(null)
-        //                + "\",\"input\":\"Tell me a long story about a chicken trying to cross the road.\","
-        //                + "\"reasoning\":{\"effort\":\"high\"},\"background\":true}"),
-        //            null);
-        //        HttpResponseFor<Response> cancellationRaw
-        //            = client.cancelResponseWithResponse(cancelableRaw.parse().id(), null);
-        //        assertNotNull(cancellationRaw);
-        //        Response cancellationResponse = cancellationRaw.parse();
-        //        assertNotNull(cancellationResponse);
-        //        assertNotNull(cancellationResponse.id());
+        // delete
+        HttpResponse deletedRaw = client.deleteResponseWithResponse(createdResponse.id(), null);
+        assertNotNull(deletedRaw);
+    }
 
-        // Deletion - currently returning 500
-        //        client.deleteResponseWithResponse(createdResponse.id(), null);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void cancelBackgroundResponseWithResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
+
+        HttpResponseFor<Response> backgroundRaw
+            = client.createResponseWithResponse(BinaryData.fromString(CREATE_BACKGROUND_RESPONSE_BODY), null);
+        assertNotNull(backgroundRaw);
+        Response backgroundResponse = backgroundRaw.parse();
+        assertNotNull(backgroundResponse);
+        assertNotNull(backgroundResponse.id());
+
+        HttpResponseFor<Response> cancelledRaw = client.cancelResponseWithResponse(backgroundResponse.id(), null);
+        assertNotNull(cancelledRaw);
+        Response cancelledResponse = cancelledRaw.parse();
+        assertNotNull(cancelledResponse);
+        assertEquals(backgroundResponse.id(), cancelledResponse.id());
+        assertTrue(cancelledResponse.status().isPresent());
+        ResponseStatus status = cancelledResponse.status().get();
+        assertTrue(status.equals(ResponseStatus.CANCELLED) || status.equals(ResponseStatus.COMPLETED),
+            "Expected CANCELLED or COMPLETED status but was " + status);
     }
 }
