@@ -30,10 +30,6 @@ public class ResponsesTests extends ClientTestBase {
     private static final String CREATE_STREAM_RESPONSE_BODY
         = "{\"input\":\"Hello, how can you help me?\",\"model\":\"gpt-4o\",\"stream\":true}";
 
-    private static final String CREATE_BACKGROUND_RESPONSE_BODY
-        = "{\"input\":\"Tell me a very long story about a chicken trying to cross the road.\","
-            + "\"model\":\"gpt-4o\",\"background\":true}";
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
@@ -92,12 +88,13 @@ public class ResponsesTests extends ClientTestBase {
     public void basicCRUDOperationsWithResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
 
-        HttpResponseFor<Response> createdRaw
-            = client.createResponseWithResponse(BinaryData.fromString(CREATE_RESPONSE_BODY), null);
-        assertNotNull(createdRaw);
-        Response createdResponse = createdRaw.parse();
-        assertNotNull(createdResponse);
-        assertNotNull(createdResponse.id());
+        try (HttpResponseFor<Response> createdRaw
+            = client.createResponseWithResponse(BinaryData.fromString(CREATE_RESPONSE_BODY), null)) {
+            assertNotNull(createdRaw);
+            Response createdResponse = createdRaw.parse();
+            assertNotNull(createdResponse);
+            assertNotNull(createdResponse.id());
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

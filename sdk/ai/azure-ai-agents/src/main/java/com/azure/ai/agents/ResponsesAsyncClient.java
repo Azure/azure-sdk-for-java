@@ -94,8 +94,10 @@ public final class ResponsesAsyncClient {
      *
      * <p>This protocol method delegates to the OpenAI Java SDK's
      * {@link ResponseServiceAsync.WithRawResponse#create(ResponseCreateParams, RequestOptions)}. The
-     * {@code createResponseRequest} payload is forwarded verbatim as the request body, so callers can
-     * include Azure-specific extensions (such as
+     * {@code createResponseRequest} payload is forwarded as the request body (semantically, not
+     * byte-for-byte: the JSON is parsed and re-serialized via {@code additionalBodyProperties},
+     * so property ordering and exact formatting may change and duplicate top-level keys are not
+     * preserved), so callers can include Azure-specific extensions (such as
      * {@link com.azure.ai.agents.models.AgentReference}) without going through the strongly-typed
      * {@link ResponseCreateParams.Builder}.</p>
      *
@@ -130,7 +132,9 @@ public final class ResponsesAsyncClient {
      *
      * <p>Delegates to the OpenAI Java SDK's
      * {@link ResponseServiceAsync.WithRawResponse#createStreaming(ResponseCreateParams, RequestOptions)}.
-     * The {@code createResponseRequest} payload is forwarded verbatim as the request body.</p>
+     * The {@code createResponseRequest} payload is forwarded as the request body (semantically,
+     * not byte-for-byte: the JSON is parsed and re-serialized, so property ordering and exact
+     * formatting may change and duplicate top-level keys are not preserved).</p>
      *
      * <p>The returned {@link HttpResponseFor} wraps a {@link StreamResponse} of
      * {@link ResponseStreamEvent} items, which the caller iterates via {@link HttpResponseFor#parse()}.
