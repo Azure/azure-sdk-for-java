@@ -26,7 +26,27 @@ public enum ListFilesIncludeType {
     /**
      * Enum value PermissionKey.
      */
-    PERMISSION_KEY("PermissionKey");
+    PERMISSION_KEY("PermissionKey"),
+
+    /**
+     * Enum value Permissions.
+     */
+    PERMISSIONS("Permissions"),
+
+    /**
+     * Enum value LinkCount.
+     */
+    LINK_COUNT("LinkCount"),
+
+    /**
+     * Enum value NfsAttributes.
+     */
+    NFS_ATTRIBUTES("NfsAttributes"),
+
+    /**
+     * Enum value All.
+     */
+    ALL("All");
 
     /**
      * The actual serialized value for a ListFilesIncludeType instance.

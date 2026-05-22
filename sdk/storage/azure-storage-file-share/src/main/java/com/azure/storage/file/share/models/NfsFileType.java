@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for NfsFileType.
+ * Type of the file.
  */
 public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
     /**
@@ -29,6 +29,30 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
      */
     @Generated
     public static final NfsFileType SYM_LINK = fromString("SymLink");
+
+    /**
+     * Static value BlockDevice for NfsFileType.
+     */
+    @Generated
+    public static final NfsFileType BLOCK_DEVICE = fromString("BlockDevice");
+
+    /**
+     * Static value CharacterDevice for NfsFileType.
+     */
+    @Generated
+    public static final NfsFileType CHARACTER_DEVICE = fromString("CharacterDevice");
+
+    /**
+     * Static value Socket for NfsFileType.
+     */
+    @Generated
+    public static final NfsFileType SOCKET = fromString("Socket");
+
+    /**
+     * Static value Fifo for NfsFileType.
+     */
+    @Generated
+    public static final NfsFileType FIFO = fromString("Fifo");
 
     /**
      * Creates a new instance of NfsFileType value.

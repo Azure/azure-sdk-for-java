@@ -14,10 +14,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * A listed directory item.
+ * A listed character device item.
  */
 @Fluent
-public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
+public final class CharDeviceItem implements XmlSerializable<CharDeviceItem> {
     /*
      * The Name property.
      */
@@ -37,28 +37,28 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     private FileProperty properties;
 
     /*
-     * The Attributes property.
-     */
-    @Generated
-    private String attributes;
-
-    /*
-     * The PermissionKey property.
-     */
-    @Generated
-    private String permissionKey;
-
-    /*
      * The LinkCount property.
      */
     @Generated
     private Long linkCount;
 
-    /**
-     * Creates an instance of DirectoryItem class.
+    /*
+     * The DeviceMajor property.
      */
     @Generated
-    public DirectoryItem() {
+    private Long deviceMajor;
+
+    /*
+     * The DeviceMinor property.
+     */
+    @Generated
+    private Long deviceMinor;
+
+    /**
+     * Creates an instance of CharDeviceItem class.
+     */
+    @Generated
+    public CharDeviceItem() {
     }
 
     /**
@@ -75,10 +75,10 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * Set the name property: The Name property.
      * 
      * @param name the name value to set.
-     * @return the DirectoryItem object itself.
+     * @return the CharDeviceItem object itself.
      */
     @Generated
-    public DirectoryItem setName(StringEncoded name) {
+    public CharDeviceItem setName(StringEncoded name) {
         this.name = name;
         return this;
     }
@@ -97,10 +97,10 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * Set the fileId property: The FileId property.
      * 
      * @param fileId the fileId value to set.
-     * @return the DirectoryItem object itself.
+     * @return the CharDeviceItem object itself.
      */
     @Generated
-    public DirectoryItem setFileId(String fileId) {
+    public CharDeviceItem setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -119,55 +119,11 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * Set the properties property: File properties.
      * 
      * @param properties the properties value to set.
-     * @return the DirectoryItem object itself.
+     * @return the CharDeviceItem object itself.
      */
     @Generated
-    public DirectoryItem setProperties(FileProperty properties) {
+    public CharDeviceItem setProperties(FileProperty properties) {
         this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the attributes property: The Attributes property.
-     * 
-     * @return the attributes value.
-     */
-    @Generated
-    public String getAttributes() {
-        return this.attributes;
-    }
-
-    /**
-     * Set the attributes property: The Attributes property.
-     * 
-     * @param attributes the attributes value to set.
-     * @return the DirectoryItem object itself.
-     */
-    @Generated
-    public DirectoryItem setAttributes(String attributes) {
-        this.attributes = attributes;
-        return this;
-    }
-
-    /**
-     * Get the permissionKey property: The PermissionKey property.
-     * 
-     * @return the permissionKey value.
-     */
-    @Generated
-    public String getPermissionKey() {
-        return this.permissionKey;
-    }
-
-    /**
-     * Set the permissionKey property: The PermissionKey property.
-     * 
-     * @param permissionKey the permissionKey value to set.
-     * @return the DirectoryItem object itself.
-     */
-    @Generated
-    public DirectoryItem setPermissionKey(String permissionKey) {
-        this.permissionKey = permissionKey;
         return this;
     }
 
@@ -185,11 +141,55 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * Set the linkCount property: The LinkCount property.
      * 
      * @param linkCount the linkCount value to set.
-     * @return the DirectoryItem object itself.
+     * @return the CharDeviceItem object itself.
      */
     @Generated
-    public DirectoryItem setLinkCount(Long linkCount) {
+    public CharDeviceItem setLinkCount(Long linkCount) {
         this.linkCount = linkCount;
+        return this;
+    }
+
+    /**
+     * Get the deviceMajor property: The DeviceMajor property.
+     * 
+     * @return the deviceMajor value.
+     */
+    @Generated
+    public Long getDeviceMajor() {
+        return this.deviceMajor;
+    }
+
+    /**
+     * Set the deviceMajor property: The DeviceMajor property.
+     * 
+     * @param deviceMajor the deviceMajor value to set.
+     * @return the CharDeviceItem object itself.
+     */
+    @Generated
+    public CharDeviceItem setDeviceMajor(Long deviceMajor) {
+        this.deviceMajor = deviceMajor;
+        return this;
+    }
+
+    /**
+     * Get the deviceMinor property: The DeviceMinor property.
+     * 
+     * @return the deviceMinor value.
+     */
+    @Generated
+    public Long getDeviceMinor() {
+        return this.deviceMinor;
+    }
+
+    /**
+     * Set the deviceMinor property: The DeviceMinor property.
+     * 
+     * @param deviceMinor the deviceMinor value to set.
+     * @return the CharDeviceItem object itself.
+     */
+    @Generated
+    public CharDeviceItem setDeviceMinor(Long deviceMinor) {
+        this.deviceMinor = deviceMinor;
         return this;
     }
 
@@ -202,67 +202,67 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Directory" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "CharDevice" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.name, "Name");
         xmlWriter.writeStringElement("FileId", this.fileId);
         xmlWriter.writeXml(this.properties, "Properties");
-        xmlWriter.writeStringElement("Attributes", this.attributes);
-        xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
         xmlWriter.writeNumberElement("LinkCount", this.linkCount);
+        xmlWriter.writeNumberElement("DeviceMajor", this.deviceMajor);
+        xmlWriter.writeNumberElement("DeviceMinor", this.deviceMinor);
         return xmlWriter.writeEndElement();
     }
 
     /**
-     * Reads an instance of DirectoryItem from the XmlReader.
+     * Reads an instance of CharDeviceItem from the XmlReader.
      * 
      * @param xmlReader The XmlReader being read.
-     * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
+     * @return An instance of CharDeviceItem if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
+     * @throws XMLStreamException If an error occurs while reading the CharDeviceItem.
      */
     @Generated
-    public static DirectoryItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+    public static CharDeviceItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
     /**
-     * Reads an instance of DirectoryItem from the XmlReader.
+     * Reads an instance of CharDeviceItem from the XmlReader.
      * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
-     * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
+     * @return An instance of CharDeviceItem if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
+     * @throws XMLStreamException If an error occurs while reading the CharDeviceItem.
      */
     @Generated
-    public static DirectoryItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+    public static CharDeviceItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "Directory" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "CharDevice" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            DirectoryItem deserializedDirectoryItem = new DirectoryItem();
+            CharDeviceItem deserializedCharDeviceItem = new CharDeviceItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
                 if ("Name".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.name = StringEncoded.fromXml(reader, "Name");
+                    deserializedCharDeviceItem.name = StringEncoded.fromXml(reader, "Name");
                 } else if ("FileId".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.fileId = reader.getStringElement();
+                    deserializedCharDeviceItem.fileId = reader.getStringElement();
                 } else if ("Properties".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.properties = FileProperty.fromXml(reader, "Properties");
-                } else if ("Attributes".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.attributes = reader.getStringElement();
-                } else if ("PermissionKey".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.permissionKey = reader.getStringElement();
+                    deserializedCharDeviceItem.properties = FileProperty.fromXml(reader, "Properties");
                 } else if ("LinkCount".equals(elementName.getLocalPart())) {
-                    deserializedDirectoryItem.linkCount = reader.getNullableElement(Long::parseLong);
+                    deserializedCharDeviceItem.linkCount = reader.getNullableElement(Long::parseLong);
+                } else if ("DeviceMajor".equals(elementName.getLocalPart())) {
+                    deserializedCharDeviceItem.deviceMajor = reader.getNullableElement(Long::parseLong);
+                } else if ("DeviceMinor".equals(elementName.getLocalPart())) {
+                    deserializedCharDeviceItem.deviceMinor = reader.getNullableElement(Long::parseLong);
                 } else {
                     reader.skipElement();
                 }
             }
 
-            return deserializedDirectoryItem;
+            return deserializedCharDeviceItem;
         });
     }
 }
