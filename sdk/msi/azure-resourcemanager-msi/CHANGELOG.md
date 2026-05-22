@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-04-20)
+## 2.54.0-beta.1 (2026-05-22)
 
 ### Breaking Changes
 
