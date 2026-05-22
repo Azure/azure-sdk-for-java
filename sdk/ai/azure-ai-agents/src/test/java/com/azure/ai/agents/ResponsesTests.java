@@ -12,6 +12,7 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.inputitems.InputItemListPage;
+import com.openai.services.blocking.ResponseService;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -37,6 +38,7 @@ public class ResponsesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
+        ResponseService responseService = getResponseServiceSyncClient(httpClient, serviceVersion);
 
         // create
         ResponseCreateParams createRequest
@@ -46,7 +48,7 @@ public class ResponsesTests extends ClientTestBase {
         assertNotNull(createdResponse.id());
 
         // retrieve
-        Response retrievedResponse = client.getResponseService().retrieve(createdResponse.id());
+        Response retrievedResponse = responseService.retrieve(createdResponse.id());
         assertNotNull(retrievedResponse);
         assertEquals(createdResponse.id(), retrievedResponse.id());
 
@@ -57,13 +59,14 @@ public class ResponsesTests extends ClientTestBase {
         assertFalse(inputItems.data().isEmpty());
 
         // delete
-        client.getResponseService().delete(createdResponse.id());
+        responseService.delete(createdResponse.id());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void cancelBackgroundResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ResponsesClient client = getResponsesSyncClient(httpClient, serviceVersion);
+        ResponseService responseService = getResponseServiceSyncClient(httpClient, serviceVersion);
 
         ResponseCreateParams createRequest = ResponseCreateParams.builder()
             .input("Tell me a very long story about a chicken trying to cross the road.")
@@ -74,7 +77,7 @@ public class ResponsesTests extends ClientTestBase {
         assertNotNull(backgroundResponse);
         assertNotNull(backgroundResponse.id());
 
-        Response cancelledResponse = client.getResponseService().cancel(backgroundResponse.id());
+        Response cancelledResponse = responseService.cancel(backgroundResponse.id());
         assertNotNull(cancelledResponse);
         assertEquals(backgroundResponse.id(), cancelledResponse.id());
         assertTrue(cancelledResponse.status().isPresent());

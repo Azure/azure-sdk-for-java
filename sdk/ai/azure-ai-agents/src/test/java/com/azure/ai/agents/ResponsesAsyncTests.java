@@ -12,6 +12,7 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.inputitems.InputItemListPageAsync;
+import com.openai.services.async.ResponseServiceAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -40,6 +41,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion)
         throws ExecutionException, InterruptedException {
         ResponsesAsyncClient client = getResponsesAsyncClient(httpClient, serviceVersion);
+        ResponseServiceAsync responseService = getResponseServiceAsyncClient(httpClient, serviceVersion);
 
         // create
         ResponseCreateParams createRequest
@@ -49,7 +51,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
         assertNotNull(createdResponse.id());
 
         // retrieve
-        Response retrievedResponse = client.getResponseServiceAsync().retrieve(createdResponse.id()).get();
+        Response retrievedResponse = responseService.retrieve(createdResponse.id()).get();
         assertNotNull(retrievedResponse);
         assertEquals(createdResponse.id(), retrievedResponse.id());
 
@@ -61,7 +63,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
         assertFalse(inputItems.data().isEmpty());
 
         // delete
-        client.getResponseServiceAsync().delete(createdResponse.id()).get();
+        responseService.delete(createdResponse.id()).get();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -69,6 +71,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
     public void cancelBackgroundResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion)
         throws ExecutionException, InterruptedException {
         ResponsesAsyncClient client = getResponsesAsyncClient(httpClient, serviceVersion);
+        ResponseServiceAsync responseService = getResponseServiceAsyncClient(httpClient, serviceVersion);
 
         ResponseCreateParams createRequest = ResponseCreateParams.builder()
             .input("Tell me a very long story about a chicken trying to cross the road.")
@@ -79,7 +82,7 @@ public class ResponsesAsyncTests extends ClientTestBase {
         assertNotNull(backgroundResponse);
         assertNotNull(backgroundResponse.id());
 
-        Response cancelledResponse = client.getResponseServiceAsync().cancel(backgroundResponse.id()).get();
+        Response cancelledResponse = responseService.cancel(backgroundResponse.id()).get();
         assertNotNull(cancelledResponse);
         assertEquals(backgroundResponse.id(), cancelledResponse.id());
         assertTrue(cancelledResponse.status().isPresent());
