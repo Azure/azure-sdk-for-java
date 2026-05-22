@@ -34,7 +34,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "producer.event-hub-name" })
 class AzureEventHubsProducerClientConfiguration {
 
-    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace", "event-hub-name" })
     @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedProducerConnectionConfiguration {
@@ -51,7 +51,7 @@ class AzureEventHubsProducerClientConfiguration {
         }
     }
 
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace", "event-hub-name" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedProducerConnectionConfiguration {
 

@@ -42,7 +42,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = "consumer-group")
 class AzureEventHubsConsumerClientConfiguration {
 
-    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace", "event-hub-name" })
     @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedConsumerConnectionConfiguration {
@@ -69,7 +69,7 @@ class AzureEventHubsConsumerClientConfiguration {
         }
     }
 
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace", "event-hub-name" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedConsumerConnectionConfiguration {
 
