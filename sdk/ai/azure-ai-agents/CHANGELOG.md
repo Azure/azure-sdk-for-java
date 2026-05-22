@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Re-enabled `SessionLogSyncTest` and `SessionLogAsyncTest`; both tests are recordable via `@RecordWithoutRequestBody` and run live against the configured Foundry project.
+
 ## 2.1.0-beta.1 (2026-05-12)
 
 ### Features Added
