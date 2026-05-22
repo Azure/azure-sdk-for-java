@@ -147,8 +147,7 @@ public class StorageContentValidationDecoderPolicyTests {
         HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen));
         HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new StorageContentValidationDecoderPolicy())
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
             .httpClient(httpClient)
             .build();
 
