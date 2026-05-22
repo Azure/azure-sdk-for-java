@@ -6,7 +6,6 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
