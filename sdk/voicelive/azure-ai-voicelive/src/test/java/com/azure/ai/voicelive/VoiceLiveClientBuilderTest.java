@@ -203,4 +203,16 @@ class VoiceLiveClientBuilderTest {
         assertSame(clientBuilder, clientBuilder.credential(mockKeyCredential));
         assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW));
     }
+
+    @Test
+    void testBuilderWithDefaultTelemetry() {
+        String endpoint = "https://test.cognitiveservices.azure.com";
+
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client
+                = clientBuilder.endpoint(endpoint).credential(mockKeyCredential).buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
 }

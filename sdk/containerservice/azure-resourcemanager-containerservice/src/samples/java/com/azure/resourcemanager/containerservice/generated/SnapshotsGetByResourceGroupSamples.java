@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01/SnapshotsGet.json
+     * x-ms-original-file: 2026-03-02-preview/SnapshotsGet.json
      */
     /**
      * Sample code: Get Snapshot.

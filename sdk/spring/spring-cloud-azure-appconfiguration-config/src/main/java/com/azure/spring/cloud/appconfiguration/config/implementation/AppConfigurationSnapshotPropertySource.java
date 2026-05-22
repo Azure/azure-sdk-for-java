@@ -50,7 +50,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
     @Override

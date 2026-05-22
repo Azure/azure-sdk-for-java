@@ -24,7 +24,7 @@ public final class PrivateZonesCreateOrUpdateSamples {
         manager.serviceClient()
             .getPrivateZones()
             .createOrUpdate("resourceGroup1", "privatezone1.com",
-                new PrivateZoneInner().withTags(mapOf("key1", "fakeTokenPlaceholder")).withLocation("Global"), null,
+                new PrivateZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")), null,
                 null, com.azure.core.util.Context.NONE);
     }
 

@@ -42,38 +42,42 @@ pr:
       - sdk/monitor/azure-resourcemanager-monitor/pom.xml
 
 parameters:
-- name: release_dependsonlivetests
-  displayName: 'Release depends on live tests'
-  type: boolean
-  default: true
-- name: release_azuremonitoringestion
-  displayName: 'azure-monitor-ingestion'
-  type: boolean
-  default: true
-- name: release_azuremonitoropentelemetryexporter
-  displayName: 'azure-monitor-opentelemetry-exporter'
-  type: boolean
-  default: true
-- name: release_azuremonitoropentelemetryautoconfigure
-  displayName: 'azure-monitor-opentelemetry-autoconfigure'
-  type: boolean
-  default: true
-- name: release_azuremonitorquery
-  displayName: 'azure-monitor-query'
-  type: boolean
-  default: true
-- name: release_azuremonitorquerylogs
-  displayName: 'azure-monitor-query-logs'
-  type: boolean
-  default: true
-- name: release_azuremonitorquerymetrics
-  displayName: 'azure-monitor-query-metrics'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagermonitor
-  displayName: 'azure-resourcemanager-monitor'
-  type: boolean
-  default: false
+  - name: release_dependsonlivetests
+    displayName: Release depends on live tests
+    type: boolean
+    default: true
+  - name: release_azuremonitoringestion
+    displayName: azure-monitor-ingestion
+    type: boolean
+    default: true
+  - name: release_azuremonitoropentelemetryexporter
+    displayName: azure-monitor-opentelemetry-exporter
+    type: boolean
+    default: true
+  - name: release_azuremonitoropentelemetryautoconfigure
+    displayName: azure-monitor-opentelemetry-autoconfigure
+    type: boolean
+    default: true
+  - name: release_azuremonitorquery
+    displayName: azure-monitor-query
+    type: boolean
+    default: true
+  - name: release_azuremonitorquerylogs
+    displayName: azure-monitor-query-logs
+    type: boolean
+    default: true
+  - name: release_azuremonitorquerymetrics
+    displayName: azure-monitor-query-metrics
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagermonitor
+    displayName: azure-resourcemanager-monitor
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagermonitorslis
+    displayName: azure-resourcemanager-monitor-slis
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -108,11 +112,14 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
         releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
+      - name: azure-resourcemanager-monitor-slis
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitorslis
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermonitorslis }}
     AdditionalModules:
       - name: azure-monitor-query-perf
         groupId: com.azure
       - name: azure-monitor-ingestion-perf
         groupId: com.azure
-        # required by the above perf library
       - name: perf-test-core
         groupId: com.azure

@@ -40,9 +40,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Model constants
     protected static final String MODEL_GPT_4O = "gpt-4o";
-    protected static final String MODEL_GPT_4O_REALTIME = "gpt-4o-realtime";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW = "gpt-4o-realtime-preview";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW_2025_06_03 = "gpt-4o-realtime-preview-2025-06-03";
+    protected static final String MODEL_GPT_REALTIME = "gpt-realtime";
     protected static final String MODEL_GPT_41 = "gpt-4.1";
     protected static final String MODEL_GPT_5 = "gpt-5";
     protected static final String MODEL_GPT_5_CHAT = "gpt-5-chat";
@@ -51,7 +49,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Default models for non-parameterized tests
     protected static final String TEST_MODEL = MODEL_GPT_4O;
-    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_4O_REALTIME_PREVIEW;
+    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_REALTIME;
 
     // Timeout constants
     protected static final Duration SESSION_TIMEOUT = Duration.ofSeconds(30);
@@ -175,10 +173,9 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected AudioInputTranscriptionOptions getSpeechRecognitionSetting(String model) {
-        AudioInputTranscriptionOptionsModel transcriptionModel
-            = model.startsWith("gpt-4o-realtime") || model.startsWith("gpt-4o-mini-realtime")
-                ? AudioInputTranscriptionOptionsModel.WHISPER_1
-                : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
+        AudioInputTranscriptionOptionsModel transcriptionModel = model.startsWith("gpt-realtime")
+            ? AudioInputTranscriptionOptionsModel.WHISPER_1
+            : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
         return new AudioInputTranscriptionOptions(transcriptionModel).setLanguage("en-US");
     }
 

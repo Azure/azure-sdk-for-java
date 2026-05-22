@@ -11,7 +11,7 @@ public final class AkriConnectorAllocatedDeviceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorAllocatedDevice model
-            = BinaryData.fromString("{\"deviceInboundEndpointName\":\"rctym\",\"deviceName\":\"xoftpipiwyczu\"}")
+            = BinaryData.fromString("{\"deviceInboundEndpointName\":\"t\",\"deviceName\":\"mrtwna\"}")
                 .toObject(AkriConnectorAllocatedDevice.class);
     }
 }

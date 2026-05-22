@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NspProvisioningState;
-import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import com.azure.resourcemanager.network.models.SecurityPerimeterTrackedResource;
 import java.io.IOException;
 import java.util.Map;
@@ -28,21 +28,20 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the resource
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -67,13 +66,12 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -93,8 +91,7 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -149,9 +146,6 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (systemData() != null) {
-            systemData().validate();
-        }
         if (location() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -190,16 +184,16 @@ public final class NetworkSecurityPerimeterInner extends SecurityPerimeterTracke
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedNetworkSecurityPerimeterInner.withLocation(reader.getString());
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedNetworkSecurityPerimeterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterInner.withLocation(reader.getString());
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNetworkSecurityPerimeterInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedNetworkSecurityPerimeterInner.systemData = SystemData.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedNetworkSecurityPerimeterInner.withTags(tags);

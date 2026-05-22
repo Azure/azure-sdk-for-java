@@ -12,7 +12,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OkResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 
@@ -32,7 +31,7 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters);
 
     /**
@@ -48,7 +47,7 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
         PrepareDataMoveRequest parameters, Context context);
 
     /**
@@ -60,10 +59,9 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters);
+    void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters);
 
     /**
      * Prepares source vault for Data Move operation.
@@ -75,10 +73,9 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+    void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
         Context context);
 
     /**
@@ -93,7 +90,7 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters);
 
     /**
@@ -109,7 +106,7 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OkResponse>, OkResponse> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
         TriggerDataMoveRequest parameters, Context context);
 
     /**
@@ -121,10 +118,9 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters);
+    void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters);
 
     /**
      * Triggers Data Move Operation on target vault.
@@ -136,10 +132,9 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+    void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
         Context context);
 
     /**

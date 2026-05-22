@@ -23,8 +23,7 @@ public class MosaicsTileMatrixSetsGetZxyScaleByFormat {
             2174.0, 3282.0, 1.0, "png",
             new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
                 .setAssetBandIndices("image|1,2,3")
-                .setCollection("naip-atl"),
-            null);
+                .setCollection("naip-atl"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-mosaics-tile.mosaics-tile-matrix-sets-get-zxy-scale-by-format
     }
 }
