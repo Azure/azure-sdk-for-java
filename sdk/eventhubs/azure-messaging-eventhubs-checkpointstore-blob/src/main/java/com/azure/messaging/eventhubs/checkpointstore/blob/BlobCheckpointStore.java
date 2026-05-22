@@ -244,7 +244,7 @@ public class BlobCheckpointStore implements CheckpointStore {
      *
      * @param checkpoint Checkpoint information containing the sequence number and/or offset (as {@code offsetString}
      * or the deprecated {@code offset}) to be stored for this partition.
-     * @return The new ETag on successful update.
+     * @return A {@link Mono} that completes when the checkpoint metadata has been persisted.
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
