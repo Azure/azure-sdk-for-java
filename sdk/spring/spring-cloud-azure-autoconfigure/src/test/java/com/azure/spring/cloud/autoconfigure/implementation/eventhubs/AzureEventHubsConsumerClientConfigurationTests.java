@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -32,18 +33,6 @@ class AzureEventHubsConsumerClientConfigurationTests {
         contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
-            )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
-            });
-
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.consumer.event-hub-name=test-eventhub",
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
@@ -133,6 +122,33 @@ class AzureEventHubsConsumerClientConfigurationTests {
                     assertThat(context).hasSingleBean(EventHubConsumerClient.class);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME);
+                }
+            );
+    }
+
+    @Test
+    void consumerEventHubNameOverrideShouldConfigureDedicated() {
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=base-eventhub",
+                "spring.cloud.azure.eventhubs.consumer.event-hub-name=override-eventhub",
+                "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group",
+                "spring.cloud.azure.eventhubs.producer.event-hub-name=base-eventhub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
+            .run(
+                context -> {
+                    assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
+                    assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
+                    assertThat(context).hasSingleBean(EventHubConsumerClient.class);
+
+                    AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                    AzureEventHubsProperties.Consumer consumer = properties.buildConsumerProperties();
+                    assertThat(consumer.getEventHubName()).isEqualTo("override-eventhub");
+                    assertThat(consumer.getNamespace()).isEqualTo("test-namespace");
                 }
             );
     }
