@@ -766,8 +766,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadKnowledgeSourceFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("sourceName") String name, @HeaderParam("Accept") String accept,
-            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Disposition") String contentDisposition, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData file,
+            RequestOptions requestOptions, Context context);
 
         @Post("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 201 })
@@ -777,8 +778,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadKnowledgeSourceFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("sourceName") String name, @HeaderParam("Accept") String accept,
-            @BodyParam("application/octet-stream") BinaryData file, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Disposition") String contentDisposition, @PathParam("sourceName") String name,
+            @HeaderParam("Accept") String accept, @BodyParam("application/octet-stream") BinaryData file,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')/files")
         @ExpectedResponses({ 200 })
@@ -7631,6 +7633,9 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
      * @param name The name of the knowledge source.
      * @param file The file content to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7642,12 +7647,13 @@ public final class SearchIndexClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponseAsync(String name, BinaryData file,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponseAsync(String contentDisposition, String name,
+        BinaryData file, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.uploadKnowledgeSourceFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, name, accept, file, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.uploadKnowledgeSourceFile(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, contentDisposition, name, accept, file, requestOptions, context));
     }
 
     /**
@@ -7675,6 +7681,9 @@ public final class SearchIndexClientImpl {
      * }
      * </pre>
      * 
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
      * @param name The name of the knowledge source.
      * @param file The file content to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7685,12 +7694,12 @@ public final class SearchIndexClientImpl {
      * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String name, BinaryData file,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String contentDisposition, String name,
+        BinaryData file, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         return service.uploadKnowledgeSourceFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, name, accept, file, requestOptions, Context.NONE);
+            contentType, contentDisposition, name, accept, file, requestOptions, Context.NONE);
     }
 
     /**
