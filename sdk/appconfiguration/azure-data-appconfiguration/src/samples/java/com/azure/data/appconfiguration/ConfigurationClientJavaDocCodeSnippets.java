@@ -622,7 +622,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
         configurationClient.checkConfigurationSettings(settingSelector).iterableByPage().forEach(page -> {
             String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
-            System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
+            System.out.printf("Page ETag: %s%n", eTag);
         });
         // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
     }
@@ -637,7 +637,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         Context ctx = new Context(key2, value2);
         configurationClient.checkConfigurationSettings(settingSelector, ctx).iterableByPage().forEach(page -> {
             String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
-            System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
+            System.out.printf("Page ETag: %s%n", eTag);
         });
         // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
     }

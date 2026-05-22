@@ -525,7 +525,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .byPage()
             .subscribe(page -> {
                 String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
-                System.out.printf("Page ETag: %s, settings count: %d%n", eTag, page.getValue().size());
+                System.out.printf("Page ETag: %s%n", eTag);
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings
     }

@@ -64,6 +64,7 @@ public class CheckConfigurationSettingsForChanges {
             .setKeyFilter(key)
             .setMatchConditions(matchConditions);
 
+        boolean hasChanges = false;
         PagedIterable<ConfigurationSetting> conditionalResult = client.checkConfigurationSettings(conditionalSelector);
         for (PagedResponse<ConfigurationSetting> page : conditionalResult.iterableByPage()) {
             if (page.getStatusCode() == 304) {
@@ -71,6 +72,7 @@ public class CheckConfigurationSettingsForChanges {
             } else {
                 System.out.printf("[CheckConfigurationSettings] Changes detected. New ETag: %s%n",
                     page.getHeaders().getValue(HttpHeaderName.ETAG));
+                hasChanges = true;
             }
         }
 
@@ -80,7 +82,6 @@ public class CheckConfigurationSettingsForChanges {
 
         // Check again with the same cached ETags - changes should be detected
         conditionalResult = client.checkConfigurationSettings(conditionalSelector);
-        boolean hasChanges = false;
         for (PagedResponse<ConfigurationSetting> page : conditionalResult.iterableByPage()) {
             if (page.getStatusCode() == 304) {
                 System.out.println("[CheckConfigurationSettings] No changes detected (304 Not Modified)");

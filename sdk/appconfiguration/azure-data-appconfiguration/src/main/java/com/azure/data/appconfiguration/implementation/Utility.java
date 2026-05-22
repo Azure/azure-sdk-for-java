@@ -215,7 +215,8 @@ public class Utility {
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
-    public static PagedResponse<ConfigurationSetting>  toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+    public static PagedResponse<ConfigurationSetting>
+        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
         String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             Collections.emptyList(), continuationToken, null);
