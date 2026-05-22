@@ -116,9 +116,9 @@ class ServiceBusSessionReceiverClientTest {
      * to the async client unchanged and surfaces every returned session ID.
      */
     @Test
-    void listSessionsWithUpdatedAfterDelegatesToAsync() {
-        final OffsetDateTime updatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        when(sessionAsyncClient.listSessions(eq(updatedAfter)))
+    void listSessionsWithSessionStateUpdatedAfterDelegatesToAsync() {
+        final OffsetDateTime sessionStateUpdatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        when(sessionAsyncClient.listSessions(eq(sessionStateUpdatedAfter)))
             .thenReturn(new PagedFlux<>(() -> Mono.just(new PagedResponseBase<Void, String>(null, 200,
                 new HttpHeaders(Collections.emptyMap()), Collections.singletonList("only"), null, null))));
 
@@ -126,7 +126,7 @@ class ServiceBusSessionReceiverClientTest {
             = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofSeconds(5));
 
         final List<String> ids = new ArrayList<>();
-        client.listSessions(updatedAfter).forEach(ids::add);
+        client.listSessions(sessionStateUpdatedAfter).forEach(ids::add);
 
         assertEquals(Collections.singletonList("only"), ids);
     }
@@ -135,7 +135,7 @@ class ServiceBusSessionReceiverClientTest {
      * Verifies that an error in the async {@code PagedFlux} (e.g., a transient broker failure)
      * propagates out of the sync {@code PagedIterable} when iterated. Uses a generic
      * {@link RuntimeException} so the failure mode is unmistakably distinct from the eager
-     * argument validation in {@link #listSessionsRejectsNullUpdatedAfterEagerly()}.
+     * argument validation in {@link #listSessionsRejectsNullSessionStateUpdatedAfterEagerly()}.
      */
     @Test
     void listSessionsPropagatesAsyncError() {
@@ -145,18 +145,18 @@ class ServiceBusSessionReceiverClientTest {
         final ServiceBusSessionReceiverClient client
             = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofSeconds(5));
 
-        final OffsetDateTime updatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        assertThrows(RuntimeException.class, () -> client.listSessions(updatedAfter).forEach(id -> {
+        final OffsetDateTime sessionStateUpdatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        assertThrows(RuntimeException.class, () -> client.listSessions(sessionStateUpdatedAfter).forEach(id -> {
         }));
     }
 
     /**
-     * Verifies the sync wrapper rejects a null {@code updatedAfter} eagerly (immediately on the
+     * Verifies the sync wrapper rejects a null {@code sessionStateUpdatedAfter} eagerly (immediately on the
      * call) rather than deferring the error until the {@code PagedIterable} is iterated, matching
      * the behavior documented on the public method.
      */
     @Test
-    void listSessionsRejectsNullUpdatedAfterEagerly() {
+    void listSessionsRejectsNullSessionStateUpdatedAfterEagerly() {
         final ServiceBusSessionReceiverClient client
             = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofSeconds(5));
 

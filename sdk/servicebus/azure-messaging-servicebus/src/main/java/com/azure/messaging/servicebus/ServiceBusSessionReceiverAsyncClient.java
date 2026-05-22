@@ -349,16 +349,16 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
      * have active messages.</p>
      *
-     * @param updatedAfter Only sessions whose session state was updated after this time are returned.
+     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
      * @return A {@link PagedFlux} of session ID strings.
-     * @throws NullPointerException if {@code updatedAfter} is null.
+     * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listSessions(OffsetDateTime updatedAfter) {
-        if (updatedAfter == null) {
-            return pagedFluxError(LOGGER, new NullPointerException("'updatedAfter' cannot be null."));
+    public PagedFlux<String> listSessions(OffsetDateTime sessionStateUpdatedAfter) {
+        if (sessionStateUpdatedAfter == null) {
+            return pagedFluxError(LOGGER, new NullPointerException("'sessionStateUpdatedAfter' cannot be null."));
         }
-        return listSessionsInternal(updatedAfter);
+        return listSessionsInternal(sessionStateUpdatedAfter);
     }
 
     private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {

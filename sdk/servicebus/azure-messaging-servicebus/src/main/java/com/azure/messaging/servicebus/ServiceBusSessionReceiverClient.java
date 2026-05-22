@@ -234,14 +234,14 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
      * have active messages.</p>
      *
-     * @param updatedAfter Only sessions whose session state was updated after this time are returned.
+     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
-     * @throws NullPointerException if {@code updatedAfter} is null.
+     * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listSessions(OffsetDateTime updatedAfter) {
-        Objects.requireNonNull(updatedAfter, "'updatedAfter' cannot be null.");
-        return new PagedIterable<>(sessionAsyncClient.listSessions(updatedAfter));
+    public PagedIterable<String> listSessions(OffsetDateTime sessionStateUpdatedAfter) {
+        Objects.requireNonNull(sessionStateUpdatedAfter, "'sessionStateUpdatedAfter' cannot be null.");
+        return new PagedIterable<>(sessionAsyncClient.listSessions(sessionStateUpdatedAfter));
     }
 
     @Override

@@ -1068,7 +1068,7 @@ class ManagementChannelTests {
      * Verifies getMessageSessions in updated-after mode sends the correct timestamp and parses the response.
      */
     @Test
-    void getMessageSessionsUpdatedAfterMode() {
+    void getMessageSessionsSessionStateUpdatedAfterMode() {
         // Arrange
         final OffsetDateTime lastUpdated = OffsetDateTime.of(2026, 1, 15, 10, 30, 0, 0, ZoneOffset.UTC);
         final int skip = 0;

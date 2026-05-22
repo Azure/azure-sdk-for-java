@@ -409,33 +409,33 @@ class ServiceBusSessionReceiverAsyncClientTest {
      */
     @Test
     void listSessionsHonorsServerSkipAndLastSessionId() {
-        final OffsetDateTime updatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime sessionStateUpdatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
         // First page returns 2 items but the server reports skip = 7 (5 entries filtered server-side).
-        when(managementNode.getMessageSessions(eq(updatedAfter), eq(0), eq(100), isNull()))
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(0), eq(100), isNull()))
             .thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("a", "b"), 7)));
         // Second-page request must use the server-returned skip (7) and lastSessionId ("b").
-        when(managementNode.getMessageSessions(eq(updatedAfter), eq(7), eq(100), eq("b")))
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(7), eq(100), eq("b")))
             .thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("c"), 8)));
         // Third page empty terminates pagination.
-        when(managementNode.getMessageSessions(eq(updatedAfter), eq(8), eq(100), eq("c")))
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(8), eq(100), eq("c")))
             .thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 8)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
-        StepVerifier.create(client.listSessions(updatedAfter))
+        StepVerifier.create(client.listSessions(sessionStateUpdatedAfter))
             .expectNext("a", "b", "c")
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
 
     /**
-     * Verifies that null {@code updatedAfter} surfaces as a logged {@link NullPointerException} via
+     * Verifies that null {@code sessionStateUpdatedAfter} surfaces as a logged {@link NullPointerException} via
      * the {@link reactor.core.publisher.Flux} returned by the {@link com.azure.core.http.rest.PagedFlux},
      * matching the contract documented on the public method.
      */
     @Test
-    void listSessionsRejectsNullUpdatedAfter() {
+    void listSessionsRejectsNullSessionStateUpdatedAfter() {
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
         StepVerifier.create(client.listSessions(null)).expectError(NullPointerException.class).verify(DEFAULT_TIMEOUT);
