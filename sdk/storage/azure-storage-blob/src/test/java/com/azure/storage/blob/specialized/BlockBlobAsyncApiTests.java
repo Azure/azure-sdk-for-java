@@ -968,7 +968,6 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL)).verifyError(BlobStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void upload() {
         StepVerifier
@@ -2504,7 +2503,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-08")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
