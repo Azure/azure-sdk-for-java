@@ -10,8 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseOutputItem;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A single evaluation task with input query, expected output, and evaluation criteria.
@@ -163,8 +165,8 @@ public final class DatasetItem implements JsonSerializable<DatasetItem> {
      *
      * @return the responseItems value.
      */
-    @Generated
-    public List<BinaryData> getResponseItems() {
+    List<BinaryData> getResponseItems() {
+        // AI Tooling: union type
         return this.responseItems;
     }
 
@@ -175,9 +177,42 @@ public final class DatasetItem implements JsonSerializable<DatasetItem> {
      * @param responseItems the responseItems value to set.
      * @return the DatasetItem object itself.
      */
-    @Generated
-    public DatasetItem setResponseItems(List<BinaryData> responseItems) {
+    DatasetItem setResponseItems(List<BinaryData> responseItems) {
+        // AI Tooling: union type
         this.responseItems = responseItems;
+        return this;
+    }
+
+    /**
+     * Get the responseItems property as a list of {@link ResponseOutputItem}: Pre-computed agent response output items.
+     * Captures the full trajectory (function calls, tool outputs, messages) from a prior agent run.
+     *
+     * @return the responseItems value as a list of ResponseOutputItem, or null if not set.
+     */
+    public List<ResponseOutputItem> getResponseItemsAsResponseOutputItems() {
+        // AI Tooling: union type
+        if (this.responseItems == null) {
+            return null;
+        }
+        return this.responseItems.stream()
+            .map(item -> item.toObject(ResponseOutputItem.class))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Set the responseItems property: Pre-computed agent response output items. Captures the full trajectory (function
+     * calls, tool outputs, messages) from a prior agent run.
+     *
+     * @param responseItems the list of ResponseOutputItem values to set.
+     * @return the DatasetItem object itself.
+     */
+    public DatasetItem setResponseOutputItems(List<ResponseOutputItem> responseItems) {
+        // AI Tooling: union type
+        if (responseItems == null) {
+            this.responseItems = null;
+        } else {
+            this.responseItems = responseItems.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        }
         return this;
     }
 

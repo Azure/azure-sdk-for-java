@@ -40,20 +40,19 @@ public class CodeAgentAsyncSample {
             .flatMap(codeZip -> {
                 String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-                // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentFromCode
+                // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
 
-                return agentsAsyncClient.createAgentFromCode(
+                return agentsAsyncClient.createAgentVersionFromCode(
                     agentName,
                     codeZipSha256,
-                    CodeAgentSampleUtils.createAgentFromCodeContent(codeZip),
+                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
                     AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW)
-                    .doOnNext(agent -> {
-                        AgentVersionDetails latestVersion = agent.getVersions().getLatest();
-                        System.out.printf("Created code-based agent: %s%n", agent.getName());
-                        CodeAgentSampleUtils.printLatestVersion(latestVersion);
+                    .doOnNext(version -> {
+                        System.out.printf("Created code-based agent: %s%n", version.getName());
+                        CodeAgentSampleUtils.printLatestVersion(version);
                     })
 
-                    // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentFromCode
+                    // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
 
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 

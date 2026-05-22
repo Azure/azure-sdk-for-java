@@ -6,7 +6,6 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
@@ -40,22 +39,21 @@ public class CodeAgentSample {
         }
 
         try {
-            // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentFromCode
+            // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode_initial
 
             BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
             String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-            AgentDetails agent = agentsClient.createAgentFromCode(
+            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
-                CodeAgentSampleUtils.createAgentFromCodeContent(codeZip),
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
                 AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
 
-            AgentVersionDetails latestVersion = agent.getVersions().getLatest();
-            System.out.printf("Created code-based agent: %s%n", agent.getName());
-            CodeAgentSampleUtils.printLatestVersion(latestVersion);
+            System.out.printf("Created code-based agent: %s%n", version.getName());
+            CodeAgentSampleUtils.printLatestVersion(version);
 
-            // END: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentFromCode
+            // END: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode_initial
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 

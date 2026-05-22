@@ -8,7 +8,6 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeConfiguration;
 import com.azure.ai.agents.models.CodeDependencyResolution;
 import com.azure.ai.agents.models.CodeFileDetails;
-import com.azure.ai.agents.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.HostedAgentDefinition;
@@ -31,10 +30,6 @@ final class CodeAgentSampleUtils {
     static final String SAMPLE_AGENT_NAME = "java-code-agent-sample";
 
     private CodeAgentSampleUtils() {
-    }
-
-    static CreateAgentFromCodeContent createAgentFromCodeContent(BinaryData codeZip) {
-        return new CreateAgentFromCodeContent(createMetadata(), createCodeFileDetails(codeZip));
     }
 
     static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(BinaryData codeZip) {
