@@ -137,8 +137,14 @@ public class SearchCustomizations extends Customization {
                     return;
                 }
 
-                if (hasBinaryDataInType(method.getType())
-                    || method.getParameters().stream().anyMatch(param -> hasBinaryDataInType(param.getType()))) {
+                boolean returnsBinaryData = hasBinaryDataInType(method.getType());
+                boolean acceptsBinaryData
+                    = method.getParameters().stream().anyMatch(param -> hasBinaryDataInType(param.getType()));
+
+                // Only hide methods that return BinaryData or accept BinaryData in WithResponse methods.
+                // Convenience methods that accept BinaryData as input (e.g., file upload) should remain public.
+                boolean isWithResponse = method.getNameAsString().contains("WithResponse");
+                if (returnsBinaryData || (acceptsBinaryData && isWithResponse)) {
                     String methodName = method.getNameAsString();
                     String newMethodName = "hiddenGenerated" + Character.toUpperCase(methodName.charAt(0))
                         + methodName.substring(1);

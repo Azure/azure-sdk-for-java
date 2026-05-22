@@ -259,6 +259,27 @@ public final class SearchAsyncClient {
     }
 
     /**
+     * Retrieves a document from the Azure AI Search index.
+     * <p>
+     * This overload preserves backward compatibility with the 12.0.0 GA signature.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
+     * default as its corresponding value in the returned object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LookupDocument> getDocument(String key, List<String> selectedFields) {
+        return getDocument(key, null, null, selectedFields);
+    }
+
+    /**
      * Sends a batch of document write actions to the index.
      *
      * @param batch The batch of index actions.

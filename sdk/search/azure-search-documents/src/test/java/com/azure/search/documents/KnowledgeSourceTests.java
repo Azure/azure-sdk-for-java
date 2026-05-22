@@ -28,6 +28,7 @@ import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSource;
 import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
@@ -58,6 +59,8 @@ import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.WorkIQKnowledgeSource;
+import com.azure.search.documents.knowledgebases.models.FreshnessPolicy;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
@@ -79,6 +82,7 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -122,7 +126,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
     @AfterEach
     public void cleanup() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            // Delete Knowledge Sources created during tests.
+            // Delete Knowledge Bases first (they reference Knowledge Sources).
+            searchIndexClient.listKnowledgeBases()
+                .forEach(knowledgeBase -> searchIndexClient.deleteKnowledgeBase(knowledgeBase.getName()));
+            // Then delete Knowledge Sources.
             searchIndexClient.listKnowledgeSources()
                 .forEach(knowledgeSource -> searchIndexClient.deleteKnowledgeSource(knowledgeSource.getName()));
         }
@@ -2184,16 +2191,15 @@ public class KnowledgeSourceTests extends SearchTestBase {
     // Blob Knowledge Source with Sensitivity Labels tests
     // ---------------------------------------------------------------
 
-    @Disabled("Requires a real Azure Blob Storage account accessible by the search service's managed identity")
     @Test
     public void createBlobKnowledgeSourceWithSensitivityLabelsSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         AzureBlobKnowledgeSourceParameters blobParams
             = new AzureBlobKnowledgeSourceParameters(BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME)
                 .setIngestionParameters(new KnowledgeSourceIngestionParameters()
-                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
-                        new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
-                            .setDeploymentName("text-embedding-3-large")
+                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                        .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                            .setDeploymentName(OPENAI_DEPLOYMENT_NAME)
                             .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))
                     .setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE,
                         KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
@@ -2214,16 +2220,15 @@ public class KnowledgeSourceTests extends SearchTestBase {
             .contains(KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
     }
 
-    @Disabled("Requires a real Azure Blob Storage account accessible by the search service's managed identity")
     @Test
     public void createBlobKnowledgeSourceWithSensitivityLabelsAsync() {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         AzureBlobKnowledgeSourceParameters blobParams
             = new AzureBlobKnowledgeSourceParameters(BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME)
                 .setIngestionParameters(new KnowledgeSourceIngestionParameters()
-                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
-                        new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
-                            .setDeploymentName("text-embedding-3-large")
+                    .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                        .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                            .setDeploymentName(OPENAI_DEPLOYMENT_NAME)
                             .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE)))
                     .setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption.RBAC_SCOPE,
                         KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
@@ -2243,6 +2248,346 @@ public class KnowledgeSourceTests extends SearchTestBase {
                 .getIngestionPermissionOptions()
                 .contains(KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
         }).verifyComplete();
+    }
+
+    @Test
+    public void createFileKnowledgeSourceWithFreshnessPolicySync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setFreshnessPolicy(new FreshnessPolicy().setBoostingDuration("P90D"))
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("File KS with freshness policy");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+        assertEquals("File KS with freshness policy", createdSource.getDescription());
+        assertNotNull(createdSource.getFileParameters().getIngestionParameters());
+        assertNotNull(createdSource.getFileParameters().getIngestionParameters().getFreshnessPolicy());
+        assertEquals("P90D",
+            createdSource.getFileParameters().getIngestionParameters().getFreshnessPolicy().getBoostingDuration());
+    }
+
+    @Test
+    public void createFileKnowledgeSourceWithFreshnessPolicyAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setFreshnessPolicy(new FreshnessPolicy().setBoostingDuration("P90D"))
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params)
+            .setDescription("File KS with freshness policy");
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            FileKnowledgeSource createdSource = assertInstanceOf(FileKnowledgeSource.class, created);
+            assertEquals("File KS with freshness policy", createdSource.getDescription());
+            assertNotNull(createdSource.getFileParameters().getIngestionParameters());
+            assertNotNull(createdSource.getFileParameters().getIngestionParameters().getFreshnessPolicy());
+            assertEquals("P90D",
+                createdSource.getFileParameters().getIngestionParameters().getFreshnessPolicy().getBoostingDuration());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createWebKnowledgeSourceWithRetrieveDefaultsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WebKnowledgeSourceParameters webParams
+            = new WebKnowledgeSourceParameters().setCount(5).setFreshness("Day").setLanguage("en").setMarket("en-US");
+        WebKnowledgeSource webKS = new WebKnowledgeSource(randomKnowledgeSourceName()).setWebParameters(webParams);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(webKS);
+
+        WebKnowledgeSource createdWeb = assertInstanceOf(WebKnowledgeSource.class, created);
+        WebKnowledgeSourceParameters createdParams = createdWeb.getWebParameters();
+        assertNotNull(createdParams);
+        assertEquals(5, createdParams.getCount());
+        assertEquals("Day", createdParams.getFreshness());
+        assertEquals("en", createdParams.getLanguage());
+        assertEquals("en-US", createdParams.getMarket());
+    }
+
+    @Test
+    public void createWebKnowledgeSourceWithRetrieveDefaultsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        WebKnowledgeSourceParameters webParams
+            = new WebKnowledgeSourceParameters().setCount(5).setFreshness("Day").setLanguage("en").setMarket("en-US");
+        WebKnowledgeSource webKS = new WebKnowledgeSource(randomKnowledgeSourceName()).setWebParameters(webParams);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(webKS)).assertNext(created -> {
+            WebKnowledgeSource createdWeb = assertInstanceOf(WebKnowledgeSource.class, created);
+            WebKnowledgeSourceParameters createdParams = createdWeb.getWebParameters();
+            assertNotNull(createdParams);
+            assertEquals(5, createdParams.getCount());
+            assertEquals("Day", createdParams.getFreshness());
+            assertEquals("en", createdParams.getLanguage());
+            assertEquals("en-US", createdParams.getMarket());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void listFilesOnEmptyFileKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        List<KnowledgeSourceFile> files = searchIndexClient.listKnowledgeSourceFiles(knowledgeSource.getName())
+            .stream()
+            .collect(Collectors.toList());
+        assertNotNull(files);
+        assertTrue(files.isEmpty(), "Newly created File KS should have no files");
+    }
+
+    @Test
+    public void listFilesOnEmptyFileKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSourceParameters params
+            = new FileKnowledgeSourceParameters().setIngestionParameters(new KnowledgeSourceIngestionParameters()
+                .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer().setAzureOpenAIParameters(
+                    new AzureOpenAIVectorizerParameters().setResourceUrl("https://fake-aoai.openai.azure.com")
+                        .setDeploymentName("text-embedding-3-large")
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        Mono<List<KnowledgeSourceFile>> createAndListMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> searchIndexClient.listKnowledgeSourceFiles(created.getName()).collectList());
+
+        StepVerifier.create(createAndListMono).assertNext(files -> {
+            assertNotNull(files);
+            assertTrue(files.isEmpty(), "Newly created File KS should have no files");
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createSearchIndexKnowledgeSourceWithBaseFilterSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchIndexKnowledgeSourceParameters params
+            = new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME).setBaseFilter("Category eq 'Budget'");
+        KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
+
+        SearchIndexKnowledgeSource createdSource = assertInstanceOf(SearchIndexKnowledgeSource.class, created);
+        assertEquals("Category eq 'Budget'", createdSource.getSearchIndexParameters().getBaseFilter());
+    }
+
+    @Test
+    public void createSearchIndexKnowledgeSourceWithBaseFilterAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        SearchIndexKnowledgeSourceParameters params
+            = new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME).setBaseFilter("Category eq 'Budget'");
+        KnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(randomKnowledgeSourceName(), params);
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
+            SearchIndexKnowledgeSource createdSource = assertInstanceOf(SearchIndexKnowledgeSource.class, created);
+            assertEquals("Category eq 'Budget'", createdSource.getSearchIndexParameters().getBaseFilter());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createWorkIQKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(workIQKS);
+
+        assertEquals(workIQKS.getName(), created.getName());
+        WorkIQKnowledgeSource createdWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, createdWorkIQ.getKind());
+    }
+
+    @Test
+    public void createWorkIQKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+
+        StepVerifier.create(searchIndexClient.createKnowledgeSource(workIQKS)).assertNext(created -> {
+            assertEquals(workIQKS.getName(), created.getName());
+            WorkIQKnowledgeSource createdWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, created);
+            assertEquals(KnowledgeSourceKind.WORK_IQ, createdWorkIQ.getKind());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createWorkIQKnowledgeSourceWithDescription() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS
+            = new WorkIQKnowledgeSource(randomKnowledgeSourceName()).setDescription("Work IQ KS for testing");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(workIQKS);
+
+        WorkIQKnowledgeSource createdWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, createdWorkIQ.getKind());
+        assertEquals("Work IQ KS for testing", createdWorkIQ.getDescription());
+    }
+
+    @Test
+    public void getWorkIQKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+        searchIndexClient.createKnowledgeSource(workIQKS);
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(workIQKS.getName());
+
+        assertEquals(workIQKS.getName(), retrieved.getName());
+        WorkIQKnowledgeSource retrievedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, retrieved);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, retrievedWorkIQ.getKind());
+    }
+
+    @Test
+    public void getWorkIQKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+
+        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(workIQKS)
+            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
+
+        StepVerifier.create(createAndGetMono).assertNext(retrieved -> {
+            assertEquals(workIQKS.getName(), retrieved.getName());
+            WorkIQKnowledgeSource retrievedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, retrieved);
+            assertEquals(KnowledgeSourceKind.WORK_IQ, retrievedWorkIQ.getKind());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void updateWorkIQKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+        searchIndexClient.createKnowledgeSource(workIQKS);
+
+        String newDescription = "Updated Work IQ description";
+        workIQKS.setDescription(newDescription);
+        KnowledgeSource updated = searchIndexClient.createOrUpdateKnowledgeSource(workIQKS);
+
+        assertEquals(newDescription, updated.getDescription());
+        WorkIQKnowledgeSource updatedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, updated);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, updatedWorkIQ.getKind());
+    }
+
+    @Test
+    public void updateWorkIQKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+
+        Mono<KnowledgeSource> createUpdateAndGetMono
+            = searchIndexClient.createKnowledgeSource(workIQKS).flatMap(created -> {
+                String newDescription = "Updated Work IQ description";
+                created.setDescription(newDescription);
+                return searchIndexClient.createOrUpdateKnowledgeSource(created);
+            }).flatMap(updated -> searchIndexClient.getKnowledgeSource(updated.getName()));
+
+        StepVerifier.create(createUpdateAndGetMono).assertNext(retrieved -> {
+            assertEquals("Updated Work IQ description", retrieved.getDescription());
+            WorkIQKnowledgeSource retrievedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, retrieved);
+            assertEquals(KnowledgeSourceKind.WORK_IQ, retrievedWorkIQ.getKind());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void deleteWorkIQKnowledgeSourceSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+        searchIndexClient.createKnowledgeSource(workIQKS);
+
+        searchIndexClient.deleteKnowledgeSource(workIQKS.getName());
+
+        assertThrows(HttpResponseException.class, () -> searchIndexClient.getKnowledgeSource(workIQKS.getName()));
+    }
+
+    @Test
+    public void deleteWorkIQKnowledgeSourceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        WorkIQKnowledgeSource workIQKS = new WorkIQKnowledgeSource(randomKnowledgeSourceName());
+
+        Mono<Void> createAndDeleteMono = searchIndexClient.createKnowledgeSource(workIQKS)
+            .flatMap(created -> searchIndexClient.deleteKnowledgeSource(created.getName()));
+
+        StepVerifier.create(createAndDeleteMono).verifyComplete();
+
+        StepVerifier.create(searchIndexClient.getKnowledgeSource(workIQKS.getName()))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void listKnowledgeSourcesIncludesWorkIQType() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS
+            = new WorkIQKnowledgeSource(randomKnowledgeSourceName()).setDescription("Work IQ for listing test");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(workIQKS);
+
+        Map<String, KnowledgeSource> knowledgeSourcesByName = searchIndexClient.listKnowledgeSources()
+            .stream()
+            .collect(Collectors.toMap(KnowledgeSource::getName, Function.identity()));
+
+        assertTrue(knowledgeSourcesByName.containsKey(created.getName()));
+        KnowledgeSource listed = knowledgeSourcesByName.get(created.getName());
+        WorkIQKnowledgeSource listedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, listed);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, listedWorkIQ.getKind());
+    }
+
+    @Test
+    public void workIQKnowledgeSourceJsonSerializationRoundTrip() {
+        WorkIQKnowledgeSource workIQKS
+            = new WorkIQKnowledgeSource(randomKnowledgeSourceName()).setDescription("JSON serialization test");
+
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+                workIQKS.toJson(writer);
+            }
+            String json = outputStream.toString();
+
+            assertTrue(json.contains("\"kind\":\"workIQ\""));
+            assertTrue(json.contains("\"name\":"));
+            assertTrue(json.contains(workIQKS.getName()));
+            assertTrue(json.contains("\"description\":\"JSON serialization test\""));
+
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                WorkIQKnowledgeSource deserialized = WorkIQKnowledgeSource.fromJson(reader);
+                assertEquals(KnowledgeSourceKind.WORK_IQ, deserialized.getKind());
+                assertEquals(workIQKS.getName(), deserialized.getName());
+                assertEquals(workIQKS.getDescription(), deserialized.getDescription());
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @Test
+    public void workIQKnowledgeSourceResponseShapeValidation() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        WorkIQKnowledgeSource workIQKS
+            = new WorkIQKnowledgeSource(randomKnowledgeSourceName()).setDescription("Response shape test");
+
+        KnowledgeSource created = searchIndexClient.createKnowledgeSource(workIQKS);
+
+        WorkIQKnowledgeSource createdWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, created);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, createdWorkIQ.getKind());
+        assertNotNull(createdWorkIQ.getName());
+        assertEquals("Response shape test", createdWorkIQ.getDescription());
+        assertNull(createdWorkIQ.getEncryptionKey());
+
+        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(created.getName());
+        WorkIQKnowledgeSource retrievedWorkIQ = assertInstanceOf(WorkIQKnowledgeSource.class, retrieved);
+        assertEquals(KnowledgeSourceKind.WORK_IQ, retrievedWorkIQ.getKind());
+        assertEquals(createdWorkIQ.getName(), retrievedWorkIQ.getName());
+        assertEquals("Response shape test", retrievedWorkIQ.getDescription());
+        assertNull(retrievedWorkIQ.getEncryptionKey());
     }
 
     private String randomKnowledgeSourceName() {

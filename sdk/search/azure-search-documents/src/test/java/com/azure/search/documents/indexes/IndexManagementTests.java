@@ -22,9 +22,11 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexPermissionFilterOption;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -1480,5 +1482,142 @@ public class IndexManagementTests extends SearchTestBase {
                 assertTrue(pagedStats.size() >= 1);
             }
         }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithSensitivityLabelFieldsSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
+            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
+            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
+                .setPurviewEnabled(true);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        List<SearchField> fields = created.getFields();
+        SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
+        SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
+        SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
+
+        assertEquals(true, labelIdField.isSensitivityLabelId());
+        assertEquals(true, labelNameField.isSensitivityLabelName());
+        assertEquals(true, sourceDocField.isSourceDocumentId());
+    }
+
+    @Test
+    public void createIndexWithSensitivityLabelFieldsAsync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
+            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
+            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
+                .setPurviewEnabled(true);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+
+            List<SearchField> fields = created.getFields();
+            SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
+            SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
+            SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
+
+            assertEquals(true, labelIdField.isSensitivityLabelId());
+            assertEquals(true, labelNameField.isSensitivityLabelName());
+            assertEquals(true, sourceDocField.isSourceDocumentId());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithPermissionFilterOptionSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        assertEquals(SearchIndexPermissionFilterOption.ENABLED, created.getPermissionFilterOption());
+    }
+
+    @Test
+    public void createIndexWithPermissionFilterOptionAsync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+            assertEquals(SearchIndexPermissionFilterOption.ENABLED, created.getPermissionFilterOption());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithSharePointConnectorAppRegistrationSync() {
+        SharePointConnectorAppRegistration appReg
+            = new SharePointConnectorAppRegistration("00000000-1111-2222-3333-444444444444",
+                "federated-credential-id-123").setTenantId("55555555-6666-7777-8888-999999999999");
+
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED)
+                .setSharePointConnectorAppRegistration(appReg);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        SharePointConnectorAppRegistration createdReg = created.getSharePointConnectorAppRegistration();
+        assertNotNull(createdReg);
+        if (interceptorManager.isLiveMode()) {
+            assertEquals("00000000-1111-2222-3333-444444444444", createdReg.getApplicationId());
+            assertEquals("55555555-6666-7777-8888-999999999999", createdReg.getTenantId());
+        }
+        assertEquals("federated-credential-id-123", createdReg.getFederatedCredentialId());
+    }
+
+    @Test
+    public void createIndexWithSharePointConnectorAppRegistrationAsync() {
+        SharePointConnectorAppRegistration appReg
+            = new SharePointConnectorAppRegistration("00000000-1111-2222-3333-444444444444",
+                "federated-credential-id-123").setTenantId("55555555-6666-7777-8888-999999999999");
+
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED)
+                .setSharePointConnectorAppRegistration(appReg);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+
+            SharePointConnectorAppRegistration createdReg = created.getSharePointConnectorAppRegistration();
+            assertNotNull(createdReg);
+            if (interceptorManager.isLiveMode()) {
+                assertEquals("00000000-1111-2222-3333-444444444444", createdReg.getApplicationId());
+                assertEquals("55555555-6666-7777-8888-999999999999", createdReg.getTenantId());
+            }
+            assertEquals("federated-credential-id-123", createdReg.getFederatedCredentialId());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void sensitivityLabelFieldsDefaultToNullSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true));
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        SearchField contentField
+            = created.getFields().stream().filter(f -> "content".equals(f.getName())).findFirst().get();
+        assertNull(contentField.isSensitivityLabelId());
+        assertNull(contentField.isSensitivityLabelName());
+        assertNull(contentField.isSourceDocumentId());
+        assertNull(created.getPermissionFilterOption());
     }
 }

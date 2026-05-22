@@ -4526,6 +4526,26 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Lists all indexes available for a search service, including their definitions.
+     * <p>
+     * This overload preserves backward compatibility with the 12.0.0 GA signature.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(List<String> select) {
+        return listIndexesWithSelectedProperties(select, null, null, null);
+    }
+
+    /**
      * Lists all synonym maps available for a search service.
      *
      * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON

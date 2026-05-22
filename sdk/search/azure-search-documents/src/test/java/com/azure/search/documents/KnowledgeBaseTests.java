@@ -28,6 +28,8 @@ import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSource;
 import com.azure.search.documents.indexes.models.FabricDataAgentKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSource;
 import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.FileKnowledgeSource;
+import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
@@ -45,9 +47,12 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.models.AzureBlobKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FabricDataAgentKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FabricOntologyKnowledgeSourceParams;
+import com.azure.search.documents.knowledgebases.models.FileKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAzureBlobReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedOneLakeReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSharePointReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexReference;
@@ -828,6 +833,206 @@ public class KnowledgeBaseTests extends SearchTestBase {
         }).verifyComplete();
     }
 
+    @Test
+    public void retrievalWithFilterAddOnSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setFilterAddOn("Category eq 'Budget'");
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+    }
+
+    @Test
+    public void retrievalWithFilterAddOnAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+
+                KnowledgeSourceParams sourceParams = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME)
+                    .setFilterAddOn("Category eq 'Budget'");
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+                    .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+        }).verifyComplete();
+    }
+
+    @Disabled("Requires an embedding model deployment (e.g., text-embedding-3-large) on the AOAI resource")
+    @Test
+    public void retrievalWithFileKnowledgeSourceParamsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+
+        // Create a File KS with required ingestion params using a real AOAI endpoint
+        String fileKsName = randomKnowledgeBaseName() + "-file-ks";
+        FileKnowledgeSourceParameters fileParams = new FileKnowledgeSourceParameters().setIngestionParameters(
+            new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                    .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
+                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)))));
+        FileKnowledgeSource fileKs = new FileKnowledgeSource(fileKsName, fileParams);
+        searchIndexClient.createKnowledgeSource(fileKs);
+
+        // Create KB referencing the File KS
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(fileKsName))
+                .setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        // Use FileKnowledgeSourceParams to exercise the runtime params model
+        FileKnowledgeSourceParams sourceParams = new FileKnowledgeSourceParams(fileKsName).setMaxOutputDocuments(10)
+            .setIncludeReferences(true)
+            .setIncludeReferenceSourceData(true);
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What documents are available?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        // File KS has no uploaded files, so response may be empty but request should succeed
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+    }
+
+    @Disabled("Requires an embedding model deployment (e.g., text-embedding-3-large) on the AOAI resource")
+    @Test
+    public void retrievalWithFileKnowledgeSourceParamsAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+
+        String fileKsName = randomKnowledgeBaseName() + "-file-ks";
+        FileKnowledgeSourceParameters fileParams = new FileKnowledgeSourceParameters().setIngestionParameters(
+            new KnowledgeSourceIngestionParameters().setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                    .setDeploymentName(KNOWLEDGEBASE_DEPLOYMENT_NAME)
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
+                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)))));
+        FileKnowledgeSource fileKs = new FileKnowledgeSource(fileKsName, fileParams);
+
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(fileKsName))
+                .setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono = searchIndexClient.createKnowledgeSource(fileKs)
+            .then(searchIndexClient.createKnowledgeBase(knowledgeBase))
+            .flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+
+                FileKnowledgeSourceParams sourceParams
+                    = new FileKnowledgeSourceParams(fileKsName).setMaxOutputDocuments(10)
+                        .setIncludeReferences(true)
+                        .setIncludeReferenceSourceData(true);
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What documents are available?"))
+                    .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void retrievalActivityIncludesModelNameSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setIncludeActivity(true);
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getActivity());
+        assertFalse(response.getActivity().isEmpty());
+
+        // At least one model-backed activity record should have modelName set
+        boolean foundModelName = response.getActivity().stream().anyMatch(record -> {
+            if (record instanceof KnowledgeBaseModelQueryPlanningActivityRecord) {
+                return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModelName() != null;
+            } else if (record instanceof KnowledgeBaseModelAnswerSynthesisActivityRecord) {
+                return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModelName() != null;
+            }
+            return false;
+        });
+        assertTrue(foundModelName, "Expected at least one model-backed activity record with modelName set");
+    }
+
+    @Test
+    public void retrievalActivityIncludesModelNameAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+                    .setIncludeActivity(true);
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getActivity());
+            assertFalse(response.getActivity().isEmpty());
+
+            boolean foundModelName = response.getActivity().stream().anyMatch(record -> {
+                if (record instanceof KnowledgeBaseModelQueryPlanningActivityRecord) {
+                    return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModelName() != null;
+                } else if (record instanceof KnowledgeBaseModelAnswerSynthesisActivityRecord) {
+                    return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModelName() != null;
+                }
+                return false;
+            });
+            assertTrue(foundModelName, "Expected at least one model-backed activity record with modelName set");
+        }).verifyComplete();
+    }
+
     // Fabric retrieval tests are disabled until the Fabric workspace/ontology/data-agent are configured
     // to accept queries from the search service. The current error is 405 Method Not Allowed from
     // the Fabric endpoint. Once permissions are granted, enable these tests and record sessions.
@@ -1221,6 +1426,78 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
+    public void createKnowledgeBaseWithFreshnessEnabledSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableFreshness(true);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertEquals(knowledgeBase.getName(), created.getName());
+        assertEquals(1, created.getKnowledgeSources().size());
+        KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+        assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+        assertEquals(true, createdRef.isEnableFreshness());
+    }
+
+    @Test
+    public void createKnowledgeBaseWithFreshnessEnabledAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableFreshness(true);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBase> createMono = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        StepVerifier.create(createMono).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
+            assertEquals(1, created.getKnowledgeSources().size());
+            KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+            assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+            assertEquals(true, createdRef.isEnableFreshness());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createKnowledgeBaseWithFreshnessDisabledSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableFreshness(false);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertEquals(knowledgeBase.getName(), created.getName());
+        assertEquals(1, created.getKnowledgeSources().size());
+        KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+        assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+        assertEquals(false, createdRef.isEnableFreshness());
+    }
+
+    @Test
+    public void createKnowledgeBaseWithFreshnessDisabledAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeSourceReference sourceRef
+            = new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME).setEnableFreshness(false);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), sourceRef).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBase> createMono = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        StepVerifier.create(createMono).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
+            assertEquals(1, created.getKnowledgeSources().size());
+            KnowledgeSourceReference createdRef = created.getKnowledgeSources().get(0);
+            assertEquals(HOTEL_KNOWLEDGE_SOURCE_NAME, createdRef.getName());
+            assertEquals(false, createdRef.isEnableFreshness());
+        }).verifyComplete();
+    }
+
+    @Test
     public void retrievalWithEnableImageServingSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase
@@ -1344,6 +1621,58 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
                     .setIntents(new KnowledgeRetrievalSemanticIntent("Show me images from documents."))
                     .setKnowledgeSourceParams(Collections.singletonList(blobRetrieveParams));
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(pipeline).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void retrieveWithFailOnErrorSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setFailOnError(true);
+
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are near the ocean?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+    }
+
+    @Test
+    public void retrieveWithFailOnErrorAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> pipeline
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+
+                KnowledgeSourceParams sourceParams
+                    = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                        .setFailOnError(true);
+
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What hotels are near the ocean?"))
+                    .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
 
                 return knowledgeBaseClient.retrieve(retrievalRequest);
             });
