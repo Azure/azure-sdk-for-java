@@ -11,9 +11,14 @@ import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
+import com.openai.core.RequestOptions;
+import com.openai.core.http.HttpResponse;
+import com.openai.core.http.HttpResponseFor;
+import com.openai.core.http.StreamResponse;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
@@ -95,6 +100,128 @@ public final class ResponsesClient {
         Objects.requireNonNull(response, "response cannot be null");
         return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
             AzureCreateResponseDetails::fromJson);
+    }
+
+    /**
+     * Creates a response from a raw JSON request body and returns the raw HTTP response.
+     *
+     * <p>This protocol method delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#create(ResponseCreateParams, RequestOptions)}. The
+     * {@code createResponseRequest} payload is forwarded verbatim as the request body, so callers can
+     * include Azure-specific extensions (such as
+     * {@link com.azure.ai.agents.models.AgentReference}) without going through the strongly-typed
+     * {@link ResponseCreateParams.Builder}.</p>
+     *
+     * <p>The returned {@link HttpResponseFor} exposes the status code, headers, and the raw
+     * response stream via {@code body()}, or the typed {@link Response} via {@code parse()}. Only
+     * one of {@code body()} or {@code parse()} may be invoked per response, and the caller must
+     * close the response (e.g. via try-with-resources) to release the underlying connection.</p>
+     *
+     * <p>Note: the second parameter is the openai-java {@link RequestOptions} (not the azure-core
+     * type) so that the OpenAI-supported options (timeout, response validation) translate
+     * faithfully. Additional headers or query parameters must be supplied via the OpenAI request
+     * builder pattern (e.g. by using {@link #createAzureResponse} for fully-typed requests).</p>
+     *
+     * @param createResponseRequest the JSON body representing the create-response request; must be a JSON object.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HttpResponseFor<Response> createResponseWithResponse(BinaryData createResponseRequest,
+        RequestOptions requestOptions) {
+        Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
+
+        ResponseCreateParams params = ResponseCreateParams.builder()
+            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
+            .build();
+        return this.responseService.withRawResponse()
+            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
+    /**
+     * Creates a streaming response from a raw JSON request body and returns the raw HTTP response.
+     *
+     * <p>Delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#createStreaming(ResponseCreateParams, RequestOptions)}.
+     * The {@code createResponseRequest} payload is forwarded verbatim as the request body.</p>
+     *
+     * <p>The returned {@link HttpResponseFor} wraps a {@link StreamResponse} of
+     * {@link ResponseStreamEvent} items, which the caller iterates via {@link HttpResponseFor#parse()}.
+     * The underlying stream must be closed when iteration completes; the typical pattern is
+     * try-with-resources on either the {@link HttpResponseFor} or the parsed {@link StreamResponse}.</p>
+     *
+     * @param createResponseRequest the JSON body representing the create-response request; must be a JSON object.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link StreamResponse} of {@link ResponseStreamEvent}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public HttpResponseFor<StreamResponse<ResponseStreamEvent>>
+        createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
+        Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
+
+        ResponseCreateParams params = ResponseCreateParams.builder()
+            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
+            .build();
+        return this.responseService.withRawResponse()
+            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
+    /**
+     * Retrieves a previously created response by id and returns the raw HTTP response.
+     *
+     * <p>Delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#retrieve(String, RequestOptions)}.</p>
+     *
+     * @param responseId the id of the response to retrieve.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HttpResponseFor<Response> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        Objects.requireNonNull(responseId, "responseId cannot be null");
+
+        return this.responseService.withRawResponse()
+            .retrieve(responseId, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
+    /**
+     * Deletes a previously created response and returns the raw HTTP response.
+     *
+     * <p>Delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#delete(String, RequestOptions)}.</p>
+     *
+     * <p>The returned {@link HttpResponse} exposes the status code and headers; the body (if any)
+     * can be read via {@link HttpResponse#body()}. Callers must close the response to release the
+     * underlying connection.</p>
+     *
+     * @param responseId the id of the response to delete.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HttpResponse deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        Objects.requireNonNull(responseId, "responseId cannot be null");
+
+        return this.responseService.withRawResponse()
+            .delete(responseId, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
+    /**
+     * Cancels a previously created response and returns the raw HTTP response.
+     *
+     * <p>Delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#cancel(String, RequestOptions)}.</p>
+     *
+     * @param responseId the id of the response to cancel.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HttpResponseFor<Response> cancelResponseWithResponse(String responseId, RequestOptions requestOptions) {
+        Objects.requireNonNull(responseId, "responseId cannot be null");
+
+        return this.responseService.withRawResponse()
+            .cancel(responseId, requestOptions == null ? RequestOptions.none() : requestOptions);
     }
 
 }
