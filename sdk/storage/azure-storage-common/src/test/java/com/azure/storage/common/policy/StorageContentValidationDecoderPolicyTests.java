@@ -18,6 +18,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -83,13 +84,87 @@ public class StorageContentValidationDecoderPolicyTests {
             sent.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
+    @Test
+    public void contentLengthIsOverriddenToDecodedSizeWhenDecodingApplied() throws IOException {
+        byte[] payload = new byte[64];
+        ThreadLocalRandom.current().nextBytes(payload);
+
+        byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+        long encodedLen = encoded.length;
+        long decodedLen = payload.length;
+
+        HttpClient httpClient = request -> Mono.just(
+            new MockHttpResponse(request, 200, structuredDownloadResponseHeaders(encodedLen, decodedLen), encoded));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
+            context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+            return next.process();
+        }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+        try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
+            assertNotNull(response);
+            assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        }
+    }
+
+    @Test
+    public void contentLengthMatchesActualDecodedBodySize() throws IOException {
+        byte[] payload = new byte[128];
+        ThreadLocalRandom.current().nextBytes(payload);
+
+        byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+        long encodedLen = encoded.length;
+        long decodedLen = payload.length;
+
+        HttpClient httpClient = request -> Mono.just(
+            new MockHttpResponse(request, 200, structuredDownloadResponseHeaders(encodedLen, decodedLen), encoded));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
+            context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
+            return next.process();
+        }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+        try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
+            assertNotNull(response);
+            assertEquals(String.valueOf(decodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+
+            byte[] body = Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(response.getBody()).block());
+            assertEquals(decodedLen, body.length);
+            assertArrayEquals(payload, body);
+        }
+    }
+
+    @Test
+    public void contentLengthIsUnchangedWhenDecodingNotApplied() throws IOException {
+        byte[] payload = new byte[64];
+        ThreadLocalRandom.current().nextBytes(payload);
+
+        byte[] encoded = encodeStructuredMessageWireBytes(payload, 64, StructuredMessageFlags.STORAGE_CRC64);
+        long encodedLen = encoded.length;
+
+        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen));
+        HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
+            .httpClient(httpClient)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
+        HttpResponse response = pipeline.send(request, Context.NONE).block();
+
+        assertNotNull(response);
+        assertEquals(String.valueOf(encodedLen), response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
     private static Stream<Arguments> segmentPayloadSizeAndTotalPayloadSizeSupplier() {
         return Stream.of(Arguments.of(10 * 1024 * 1024, 10 * 1024 * 1024 + 1), // larger than 4 MiB
             Arguments.of(3 * 1024 * 1024, 3 * 1024 * 1024 + 1), // smaller than 4 MiB, but not KB
             Arguments.of(5 * 1024 * 1024 + 1, 15 * 1024 * 1024));
     }
 
-    private static HttpHeaders structuredDownloadResponseHeaders(int contentLength, long structuredContentLength) {
+    private static HttpHeaders structuredDownloadResponseHeaders(long contentLength, long structuredContentLength) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         headers.set(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME,
