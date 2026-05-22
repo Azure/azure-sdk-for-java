@@ -102,21 +102,21 @@
 
 #### `models.Accounts` was modified
 
-* `evaluateDeploymentPolicies(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest)` was added
 * `evaluateDeploymentPoliciesWithResponse(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+* `evaluateDeploymentPolicies(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest)` was added
 
 #### `CognitiveServicesManager` was modified
 
-* `managedComputeCapacities()` was added
-* `managedComputeDeployments()` was added
 * `computes()` was added
-* `workbenches()` was added
 * `managedComputeUsagesOperationGroups()` was added
+* `managedComputeDeployments()` was added
+* `managedComputeCapacities()` was added
+* `workbenches()` was added
 
 #### `models.Account` was modified
 
-* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
 * `evaluateDeploymentPoliciesWithResponse(models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
 
 ## 1.5.0-beta.1 (2026-04-30)
 
