@@ -7,7 +7,6 @@ import com.azure.ai.agents.implementation.MemoryStoresImpl;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.models.CreateMemoryRequest;
 import com.azure.ai.agents.implementation.models.CreateMemoryStoreRequest;
-import com.azure.ai.agents.implementation.models.InputItem;
 import com.azure.ai.agents.implementation.models.ListMemoriesRequest;
 import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
@@ -650,9 +649,7 @@ public final class MemoryStoresClient {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -720,9 +717,7 @@ public final class MemoryStoresClient {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -818,7 +813,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<InputItem> items,
+    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<BinaryData> items,
         String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for internalSearchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -875,7 +870,7 @@ public final class MemoryStoresClient {
     public MemoryStoreSearchResponse searchMemories(String name, String scope, List<ResponseInputItem> items,
         String previousSearchId, MemorySearchOptions options) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
-        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
         return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
@@ -902,7 +897,7 @@ public final class MemoryStoresClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginInternalUpdateMemories(String name,
-        String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
+        String scope, List<BinaryData> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginInternalUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)
@@ -960,7 +955,7 @@ public final class MemoryStoresClient {
     public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
         String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelayInSeconds) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
-        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
         return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelayInSeconds);
     }
 

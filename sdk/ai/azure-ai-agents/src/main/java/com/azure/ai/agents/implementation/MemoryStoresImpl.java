@@ -1024,9 +1024,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -1098,9 +1096,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -1172,9 +1168,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1265,9 +1259,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1357,9 +1349,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1456,9 +1446,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1554,9 +1542,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1651,9 +1637,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)

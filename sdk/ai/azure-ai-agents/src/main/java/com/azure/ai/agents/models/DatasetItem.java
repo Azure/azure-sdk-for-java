@@ -10,9 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.openai.models.responses.ResponseOutputItem;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -165,65 +163,22 @@ public final class DatasetItem implements JsonSerializable<DatasetItem> {
      *
      * @return the responseItems value.
      */
+    @Generated
     public List<BinaryData> getResponseItems() {
-        // AI Tooling: union type
         return this.responseItems;
     }
 
     /**
      * Set the responseItems property: Pre-computed agent response output items. Captures the full trajectory (function
      * calls, tool outputs, messages) from a prior agent run.
-     * <p>
-     * Use this method when passing Azure-specific tool call types (e.g., {@link BingGroundingToolCall},
-     * {@link SharepointGroundingToolCall}, {@link AzureAISearchToolCall}) as {@code BinaryData.fromObject(toolCall)}.
-     * For standard OpenAI output items, prefer {@link #setResponseOutputItems(List)}.
      *
      * @param responseItems the responseItems value to set.
      * @return the DatasetItem object itself.
      */
+    @Generated
     public DatasetItem setResponseItems(List<BinaryData> responseItems) {
-        // AI Tooling: union type
         this.responseItems = responseItems;
         return this;
-    }
-
-    /**
-     * Set the responseItems property: Pre-computed agent response output items. Captures the full trajectory (function
-     * calls, tool outputs, messages) from a prior agent run.
-     *
-     * @param responseItems the list of {@link ResponseOutputItem} values to set.
-     * @return the DatasetItem object itself.
-     */
-    public DatasetItem setResponseOutputItems(List<ResponseOutputItem> responseItems) {
-        // AI Tooling: union type
-        if (responseItems == null) {
-            this.responseItems = null;
-        } else {
-            List<BinaryData> binaryDataList = new ArrayList<>(responseItems.size());
-            for (ResponseOutputItem item : responseItems) {
-                binaryDataList.add(BinaryData.fromObject(item));
-            }
-            this.responseItems = binaryDataList;
-        }
-        return this;
-    }
-
-    /**
-     * Get the responseItems property as a list of {@link ResponseOutputItem}: Pre-computed agent response output
-     * items. Captures the full trajectory (function calls, tool outputs, messages) from a prior agent run.
-     *
-     * @return the responseItems value as a list of {@link ResponseOutputItem}.
-     */
-    public List<ResponseOutputItem> getResponseItemsAsResponseOutputItems() {
-        // AI Tooling: union type
-        if (this.responseItems == null) {
-            return null;
-        }
-        List<ResponseOutputItem> result = new ArrayList<>(this.responseItems.size());
-        for (BinaryData item : this.responseItems) {
-            result.add(item.toObject(ResponseOutputItem.class));
-        }
-        return result;
     }
 
     /**

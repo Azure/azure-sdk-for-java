@@ -26,7 +26,6 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AgentsPagedResultOptimizationCandidate;
 import com.azure.ai.agents.models.CandidateDeployConfig;
 import com.azure.ai.agents.models.CandidateResults;
-import com.azure.ai.agents.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
