@@ -71,7 +71,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             }
 
             // Confirm the service honored our structured-body request and parse the decoded length in one step,
-            // failing fast with a consistent error if either header is absent or unparseable.
+            // failing fast with a consistent error if either header is absent or not parseable as a long.
             long decodedContentLength = validateAndGetDecodedContentLength(httpResponse);
 
             // Fresh decoder per response so retries each get a clean state machine.
