@@ -854,7 +854,7 @@ public final class BlobDownloadHeaders {
      * account or for Block blobs on blob storage or general purpose V2 account.
      */
     public Boolean isAccessTierInferred() {
-        return internalHeaders.isXMsAccessTierInferred();
+        return Boolean.TRUE.equals(internalHeaders.isXMsAccessTierInferred());
     }
 
     /**

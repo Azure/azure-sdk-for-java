@@ -89,7 +89,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -548,7 +547,9 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void downloadSmartAccessTierHeaders() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        BlobDownloadResponse response = bc.downloadWithResponse(stream, null, null, null, false, null, null);
+        bc.setAccessTier(AccessTier.SMART);
+
+        BlobDownloadResponse response = bc.downloadStreamWithResponse(stream, null, null, null, false, null, null);
         ByteBuffer body = ByteBuffer.wrap(stream.toByteArray());
 
         assertEquals(DATA.getDefaultData(), body);
@@ -558,6 +559,7 @@ public class BlobApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void downloadContentSmartAccessTierHeaders() {
+        bc.setAccessTier(AccessTier.SMART);
         BlobDownloadContentResponse response = bc.downloadContentWithResponse(null, null, null, null);
 
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), response.getValue().toBytes());
@@ -567,7 +569,7 @@ public class BlobApiTests extends BlobTestBase {
     private static void assertSmartAccessTierHeaders(BlobDownloadHeaders headers) {
         assertEquals(AccessTier.SMART, headers.getAccessTier());
         assertNotNull(headers.getSmartAccessTier());
-        assertTrue(headers.isAccessTierInferred());
+        assertFalse(headers.isAccessTierInferred());
         assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
     }
 
