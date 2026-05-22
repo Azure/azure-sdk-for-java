@@ -180,16 +180,16 @@ public final class ShareListFilesAndDirectoriesOptions {
         return includePermissions;
     }
 
-    public ShareListFilesAndDirectoriesOptions setIncludePermissions( boolean includePermissions){
+    public ShareListFilesAndDirectoriesOptions setIncludePermissions(boolean includePermissions) {
         this.includePermissions = includePermissions;
         return this;
     }
 
-    public boolean includeNfsAttributes(){
+    public boolean includeNfsAttributes() {
         return includeNfsAttributes;
     }
 
-    public ShareListFilesAndDirectoriesOptions setIncludeNfsAttributes( boolean includeNfsAttributes){
+    public ShareListFilesAndDirectoriesOptions setIncludeNfsAttributes(boolean includeNfsAttributes) {
         this.includeNfsAttributes = includeNfsAttributes;
         return this;
     }
@@ -198,16 +198,16 @@ public final class ShareListFilesAndDirectoriesOptions {
         return includeLinkCount;
     }
 
-    public ShareListFilesAndDirectoriesOptions setIncludeLinkCount(boolean includeLinkCount){
+    public ShareListFilesAndDirectoriesOptions setIncludeLinkCount(boolean includeLinkCount) {
         this.includeLinkCount = includeLinkCount;
         return this;
     }
 
-    public boolean includeAll(){
+    public boolean includeAll() {
         return includeAll;
     }
 
-    public ShareListFilesAndDirectoriesOptions setIncludeAll(boolean includeAll){
+    public ShareListFilesAndDirectoriesOptions setIncludeAll(boolean includeAll) {
         this.includeAll = includeAll;
         return this;
     }

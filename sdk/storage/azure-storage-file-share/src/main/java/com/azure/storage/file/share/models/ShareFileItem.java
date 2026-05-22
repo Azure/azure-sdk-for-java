@@ -19,6 +19,11 @@ public final class ShareFileItem {
     private final EnumSet<NtfsFileAttributes> fileAttributes;
     private final String permissionKey;
     private final Long fileSize;
+    private final Long linkCount;
+    private final NfsFileType fileType;
+    private final String linkText;
+    private final Long deviceMajor;
+    private final Long deviceMinor;
 
     /**
      * Creates an instance of file or directory reference information about a specific Share.
@@ -28,7 +33,7 @@ public final class ShareFileItem {
      * @param fileSize Size of a file. Pass {@code null} if the reference is a directory.
      */
     public ShareFileItem(String name, boolean isDirectory, Long fileSize) {
-        this(name, isDirectory, null, null, null, null, fileSize);
+        this(name, isDirectory, null, null, null, null, fileSize, null, null, null, null, null);
     }
 
     /**
@@ -44,6 +49,12 @@ public final class ShareFileItem {
      */
     public ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
         EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize) {
+        this(name, isDirectory, id, properties, fileAttributes, permissionKey, fileSize, null, null, null, null, null);
+    }
+
+    public ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
+        EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
+        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         this.name = name;
         this.isDirectory = isDirectory;
         this.id = id;
@@ -51,6 +62,11 @@ public final class ShareFileItem {
         this.fileAttributes = fileAttributes;
         this.permissionKey = permissionKey;
         this.fileSize = fileSize;
+        this.linkCount = linkCount;
+        this.fileType = fileType;
+        this.linkText = linkText;
+        this.deviceMajor = deviceMajor;
+        this.deviceMinor = deviceMinor;
     }
 
     /**
@@ -114,5 +130,25 @@ public final class ShareFileItem {
      */
     public String getPermissionKey() {
         return permissionKey;
+    }
+
+    public Long getLinkCount() {
+        return linkCount;
+    }
+
+    public NfsFileType getFileType() {
+        return fileType;
+    }
+
+    public String getLinkText() {
+        return linkText;
+    }
+
+    public Long getDeviceMajor() {
+        return deviceMajor;
+    }
+
+    public Long getDeviceMinor() {
+        return deviceMinor;
     }
 }

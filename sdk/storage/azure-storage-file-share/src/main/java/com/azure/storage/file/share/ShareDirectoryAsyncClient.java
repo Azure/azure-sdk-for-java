@@ -981,17 +981,31 @@ public class ShareDirectoryAsyncClient {
             = options == null ? new ShareListFilesAndDirectoriesOptions() : options;
 
         List<ListFilesIncludeType> includeTypes = new ArrayList<>();
-        if (modifiedOptions.includeAttributes()) {
-            includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
-        }
-        if (modifiedOptions.includeETag()) {
-            includeTypes.add(ListFilesIncludeType.ETAG);
-        }
-        if (modifiedOptions.includeTimestamps()) {
-            includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
-        }
-        if (modifiedOptions.includePermissionKey()) {
-            includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+
+        if (modifiedOptions.includeAll()) {
+            includeTypes.add(ListFilesIncludeType.ALL);
+        } else {
+            if (modifiedOptions.includeAttributes()) {
+                includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
+            }
+            if (modifiedOptions.includeETag()) {
+                includeTypes.add(ListFilesIncludeType.ETAG);
+            }
+            if (modifiedOptions.includeTimestamps()) {
+                includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
+            }
+            if (modifiedOptions.includePermissionKey()) {
+                includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+            }
+            if (modifiedOptions.includeLinkCount()) {
+                includeTypes.add(ListFilesIncludeType.LINK_COUNT);
+            }
+            if (modifiedOptions.includePermissions()) {
+                includeTypes.add(ListFilesIncludeType.PERMISSIONS);
+            }
+            if (modifiedOptions.includeNfsAttributes()) {
+                includeTypes.add(ListFilesIncludeType.NFS_ATTRIBUTES);
+            }
         }
 
         // these options must be absent from request if empty or false

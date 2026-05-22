@@ -19,6 +19,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -56,6 +57,7 @@ import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -947,17 +949,31 @@ public class ShareDirectoryClient {
             = options == null ? new ShareListFilesAndDirectoriesOptions() : options;
 
         List<ListFilesIncludeType> includeTypes = new ArrayList<>();
-        if (modifiedOptions.includeAttributes()) {
-            includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
-        }
-        if (modifiedOptions.includeETag()) {
-            includeTypes.add(ListFilesIncludeType.ETAG);
-        }
-        if (modifiedOptions.includeTimestamps()) {
-            includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
-        }
-        if (modifiedOptions.includePermissionKey()) {
-            includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+
+        if (modifiedOptions.includeAll()) {
+            includeTypes.add(ListFilesIncludeType.ALL);
+        } else {
+            if (modifiedOptions.includeAttributes()) {
+                includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
+            }
+            if (modifiedOptions.includeETag()) {
+                includeTypes.add(ListFilesIncludeType.ETAG);
+            }
+            if (modifiedOptions.includeTimestamps()) {
+                includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
+            }
+            if (modifiedOptions.includePermissionKey()) {
+                includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+            }
+            if (modifiedOptions.includeLinkCount()) {
+                includeTypes.add(ListFilesIncludeType.LINK_COUNT);
+            }
+            if (modifiedOptions.includePermissions()) {
+                includeTypes.add(ListFilesIncludeType.PERMISSIONS);
+            }
+            if (modifiedOptions.includeNfsAttributes()) {
+                includeTypes.add(ListFilesIncludeType.NFS_ATTRIBUTES);
+            }
         }
 
         // these options must be absent from request if empty or false
