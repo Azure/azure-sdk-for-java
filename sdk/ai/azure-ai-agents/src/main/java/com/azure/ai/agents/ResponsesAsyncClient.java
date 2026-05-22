@@ -14,7 +14,6 @@ import com.azure.core.util.BinaryData;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
-import com.openai.core.http.HttpResponse;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
 import com.openai.models.responses.Response;
@@ -154,64 +153,5 @@ public final class ResponsesAsyncClient {
             .build();
         return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
             .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions));
-    }
-
-    /**
-     * Retrieves a previously created response by id and returns the raw HTTP response.
-     *
-     * <p>Delegates to the OpenAI Java SDK's
-     * {@link ResponseServiceAsync.WithRawResponse#retrieve(String, RequestOptions)}.</p>
-     *
-     * @param responseId the id of the response to retrieve.
-     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
-     * @return a {@link Mono} emitting the raw HTTP response, parseable as a {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HttpResponseFor<Response>> getResponseWithResponse(String responseId, RequestOptions requestOptions) {
-        Objects.requireNonNull(responseId, "responseId cannot be null");
-
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .retrieve(responseId, requestOptions == null ? RequestOptions.none() : requestOptions));
-    }
-
-    /**
-     * Deletes a previously created response and returns the raw HTTP response.
-     *
-     * <p>Delegates to the OpenAI Java SDK's
-     * {@link ResponseServiceAsync.WithRawResponse#delete(String, RequestOptions)}.</p>
-     *
-     * <p>The returned {@link HttpResponse} exposes the status code and headers; the body (if any)
-     * can be read via {@link HttpResponse#body()}. Callers must close the response to release the
-     * underlying connection.</p>
-     *
-     * @param responseId the id of the response to delete.
-     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
-     * @return a {@link Mono} emitting the raw HTTP response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HttpResponse> deleteResponseWithResponse(String responseId, RequestOptions requestOptions) {
-        Objects.requireNonNull(responseId, "responseId cannot be null");
-
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .delete(responseId, requestOptions == null ? RequestOptions.none() : requestOptions));
-    }
-
-    /**
-     * Cancels a previously created response and returns the raw HTTP response.
-     *
-     * <p>Delegates to the OpenAI Java SDK's
-     * {@link ResponseServiceAsync.WithRawResponse#cancel(String, RequestOptions)}.</p>
-     *
-     * @param responseId the id of the response to cancel.
-     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
-     * @return a {@link Mono} emitting the raw HTTP response, parseable as a {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HttpResponseFor<Response>> cancelResponseWithResponse(String responseId,
-        RequestOptions requestOptions) {
-        Objects.requireNonNull(responseId, "responseId cannot be null");
-
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .cancel(responseId, requestOptions == null ? RequestOptions.none() : requestOptions));
     }
 }
