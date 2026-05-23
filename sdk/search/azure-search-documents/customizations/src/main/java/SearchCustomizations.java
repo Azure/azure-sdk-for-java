@@ -202,33 +202,53 @@ public class SearchCustomizations extends Customization {
     private static void addAsyncKnowledgeBaseConvenienceMethods(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
             // Add: public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase)
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+            MethodDeclaration createOrUpdateKB = StaticJavaParser.parseBodyDeclaration(
                 "@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {\n"
                     + "    return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);\n"
-                    + "}\n"));
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKB.setJavadocComment(
+                "Creates a new knowledge base or updates a knowledge base if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeBase The definition of the knowledge base to create or update.\n"
+                    + "@return the knowledge base that was created or updated.");
+            clazz.addMember(createOrUpdateKB);
 
             // Add: public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(
             //          KnowledgeBase knowledgeBase, RequestOptions requestOptions)
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+            MethodDeclaration createOrUpdateKBWithResponse = StaticJavaParser.parseBodyDeclaration(
                 "@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse("
                     + "KnowledgeBase knowledgeBase, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync("
                     + "knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions), "
                     + "KnowledgeBase.class);\n"
-                    + "}\n"));
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKBWithResponse.setJavadocComment(
+                "Creates a new knowledge base or updates a knowledge base if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeBase The definition of the knowledge base to create or update.\n"
+                    + "@param requestOptions The options to configure the HTTP request before HTTP client sends it.\n"
+                    + "@return the knowledge base that was created or updated along with {@link Response}.");
+            clazz.addMember(createOrUpdateKBWithResponse);
 
             // Add: public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(
             //          KnowledgeSource knowledgeSource, RequestOptions requestOptions)
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+            MethodDeclaration createOrUpdateKSWithResponse = StaticJavaParser.parseBodyDeclaration(
                 "@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse("
                     + "KnowledgeSource knowledgeSource, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync("
                     + "knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions), "
                     + "KnowledgeSource.class);\n"
-                    + "}\n"));
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKSWithResponse.setJavadocComment(
+                "Creates a new knowledge source or updates a knowledge source if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeSource The definition of the knowledge source to create or update.\n"
+                    + "@param requestOptions The options to configure the HTTP request before HTTP client sends it.\n"
+                    + "@return the knowledge source that was created or updated along with {@link Response}.");
+            clazz.addMember(createOrUpdateKSWithResponse);
         }));
     }
 }

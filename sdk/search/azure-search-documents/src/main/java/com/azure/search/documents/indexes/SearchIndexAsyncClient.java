@@ -5008,11 +5008,24 @@ public final class SearchIndexAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
     }
 
+    /**
+     * Creates or updates a knowledge base.
+     *
+     * @param knowledgeBase the knowledge base to create or update.
+     * @return the created or updated knowledge base.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
         return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);
     }
 
+    /**
+     * Creates or updates a knowledge base with a REST response.
+     *
+     * @param knowledgeBase the knowledge base to create or update.
+     * @param requestOptions additional request options.
+     * @return the created or updated knowledge base with REST response.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
         RequestOptions requestOptions) {
@@ -5020,6 +5033,13 @@ public final class SearchIndexAsyncClient {
             BinaryData.fromObject(knowledgeBase), requestOptions), KnowledgeBase.class);
     }
 
+    /**
+     * Creates or updates a knowledge source with a REST response.
+     *
+     * @param knowledgeSource the knowledge source to create or update.
+     * @param requestOptions additional request options.
+     * @return the created or updated knowledge source with REST response.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
         RequestOptions requestOptions) {
