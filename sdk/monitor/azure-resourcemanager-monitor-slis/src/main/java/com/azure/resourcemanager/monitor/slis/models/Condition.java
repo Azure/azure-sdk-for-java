@@ -38,8 +38,8 @@ public final class Condition implements JsonSerializable<Condition> {
 
     /*
      * Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith, notstartswith, contains,
-     * notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and `notin` operators, multiple
-     * values must be joined by the delimiter `^^` (for example "east^^west^^north").
+     * notcontains) this is a single value (for example "GetContosoUsers"). For the {@code in} and {@code notin}
+     * operators, multiple values must be joined by the delimiter {@code ^^} (for example "east^^west^^north").
      */
     private String value;
 
@@ -130,9 +130,10 @@ public final class Condition implements JsonSerializable<Condition> {
     }
 
     /**
-     * Get the value property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith,
-     * notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and
-     * `notin` operators, multiple values must be joined by the delimiter `^^` (for example "east^^west^^north").
+     * Get the {@code value} property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte,
+     * startswith, notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For
+     * the {@code in} and {@code notin} operators, multiple values must be joined by the delimiter {@code ^^} (for
+     * example "east^^west^^north").
      * 
      * @return the value value.
      */
@@ -141,9 +142,10 @@ public final class Condition implements JsonSerializable<Condition> {
     }
 
     /**
-     * Set the value property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith,
-     * notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and
-     * `notin` operators, multiple values must be joined by the delimiter `^^` (for example "east^^west^^north").
+     * Set the {@code value} property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte,
+     * startswith, notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For
+     * the {@code in} and {@code notin} operators, multiple values must be joined by the delimiter {@code ^^} (for
+     * example "east^^west^^north").
      * 
      * @param value the value value to set.
      * @return the Condition object itself.
