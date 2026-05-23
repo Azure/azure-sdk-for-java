@@ -20,6 +20,8 @@ import com.azure.resourcemanager.monitor.slis.models.Condition;
 import com.azure.resourcemanager.monitor.slis.models.ConditionOperator;
 import com.azure.resourcemanager.monitor.slis.models.EvaluationCalculationType;
 import com.azure.resourcemanager.monitor.slis.models.EvaluationType;
+import com.azure.resourcemanager.monitor.slis.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.monitor.slis.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.monitor.slis.models.Signal;
 import com.azure.resourcemanager.monitor.slis.models.SignalSource;
 import com.azure.resourcemanager.monitor.slis.models.Sli;
@@ -29,6 +31,7 @@ import com.azure.resourcemanager.monitor.slis.models.SpatialAggregation;
 import com.azure.resourcemanager.monitor.slis.models.SpatialAggregationType;
 import com.azure.resourcemanager.monitor.slis.models.TemporalAggregation;
 import com.azure.resourcemanager.monitor.slis.models.TemporalAggregationType;
+import com.azure.resourcemanager.monitor.slis.models.UserAssignedIdentity;
 import com.azure.resourcemanager.monitor.slis.models.WindowUptimeCriteria;
 import com.azure.resourcemanager.monitor.slis.models.WindowUptimeCriteriaComparator;
 import org.junit.jupiter.api.Assertions;
@@ -36,13 +39,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * Live CRUD test for Microsoft.Monitor/slis resource.
  * Tests: Create ΓåÆ Get ΓåÆ Delete ΓåÆ Get (expect 404).
  */
-@LiveOnly
 public class SliCrudLiveTest extends TestProxyTestBase {
 
     private static final String SERVICE_GROUP_NAME
@@ -65,6 +69,7 @@ public class SliCrudLiveTest extends TestProxyTestBase {
     }
 
     @Test
+    @LiveOnly
     public void testSliCrudLifecycle() {
         SlisManager manager = getManager();
         String sliName = "javaslitest-" + UUID.randomUUID().toString().substring(0, 8);
@@ -72,7 +77,8 @@ public class SliCrudLiveTest extends TestProxyTestBase {
 
         try {
             Sli createdSli = manager.slis()
-                .createOrUpdate(SERVICE_GROUP_NAME, sliName, new SliInner().withProperties(createSliResource()));
+                .createOrUpdate(SERVICE_GROUP_NAME, sliName,
+                    new SliInner().withIdentity(createIdentity()).withProperties(createSliResource()));
 
             Assertions.assertNotNull(createdSli);
             Assertions.assertEquals(sliName, createdSli.name());
@@ -98,6 +104,16 @@ public class SliCrudLiveTest extends TestProxyTestBase {
         }
     }
 
+    private ManagedServiceIdentity createIdentity() {
+        Map<String, UserAssignedIdentity> identities = new HashMap<>();
+        identities.put(MANAGED_IDENTITY_RESOURCE_ID, new UserAssignedIdentity());
+        if (!MANAGED_IDENTITY_RESOURCE_ID.equalsIgnoreCase(SOURCE_MANAGED_IDENTITY_RESOURCE_ID)) {
+            identities.put(SOURCE_MANAGED_IDENTITY_RESOURCE_ID, new UserAssignedIdentity());
+        }
+        return new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(identities);
+    }
+
     private SliResource createSliResource() {
         return new SliResource().withDescription("Live test SLI - measures latency of test API")
             .withCategory(Category.LATENCY)
@@ -115,14 +131,17 @@ public class SliCrudLiveTest extends TestProxyTestBase {
                     .withSignalSources(Collections.singletonList(new SignalSource().withSignalSourceId("A")
                         .withSourceAmwAccountManagedIdentity(SOURCE_MANAGED_IDENTITY_RESOURCE_ID)
                         .withSourceAmwAccountResourceId(SOURCE_AMW_RESOURCE_ID)
-                        .withMetricNamespace("TestMetrics")
-                        .withMetricName("TestLatency")
-                        .withFilters(Collections.singletonList(new Condition().withDimensionName("ApiName")
-                            .withOperator(ConditionOperator.EQUAL)
-                            .withValue("TestApi")))
-                        .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.AVERAGE)
-                            .withDimensions(Arrays.asList("Region")))
-                        .withTemporalAggregation(new TemporalAggregation().withType(TemporalAggregationType.AVERAGE)
-                            .withWindowSizeMinutes(5))))));
+                        // Source metric is a real Azure Managed Prometheus metric scraped by AKS.
+                        // Test infra (bicep) deploys an AKS cluster with the Azure Monitor metrics addon
+                        // pointed at the source AMW; container_cpu_usage_seconds_total is always populated.
+                        .withMetricNamespace("customdefault")
+                        .withMetricName("container_cpu_usage_seconds_total")
+                        .withFilters(Collections.singletonList(new Condition().withDimensionName("container")
+                            .withOperator(ConditionOperator.NOT_EQUAL)
+                            .withValue("POD")))
+                        .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.SUM)
+                            .withDimensions(Arrays.asList("instance")))
+                        .withTemporalAggregation(new TemporalAggregation().withType(TemporalAggregationType.RATE)
+                            .withWindowSizeMinutes(1))))));
     }
 }
