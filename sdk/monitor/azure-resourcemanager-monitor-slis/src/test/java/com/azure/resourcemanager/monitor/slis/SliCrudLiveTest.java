@@ -9,6 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.monitor.slis.fluent.models.SliInner;
 import com.azure.resourcemanager.monitor.slis.models.AmwAccount;
@@ -41,26 +42,26 @@ import java.util.UUID;
  * Live CRUD test for Microsoft.Monitor/slis resource.
  * Tests: Create ΓåÆ Get ΓåÆ Delete ΓåÆ Get (expect 404).
  */
+@LiveOnly
 public class SliCrudLiveTest extends TestProxyTestBase {
 
-    private static final String SERVICE_GROUP_NAME = System.getenv().getOrDefault("SERVICE_GROUP_NAME", "arm-sdk-tests-sg");
-    private static final String AMW_RESOURCE_ID = System.getenv().getOrDefault(
-            "AMW_RESOURCE_ID",
+    private static final String SERVICE_GROUP_NAME
+        = System.getenv().getOrDefault("SERVICE_GROUP_NAME", "arm-sdk-tests-sg");
+    private static final String AMW_RESOURCE_ID = System.getenv()
+        .getOrDefault("AMW_RESOURCE_ID",
             "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/mfrei/providers/microsoft.monitor/accounts/streaming-3p-slo-am2cbn-eastus2euap-1");
-    private static final String MANAGED_IDENTITY_RESOURCE_ID = System.getenv().getOrDefault(
-            "MANAGED_IDENTITY_RESOURCE_ID",
+    private static final String MANAGED_IDENTITY_RESOURCE_ID = System.getenv()
+        .getOrDefault("MANAGED_IDENTITY_RESOURCE_ID",
             "/subscriptions/6820e35f-0fe6-4af3-aad2-27414fa82621/resourceGroups/mfrei/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mfrei-test-user-managed-identity");
-    private static final String SOURCE_AMW_RESOURCE_ID = System.getenv().getOrDefault(
-            "SOURCE_AMW_RESOURCE_ID", AMW_RESOURCE_ID);
-    private static final String SOURCE_MANAGED_IDENTITY_RESOURCE_ID = System.getenv().getOrDefault(
-            "SOURCE_MANAGED_IDENTITY_RESOURCE_ID", MANAGED_IDENTITY_RESOURCE_ID);
+    private static final String SOURCE_AMW_RESOURCE_ID
+        = System.getenv().getOrDefault("SOURCE_AMW_RESOURCE_ID", AMW_RESOURCE_ID);
+    private static final String SOURCE_MANAGED_IDENTITY_RESOURCE_ID
+        = System.getenv().getOrDefault("SOURCE_MANAGED_IDENTITY_RESOURCE_ID", MANAGED_IDENTITY_RESOURCE_ID);
 
     private SlisManager getManager() {
         return SlisManager.configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(
-                        new DefaultAzureCredentialBuilder().build(),
-                        new AzureProfile(AzureEnvironment.AZURE));
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
     @Test
@@ -70,10 +71,8 @@ public class SliCrudLiveTest extends TestProxyTestBase {
         boolean deleted = false;
 
         try {
-            Sli createdSli = manager.slis().createOrUpdate(
-                    SERVICE_GROUP_NAME,
-                    sliName,
-                    new SliInner().withProperties(createSliResource()));
+            Sli createdSli = manager.slis()
+                .createOrUpdate(SERVICE_GROUP_NAME, sliName, new SliInner().withProperties(createSliResource()));
 
             Assertions.assertNotNull(createdSli);
             Assertions.assertEquals(sliName, createdSli.name());
@@ -87,9 +86,7 @@ public class SliCrudLiveTest extends TestProxyTestBase {
             manager.slis().deleteByResourceGroup(SERVICE_GROUP_NAME, sliName);
             deleted = true;
 
-            Assertions.assertThrows(
-                    ManagementException.class,
-                    () -> manager.slis().get(SERVICE_GROUP_NAME, sliName));
+            Assertions.assertThrows(ManagementException.class, () -> manager.slis().get(SERVICE_GROUP_NAME, sliName));
         } finally {
             if (!deleted) {
                 try {
@@ -102,43 +99,30 @@ public class SliCrudLiveTest extends TestProxyTestBase {
     }
 
     private SliResource createSliResource() {
-        return new SliResource()
-                .withDescription("Live test SLI - measures latency of test API")
-                .withCategory(Category.LATENCY)
-                .withEvaluationType(EvaluationType.WINDOW_BASED)
-                .withEnableAlert(true)
-                .withDestinationAmwAccounts(Collections.singletonList(
-                        new AmwAccount()
-                                .withResourceId(AMW_RESOURCE_ID)
-                                .withIdentity(MANAGED_IDENTITY_RESOURCE_ID)))
-                .withBaselineProperties(new BaselineProperties()
-                        .withBaseline(new Baseline()
-                                .withValue(99.0)
-                                .withEvaluationPeriodDays(30)
-                                .withEvaluationCalculationType(EvaluationCalculationType.CALENDAR_DAYS)))
-                .withSliProperties(new SliProperties()
-                        .withWindowUptimeCriteria(new WindowUptimeCriteria()
-                                .withTarget(95.0)
-                                .withComparator(WindowUptimeCriteriaComparator.GREATER_THAN_OR_EQUAL))
-                        .withSignals(new Signal()
-                                .withSignalFormula("A")
-                                .withSignalSources(Collections.singletonList(
-                                        new SignalSource()
-                                                .withSignalSourceId("A")
-                                                .withSourceAmwAccountManagedIdentity(SOURCE_MANAGED_IDENTITY_RESOURCE_ID)
-                                                .withSourceAmwAccountResourceId(SOURCE_AMW_RESOURCE_ID)
-                                                .withMetricNamespace("TestMetrics")
-                                                .withMetricName("TestLatency")
-                                                .withFilters(Collections.singletonList(
-                                                        new Condition()
-                                                                .withDimensionName("ApiName")
-                                                                .withOperator(ConditionOperator.EQUAL)
-                                                                .withValue("TestApi")))
-                                                .withSpatialAggregation(new SpatialAggregation()
-                                                        .withType(SpatialAggregationType.AVERAGE)
-                                                        .withDimensions(Arrays.asList("Region")))
-                                                .withTemporalAggregation(new TemporalAggregation()
-                                                        .withType(TemporalAggregationType.AVERAGE)
-                                                        .withWindowSizeMinutes(5))))));
+        return new SliResource().withDescription("Live test SLI - measures latency of test API")
+            .withCategory(Category.LATENCY)
+            .withEvaluationType(EvaluationType.WINDOW_BASED)
+            .withEnableAlert(true)
+            .withDestinationAmwAccounts(Collections.singletonList(
+                new AmwAccount().withResourceId(AMW_RESOURCE_ID).withIdentity(MANAGED_IDENTITY_RESOURCE_ID)))
+            .withBaselineProperties(new BaselineProperties().withBaseline(new Baseline().withValue(99.0)
+                .withEvaluationPeriodDays(30)
+                .withEvaluationCalculationType(EvaluationCalculationType.CALENDAR_DAYS)))
+            .withSliProperties(new SliProperties()
+                .withWindowUptimeCriteria(new WindowUptimeCriteria().withTarget(95.0)
+                    .withComparator(WindowUptimeCriteriaComparator.GREATER_THAN_OR_EQUAL))
+                .withSignals(new Signal().withSignalFormula("A")
+                    .withSignalSources(Collections.singletonList(new SignalSource().withSignalSourceId("A")
+                        .withSourceAmwAccountManagedIdentity(SOURCE_MANAGED_IDENTITY_RESOURCE_ID)
+                        .withSourceAmwAccountResourceId(SOURCE_AMW_RESOURCE_ID)
+                        .withMetricNamespace("TestMetrics")
+                        .withMetricName("TestLatency")
+                        .withFilters(Collections.singletonList(new Condition().withDimensionName("ApiName")
+                            .withOperator(ConditionOperator.EQUAL)
+                            .withValue("TestApi")))
+                        .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.AVERAGE)
+                            .withDimensions(Arrays.asList("Region")))
+                        .withTemporalAggregation(new TemporalAggregation().withType(TemporalAggregationType.AVERAGE)
+                            .withWindowSizeMinutes(5))))));
     }
 }
