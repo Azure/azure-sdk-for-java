@@ -37,7 +37,9 @@ public final class Condition implements JsonSerializable<Condition> {
     private ConditionOperator operator;
 
     /*
-     * Value used in filtering.
+     * Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith, notstartswith, contains,
+     * notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and `notin` operators, multiple
+     * values must be joined by the delimiter `^^` (for example "east^^west^^north").
      */
     private String value;
 
@@ -128,7 +130,9 @@ public final class Condition implements JsonSerializable<Condition> {
     }
 
     /**
-     * Get the value property: Value used in filtering.
+     * Get the value property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith,
+     * notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and
+     * `notin` operators, multiple values must be joined by the delimiter `^^` (for example "east^^west^^north").
      * 
      * @return the value value.
      */
@@ -137,7 +141,9 @@ public final class Condition implements JsonSerializable<Condition> {
     }
 
     /**
-     * Set the value property: Value used in filtering.
+     * Set the value property: Value used in filtering. For most operators (eq, ne, lt, lte, gt, gte, startswith,
+     * notstartswith, contains, notcontains) this is a single value (for example "GetContosoUsers"). For the `in` and
+     * `notin` operators, multiple values must be joined by the delimiter `^^` (for example "east^^west^^north").
      * 
      * @param value the value value to set.
      * @return the Condition object itself.

@@ -1,4 +1,4 @@
 directory: specification/monitoringservice/resource-manager/Microsoft.Monitor/Slis
-commit: d32a3f6cc49c6dd6604161f8c7cee7c95a84c578
+commit: 8be8c75d9bb11ea95d8a7e251db74aa78b5cd76c
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
