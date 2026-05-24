@@ -283,11 +283,25 @@ public interface SqlServer
             /**
              * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
              *
+             * <p>The principal type is inferred by the service from the SID.</p>
+             *
              * @param userLogin the user or group login; it can be the name or the email address
              * @param sid the user or group object ID
              * @return Next stage of the SQL Server definition
              */
             WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid);
+
+            /**
+             * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server
+             * with an explicit principal type.
+             *
+             * @param userLogin the user, group, or application login name
+             * @param sid the user, group, or application object ID
+             * @param principalType the principal type (User, Group, or Application)
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid,
+                PrincipalType principalType);
         }
 
         /** A SQL Server definition setting admin user password. */
@@ -324,6 +338,22 @@ public interface SqlServer
              * @return Next stage of the SQL Server definition
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
+        }
+
+        /** A SQL Server definition setting a user-assigned managed service identity as the primary identity. */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Sets the specified user-assigned managed identity (UAMI) on the SQL server and marks it as the
+             * primary identity. If a system-assigned identity is also enabled, the resulting identity type is
+             * {@code SystemAssigned,UserAssigned}; otherwise it is {@code UserAssigned}.
+             *
+             * @param identityResourceId the Azure resource ID of the user-assigned managed identity
+             * @return Next stage of the SQL Server definition
+             */
+            default WithCreate withPrimaryUserAssignedManagedServiceIdentity(String identityResourceId) {
+                throw new UnsupportedOperationException(
+                    "[withPrimaryUserAssignedManagedServiceIdentity] is not supported in " + getClass());
+            }
         }
 
         /** A SQL Server definition for specifying elastic pool. */
@@ -395,8 +425,9 @@ public interface SqlServer
          * A SQL Server definition with sufficient inputs to create a new SQL Server in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<SqlServer>, WithActiveDirectoryAdministrator,
-            WithSystemAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
+        interface WithCreate
+            extends Creatable<SqlServer>, WithActiveDirectoryAdministrator, WithSystemAssignedManagedServiceIdentity,
+            WithUserAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
             WithVirtualNetworkRule, WithPublicNetworkAccess, DefinitionWithTags<WithCreate> {
         }
     }

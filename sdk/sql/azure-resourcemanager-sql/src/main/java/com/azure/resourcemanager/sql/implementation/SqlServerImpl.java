@@ -20,8 +20,8 @@ import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
-import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.PrincipalType;
+import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerMetric;
@@ -40,11 +40,15 @@ import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
 import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import com.azure.resourcemanager.sql.models.UserIdentity;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /** Implementation for SqlServer and its parent interfaces. */
@@ -382,11 +386,15 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         } else {
             this.innerModel().administrators().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY);
         }
-        this.innerModel()
-            .administrators()
-            .withLogin(userLogin)
-            .withSid(UUID.fromString(sid))
-            .withPrincipalType(PrincipalType.USER);
+        this.innerModel().administrators().withLogin(userLogin).withSid(UUID.fromString(sid));
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid,
+        PrincipalType principalType) {
+        withExternalActiveDirectoryAdministrator(userLogin, sid);
+        this.innerModel().administrators().withPrincipalType(principalType);
         return this;
     }
 
@@ -517,6 +525,31 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
         this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withPrimaryUserAssignedManagedServiceIdentity(String identityResourceId) {
+        Objects.requireNonNull(identityResourceId, "'identityResourceId' cannot be null.");
+        ResourceIdentity existing = this.innerModel().identity();
+        IdentityType type;
+        Map<String, UserIdentity> identities;
+        if (existing == null || existing.type() == null || existing.type() == IdentityType.NONE) {
+            type = IdentityType.USER_ASSIGNED;
+            identities = new HashMap<>();
+        } else if (existing.type() == IdentityType.SYSTEM_ASSIGNED) {
+            type = IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED;
+            identities = new HashMap<>();
+        } else {
+            type = existing.type();
+            identities = existing.userAssignedIdentities() == null
+                ? new HashMap<>()
+                : new HashMap<>(existing.userAssignedIdentities());
+        }
+        identities.put(identityResourceId, new UserIdentity());
+        this.innerModel()
+            .withIdentity(new ResourceIdentity().withType(type).withUserAssignedIdentities(identities))
+            .withPrimaryUserAssignedIdentityId(identityResourceId);
         return this;
     }
 

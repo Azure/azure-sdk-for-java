@@ -7,7 +7,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -58,7 +59,6 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.model.AzureUser;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -577,29 +577,33 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @DoNotRecord(skipInPlayback = true)
     // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
     public void canCRUDSqlServerWithImportDatabase() throws Exception {
-        // Create
-
         String storageName = generateRandomResourceName(sqlServerName, 22);
+        String uamiName = generateRandomResourceName("uami", 18);
         AzureUser user = azureCliSignedInUser();
 
-        // Pre-create the resource group explicitly so that downstream resource providers (Storage in
-        // particular) observe it consistently. Creating the RG as a dependency of the SQL server can
-        // race with Storage RP and surface as 404 "ResourceGroupNotFound" when the storage account is
-        // subsequently created or fetched in that RG.
         resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
 
-        // Import/export against an AAD-only SQL server requires Managed Identity authentication
-        // (SQL auth and ADPassword/ROPC are blocked in AAD-only tenants). The user-assigned managed
-        // identity must be:
-        //   1. Assigned to the SQL server (and typically set as its primary identity).
-        //   2. Granted "Storage Blob Data Contributor" on the storage account.
-        //   3. Mapped to a database user with the required privileges (db_owner or equivalent).
-        //
-        // The UAMI resource ID is read from the AZURE_SQL_IMPORT_EXPORT_UAMI_ID environment variable.
-        // If it is not provided the test is skipped instead of failing.
-        String uamiResourceId = System.getenv("AZURE_SQL_IMPORT_EXPORT_UAMI_ID");
-        Assumptions.assumeFalse(CoreUtils.isNullOrEmpty(uamiResourceId),
-            "AZURE_SQL_IMPORT_EXPORT_UAMI_ID is not set; skipping import/export Managed Identity test.");
+        Identity uami = msiManager.identities()
+            .define(uamiName)
+            .withRegion(DEFAULT_REGION)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageName)
+            .withRegion(DEFAULT_REGION)
+            .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
+        authorizationManager.roleAssignments()
+            .define(generateRandomUuid())
+            .forObjectId(uami.principalId())
+            .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
+            .withResourceScope(storageAccount)
+            .create();
+
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         SqlServer sqlServer = sqlServerManager.sqlServers()
             .define(sqlServerName)
@@ -607,6 +611,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
             .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withPrimaryUserAssignedManagedServiceIdentity(uami.id())
             .create();
 
         SqlDatabase dbFromSample = sqlServer.databases()
@@ -617,20 +622,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
-        // Pre-create the storage account synchronously (rather than wiring it as a Creatable dependency
-        // of the export request) so that we have a fully provisioned StorageAccount instance to reuse
-        // for both export and import, and any provisioning failure surfaces here rather than deep in
-        // the export pipeline.
-        StorageAccount storageAccount = storageManager.storageAccounts()
-            .define(storageName)
-            .withRegion(sqlServer.regionName())
-            .withExistingResourceGroup(sqlServer.resourceGroupName())
-            .create();
-
         SqlDatabaseImportExportResponse exportedDB
             = dbFromSample.exportTo(storageAccount, "from-sample", "dbfromsample.bacpac")
-                .withManagedIdentity(uamiResourceId)
+                .withManagedIdentity(uami.id())
                 .execute();
+        Assertions.assertNotNull(exportedDB);
 
         SqlDatabase dbFromImport = sqlServer.databases()
             .define("db-from-import")
@@ -638,7 +634,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withBasicPool()
             .attach()
             .importFrom(storageAccount, "from-sample", "dbfromsample.bacpac")
-            .withManagedIdentity(uamiResourceId)
+            .withManagedIdentity(uami.id())
             .withTag("tag2", "value2")
             .create();
         Assertions.assertNotNull(dbFromImport);

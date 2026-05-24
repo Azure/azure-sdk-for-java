@@ -88,17 +88,24 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
-             * Specifies the user-assigned managed identity used to authenticate to the SQL database for import.
+             * Specifies the user-assigned managed identity (UAMI) used to authenticate to the SQL database for import.
              *
-             * <p>The SQL server must have the specified user-assigned managed identity assigned (and typically set as
-             * its primary identity), the identity must be granted the appropriate role on the source storage account
-             * (e.g. {@code Storage Blob Data Contributor}), and it must be mapped to a database user with the required
-             * privileges. When this method is used, no administrator password is sent to the service.</p>
+             * <p>The SQL server must have the specified UAMI assigned (and typically set as its primary identity), the
+             * UAMI must be granted the appropriate role on the source storage account (e.g. {@code Storage Blob Data
+             * Contributor}), and it must be mapped to a database user with the required privileges. When this method
+             * is used, no administrator password is sent to the service.</p>
+             *
+             * <p>This method is for user-assigned managed identity. To use the server's system-assigned managed
+             * identity, enable SAMI on the server and pass the SAMI's resource identifier as well. The signed-in
+             * user's object ID is not a managed identity and cannot be used here.</p>
              *
              * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithExecute withManagedIdentity(String managedIdentityResourceId);
+            default SqlDatabaseImportRequest.DefinitionStages.WithExecute
+                withManagedIdentity(String managedIdentityResourceId) {
+                throw new UnsupportedOperationException("[withManagedIdentity] is not supported in " + getClass());
+            }
         }
 
         /**
