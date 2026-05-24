@@ -42,7 +42,8 @@ public final class ConditionOperator extends ExpandableStringEnum<ConditionOpera
     public static final ConditionOperator GREATER_THAN_OR_EQUAL = fromString("gte");
 
     /**
-     * Matches when {@code value} is one of the items in the {@code ^^}-delimited list (for example, {@code value} = "east^^west^^north").
+     * Matches when {@code value} is one of the items in the {@code ^^}-delimited list (for example, {@code value} =
+     * "east^^west^^north").
      */
     public static final ConditionOperator IN = fromString("in");
 
