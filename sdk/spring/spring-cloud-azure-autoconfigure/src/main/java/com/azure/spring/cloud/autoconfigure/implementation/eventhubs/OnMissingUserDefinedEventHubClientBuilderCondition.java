@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
@@ -38,7 +39,8 @@ class OnMissingUserDefinedEventHubClientBuilderCondition extends SpringBootCondi
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        String[] beanNames = context.getBeanFactory().getBeanNamesForType(EventHubClientBuilder.class, true, false);
+        String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
+            context.getBeanFactory(), EventHubClientBuilder.class, true, false);
         for (String name : beanNames) {
             if (!RESERVED_BUILDER_BEAN_NAMES.contains(name)) {
                 return ConditionOutcome.noMatch("found user-defined EventHubClientBuilder bean: " + name);
