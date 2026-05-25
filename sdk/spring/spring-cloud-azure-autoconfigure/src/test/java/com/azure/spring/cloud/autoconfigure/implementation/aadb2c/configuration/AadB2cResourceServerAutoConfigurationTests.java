@@ -222,6 +222,48 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     }
 
     @Test
+    void testValidateTenantIdRejectsOrganizations() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=organizations", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsConsumers() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=consumers", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsReservedValuesWithWhitespaceAndCase() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=  COMMON  ", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
     void testExistjwtProcessorBean() {
         getDefaultContextRunner()
