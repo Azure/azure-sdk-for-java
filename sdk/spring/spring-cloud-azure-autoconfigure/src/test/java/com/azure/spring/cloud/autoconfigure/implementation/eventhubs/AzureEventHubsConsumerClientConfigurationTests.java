@@ -95,6 +95,10 @@ class AzureEventHubsConsumerClientConfigurationTests {
                     assertThat(context.getBeansOfType(EventHubClientBuilder.class)).hasSizeGreaterThan(1);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME);
                     assertThat(context).hasSingleBean(EventHubConsumerClient.class);
+                    // Pin the shared consumer to the root builder: it must target base-eventhub,
+                    // never the producer-dedicated override-eventhub. This is the actual #49245 invariant.
+                    assertThat(context.getBean(EventHubConsumerClient.class).getEventHubName()).isEqualTo("base-eventhub");
+                    assertThat(context.getBean(EventHubConsumerAsyncClient.class).getEventHubName()).isEqualTo("base-eventhub");
                 }
             );
     }
