@@ -29,6 +29,8 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -182,6 +184,82 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                     context.getBean(AadB2cTrustedIssuerRepository.class);
                 assertThat(aadb2CTrustedIssuerRepository).isNotNull();
                 assertThat(aadb2CTrustedIssuerRepository).isExactlyInstanceOf(AadB2cTrustedIssuerRepository.class);
+
+                Set<String> trustedIssuers = aadb2CTrustedIssuerRepository.getTrustedIssuers();
+                assertThat(trustedIssuers)
+                    .noneMatch(issuer -> issuer.startsWith("https://login.microsoftonline.com/"))
+                    .noneMatch(issuer -> issuer.startsWith("https://sts.windows.net/"))
+                    .noneMatch(issuer -> issuer.startsWith("https://sts.chinacloudapi.cn/"));
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsCommon() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=common", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsEmptyString() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsOrganizations() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=organizations", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsConsumers() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=consumers", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsReservedValuesWithWhitespaceAndCase() {
+        getDefaultContextRunner()
+            .withPropertyValues(getB2CResourceServerProperties())
+            .withPropertyValues(String.format("%s=  COMMON  ", AadB2cConstants.TENANT_ID))
+            .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
             });
     }
 
