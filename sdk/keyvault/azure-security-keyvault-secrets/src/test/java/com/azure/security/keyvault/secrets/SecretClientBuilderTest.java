@@ -130,6 +130,45 @@ public class SecretClientBuilderTest {
     }
 
     @Test
+    public void defaultAsyncClientUsesLatestServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildAsyncClient();
+
+        secretAsyncClient.getSecret(secretName).block();
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
+    }
+
+    @Test
+    public void configuredAsyncClientUses20260301PreviewServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .serviceVersion(SecretServiceVersion.V2026_03_01_PREVIEW)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildAsyncClient();
+
+        secretAsyncClient.getSecret(secretName).block();
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
+    }
+
+    @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SecretClientBuilder().vaultUrl(""));
     }
