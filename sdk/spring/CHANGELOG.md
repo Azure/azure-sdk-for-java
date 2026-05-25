@@ -10,6 +10,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted and will cause application startup to fail with an `IllegalArgumentException`. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
 - `AadAuthenticationFilter` now enables explicit audience validation by default. The filter will verify that the JWT's `aud` (audience) claim matches either `spring.cloud.azure.active-directory.credential.client-id` or `spring.cloud.azure.active-directory.app-id-uri`. Tokens issued for other applications will be rejected with `BadJWTException`. This prevents cross-application token reuse and aligns with OAuth2/OIDC security best practices. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- B2C resource server now requires `spring.cloud.azure.active-directory.b2c.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted. In addition, default token validation is hardened to enforce tenant-bound `tid`, stricter `aud` validation, and B2C-only trusted issuers. ([#49252](https://github.com/Azure/azure-sdk-for-java/pull/49252))
 
 #### Bugs Fixed
 
