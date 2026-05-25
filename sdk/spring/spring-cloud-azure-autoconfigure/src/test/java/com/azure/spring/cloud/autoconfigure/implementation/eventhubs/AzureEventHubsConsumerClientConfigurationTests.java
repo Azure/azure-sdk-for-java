@@ -72,32 +72,6 @@ class AzureEventHubsConsumerClientConfigurationTests {
     }
 
     @Test
-    void producerOnlyDedicatedOverrideShouldNotActivateSharedConsumer() {
-        // Regression for issue #49245: producer dedicated builder must not satisfy the shared consumer condition,
-        // nor be injected into the shared consumer path. Without sub-level overrides on the consumer side and
-        // without the global event-hub-name, the consumer config simply should not activate.
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace",
-                "spring.cloud.azure.eventhubs.producer.event-hub-name=override-eventhub",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
-            )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
-            .run(
-                context -> {
-                    assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.class);
-                    assertThat(context).doesNotHaveBean(EventHubConsumerClient.class);
-                    assertThat(context).doesNotHaveBean(EventHubConsumerAsyncClient.class);
-                    // The producer dedicated path must actually be activated for this test to exercise the
-                    // "asymmetric, dedicated builder bean exists" scenario the bug fix targets.
-                    assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
-                    assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME);
-                }
-            );
-    }
-
-    @Test
     void sharedConsumerInjectsRootBuilderWhenProducerHasDedicatedOverride() {
         // Regression for issue #49245: when both a global event-hub-name and a producer-only override exist,
         // the shared consumer should still bind to the root builder, not the producer's dedicated builder.

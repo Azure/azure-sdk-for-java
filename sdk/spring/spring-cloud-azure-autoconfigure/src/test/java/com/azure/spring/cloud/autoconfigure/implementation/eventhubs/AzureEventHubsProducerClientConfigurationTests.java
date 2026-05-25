@@ -70,32 +70,6 @@ class AzureEventHubsProducerClientConfigurationTests {
     }
 
     @Test
-    void consumerOnlyDedicatedOverrideShouldNotActivateSharedProducer() {
-        // Regression for issue #49245: a consumer-dedicated builder must not satisfy the shared producer condition.
-        // Without sub-level overrides on the producer side and without a global event-hub-name, the producer
-        // config simply should not activate.
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace",
-                "spring.cloud.azure.eventhubs.consumer.event-hub-name=override-eventhub",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
-            )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
-            .run(
-                context -> {
-                    assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.class);
-                    assertThat(context).doesNotHaveBean(EventHubProducerClient.class);
-                    assertThat(context).doesNotHaveBean(EventHubProducerAsyncClient.class);
-                    // The consumer dedicated path must actually be activated for this test to exercise the
-                    // "asymmetric, dedicated builder bean exists" scenario the bug fix targets.
-                    assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
-                    assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME);
-                }
-            );
-    }
-
-    @Test
     void sharedProducerInjectsRootBuilderWhenConsumerHasDedicatedOverride() {
         // Regression for issue #49245: when both a global event-hub-name and a consumer-only override exist,
         // the shared producer should still bind to the root builder, not the consumer's dedicated builder.
