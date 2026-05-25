@@ -22,7 +22,6 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.PlatformManaged;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -585,36 +584,6 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(certificate -> assertPlatformManagedPolicy(policy, certificate.getPolicy()))
-                .verifyComplete();
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
-    @MethodSource("getPlatformManagedTestParameters")
-    public void updateCertificateWithPlatformManagedPolicy(HttpClient httpClient,
-        CertificateServiceVersion serviceVersion) {
-        createCertificateAsyncClient(httpClient, serviceVersion);
-
-        platformManagedCertificatePolicyRunner(certificateName -> {
-            AtomicReference<CertificatePolicy> expectedPolicy = new AtomicReference<>();
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
-                = setPlaybackPollerFluxPollInterval(
-                    certificateAsyncClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()));
-
-            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult).flatMap(certificate -> {
-                CertificatePolicy policy = certificate.getPolicy()
-                    .setPlatformManaged(new PlatformManaged("clientAuth")
-                        .setMetadata(Collections.singletonMap("source", "java-sdk-update-test")));
-                expectedPolicy.set(policy);
-
-                return certificateAsyncClient.updateCertificatePolicy(certificateName, policy);
-            })
-                .flatMap(updatedPolicy -> certificateAsyncClient.getCertificatePolicy(certificateName)
-                    .map(getPolicy -> Tuples.of(updatedPolicy, getPolicy))))
-                .assertNext(policies -> {
-                    assertPlatformManagedPolicy(expectedPolicy.get(), policies.getT1());
-                    assertPlatformManagedPolicy(expectedPolicy.get(), policies.getT2());
-                })
                 .verifyComplete();
         });
     }

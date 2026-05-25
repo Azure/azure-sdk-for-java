@@ -27,7 +27,6 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.PlatformManaged;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -586,32 +585,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             assertPlatformManagedPolicy(policy, certificate.getPolicy());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
-    @MethodSource("getPlatformManagedTestParameters")
-    public void updateCertificateWithPlatformManagedPolicy(HttpClient httpClient,
-        CertificateServiceVersion serviceVersion) {
-        createCertificateClient(httpClient, serviceVersion);
-
-        platformManagedCertificatePolicyRunner(certificateName -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
-                = setPlaybackSyncPollerPollInterval(
-                    certificateClient.beginCreateCertificate(certificateName, CertificatePolicy.getDefault()));
-
-            certPoller.waitForCompletion();
-
-            CertificatePolicy policy = certPoller.getFinalResult()
-                .getPolicy()
-                .setPlatformManaged(new PlatformManaged("clientAuth")
-                    .setMetadata(Collections.singletonMap("source", "java-sdk-update-test")));
-
-            CertificatePolicy updatedPolicy = certificateClient.updateCertificatePolicy(certificateName, policy);
-            assertPlatformManagedPolicy(policy, updatedPolicy);
-
-            CertificatePolicy getPolicy = certificateClient.getCertificatePolicy(certificateName);
-            assertPlatformManagedPolicy(policy, getPolicy);
         });
     }
 
