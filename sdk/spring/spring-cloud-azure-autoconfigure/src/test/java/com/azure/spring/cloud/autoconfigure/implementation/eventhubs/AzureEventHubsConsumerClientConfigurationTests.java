@@ -89,6 +89,10 @@ class AzureEventHubsConsumerClientConfigurationTests {
                     assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.class);
                     assertThat(context).doesNotHaveBean(EventHubConsumerClient.class);
                     assertThat(context).doesNotHaveBean(EventHubConsumerAsyncClient.class);
+                    // The producer dedicated path must actually be activated for this test to exercise the
+                    // "asymmetric, dedicated builder bean exists" scenario the bug fix targets.
+                    assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
+                    assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME);
                 }
             );
     }
@@ -110,6 +114,11 @@ class AzureEventHubsConsumerClientConfigurationTests {
                 context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
                     assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
+                    // Producer dedicated must be active so multiple EventHubClientBuilder beans coexist,
+                    // proving the shared consumer is selecting the root builder by qualifier rather than
+                    // succeeding by accident because only one builder bean exists.
+                    assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
+                    assertThat(context.getBeansOfType(EventHubClientBuilder.class)).hasSizeGreaterThan(1);
                     assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME);
                     assertThat(context).hasSingleBean(EventHubConsumerClient.class);
                 }
