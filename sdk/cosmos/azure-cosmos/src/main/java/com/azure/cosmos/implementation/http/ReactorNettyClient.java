@@ -51,6 +51,8 @@ public class ReactorNettyClient implements HttpClient {
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
+    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
 
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
@@ -140,8 +142,6 @@ public class ReactorNettyClient implements HttpClient {
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                                            .validateHeaders(true));
 
-        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
-            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
 
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);

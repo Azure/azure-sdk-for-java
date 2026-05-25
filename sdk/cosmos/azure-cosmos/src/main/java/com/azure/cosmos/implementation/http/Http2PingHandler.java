@@ -6,11 +6,9 @@ import com.azure.cosmos.implementation.Configs;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
 import io.netty.handler.codec.http2.Http2Error;
 import io.netty.handler.codec.http2.Http2Exception;
-import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2PingFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +43,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private final long pingTimeoutNanos;
     private final int failureThreshold;
     private final AtomicBoolean clientPingDisabled;  // shared across all connections for this CosmosClient
+
+    // Mutable fields below are accessed only from the channel's EventLoop thread
+    // (handlerAdded, channelRead, scheduled task, writeAndFlush listener), so no
+    // synchronization or volatile is needed.
     private long lastReadNanos;              // nanoTime of last inbound frame (response); PING triggers when no read for interval
     private long pingOutstandingSinceNanos;  // nanoTime when PING was sent; 0 = no outstanding PING
     private int consecutiveFailures;         // incremented on timeout, reset on ACK
@@ -127,14 +129,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        // Writes (outbound requests) do NOT reset the idle timer.
-        // We track last *read* (inbound response) to detect half-dead connections
-        // where writes succeed but responses never arrive.
-        super.write(ctx, msg, promise);
-    }
-
-    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         // Detect server-side PING rejection: some HTTP/2 endpoints (e.g., Cosmos DB Dedicated Gateway's
         // old Mux stack) respond to PING with an invalid RST_STREAM(stream_id=0, PROTOCOL_ERROR).
@@ -186,16 +180,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                 }
             }
             // Don't send another PING while one is outstanding
-            return;
-        }
-
-        // Don't send if there are active streams -- request/response traffic is already
-        // keeping the connection alive, so a PING would be pure overhead.
-        Http2FrameCodec codec = ctx.pipeline().get(Http2FrameCodec.class);
-        if (codec != null && codec.connection().numActiveStreams() > 0) {
-            // Active streams reset the read baseline so the first idle check after
-            // all streams close measures from *now*, not from the last frame.
-            lastReadNanos = System.nanoTime();
             return;
         }
 
