@@ -8,6 +8,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
+import io.netty.handler.codec.http2.Http2Error;
+import io.netty.handler.codec.http2.Http2Exception;
 import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2PingFrame;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Manual HTTP/2 PING keepalive handler installed on the parent (TCP) channel.
@@ -41,6 +44,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
     private final int failureThreshold;
+    private final AtomicBoolean clientPingDisabled;  // shared across all connections for this CosmosClient
     private long lastReadNanos;              // nanoTime of last inbound frame (response); PING triggers when no read for interval
     private long pingOutstandingSinceNanos;  // nanoTime when PING was sent; 0 = no outstanding PING
     private int consecutiveFailures;         // incremented on timeout, reset on ACK
@@ -51,12 +55,16 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingIntervalSeconds  interval in seconds; when idle longer than this, a PING is sent
      * @param pingTimeoutSeconds   timeout in seconds per PING attempt
      * @param failureThreshold     consecutive timeouts before closing the connection
+     * @param clientPingDisabled   shared flag; set to {@code true} if the server rejects PING,
+     *                             disabling PING for all connections from this CosmosClient
      */
-    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
+    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold,
+                            AtomicBoolean clientPingDisabled) {
         this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingIntervalSeconds));
         this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingTimeoutSeconds));
         this.failureThreshold = Math.max(1, failureThreshold);
         this.lastReadNanos = System.nanoTime();
+        this.clientPingDisabled = clientPingDisabled;
     }
 
     @Override
@@ -75,6 +83,26 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
             TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
             checkIntervalMs);
+
+        // Send probe PING after short delay to verify server supports HTTP/2 PING.
+        // Allows time for H2 connection preface (SETTINGS exchange) to complete.
+        // If the server rejects PING (e.g., RST_STREAM with PROTOCOL_ERROR), exceptionCaught()
+        // disables PING for all connections from this CosmosClient via clientPingDisabled.
+        ctx.executor().schedule(() -> {
+            if (ctx.channel().isActive() && !clientPingDisabled.get()) {
+                int count = ++pingsSent;
+                pingOutstandingSinceNanos = System.nanoTime();
+                ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
+                    .addListener(f -> {
+                        if (f.isSuccess()) {
+                            logger.debug("Probe PING #{} sent on channel {}",
+                                count, ctx.channel().id().asShortText());
+                        } else {
+                            pingOutstandingSinceNanos = 0;
+                        }
+                    });
+            }
+        }, 500, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -106,8 +134,35 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         super.write(ctx, msg, promise);
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // Detect server-side PING rejection: some HTTP/2 endpoints (e.g., Cosmos DB Dedicated Gateway's
+        // old Mux stack) respond to PING with an invalid RST_STREAM(stream_id=0, PROTOCOL_ERROR).
+        // Netty's Http2FrameCodec treats RST_STREAM on stream 0 as a connection error and fires
+        // Http2Exception(PROTOCOL_ERROR) down the pipeline. If this occurs while our PING is
+        // outstanding, the server does not support PING — disable for all connections from this
+        // CosmosClient to avoid repeatedly killing connections.
+        if (pingOutstandingSinceNanos != 0 && cause instanceof Http2Exception) {
+            Http2Exception h2e = (Http2Exception) cause;
+            if (h2e.error() == Http2Error.PROTOCOL_ERROR) {
+                clientPingDisabled.set(true);
+                cancelPingTask();
+                logger.warn("Server rejected PING with PROTOCOL_ERROR on channel {} — "
+                    + "disabling HTTP/2 PING for this CosmosClient",
+                    ctx.channel().id().asShortText());
+            }
+        }
+        super.exceptionCaught(ctx, cause);
+    }
+
     private void maybeSendPing(ChannelHandlerContext ctx) {
         if (!ctx.channel().isActive() || !Configs.isHttp2PingHealthEnabled()) {
+            cancelPingTask();
+            return;
+        }
+
+        // Client-level kill switch — another connection's handler detected PING rejection
+        if (clientPingDisabled.get()) {
             cancelPingTask();
             return;
         }
@@ -181,12 +236,18 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingIntervalSeconds PING interval in seconds
      * @param pingTimeoutSeconds  PING ACK timeout in seconds
      * @param failureThreshold    consecutive timeouts before closing
+     * @param clientPingDisabled  shared flag; if {@code true}, PING has been disabled for this CosmosClient
      */
-    public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
+    public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds,
+                                       int failureThreshold, AtomicBoolean clientPingDisabled) {
+        if (clientPingDisabled.get()) {
+            return;
+        }
         Channel parent = channel.parent() != null ? channel.parent() : channel;
         if (parent.pipeline().get(HANDLER_NAME) == null) {
             try {
-                parent.pipeline().addLast(HANDLER_NAME, new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold));
+                parent.pipeline().addLast(HANDLER_NAME,
+                    new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold, clientPingDisabled));
             } catch (IllegalArgumentException ignored) {
                 // Duplicate -- race between concurrent streams, benign
             }

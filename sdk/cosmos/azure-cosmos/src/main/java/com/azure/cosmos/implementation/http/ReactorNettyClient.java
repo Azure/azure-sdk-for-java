@@ -37,6 +37,7 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
@@ -56,6 +57,7 @@ public class ReactorNettyClient implements HttpClient {
     private ConnectionProvider connectionProvider;
     private String reactorNetworkLogCategory;
     private Logger wireTapLogger;
+    private final AtomicBoolean http2PingDisabled = new AtomicBoolean(false);
 
     private ReactorNettyClient() {}
 
@@ -145,19 +147,26 @@ public class ReactorNettyClient implements HttpClient {
         boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
 
         if (isH2Enabled) {
+            final AtomicBoolean pingDisabledRef = this.http2PingDisabled;
             this.httpClient = this.httpClient.doOnConnected(connection -> {
                 // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
                 // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
                 // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
                 // and the second fires for stream channels (parent()!=null).
                 // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
+                //
+                // A probe PING is sent immediately on handler installation to detect servers that
+                // reject PING (e.g., Cosmos DB Dedicated Gateway's old Mux stack). If PROTOCOL_ERROR
+                // is received, PING is disabled for all connections from this CosmosClient.
                 if (Configs.isHttp2PingHealthEnabled()
+                    && !pingDisabledRef.get()
                     && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
                     int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
                     int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
                     int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
                     if (pingIntervalSeconds > 0) {
-                        Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds, pingTimeoutSeconds, pingFailureThreshold);
+                        Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds,
+                            pingTimeoutSeconds, pingFailureThreshold, pingDisabledRef);
                     }
                 }
             });
