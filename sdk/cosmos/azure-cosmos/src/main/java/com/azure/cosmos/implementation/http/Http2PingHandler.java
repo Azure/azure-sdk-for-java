@@ -85,26 +85,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
             TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
             checkIntervalMs);
-
-        // Send probe PING after short delay to verify server supports HTTP/2 PING.
-        // Allows time for H2 connection preface (SETTINGS exchange) to complete.
-        // If the server rejects PING (e.g., RST_STREAM with PROTOCOL_ERROR), exceptionCaught()
-        // disables PING for all connections from this CosmosClient via clientPingDisabled.
-        ctx.executor().schedule(() -> {
-            if (ctx.channel().isActive() && !clientPingDisabled.get()) {
-                int count = ++pingsSent;
-                pingOutstandingSinceNanos = System.nanoTime();
-                ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
-                    .addListener(f -> {
-                        if (f.isSuccess()) {
-                            logger.debug("Probe PING #{} sent on channel {}",
-                                count, ctx.channel().id().asShortText());
-                        } else {
-                            pingOutstandingSinceNanos = 0;
-                        }
-                    });
-            }
-        }, 500, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -136,14 +116,20 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         // Http2Exception(PROTOCOL_ERROR) down the pipeline. If this occurs while our PING is
         // outstanding, the server does not support PING — disable for all connections from this
         // CosmosClient to avoid repeatedly killing connections.
+        //
+        // We swallow the exception (do NOT call super) to prevent the codec from closing
+        // the connection — without this PR, the connection would have been fine.
         if (pingOutstandingSinceNanos != 0 && cause instanceof Http2Exception) {
             Http2Exception h2e = (Http2Exception) cause;
             if (h2e.error() == Http2Error.PROTOCOL_ERROR) {
                 clientPingDisabled.set(true);
                 cancelPingTask();
-                logger.warn("Server rejected PING with PROTOCOL_ERROR on channel {} — "
+                pingOutstandingSinceNanos = 0;
+                logger.warn("Server rejected PING with PROTOCOL_ERROR on channel {} -- "
                     + "disabling HTTP/2 PING for this CosmosClient",
                     ctx.channel().id().asShortText());
+                ctx.pipeline().remove(this);
+                return;
             }
         }
         super.exceptionCaught(ctx, cause);

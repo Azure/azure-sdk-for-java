@@ -155,9 +155,10 @@ public class ReactorNettyClient implements HttpClient {
                 // and the second fires for stream channels (parent()!=null).
                 // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
                 //
-                // A probe PING is sent immediately on handler installation to detect servers that
-                // reject PING (e.g., Cosmos DB Dedicated Gateway's old Mux stack). If PROTOCOL_ERROR
-                // is received, PING is disabled for all connections from this CosmosClient.
+                // If the server rejects PING (e.g., Cosmos DB Dedicated Gateway's custom Mux stack
+                // returns RST_STREAM/PROTOCOL_ERROR), the handler sets clientPingDisabled and removes
+                // itself. The connection is lost (server-side close), but the pool replaces it, and
+                // no further PINGs are sent from this CosmosClient.
                 if (Configs.isHttp2PingHealthEnabled()
                     && !pingDisabledRef.get()
                     && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
