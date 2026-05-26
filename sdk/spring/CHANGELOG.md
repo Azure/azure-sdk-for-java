@@ -15,6 +15,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
+- Fixed Service Bus autoconfiguration for dedicated producer, consumer, and processor connection details so applications can initialize with only sub-level Service Bus `namespace` or `connection-string` settings and no top-level Service Bus connection configuration. ([#49257](https://github.com/Azure/azure-sdk-for-java/pull/49257))
 
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
