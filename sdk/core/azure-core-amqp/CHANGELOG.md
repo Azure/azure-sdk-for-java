@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+- Added support for reading the `com.microsoft:max-message-batch-size` AMQP vendor property from
+  sender link remote properties, with fallback to `max-message-size` when the property is absent.
+  Allows downstream messaging packages to size message batches against the broker-enforced batch
+  limit, which can be smaller than `max-message-size` on Premium large-message entities.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
 ## 2.11.4 (2026-04-28)
 
 ### Other Changes

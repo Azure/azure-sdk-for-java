@@ -4,6 +4,10 @@ package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
@@ -111,6 +115,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     }
 
     private static class InternalCredentialResolver implements AzureCredentialResolver<TokenCredential> {
+        private static final ClientLogger LOGGER = new ClientLogger(InternalCredentialResolver.class);
+
         private final AzureCredentialResolver<TokenCredential> delegated;
         private final Map<String, ?> configs;
         private TokenCredential credential;
@@ -128,8 +134,16 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                 if (credential == null) {
                     credential = delegated.resolve(properties);
                     if (credential == null) {
-                        // Create DefaultAzureCredential when no credential can be resolved from configs.
-                        credential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
+                        TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
+                        TokenCredential pipelinesCredential = tryBuildAzurePipelinesCredential(properties);
+                        if (pipelinesCredential == null) {
+                            credential = defaultAzureCredential;
+                        } else {
+                            credential = new ChainedTokenCredentialBuilder()
+                                .addLast(pipelinesCredential)
+                                .addLast(defaultAzureCredential)
+                                .build();
+                        }
                     }
                 }
             }
@@ -139,6 +153,56 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         @Override
         public boolean isResolvable(AzureProperties properties) {
             return true;
+        }
+
+        /**
+         * Attempts to build an {@code AzurePipelinesCredential} from the Azure DevOps federated
+         * workload-identity environment variables. Returns {@code null} when any of the four
+         * caller-provided variables ({@code AZURESUBSCRIPTION_SERVICE_CONNECTION_ID},
+         * {@code AZURESUBSCRIPTION_CLIENT_ID}, {@code AZURESUBSCRIPTION_TENANT_ID},
+         * {@code SYSTEM_ACCESSTOKEN}) are missing, or when {@code AzurePipelinesCredentialBuilder#build()}
+         * itself fails (e.g. {@code SYSTEM_OIDCREQUESTURI} is unavailable outside an Azure DevOps
+         * job). The authority host is taken from the {@link AzureProperties} profile so that the
+         * credential targets the correct cloud (public, China, US Gov).
+         */
+        private static TokenCredential tryBuildAzurePipelinesCredential(AzureProperties properties) {
+            Configuration config = Configuration.getGlobalConfiguration();
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+            if (isNullOrEmpty(serviceConnectionId)
+                || isNullOrEmpty(clientId)
+                || isNullOrEmpty(tenantId)
+                || isNullOrEmpty(systemAccessToken)) {
+                return null;
+            }
+            try {
+                AzurePipelinesCredentialBuilder builder = new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId);
+                String authorityHost = resolveAuthorityHost(properties);
+                if (!isNullOrEmpty(authorityHost)) {
+                    builder.authorityHost(authorityHost);
+                }
+                return builder.build();
+            } catch (RuntimeException e) {
+                LOGGER.verbose("Failed to build AzurePipelinesCredential, will fall back to DefaultAzureCredential.", e);
+                return null;
+            }
+        }
+
+        private static String resolveAuthorityHost(AzureProperties properties) {
+            if (properties == null || properties.getProfile() == null || properties.getProfile().getEnvironment() == null) {
+                return null;
+            }
+            return properties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
+        }
+
+        private static boolean isNullOrEmpty(String value) {
+            return value == null || value.isEmpty();
         }
     }
 }

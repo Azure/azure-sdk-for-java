@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base for session configuration shared between request and response.
@@ -553,6 +554,9 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
             jsonWriter.writeFieldName("interim_response");
             this.interimResponse.writeTo(jsonWriter);
         }
+        jsonWriter.writeArrayField("include", this.include,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -626,6 +630,13 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("interim_response".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.interimResponse
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("include".equals(fieldName)) {
+                    List<SessionIncludeOption> include
+                        = reader.readArray(reader1 -> SessionIncludeOption.fromString(reader1.getString()));
+                    deserializedVoiceLiveSessionOptions.include = include;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVoiceLiveSessionOptions.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }
@@ -730,6 +741,76 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     public VoiceLiveSessionOptions setInterimResponse(BinaryData interimResponse) {
         this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /*
+     * List of include options for the session (e.g., logprobs, phrases, file search results).
+     */
+    @Generated
+    private List<SessionIncludeOption> include;
+
+    /*
+     * Set of up to 16 key-value pairs that can be attached to the session. This is useful for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /**
+     * Get the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @return the include value.
+     */
+    @Generated
+    public List<SessionIncludeOption> getInclude() {
+        return this.include;
+    }
+
+    /**
+     * Set the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @param include the include value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setInclude(List<SessionIncludeOption> include) {
+        this.include = include;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @param metadata the metadata value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

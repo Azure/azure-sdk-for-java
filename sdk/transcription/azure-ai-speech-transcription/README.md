@@ -28,7 +28,7 @@ Use the client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-speech-transcription</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -145,7 +145,7 @@ try {
     TranscriptionResult result = client.transcribe(options);
 
     // Process results
-    System.out.println("Duration: " + result.getDuration() + " ms");
+    System.out.println("Duration: " + result.getDuration().toMillis() + " ms");
     result.getCombinedPhrases().forEach(phrase -> {
         System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
     });
