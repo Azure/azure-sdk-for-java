@@ -220,9 +220,11 @@ public class DataGenerationJobWithEvaluationSample {
     }
 
     private static List<EvalCreateParams.TestingCriterion> createAzureAIEvaluatorCriteria(String modelName) {
+        Map<String, String> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("query", "{{item.query}}");
+        dataMapping.put("response", "{{sample.output_text}}");
         return Arrays.asList(
-            createAzureAIEvaluator("coherence", "builtin.coherence", modelName,
-                mapOf("query", "{{item.query}}", "response", "{{sample.output_text}}")),
+            createAzureAIEvaluator("coherence", "builtin.coherence", modelName, dataMapping),
             createAzureAIEvaluator("fluency", "builtin.fluency", modelName,
                 Collections.singletonMap("response", "{{sample.output_text}}")));
     }
@@ -290,12 +292,5 @@ public class DataGenerationJobWithEvaluationSample {
             System.out.printf("  item %d: status=%s | %s%n", count, item.status(), item.results());
         }
         System.out.printf("Output items (total: %d).%n", count);
-    }
-
-    private static Map<String, String> mapOf(String firstKey, String firstValue, String secondKey, String secondValue) {
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put(firstKey, firstValue);
-        map.put(secondKey, secondValue);
-        return map;
     }
 }
