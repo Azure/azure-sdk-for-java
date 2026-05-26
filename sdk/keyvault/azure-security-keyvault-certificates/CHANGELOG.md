@@ -6,12 +6,6 @@
 
 - Includes all changes from 4.9.0-beta.1.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 4.8.7 (2026-05-05)
 
 ### Other Changes
