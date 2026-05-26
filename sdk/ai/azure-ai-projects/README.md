@@ -77,8 +77,8 @@ dataMapping.put("response", "{{sample.output_text}}");
 
 TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
     "builtin.coherence")
-        .setInitializationParameters(BinaryData.fromObject(Collections.singletonMap("deployment_name",
-            "gpt-4o-mini")))
+        .setInitializationParameters(Collections.singletonMap("deployment_name",
+            BinaryData.fromObject("gpt-4o-mini")))
         .setDataMapping(dataMapping);
 
 EvalCreateParams.TestingCriterion testingCriterion

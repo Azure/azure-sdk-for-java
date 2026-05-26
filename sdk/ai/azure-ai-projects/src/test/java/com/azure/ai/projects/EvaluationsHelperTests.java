@@ -19,7 +19,7 @@ public class EvaluationsHelperTests {
         TestingCriterionAzureAIEvaluator evaluator
             = new TestingCriterionAzureAIEvaluator("coherence", "builtin.coherence")
                 .setInitializationParameters(
-                    BinaryData.fromObject(Collections.singletonMap("deployment_name", "gpt-4o-mini")))
+                    Collections.singletonMap("deployment_name", BinaryData.fromObject("gpt-4o-mini")))
                 .setDataMapping(Collections.singletonMap("response", "{{sample.output_text}}"));
 
         EvalCreateParams.TestingCriterion testingCriterion = EvaluationsHelper.toTestingCriterion(evaluator);

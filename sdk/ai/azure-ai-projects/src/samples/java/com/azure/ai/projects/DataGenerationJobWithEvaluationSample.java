@@ -233,7 +233,7 @@ public class DataGenerationJobWithEvaluationSample {
     private static EvalCreateParams.TestingCriterion createAzureAIEvaluator(String name, String evaluatorName,
         String modelName, Map<String, String> dataMapping) {
         TestingCriterionAzureAIEvaluator evaluator = new TestingCriterionAzureAIEvaluator(name, evaluatorName)
-            .setInitializationParameters(Collections.singletonMap("deployment_name", BinaryData.fromString(modelName)))
+            .setInitializationParameters(Collections.singletonMap("deployment_name", BinaryData.fromObject(modelName)))
             .setDataMapping(dataMapping);
 
         return EvaluationsHelper.toTestingCriterion(evaluator);
