@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -20,6 +21,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -405,11 +407,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools) {
+    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions).getValue()
@@ -428,11 +433,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxDetails getToolbox(String name) {
+    public ToolboxDetails getToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxWithResponse(name, requestOptions).getValue().toObject(ToolboxDetails.class);
     }
 
@@ -457,11 +464,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+        PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -488,11 +498,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes() {
+    public PagedIterable<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxes(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
@@ -519,12 +531,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
-        String after, String before) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name,
+        FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -553,11 +567,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
@@ -575,11 +592,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails getToolboxVersion(String name, String version) {
+    public ToolboxVersionDetails getToolboxVersion(String name, String version,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxVersionWithResponse(name, version, requestOptions).getValue()
             .toObject(ToolboxVersionDetails.class);
     }
@@ -598,11 +618,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxDetails updateToolbox(String name, String defaultVersion) {
+    public ToolboxDetails updateToolbox(String name, String defaultVersion, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
         BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
         return updateToolboxWithResponse(name, updateToolboxRequest, requestOptions).getValue()
@@ -620,11 +642,13 @@ public final class ToolboxesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteToolbox(String name) {
+    public void deleteToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         deleteToolboxWithResponse(name, requestOptions).getValue();
     }
 
@@ -640,11 +664,13 @@ public final class ToolboxesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteToolboxVersion(String name, String version) {
+    public void deleteToolboxVersion(String name, String version, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         deleteToolboxVersionWithResponse(name, version, requestOptions).getValue();
     }
 
@@ -666,12 +692,15 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools, String description,
-        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies) {
+        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj
             = new CreateToolboxVersionRequest(tools).setDescription(description)
                 .setMetadata(metadata)
