@@ -22,19 +22,13 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
      * The agent (and pinned version) being optimized.
      */
     @Generated
-    private final OptimizationAgentDefinition agent;
+    private final AgentIdentifier agent;
 
     /*
-     * Inline evaluation dataset. Mutually exclusive with `train_dataset_reference`.
+     * Reference to a registered training dataset (required).
      */
     @Generated
-    private List<DatasetItem> dataset;
-
-    /*
-     * Reference to a registered training dataset. Mutually exclusive with `dataset`.
-     */
-    @Generated
-    private DatasetRef trainDatasetReference;
+    private final DatasetRef trainDatasetReference;
 
     /*
      * Optional held-out validation dataset for measuring generalization of the final candidate.
@@ -43,16 +37,10 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     private DatasetRef validationDatasetReference;
 
     /*
-     * Job-level evaluators (referenced by `name`). Per-task `criteria` may override. Default: ['task_adherence'].
+     * Job-level evaluators (referenced by name). Per-task criteria may override. Default: ['task_adherence'].
      */
     @Generated
     private List<String> evaluators;
-
-    /*
-     * Job-level evaluation criteria. Applied to all tasks unless overridden by per-task `criteria`.
-     */
-    @Generated
-    private List<EvaluationCriterion> criteria;
 
     /*
      * Tuning knobs and run-mode.
@@ -61,69 +49,23 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     private OptimizationOptions options;
 
     /**
-     * Creates an instance of OptimizationJobInputs class.
-     *
-     * @param agent the agent value to set.
-     */
-    @Generated
-    public OptimizationJobInputs(OptimizationAgentDefinition agent) {
-        this.agent = agent;
-    }
-
-    /**
      * Get the agent property: The agent (and pinned version) being optimized.
      *
      * @return the agent value.
      */
     @Generated
-    public OptimizationAgentDefinition getAgent() {
+    public AgentIdentifier getAgent() {
         return this.agent;
     }
 
     /**
-     * Get the dataset property: Inline evaluation dataset. Mutually exclusive with `train_dataset_reference`.
-     *
-     * @return the dataset value.
-     */
-    @Generated
-    public List<DatasetItem> getDataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: Inline evaluation dataset. Mutually exclusive with `train_dataset_reference`.
-     *
-     * @param dataset the dataset value to set.
-     * @return the OptimizationJobInputs object itself.
-     */
-    @Generated
-    public OptimizationJobInputs setDataset(List<DatasetItem> dataset) {
-        this.dataset = dataset;
-        return this;
-    }
-
-    /**
-     * Get the trainDatasetReference property: Reference to a registered training dataset. Mutually exclusive with
-     * `dataset`.
+     * Get the trainDatasetReference property: Reference to a registered training dataset (required).
      *
      * @return the trainDatasetReference value.
      */
     @Generated
     public DatasetRef getTrainDatasetReference() {
         return this.trainDatasetReference;
-    }
-
-    /**
-     * Set the trainDatasetReference property: Reference to a registered training dataset. Mutually exclusive with
-     * `dataset`.
-     *
-     * @param trainDatasetReference the trainDatasetReference value to set.
-     * @return the OptimizationJobInputs object itself.
-     */
-    @Generated
-    public OptimizationJobInputs setTrainDatasetReference(DatasetRef trainDatasetReference) {
-        this.trainDatasetReference = trainDatasetReference;
-        return this;
     }
 
     /**
@@ -151,8 +93,8 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the evaluators property: Job-level evaluators (referenced by `name`). Per-task `criteria` may override.
-     * Default: ['task_adherence'].
+     * Get the evaluators property: Job-level evaluators (referenced by name). Per-task criteria may override. Default:
+     * ['task_adherence'].
      *
      * @return the evaluators value.
      */
@@ -162,8 +104,8 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Set the evaluators property: Job-level evaluators (referenced by `name`). Per-task `criteria` may override.
-     * Default: ['task_adherence'].
+     * Set the evaluators property: Job-level evaluators (referenced by name). Per-task criteria may override. Default:
+     * ['task_adherence'].
      *
      * @param evaluators the evaluators value to set.
      * @return the OptimizationJobInputs object itself.
@@ -171,30 +113,6 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     @Generated
     public OptimizationJobInputs setEvaluators(List<String> evaluators) {
         this.evaluators = evaluators;
-        return this;
-    }
-
-    /**
-     * Get the criteria property: Job-level evaluation criteria. Applied to all tasks unless overridden by per-task
-     * `criteria`.
-     *
-     * @return the criteria value.
-     */
-    @Generated
-    public List<EvaluationCriterion> getCriteria() {
-        return this.criteria;
-    }
-
-    /**
-     * Set the criteria property: Job-level evaluation criteria. Applied to all tasks unless overridden by per-task
-     * `criteria`.
-     *
-     * @param criteria the criteria value to set.
-     * @return the OptimizationJobInputs object itself.
-     */
-    @Generated
-    public OptimizationJobInputs setCriteria(List<EvaluationCriterion> criteria) {
-        this.criteria = criteria;
         return this;
     }
 
@@ -228,11 +146,9 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("agent", this.agent);
-        jsonWriter.writeArrayField("dataset", this.dataset, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("train_dataset_reference", this.trainDatasetReference);
-        jsonWriter.writeJsonField("validation_dataset_reference", this.validationDatasetReference);
+        jsonWriter.writeJsonField("trainDatasetReference", this.trainDatasetReference);
+        jsonWriter.writeJsonField("validationDatasetReference", this.validationDatasetReference);
         jsonWriter.writeArrayField("evaluators", this.evaluators, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("criteria", this.criteria, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("options", this.options);
         return jsonWriter.writeEndObject();
     }
@@ -249,42 +165,46 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     @Generated
     public static OptimizationJobInputs fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationAgentDefinition agent = null;
-            List<DatasetItem> dataset = null;
+            AgentIdentifier agent = null;
             DatasetRef trainDatasetReference = null;
             DatasetRef validationDatasetReference = null;
             List<String> evaluators = null;
-            List<EvaluationCriterion> criteria = null;
             OptimizationOptions options = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("agent".equals(fieldName)) {
-                    agent = OptimizationAgentDefinition.fromJson(reader);
-                } else if ("dataset".equals(fieldName)) {
-                    dataset = reader.readArray(reader1 -> DatasetItem.fromJson(reader1));
-                } else if ("train_dataset_reference".equals(fieldName)) {
+                    agent = AgentIdentifier.fromJson(reader);
+                } else if ("trainDatasetReference".equals(fieldName)) {
                     trainDatasetReference = DatasetRef.fromJson(reader);
-                } else if ("validation_dataset_reference".equals(fieldName)) {
+                } else if ("validationDatasetReference".equals(fieldName)) {
                     validationDatasetReference = DatasetRef.fromJson(reader);
                 } else if ("evaluators".equals(fieldName)) {
                     evaluators = reader.readArray(reader1 -> reader1.getString());
-                } else if ("criteria".equals(fieldName)) {
-                    criteria = reader.readArray(reader1 -> EvaluationCriterion.fromJson(reader1));
                 } else if ("options".equals(fieldName)) {
                     options = OptimizationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            OptimizationJobInputs deserializedOptimizationJobInputs = new OptimizationJobInputs(agent);
-            deserializedOptimizationJobInputs.dataset = dataset;
-            deserializedOptimizationJobInputs.trainDatasetReference = trainDatasetReference;
+            OptimizationJobInputs deserializedOptimizationJobInputs
+                = new OptimizationJobInputs(agent, trainDatasetReference);
             deserializedOptimizationJobInputs.validationDatasetReference = validationDatasetReference;
             deserializedOptimizationJobInputs.evaluators = evaluators;
-            deserializedOptimizationJobInputs.criteria = criteria;
             deserializedOptimizationJobInputs.options = options;
             return deserializedOptimizationJobInputs;
         });
+    }
+
+    /**
+     * Creates an instance of OptimizationJobInputs class.
+     *
+     * @param agent the agent value to set.
+     * @param trainDatasetReference the trainDatasetReference value to set.
+     */
+    @Generated
+    public OptimizationJobInputs(AgentIdentifier agent, DatasetRef trainDatasetReference) {
+        this.agent = agent;
+        this.trainDatasetReference = trainDatasetReference;
     }
 }

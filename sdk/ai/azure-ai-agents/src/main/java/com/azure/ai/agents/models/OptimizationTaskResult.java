@@ -222,17 +222,17 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("task_name", this.taskName);
+        jsonWriter.writeStringField("taskName", this.taskName);
         jsonWriter.writeMapField("scores", this.scores, (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeDoubleField("composite_score", this.compositeScore);
+        jsonWriter.writeDoubleField("compositeScore", this.compositeScore);
         jsonWriter.writeIntField("tokens", this.tokens);
-        jsonWriter.writeDoubleField("duration_seconds", this.durationSeconds);
+        jsonWriter.writeDoubleField("durationSeconds", this.durationSeconds);
         jsonWriter.writeBooleanField("passed", this.passed);
         jsonWriter.writeStringField("query", this.query);
-        jsonWriter.writeStringField("error_message", this.errorMessage);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
         jsonWriter.writeMapField("rationales", this.rationales, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("response", this.response);
-        jsonWriter.writeStringField("run_id", this.runId);
+        jsonWriter.writeStringField("runId", this.runId);
         return jsonWriter.writeEndObject();
     }
 
@@ -262,27 +262,27 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("task_name".equals(fieldName)) {
+                if ("taskName".equals(fieldName)) {
                     taskName = reader.getString();
                 } else if ("scores".equals(fieldName)) {
                     scores = reader.readMap(reader1 -> reader1.getDouble());
-                } else if ("composite_score".equals(fieldName)) {
+                } else if ("compositeScore".equals(fieldName)) {
                     compositeScore = reader.getDouble();
                 } else if ("tokens".equals(fieldName)) {
                     tokens = reader.getInt();
-                } else if ("duration_seconds".equals(fieldName)) {
+                } else if ("durationSeconds".equals(fieldName)) {
                     durationSeconds = reader.getDouble();
                 } else if ("passed".equals(fieldName)) {
                     passed = reader.getBoolean();
                 } else if ("query".equals(fieldName)) {
                     query = reader.getString();
-                } else if ("error_message".equals(fieldName)) {
+                } else if ("errorMessage".equals(fieldName)) {
                     errorMessage = reader.getString();
                 } else if ("rationales".equals(fieldName)) {
                     rationales = reader.readMap(reader1 -> reader1.getString());
                 } else if ("response".equals(fieldName)) {
                     response = reader.getString();
-                } else if ("run_id".equals(fieldName)) {
+                } else if ("runId".equals(fieldName)) {
                     runId = reader.getString();
                 } else {
                     reader.skipChildren();

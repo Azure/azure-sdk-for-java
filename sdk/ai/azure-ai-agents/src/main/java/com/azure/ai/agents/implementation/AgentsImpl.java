@@ -533,6 +533,26 @@ public final class AgentsImpl {
             @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
+        @Post("/agents/{agent_name}/endpoint/sessions/{session_id}:stop")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> stopSession(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}/endpoint/sessions/{session_id}:stop")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> stopSessionSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
         @Get("/agents/{agent_name}/endpoint/sessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -583,7 +603,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOptimizationJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/agent_optimization_jobs")
@@ -594,11 +614,11 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOptimizationJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -608,7 +628,7 @@ public final class AgentsImpl {
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -763,6 +783,52 @@ public final class AgentsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
+        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCandidateFile(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCandidateFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> promoteCandidate(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> promoteCandidateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
+
         @Get("/openai/v1/conversations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -831,7 +897,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -927,7 +993,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1015,7 +1081,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1091,7 +1157,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1182,7 +1248,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1258,7 +1324,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1370,7 +1436,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1488,7 +1554,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1623,7 +1689,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1756,7 +1822,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1870,7 +1936,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1989,7 +2055,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2111,7 +2177,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2228,7 +2294,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2345,7 +2411,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2463,7 +2529,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2523,8 +2589,8 @@ public final class AgentsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the agent even if its
-     * versions have active sessions, cascading deletion to all associated sessions. This value is not relevant for
-     * other Agent types. Defaults to false.</td></tr>
+     * versions have active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is
+     * not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2564,8 +2630,8 @@ public final class AgentsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the agent even if its
-     * versions have active sessions, cascading deletion to all associated sessions. This value is not relevant for
-     * other Agent types. Defaults to false.</td></tr>
+     * versions have active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is
+     * not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2666,7 +2732,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2787,7 +2853,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2902,7 +2968,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -3021,7 +3087,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -3510,8 +3576,8 @@ public final class AgentsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the version even if it
-     * has active sessions, cascading deletion to all associated sessions. This value is not relevant for other Agent
-     * types. Defaults to false.</td></tr>
+     * has active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is not
+     * relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3553,8 +3619,8 @@ public final class AgentsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the version even if it
-     * has active sessions, cascading deletion to all associated sessions. This value is not relevant for other Agent
-     * types. Defaults to false.</td></tr>
+     * has active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is not
+     * relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3901,7 +3967,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -3977,7 +4043,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -4055,7 +4121,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -4131,7 +4197,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -4436,6 +4502,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -4460,7 +4528,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4500,6 +4568,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -4524,7 +4594,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4562,6 +4632,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4573,7 +4645,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4609,6 +4681,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4620,7 +4694,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4657,6 +4731,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
@@ -4687,6 +4763,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
@@ -4702,6 +4780,65 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, RequestOptions requestOptions) {
         return service.deleteSessionSync(this.client.getEndpoint(), agentName, sessionId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Stops a session.
+     * Returns 204 No Content when the stop succeeds.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopSessionWithResponseAsync(String agentName, String sessionId,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.stopSession(this.client.getEndpoint(), agentName, sessionId,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Stops a session.
+     * Returns 204 No Content when the stop succeeds.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopSessionWithResponse(String agentName, String sessionId, RequestOptions requestOptions) {
+        return service.stopSessionSync(this.client.getEndpoint(), agentName, sessionId,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
@@ -4735,6 +4872,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4746,7 +4885,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4804,6 +4943,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4815,7 +4956,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4866,6 +5007,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4877,7 +5020,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -4932,6 +5075,8 @@ public final class AgentsImpl {
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
      * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4943,7 +5088,7 @@ public final class AgentsImpl {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -5126,166 +5271,26 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
+     *     agent (Required): {
+     *         agentName: String (Required)
+     *         agentVersion: String (Optional)
      *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
+     *     trainDatasetReference (Required): {
+     *         name: String (Required)
+     *         version: String (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
+     *     validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *     evaluators (Optional): [
+     *         String (Optional)
+     *     ]
+     *     options (Optional): {
+     *         maxIterations: Integer (Optional)
+     *         optimizationConfig (Optional): {
      *             String: BinaryData (Required)
      *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         evalModel: String (Optional)
+     *         optimizationModel: String (Optional)
+     *         evaluationLevel: String(turn/conversation) (Optional)
      *     }
      * }
      * }
@@ -5297,140 +5302,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -5447,37 +5318,127 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param body The optimization job inputs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills) to maximize evaluation scores along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOptimizationJobWithResponseAsync(BinaryData job,
+    public Mono<Response<BinaryData>> createOptimizationJobWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOptimizationJob(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -5502,166 +5463,26 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
+     *     agent (Required): {
+     *         agentName: String (Required)
+     *         agentVersion: String (Optional)
      *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
+     *     trainDatasetReference (Required): {
+     *         name: String (Required)
+     *         version: String (Optional)
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
+     *     validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *     evaluators (Optional): [
+     *         String (Optional)
+     *     ]
+     *     options (Optional): {
+     *         maxIterations: Integer (Optional)
+     *         optimizationConfig (Optional): {
      *             String: BinaryData (Required)
      *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         evalModel: String (Optional)
+     *         optimizationModel: String (Optional)
+     *         evaluationLevel: String(turn/conversation) (Optional)
      *     }
      * }
      * }
@@ -5673,140 +5494,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -5823,41 +5510,131 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param body The optimization job inputs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills) to maximize evaluation scores along with {@link Response}.
+     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOptimizationJobSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Get info about an agent optimization job.
      * 
-     * Get an optimization job by id. Emits `Retry-After` while the job is non-terminal.
+     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -5875,140 +5652,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -6025,15 +5668,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -6059,7 +5792,7 @@ public final class AgentsImpl {
     /**
      * Get info about an agent optimization job.
      * 
-     * Get an optimization job by id. Emits `Retry-After` while the job is non-terminal.
+     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -6077,140 +5810,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -6227,15 +5826,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -6261,7 +5950,7 @@ public final class AgentsImpl {
     /**
      * Returns a list of agent optimization jobs.
      * 
-     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -6282,7 +5971,7 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
      * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -6302,140 +5991,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -6452,15 +6007,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -6487,7 +6132,7 @@ public final class AgentsImpl {
     /**
      * Returns a list of agent optimization jobs.
      * 
-     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -6508,7 +6153,7 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
      * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -6528,140 +6173,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -6678,15 +6189,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -6707,7 +6308,7 @@ public final class AgentsImpl {
     /**
      * Returns a list of agent optimization jobs.
      * 
-     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -6728,7 +6329,7 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
      * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -6748,140 +6349,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -6898,15 +6365,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -6931,7 +6488,7 @@ public final class AgentsImpl {
     /**
      * Returns a list of agent optimization jobs.
      * 
-     * List optimization jobs. Supports cursor pagination and optional `status` / `agent_name` filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -6952,7 +6509,7 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
      * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -6972,140 +6529,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -7122,15 +6545,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -7169,140 +6682,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -7319,15 +6698,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -7340,8 +6809,8 @@ public final class AgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills) to maximize evaluation scores along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelOptimizationJobWithResponseAsync(String jobId,
@@ -7372,140 +6841,6 @@ public final class AgentsImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *             model: String (Optional)
-     *             system_prompt: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         dataset (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 query: String (Required)
-     *                 ground_truth: String (Optional)
-     *                 criteria (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         instruction: String (Required)
-     *                     }
-     *                 ]
-     *                 eval_results (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         type: String (Optional)
-     *                         score: double (Required)
-     *                         passed: boolean (Required)
-     *                         sample (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                         status: String(completed/errored/skipped) (Optional)
-     *                         metric: String (Optional)
-     *                         label: String (Optional)
-     *                         threshold: Double (Optional)
-     *                         reason: String (Optional)
-     *                         properties (Optional): {
-     *                             String: String (Required)
-     *                         }
-     *                          (Optional): {
-     *                             String: BinaryData (Required)
-     *                         }
-     *                     }
-     *                 ]
-     *                 response_items (Optional): [
-     *                     BinaryData (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *         train_dataset_reference (Optional): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         criteria (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             strategies (Optional): [
-     *                 String(instruction/model/skill) (Optional)
-     *             ]
-     *             budget: Integer (Optional)
-     *             max_iterations: Integer (Optional)
-     *             tasks_per_iteration: Integer (Optional)
-     *             max_reflection_tasks: Integer (Optional)
-     *             min_improvement: Double (Optional)
-     *             pass_threshold: Double (Optional)
-     *             improvement_threshold: Double (Optional)
-     *             mode: String(optimize) (Optional)
-     *             eval_model: String (Optional)
-     *             reflection_model: String (Optional)
-     *             task_timeout_seconds: Long (Optional)
-     *             keep_versions: Boolean (Optional)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): (recursive schema, see config above)
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         pareto_frontier (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         validation_score (Optional): (recursive schema, see validation_score above)
-     *         options (Optional): (recursive schema, see options above)
-     *         sample_size: Integer (Optional)
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_strategies_failed: Boolean (Optional)
-     *     }
      *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -7522,15 +6857,105 @@ public final class AgentsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
+     *     result (Optional): {
+     *         baseline (Optional): {
+     *             candidateId: String (Optional)
+     *             name: String (Required)
+     *             config (Required): {
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
+     *                 model: String (Optional)
+     *                 systemPrompt: String (Optional)
+     *                 skills (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             mutations (Required): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
+     *                  (Required){
+     *                     taskName: String (Required)
+     *                     query: String (Optional)
+     *                     scores (Required): {
+     *                         String: double (Required)
+     *                     }
+     *                     compositeScore: double (Required)
+     *                     tokens: int (Required)
+     *                     durationSeconds: double (Required)
+     *                     passed: boolean (Required)
+     *                     errorMessage: String (Optional)
+     *                     rationales (Optional): {
+     *                         String: String (Required)
+     *                     }
+     *                     response: String (Optional)
+     *                     runId: String (Optional)
+     *                 }
+     *             ]
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
+     *         }
+     *         best (Optional): (recursive schema, see best above)
+     *         candidates (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         options (Optional): {
+     *             maxIterations: Integer (Optional)
+     *             optimizationConfig (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
+     *             evalModel: String (Optional)
+     *             optimizationModel: String (Optional)
+     *             evaluationLevel: String(turn/conversation) (Optional)
+     *         }
+     *         warnings (Optional): [
+     *             String (Optional)
+     *         ]
+     *         allTargetAttributesFailed: Boolean (Optional)
+     *     }
+     *     inputs (Optional): {
+     *         agent (Required): {
+     *             agentName: String (Required)
+     *             agentVersion: String (Optional)
+     *         }
+     *         trainDatasetReference (Required): {
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         evaluators (Optional): [
+     *             String (Optional)
+     *         ]
+     *         options (Optional): (recursive schema, see options above)
+     *     }
+     *     createdAt: long (Required)
+     *     updatedAt: Long (Optional)
      *     progress (Optional): {
-     *         current_strategy: String(instruction/model/skill) (Required)
-     *         current_iteration: int (Required)
-     *         tasks_completed: int (Required)
-     *         tasks_total: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
+     *         currentIteration: int (Required)
+     *         bestScore: double (Required)
+     *         elapsedSeconds: double (Required)
+     *     }
+     *     dataset (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         taskCount: int (Required)
+     *         isInline: boolean (Required)
      *     }
      * }
      * }
@@ -7543,7 +6968,7 @@ public final class AgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills) to maximize evaluation scores along with {@link Response}.
+     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
@@ -7556,6 +6981,14 @@ public final class AgentsImpl {
      * Deletes an agent optimization job.
      * 
      * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>When true, force-delete even if the job is in a non-terminal
+     * state.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -7586,6 +7019,14 @@ public final class AgentsImpl {
      * Deletes an agent optimization job.
      * 
      * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>When true, force-delete even if the job is in a non-terminal
+     * state.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -7654,53 +7095,57 @@ public final class AgentsImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             candidate_id: String (Optional)
+     *             candidateId: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Optional)
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
      *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
+     *                 systemPrompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
-     *                         name: String (Required)
-     *                         description: String (Optional)
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
      *                     }
      *                 ]
      *             }
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
      *                  (Required){
-     *                     task_name: String (Required)
+     *                     taskName: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     composite_score: double (Required)
+     *                     compositeScore: double (Required)
      *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
+     *                     durationSeconds: double (Required)
      *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
+     *                     errorMessage: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     run_id: String (Optional)
+     *                     runId: String (Optional)
      *                 }
      *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
      *         }
      *     ]
      *     first_id: String (Optional)
@@ -7769,53 +7214,57 @@ public final class AgentsImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             candidate_id: String (Optional)
+     *             candidateId: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Optional)
+     *                 agentName: String (Optional)
+     *                 agentVersion: String (Optional)
      *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
+     *                 systemPrompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
-     *                         name: String (Required)
-     *                         description: String (Optional)
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 ]
+     *                 tools (Optional): [
+     *                      (Optional){
+     *                         String: BinaryData (Required)
      *                     }
      *                 ]
      *             }
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             rationale: String (Required)
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
+     *             avgScore: double (Required)
+     *             avgTokens: double (Required)
+     *             passRate: double (Required)
+     *             taskScores (Required): [
      *                  (Required){
-     *                     task_name: String (Required)
+     *                     taskName: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     composite_score: double (Required)
+     *                     compositeScore: double (Required)
      *                     tokens: int (Required)
-     *                     duration_seconds: double (Required)
+     *                     durationSeconds: double (Required)
      *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
+     *                     errorMessage: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     run_id: String (Optional)
+     *                     runId: String (Optional)
      *                 }
      *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             sample_avg_score: Double (Optional)
-     *             sample_size: Integer (Optional)
-     *             evaluation_type: String (Optional)
-     *             strategy: String(instruction/model/skill) (Optional)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
+     *             isParetoOptimal: boolean (Required)
+     *             evalId: String (Optional)
+     *             evalRunId: String (Optional)
+     *             promotion (Optional): {
+     *                 promotedAt: long (Required)
+     *                 agentName: String (Required)
+     *                 agentVersion: String (Required)
+     *             }
      *         }
      *     ]
      *     first_id: String (Optional)
@@ -7843,7 +7292,7 @@ public final class AgentsImpl {
     /**
      * Get a candidate by id.
      * 
-     * Get a single candidate manifest and aggregated evaluation summary.
+     * Get a single candidate's metadata, manifest, and promotion info.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -7860,53 +7309,26 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     candidate_id: String (Optional)
-     *     name: String (Required)
-     *     config (Required): {
-     *         agent_name: String (Required)
-     *         agent_version: String (Optional)
-     *         model: String (Optional)
-     *         system_prompt: String (Optional)
-     *         skills (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
+     *     candidateId: String (Required)
+     *     jobId: String (Required)
+     *     candidateName: String (Required)
+     *     status: String (Required)
+     *     score: Double (Optional)
+     *     hasResults: boolean (Required)
+     *     createdAt: long (Required)
+     *     updatedAt: long (Required)
+     *     promotion (Optional): {
+     *         promotedAt: long (Required)
+     *         agentName: String (Required)
+     *         agentVersion: String (Required)
      *     }
-     *     mutations (Required): {
-     *         String: BinaryData (Required)
-     *     }
-     *     rationale: String (Required)
-     *     avg_score: double (Required)
-     *     avg_tokens: double (Required)
-     *     pass_rate: double (Required)
-     *     task_scores (Required): [
+     *     files (Required): [
      *          (Required){
-     *             task_name: String (Required)
-     *             query: String (Optional)
-     *             scores (Required): {
-     *                 String: double (Required)
-     *             }
-     *             composite_score: double (Required)
-     *             tokens: int (Required)
-     *             duration_seconds: double (Required)
-     *             passed: boolean (Required)
-     *             error_message: String (Optional)
-     *             rationales (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             response: String (Optional)
-     *             run_id: String (Optional)
+     *             path: String (Required)
+     *             type: String (Required)
+     *             sizeBytes: long (Required)
      *         }
      *     ]
-     *     is_pareto_optimal: boolean (Required)
-     *     sample_avg_score: Double (Optional)
-     *     sample_size: Integer (Optional)
-     *     evaluation_type: String (Optional)
-     *     strategy: String(instruction/model/skill) (Optional)
-     *     eval_id: String (Optional)
-     *     eval_run_id: String (Optional)
      * }
      * }
      * </pre>
@@ -7920,7 +7342,7 @@ public final class AgentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a candidate by id.
      * 
-     * Get a single candidate manifest and aggregated evaluation summary along with {@link Response} on successful
+     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7934,7 +7356,7 @@ public final class AgentsImpl {
     /**
      * Get a candidate by id.
      * 
-     * Get a single candidate manifest and aggregated evaluation summary.
+     * Get a single candidate's metadata, manifest, and promotion info.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -7951,53 +7373,26 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     candidate_id: String (Optional)
-     *     name: String (Required)
-     *     config (Required): {
-     *         agent_name: String (Required)
-     *         agent_version: String (Optional)
-     *         model: String (Optional)
-     *         system_prompt: String (Optional)
-     *         skills (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
+     *     candidateId: String (Required)
+     *     jobId: String (Required)
+     *     candidateName: String (Required)
+     *     status: String (Required)
+     *     score: Double (Optional)
+     *     hasResults: boolean (Required)
+     *     createdAt: long (Required)
+     *     updatedAt: long (Required)
+     *     promotion (Optional): {
+     *         promotedAt: long (Required)
+     *         agentName: String (Required)
+     *         agentVersion: String (Required)
      *     }
-     *     mutations (Required): {
-     *         String: BinaryData (Required)
-     *     }
-     *     rationale: String (Required)
-     *     avg_score: double (Required)
-     *     avg_tokens: double (Required)
-     *     pass_rate: double (Required)
-     *     task_scores (Required): [
+     *     files (Required): [
      *          (Required){
-     *             task_name: String (Required)
-     *             query: String (Optional)
-     *             scores (Required): {
-     *                 String: double (Required)
-     *             }
-     *             composite_score: double (Required)
-     *             tokens: int (Required)
-     *             duration_seconds: double (Required)
-     *             passed: boolean (Required)
-     *             error_message: String (Optional)
-     *             rationales (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             response: String (Optional)
-     *             run_id: String (Optional)
+     *             path: String (Required)
+     *             type: String (Required)
+     *             sizeBytes: long (Required)
      *         }
      *     ]
-     *     is_pareto_optimal: boolean (Required)
-     *     sample_avg_score: Double (Optional)
-     *     sample_size: Integer (Optional)
-     *     evaluation_type: String (Optional)
-     *     strategy: String(instruction/model/skill) (Optional)
-     *     eval_id: String (Optional)
-     *     eval_run_id: String (Optional)
      * }
      * }
      * </pre>
@@ -8011,7 +7406,7 @@ public final class AgentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a candidate by id.
      * 
-     * Get a single candidate manifest and aggregated evaluation summary along with {@link Response}.
+     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
@@ -8046,8 +7441,12 @@ public final class AgentsImpl {
      *     temperature: Double (Optional)
      *     skills (Optional): [
      *          (Optional){
-     *             name: String (Required)
-     *             description: String (Optional)
+     *             String: BinaryData (Required)
+     *         }
+     *     ]
+     *     tools (Optional): [
+     *          (Optional){
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -8098,8 +7497,12 @@ public final class AgentsImpl {
      *     temperature: Double (Optional)
      *     skills (Optional): [
      *          (Optional){
-     *             name: String (Required)
-     *             description: String (Optional)
+     *             String: BinaryData (Required)
+     *         }
+     *     ]
+     *     tools (Optional): [
+     *          (Optional){
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -8145,24 +7548,24 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     candidate_id: String (Required)
+     *     candidateId: String (Required)
      *     results (Required): [
      *          (Required){
-     *             task_name: String (Required)
+     *             taskName: String (Required)
      *             query: String (Optional)
      *             scores (Required): {
      *                 String: double (Required)
      *             }
-     *             composite_score: double (Required)
+     *             compositeScore: double (Required)
      *             tokens: int (Required)
-     *             duration_seconds: double (Required)
+     *             durationSeconds: double (Required)
      *             passed: boolean (Required)
-     *             error_message: String (Optional)
+     *             errorMessage: String (Optional)
      *             rationales (Optional): {
      *                 String: String (Required)
      *             }
      *             response: String (Optional)
-     *             run_id: String (Optional)
+     *             runId: String (Optional)
      *         }
      *     ]
      * }
@@ -8209,24 +7612,24 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     candidate_id: String (Required)
+     *     candidateId: String (Required)
      *     results (Required): [
      *          (Required){
-     *             task_name: String (Required)
+     *             taskName: String (Required)
      *             query: String (Optional)
      *             scores (Required): {
      *                 String: double (Required)
      *             }
-     *             composite_score: double (Required)
+     *             compositeScore: double (Required)
      *             tokens: int (Required)
-     *             duration_seconds: double (Required)
+     *             durationSeconds: double (Required)
      *             passed: boolean (Required)
-     *             error_message: String (Optional)
+     *             errorMessage: String (Optional)
      *             rationales (Optional): {
      *                 String: String (Required)
      *             }
      *             response: String (Optional)
-     *             run_id: String (Optional)
+     *             runId: String (Optional)
      *         }
      *     ]
      * }
@@ -8250,6 +7653,212 @@ public final class AgentsImpl {
         final String accept = "application/json";
         return service.getOptimizationCandidateResultsSync(this.client.getEndpoint(), jobId, candidateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get a candidate file.
+     * 
+     * Stream a specific file from the candidate's blob directory.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate file.
+     * 
+     * Stream a specific file from the candidate's blob directory along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCandidateFileWithResponseAsync(String jobId, String candidateId, String path,
+        RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return FluxUtil.withContext(context -> service.getCandidateFile(this.client.getEndpoint(), jobId, candidateId,
+            path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a candidate file.
+     * 
+     * Stream a specific file from the candidate's blob directory.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate file.
+     * 
+     * Stream a specific file from the candidate's blob directory along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCandidateFileWithResponse(String jobId, String candidateId, String path,
+        RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return service.getCandidateFileSync(this.client.getEndpoint(), jobId, candidateId, path,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Promote a candidate.
+     * 
+     * Promotes a candidate, recording the deployment timestamp and target agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentName: String (Required)
+     *     agentVersion: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidateId: String (Required)
+     *     status: String (Required)
+     *     promotedAt: long (Required)
+     *     agentName: String (Required)
+     *     agentVersion: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id to promote.
+     * @param body Promotion details.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response after successfully promoting a candidate along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> promoteCandidateWithResponseAsync(String jobId, String candidateId,
+        BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.promoteCandidate(this.client.getEndpoint(), jobId, candidateId,
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Promote a candidate.
+     * 
+     * Promotes a candidate, recording the deployment timestamp and target agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     agentName: String (Required)
+     *     agentVersion: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidateId: String (Required)
+     *     status: String (Required)
+     *     promotedAt: long (Required)
+     *     agentName: String (Required)
+     *     agentVersion: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id to promote.
+     * @param body Promotion details.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response after successfully promoting a candidate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> promoteCandidateWithResponse(String jobId, String candidateId, BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.promoteCandidateSync(this.client.getEndpoint(), jobId, candidateId,
+            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**

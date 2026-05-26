@@ -115,8 +115,6 @@ public class DataGenerationJobSource implements JsonSerializable<DataGenerationJ
                     return AgentDataGenerationJobSource.fromJson(readerToUse.reset());
                 } else if ("traces".equals(discriminatorValue)) {
                     return TracesDataGenerationJobSource.fromJson(readerToUse.reset());
-                } else if ("dataset".equals(discriminatorValue)) {
-                    return DatasetDataGenerationJobSource.fromJson(readerToUse.reset());
                 } else if ("file".equals(discriminatorValue)) {
                     return FileDataGenerationJobSource.fromJson(readerToUse.reset());
                 } else {

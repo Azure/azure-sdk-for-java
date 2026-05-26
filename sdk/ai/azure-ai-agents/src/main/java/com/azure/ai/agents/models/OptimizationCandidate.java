@@ -21,7 +21,7 @@ import java.util.Map;
 public final class OptimizationCandidate implements JsonSerializable<OptimizationCandidate> {
 
     /*
-     * Server-assigned candidate identifier. Use with `GET /candidates/{id}` sub-endpoints.
+     * Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
      */
     @Generated
     private String candidateId;
@@ -39,16 +39,10 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private final OptimizationAgentDefinition config;
 
     /*
-     * What was mutated from the baseline (e.g., {instructions: 'new prompt'}).
+     * What was mutated from the baseline (e.g., {systemPrompt: 'new prompt'}).
      */
     @Generated
     private final Map<String, BinaryData> mutations;
-
-    /*
-     * Strategy rationale — why this candidate was generated.
-     */
-    @Generated
-    private final String rationale;
 
     /*
      * Average composite score across all tasks.
@@ -81,30 +75,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private final boolean isParetoOptimal;
 
     /*
-     * Average score from sampled evaluation (null if full dataset was used).
-     */
-    @Generated
-    private Double sampleAvgScore;
-
-    /*
-     * Number of tasks in the sample (null if full dataset was used).
-     */
-    @Generated
-    private Integer sampleSize;
-
-    /*
-     * 'sample' if scored on a subset, 'full' if re-evaluated on the full dataset.
-     */
-    @Generated
-    private String evaluationType;
-
-    /*
-     * Identifies the strategy that produced this candidate.
-     */
-    @Generated
-    private OptimizationStrategy strategy;
-
-    /*
      * Foundry evaluation identifier used to score this candidate.
      */
     @Generated
@@ -117,36 +87,7 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private String evalRunId;
 
     /**
-     * Creates an instance of OptimizationCandidate class.
-     *
-     * @param name the name value to set.
-     * @param config the config value to set.
-     * @param mutations the mutations value to set.
-     * @param rationale the rationale value to set.
-     * @param avgScore the avgScore value to set.
-     * @param avgTokens the avgTokens value to set.
-     * @param passRate the passRate value to set.
-     * @param taskScores the taskScores value to set.
-     * @param isParetoOptimal the isParetoOptimal value to set.
-     */
-    @Generated
-    private OptimizationCandidate(String name, OptimizationAgentDefinition config, Map<String, BinaryData> mutations,
-        String rationale, double avgScore, double avgTokens, double passRate, List<OptimizationTaskResult> taskScores,
-        boolean isParetoOptimal) {
-        this.name = name;
-        this.config = config;
-        this.mutations = mutations;
-        this.rationale = rationale;
-        this.avgScore = avgScore;
-        this.avgTokens = avgTokens;
-        this.passRate = passRate;
-        this.taskScores = taskScores;
-        this.isParetoOptimal = isParetoOptimal;
-    }
-
-    /**
-     * Get the candidateId property: Server-assigned candidate identifier. Use with `GET /candidates/{id}`
-     * sub-endpoints.
+     * Get the candidateId property: Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
      *
      * @return the candidateId value.
      */
@@ -176,23 +117,13 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the mutations property: What was mutated from the baseline (e.g., {instructions: 'new prompt'}).
+     * Get the mutations property: What was mutated from the baseline (e.g., {systemPrompt: 'new prompt'}).
      *
      * @return the mutations value.
      */
     @Generated
     public Map<String, BinaryData> getMutations() {
         return this.mutations;
-    }
-
-    /**
-     * Get the rationale property: Strategy rationale — why this candidate was generated.
-     *
-     * @return the rationale value.
-     */
-    @Generated
-    public String getRationale() {
-        return this.rationale;
     }
 
     /**
@@ -246,46 +177,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the sampleAvgScore property: Average score from sampled evaluation (null if full dataset was used).
-     *
-     * @return the sampleAvgScore value.
-     */
-    @Generated
-    public Double getSampleAvgScore() {
-        return this.sampleAvgScore;
-    }
-
-    /**
-     * Get the sampleSize property: Number of tasks in the sample (null if full dataset was used).
-     *
-     * @return the sampleSize value.
-     */
-    @Generated
-    public Integer getSampleSize() {
-        return this.sampleSize;
-    }
-
-    /**
-     * Get the evaluationType property: 'sample' if scored on a subset, 'full' if re-evaluated on the full dataset.
-     *
-     * @return the evaluationType value.
-     */
-    @Generated
-    public String getEvaluationType() {
-        return this.evaluationType;
-    }
-
-    /**
-     * Get the strategy property: Identifies the strategy that produced this candidate.
-     *
-     * @return the strategy value.
-     */
-    @Generated
-    public OptimizationStrategy getStrategy() {
-        return this.strategy;
-    }
-
-    /**
      * Get the evalId property: Foundry evaluation identifier used to score this candidate.
      *
      * @return the evalId value.
@@ -321,19 +212,15 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeStringField("rationale", this.rationale);
-        jsonWriter.writeDoubleField("avg_score", this.avgScore);
-        jsonWriter.writeDoubleField("avg_tokens", this.avgTokens);
-        jsonWriter.writeDoubleField("pass_rate", this.passRate);
-        jsonWriter.writeArrayField("task_scores", this.taskScores, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeBooleanField("is_pareto_optimal", this.isParetoOptimal);
-        jsonWriter.writeStringField("candidate_id", this.candidateId);
-        jsonWriter.writeNumberField("sample_avg_score", this.sampleAvgScore);
-        jsonWriter.writeNumberField("sample_size", this.sampleSize);
-        jsonWriter.writeStringField("evaluation_type", this.evaluationType);
-        jsonWriter.writeStringField("strategy", this.strategy == null ? null : this.strategy.toString());
-        jsonWriter.writeStringField("eval_id", this.evalId);
-        jsonWriter.writeStringField("eval_run_id", this.evalRunId);
+        jsonWriter.writeDoubleField("avgScore", this.avgScore);
+        jsonWriter.writeDoubleField("avgTokens", this.avgTokens);
+        jsonWriter.writeDoubleField("passRate", this.passRate);
+        jsonWriter.writeArrayField("taskScores", this.taskScores, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isParetoOptimal", this.isParetoOptimal);
+        jsonWriter.writeStringField("candidateId", this.candidateId);
+        jsonWriter.writeStringField("evalId", this.evalId);
+        jsonWriter.writeStringField("evalRunId", this.evalRunId);
+        jsonWriter.writeJsonField("promotion", this.promotion);
         return jsonWriter.writeEndObject();
     }
 
@@ -352,19 +239,15 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
             String name = null;
             OptimizationAgentDefinition config = null;
             Map<String, BinaryData> mutations = null;
-            String rationale = null;
             double avgScore = 0.0;
             double avgTokens = 0.0;
             double passRate = 0.0;
             List<OptimizationTaskResult> taskScores = null;
             boolean isParetoOptimal = false;
             String candidateId = null;
-            Double sampleAvgScore = null;
-            Integer sampleSize = null;
-            String evaluationType = null;
-            OptimizationStrategy strategy = null;
             String evalId = null;
             String evalRunId = null;
+            PromotionInfo promotion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -375,46 +258,77 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 } else if ("mutations".equals(fieldName)) {
                     mutations = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("rationale".equals(fieldName)) {
-                    rationale = reader.getString();
-                } else if ("avg_score".equals(fieldName)) {
+                } else if ("avgScore".equals(fieldName)) {
                     avgScore = reader.getDouble();
-                } else if ("avg_tokens".equals(fieldName)) {
+                } else if ("avgTokens".equals(fieldName)) {
                     avgTokens = reader.getDouble();
-                } else if ("pass_rate".equals(fieldName)) {
+                } else if ("passRate".equals(fieldName)) {
                     passRate = reader.getDouble();
-                } else if ("task_scores".equals(fieldName)) {
+                } else if ("taskScores".equals(fieldName)) {
                     taskScores = reader.readArray(reader1 -> OptimizationTaskResult.fromJson(reader1));
-                } else if ("is_pareto_optimal".equals(fieldName)) {
+                } else if ("isParetoOptimal".equals(fieldName)) {
                     isParetoOptimal = reader.getBoolean();
-                } else if ("candidate_id".equals(fieldName)) {
+                } else if ("candidateId".equals(fieldName)) {
                     candidateId = reader.getString();
-                } else if ("sample_avg_score".equals(fieldName)) {
-                    sampleAvgScore = reader.getNullable(JsonReader::getDouble);
-                } else if ("sample_size".equals(fieldName)) {
-                    sampleSize = reader.getNullable(JsonReader::getInt);
-                } else if ("evaluation_type".equals(fieldName)) {
-                    evaluationType = reader.getString();
-                } else if ("strategy".equals(fieldName)) {
-                    strategy = OptimizationStrategy.fromString(reader.getString());
-                } else if ("eval_id".equals(fieldName)) {
+                } else if ("evalId".equals(fieldName)) {
                     evalId = reader.getString();
-                } else if ("eval_run_id".equals(fieldName)) {
+                } else if ("evalRunId".equals(fieldName)) {
                     evalRunId = reader.getString();
+                } else if ("promotion".equals(fieldName)) {
+                    promotion = PromotionInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             OptimizationCandidate deserializedOptimizationCandidate = new OptimizationCandidate(name, config, mutations,
-                rationale, avgScore, avgTokens, passRate, taskScores, isParetoOptimal);
+                avgScore, avgTokens, passRate, taskScores, isParetoOptimal);
             deserializedOptimizationCandidate.candidateId = candidateId;
-            deserializedOptimizationCandidate.sampleAvgScore = sampleAvgScore;
-            deserializedOptimizationCandidate.sampleSize = sampleSize;
-            deserializedOptimizationCandidate.evaluationType = evaluationType;
-            deserializedOptimizationCandidate.strategy = strategy;
             deserializedOptimizationCandidate.evalId = evalId;
             deserializedOptimizationCandidate.evalRunId = evalRunId;
+            deserializedOptimizationCandidate.promotion = promotion;
             return deserializedOptimizationCandidate;
         });
+    }
+
+    /*
+     * Promotion metadata. Null if the candidate has not been promoted.
+     */
+    @Generated
+    private PromotionInfo promotion;
+
+    /**
+     * Creates an instance of OptimizationCandidate class.
+     *
+     * @param name the name value to set.
+     * @param config the config value to set.
+     * @param mutations the mutations value to set.
+     * @param avgScore the avgScore value to set.
+     * @param avgTokens the avgTokens value to set.
+     * @param passRate the passRate value to set.
+     * @param taskScores the taskScores value to set.
+     * @param isParetoOptimal the isParetoOptimal value to set.
+     */
+    @Generated
+    private OptimizationCandidate(String name, OptimizationAgentDefinition config, Map<String, BinaryData> mutations,
+        double avgScore, double avgTokens, double passRate, List<OptimizationTaskResult> taskScores,
+        boolean isParetoOptimal) {
+        this.name = name;
+        this.config = config;
+        this.mutations = mutations;
+        this.avgScore = avgScore;
+        this.avgTokens = avgTokens;
+        this.passRate = passRate;
+        this.taskScores = taskScores;
+        this.isParetoOptimal = isParetoOptimal;
+    }
+
+    /**
+     * Get the promotion property: Promotion metadata. Null if the candidate has not been promoted.
+     *
+     * @return the promotion value.
+     */
+    @Generated
+    public PromotionInfo getPromotion() {
+        return this.promotion;
     }
 }

@@ -69,7 +69,7 @@ public final class CandidateResults implements JsonSerializable<CandidateResults
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("candidate_id", this.candidateId);
+        jsonWriter.writeStringField("candidateId", this.candidateId);
         jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -91,7 +91,7 @@ public final class CandidateResults implements JsonSerializable<CandidateResults
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("candidate_id".equals(fieldName)) {
+                if ("candidateId".equals(fieldName)) {
                     candidateId = reader.getString();
                 } else if ("results".equals(fieldName)) {
                     results = reader.readArray(reader1 -> OptimizationTaskResult.fromJson(reader1));

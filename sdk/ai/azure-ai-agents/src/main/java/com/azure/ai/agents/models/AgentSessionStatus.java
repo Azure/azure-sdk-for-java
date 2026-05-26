@@ -90,4 +90,10 @@ public final class AgentSessionStatus extends ExpandableStringEnum<AgentSessionS
     public static Collection<AgentSessionStatus> values() {
         return values(AgentSessionStatus.class);
     }
+
+    /**
+     * Session is being stopped.
+     */
+    @Generated
+    public static final AgentSessionStatus STOPPING = fromString("stopping");
 }
