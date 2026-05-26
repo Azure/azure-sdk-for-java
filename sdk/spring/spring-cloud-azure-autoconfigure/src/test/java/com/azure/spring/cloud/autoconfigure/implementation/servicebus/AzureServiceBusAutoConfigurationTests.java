@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
@@ -155,6 +156,21 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
                 assertEquals(6, properties.getRetry().getFixed().getMaxRetries());
                 assertEquals(Duration.ofSeconds(30), properties.getRetry().getFixed().getDelay());
                 assertEquals(Duration.ofSeconds(40), properties.getRetry().getTryTimeout());
+            });
+    }
+
+    @Test
+    void producerDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.producer.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "producer-namespace"),
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusSenderClient.class);
             });
     }
 
