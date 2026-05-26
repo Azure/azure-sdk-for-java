@@ -15,7 +15,9 @@ import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
+import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
@@ -229,16 +231,12 @@ public class DataGenerationJobWithEvaluationSample {
 
     private static TestingCriterion createAzureAIEvaluator(String name, String evaluatorName, String modelName,
         Map<String, String> dataMapping) {
-        Map<String, Object> initializationParameters = new LinkedHashMap<>();
-        initializationParameters.put("deployment_name", modelName);
+        TestingCriterionAzureAIEvaluator evaluator = new TestingCriterionAzureAIEvaluator(name, evaluatorName)
+            .setInitializationParameters(BinaryData.fromObject(Collections.singletonMap("deployment_name", modelName)))
+            .setDataMapping(dataMapping);
 
-        Map<String, Object> evaluator = new LinkedHashMap<>();
-        evaluator.put("type", "azure_ai_evaluator");
-        evaluator.put("name", name);
-        evaluator.put("evaluator_name", evaluatorName);
-        evaluator.put("initialization_parameters", initializationParameters);
-        evaluator.put("data_mapping", dataMapping);
-        return ObjectMappers.jsonMapper().convertValue(evaluator, TestingCriterion.class);
+        return ObjectMappers.jsonMapper()
+            .convertValue(BinaryData.fromObject(evaluator).toObject(Map.class), TestingCriterion.class);
     }
 
     static RunCreateParams createEvaluationRunParams(String evalId, String datasetId, String modelName) {
