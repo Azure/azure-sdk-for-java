@@ -10,6 +10,8 @@ import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
+import com.azure.ai.agents.models.ToolboxPolicies;
+import com.azure.ai.agents.models.ToolboxSkill;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -28,6 +30,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -729,5 +732,43 @@ public final class ToolboxesAsyncClient {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
         return deleteToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     *
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param tools The list of tools to include in this version.
+     * @param description A human-readable description of the toolbox.
+     * @param metadata Arbitrary key-value metadata to associate with the toolbox.
+     * @param skills The list of skill sources to include in this version.
+     * @param policies Policy configuration for this toolbox version.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a toolbox on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools, String description,
+        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for createToolboxVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        CreateToolboxVersionRequest createToolboxVersionRequestObj
+            = new CreateToolboxVersionRequest(tools).setDescription(description)
+                .setMetadata(metadata)
+                .setSkills(skills)
+                .setPolicies(policies);
+        BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
+        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 }

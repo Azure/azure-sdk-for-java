@@ -78,7 +78,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     }
 
     private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
-        return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+        return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
             .onErrorResume(error -> Mono.empty());
     }
 

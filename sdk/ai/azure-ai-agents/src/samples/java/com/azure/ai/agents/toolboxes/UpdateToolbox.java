@@ -5,6 +5,7 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -31,7 +32,8 @@ public class UpdateToolbox {
                 .endpoint(endpoint)
                 .buildToolboxesClient();
 
-        ToolboxDetails updatedToolbox = toolboxesClient.updateToolbox(toolboxName, "2");
+        ToolboxDetails updatedToolbox = toolboxesClient.updateToolbox(toolboxName, "2",
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
 
         System.out.println("Updated Toolbox Name: " + updatedToolbox.getName());
         System.out.println("Updated Default Version: " + updatedToolbox.getDefaultVersion());
