@@ -37,6 +37,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryClientImpl;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -179,10 +181,13 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     public SchemaRegistryClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
         Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         try {
-            URL url = new URL(fullyQualifiedNamespace);
+            URL url = (new URI(fullyQualifiedNamespace)).toURL();
             this.fullyQualifiedNamespace = url.getHost();
         } catch (MalformedURLException ex) {
             LOGGER.verbose("Fully qualified namespace did not contain protocol.");
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        } catch (URISyntaxException e) {
+            LOGGER.verbose("Fully qualified namespace is not a valid URI. Using value as-is.");
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         }
         return this;

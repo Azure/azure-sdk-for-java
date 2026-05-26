@@ -4,8 +4,6 @@
 package com.azure.data.schemaregistry;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.schemaregistry.implementation.SchemaRegistryHelper.ACCEPTED_CONTENT_TYPE;
-
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -275,7 +273,6 @@ public final class SchemaRegistryAsyncClient {
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
-
         return serviceClient
             .registerSchemaWithResponseAsync(groupName, name, contentType.toString(), binaryData,
                 new RequestOptions().setContext(context))
@@ -365,14 +362,11 @@ public final class SchemaRegistryAsyncClient {
         if (Objects.isNull(schemaId)) {
             return monoError(logger, new NullPointerException("'schemaId' should not be null."));
         }
-
         final RequestOptions options = new RequestOptions().setContext(context);
-
-        return this.serviceClient.getSchemaByIdWithResponseAsync(schemaId, ACCEPTED_CONTENT_TYPE, options)
+        return this.serviceClient.getSchemaByIdWithResponseAsync(schemaId, options)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
                 SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getHeaders(), null);
-
                 return convertToString(response.getValue().toFluxByteBuffer(), response.getHeaders())
                     .map(schema -> new SimpleResponse<>(response, new SchemaRegistrySchema(schemaObject, schema)));
             });
@@ -383,11 +377,9 @@ public final class SchemaRegistryAsyncClient {
         if (Objects.isNull(groupName)) {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         }
-
         final RequestOptions options = new RequestOptions().setContext(context);
-
         return this.serviceClient
-            .getSchemaByVersionWithResponseAsync(groupName, schemaName, schemaVersion, ACCEPTED_CONTENT_TYPE, options)
+            .getSchemaByVersionWithResponseAsync(groupName, schemaName, schemaVersion, options)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
                 final Flux<ByteBuffer> schemaFlux = response.getValue().toFluxByteBuffer();
@@ -578,69 +570,6 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Get a registered schema by its unique ID reference.
-     *
-     * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
-     * Operation response type is based on serialization of schema requested.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a registered schema by its unique ID reference.
-     *
-     * Gets a registered schema by its unique ID along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSchemaByIdWithResponse(String id, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getSchemaByIdWithResponseAsync(id, accept, requestOptions);
-    }
-
-    /**
-     * Get specific schema versions.
-     *
-     * Gets one specific version of one schema.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param groupName Name of schema group.
-     * @param schemaName Name of schema.
-     * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return specific schema versions.
-     *
-     * Gets one specific version of one schema along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSchemaByVersionWithResponse(String groupName, String schemaName, int schemaVersion,
-        String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getSchemaByVersionWithResponseAsync(groupName, schemaName, schemaVersion, accept,
-            requestOptions);
-    }
-
-    /**
      * Get properties for existing schema.
      *
      * Gets the properties referencing an existing schema within the specified schema group, as matched by schema
@@ -752,9 +681,69 @@ public final class SchemaRegistryAsyncClient {
      *
      * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
      * Operation response type is based on serialization of schema requested.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
      *
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a registered schema by its unique ID reference.
+     *
+     * Gets a registered schema by its unique ID along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getSchemaByIdWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getSchemaByIdWithResponseAsync(id, requestOptions);
+    }
+
+    /**
+     * Get specific schema versions.
+     *
+     * Gets one specific version of one schema.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param groupName Name of schema group.
+     * @param schemaName Name of schema.
+     * @param schemaVersion Version number of specific schema.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return specific schema versions.
+     *
+     * Gets one specific version of one schema along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getSchemaByVersionWithResponse(String groupName, String schemaName, int schemaVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSchemaByVersionWithResponseAsync(groupName, schemaName, schemaVersion,
+            requestOptions);
+    }
+
+    /**
+     * Get a registered schema by its unique ID reference.
+     *
+     * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
+     * Operation response type is based on serialization of schema requested.
+     *
+     * @param id Schema ID that uniquely identifies a schema in the registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -767,10 +756,10 @@ public final class SchemaRegistryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BinaryData> getSchemaById(String id, String accept) {
+    Mono<BinaryData> getSchemaById(String id) {
         // Generated convenience method for getSchemaByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSchemaByIdWithResponse(id, accept, requestOptions).flatMap(FluxUtil::toMono);
+        return getSchemaByIdWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -781,7 +770,6 @@ public final class SchemaRegistryAsyncClient {
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -794,10 +782,10 @@ public final class SchemaRegistryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BinaryData> getSchemaByVersion(String groupName, String schemaName, int schemaVersion, String accept) {
+    Mono<BinaryData> getSchemaByVersion(String groupName, String schemaName, int schemaVersion) {
         // Generated convenience method for getSchemaByVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, accept, requestOptions)
+        return getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 }

@@ -14,7 +14,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -311,9 +310,7 @@ public final class SchemaRegistryClient {
             throw logger.logExceptionAsError(new NullPointerException("'schemaId' should not be null."));
         }
         try {
-            Response<BinaryData> response = this.serviceClient.getSchemaByIdWithResponse(schemaId,
-                SchemaRegistryHelper.ACCEPTED_CONTENT_TYPE, new RequestOptions().setContext(context));
-
+            Response<BinaryData> response = this.serviceClient.getSchemaByIdWithResponse(schemaId, new RequestOptions().setContext(context));
             SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getHeaders(), null);
             return new SimpleResponse<>(response,
                 new SchemaRegistrySchema(schemaObject, convertToString(response.getValue().toStream())));
@@ -345,7 +342,7 @@ public final class SchemaRegistryClient {
             throw logger.logExceptionAsError(new NullPointerException("'groupName' should not be null."));
         }
         final Response<BinaryData> response = this.serviceClient.getSchemaByVersionWithResponse(groupName, schemaName,
-            schemaVersion, SchemaRegistryHelper.ACCEPTED_CONTENT_TYPE, new RequestOptions().setContext(context));
+            schemaVersion, new RequestOptions().setContext(context));
         InputStream schemaInputStream = response.getValue().toStream();
         SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getHeaders(), null);
         if (schemaInputStream == null) {
@@ -415,7 +412,6 @@ public final class SchemaRegistryClient {
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
         final RequestOptions options = new RequestOptions().setContext(context);
-
         try {
             final Response<Void> response = serviceClient.getSchemaPropertiesByContentWithResponse(groupName, name,
                 contentType.getValue(), binaryData, options);
@@ -501,69 +497,6 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listSchemaVersions(String groupName, String schemaName, RequestOptions requestOptions) {
         return this.serviceClient.listSchemaVersions(groupName, schemaName, requestOptions);
-    }
-
-    /**
-     * Get a registered schema by its unique ID reference.
-     *
-     * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
-     * Operation response type is based on serialization of schema requested.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a registered schema by its unique ID reference.
-     *
-     * Gets a registered schema by its unique ID along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getSchemaByIdWithResponse(String id, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getSchemaByIdWithResponse(id, accept, requestOptions);
-    }
-
-    /**
-     * Get specific schema versions.
-     *
-     * Gets one specific version of one schema.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param groupName Name of schema group.
-     * @param schemaName Name of schema.
-     * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return specific schema versions.
-     *
-     * Gets one specific version of one schema along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getSchemaByVersionWithResponse(String groupName, String schemaName, int schemaVersion,
-        String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, accept,
-            requestOptions);
     }
 
     /**
@@ -656,9 +589,68 @@ public final class SchemaRegistryClient {
      *
      * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
      * Operation response type is based on serialization of schema requested.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
      *
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a registered schema by its unique ID reference.
+     *
+     * Gets a registered schema by its unique ID along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getSchemaByIdWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getSchemaByIdWithResponse(id, requestOptions);
+    }
+
+    /**
+     * Get specific schema versions.
+     *
+     * Gets one specific version of one schema.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param groupName Name of schema group.
+     * @param schemaName Name of schema.
+     * @param schemaVersion Version number of specific schema.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return specific schema versions.
+     *
+     * Gets one specific version of one schema along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getSchemaByVersionWithResponse(String groupName, String schemaName, int schemaVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, requestOptions);
+    }
+
+    /**
+     * Get a registered schema by its unique ID reference.
+     *
+     * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
+     * Operation response type is based on serialization of schema requested.
+     *
+     * @param id Schema ID that uniquely identifies a schema in the registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -671,10 +663,10 @@ public final class SchemaRegistryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData getSchemaById(String id, String accept) {
+    BinaryData getSchemaById(String id) {
         // Generated convenience method for getSchemaByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSchemaByIdWithResponse(id, accept, requestOptions).getValue();
+        return getSchemaByIdWithResponse(id, requestOptions).getValue();
     }
 
     /**
@@ -685,7 +677,6 @@ public final class SchemaRegistryClient {
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -698,9 +689,9 @@ public final class SchemaRegistryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData getSchemaByVersion(String groupName, String schemaName, int schemaVersion, String accept) {
+    BinaryData getSchemaByVersion(String groupName, String schemaName, int schemaVersion) {
         // Generated convenience method for getSchemaByVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, accept, requestOptions).getValue();
+        return getSchemaByVersionWithResponse(groupName, schemaName, schemaVersion, requestOptions).getValue();
     }
 }
