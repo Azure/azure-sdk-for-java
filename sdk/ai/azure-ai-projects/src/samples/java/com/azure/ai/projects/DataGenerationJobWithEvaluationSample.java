@@ -21,11 +21,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
-import com.openai.core.ObjectMappers;
 import com.openai.models.evals.EvalCreateParams;
 import com.openai.models.evals.EvalCreateParams.DataSourceConfig.Custom;
 import com.openai.models.evals.EvalCreateParams.DataSourceConfig.Custom.ItemSchema;
-import com.openai.models.evals.EvalCreateParams.TestingCriterion;
 import com.openai.models.evals.EvalCreateResponse;
 import com.openai.models.evals.EvalDeleteParams;
 import com.openai.models.evals.runs.CreateEvalCompletionsRunDataSource;
@@ -221,7 +219,7 @@ public class DataGenerationJobWithEvaluationSample {
             .build();
     }
 
-    private static List<TestingCriterion> createAzureAIEvaluatorCriteria(String modelName) {
+    private static List<EvalCreateParams.TestingCriterion> createAzureAIEvaluatorCriteria(String modelName) {
         return Arrays.asList(
             createAzureAIEvaluator("coherence", "builtin.coherence", modelName,
                 mapOf("query", "{{item.query}}", "response", "{{sample.output_text}}")),
@@ -229,14 +227,13 @@ public class DataGenerationJobWithEvaluationSample {
                 Collections.singletonMap("response", "{{sample.output_text}}")));
     }
 
-    private static TestingCriterion createAzureAIEvaluator(String name, String evaluatorName, String modelName,
-        Map<String, String> dataMapping) {
+    private static EvalCreateParams.TestingCriterion createAzureAIEvaluator(String name, String evaluatorName,
+        String modelName, Map<String, String> dataMapping) {
         TestingCriterionAzureAIEvaluator evaluator = new TestingCriterionAzureAIEvaluator(name, evaluatorName)
             .setInitializationParameters(BinaryData.fromObject(Collections.singletonMap("deployment_name", modelName)))
             .setDataMapping(dataMapping);
 
-        return ObjectMappers.jsonMapper()
-            .convertValue(BinaryData.fromObject(evaluator).toObject(Map.class), TestingCriterion.class);
+        return EvaluationsHelper.toTestingCriterion(evaluator);
     }
 
     static RunCreateParams createEvaluationRunParams(String evalId, String datasetId, String modelName) {

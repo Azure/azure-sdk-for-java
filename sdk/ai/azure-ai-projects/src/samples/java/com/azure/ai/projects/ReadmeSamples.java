@@ -8,10 +8,17 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.util.BinaryData;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
+import com.openai.models.evals.EvalCreateParams;
 import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
@@ -38,6 +45,21 @@ public final class ReadmeSamples {
         EvalService evalService = builder.buildOpenAIClient().evals();
         EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
         // END: com.azure.ai.projects.evalsServices
+
+        // BEGIN: com.azure.ai.projects.evaluationsHelper
+        Map<String, String> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("query", "{{item.query}}");
+        dataMapping.put("response", "{{sample.output_text}}");
+
+        TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
+            "builtin.coherence")
+                .setInitializationParameters(BinaryData.fromObject(Collections.singletonMap("deployment_name",
+                    "gpt-4o-mini")))
+                .setDataMapping(dataMapping);
+
+        EvalCreateParams.TestingCriterion testingCriterion
+            = EvaluationsHelper.toTestingCriterion(coherenceEvaluator);
+        // END: com.azure.ai.projects.evaluationsHelper
 
         // BEGIN: com.azure.ai.projects.openAIClient
         OpenAIClient openAIClient = builder.buildOpenAIClient();
