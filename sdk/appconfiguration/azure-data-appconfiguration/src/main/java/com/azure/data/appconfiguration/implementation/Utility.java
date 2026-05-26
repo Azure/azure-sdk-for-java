@@ -3,33 +3,33 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MatchConditions;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
-import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
-import com.azure.data.appconfiguration.models.SettingFields;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.MatchConditions;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.SettingFields;
+
+import reactor.core.publisher.Mono;
 
 /**
  * App Configuration Utility methods, use internally.
@@ -112,24 +112,37 @@ public class Utility {
         return Mono.just(setting);
     }
 
+    private static final String SNAPSHOT_UPDATE_CONTENT_TYPE = "application/merge-patch+json";
+
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
         MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
         Context context) {
-        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.updateSnapshotWithResponse(snapshotName, new SnapshotUpdateParameters().setStatus(status),
-                ifMatch, null, context);
-        return new SimpleResponse<>(response, response.getValue());
+        final RequestOptions options = buildUpdateSnapshotOptions(matchConditions, context);
+        final BinaryData body = BinaryData.fromString("{\"status\":\"" + status + "\"}");
+        final Response<BinaryData> response
+            = serviceClient.updateSnapshotWithResponse(SNAPSHOT_UPDATE_CONTENT_TYPE, snapshotName, body, options);
+        return new SimpleResponse<>(response,
+            response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
         MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
-        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        return serviceClient
-            .updateSnapshotWithResponseAsync(snapshotName, new SnapshotUpdateParameters().setStatus(status), ifMatch,
-                null)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        final RequestOptions options = buildUpdateSnapshotOptions(matchConditions, null);
+        final BinaryData body = BinaryData.fromString("{\"status\":\"" + status + "\"}");
+        return serviceClient.updateSnapshotWithResponseAsync(SNAPSHOT_UPDATE_CONTENT_TYPE, snapshotName, body, options)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
+    }
+
+    private static RequestOptions buildUpdateSnapshotOptions(MatchConditions matchConditions, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (matchConditions != null && matchConditions.getIfMatch() != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, matchConditions.getIfMatch());
+        }
+        return options;
     }
 
     // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"

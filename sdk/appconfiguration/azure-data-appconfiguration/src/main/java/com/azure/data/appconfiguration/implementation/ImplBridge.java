@@ -1,0 +1,475 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.data.appconfiguration.implementation;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
+import com.azure.data.appconfiguration.models.SnapshotFields;
+
+import reactor.core.publisher.Mono;
+
+/**
+ * Internal bridge that exposes the old typed convenience method shapes (Response&lt;KeyValue&gt;,
+ * PagedResponse&lt;KeyValue&gt;, etc.) on top of the new TypeSpec-generated protocol methods
+ * (RequestOptions + BinaryData) on {@link AzureAppConfigurationImpl}.
+ *
+ * <p>This exists so the hand-written {@code ConfigurationClient}/{@code ConfigurationAsyncClient} call sites
+ * keep working without being rewritten end-to-end after migrating from autorest to typespec-java.</p>
+ */
+public final class ImplBridge {
+
+    private static final HttpHeaderName ACCEPT_DATETIME = HttpHeaderName.fromString("Accept-Datetime");
+    private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
+
+    private ImplBridge() {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // RequestOptions builders
+    // -----------------------------------------------------------------------------------------------------
+
+    private static RequestOptions singleKvOptions(String label, String acceptDateTime, String syncToken, String ifMatch,
+        String ifNoneMatch, List<SettingFields> fields, List<String> tags, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (label != null) {
+            options.addQueryParam("label", label);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinFields(fields));
+        }
+        if (tags != null) {
+            for (String tag : tags) {
+                options.addQueryParam("tags", tag);
+            }
+        }
+        if (acceptDateTime != null) {
+            options.setHeader(ACCEPT_DATETIME, acceptDateTime);
+        }
+        if (syncToken != null) {
+            options.setHeader(SYNC_TOKEN, syncToken);
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return options;
+    }
+
+    private static String joinFields(List<SettingFields> fields) {
+        return fields.stream().map(SettingFields::toString).collect(Collectors.joining(","));
+    }
+
+    private static String joinSnapshotFields(List<SnapshotFields> fields) {
+        return fields.stream().map(SnapshotFields::toString).collect(Collectors.joining(","));
+    }
+
+    private static String joinLabelFields(List<SettingLabelFields> fields) {
+        return fields.stream().map(SettingLabelFields::toString).collect(Collectors.joining(","));
+    }
+
+    private static String joinStatus(List<ConfigurationSnapshotStatus> statuses) {
+        return statuses.stream().map(ConfigurationSnapshotStatus::toString).collect(Collectors.joining(","));
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // putKeyValue (now setConfigurationSettingWithResponse)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<KeyValue> putKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
+        String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        options.setBody(BinaryData.fromObject(entity));
+        return toKeyValueResponse(service.setConfigurationSettingWithResponse(key, options));
+    }
+
+    public static Mono<Response<KeyValue>> putKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
+        String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        options.setBody(BinaryData.fromObject(entity));
+        return service.setConfigurationSettingWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // getKeyValue (now getKeyValueWithResponse, protocol)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<KeyValue> getKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
+        String label, String acceptDateTime, String syncToken, String ifMatch, String ifNoneMatch,
+        List<SettingFields> fields, Context context) {
+        RequestOptions options
+            = singleKvOptions(label, acceptDateTime, syncToken, ifMatch, ifNoneMatch, fields, null, context);
+        return toKeyValueResponse(service.getKeyValueWithResponse(key, options));
+    }
+
+    public static Mono<Response<KeyValue>> getKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
+        String label, String acceptDateTime, String syncToken, String ifMatch, String ifNoneMatch,
+        List<SettingFields> fields, Context context) {
+        RequestOptions options
+            = singleKvOptions(label, acceptDateTime, syncToken, ifMatch, ifNoneMatch, fields, null, context);
+        return service.getKeyValueWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // deleteKeyValue (now deleteConfigurationSettingWithResponse)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<KeyValue> deleteKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
+        String label, String ifMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
+        return toKeyValueResponseAllowEmpty(service.deleteConfigurationSettingWithResponse(key, options));
+    }
+
+    public static Mono<Response<KeyValue>> deleteKeyValueWithResponseAsync(AzureAppConfigurationImpl service,
+        String key, String label, String ifMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
+        return service.deleteConfigurationSettingWithResponseAsync(key, options)
+            .map(ImplBridge::toKeyValueResponseAllowEmpty);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // putLock / deleteLock (read-only)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<KeyValue> putLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
+        String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        return toKeyValueResponse(service.putLockWithResponse(key, options));
+    }
+
+    public static Mono<Response<KeyValue>> putLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
+        String label, String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        return service.putLockWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+    }
+
+    public static Response<KeyValue> deleteLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
+        String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        return toKeyValueResponse(service.deleteLockWithResponse(key, options));
+    }
+
+    public static Mono<Response<KeyValue>> deleteLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
+        String label, String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
+        return service.deleteLockWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // listConfigurationSettings (was getKeyValues*)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static PagedResponse<KeyValue> getKeyValuesSinglePage(AzureAppConfigurationImpl service, String keyFilter,
+        String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields, String snapshotName,
+        String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
+            snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
+        return toKeyValuePage(service.listConfigurationSettingsSinglePage(options));
+    }
+
+    public static Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(AzureAppConfigurationImpl service,
+        String keyFilter, String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
+        String snapshotName, String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
+            snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
+        return service.listConfigurationSettingsSinglePageAsync(options).map(ImplBridge::toKeyValuePage);
+    }
+
+    public static PagedResponse<KeyValue> getKeyValuesNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
+        String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
+        return toKeyValuePage(service.listConfigurationSettingsNextSinglePage(nextLink, options));
+    }
+
+    public static Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(AzureAppConfigurationImpl service,
+        String nextLink, String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
+        RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
+        return service.listConfigurationSettingsNextSinglePageAsync(nextLink, options).map(ImplBridge::toKeyValuePage);
+    }
+
+    private static RequestOptions listKeyValuesOptions(String keyFilter, String labelFilter, String syncToken,
+        String acceptDateTime, List<SettingFields> fields, String snapshotName, String ifMatch, String ifNoneMatch,
+        List<String> tagsFilter, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (keyFilter != null) {
+            options.addQueryParam("key", keyFilter);
+        }
+        if (labelFilter != null) {
+            options.addQueryParam("label", labelFilter);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinFields(fields));
+        }
+        if (snapshotName != null) {
+            options.addQueryParam("snapshot", snapshotName);
+        }
+        if (tagsFilter != null) {
+            for (String tag : tagsFilter) {
+                options.addQueryParam("tags", tag);
+            }
+        }
+        if (syncToken != null) {
+            options.setHeader(SYNC_TOKEN, syncToken);
+        }
+        if (acceptDateTime != null) {
+            options.setHeader(ACCEPT_DATETIME, acceptDateTime);
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return options;
+    }
+
+    private static RequestOptions nextPageOptions(String acceptDateTime, String ifMatch, String ifNoneMatch,
+        Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (acceptDateTime != null) {
+            options.setHeader(ACCEPT_DATETIME, acceptDateTime);
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return options;
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // listRevisions
+    // -----------------------------------------------------------------------------------------------------
+
+    public static PagedResponse<KeyValue> getRevisionsSinglePage(AzureAppConfigurationImpl service, String keyFilter,
+        String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
+        List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
+            null, null, tagsFilter, context);
+        return toKeyValuePage(service.getRevisionsSinglePage(options));
+    }
+
+    public static Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(AzureAppConfigurationImpl service,
+        String keyFilter, String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
+        List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
+            null, null, tagsFilter, context);
+        return service.getRevisionsSinglePageAsync(options).map(ImplBridge::toKeyValuePage);
+    }
+
+    public static PagedResponse<KeyValue> getRevisionsNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
+        String acceptDateTime, Context context) {
+        RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
+        return toKeyValuePage(service.getRevisionsNextSinglePage(nextLink, options));
+    }
+
+    public static Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(AzureAppConfigurationImpl service,
+        String nextLink, String acceptDateTime, Context context) {
+        RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
+        return service.getRevisionsNextSinglePageAsync(nextLink, options).map(ImplBridge::toKeyValuePage);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // getSnapshot / listSnapshots
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<ConfigurationSnapshot> getSnapshotWithResponse(AzureAppConfigurationImpl service,
+        String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> fields, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinSnapshotFields(fields));
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        Response<BinaryData> response = service.getSnapshotWithResponse(name, options);
+        return new SimpleResponse<>(response,
+            response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
+    }
+
+    public static Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponseAsync(AzureAppConfigurationImpl service,
+        String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> fields, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinSnapshotFields(fields));
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return service.getSnapshotWithResponseAsync(name, options)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
+    }
+
+    public static PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(AzureAppConfigurationImpl service,
+        String nameFilter, String syncToken, List<SnapshotFields> fields, List<ConfigurationSnapshotStatus> statuses,
+        Context context) {
+        RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
+        return toSnapshotPage(service.getSnapshotsSinglePage(options));
+    }
+
+    public static Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
+        AzureAppConfigurationImpl service, String nameFilter, String syncToken, List<SnapshotFields> fields,
+        List<ConfigurationSnapshotStatus> statuses, Context context) {
+        RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
+        return service.getSnapshotsSinglePageAsync(options).map(ImplBridge::toSnapshotPage);
+    }
+
+    public static PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(AzureAppConfigurationImpl service,
+        String nextLink, Context context) {
+        RequestOptions options = nextPageOptions(null, null, null, context);
+        return toSnapshotPage(service.getSnapshotsNextSinglePage(nextLink, options));
+    }
+
+    public static Mono<PagedResponse<ConfigurationSnapshot>>
+        getSnapshotsNextSinglePageAsync(AzureAppConfigurationImpl service, String nextLink, Context context) {
+        RequestOptions options = nextPageOptions(null, null, null, context);
+        return service.getSnapshotsNextSinglePageAsync(nextLink, options).map(ImplBridge::toSnapshotPage);
+    }
+
+    private static RequestOptions snapshotListOptions(String nameFilter, String syncToken, List<SnapshotFields> fields,
+        List<ConfigurationSnapshotStatus> statuses, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (nameFilter != null) {
+            options.addQueryParam("name", nameFilter);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinSnapshotFields(fields));
+        }
+        if (statuses != null && !statuses.isEmpty()) {
+            options.addQueryParam("status", joinStatus(statuses));
+        }
+        if (syncToken != null) {
+            options.setHeader(SYNC_TOKEN, syncToken);
+        }
+        return options;
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // listLabels
+    // -----------------------------------------------------------------------------------------------------
+
+    public static PagedIterable<SettingLabel> getLabels(AzureAppConfigurationImpl service, String nameFilter,
+        String syncToken, String acceptDatetime, List<SettingLabelFields> fields, Context context) {
+        RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, context);
+        return new PagedIterable<>(() -> toLabelPage(service.getLabelsSinglePage(options)), nextLink -> toLabelPage(
+            service.getLabelsNextSinglePage(nextLink, nextPageOptions(null, null, null, context))));
+    }
+
+    public static PagedFlux<SettingLabel> getLabelsAsync(AzureAppConfigurationImpl service, String nameFilter,
+        String syncToken, String acceptDatetime, List<SettingLabelFields> fields) {
+        RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, Context.NONE);
+        return new PagedFlux<>(() -> service.getLabelsSinglePageAsync(options).map(ImplBridge::toLabelPage),
+            nextLink -> service.getLabelsNextSinglePageAsync(nextLink, new RequestOptions())
+                .map(ImplBridge::toLabelPage));
+    }
+
+    private static PagedResponse<SettingLabel> toLabelPage(PagedResponse<BinaryData> page) {
+        return mapPage(page, bd -> bd.toObject(SettingLabel.class));
+    }
+
+    private static RequestOptions labelListOptions(String nameFilter, String syncToken, String acceptDatetime,
+        List<SettingLabelFields> fields, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (nameFilter != null) {
+            options.addQueryParam("name", nameFilter);
+        }
+        if (fields != null && !fields.isEmpty()) {
+            options.addQueryParam("$Select", joinLabelFields(fields));
+        }
+        if (syncToken != null) {
+            options.setHeader(SYNC_TOKEN, syncToken);
+        }
+        if (acceptDatetime != null) {
+            options.setHeader(ACCEPT_DATETIME, acceptDatetime);
+        }
+        return options;
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // Response/page mappers
+    // -----------------------------------------------------------------------------------------------------
+
+    private static Response<KeyValue> toKeyValueResponse(Response<BinaryData> response) {
+        BinaryData body = response.getValue();
+        KeyValue kv = body == null ? null : body.toObject(KeyValue.class);
+        return new SimpleResponse<>(response, kv);
+    }
+
+    // DELETE may return a 204 with no body — treat as success with null KeyValue.
+    private static Response<KeyValue> toKeyValueResponseAllowEmpty(Response<BinaryData> response) {
+        BinaryData body = response.getValue();
+        KeyValue kv;
+        if (body == null) {
+            kv = null;
+        } else {
+            byte[] bytes = body.toBytes();
+            kv = (bytes == null || bytes.length == 0) ? null : body.toObject(KeyValue.class);
+        }
+        return new SimpleResponse<>(response, kv);
+    }
+
+    private static PagedResponse<KeyValue> toKeyValuePage(PagedResponse<BinaryData> page) {
+        return mapPage(page, bd -> bd.toObject(KeyValue.class));
+    }
+
+    private static PagedResponse<ConfigurationSnapshot> toSnapshotPage(PagedResponse<BinaryData> page) {
+        return mapPage(page, bd -> bd.toObject(ConfigurationSnapshot.class));
+    }
+
+    private static <T> PagedResponse<T> mapPage(PagedResponse<BinaryData> page,
+        java.util.function.Function<BinaryData, T> mapper) {
+        List<T> items = page.getValue() == null
+            ? java.util.Collections.emptyList()
+            : page.getValue().stream().map(mapper).collect(Collectors.toList());
+        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), items,
+            page.getContinuationToken(), null);
+    }
+}

@@ -4,6 +4,11 @@
 
 package com.azure.data.appconfiguration.implementation.models;
 
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
@@ -11,10 +16,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 /**
  * A key-value pair representing application settings.
@@ -74,6 +75,17 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      */
     @Generated
     public KeyValue() {
+    }
+
+    /**
+     * Set the key property: The key of the key-value.
+     *
+     * @param key the key value to set.
+     * @return the KeyValue object itself.
+     */
+    public KeyValue setKey(String key) {
+        this.key = key;
+        return this;
     }
 
     /**

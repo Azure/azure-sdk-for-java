@@ -724,7 +724,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getKeysSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getKeysSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
@@ -823,7 +823,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of keys along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getKeysSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getKeysSinglePage(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
         Response<BinaryData> res = service.getKeysSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
@@ -1021,7 +1021,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listConfigurationSettingsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listConfigurationSettingsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.listConfigurationSettings(this.getEndpoint(),
@@ -1172,7 +1172,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listConfigurationSettingsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> listConfigurationSettingsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         Response<BinaryData> res = service.listConfigurationSettingsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
@@ -1923,7 +1923,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSnapshotsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getSnapshotsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(),
@@ -2064,7 +2064,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSnapshotsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getSnapshotsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         Response<BinaryData> res = service.getSnapshotsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
@@ -2511,7 +2511,7 @@ public final class AzureAppConfigurationImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createSnapshotWithResponseAsync(String contentType, String name,
+    public Mono<Response<BinaryData>> createSnapshotWithResponseAsync(String contentType, String name,
         BinaryData entity, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return FluxUtil.withContext(context -> service.createSnapshot(this.getEndpoint(),
@@ -2601,7 +2601,7 @@ public final class AzureAppConfigurationImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createSnapshotWithResponse(String contentType, String name, BinaryData entity,
+    public Response<BinaryData> createSnapshotWithResponse(String contentType, String name, BinaryData entity,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return service.createSnapshotSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, name,
@@ -3055,7 +3055,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getLabelsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getLabelsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
@@ -3158,7 +3158,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getLabelsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getLabelsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         Response<BinaryData> res = service.getLabelsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
@@ -3583,7 +3583,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getRevisionsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getRevisionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(),
@@ -3716,7 +3716,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getRevisionsSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getRevisionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         Response<BinaryData> res = service.getRevisionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
@@ -3914,7 +3914,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getKeysNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getKeysNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
         return FluxUtil
             .withContext(context -> service.getKeysNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
@@ -3956,7 +3956,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of keys along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.keyset+json, application/problem+json";
         Response<BinaryData> res
             = service.getKeysNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
@@ -4013,7 +4013,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listConfigurationSettingsNextSinglePageAsync(String nextLink,
+    public Mono<PagedResponse<BinaryData>> listConfigurationSettingsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return FluxUtil
@@ -4072,7 +4072,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listConfigurationSettingsNextSinglePage(String nextLink,
+    public PagedResponse<BinaryData> listConfigurationSettingsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         Response<BinaryData> res = service.listConfigurationSettingsNextSync(nextLink, this.getEndpoint(), accept,
@@ -4132,7 +4132,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getSnapshotsNextSinglePageAsync(String nextLink,
+    public Mono<PagedResponse<BinaryData>> getSnapshotsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         return FluxUtil
@@ -4193,7 +4193,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getSnapshotsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getSnapshotsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         Response<BinaryData> res
             = service.getSnapshotsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
@@ -4235,7 +4235,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getLabelsNextSinglePageAsync(String nextLink,
+    public Mono<PagedResponse<BinaryData>> getLabelsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         return FluxUtil
@@ -4279,7 +4279,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of labels along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getLabelsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getLabelsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.labelset+json, application/problem+json";
         Response<BinaryData> res
             = service.getLabelsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
@@ -4330,7 +4330,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getRevisionsNextSinglePageAsync(String nextLink,
+    public Mono<PagedResponse<BinaryData>> getRevisionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return FluxUtil
@@ -4383,7 +4383,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getRevisionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<BinaryData> getRevisionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         Response<BinaryData> res
             = service.getRevisionsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);

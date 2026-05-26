@@ -238,7 +238,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
             : pipeline;
 
-        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
+        return new AzureAppConfigurationImpl(buildPipeline, endpointLocal, serviceVersion);
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
