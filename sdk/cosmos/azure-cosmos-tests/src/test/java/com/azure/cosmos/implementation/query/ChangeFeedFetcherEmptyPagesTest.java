@@ -21,12 +21,10 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,6 +94,28 @@ public class ChangeFeedFetcherEmptyPagesTest {
         FeedResponse<Document> dataResponse = changeFeedDataPage("token-C", new Document());
 
         assertThat(invokeIsFullyDrained(fetcher, dataResponse)).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void isFullyDrained_noChangesResponseWithEmptyPagesAllowedFalse_returnsTrue() throws Exception {
+        // Regression test: with the default emptyPagesAllowed=false the noChanges short-circuit
+        // MUST stay in place. Otherwise any non-Spark caller that drains the change feed flux
+        // (e.g. queryChangeFeed(...).byPage().toIterable().iterator()) would loop forever,
+        // because FeedRangeCompositeContinuationImpl.isDone() returns
+        // compositeContinuationTokens.size()==0, which is permanently false for incremental
+        // change feed (moveToNextToken rotates the deque, never shrinks it). The
+        // NO_RETRY result from handleChangeFeedNotModified is the only termination signal,
+        // and Paginator only honors it via Fetcher.shouldFetchMore() being flipped by
+        // isFullyDrained=true on this noChanges page.
+        FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
+        when(continuation.isDone()).thenReturn(false);
+        ChangeFeedFetcher<Document> fetcher = newFetcher(continuation, /* emptyPagesAllowed */ false);
+
+        FeedResponse<Document> noChangesResponse = changeFeedNoChanges("token-D");
+
+        assertThat(invokeIsFullyDrained(fetcher, noChangesResponse))
+            .describedAs("With emptyPagesAllowed=false the noChanges short-circuit must remain to terminate iteration")
+            .isTrue();
     }
 
     @Test(groups = { "unit" })
@@ -236,19 +256,10 @@ public class ChangeFeedFetcherEmptyPagesTest {
         when(request.getResourceAddress()).thenReturn("dbs/db1/colls/coll1");
         when(request.getOperationType()).thenReturn(OperationType.ReadFeed);
         when(request.getResourceType()).thenReturn(ResourceType.Document);
-        DocumentServiceRequestContext requestContext = new DocumentServiceRequestContext();
-        try {
-            Field f = RxDocumentServiceRequest.class.getField("requestContext");
-            f.set(request, requestContext);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Failed to inject requestContext into mock", e);
-        }
-        try {
-            Field f = RxDocumentServiceRequest.class.getField("faultInjectionRequestContext");
-            f.set(request, new FaultInjectionRequestContext());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Failed to inject faultInjectionRequestContext into mock", e);
-        }
+        // requestContext and faultInjectionRequestContext are public fields on the real class;
+        // direct assignment on the mock works (Mockito only intercepts method calls).
+        request.requestContext = new DocumentServiceRequestContext();
+        request.faultInjectionRequestContext = new FaultInjectionRequestContext();
         return request;
     }
 
