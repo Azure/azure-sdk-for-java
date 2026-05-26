@@ -192,10 +192,24 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     }
 
     @Test
-    void consumerDedicatedConnectionDetailsShouldConfigureWithoutTopLevelConnectionInfo() {
+    void consumerDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "consumer-namespace"),
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusReceiverClient.class);
+            });
+    }
+
+    @Test
+    void consumerDedicatedNamespaceShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
                 "spring.cloud.azure.servicebus.consumer.namespace=consumer-namespace",
                 "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.consumer.entity-type=queue"
@@ -208,10 +222,26 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     }
 
     @Test
-    void processorDedicatedConnectionDetailsShouldConfigureWithoutTopLevelConnectionInfo() {
+    void processorDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "processor-namespace"),
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
+            });
+    }
+
+    @Test
+    void processorDedicatedNamespaceShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
                 "spring.cloud.azure.servicebus.processor.namespace=processor-namespace",
                 "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.processor.entity-type=queue"
