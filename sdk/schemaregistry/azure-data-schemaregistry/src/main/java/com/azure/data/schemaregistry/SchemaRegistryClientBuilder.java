@@ -181,10 +181,16 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     public SchemaRegistryClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
         Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         try {
-            URL url = (new URI(fullyQualifiedNamespace)).toURL();
-            this.fullyQualifiedNamespace = url.getHost();
+            URI uri = new URI(fullyQualifiedNamespace);
+            if (uri.isAbsolute()) {
+                URL url = uri.toURL();
+                this.fullyQualifiedNamespace = url.getHost();
+            } else {
+                LOGGER.verbose("Fully qualified namespace did not contain protocol.");
+                this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+            }
         } catch (MalformedURLException ex) {
-            LOGGER.verbose("Fully qualified namespace did not contain protocol.");
+            LOGGER.verbose("Fully qualified namespace is malformed URL. Using value as-is.");
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         } catch (URISyntaxException e) {
             LOGGER.verbose("Fully qualified namespace is not a valid URI. Using value as-is.");
