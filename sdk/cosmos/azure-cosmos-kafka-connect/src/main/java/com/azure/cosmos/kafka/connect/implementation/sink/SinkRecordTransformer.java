@@ -32,7 +32,15 @@ public class SinkRecordTransformer {
         CosmosSinkTaskConfig sinkTaskConfig,
         ErrantRecordReporter errantRecordReporter,
         ToleranceOnErrorLevel toleranceOnErrorLevel) {
-        this.idStrategy = this.createIdStrategy(sinkTaskConfig);
+        this(createIdStrategy(sinkTaskConfig), errantRecordReporter, toleranceOnErrorLevel);
+    }
+
+    // Package-private constructor for unit testing without requiring CosmosSinkTaskConfig.
+    SinkRecordTransformer(
+        IdStrategy idStrategy,
+        ErrantRecordReporter errantRecordReporter,
+        ToleranceOnErrorLevel toleranceOnErrorLevel) {
+        this.idStrategy = idStrategy;
         this.errantRecordReporter = errantRecordReporter;
         this.toleranceOnErrorLevel = toleranceOnErrorLevel;
     }
@@ -77,13 +85,8 @@ public class SinkRecordTransformer {
 
                 toBeWrittenRecordList.add(updatedRecord);
             } catch (Exception e) {
-                LOGGER.warn(
-                    "Failed to transform record from topic {}, partition {}, offset {}, container {}.",
-                    record.topic(),
-                    record.kafkaPartition(),
-                    record.kafkaOffset(),
-                    containerName,
-                    e);
+                // Report to DLQ if configured (fire-and-forget, guarded against reporter failures).
+                // This is consistent with the writer-level pattern in CosmosWriterBase.sendToDlqIfConfigured().
                 if (this.errantRecordReporter != null) {
                     try {
                         this.errantRecordReporter.report(record, e);
@@ -95,26 +98,27 @@ public class SinkRecordTransformer {
                             record.kafkaOffset(),
                             containerName,
                             reportException);
-                        if (this.toleranceOnErrorLevel != ToleranceOnErrorLevel.ALL) {
-                            throw e;
-                        }
                     }
-                } else if (this.toleranceOnErrorLevel == ToleranceOnErrorLevel.ALL) {
+                }
+
+                // Use tolerance level to decide continue-vs-throw (consistent with writer pattern).
+                if (this.toleranceOnErrorLevel == ToleranceOnErrorLevel.ALL) {
                     LOGGER.warn(
-                        "Skipping record from topic {}, partition {}, offset {}, container {} due to transform error "
-                            + "and ToleranceOnErrorLevel is ALL.",
+                        "Skipping record from topic {}, partition {}, offset {}, container {} due to transform error.",
                         record.topic(),
                         record.kafkaPartition(),
                         record.kafkaOffset(),
-                        containerName);
+                        containerName,
+                        e);
                 } else {
                     LOGGER.error(
-                        "Failing record from topic {}, partition {}, offset {}, container {} because no DLQ reporter "
-                            + "is configured and ToleranceOnErrorLevel is NONE.",
+                        "Failing task due to transform error for record from topic {}, partition {}, offset {}, "
+                            + "container {}.",
                         record.topic(),
                         record.kafkaPartition(),
                         record.kafkaOffset(),
-                        containerName);
+                        containerName,
+                        e);
                     throw e;
                 }
             }
@@ -132,7 +136,7 @@ public class SinkRecordTransformer {
         recordMap.put("id", this.idStrategy.generateId(sinkRecord));
     }
 
-    private IdStrategy createIdStrategy(CosmosSinkTaskConfig sinkTaskConfig) {
+    private static IdStrategy createIdStrategy(CosmosSinkTaskConfig sinkTaskConfig) {
         IdStrategy idStrategyClass;
         switch (sinkTaskConfig.getIdStrategy()) {
             case FULL_KEY_STRATEGY:

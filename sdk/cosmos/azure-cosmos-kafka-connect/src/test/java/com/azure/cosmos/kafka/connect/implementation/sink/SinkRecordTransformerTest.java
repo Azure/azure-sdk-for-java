@@ -4,7 +4,6 @@
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.IdStrategy;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -21,34 +20,13 @@ import java.util.concurrent.Future;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
 
 public class SinkRecordTransformerTest {
     private static final int TIMEOUT = 60000;
-
-    /**
-     * Creates a SinkRecordTransformer bypassing the constructor that needs CosmosSinkTaskConfig.
-     * Uses Mockito with CALLS_REAL_METHODS so the transform() method executes real code,
-     * then injects the fields via reflection.
-     */
-    private SinkRecordTransformer createTransformer(
-        IdStrategy idStrategy,
-        ErrantRecordReporter reporter,
-        ToleranceOnErrorLevel toleranceLevel) throws Exception {
-
-        SinkRecordTransformer transformer = Mockito.mock(
-            SinkRecordTransformer.class,
-            withSettings().defaultAnswer(CALLS_REAL_METHODS));
-        FieldUtils.writeField(transformer, "idStrategy", idStrategy, true);
-        FieldUtils.writeField(transformer, "errantRecordReporter", reporter, true);
-        FieldUtils.writeField(transformer, "toleranceOnErrorLevel", toleranceLevel, true);
-        return transformer;
-    }
 
     /**
      * Creates a SinkRecord with a Map value containing the given fields.
@@ -80,18 +58,18 @@ public class SinkRecordTransformerTest {
     }
 
     // ============================================================
-    // T1: Mixed batch with reporter — bad record goes to DLQ, valid records in output
+    // T1: Mixed batch with reporter + tolerance ALL — bad record goes to DLQ, valid records in output
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
-    public void mixedBatchWithReporter_badRecordReportedValidRecordsInOutput() throws Exception {
+    public void mixedBatchWithReporterToleranceAll_badRecordReportedValidRecordsInOutput() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
         Future<?> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
 
         Map<String, Object> goodValue1 = new HashMap<>();
         goodValue1.put("data", "hello");
@@ -132,7 +110,7 @@ public class SinkRecordTransformerTest {
     public void mixedBatchToleranceAll_noReporter_badRecordSkipped() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
-        SinkRecordTransformer transformer = createTransformer(idStrategy, null, ToleranceOnErrorLevel.ALL);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, null, ToleranceOnErrorLevel.ALL);
 
         Map<String, Object> goodValue = new HashMap<>();
         goodValue.put("data", "hello");
@@ -154,13 +132,13 @@ public class SinkRecordTransformerTest {
     }
 
     // ============================================================
-    // T3: Mixed batch with tolerance NONE, no reporter — exception thrown
+    // T3: Mixed batch with tolerance NONE, no reporter — exception thrown (fail-fast)
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void mixedBatchToleranceNone_noReporter_exceptionThrown() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
-        SinkRecordTransformer transformer = createTransformer(idStrategy, null, ToleranceOnErrorLevel.NONE);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, null, ToleranceOnErrorLevel.NONE);
 
         Map<String, Object> goodValue = new HashMap<>();
         goodValue.put("data", "hello");
@@ -190,7 +168,7 @@ public class SinkRecordTransformerTest {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
 
         Map<String, Object> value1 = new HashMap<>();
         value1.put("data", "a");
@@ -220,17 +198,17 @@ public class SinkRecordTransformerTest {
     }
 
     // ============================================================
-    // T5: All records bad with reporter — all reported to DLQ, empty output
+    // T5: All records bad with reporter + tolerance ALL — all reported to DLQ, empty output
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void allBadRecordsWithReporter_allReportedEmptyOutput() throws Exception {
+    public void allBadRecordsWithReporterToleranceAll_allReportedEmptyOutput() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
         Future<?> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
 
         Map<String, Object> bad1 = new HashMap<>();
         bad1.put("fail", true);
@@ -266,7 +244,7 @@ public class SinkRecordTransformerTest {
         when(reporter.report(any(SinkRecord.class), any(Throwable.class)))
             .thenThrow(new ConnectException("DLQ write failed"));
 
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
 
         Map<String, Object> badValue = new HashMap<>();
         badValue.put("fail", true);
@@ -298,7 +276,7 @@ public class SinkRecordTransformerTest {
         when(reporter.report(any(SinkRecord.class), any(Throwable.class)))
             .thenThrow(new ConnectException("DLQ write failed"));
 
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
 
         Map<String, Object> badValue = new HashMap<>();
         badValue.put("fail", true);
@@ -319,32 +297,35 @@ public class SinkRecordTransformerTest {
     }
 
     // ============================================================
-    // T8: Reporter takes precedence over tolerance NONE — when reporter is present,
-    //     report instead of throwing even when tolerance is NONE
+    // T8: Tolerance NONE with reporter — record reported to DLQ AND exception thrown
+    //     (consistent with writer-level pattern: DLQ is side-effect, tolerance controls flow)
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void reporterTakesPrecedenceOverToleranceNone() throws Exception {
+    public void toleranceNoneWithReporter_reportedToDlqAndExceptionThrown() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
         Future<?> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
-        // Tolerance is NONE but reporter is available
-        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+        // Tolerance is NONE — task should fail even though reporter is available
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
 
         Map<String, Object> badValue = new HashMap<>();
         badValue.put("fail", true);
 
         List<SinkRecord> batch = Arrays.asList(
-            createMapRecord("topicE", 0, 0L, badValue)
+            createMapRecord("topicH", 0, 0L, badValue)
         );
 
-        // Act — should NOT throw because reporter handles it
-        Throwable thrown = catchThrowable(() -> transformer.transform("container6", batch));
+        // Act
+        Throwable thrown = catchThrowable(() -> transformer.transform("container9", batch));
 
-        // Assert
-        assertThat(thrown).isNull();
+        // Assert — exception IS thrown (tolerance NONE means fail)
+        assertThat(thrown).isInstanceOf(ConnectException.class);
+        assertThat(thrown.getMessage()).contains("Cannot generate ID");
+
+        // Assert — reporter WAS called (DLQ is side-effect for observability)
         verify(reporter, times(1)).report(any(SinkRecord.class), any(ConnectException.class));
     }
 }
