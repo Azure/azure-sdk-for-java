@@ -4,8 +4,10 @@
 package com.azure.data.appconfiguration.implementation;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
@@ -40,6 +42,30 @@ public final class ImplBridge {
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
 
     private ImplBridge() {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // Exception remapping
+    // -----------------------------------------------------------------------------------------------------
+    // The TypeSpec-generated protocol layer throws ResourceNotFoundException / ResourceModifiedException
+    // (subclasses of HttpResponseException). The hand-written public API historically threw plain
+    // HttpResponseException, so remap to preserve that public contract.
+
+    private static <T> T remap(Supplier<T> action) {
+        try {
+            return action.get();
+        } catch (HttpResponseException ex) {
+            throw remap(ex);
+        }
+    }
+
+    private static HttpResponseException remap(HttpResponseException ex) {
+        if (ex.getClass() == HttpResponseException.class) {
+            return ex;
+        }
+        HttpResponseException remapped = new HttpResponseException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        remapped.setStackTrace(ex.getStackTrace());
+        return remapped;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -102,14 +128,16 @@ public final class ImplBridge {
         String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         options.setBody(BinaryData.fromObject(entity));
-        return toKeyValueResponse(service.setConfigurationSettingWithResponse(key, options));
+        return remap(() -> toKeyValueResponse(service.setConfigurationSettingWithResponse(key, options)));
     }
 
     public static Mono<Response<KeyValue>> putKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         options.setBody(BinaryData.fromObject(entity));
-        return service.setConfigurationSettingWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+        return service.setConfigurationSettingWithResponseAsync(key, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValueResponse);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -121,7 +149,7 @@ public final class ImplBridge {
         List<SettingFields> fields, Context context) {
         RequestOptions options
             = singleKvOptions(label, acceptDateTime, syncToken, ifMatch, ifNoneMatch, fields, null, context);
-        return toKeyValueResponse(service.getKeyValueWithResponse(key, options));
+        return remap(() -> toKeyValueResponse(service.getKeyValueWithResponse(key, options)));
     }
 
     public static Mono<Response<KeyValue>> getKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
@@ -129,7 +157,9 @@ public final class ImplBridge {
         List<SettingFields> fields, Context context) {
         RequestOptions options
             = singleKvOptions(label, acceptDateTime, syncToken, ifMatch, ifNoneMatch, fields, null, context);
-        return service.getKeyValueWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+        return service.getKeyValueWithResponseAsync(key, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValueResponse);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -139,13 +169,14 @@ public final class ImplBridge {
     public static Response<KeyValue> deleteKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
         String label, String ifMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
-        return toKeyValueResponseAllowEmpty(service.deleteConfigurationSettingWithResponse(key, options));
+        return remap(() -> toKeyValueResponseAllowEmpty(service.deleteConfigurationSettingWithResponse(key, options)));
     }
 
     public static Mono<Response<KeyValue>> deleteKeyValueWithResponseAsync(AzureAppConfigurationImpl service,
         String key, String label, String ifMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
         return service.deleteConfigurationSettingWithResponseAsync(key, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
             .map(ImplBridge::toKeyValueResponseAllowEmpty);
     }
 
@@ -156,25 +187,29 @@ public final class ImplBridge {
     public static Response<KeyValue> putLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
         String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
-        return toKeyValueResponse(service.putLockWithResponse(key, options));
+        return remap(() -> toKeyValueResponse(service.putLockWithResponse(key, options)));
     }
 
     public static Mono<Response<KeyValue>> putLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
-        return service.putLockWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+        return service.putLockWithResponseAsync(key, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValueResponse);
     }
 
     public static Response<KeyValue> deleteLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
         String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
-        return toKeyValueResponse(service.deleteLockWithResponse(key, options));
+        return remap(() -> toKeyValueResponse(service.deleteLockWithResponse(key, options)));
     }
 
     public static Mono<Response<KeyValue>> deleteLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
-        return service.deleteLockWithResponseAsync(key, options).map(ImplBridge::toKeyValueResponse);
+        return service.deleteLockWithResponseAsync(key, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValueResponse);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -186,7 +221,7 @@ public final class ImplBridge {
         String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
             snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
-        return toKeyValuePage(service.listConfigurationSettingsSinglePage(options));
+        return remap(() -> toKeyValuePage(service.listConfigurationSettingsSinglePage(options)));
     }
 
     public static Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(AzureAppConfigurationImpl service,
@@ -194,19 +229,23 @@ public final class ImplBridge {
         String snapshotName, String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
             snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
-        return service.listConfigurationSettingsSinglePageAsync(options).map(ImplBridge::toKeyValuePage);
+        return service.listConfigurationSettingsSinglePageAsync(options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValuePage);
     }
 
     public static PagedResponse<KeyValue> getKeyValuesNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
         String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
-        return toKeyValuePage(service.listConfigurationSettingsNextSinglePage(nextLink, options));
+        return remap(() -> toKeyValuePage(service.listConfigurationSettingsNextSinglePage(nextLink, options)));
     }
 
     public static Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(AzureAppConfigurationImpl service,
         String nextLink, String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
-        return service.listConfigurationSettingsNextSinglePageAsync(nextLink, options).map(ImplBridge::toKeyValuePage);
+        return service.listConfigurationSettingsNextSinglePageAsync(nextLink, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValuePage);
     }
 
     private static RequestOptions listKeyValuesOptions(String keyFilter, String labelFilter, String syncToken,
@@ -275,7 +314,7 @@ public final class ImplBridge {
         List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
             null, null, tagsFilter, context);
-        return toKeyValuePage(service.getRevisionsSinglePage(options));
+        return remap(() -> toKeyValuePage(service.getRevisionsSinglePage(options)));
     }
 
     public static Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(AzureAppConfigurationImpl service,
@@ -283,19 +322,23 @@ public final class ImplBridge {
         List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
             null, null, tagsFilter, context);
-        return service.getRevisionsSinglePageAsync(options).map(ImplBridge::toKeyValuePage);
+        return service.getRevisionsSinglePageAsync(options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValuePage);
     }
 
     public static PagedResponse<KeyValue> getRevisionsNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
         String acceptDateTime, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
-        return toKeyValuePage(service.getRevisionsNextSinglePage(nextLink, options));
+        return remap(() -> toKeyValuePage(service.getRevisionsNextSinglePage(nextLink, options)));
     }
 
     public static Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(AzureAppConfigurationImpl service,
         String nextLink, String acceptDateTime, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
-        return service.getRevisionsNextSinglePageAsync(nextLink, options).map(ImplBridge::toKeyValuePage);
+        return service.getRevisionsNextSinglePageAsync(nextLink, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toKeyValuePage);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -317,9 +360,11 @@ public final class ImplBridge {
         if (ifNoneMatch != null) {
             options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        Response<BinaryData> response = service.getSnapshotWithResponse(name, options);
-        return new SimpleResponse<>(response,
-            response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
+        return remap(() -> {
+            Response<BinaryData> response = service.getSnapshotWithResponse(name, options);
+            return new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
+        });
     }
 
     public static Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponseAsync(AzureAppConfigurationImpl service,
@@ -338,6 +383,7 @@ public final class ImplBridge {
             options.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return service.getSnapshotWithResponseAsync(name, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
             .map(response -> new SimpleResponse<>(response,
                 response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
     }
@@ -346,26 +392,30 @@ public final class ImplBridge {
         String nameFilter, String syncToken, List<SnapshotFields> fields, List<ConfigurationSnapshotStatus> statuses,
         Context context) {
         RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
-        return toSnapshotPage(service.getSnapshotsSinglePage(options));
+        return remap(() -> toSnapshotPage(service.getSnapshotsSinglePage(options)));
     }
 
     public static Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
         AzureAppConfigurationImpl service, String nameFilter, String syncToken, List<SnapshotFields> fields,
         List<ConfigurationSnapshotStatus> statuses, Context context) {
         RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
-        return service.getSnapshotsSinglePageAsync(options).map(ImplBridge::toSnapshotPage);
+        return service.getSnapshotsSinglePageAsync(options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toSnapshotPage);
     }
 
     public static PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(AzureAppConfigurationImpl service,
         String nextLink, Context context) {
         RequestOptions options = nextPageOptions(null, null, null, context);
-        return toSnapshotPage(service.getSnapshotsNextSinglePage(nextLink, options));
+        return remap(() -> toSnapshotPage(service.getSnapshotsNextSinglePage(nextLink, options)));
     }
 
     public static Mono<PagedResponse<ConfigurationSnapshot>>
         getSnapshotsNextSinglePageAsync(AzureAppConfigurationImpl service, String nextLink, Context context) {
         RequestOptions options = nextPageOptions(null, null, null, context);
-        return service.getSnapshotsNextSinglePageAsync(nextLink, options).map(ImplBridge::toSnapshotPage);
+        return service.getSnapshotsNextSinglePageAsync(nextLink, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toSnapshotPage);
     }
 
     private static RequestOptions snapshotListOptions(String nameFilter, String syncToken, List<SnapshotFields> fields,
@@ -396,15 +446,20 @@ public final class ImplBridge {
     public static PagedIterable<SettingLabel> getLabels(AzureAppConfigurationImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields, Context context) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, context);
-        return new PagedIterable<>(() -> toLabelPage(service.getLabelsSinglePage(options)), nextLink -> toLabelPage(
-            service.getLabelsNextSinglePage(nextLink, nextPageOptions(null, null, null, context))));
+        return new PagedIterable<>(() -> remap(() -> toLabelPage(service.getLabelsSinglePage(options))),
+            nextLink -> remap(() -> toLabelPage(
+                service.getLabelsNextSinglePage(nextLink, nextPageOptions(null, null, null, context)))));
     }
 
     public static PagedFlux<SettingLabel> getLabelsAsync(AzureAppConfigurationImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, Context.NONE);
-        return new PagedFlux<>(() -> service.getLabelsSinglePageAsync(options).map(ImplBridge::toLabelPage),
+        return new PagedFlux<>(
+            () -> service.getLabelsSinglePageAsync(options)
+                .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+                .map(ImplBridge::toLabelPage),
             nextLink -> service.getLabelsNextSinglePageAsync(nextLink, new RequestOptions())
+                .onErrorMap(HttpResponseException.class, ImplBridge::remap)
                 .map(ImplBridge::toLabelPage));
     }
 
