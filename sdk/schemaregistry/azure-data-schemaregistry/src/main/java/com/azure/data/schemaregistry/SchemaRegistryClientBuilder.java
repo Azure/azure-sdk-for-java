@@ -358,7 +358,6 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'serviceVersion' must be an instance of SchemaRegistryServiceVersion."));
         }
-
         return this;
     }
 
@@ -446,7 +445,6 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         }
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
