@@ -27,7 +27,6 @@
     <scala.binary.version>2.12</scala.binary.version>
     <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
     <spark-hive-version>3.5.0</spark-hive-version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;external_dependency} -->
-    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
   </properties>
   <profiles>
     <profile>
@@ -135,7 +134,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-scala_${scala.binary.version}</artifactId>
-      <version>${scala-jackson.version}</version>
+      <version>2.18.7</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
     </dependency>
   </dependencies>
 </project>
