@@ -84,7 +84,7 @@ public class SinkRecordTransformer {
                     record.headers());
 
                 toBeWrittenRecordList.add(updatedRecord);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 // Report to DLQ if configured (fire-and-forget, guarded against reporter failures).
                 // This is consistent with the writer-level pattern in CosmosWriterBase.sendToDlqIfConfigured().
                 if (this.errantRecordReporter != null) {
