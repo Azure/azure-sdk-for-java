@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -19,6 +20,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -397,12 +399,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools, String description,
-        Map<String, String> metadata, ToolboxPolicies policies) {
+        Map<String, String> metadata, ToolboxPolicies policies, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj
             = new CreateToolboxVersionRequest(tools).setDescription(description)
                 .setMetadata(metadata)
@@ -450,11 +454,13 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxDetails> getToolbox(String name) {
+    public Mono<ToolboxDetails> getToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class));
     }
@@ -480,11 +486,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+    public PagedFlux<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+        PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -564,12 +573,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
-        String after, String before) {
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name, FoundryFeaturesOptInKeys foundryFeatures,
+        Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -644,11 +655,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> getToolboxVersion(String name, String version) {
+    public Mono<ToolboxVersionDetails> getToolboxVersion(String name, String version,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
@@ -667,11 +681,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxDetails> updateToolbox(String name, String defaultVersion) {
+    public Mono<ToolboxDetails> updateToolbox(String name, String defaultVersion,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
         BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
         return updateToolboxWithResponse(name, updateToolboxRequest, requestOptions).flatMap(FluxUtil::toMono)
@@ -690,11 +707,13 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteToolbox(String name) {
+    public Mono<Void> deleteToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return deleteToolboxWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -711,11 +730,13 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteToolboxVersion(String name, String version) {
+    public Mono<Void> deleteToolboxVersion(String name, String version, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return deleteToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 }
