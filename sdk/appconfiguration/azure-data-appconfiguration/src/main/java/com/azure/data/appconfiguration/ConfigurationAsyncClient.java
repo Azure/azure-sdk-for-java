@@ -1068,7 +1068,7 @@ public final class ConfigurationAsyncClient {
      *     .byPage&#40;&#41;
      *     .subscribe&#40;page -&gt; &#123;
      *         String eTag = page.getHeaders&#40;&#41;.getValue&#40;HttpHeaderName.ETAG&#41;;
-     *         System.out.printf&#40;&quot;Page ETag: %s, settings count: %d%n&quot;, eTag, page.getValue&#40;&#41;.size&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Page ETag: %s%n&quot;, eTag&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
