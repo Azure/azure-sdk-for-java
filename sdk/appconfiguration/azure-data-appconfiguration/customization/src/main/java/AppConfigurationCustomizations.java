@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
 /**
@@ -15,23 +15,26 @@ import org.slf4j.Logger;
  */
 public class AppConfigurationCustomizations extends Customization {
 
-    private static final String ROOT_PACKAGE = "com.azure.data.appconfiguration";
+    private static final String ROOT_FILE_PATH = "src/main/java/com/azure/data/appconfiguration/";
+
+    private static final String[] FILES_TO_REMOVE = new String[] {
+        "AzureAppConfigurationClient.java",
+        "AzureAppConfigurationAsyncClient.java",
+        "AzureAppConfigurationBuilder.java",
+        "AzureAppConfigurationServiceVersion.java"
+    };
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        PackageCustomization rootPackage = customization.getPackage(ROOT_PACKAGE);
-        removeIfPresent(rootPackage, "ConfigurationClient", logger);
-        removeIfPresent(rootPackage, "ConfigurationAsyncClient", logger);
-        removeIfPresent(rootPackage, "ConfigurationClientBuilder", logger);
-        removeIfPresent(rootPackage, "ConfigurationServiceVersion", logger);
-    }
-
-    private static void removeIfPresent(PackageCustomization pkg, String className, Logger logger) {
-        try {
-            pkg.getClass(className).remove();
-            logger.info("Removed generated class {}.{}", pkg.getPackageName(), className);
-        } catch (Exception ex) {
-            logger.info("Generated class {}.{} not present; skipping removal.", pkg.getPackageName(), className);
+        Editor editor = customization.getRawEditor();
+        for (String fileName : FILES_TO_REMOVE) {
+            String path = ROOT_FILE_PATH + fileName;
+            if (editor.getContents().containsKey(path)) {
+                editor.removeFile(path);
+                logger.info("Removed generated file {}", path);
+            } else {
+                logger.info("Generated file {} not present; skipping removal.", path);
+            }
         }
     }
 }
