@@ -823,7 +823,9 @@ public abstract class IdentityClientBase {
                 continue;
             }
 
-            // Handle multiple JSON objects on one line (v1 merges stdout+stderr without delimiters).
+            // Defensive: the read loop above uses readLine() (which strips line terminators)
+            // and appends without re-inserting newlines, so multiple JSON objects can end up
+            // glued together on the same logical line.
             try (JsonReader reader = JsonProviders.createReader(trimmed)) {
                 while (reader.nextToken() != null) {
                     if (reader.currentToken() != JsonToken.START_OBJECT) {
