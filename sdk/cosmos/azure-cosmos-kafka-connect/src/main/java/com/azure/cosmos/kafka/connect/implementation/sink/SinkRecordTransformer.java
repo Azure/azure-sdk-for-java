@@ -11,6 +11,7 @@ import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInK
 import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInValueStrategy;
 import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.TemplateStrategy;
 import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,16 @@ public class SinkRecordTransformer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SinkRecordTransformer.class);
 
     private final IdStrategy idStrategy;
+    private final ErrantRecordReporter errantRecordReporter;
+    private final ToleranceOnErrorLevel toleranceOnErrorLevel;
 
-    public SinkRecordTransformer(CosmosSinkTaskConfig sinkTaskConfig) {
+    public SinkRecordTransformer(
+        CosmosSinkTaskConfig sinkTaskConfig,
+        ErrantRecordReporter errantRecordReporter,
+        ToleranceOnErrorLevel toleranceOnErrorLevel) {
         this.idStrategy = this.createIdStrategy(sinkTaskConfig);
+        this.errantRecordReporter = errantRecordReporter;
+        this.toleranceOnErrorLevel = toleranceOnErrorLevel;
     }
 
     @SuppressWarnings("unchecked")
@@ -44,30 +52,59 @@ public class SinkRecordTransformer {
                 record.value() == null ? null : record.value().getClass().getName(),
                 record.value() == null ? null : record.valueSchema());
 
-            Object recordValue;
-            if (record.value() instanceof Struct) {
-                recordValue = StructToJsonMap.toJsonMap((Struct) record.value());
-            } else if (record.value() instanceof Map) {
-                recordValue = StructToJsonMap.handleMap((Map<String, Object>) record.value());
-            } else {
-                recordValue = record.value();
+            try {
+                Object recordValue;
+                if (record.value() instanceof Struct) {
+                    recordValue = StructToJsonMap.toJsonMap((Struct) record.value());
+                } else if (record.value() instanceof Map) {
+                    recordValue = StructToJsonMap.handleMap((Map<String, Object>) record.value());
+                } else {
+                    recordValue = record.value();
+                }
+
+                maybeInsertId(recordValue, record);
+
+                final SinkRecord updatedRecord = new SinkRecord(record.topic(),
+                    record.kafkaPartition(),
+                    record.keySchema(),
+                    record.key(),
+                    record.valueSchema(),
+                    recordValue,
+                    record.kafkaOffset(),
+                    record.timestamp(),
+                    record.timestampType(),
+                    record.headers());
+
+                toBeWrittenRecordList.add(updatedRecord);
+            } catch (Exception e) {
+                LOGGER.warn(
+                    "Failed to transform record from topic {}, partition {}, offset {}, container {}.",
+                    record.topic(),
+                    record.kafkaPartition(),
+                    record.kafkaOffset(),
+                    containerName,
+                    e);
+                if (this.errantRecordReporter != null) {
+                    this.errantRecordReporter.report(record, e);
+                } else if (this.toleranceOnErrorLevel == ToleranceOnErrorLevel.ALL) {
+                    LOGGER.warn(
+                        "Skipping record from topic {}, partition {}, offset {}, container {} due to transform error "
+                            + "and ToleranceOnErrorLevel is ALL.",
+                        record.topic(),
+                        record.kafkaPartition(),
+                        record.kafkaOffset(),
+                        containerName);
+                } else {
+                    LOGGER.error(
+                        "Failing record from topic {}, partition {}, offset {}, container {} because no DLQ reporter "
+                            + "is configured and ToleranceOnErrorLevel is NONE.",
+                        record.topic(),
+                        record.kafkaPartition(),
+                        record.kafkaOffset(),
+                        containerName);
+                    throw e;
+                }
             }
-
-            maybeInsertId(recordValue, record);
-
-            //  Create an updated record with from the current record and the updated record value
-            final SinkRecord updatedRecord = new SinkRecord(record.topic(),
-                record.kafkaPartition(),
-                record.keySchema(),
-                record.key(),
-                record.valueSchema(),
-                recordValue,
-                record.kafkaOffset(),
-                record.timestamp(),
-                record.timestampType(),
-                record.headers());
-
-            toBeWrittenRecordList.add(updatedRecord);
         }
 
         return toBeWrittenRecordList;
