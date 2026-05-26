@@ -46,15 +46,14 @@
  * in deployment and development and chooses the credential to used based on its running environment.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
- * 
  * <pre>
- * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
  * SchemaRegistryClient client = new SchemaRegistryClientBuilder&#40;&#41;
  *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
  *     .credential&#40;azureCredential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
  *
  * <h2>Using the Client</h2>
@@ -70,14 +69,13 @@
  * identifies the schema and can be used to quickly associate payloads with that schema.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro -->
- * 
  * <pre>
  * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
- * SchemaProperties properties = client.registerSchema&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema, SchemaFormat.AVRO&#41;;
+ * SchemaProperties properties = client.registerSchema&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
+ *     SchemaFormat.AVRO&#41;;
  *
  * System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, properties.getId&#40;&#41;, properties.getFormat&#40;&#41;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro -->
  *
  * <p><strong>Sample: Getting the schema using a schema id</strong></p>
@@ -88,7 +86,6 @@
  * </p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschema -->
- * 
  * <pre>
  * SchemaRegistrySchema schema = client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;;
  *
@@ -96,7 +93,6 @@
  *     schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
  * System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschema -->
  *
  * @see com.azure.data.schemaregistry.SchemaRegistryClient

@@ -117,13 +117,9 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
 
     private HttpClient httpClient;
 
-    private TokenCredential credential;
-
     private ClientOptions clientOptions;
 
     private HttpLogOptions httpLogOptions;
-
-    private HttpPipeline httpPipeline;
 
     private RetryPolicy retryPolicy;
 
@@ -133,6 +129,34 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
 
     private SchemaRegistryServiceVersion serviceVersion;
 
+    @Generated
+    private static final String SDK_NAME = "name";
+
+    @Generated
+    private static final String SDK_VERSION = "version";
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://eventhubs.azure.net/.default" };
+
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-data-schemaregistry.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
     /**
      * Constructor for SchemaRegistryClientBuilder. Supplies client defaults.
      */
@@ -140,7 +164,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         this.pipelinePolicies = new ArrayList<>();
         this.httpLogOptions = new HttpLogOptions();
         this.httpClient = null;
-        this.credential = null;
+        this.tokenCredential = null;
     }
 
     /**
@@ -200,10 +224,10 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      */
     @Override
     public SchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
-        if (this.httpPipeline != null && httpPipeline == null) {
+        if (this.pipeline != null && httpPipeline == null) {
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
-        this.httpPipeline = httpPipeline;
+        this.pipeline = httpPipeline;
         return this;
     }
 
@@ -233,7 +257,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      */
     @Override
     public SchemaRegistryClientBuilder credential(TokenCredential credential) {
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -393,34 +417,6 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         return new SchemaRegistryClient(restService);
     }
 
-    @Generated
-    private static final String SDK_NAME = "name";
-
-    @Generated
-    private static final String SDK_VERSION = "version";
-
-    @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] { "https://eventhubs.azure.net/.default" };
-
-    @Generated
-    private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-data-schemaregistry.properties");
-
-    @Generated
-    private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /*
-     * The TokenCredential used for authentication.
-     */
-    @Generated
-    private TokenCredential tokenCredential;
-
     /**
      * Builds an instance of SchemaRegistryClientImpl with the provided parameters.
      *
@@ -433,8 +429,8 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         SchemaRegistryServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : SchemaRegistryServiceVersion.getLatest();
         SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
-        SchemaRegistryClientImpl client = new SchemaRegistryClientImpl(localPipeline,
-            serializerAdapter, this.fullyQualifiedNamespace, localServiceVersion);
+        SchemaRegistryClientImpl client = new SchemaRegistryClientImpl(localPipeline, serializerAdapter,
+            this.fullyQualifiedNamespace, localServiceVersion);
         return client;
     }
 
@@ -442,8 +438,8 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(credential,
-            "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
+        Objects.requireNonNull(tokenCredential,
+            "'tokenCredential' cannot be null and must be set via builder.credential(TokenCredential)");
         Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {

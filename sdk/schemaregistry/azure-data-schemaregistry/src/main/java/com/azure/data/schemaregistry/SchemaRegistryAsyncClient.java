@@ -276,11 +276,12 @@ public final class SchemaRegistryAsyncClient {
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
 
-        return serviceClient.registerSchemaWithResponseAsync(groupName, name, contentType.toString(), binaryData,
-            new RequestOptions().setContext(context))
+        return serviceClient
+            .registerSchemaWithResponseAsync(groupName, name, contentType.toString(), binaryData,
+                new RequestOptions().setContext(context))
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper
-                    .getSchemaProperties(response.getHeaders(), format);
+                final SchemaProperties registered
+                    = SchemaRegistryHelper.getSchemaProperties(response.getHeaders(), format);
                 return new SimpleResponse<>(response, registered);
             });
     }
@@ -481,12 +482,11 @@ public final class SchemaRegistryAsyncClient {
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
         final RequestOptions options = new RequestOptions().setContext(context);
-        return serviceClient.getSchemaPropertiesByContentWithResponseAsync(groupName, name, contentType.getValue(),
-                binaryData, options)
+        return getSchemaPropertiesByContentWithResponse(groupName, name, contentType.getValue(), binaryData, options)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper
-                    .getSchemaProperties(response.getHeaders(), format);
+                final SchemaProperties properties
+                    = SchemaRegistryHelper.getSchemaProperties(response.getHeaders(), format);
                 return new SimpleResponse<>(response, properties);
             });
     }
