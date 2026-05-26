@@ -707,7 +707,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testIgnoreSuggestionAtCaseInsensitive() {
+    public void testFirstMessageWinsOverSuggestionPrefix() {
         // Suggestion preference was removed; first non-empty wins (matches Go/.NET/JS/Python).
         String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"First message\"}}\n"
             + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"SUGGESTION: Try running azd auth login\"}}";
