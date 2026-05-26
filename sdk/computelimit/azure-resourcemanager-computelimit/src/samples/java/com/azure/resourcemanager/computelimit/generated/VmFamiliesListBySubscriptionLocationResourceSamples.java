@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class VmFamiliesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/VmFamilies_List.json
+     * x-ms-original-file: 2026-06-01/VmFamilies_List.json
      */
     /**
      * Sample code: List VM families.
