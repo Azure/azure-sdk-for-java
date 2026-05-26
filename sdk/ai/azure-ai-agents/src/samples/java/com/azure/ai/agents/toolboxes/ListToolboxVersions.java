@@ -34,7 +34,7 @@ public class ListToolboxVersions {
 
         System.out.println("Listing all versions of toolbox '" + toolboxName + "':");
         for (ToolboxVersionDetails version : toolboxesClient.listToolboxVersions(toolboxName,
-                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW, null, null, null, null)) {
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)) {
             System.out.println("Version: " + version.getVersion());
             System.out.println("Version ID: " + version.getId());
             System.out.println("Description: " + version.getDescription());

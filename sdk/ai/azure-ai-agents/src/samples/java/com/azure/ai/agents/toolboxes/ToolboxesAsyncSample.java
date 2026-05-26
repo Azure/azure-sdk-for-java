@@ -71,8 +71,7 @@ public class ToolboxesAsyncSample {
             .then(toolboxesAsyncClient.updateToolbox(toolboxName, "1", FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .flatMap(updated -> printFetchedDefaultToolboxVersion(toolboxesAsyncClient, updated))
             .then(Mono.fromRunnable(() -> System.out.println("Listing toolboxes...")))
-            .thenMany(toolboxesAsyncClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW,
-                null, null, null, null))
+            .thenMany(toolboxesAsyncClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnNext(item -> System.out.printf("  - %s (%s)%n", item.getName(), item.getId()))
             .then(toolboxesAsyncClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnSuccess(unused -> System.out.println("Toolbox deleted"));

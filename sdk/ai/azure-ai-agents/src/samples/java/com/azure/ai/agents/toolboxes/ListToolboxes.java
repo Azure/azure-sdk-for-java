@@ -31,8 +31,7 @@ public class ListToolboxes {
                 .buildToolboxesClient();
 
         System.out.println("Listing all toolboxes:");
-        for (ToolboxDetails toolbox : toolboxesClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW,
-                null, null, null, null)) {
+        for (ToolboxDetails toolbox : toolboxesClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)) {
             System.out.println("Toolbox ID: " + toolbox.getId());
             System.out.println("Toolbox Name: " + toolbox.getName());
             System.out.println("Default Version: " + toolbox.getDefaultVersion());

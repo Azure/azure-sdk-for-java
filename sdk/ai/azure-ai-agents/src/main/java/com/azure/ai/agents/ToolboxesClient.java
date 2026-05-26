@@ -419,11 +419,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools) {
+    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions).getValue()
@@ -507,11 +510,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes() {
+    public PagedIterable<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxes(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
@@ -574,11 +579,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }

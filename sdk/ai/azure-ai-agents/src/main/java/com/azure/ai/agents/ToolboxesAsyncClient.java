@@ -430,11 +430,14 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools) {
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
@@ -531,11 +534,13 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxDetails> listToolboxes() {
+    public PagedFlux<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         PagedFlux<BinaryData> pagedFluxResponse = listToolboxes(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
@@ -621,11 +626,13 @@ public final class ToolboxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name) {
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
