@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (2026-05-22)
+## 1.5.0-beta.2 (2026-05-26)
 
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-03-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -102,16 +102,16 @@
 
 #### `models.Accounts` was modified
 
-* `evaluateDeploymentPoliciesWithResponse(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
 * `evaluateDeploymentPolicies(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest)` was added
+* `evaluateDeploymentPoliciesWithResponse(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
 
 #### `CognitiveServicesManager` was modified
 
-* `computes()` was added
 * `managedComputeUsagesOperationGroups()` was added
-* `managedComputeDeployments()` was added
-* `managedComputeCapacities()` was added
 * `workbenches()` was added
+* `managedComputeCapacities()` was added
+* `computes()` was added
+* `managedComputeDeployments()` was added
 
 #### `models.Account` was modified
 
