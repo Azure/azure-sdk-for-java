@@ -4,7 +4,12 @@
 
 ### Features Added
 
-- Includes all changes from 4.9.0-beta.1.
+- Added support for service version `V2025_07_01`.
+- Added the following methods to `SubjectAlternativeNames`:
+  - `setUniformResourceIdentifiers(java.util.List)`
+  - `setIpAddresses(java.util.List)`
+  - `getUniformResourceIdentifiers()`
+  - `getIpAddresses()`
 
 ## 4.8.7 (2026-05-05)
 
