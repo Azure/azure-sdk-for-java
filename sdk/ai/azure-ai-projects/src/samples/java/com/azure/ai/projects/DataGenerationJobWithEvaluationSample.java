@@ -18,8 +18,8 @@ import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
-import com.openai.core.JsonField;
 import com.openai.core.JsonValue;
+import com.openai.core.ObjectMappers;
 import com.openai.models.evals.EvalCreateParams;
 import com.openai.models.evals.EvalCreateParams.DataSourceConfig.Custom;
 import com.openai.models.evals.EvalCreateParams.DataSourceConfig.Custom.ItemSchema;
@@ -219,17 +219,15 @@ public class DataGenerationJobWithEvaluationSample {
             .build();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static JsonField<? extends List<TestingCriterion>> createAzureAIEvaluatorCriteria(String modelName) {
-        // openai-java 4.14.0 does not have a typed Azure AI evaluator testing criterion model.
-        return (JsonField) JsonValue.from(Arrays.asList(
+    private static List<TestingCriterion> createAzureAIEvaluatorCriteria(String modelName) {
+        return Arrays.asList(
             createAzureAIEvaluator("coherence", "builtin.coherence", modelName,
                 mapOf("query", "{{item.query}}", "response", "{{sample.output_text}}")),
             createAzureAIEvaluator("fluency", "builtin.fluency", modelName,
-                Collections.singletonMap("response", "{{sample.output_text}}"))));
+                Collections.singletonMap("response", "{{sample.output_text}}")));
     }
 
-    private static Map<String, Object> createAzureAIEvaluator(String name, String evaluatorName, String modelName,
+    private static TestingCriterion createAzureAIEvaluator(String name, String evaluatorName, String modelName,
         Map<String, String> dataMapping) {
         Map<String, Object> initializationParameters = new LinkedHashMap<>();
         initializationParameters.put("deployment_name", modelName);
@@ -240,7 +238,7 @@ public class DataGenerationJobWithEvaluationSample {
         evaluator.put("evaluator_name", evaluatorName);
         evaluator.put("initialization_parameters", initializationParameters);
         evaluator.put("data_mapping", dataMapping);
-        return evaluator;
+        return ObjectMappers.jsonMapper().convertValue(evaluator, TestingCriterion.class);
     }
 
     static RunCreateParams createEvaluationRunParams(String evalId, String datasetId, String modelName) {
