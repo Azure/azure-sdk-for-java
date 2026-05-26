@@ -599,7 +599,6 @@ public final class SchemaRegistryClientImpl {
      * </pre>
      * 
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -610,8 +609,9 @@ public final class SchemaRegistryClientImpl {
      * Gets a registered schema by its unique ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSchemaByIdWithResponseAsync(String id, String accept,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSchemaByIdWithResponseAsync(String id, RequestOptions requestOptions) {
+        final String accept
+            = "application/json; serialization=Avro, application/json; serialization=Json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return FluxUtil.withContext(context -> service.getSchemaById(this.getFullyQualifiedNamespace(),
             this.getServiceVersion().getVersion(), id, accept, requestOptions, context));
     }
@@ -630,7 +630,6 @@ public final class SchemaRegistryClientImpl {
      * </pre>
      * 
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
-     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -641,7 +640,9 @@ public final class SchemaRegistryClientImpl {
      * Gets a registered schema by its unique ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSchemaByIdWithResponse(String id, String accept, RequestOptions requestOptions) {
+    public Response<BinaryData> getSchemaByIdWithResponse(String id, RequestOptions requestOptions) {
+        final String accept
+            = "application/json; serialization=Avro, application/json; serialization=Json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getSchemaByIdSync(this.getFullyQualifiedNamespace(), this.getServiceVersion().getVersion(), id,
             accept, requestOptions, Context.NONE);
     }
@@ -661,7 +662,6 @@ public final class SchemaRegistryClientImpl {
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -673,7 +673,9 @@ public final class SchemaRegistryClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSchemaByVersionWithResponseAsync(String groupName, String schemaName,
-        int schemaVersion, String accept, RequestOptions requestOptions) {
+        int schemaVersion, RequestOptions requestOptions) {
+        final String accept
+            = "application/json; serialization=Avro, application/json; serialization=Json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return FluxUtil.withContext(context -> service.getSchemaByVersion(this.getFullyQualifiedNamespace(),
             this.getServiceVersion().getVersion(), groupName, schemaName, schemaVersion, accept, requestOptions,
             context));
@@ -694,7 +696,6 @@ public final class SchemaRegistryClientImpl {
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
-     * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -706,7 +707,9 @@ public final class SchemaRegistryClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSchemaByVersionWithResponse(String groupName, String schemaName, int schemaVersion,
-        String accept, RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
+        final String accept
+            = "application/json; serialization=Avro, application/json; serialization=Json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getSchemaByVersionSync(this.getFullyQualifiedNamespace(), this.getServiceVersion().getVersion(),
             groupName, schemaName, schemaVersion, accept, requestOptions, Context.NONE);
     }
