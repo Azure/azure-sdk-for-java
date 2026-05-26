@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
 /**
  * Service version of SchemaRegistryClient.
  */
-public enum SchemaRegistryServiceVersion implements ServiceVersion {
+public enum SchemaRegistryVersion implements ServiceVersion {
     /**
      * Enum value 2021-10.
      */
@@ -27,7 +27,7 @@ public enum SchemaRegistryServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    SchemaRegistryServiceVersion(String version) {
+    SchemaRegistryVersion(String version) {
         this.version = version;
     }
 
@@ -42,9 +42,9 @@ public enum SchemaRegistryServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      *
-     * @return The latest {@link SchemaRegistryServiceVersion}.
+     * @return The latest {@link SchemaRegistryVersion}.
      */
-    public static SchemaRegistryServiceVersion getLatest() {
+    public static SchemaRegistryVersion getLatest() {
         return V2023_07_01;
     }
 }

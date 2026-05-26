@@ -74,7 +74,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
-            .serviceVersion(SchemaRegistryServiceVersion.V2021_10)
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
@@ -98,7 +98,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
-            .serviceVersion(SchemaRegistryServiceVersion.V2021_10)
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 

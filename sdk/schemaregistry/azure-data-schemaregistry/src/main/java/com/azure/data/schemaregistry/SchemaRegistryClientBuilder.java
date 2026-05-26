@@ -129,7 +129,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
 
     private Configuration configuration;
 
-    private SchemaRegistryServiceVersion serviceVersion;
+    private SchemaRegistryVersion serviceVersion;
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -354,11 +354,11 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      * @return The updated instance.
      *
      * @throws IllegalArgumentException if {@param serviceVersion} is not an instance of
-     * {@link SchemaRegistryServiceVersion}.
+     * {@link SchemaRegistryVersion}.
      */
     public SchemaRegistryClientBuilder serviceVersion(ServiceVersion serviceVersion) {
-        if (serviceVersion instanceof SchemaRegistryServiceVersion) {
-            this.serviceVersion = (SchemaRegistryServiceVersion) serviceVersion;
+        if (serviceVersion instanceof SchemaRegistryVersion) {
+            this.serviceVersion = (SchemaRegistryVersion) serviceVersion;
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'serviceVersion' must be an instance of SchemaRegistryServiceVersion."));
@@ -429,8 +429,8 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     private SchemaRegistryClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        SchemaRegistryServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : SchemaRegistryServiceVersion.getLatest();
+        SchemaRegistryVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : SchemaRegistryVersion.getLatest();
         SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
         SchemaRegistryClientImpl client = new SchemaRegistryClientImpl(localPipeline, serializerAdapter,
             this.fullyQualifiedNamespace, localServiceVersion);

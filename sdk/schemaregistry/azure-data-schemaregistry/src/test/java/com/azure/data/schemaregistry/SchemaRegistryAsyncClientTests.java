@@ -69,7 +69,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
             .addAllowedHttpHeaderName(HttpHeaderName.ACCEPT);
 
         builder = new SchemaRegistryClientBuilder()
-            .serviceVersion(SchemaRegistryServiceVersion.V2022_10)
+            .serviceVersion(SchemaRegistryVersion.V2022_10)
             .credential(tokenCredential)
             .fullyQualifiedNamespace(endpoint).addPolicy(new HttpLoggingPolicy(logOptions));
 
@@ -230,7 +230,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     public void getSchemaIdDoesNotExist() {
         // Arrange
         final SchemaRegistryAsyncClient client1 = builder
-            .serviceVersion(SchemaRegistryServiceVersion.V2022_10)
+            .serviceVersion(SchemaRegistryVersion.V2022_10)
             .buildAsyncClient();
 
         // Act & Assert

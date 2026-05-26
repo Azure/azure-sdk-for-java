@@ -38,7 +38,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.data.schemaregistry.SchemaRegistryServiceVersion;
+import com.azure.data.schemaregistry.SchemaRegistryVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,7 +60,7 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Gets The Schema Registry service endpoint, for example 'my-namespace.servicebus.windows.net'.
-     * 
+     *
      * @return the fullyQualifiedNamespace value.
      */
     public String getFullyQualifiedNamespace() {
@@ -70,14 +70,14 @@ public final class SchemaRegistryClientImpl {
     /**
      * Service version.
      */
-    private final SchemaRegistryServiceVersion serviceVersion;
+    private final SchemaRegistryVersion serviceVersion;
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
-    public SchemaRegistryServiceVersion getServiceVersion() {
+    public SchemaRegistryVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -88,7 +88,7 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -102,7 +102,7 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -111,32 +111,32 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Initializes an instance of SchemaRegistryClient client.
-     * 
+     *
      * @param fullyQualifiedNamespace The Schema Registry service endpoint, for example
      * 'my-namespace.servicebus.windows.net'.
      * @param serviceVersion Service version.
      */
-    public SchemaRegistryClientImpl(String fullyQualifiedNamespace, SchemaRegistryServiceVersion serviceVersion) {
+    public SchemaRegistryClientImpl(String fullyQualifiedNamespace, SchemaRegistryVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), fullyQualifiedNamespace, serviceVersion);
     }
 
     /**
      * Initializes an instance of SchemaRegistryClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param fullyQualifiedNamespace The Schema Registry service endpoint, for example
      * 'my-namespace.servicebus.windows.net'.
      * @param serviceVersion Service version.
      */
     public SchemaRegistryClientImpl(HttpPipeline httpPipeline, String fullyQualifiedNamespace,
-        SchemaRegistryServiceVersion serviceVersion) {
+        SchemaRegistryVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), fullyQualifiedNamespace, serviceVersion);
     }
 
     /**
      * Initializes an instance of SchemaRegistryClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param fullyQualifiedNamespace The Schema Registry service endpoint, for example
@@ -144,7 +144,7 @@ public final class SchemaRegistryClientImpl {
      * @param serviceVersion Service version.
      */
     public SchemaRegistryClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String fullyQualifiedNamespace, SchemaRegistryServiceVersion serviceVersion) {
+        String fullyQualifiedNamespace, SchemaRegistryVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -339,23 +339,23 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -371,23 +371,23 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -401,23 +401,23 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -431,23 +431,23 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -461,16 +461,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Gets the list of all versions of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -494,16 +494,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Gets the list of all versions of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -525,16 +525,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Gets the list of all versions of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -556,16 +556,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Gets the list of all versions of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -587,17 +587,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get a registered schema by its unique ID reference.
-     * 
+     *
      * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
      * Operation response type is based on serialization of schema requested.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -605,7 +605,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a registered schema by its unique ID reference.
-     * 
+     *
      * Gets a registered schema by its unique ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -618,17 +618,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get a registered schema by its unique ID reference.
-     * 
+     *
      * Gets a registered schema by its unique ID. Azure Schema Registry guarantees that ID is unique within a namespace.
      * Operation response type is based on serialization of schema requested.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param id Schema ID that uniquely identifies a schema in the registry namespace.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -636,7 +636,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a registered schema by its unique ID reference.
-     * 
+     *
      * Gets a registered schema by its unique ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -649,16 +649,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get specific schema versions.
-     * 
+     *
      * Gets one specific version of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
@@ -668,7 +668,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specific schema versions.
-     * 
+     *
      * Gets one specific version of one schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -683,16 +683,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get specific schema versions.
-     * 
+     *
      * Gets one specific version of one schema.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param schemaVersion Version number of specific schema.
@@ -702,7 +702,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specific schema versions.
-     * 
+     *
      * Gets one specific version of one schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -716,17 +716,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get properties for existing schema.
-     * 
+     *
      * Gets the properties referencing an existing schema within the specified schema group, as matched by schema
      * content comparison.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param contentType The content type for given schema. Allowed values: "application/json; serialization=Avro",
@@ -738,7 +738,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return properties for existing schema.
-     * 
+     *
      * Gets the properties referencing an existing schema within the specified schema group, as matched by schema
      * content comparison along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -752,17 +752,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get properties for existing schema.
-     * 
+     *
      * Gets the properties referencing an existing schema within the specified schema group, as matched by schema
      * content comparison.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param contentType The content type for given schema. Allowed values: "application/json; serialization=Avro",
@@ -774,7 +774,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return properties for existing schema.
-     * 
+     *
      * Gets the properties referencing an existing schema within the specified schema group, as matched by schema
      * content comparison along with {@link Response}.
      */
@@ -788,17 +788,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Register new schema
-     * 
+     *
      * Register new schema. If schema of specified name does not exist in specified group, schema is created at version
      * 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param contentType The content type for given schema. Allowed values: "application/json; serialization=Avro",
@@ -821,17 +821,17 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Register new schema
-     * 
+     *
      * Register new schema. If schema of specified name does not exist in specified group, schema is created at version
      * 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param groupName Name of schema group.
      * @param schemaName Name of schema.
      * @param contentType The content type for given schema. Allowed values: "application/json; serialization=Avro",
@@ -853,16 +853,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -870,7 +870,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -887,16 +887,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * Get list of schema groups.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * String
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -904,7 +904,7 @@ public final class SchemaRegistryClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of schema groups.
-     * 
+     *
      * Gets the list of schema groups user is authorized to access along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -918,16 +918,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -950,16 +950,16 @@ public final class SchemaRegistryClientImpl {
 
     /**
      * List schema versions.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * int
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
