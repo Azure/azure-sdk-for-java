@@ -377,7 +377,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid) {
+    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid,
+        PrincipalType principalType) {
         if (this.innerModel().administrators() == null) {
             this.innerModel()
                 .withAdministrators(
@@ -386,15 +387,11 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         } else {
             this.innerModel().administrators().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY);
         }
-        this.innerModel().administrators().withLogin(userLogin).withSid(UUID.fromString(sid));
-        return this;
-    }
-
-    @Override
-    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid,
-        PrincipalType principalType) {
-        withExternalActiveDirectoryAdministrator(userLogin, sid);
-        this.innerModel().administrators().withPrincipalType(principalType);
+        this.innerModel()
+            .administrators()
+            .withLogin(userLogin)
+            .withSid(UUID.fromString(sid))
+            .withPrincipalType(principalType);
         return this;
     }
 

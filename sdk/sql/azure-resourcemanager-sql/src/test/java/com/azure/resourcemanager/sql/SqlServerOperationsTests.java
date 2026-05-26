@@ -26,6 +26,7 @@ import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
@@ -111,7 +112,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -182,7 +183,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(SECONDARY_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -239,7 +240,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(SECONDARY_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .defineElasticPool(epName)
             .withPremiumPool()
             .attach()
@@ -254,7 +255,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
 
         SqlDatabase dbSample = sqlPrimaryServer.databases().get(dbName);
@@ -285,7 +286,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .defineDatabase(dbName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -297,7 +298,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(SECONDARY_REGION)
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
 
         SqlServer sqlOtherServer = sqlServerManager.sqlServers()
@@ -305,7 +306,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(TERTIARY_REGION)
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
 
         SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups()
@@ -405,7 +406,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
             .withBasicEdition()
@@ -479,7 +480,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
         Assertions.assertNotNull(sqlServer1);
 
@@ -501,7 +502,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
         Assertions.assertNotNull(sqlServer2);
 
@@ -542,7 +543,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .withSystemAssignedManagedServiceIdentity()
             .defineDatabase(databaseName)
             .fromSample(SampleName.ADVENTURE_WORKS_LT)
@@ -610,7 +611,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .withPrimaryUserAssignedManagedServiceIdentity(uami.id())
             .create();
 
@@ -656,7 +657,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator("DSEng", user.id())
+            .withExternalActiveDirectoryAdministrator("DSEng", user.id(), PrincipalType.USER)
             .withoutAccessFromAzureServices()
             .defineFirewallRule("somefirewallrule1")
             .withIpAddress("0.0.0.1")
@@ -797,7 +798,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .withoutAccessFromAzureServices()
             .defineDatabase(SQL_DATABASE_NAME)
             .attach()
@@ -1504,7 +1505,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
     }
 
@@ -1629,7 +1630,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .create();
 
         // Too many elastic pools defined will hit sql server DTU quota limits.
@@ -1748,7 +1749,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withNewResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id())
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
             .withoutAccessFromAzureServices()
             .disablePublicNetworkAccess()
             .create();

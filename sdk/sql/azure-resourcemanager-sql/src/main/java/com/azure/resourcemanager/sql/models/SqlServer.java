@@ -283,21 +283,10 @@ public interface SqlServer
             /**
              * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
              *
-             * <p>The principal type is inferred by the service from the SID.</p>
-             *
-             * @param userLogin the user or group login; it can be the name or the email address
-             * @param sid the user or group object ID
-             * @return Next stage of the SQL Server definition
-             */
-            WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid);
-
-            /**
-             * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server
-             * with an explicit principal type.
-             *
              * @param userLogin the user, group, or application login name
              * @param sid the user, group, or application object ID
-             * @param principalType the principal type (User, Group, or Application)
+             * @param principalType the principal type (User, Group, or Application). Must be specified explicitly;
+             *                      the service does not reliably infer it from the SID
              * @return Next stage of the SQL Server definition
              */
             WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid,

@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added a new stage `WithAzureActiveDirectoryOnlyAuthentication` with the method `withAzureActiveDirectoryOnlyAuthentication()` on `SqlServer.DefinitionStages.WithAdministratorLogin`, followed by the new stage `WithExternalActiveDirectoryAdministrator` with the method `withExternalActiveDirectoryAdministrator(String userLogin, String sid)`. This enables creating a SQL Server with Microsoft Entra-only authentication enabled at creation time, which is required when the target subscription/management group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.
+- Added a new stage `WithAzureActiveDirectoryOnlyAuthentication` with the method `withAzureActiveDirectoryOnlyAuthentication()` on `SqlServer.DefinitionStages.WithAdministratorLogin`, followed by the new stage `WithExternalActiveDirectoryAdministrator` with the method `withExternalActiveDirectoryAdministrator(String userLogin, String sid, PrincipalType principalType)`. This enables creating a SQL Server with Microsoft Entra-only authentication enabled at creation time, which is required when the target subscription/management group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation. The `principalType` must be specified explicitly because the service does not reliably infer it from the SID.
 - Added `withManagedIdentity(String managedIdentityResourceId)` to the import/export authentication stages of `SqlDatabaseImportRequest`, `SqlDatabaseExportRequest`, `SqlDatabaseOperations` (both standalone and in-elastic-pool import definitions) and `SqlDatabase` (both standalone and in-elastic-pool import definitions). This lets callers authenticate to the storage account using a user-assigned managed identity assigned to the SQL server instead of a storage access/shared key, which is required when the storage account has shared-key access disabled.
 
 ### Breaking Changes
@@ -366,21 +366,21 @@
 
 ### Breaking Changes
 
-- Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional. 
+- Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional.
 - Removed `withPolicyNew` method from `SqlDatabaseThreatDetectionPolicy` since `NEW` is no longer supported in `SecurityAlertPolicyState`.
 - Removed `nextResetTime` and `resourceName` methods from `ServerMetric` and `SqlDatabase`. The methods are non-functional.
 - Removed `listMetricsDefinitions` and `listMetrics` methods from `SqlDatabase`. Metrics in SQL have been replaced by the Azure monitor shoebox metrics API. Not in SQL any more.
 - Removed `listServiceTierAdvisors` method from `SqlDatabase`. It's no longer supported.
 - Removed class `ElasticPoolDatabaseActivity`. It's removed from service definition.
-- Removed `listDatabaseActivities`, `listDatabaseMetricDefinitions` and `listDatabaseMetrics` methods from `SqlElasticPool`. 
-- Removed `elasticPoolName` and `serviceLevelObjective` methods from `SqlRestorableDroppedDatabase`. 
+- Removed `listDatabaseActivities`, `listDatabaseMetricDefinitions` and `listDatabaseMetrics` methods from `SqlElasticPool`.
+- Removed `elasticPoolName` and `serviceLevelObjective` methods from `SqlRestorableDroppedDatabase`.
 - Removed `getServiceObjective`, `listRecommendedElasticPools`, `listServiceObjectives` methods from `SqlServer`.
 - Removed `withCreationDate` and `withThumbprint` from SqlServerKeyOperations. The properties are no longer mutable.
 - Renamed class from `TransparentDataEncryptionInner` to `LogicalDatabaseTransparentDataEncryptionInner`.
 - Removed class `TransparentDataEncryptionActivity`. The class is no longer functional.
 - Removed `listActivities` from `TransparentDataEncryption` since `TransparentDataEncryptionActivity` is removed.
 - Renamed `TransparentDataEncryptionStatus` to `TransparentDataEncryptionState`.
-- Removed `location`, `requestedDatabaseDtuCap`, `requestedDatabaseDtuGuarantee`, `requestedDatabaseDtuMax`, `requestedDatabaseDtuMin`, 
+- Removed `location`, `requestedDatabaseDtuCap`, `requestedDatabaseDtuGuarantee`, `requestedDatabaseDtuMax`, `requestedDatabaseDtuMin`,
   `requestedDtu`, `requestedDtuGuarantee` and `requestedElasticPoolName`, `requestedStorageLimitInGB` and `requestedStorageLimitInMB` methods from `ElasticPoolActivity`. The properties are no longer functional.
 - Renamed class from `ElasticPoolActivityInner` to `ElasticPoolOperationInner`.
 - Removed `readReplicaCount` and `withReadReplicaCount` from `DatabaseUpdate`. The property is non-functional.
