@@ -10,19 +10,12 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
 
 /**
- * In-flight progress; only populated while status is `queued` or `in_progress`.
+ * In-flight progress; only populated while status is queued or in_progress.
  */
 @Immutable
 public final class OptimizationJobProgress implements JsonSerializable<OptimizationJobProgress> {
-
-    /*
-     * Strategy currently being explored.
-     */
-    @Generated
-    private final OptimizationStrategy currentStrategy;
 
     /*
      * 1-based current iteration index.
@@ -31,63 +24,16 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     private final int currentIteration;
 
     /*
-     * Tasks evaluated so far this iteration.
-     */
-    @Generated
-    private final int tasksCompleted;
-
-    /*
-     * Total tasks scheduled this iteration.
-     */
-    @Generated
-    private final int tasksTotal;
-
-    /*
      * Best score observed so far across all candidates.
      */
     @Generated
     private final double bestScore;
 
     /*
-     * Wall-clock time elapsed since the job began executing.
+     * Wall-clock time elapsed in seconds since the job began executing.
      */
     @Generated
     private final double elapsedSeconds;
-
-    /**
-     * Creates an instance of OptimizationJobProgress class.
-     *
-     * @param currentStrategy the currentStrategy value to set.
-     * @param currentIteration the currentIteration value to set.
-     * @param tasksCompleted the tasksCompleted value to set.
-     * @param tasksTotal the tasksTotal value to set.
-     * @param bestScore the bestScore value to set.
-     * @param elapsedSeconds the elapsedSeconds value to set.
-     */
-    @Generated
-    private OptimizationJobProgress(OptimizationStrategy currentStrategy, int currentIteration, int tasksCompleted,
-        int tasksTotal, double bestScore, Duration elapsedSeconds) {
-        this.currentStrategy = currentStrategy;
-        this.currentIteration = currentIteration;
-        this.tasksCompleted = tasksCompleted;
-        this.tasksTotal = tasksTotal;
-        this.bestScore = bestScore;
-        if (elapsedSeconds == null) {
-            this.elapsedSeconds = 0.0;
-        } else {
-            this.elapsedSeconds = (double) elapsedSeconds.toNanos() / 1000_000_000L;
-        }
-    }
-
-    /**
-     * Get the currentStrategy property: Strategy currently being explored.
-     *
-     * @return the currentStrategy value.
-     */
-    @Generated
-    public OptimizationStrategy getCurrentStrategy() {
-        return this.currentStrategy;
-    }
 
     /**
      * Get the currentIteration property: 1-based current iteration index.
@@ -97,26 +43,6 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Generated
     public int getCurrentIteration() {
         return this.currentIteration;
-    }
-
-    /**
-     * Get the tasksCompleted property: Tasks evaluated so far this iteration.
-     *
-     * @return the tasksCompleted value.
-     */
-    @Generated
-    public int getTasksCompleted() {
-        return this.tasksCompleted;
-    }
-
-    /**
-     * Get the tasksTotal property: Total tasks scheduled this iteration.
-     *
-     * @return the tasksTotal value.
-     */
-    @Generated
-    public int getTasksTotal() {
-        return this.tasksTotal;
     }
 
     /**
@@ -130,13 +56,13 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     }
 
     /**
-     * Get the elapsedSeconds property: Wall-clock time elapsed since the job began executing.
+     * Get the elapsedSeconds property: Wall-clock time elapsed in seconds since the job began executing.
      *
      * @return the elapsedSeconds value.
      */
     @Generated
-    public Duration getElapsedSeconds() {
-        return Duration.ofNanos((long) (this.elapsedSeconds * 1000_000_000L));
+    public double getElapsedSeconds() {
+        return this.elapsedSeconds;
     }
 
     /**
@@ -146,13 +72,9 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("current_strategy",
-            this.currentStrategy == null ? null : this.currentStrategy.toString());
-        jsonWriter.writeIntField("current_iteration", this.currentIteration);
-        jsonWriter.writeIntField("tasks_completed", this.tasksCompleted);
-        jsonWriter.writeIntField("tasks_total", this.tasksTotal);
-        jsonWriter.writeDoubleField("best_score", this.bestScore);
-        jsonWriter.writeDoubleField("elapsed_seconds", this.elapsedSeconds);
+        jsonWriter.writeIntField("currentIteration", this.currentIteration);
+        jsonWriter.writeDoubleField("bestScore", this.bestScore);
+        jsonWriter.writeDoubleField("elapsedSeconds", this.elapsedSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,33 +90,37 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Generated
     public static OptimizationJobProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationStrategy currentStrategy = null;
             int currentIteration = 0;
-            int tasksCompleted = 0;
-            int tasksTotal = 0;
             double bestScore = 0.0;
-            Duration elapsedSeconds = null;
+            double elapsedSeconds = 0.0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("current_strategy".equals(fieldName)) {
-                    currentStrategy = OptimizationStrategy.fromString(reader.getString());
-                } else if ("current_iteration".equals(fieldName)) {
+                if ("currentIteration".equals(fieldName)) {
                     currentIteration = reader.getInt();
-                } else if ("tasks_completed".equals(fieldName)) {
-                    tasksCompleted = reader.getInt();
-                } else if ("tasks_total".equals(fieldName)) {
-                    tasksTotal = reader.getInt();
-                } else if ("best_score".equals(fieldName)) {
+                } else if ("bestScore".equals(fieldName)) {
                     bestScore = reader.getDouble();
-                } else if ("elapsed_seconds".equals(fieldName)) {
-                    elapsedSeconds = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
+                } else if ("elapsedSeconds".equals(fieldName)) {
+                    elapsedSeconds = reader.getDouble();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new OptimizationJobProgress(currentStrategy, currentIteration, tasksCompleted, tasksTotal, bestScore,
-                elapsedSeconds);
+            return new OptimizationJobProgress(currentIteration, bestScore, elapsedSeconds);
         });
+    }
+
+    /**
+     * Creates an instance of OptimizationJobProgress class.
+     *
+     * @param currentIteration the currentIteration value to set.
+     * @param bestScore the bestScore value to set.
+     * @param elapsedSeconds the elapsedSeconds value to set.
+     */
+    @Generated
+    private OptimizationJobProgress(int currentIteration, double bestScore, double elapsedSeconds) {
+        this.currentIteration = currentIteration;
+        this.bestScore = bestScore;
+        this.elapsedSeconds = elapsedSeconds;
     }
 }

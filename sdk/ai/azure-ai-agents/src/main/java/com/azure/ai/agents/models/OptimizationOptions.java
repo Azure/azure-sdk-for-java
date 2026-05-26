@@ -5,13 +5,13 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Tuning knobs and run-mode for an optimization job.
@@ -20,83 +20,16 @@ import java.util.List;
 public final class OptimizationOptions implements JsonSerializable<OptimizationOptions> {
 
     /*
-     * Strategies to apply this run. Default: ['instruction'].
-     */
-    @Generated
-    private List<OptimizationStrategy> strategies;
-
-    /*
-     * Total candidate generation budget (number of candidates explored). Default: 10.
-     */
-    @Generated
-    private Integer budget;
-
-    /*
-     * Maximum optimization iterations per strategy. Default: 5.
+     * Maximum optimization iterations per strategy. Must be >= 1. Default: 5.
      */
     @Generated
     private Integer maxIterations;
 
     /*
-     * Tasks sampled per iteration (mutation step input). Default: service-decided (auto-computed).
-     */
-    @Generated
-    private Integer tasksPerIteration;
-
-    /*
-     * Maximum tasks fed into the reflective-mutation LLM per iteration. Default: 5.
-     */
-    @Generated
-    private Integer maxReflectionTasks;
-
-    /*
-     * Minimum score improvement between iterations to continue (plateau detection). Default: 0.005.
-     */
-    @Generated
-    private Double minImprovement;
-
-    /*
-     * Composite score threshold for a task to be considered passing. Default: 0.5.
-     */
-    @Generated
-    private Double passThreshold;
-
-    /*
-     * Target average score at which optimization stops early (quality ceiling). Default: 0.95.
-     */
-    @Generated
-    private Double improvementThreshold;
-
-    /*
-     * Run mode.
-     */
-    @Generated
-    private OptimizationMode mode;
-
-    /*
-     * Foundry deployment name to use as the LLM-as-judge evaluation model. Required.
+     * Model deployment used for evaluation. Defaults to server config (typically 'gpt-4o').
      */
     @Generated
     private String evalModel;
-
-    /*
-     * Optional model deployment for strategy reflection (instruction rewriting, skill generation). Falls back to
-     * `eval_model` if unset.
-     */
-    @Generated
-    private String reflectionModel;
-
-    /*
-     * Per-task timeout for agent execution. Default: 300 seconds (5 minutes).
-     */
-    @Generated
-    private Long taskTimeoutSeconds;
-
-    /*
-     * If true, retain temporary candidate-evaluation agent versions for inspection. Default: false.
-     */
-    @Generated
-    private Boolean keepVersions;
 
     /**
      * Creates an instance of OptimizationOptions class.
@@ -106,51 +39,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /**
-     * Get the strategies property: Strategies to apply this run. Default: ['instruction'].
-     *
-     * @return the strategies value.
-     */
-    @Generated
-    public List<OptimizationStrategy> getStrategies() {
-        return this.strategies;
-    }
-
-    /**
-     * Set the strategies property: Strategies to apply this run. Default: ['instruction'].
-     *
-     * @param strategies the strategies value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setStrategies(List<OptimizationStrategy> strategies) {
-        this.strategies = strategies;
-        return this;
-    }
-
-    /**
-     * Get the budget property: Total candidate generation budget (number of candidates explored). Default: 10.
-     *
-     * @return the budget value.
-     */
-    @Generated
-    public Integer getBudget() {
-        return this.budget;
-    }
-
-    /**
-     * Set the budget property: Total candidate generation budget (number of candidates explored). Default: 10.
-     *
-     * @param budget the budget value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setBudget(Integer budget) {
-        this.budget = budget;
-        return this;
-    }
-
-    /**
-     * Get the maxIterations property: Maximum optimization iterations per strategy. Default: 5.
+     * Get the maxIterations property: Maximum optimization iterations per strategy. Must be &gt;= 1. Default: 5.
      *
      * @return the maxIterations value.
      */
@@ -160,7 +49,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /**
-     * Set the maxIterations property: Maximum optimization iterations per strategy. Default: 5.
+     * Set the maxIterations property: Maximum optimization iterations per strategy. Must be &gt;= 1. Default: 5.
      *
      * @param maxIterations the maxIterations value to set.
      * @return the OptimizationOptions object itself.
@@ -172,147 +61,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /**
-     * Get the tasksPerIteration property: Tasks sampled per iteration (mutation step input). Default: service-decided
-     * (auto-computed).
-     *
-     * @return the tasksPerIteration value.
-     */
-    @Generated
-    public Integer getTasksPerIteration() {
-        return this.tasksPerIteration;
-    }
-
-    /**
-     * Set the tasksPerIteration property: Tasks sampled per iteration (mutation step input). Default: service-decided
-     * (auto-computed).
-     *
-     * @param tasksPerIteration the tasksPerIteration value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setTasksPerIteration(Integer tasksPerIteration) {
-        this.tasksPerIteration = tasksPerIteration;
-        return this;
-    }
-
-    /**
-     * Get the maxReflectionTasks property: Maximum tasks fed into the reflective-mutation LLM per iteration. Default:
-     * 5.
-     *
-     * @return the maxReflectionTasks value.
-     */
-    @Generated
-    public Integer getMaxReflectionTasks() {
-        return this.maxReflectionTasks;
-    }
-
-    /**
-     * Set the maxReflectionTasks property: Maximum tasks fed into the reflective-mutation LLM per iteration. Default:
-     * 5.
-     *
-     * @param maxReflectionTasks the maxReflectionTasks value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setMaxReflectionTasks(Integer maxReflectionTasks) {
-        this.maxReflectionTasks = maxReflectionTasks;
-        return this;
-    }
-
-    /**
-     * Get the minImprovement property: Minimum score improvement between iterations to continue (plateau detection).
-     * Default: 0.005.
-     *
-     * @return the minImprovement value.
-     */
-    @Generated
-    public Double getMinImprovement() {
-        return this.minImprovement;
-    }
-
-    /**
-     * Set the minImprovement property: Minimum score improvement between iterations to continue (plateau detection).
-     * Default: 0.005.
-     *
-     * @param minImprovement the minImprovement value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setMinImprovement(Double minImprovement) {
-        this.minImprovement = minImprovement;
-        return this;
-    }
-
-    /**
-     * Get the passThreshold property: Composite score threshold for a task to be considered passing. Default: 0.5.
-     *
-     * @return the passThreshold value.
-     */
-    @Generated
-    public Double getPassThreshold() {
-        return this.passThreshold;
-    }
-
-    /**
-     * Set the passThreshold property: Composite score threshold for a task to be considered passing. Default: 0.5.
-     *
-     * @param passThreshold the passThreshold value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setPassThreshold(Double passThreshold) {
-        this.passThreshold = passThreshold;
-        return this;
-    }
-
-    /**
-     * Get the improvementThreshold property: Target average score at which optimization stops early (quality ceiling).
-     * Default: 0.95.
-     *
-     * @return the improvementThreshold value.
-     */
-    @Generated
-    public Double getImprovementThreshold() {
-        return this.improvementThreshold;
-    }
-
-    /**
-     * Set the improvementThreshold property: Target average score at which optimization stops early (quality ceiling).
-     * Default: 0.95.
-     *
-     * @param improvementThreshold the improvementThreshold value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setImprovementThreshold(Double improvementThreshold) {
-        this.improvementThreshold = improvementThreshold;
-        return this;
-    }
-
-    /**
-     * Get the mode property: Run mode.
-     *
-     * @return the mode value.
-     */
-    @Generated
-    public OptimizationMode getMode() {
-        return this.mode;
-    }
-
-    /**
-     * Set the mode property: Run mode.
-     *
-     * @param mode the mode value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setMode(OptimizationMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
-     * Get the evalModel property: Foundry deployment name to use as the LLM-as-judge evaluation model. Required.
+     * Get the evalModel property: Model deployment used for evaluation. Defaults to server config (typically 'gpt-4o').
      *
      * @return the evalModel value.
      */
@@ -322,7 +71,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /**
-     * Set the evalModel property: Foundry deployment name to use as the LLM-as-judge evaluation model. Required.
+     * Set the evalModel property: Model deployment used for evaluation. Defaults to server config (typically 'gpt-4o').
      *
      * @param evalModel the evalModel value to set.
      * @return the OptimizationOptions object itself.
@@ -334,103 +83,24 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /**
-     * Get the reflectionModel property: Optional model deployment for strategy reflection (instruction rewriting, skill
-     * generation). Falls back to `eval_model` if unset.
-     *
-     * @return the reflectionModel value.
-     */
-    @Generated
-    public String getReflectionModel() {
-        return this.reflectionModel;
-    }
-
-    /**
-     * Set the reflectionModel property: Optional model deployment for strategy reflection (instruction rewriting, skill
-     * generation). Falls back to `eval_model` if unset.
-     *
-     * @param reflectionModel the reflectionModel value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setReflectionModel(String reflectionModel) {
-        this.reflectionModel = reflectionModel;
-        return this;
-    }
-
-    /**
-     * Get the taskTimeoutSeconds property: Per-task timeout for agent execution. Default: 300 seconds (5 minutes).
-     *
-     * @return the taskTimeoutSeconds value.
-     */
-    @Generated
-    public Duration getTaskTimeoutSeconds() {
-        if (this.taskTimeoutSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.taskTimeoutSeconds);
-    }
-
-    /**
-     * Set the taskTimeoutSeconds property: Per-task timeout for agent execution. Default: 300 seconds (5 minutes).
-     *
-     * @param taskTimeoutSeconds the taskTimeoutSeconds value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setTaskTimeoutSeconds(Duration taskTimeoutSeconds) {
-        if (taskTimeoutSeconds == null) {
-            this.taskTimeoutSeconds = null;
-        } else {
-            this.taskTimeoutSeconds = taskTimeoutSeconds.getSeconds();
-        }
-        return this;
-    }
-
-    /**
-     * Get the keepVersions property: If true, retain temporary candidate-evaluation agent versions for inspection.
-     * Default: false.
-     *
-     * @return the keepVersions value.
-     */
-    @Generated
-    public Boolean isKeepVersions() {
-        return this.keepVersions;
-    }
-
-    /**
-     * Set the keepVersions property: If true, retain temporary candidate-evaluation agent versions for inspection.
-     * Default: false.
-     *
-     * @param keepVersions the keepVersions value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setKeepVersions(Boolean keepVersions) {
-        this.keepVersions = keepVersions;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("strategies", this.strategies,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeNumberField("budget", this.budget);
-        jsonWriter.writeNumberField("max_iterations", this.maxIterations);
-        jsonWriter.writeNumberField("tasks_per_iteration", this.tasksPerIteration);
-        jsonWriter.writeNumberField("max_reflection_tasks", this.maxReflectionTasks);
-        jsonWriter.writeNumberField("min_improvement", this.minImprovement);
-        jsonWriter.writeNumberField("pass_threshold", this.passThreshold);
-        jsonWriter.writeNumberField("improvement_threshold", this.improvementThreshold);
-        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
-        jsonWriter.writeStringField("eval_model", this.evalModel);
-        jsonWriter.writeStringField("reflection_model", this.reflectionModel);
-        jsonWriter.writeNumberField("task_timeout_seconds", this.taskTimeoutSeconds);
-        jsonWriter.writeBooleanField("keep_versions", this.keepVersions);
+        jsonWriter.writeNumberField("maxIterations", this.maxIterations);
+        jsonWriter.writeMapField("optimizationConfig", this.optimizationConfig, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeStringField("evalModel", this.evalModel);
+        jsonWriter.writeStringField("optimizationModel", this.optimizationModel);
+        jsonWriter.writeStringField("evaluationLevel",
+            this.evaluationLevel == null ? null : this.evaluationLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -449,39 +119,116 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("strategies".equals(fieldName)) {
-                    List<OptimizationStrategy> strategies
-                        = reader.readArray(reader1 -> OptimizationStrategy.fromString(reader1.getString()));
-                    deserializedOptimizationOptions.strategies = strategies;
-                } else if ("budget".equals(fieldName)) {
-                    deserializedOptimizationOptions.budget = reader.getNullable(JsonReader::getInt);
-                } else if ("max_iterations".equals(fieldName)) {
+                if ("maxIterations".equals(fieldName)) {
                     deserializedOptimizationOptions.maxIterations = reader.getNullable(JsonReader::getInt);
-                } else if ("tasks_per_iteration".equals(fieldName)) {
-                    deserializedOptimizationOptions.tasksPerIteration = reader.getNullable(JsonReader::getInt);
-                } else if ("max_reflection_tasks".equals(fieldName)) {
-                    deserializedOptimizationOptions.maxReflectionTasks = reader.getNullable(JsonReader::getInt);
-                } else if ("min_improvement".equals(fieldName)) {
-                    deserializedOptimizationOptions.minImprovement = reader.getNullable(JsonReader::getDouble);
-                } else if ("pass_threshold".equals(fieldName)) {
-                    deserializedOptimizationOptions.passThreshold = reader.getNullable(JsonReader::getDouble);
-                } else if ("improvement_threshold".equals(fieldName)) {
-                    deserializedOptimizationOptions.improvementThreshold = reader.getNullable(JsonReader::getDouble);
-                } else if ("mode".equals(fieldName)) {
-                    deserializedOptimizationOptions.mode = OptimizationMode.fromString(reader.getString());
-                } else if ("eval_model".equals(fieldName)) {
+                } else if ("optimizationConfig".equals(fieldName)) {
+                    Map<String, BinaryData> optimizationConfig = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedOptimizationOptions.optimizationConfig = optimizationConfig;
+                } else if ("evalModel".equals(fieldName)) {
                     deserializedOptimizationOptions.evalModel = reader.getString();
-                } else if ("reflection_model".equals(fieldName)) {
-                    deserializedOptimizationOptions.reflectionModel = reader.getString();
-                } else if ("task_timeout_seconds".equals(fieldName)) {
-                    deserializedOptimizationOptions.taskTimeoutSeconds = reader.getNullable(JsonReader::getLong);
-                } else if ("keep_versions".equals(fieldName)) {
-                    deserializedOptimizationOptions.keepVersions = reader.getNullable(JsonReader::getBoolean);
+                } else if ("optimizationModel".equals(fieldName)) {
+                    deserializedOptimizationOptions.optimizationModel = reader.getString();
+                } else if ("evaluationLevel".equals(fieldName)) {
+                    deserializedOptimizationOptions.evaluationLevel = EvaluationLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedOptimizationOptions;
         });
+    }
+
+    /*
+     * Per-target-attribute configuration overrides. Contains skills, tools, systemPrompt for the agent, plus model
+     * space for model optimization.
+     */
+    @Generated
+    private Map<String, BinaryData> optimizationConfig;
+
+    /*
+     * Model deployment for optimization reasoning (must be gpt-5 family). Falls back to the default eval model when not
+     * set.
+     */
+    @Generated
+    private String optimizationModel;
+
+    /*
+     * Evaluation granularity. Null/omitted means per-item single-turn. Set to 'conversation' for per-conversation
+     * multi-turn simulation scoring.
+     */
+    @Generated
+    private EvaluationLevel evaluationLevel;
+
+    /**
+     * Get the optimizationConfig property: Per-target-attribute configuration overrides. Contains skills, tools,
+     * systemPrompt for the agent, plus model space for model optimization.
+     *
+     * @return the optimizationConfig value.
+     */
+    @Generated
+    public Map<String, BinaryData> getOptimizationConfig() {
+        return this.optimizationConfig;
+    }
+
+    /**
+     * Set the optimizationConfig property: Per-target-attribute configuration overrides. Contains skills, tools,
+     * systemPrompt for the agent, plus model space for model optimization.
+     *
+     * @param optimizationConfig the optimizationConfig value to set.
+     * @return the OptimizationOptions object itself.
+     */
+    @Generated
+    public OptimizationOptions setOptimizationConfig(Map<String, BinaryData> optimizationConfig) {
+        this.optimizationConfig = optimizationConfig;
+        return this;
+    }
+
+    /**
+     * Get the optimizationModel property: Model deployment for optimization reasoning (must be gpt-5 family). Falls
+     * back to the default eval model when not set.
+     *
+     * @return the optimizationModel value.
+     */
+    @Generated
+    public String getOptimizationModel() {
+        return this.optimizationModel;
+    }
+
+    /**
+     * Set the optimizationModel property: Model deployment for optimization reasoning (must be gpt-5 family). Falls
+     * back to the default eval model when not set.
+     *
+     * @param optimizationModel the optimizationModel value to set.
+     * @return the OptimizationOptions object itself.
+     */
+    @Generated
+    public OptimizationOptions setOptimizationModel(String optimizationModel) {
+        this.optimizationModel = optimizationModel;
+        return this;
+    }
+
+    /**
+     * Get the evaluationLevel property: Evaluation granularity. Null/omitted means per-item single-turn. Set to
+     * 'conversation' for per-conversation multi-turn simulation scoring.
+     *
+     * @return the evaluationLevel value.
+     */
+    @Generated
+    public EvaluationLevel getEvaluationLevel() {
+        return this.evaluationLevel;
+    }
+
+    /**
+     * Set the evaluationLevel property: Evaluation granularity. Null/omitted means per-item single-turn. Set to
+     * 'conversation' for per-conversation multi-turn simulation scoring.
+     *
+     * @param evaluationLevel the evaluationLevel value to set.
+     * @return the OptimizationOptions object itself.
+     */
+    @Generated
+    public OptimizationOptions setEvaluationLevel(EvaluationLevel evaluationLevel) {
+        this.evaluationLevel = evaluationLevel;
+        return this;
     }
 }

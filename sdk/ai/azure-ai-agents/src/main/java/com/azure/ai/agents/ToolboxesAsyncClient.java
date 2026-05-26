@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
+import com.azure.ai.agents.models.ToolboxSkill;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -67,6 +68,11 @@ public final class ToolboxesAsyncClient {
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
@@ -92,6 +98,11 @@ public final class ToolboxesAsyncClient {
      *     tools (Required): [
      *          (Required){
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -236,6 +247,11 @@ public final class ToolboxesAsyncClient {
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
@@ -277,6 +293,11 @@ public final class ToolboxesAsyncClient {
      *     tools (Required): [
      *          (Required){
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -379,38 +400,6 @@ public final class ToolboxesAsyncClient {
     public Mono<Response<Void>> deleteToolboxVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteToolboxVersionWithResponseAsync(name, version, requestOptions);
-    }
-
-    /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
-     *
-     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
-     * @param tools The list of tools to include in this version.
-     * @param description A human-readable description of the toolbox.
-     * @param metadata Arbitrary key-value metadata to associate with the toolbox.
-     * @param policies Policy configuration for this toolbox version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific version of a toolbox on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools, String description,
-        Map<String, String> metadata, ToolboxPolicies policies) {
-        // Generated convenience method for createToolboxVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateToolboxVersionRequest createToolboxVersionRequestObj
-            = new CreateToolboxVersionRequest(tools).setDescription(description)
-                .setMetadata(metadata)
-                .setPolicies(policies);
-        BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
-        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
@@ -717,5 +706,40 @@ public final class ToolboxesAsyncClient {
         // Generated convenience method for deleteToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     *
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param tools The list of tools to include in this version.
+     * @param description A human-readable description of the toolbox.
+     * @param metadata Arbitrary key-value metadata to associate with the toolbox.
+     * @param skills The list of skill sources to include in this version. A skill reference specifies a skill name and
+     * optionally a version. If version is omitted, the skill's default version is used.
+     * @param policies Policy configuration for this toolbox version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a toolbox on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools, String description,
+        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies) {
+        // Generated convenience method for createToolboxVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateToolboxVersionRequest createToolboxVersionRequestObj
+            = new CreateToolboxVersionRequest(tools).setDescription(description)
+                .setMetadata(metadata)
+                .setSkills(skills)
+                .setPolicies(policies);
+        BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
+        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 }

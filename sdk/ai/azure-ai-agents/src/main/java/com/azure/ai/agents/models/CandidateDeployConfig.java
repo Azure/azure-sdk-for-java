@@ -5,12 +5,14 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Deploy-config blob for a candidate. Suitable for setting OPTIMIZATION_CONFIG on a hosted-agent version.
@@ -40,7 +42,7 @@ public final class CandidateDeployConfig implements JsonSerializable<CandidateDe
      * Optional skill overrides.
      */
     @Generated
-    private List<OptimizationAgentSkill> skills;
+    private List<Map<String, BinaryData>> skills;
 
     /**
      * Creates an instance of CandidateDeployConfig class.
@@ -85,7 +87,7 @@ public final class CandidateDeployConfig implements JsonSerializable<CandidateDe
      * @return the skills value.
      */
     @Generated
-    public List<OptimizationAgentSkill> getSkills() {
+    public List<Map<String, BinaryData>> getSkills() {
         return this.skills;
     }
 
@@ -99,7 +101,22 @@ public final class CandidateDeployConfig implements JsonSerializable<CandidateDe
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeNumberField("temperature", this.temperature);
-        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("skills", this.skills,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
+        jsonWriter.writeArrayField("tools", this.tools,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         return jsonWriter.writeEndObject();
     }
 
@@ -125,14 +142,35 @@ public final class CandidateDeployConfig implements JsonSerializable<CandidateDe
                 } else if ("temperature".equals(fieldName)) {
                     deserializedCandidateDeployConfig.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("skills".equals(fieldName)) {
-                    List<OptimizationAgentSkill> skills
-                        = reader.readArray(reader1 -> OptimizationAgentSkill.fromJson(reader1));
+                    List<Map<String, BinaryData>> skills
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2
+                            .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
                     deserializedCandidateDeployConfig.skills = skills;
+                } else if ("tools".equals(fieldName)) {
+                    List<Map<String, BinaryData>> tools = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
+                    deserializedCandidateDeployConfig.tools = tools;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedCandidateDeployConfig;
         });
+    }
+
+    /*
+     * Optional tool overrides.
+     */
+    @Generated
+    private List<Map<String, BinaryData>> tools;
+
+    /**
+     * Get the tools property: Optional tool overrides.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<Map<String, BinaryData>> getTools() {
+        return this.tools;
     }
 }

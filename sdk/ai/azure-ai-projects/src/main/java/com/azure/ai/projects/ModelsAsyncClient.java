@@ -385,7 +385,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -396,9 +396,10 @@ public final class ModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> startModelPendingUploadWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.startModelPendingUploadWithResponseAsync(name, version, body, requestOptions);
+    public Mono<Response<BinaryData>> startModelPendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        return this.serviceClient.startModelPendingUploadWithResponseAsync(name, version, pendingUploadRequest,
+            requestOptions);
     }
 
     /**
@@ -432,7 +433,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -443,9 +444,10 @@ public final class ModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getModelCredentialsWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getModelCredentialsWithResponseAsync(name, version, body, requestOptions);
+    public Mono<Response<BinaryData>> getModelCredentialsWithResponse(String name, String version,
+        BinaryData credentialRequest, RequestOptions requestOptions) {
+        return this.serviceClient.getModelCredentialsWithResponseAsync(name, version, credentialRequest,
+            requestOptions);
     }
 
     /**
@@ -588,7 +590,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -599,10 +601,11 @@ public final class ModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetCredential> getModelCredentials(String name, String version, ModelCredentialRequest body) {
+    public Mono<DatasetCredential> getModelCredentials(String name, String version,
+        ModelCredentialRequest credentialRequest) {
         // Generated convenience method for getModelCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
     }
@@ -672,7 +675,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -682,9 +685,9 @@ public final class ModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createModelVersionAsyncWithResponseAsync(name, version, body, requestOptions);
+    public Mono<Response<BinaryData>> createModelVersionAsyncWithResponse(String name, String version,
+        BinaryData modelVersion, RequestOptions requestOptions) {
+        return this.serviceClient.createModelVersionAsyncWithResponseAsync(name, version, modelVersion, requestOptions);
     }
 
     /**
@@ -693,7 +696,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -704,10 +707,10 @@ public final class ModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateAsyncResponse> createModelVersionAsync(String name, String version, ModelVersion body) {
+    public Mono<CreateAsyncResponse> createModelVersionAsync(String name, String version, ModelVersion modelVersion) {
         // Generated convenience method for createModelVersionAsyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(modelVersion), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CreateAsyncResponse.class));
     }
@@ -717,7 +720,7 @@ public final class ModelsAsyncClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -729,11 +732,11 @@ public final class ModelsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ModelPendingUploadResponse> startModelPendingUpload(String name, String version,
-        ModelPendingUploadRequest body) {
+        ModelPendingUploadRequest pendingUploadRequest) {
         // Generated convenience method for startModelPendingUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ModelPendingUploadResponse.class));
+        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ModelPendingUploadResponse.class));
     }
 }
