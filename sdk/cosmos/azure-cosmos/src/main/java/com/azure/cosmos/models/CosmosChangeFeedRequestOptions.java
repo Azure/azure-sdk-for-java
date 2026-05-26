@@ -442,11 +442,19 @@ public final class CosmosChangeFeedRequestOptions {
         CosmosChangeFeedRequestOptions effectiveRequestOptions = this;
 
         if (pagedFluxOptions.getRequestContinuation() != null) {
+            // NOTE: this hand-maintained copy list is a known drift hazard.
+            // `createForProcessingFromContinuation` builds a fresh
+            // CosmosChangeFeedRequestOptionsImpl from the parsed continuation
+            // token, so any field NOT explicitly copied below is silently
+            // dropped. If you add a new field to CosmosChangeFeedRequestOptions
+            // and it must survive the paged-flux pull continuation path,
+            // propagate it here (and ideally add a test covering it).
             effectiveRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
             effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
             effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
+            effectiveRequestOptions.getImpl().setEmptyPagesAllowed(this.getImpl().isEmptyPagesAllowed());
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
@@ -782,6 +790,23 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.disableSplitHandling();
+                }
+
+                @Override
+                public boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getImpl().isEmptyPagesAllowed();
+                }
+
+                @Override
+                public void setAllowEmptyPages(
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                    boolean emptyPagesAllowed) {
+
+                    // Note: kept package-private (impl-side only). We deliberately do NOT
+                    // expose a public setEmptyPagesAllowed on CosmosChangeFeedRequestOptions
+                    // because the flag changes paging semantics in subtle ways the SDK
+                    // does not want most callers to opt into.
+                    changeFeedRequestOptions.getImpl().setEmptyPagesAllowed(emptyPagesAllowed);
                 }
             });
     }

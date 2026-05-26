@@ -53,6 +53,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
     private ReadConsistencyStrategy readConsistencyStrategy;
+    private boolean emptyPagesAllowed;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         if (toBeCloned.continuationState != null) {
@@ -80,6 +81,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
+        this.emptyPagesAllowed = toBeCloned.emptyPagesAllowed;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -183,6 +185,15 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
     public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
         this.quotaInfoEnabled = quotaInfoEnabled;
+    }
+
+    public boolean isEmptyPagesAllowed() {
+        return this.emptyPagesAllowed;
+    }
+
+    public CosmosChangeFeedRequestOptionsImpl setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+        this.emptyPagesAllowed = emptyPagesAllowed;
+        return this;
     }
 
     public void setDiagnosticsThresholds(

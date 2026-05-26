@@ -45,6 +45,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
+    private final boolean emptyPagesAllowed;
     private final Long endLSN;
 
     public ChangeFeedFetcher(
@@ -57,6 +58,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
+        boolean emptyPagesAllowed,
         Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
@@ -85,6 +87,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 diagnosticsClientContext);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
+        this.emptyPagesAllowed = emptyPagesAllowed;
         this.endLSN = endLSN;
     }
 
@@ -135,6 +138,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                if (ModelBridgeInternal.<T>noChanges(r)) {
                                    // if we have reached here, it means we have got 304 for the current feedRange,
                                    // but we need to continue drain the changes from other sub-feedRange
+                                   if (this.emptyPagesAllowed) {
+                                       // Surface the empty page to the caller instead of swallowing it via
+                                       // repeatWhenEmpty. isFullyDrained does not flip shouldFetchMore off
+                                       // for noChanges responses (it consults only continuation.isDone()),
+                                       // so the outer Paginator generate-loop will issue the next nextPage()
+                                       // call to drain the remaining sub-feedRanges.
+                                       return Mono.just(r);
+                                   }
                                    this.reEnableShouldFetchMoreForRetry();
                                    return Mono.empty();
                                }
@@ -146,6 +157,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                                // not all continuations have been drained yet
                                // repeat with the next continuation
+                               if (this.emptyPagesAllowed) {
+                                   // Surface the empty/304 page to the caller instead of swallowing it via
+                                   // repeatWhenEmpty. isFullyDrained does not flip shouldFetchMore off for
+                                   // noChanges responses, so Paginator will continue to drain remaining
+                                   // sub-feedRanges via the next nextPage() call.
+                                   return Mono.just(r);
+                               }
                                this.reEnableShouldFetchMoreForRetry();
                                return Mono.empty();
                            }
@@ -170,10 +188,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
     @Override
     protected boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response) {
-        if (ModelBridgeInternal.noChanges(response)) {
-            return true;
-        }
-
+        // Note: we intentionally do NOT short-circuit to true on noChanges. The
+        // original logic returned true for noChanges and then nextPageInternal
+        // had to undo that via reEnableShouldFetchMoreForRetry() before either
+        // surfacing or swallowing the page via repeatWhenEmpty. Consulting the
+        // continuation directly is both simpler and required for
+        // emptyPagesAllowed=true (where each noChanges page is surfaced to the
+        // caller and the outer Paginator loop must keep calling nextPage()).
         FeedRangeContinuation continuation = this.changeFeedState.getContinuation();
         return continuation != null && continuation.isDone();
     }
