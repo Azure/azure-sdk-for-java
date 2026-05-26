@@ -33,6 +33,14 @@ public final class SchemaRegistryHelper {
     }
 
     /**
+     * Accepted content types based on specification.
+     * See <a href="https://github.com/Azure/azure-rest-api-specs/blob/563ec395b73746bfa3c9f16f72af235d6009f816/specification/schemaregistry/data-plane/SchemaRegistry/main.tsp#L174">
+     *     SchemaContentTypeValues</a>
+     */
+    public static final String ACCEPTED_CONTENT_TYPE
+        = "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
+
+    /**
      * Accessor interface.
      */
     public interface SchemaRegistryModelsAccessor {
