@@ -85,7 +85,20 @@ public class SinkRecordTransformer {
                     containerName,
                     e);
                 if (this.errantRecordReporter != null) {
-                    this.errantRecordReporter.report(record, e);
+                    try {
+                        this.errantRecordReporter.report(record, e);
+                    } catch (Exception reportException) {
+                        LOGGER.error(
+                            "Failed to report errant record to DLQ for topic {}, partition {}, offset {}, container {}.",
+                            record.topic(),
+                            record.kafkaPartition(),
+                            record.kafkaOffset(),
+                            containerName,
+                            reportException);
+                        if (this.toleranceOnErrorLevel != ToleranceOnErrorLevel.ALL) {
+                            throw e;
+                        }
+                    }
                 } else if (this.toleranceOnErrorLevel == ToleranceOnErrorLevel.ALL) {
                     LOGGER.warn(
                         "Skipping record from topic {}, partition {}, offset {}, container {} due to transform error "

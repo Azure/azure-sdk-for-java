@@ -256,7 +256,70 @@ public class SinkRecordTransformerTest {
     }
 
     // ============================================================
-    // T6: Reporter takes precedence over tolerance NONE — when reporter is present,
+    // T6: Reporter itself throws — with tolerance NONE, original exception rethrown
+    // ============================================================
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void reporterThrows_toleranceNone_originalExceptionRethrown() throws Exception {
+        // Arrange
+        IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
+        ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
+        when(reporter.report(any(SinkRecord.class), any(Throwable.class)))
+            .thenThrow(new ConnectException("DLQ write failed"));
+
+        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.NONE);
+
+        Map<String, Object> badValue = new HashMap<>();
+        badValue.put("fail", true);
+        Map<String, Object> goodValue = new HashMap<>();
+        goodValue.put("data", "after-bad");
+
+        List<SinkRecord> batch = Arrays.asList(
+            createMapRecord("topicF", 0, 0L, badValue),
+            createMapRecord("topicF", 0, 1L, goodValue)
+        );
+
+        // Act
+        Throwable thrown = catchThrowable(() -> transformer.transform("container7", batch));
+
+        // Assert — original transform exception, NOT the DLQ exception
+        assertThat(thrown).isInstanceOf(ConnectException.class);
+        assertThat(thrown.getMessage()).contains("Cannot generate ID");
+    }
+
+    // ============================================================
+    // T7: Reporter itself throws — with tolerance ALL, record skipped and processing continues
+    // ============================================================
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
+    public void reporterThrows_toleranceAll_recordSkippedProcessingContinues() throws Exception {
+        // Arrange
+        IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
+        ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
+        when(reporter.report(any(SinkRecord.class), any(Throwable.class)))
+            .thenThrow(new ConnectException("DLQ write failed"));
+
+        SinkRecordTransformer transformer = createTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
+
+        Map<String, Object> badValue = new HashMap<>();
+        badValue.put("fail", true);
+        Map<String, Object> goodValue = new HashMap<>();
+        goodValue.put("data", "survives");
+
+        List<SinkRecord> batch = Arrays.asList(
+            createMapRecord("topicG", 0, 0L, badValue),
+            createMapRecord("topicG", 0, 1L, goodValue)
+        );
+
+        // Act — should NOT throw
+        List<SinkRecord> result = transformer.transform("container8", batch);
+
+        // Assert — only the good record survives
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(((Map<String, Object>) result.get(0).value()).get("id")).isEqualTo("generated-id-1");
+    }
+
+    // ============================================================
+    // T8: Reporter takes precedence over tolerance NONE — when reporter is present,
     //     report instead of throwing even when tolerance is NONE
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
