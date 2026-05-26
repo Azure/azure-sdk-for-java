@@ -49,7 +49,7 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
      * The initialization parameters for the evaluation. Must support structured outputs.
      */
     @Generated
-    private BinaryData initializationParameters;
+    private Map<String, BinaryData> initializationParameters;
 
     /*
      * The model to use for the evaluation. Must support structured outputs.
@@ -128,7 +128,7 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
      * @return the initializationParameters value.
      */
     @Generated
-    public BinaryData getInitializationParameters() {
+    public Map<String, BinaryData> getInitializationParameters() {
         return this.initializationParameters;
     }
 
@@ -165,10 +165,13 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("evaluator_name", this.evaluatorName);
         jsonWriter.writeStringField("evaluator_version", this.evaluatorVersion);
-        if (this.initializationParameters != null) {
-            jsonWriter.writeFieldName("initialization_parameters");
-            this.initializationParameters.writeTo(jsonWriter);
-        }
+        jsonWriter.writeMapField("initialization_parameters", this.initializationParameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeMapField("data_mapping", this.dataMapping, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -188,7 +191,7 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
             String name = null;
             String evaluatorName = null;
             String evaluatorVersion = null;
-            BinaryData initializationParameters = null;
+            Map<String, BinaryData> initializationParameters = null;
             Map<String, String> dataMapping = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -200,8 +203,8 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
                 } else if ("evaluator_version".equals(fieldName)) {
                     evaluatorVersion = reader.getString();
                 } else if ("initialization_parameters".equals(fieldName)) {
-                    initializationParameters
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    initializationParameters = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("data_mapping".equals(fieldName)) {
                     dataMapping = reader.readMap(reader1 -> reader1.getString());
                 } else {
@@ -225,7 +228,8 @@ public final class TestingCriterionAzureAIEvaluator implements JsonSerializable<
      * @return the TestingCriterionAzureAIEvaluator object itself.
      */
     @Generated
-    public TestingCriterionAzureAIEvaluator setInitializationParameters(BinaryData initializationParameters) {
+    public TestingCriterionAzureAIEvaluator
+        setInitializationParameters(Map<String, BinaryData> initializationParameters) {
         this.initializationParameters = initializationParameters;
         return this;
     }

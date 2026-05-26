@@ -224,7 +224,8 @@ public class DataGenerationJobWithEvaluationSample {
         dataMapping.put("query", "{{item.query}}");
         dataMapping.put("response", "{{sample.output_text}}");
         return Arrays.asList(
-            createAzureAIEvaluator("coherence", "builtin.coherence", modelName, dataMapping),
+            createAzureAIEvaluator("coherence", "builtin.coherence", modelName,
+                dataMapping),
             createAzureAIEvaluator("fluency", "builtin.fluency", modelName,
                 Collections.singletonMap("response", "{{sample.output_text}}")));
     }
@@ -232,7 +233,7 @@ public class DataGenerationJobWithEvaluationSample {
     private static EvalCreateParams.TestingCriterion createAzureAIEvaluator(String name, String evaluatorName,
         String modelName, Map<String, String> dataMapping) {
         TestingCriterionAzureAIEvaluator evaluator = new TestingCriterionAzureAIEvaluator(name, evaluatorName)
-            .setInitializationParameters(BinaryData.fromObject(Collections.singletonMap("deployment_name", modelName)))
+            .setInitializationParameters(Collections.singletonMap("deployment_name", BinaryData.fromString(modelName)))
             .setDataMapping(dataMapping);
 
         return EvaluationsHelper.toTestingCriterion(evaluator);
