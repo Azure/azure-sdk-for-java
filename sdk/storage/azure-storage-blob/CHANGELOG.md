@@ -10,12 +10,29 @@
 
 ### Other Changes
 
+## 12.34.0 (2026-05-14)
+
+### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.18.3` to version `12.19.0`.
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
+
 ## 12.33.4 (2026-05-05)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-internal-avro` from `12.18.2` to version `12.18.3`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.

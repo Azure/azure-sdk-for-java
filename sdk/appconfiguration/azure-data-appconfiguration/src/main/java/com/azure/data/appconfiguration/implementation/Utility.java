@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration.implementation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.models.CheckKeyValuesHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -222,5 +224,47 @@ public class Utility {
             tagsFilters = null;
         }
         return tagsFilters;
+    }
+
+    // Convert a HEAD response to a PagedResponse with empty items.
+    public static PagedResponse<ConfigurationSetting>
+        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+        String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            Collections.emptyList(), continuationToken, null);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Async handler
+    public static Mono<PagedResponse<ConfigurationSetting>>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            return Mono.error(error);
+        }
+
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return Mono.just(new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null));
+        }
+
+        return Mono.error(error);
+    }
+
+    // Handle 304 status code from HEAD request to a valid response - Sync handler
+    public static PagedResponse<ConfigurationSetting>
+        handleHeadNotModifiedErrorToValidResponse(HttpResponseException error, ClientLogger logger) {
+        HttpResponse httpResponse = error.getResponse();
+        if (httpResponse == null) {
+            throw logger.logExceptionAsError(error);
+        }
+
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
+        if (httpResponse.getStatusCode() == 304) {
+            return new PagedResponseBase<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                httpResponse.getHeaders(), Collections.emptyList(), continuationToken, null);
+        }
+
+        throw logger.logExceptionAsError(error);
     }
 }

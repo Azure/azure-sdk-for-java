@@ -27,12 +27,17 @@ public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
      * @param aadB2cProperties the AAD B2C properties
      */
     public AadB2cTrustedIssuerRepository(AadB2cProperties aadB2cProperties) {
-        super(aadB2cProperties.getProfile().getTenantId());
+        super(getTrimmedTenantId(aadB2cProperties), false);
         this.aadB2cProperties = aadB2cProperties;
         this.resolvedBaseUri = resolveBaseUri(this.aadB2cProperties.getBaseUri());
         this.userFlows = this.aadB2cProperties.getUserFlows();
         this.addB2cIssuer();
         this.addB2cUserFlowIssuers();
+    }
+
+    private static String getTrimmedTenantId(AadB2cProperties aadB2cProperties) {
+        String tenantId = aadB2cProperties != null ? aadB2cProperties.getProfile().getTenantId() : null;
+        return tenantId != null ? tenantId.trim().toLowerCase(ROOT) : null;
     }
 
     private void addB2cIssuer() {

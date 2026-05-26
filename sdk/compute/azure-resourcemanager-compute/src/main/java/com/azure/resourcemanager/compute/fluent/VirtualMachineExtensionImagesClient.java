@@ -145,8 +145,6 @@ public interface VirtualMachineExtensionImagesClient {
      * @param filter The filter to apply on the operation.
      * @param top The top parameter.
      * @param orderby The orderby parameter.
-     * @param expand The expand expression to apply on the operation. Allowed values are 'properties' and
-     * 'properties/deprecationStatus'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,7 +153,7 @@ public interface VirtualMachineExtensionImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(String location,
-        String publisherName, String type, String filter, Integer top, String orderby, String expand);
+        String publisherName, String type, String filter, Integer top, String orderby);
 
     /**
      * Gets a list of virtual machine extension image versions.
@@ -180,8 +178,6 @@ public interface VirtualMachineExtensionImagesClient {
      * @param filter The filter to apply on the operation.
      * @param top The top parameter.
      * @param orderby The orderby parameter.
-     * @param expand The expand expression to apply on the operation. Allowed values are 'properties' and
-     * 'properties/deprecationStatus'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -190,7 +186,7 @@ public interface VirtualMachineExtensionImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(String location, String publisherName,
-        String type, String filter, Integer top, String orderby, String expand, Context context);
+        String type, String filter, Integer top, String orderby, Context context);
 
     /**
      * Gets a list of virtual machine extension image versions.
