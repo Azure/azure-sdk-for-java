@@ -57,7 +57,7 @@ public class FabricIQAsync {
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(fabricIqTool));
 
-        agentsAsyncClient.createAgentVersion("MyAgent", agentDefinition)
+        agentsAsyncClient.createAgentVersion("fabric-iq-agent", agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());

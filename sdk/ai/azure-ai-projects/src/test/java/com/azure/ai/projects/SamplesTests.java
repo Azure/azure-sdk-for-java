@@ -213,57 +213,49 @@ public class SamplesTests extends ClientTestBase {
         String modelName = getRecordedConfig("FOUNDRY_MODEL_NAME");
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
-        DataGenerationJob job = null;
-        EvalCreateResponse eval = null;
+        DataGenerationJob job = dataGenerationJobsClient.createGenerationJob(
+            DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+            DATA_GENERATION_PREVIEW, testResourceNamer.randomUuid());
 
-        try {
-            job = dataGenerationJobsClient.createGenerationJob(
-                DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-                DATA_GENERATION_PREVIEW, testResourceNamer.randomUuid());
-
-            job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
-            if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
-                ApiError error = job.getError();
-                String message = error == null ? "<no error message>" : error.getMessage();
-                Assertions
-                    .fail(String.format("Job `%s` ended with status `%s`: %s", job.getId(), job.getStatus(), message));
-            }
-
-            DatasetDataGenerationJobOutput output = DataGenerationJobWithEvaluationSample.findDatasetOutput(job);
-            DatasetVersion dataset = datasetsClient.getDatasetVersion(output.getName(), output.getVersion());
-            Assertions.assertNotNull(dataset);
-            Assertions.assertNotNull(dataset.getId());
-
-            eval = openAIClient.evals().create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName));
-            Assertions.assertNotNull(eval);
-
-            RunCreateResponse evalRun = openAIClient.evals()
-                .runs()
-                .create(DataGenerationJobWithEvaluationSample.createEvaluationRunParams(eval.id(), dataset.getId(),
-                    modelName));
-            Assertions.assertNotNull(evalRun);
-
-            RunRetrieveResponse completedRun = waitForEvaluationRun(openAIClient, eval.id(), evalRun.id(), 5, 180);
-            Assertions.assertEquals("completed", completedRun.status());
-            Assertions.assertNotNull(completedRun.resultCounts());
-
-            int outputItemCount = 0;
-            for (OutputItemListResponse ignored : openAIClient.evals()
-                .runs()
-                .outputItems()
-                .list(OutputItemListParams.builder().evalId(eval.id()).runId(evalRun.id()).build())
-                .autoPager()) {
-                outputItemCount++;
-            }
-            Assertions.assertTrue(outputItemCount > 0);
-        } finally {
-            if (eval != null) {
-                openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
-            }
-            if (job != null) {
-                dataGenerationJobsClient.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
-            }
+        job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
+        if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
+            ApiError error = job.getError();
+            String message = error == null ? "<no error message>" : error.getMessage();
+            Assertions
+                .fail(String.format("Job `%s` ended with status `%s`: %s", job.getId(), job.getStatus(), message));
         }
+
+        DatasetDataGenerationJobOutput output = DataGenerationJobWithEvaluationSample.findDatasetOutput(job);
+        DatasetVersion dataset = datasetsClient.getDatasetVersion(output.getName(), output.getVersion());
+        Assertions.assertNotNull(dataset);
+        Assertions.assertNotNull(dataset.getId());
+
+        EvalCreateResponse eval
+            = openAIClient.evals().create(DataGenerationJobWithEvaluationSample.createEvaluationParams(modelName));
+        Assertions.assertNotNull(eval);
+
+        RunCreateResponse evalRun = openAIClient.evals()
+            .runs()
+            .create(
+                DataGenerationJobWithEvaluationSample.createEvaluationRunParams(eval.id(), dataset.getId(), modelName));
+        Assertions.assertNotNull(evalRun);
+
+        RunRetrieveResponse completedRun = waitForEvaluationRun(openAIClient, eval.id(), evalRun.id(), 5, 180);
+        Assertions.assertEquals("completed", completedRun.status());
+        Assertions.assertNotNull(completedRun.resultCounts());
+
+        int outputItemCount = 0;
+        for (OutputItemListResponse ignored : openAIClient.evals()
+            .runs()
+            .outputItems()
+            .list(OutputItemListParams.builder().evalId(eval.id()).runId(evalRun.id()).build())
+            .autoPager()) {
+            outputItemCount++;
+        }
+        Assertions.assertTrue(outputItemCount > 0);
+
+        openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
+        dataGenerationJobsClient.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
     }
 
     @Disabled("Requires FOUNDRY_MODEL_ASSET_NAME, FOUNDRY_MODEL_ASSET_VERSION, and FOUNDRY_MODEL_BLOB_URI.")

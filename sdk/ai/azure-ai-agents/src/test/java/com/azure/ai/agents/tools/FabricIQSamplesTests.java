@@ -55,23 +55,16 @@ public class FabricIQSamplesTests extends ClientTestBase {
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
         String agentName = testResourceNamer.randomName("fabric-iq-sync-", 40);
-        AgentVersionDetails agent = null;
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, createAgentDefinition());
+        Assertions.assertNotNull(agent);
 
-        try {
-            agent = agentsClient.createAgentVersion(agentName, createAgentDefinition());
-            Assertions.assertNotNull(agent);
-
-            AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+        AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+        Response response
+            = responsesClient.createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input(getUserInput()));
 
-            assertCompletedResponse(response);
-        } finally {
-            if (agent != null) {
-                agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
-            }
-        }
+        assertCompletedResponse(response);
+        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
     }
 
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
@@ -83,26 +76,19 @@ public class FabricIQSamplesTests extends ClientTestBase {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
         String agentName = testResourceNamer.randomName("fabric-iq-async-", 40);
-        AgentVersionDetails agent = null;
+        AgentVersionDetails agent
+            = agentsAsyncClient.createAgentVersion(agentName, createAgentDefinition()).block(Duration.ofMinutes(2));
+        Assertions.assertNotNull(agent);
 
-        try {
-            agent
-                = agentsAsyncClient.createAgentVersion(agentName, createAgentDefinition()).block(Duration.ofMinutes(2));
-            Assertions.assertNotNull(agent);
+        AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+        Response response
+            = responsesAsyncClient
+                .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder().input(getUserInput()))
+                .block(Duration.ofMinutes(3));
 
-            AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-            Response response
-                = responsesAsyncClient
-                    .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
-                        ResponseCreateParams.builder().input(getUserInput()))
-                    .block(Duration.ofMinutes(3));
-
-            assertCompletedResponse(response);
-        } finally {
-            if (agent != null) {
-                agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block(Duration.ofMinutes(1));
-            }
-        }
+        assertCompletedResponse(response);
+        agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block(Duration.ofMinutes(1));
     }
 
     private PromptAgentDefinition createAgentDefinition() {

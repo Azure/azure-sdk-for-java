@@ -58,7 +58,7 @@ public class FabricIQSync {
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(fabricIqTool));
 
-        AgentVersionDetails agent = agentsClient.createAgentVersion("MyAgent", agentDefinition);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("fabric-iq-agent", agentDefinition);
         System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
         try {
