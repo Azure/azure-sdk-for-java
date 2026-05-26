@@ -26,6 +26,10 @@
 * `AVERAGE` was added
 * `COUNT` was added
 
+#### `models.ConditionValues` was added
+
+* New utility class with `values(Condition)`, `withValues(Condition, List<String>)`, and `forListOperator(ConditionOperator, List<String>)` helpers that transparently join/split list values on the wire `^^` separator used by the `in` and `notin` operators.
+
 ## 1.0.0-beta.1 (2026-04-22)
 
 ### Features Added
