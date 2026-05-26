@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
+* Added support for creating Global Secondary Index (GSI) containers via `CosmosContainerProperties.setGlobalSecondaryIndexDefinition()` / `getGlobalSecondaryIndexDefinition()`, the new `CosmosGlobalSecondaryIndexDefinition` model, and the `CosmosGlobalSecondaryIndexBuildStatus` enum returned by `getStatus()`. - See [PR 48480](https://github.com/Azure/azure-sdk-for-java/pull/48480)
 
 #### Breaking Changes
 
