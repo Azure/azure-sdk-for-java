@@ -1,14 +1,10 @@
 ## Release History
 
-### 7.3.0 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 7.3.0 (2026-05-27)
 
 #### Other Changes
+
+* regular release
 
 ### 6.3.0 (2026-04-29)
 
