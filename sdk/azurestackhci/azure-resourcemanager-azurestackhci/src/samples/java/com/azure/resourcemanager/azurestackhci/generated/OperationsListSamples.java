@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-04-30/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.

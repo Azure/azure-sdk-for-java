@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
-import com.azure.resourcemanager.azurestackhci.models.ChangeRingRequest;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
 import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
@@ -16,8 +15,6 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.ClusterSdnProperties;
-import com.azure.resourcemanager.azurestackhci.models.ConfidentialVmProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
@@ -93,10 +90,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String cloudId() {
         return this.innerModel().cloudId();
-    }
-
-    public String ring() {
-        return this.innerModel().ring();
     }
 
     public String cloudManagementEndpoint() {
@@ -190,14 +183,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterPattern clusterPattern() {
         return this.innerModel().clusterPattern();
-    }
-
-    public ConfidentialVmProperties confidentialVmProperties() {
-        return this.innerModel().confidentialVmProperties();
-    }
-
-    public ClusterSdnProperties sdnProperties() {
-        return this.innerModel().sdnProperties();
     }
 
     public List<LocalAvailabilityZones> localAvailabilityZones() {
@@ -368,14 +353,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         Context context) {
         return serviceManager.clusters()
             .extendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest, context);
-    }
-
-    public Cluster changeRing(ChangeRingRequest changeRingRequest) {
-        return serviceManager.clusters().changeRing(resourceGroupName, clusterName, changeRingRequest);
-    }
-
-    public Cluster changeRing(ChangeRingRequest changeRingRequest, Context context) {
-        return serviceManager.clusters().changeRing(resourceGroupName, clusterName, changeRingRequest, context);
     }
 
     public Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest) {

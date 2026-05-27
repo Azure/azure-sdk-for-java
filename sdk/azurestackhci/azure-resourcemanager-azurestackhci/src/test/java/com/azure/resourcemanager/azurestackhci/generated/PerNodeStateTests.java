@@ -11,7 +11,7 @@ public final class PerNodeStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PerNodeState model = BinaryData.fromString(
-            "{\"name\":\"es\",\"arcInstance\":\"vlopwiyighx\",\"arcNodeServicePrincipalObjectId\":\"dwzbaiue\",\"state\":\"Updating\"}")
+            "{\"name\":\"theotusiv\",\"arcInstance\":\"v\",\"arcNodeServicePrincipalObjectId\":\"iqihn\",\"state\":\"Creating\"}")
             .toObject(PerNodeState.class);
     }
 }

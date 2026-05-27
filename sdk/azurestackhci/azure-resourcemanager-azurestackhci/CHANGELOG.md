@@ -1,14 +1,103 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0 (2026-05-15)
+
+- Azure Resource Manager Azure Stack Hci client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Management SDK. Azure Stack HCI service. Package api-version 2026-04-30. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.RemoteSupportProvisioningState` was added
 
-### Bugs Fixed
+* `models.ClusterBillingProperties` was added
 
-### Other Changes
+* `models.EdgeDeviceDisks` was added
+
+* `models.SanAdapterProperties` was added
+
+* `models.StorageS2dConfig` was added
+
+* `models.SanNetworks` was added
+
+* `models.StorageType` was added
+
+* `models.StorageSanConfig` was added
+
+* `models.SanClusterNetworkConfig` was added
+
+* `models.UpdateSummariesOperationGroups` was added
+
+* `models.OverprovisioningRatio` was added
+
+* `models.VolumeType` was added
+
+* `models.SanAdapterIPConfig` was added
+
+* `models.NextBillingModel` was added
+
+* `models.CheckUpdatesRequest` was added
+
+#### `models.Updates` was modified
+
+* `prepare(java.lang.String,java.lang.String,java.lang.String)` was added
+* `prepare(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.HciReportedProperties` was modified
+
+* `lastSyncTimestamp()` was added
+
+#### `models.Storage` was modified
+
+* `s2d()` was added
+* `withStorageType(models.StorageType)` was added
+* `withS2d(models.StorageS2dConfig)` was added
+* `storageType()` was added
+* `withSan(models.StorageSanConfig)` was added
+* `san()` was added
+
+#### `models.DeploymentSettingHostNetwork` was modified
+
+* `withSanNetworks(models.SanNetworks)` was added
+* `sanNetworks()` was added
+
+#### `models.Cluster` was modified
+
+* `storageType()` was added
+* `kind()` was added
+* `billingProperties()` was added
+
+#### `models.HciStorageProfile` was modified
+
+* `disks()` was added
+
+#### `models.PerNodeRemoteSupportSession` was modified
+
+* `transcriptLocation()` was added
+
+#### `models.ReportedProperties` was modified
+
+* `lastSyncTimestamp()` was added
+
+#### `models.RemoteSupportProperties` was modified
+
+* `remoteSupportProvisioningState()` was added
+
+#### `models.State` was modified
+
+* `PENDING_OEMVALIDATION` was added
+* `HEALTH_CHECK_EXPIRED` was added
+
+#### `models.HciUpdate` was modified
+
+* `prepare(com.azure.core.util.Context)` was added
+* `prepare()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withKind(java.lang.String)` was added
+
+#### `AzureStackHciManager` was modified
+
+* `updateSummariesOperationGroups()` was added
 
 ## 1.1.0-beta.1 (2026-04-14)
 
