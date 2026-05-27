@@ -1439,6 +1439,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 exception,
                 mostRecentlyCreatedDiagnostics);
         } else {
+            if (requestOptions == null) {
+                return;
+            }
             List<CosmosDiagnostics> cancelledRequestDiagnostics =
                 qryOptAccessor
                     .getCancelledRequestDiagnosticsTracker(requestOptions);
@@ -1492,7 +1495,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         CosmosException cancellationException = getNegativeTimeoutException(null, endToEndTimeout);
                         cancellationException.setStackTrace(throwable.getStackTrace());
 
-                        isQueryCancelledOnTimeout.set(true);
+                        if (isQueryCancelledOnTimeout != null) {
+                            isQueryCancelledOnTimeout.set(true);
+                        }
 
                         applyExceptionToMergedDiagnosticsForQuery(
                             requestOptions, cancellationException, diagnosticsClientContext);
@@ -1510,53 +1515,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
 
-                    isQueryCancelledOnTimeout.set(true);
+                    if (isQueryCancelledOnTimeout != null) {
+                        isQueryCancelledOnTimeout.set(true);
+                    }
 
                     applyExceptionToMergedDiagnosticsForQuery(requestOptions, exception, diagnosticsClientContext);
-
-                    return exception;
-                }
-                return throwable;
-            });
-    }
-
-    private static <T> Flux<FeedResponse<T>> getChangeFeedResponseFluxWithTimeout(
-        Flux<FeedResponse<T>> feedResponseFlux,
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext diagnosticsClientContext) {
-
-        Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
-
-        if (endToEndTimeout.isNegative()) {
-            return feedResponseFlux
-                .timeout(endToEndTimeout)
-                .onErrorMap(throwable -> {
-                    if (throwable instanceof TimeoutException) {
-                        CosmosException cancellationException = getNegativeTimeoutException(null, endToEndTimeout);
-                        cancellationException.setStackTrace(throwable.getStackTrace());
-
-                        CosmosDiagnostics mostRecentDiagnostics = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                        if (mostRecentDiagnostics != null) {
-                            BridgeInternal.setCosmosDiagnostics(cancellationException, mostRecentDiagnostics);
-                        }
-
-                        return cancellationException;
-                    }
-                    return throwable;
-                });
-        }
-
-        return feedResponseFlux
-            .timeout(endToEndTimeout)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof TimeoutException) {
-                    CosmosException exception = new OperationCancelledException();
-                    exception.setStackTrace(throwable.getStackTrace());
-
-                    CosmosDiagnostics mostRecentDiagnostics = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                    if (mostRecentDiagnostics != null) {
-                        BridgeInternal.setCosmosDiagnostics(exception, mostRecentDiagnostics);
-                    }
 
                     return exception;
                 }
@@ -4834,7 +4797,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Flux<FeedResponse<T>> feedResponseFlux = changeFeedQueryImpl.executeAsync();
 
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-            return getChangeFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, diagnosticsClientContext);
+            return getFeedResponseFluxWithTimeout(
+                feedResponseFlux,
+                endToEndPolicyConfig,
+                null,
+                null,
+                diagnosticsClientContext);
         }
 
         return feedResponseFlux;

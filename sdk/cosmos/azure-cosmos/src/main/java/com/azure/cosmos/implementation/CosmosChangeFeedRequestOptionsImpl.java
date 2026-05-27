@@ -421,6 +421,9 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.endToEndOperationLatencyPolicyConfig = overrideOption(
+            cosmosRequestOptions.getCosmosEndToEndLatencyPolicyConfig(),
+            this.endToEndOperationLatencyPolicyConfig);
     }
 
 }

@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
+* Added support for `CosmosEndToEndOperationLatencyPolicyConfig` on `queryChangeFeed` operations so that an end-to-end operation timeout (and associated availability strategy) configured at the client level, request level, or via `CosmosOperationPolicy` is now honored for change feed queries. - See [PR 48144](https://github.com/Azure/azure-sdk-for-java/pull/48144)
 
 #### Breaking Changes
 
