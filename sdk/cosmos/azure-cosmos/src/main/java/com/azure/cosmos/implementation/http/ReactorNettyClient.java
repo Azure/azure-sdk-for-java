@@ -37,7 +37,6 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
@@ -61,7 +60,6 @@ public class ReactorNettyClient implements HttpClient {
     private ConnectionProvider connectionProvider;
     private String reactorNetworkLogCategory;
     private Logger wireTapLogger;
-    private final AtomicBoolean http2PingDisabled = new AtomicBoolean(false);
 
     private ReactorNettyClient() {}
 
@@ -149,20 +147,12 @@ public class ReactorNettyClient implements HttpClient {
         boolean isH2Enabled = http2CfgAccessor().isEffectivelyEnabled(http2Cfg);
 
         if (isH2Enabled) {
-            final AtomicBoolean pingDisabledRef = this.http2PingDisabled;
             this.httpClient = this.httpClient.doOnConnected(connection -> {
                 // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
                 // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
-                // For H2, the first doOnConnected fires for the parent TCP channel (parent()==null),
-                // and the second fires for stream channels (parent()!=null).
-                // We install on the parent channel -- detect it via Http2MultiplexHandler in the pipeline.
-                //
-                // If the server rejects PING (e.g., Cosmos DB Dedicated Gateway's custom Mux stack
-                // returns RST_STREAM/PROTOCOL_ERROR), the handler sets clientPingDisabled and removes
-                // itself. The connection is lost (server-side close), but the pool replaces it, and
-                // no further PINGs are sent from this CosmosClient.
-                if (Configs.isHttp2PingHealthEnabled()
-                    && !pingDisabledRef.get()) {
+                // For H2, doOnConnected fires for both the parent TCP channel and child stream
+                // channels. We install on the parent channel via Http2MultiplexHandler detection.
+                if (Configs.isHttp2PingHealthEnabled()) {
                     // Resolve to the parent (TCP) channel -- doOnConnected may fire for
                     // child stream channels where Http2MultiplexHandler is absent.
                     Channel ch = connection.channel();
@@ -173,7 +163,7 @@ public class ReactorNettyClient implements HttpClient {
                         int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
                         if (pingIntervalSeconds > 0) {
                             Http2PingHandler.installIfAbsent(parent, pingIntervalSeconds,
-                                pingTimeoutSeconds, pingFailureThreshold, pingDisabledRef);
+                                pingTimeoutSeconds, pingFailureThreshold);
                         }
                     }
                 }
