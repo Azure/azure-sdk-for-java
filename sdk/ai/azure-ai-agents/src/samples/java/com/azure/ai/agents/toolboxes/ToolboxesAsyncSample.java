@@ -5,6 +5,7 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesAsyncClient;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -50,31 +51,38 @@ public class ToolboxesAsyncSample {
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
                 .setRequireApproval("always"));
 
-        Mono<Void> workflow = toolboxesAsyncClient.deleteToolbox(toolboxName)
+        Mono<Void> workflow = toolboxesAsyncClient.deleteToolbox(toolboxName,
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)
             .doOnSuccess(unused -> System.out.printf("Toolbox `%s` deleted%n", toolboxName))
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalNever,
-                "Toolbox version with MCP require_approval set to 'never'.", null, null))
+                "Toolbox version with MCP require_approval set to 'never'.", null, null, null,
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnNext(created -> System.out.printf(
                 "Created toolbox: %s with MCP tools requiring approval 'never' in version %s%n",
                 created.getName(), created.getVersion()))
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalAlways,
-                "Toolbox version with MCP require_approval set to 'always'.", null, null))
+                "Toolbox version with MCP require_approval set to 'always'.", null, null, null,
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnNext(created -> System.out.printf(
                 "Created toolbox: %s with MCP tools requiring approval 'always' in version %s%n",
                 created.getName(), created.getVersion()))
-            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "2"))
+            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "2",
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .flatMap(updated -> printFetchedDefaultToolboxVersion(toolboxesAsyncClient, updated))
-            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "1"))
+            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "1",
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .flatMap(updated -> printFetchedDefaultToolboxVersion(toolboxesAsyncClient, updated))
             .then(Mono.fromRunnable(() -> System.out.println("Listing toolboxes...")))
-            .thenMany(toolboxesAsyncClient.listToolboxes())
+            .thenMany(toolboxesAsyncClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnNext(item -> System.out.printf("  - %s (%s)%n", item.getName(), item.getId()))
-            .then(toolboxesAsyncClient.deleteToolbox(toolboxName))
+            .then(toolboxesAsyncClient.deleteToolbox(toolboxName,
+                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnSuccess(unused -> System.out.println("Toolbox deleted"));
 
         workflow
-            .onErrorResume(error -> toolboxesAsyncClient.deleteToolbox(toolboxName)
+            .onErrorResume(error -> toolboxesAsyncClient.deleteToolbox(toolboxName,
+                    FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)
                 .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
                 .then(Mono.error(error)))
             .timeout(Duration.ofMinutes(5))
@@ -86,10 +94,11 @@ public class ToolboxesAsyncSample {
         System.out.printf("Updated toolbox: %s default version is now %s%n", updated.getName(),
             updated.getDefaultVersion());
 
-        return toolboxesAsyncClient.getToolbox(updated.getName())
+        return toolboxesAsyncClient.getToolbox(updated.getName(), FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)
             .doOnNext(fetched -> System.out.printf("Retrieved toolbox with default version: %s%n",
                 fetched.getDefaultVersion()))
-            .flatMap(fetched -> toolboxesAsyncClient.getToolboxVersion(fetched.getName(), fetched.getDefaultVersion()))
+            .flatMap(fetched -> toolboxesAsyncClient.getToolboxVersion(fetched.getName(),
+                fetched.getDefaultVersion(), FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
             .doOnNext(version -> printMcpRequireApproval(version.getTools()));
     }
 

@@ -6,8 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.DataGenerationJobsImpl;
 import com.azure.ai.projects.models.DataGenerationJob;
-import com.azure.ai.projects.models.DataGenerationJobScenario;
-import com.azure.ai.projects.models.DataGenerationJobType;
 import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -22,9 +20,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -70,7 +65,7 @@ public final class DataGenerationJobsClient {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -164,10 +159,6 @@ public final class DataGenerationJobsClient {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>scenario</td><td>String</td><td>No</td><td>Filter data generation jobs by their scenario. Allowed values:
-     * "supervised_finetuning", "reinforcement_finetuning", "evaluation".</td></tr>
-     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter data generation jobs by their type. In the form
-     * of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -191,7 +182,7 @@ public final class DataGenerationJobsClient {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -285,7 +276,7 @@ public final class DataGenerationJobsClient {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -351,7 +342,7 @@ public final class DataGenerationJobsClient {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -446,7 +437,7 @@ public final class DataGenerationJobsClient {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -597,69 +588,6 @@ public final class DataGenerationJobsClient {
         // Generated convenience method for getGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getGenerationJobWithResponse(jobId, requestOptions).getValue().toObject(DataGenerationJob.class);
-    }
-
-    /**
-     * Returns a list of data generation jobs
-     *
-     * Returns a list of data generation jobs.
-     *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param scenario Filter data generation jobs by their scenario.
-     * @param type Filter data generation jobs by their type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataGenerationJob> listGenerationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
-        PageOrder order, String after, String before, DataGenerationJobScenario scenario,
-        List<DataGenerationJobType> type) {
-        // Generated convenience method for listGenerationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (scenario != null) {
-            requestOptions.addQueryParam("scenario", scenario.toString(), false);
-        }
-        if (type != null) {
-            requestOptions.addQueryParam("type",
-                type.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listGenerationJobs(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 
     /**
@@ -830,5 +758,55 @@ public final class DataGenerationJobsClient {
         // Generated convenience method for deleteGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteGenerationJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Returns a list of data generation jobs
+     *
+     * Returns a list of data generation jobs.
+     *
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataGenerationJob> listGenerationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+        PageOrder order, String after, String before) {
+        // Generated convenience method for listGenerationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listGenerationJobs(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataGenerationJob.class));
     }
 }

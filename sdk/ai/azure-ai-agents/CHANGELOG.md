@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
+
+### Other Changes
+
+- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

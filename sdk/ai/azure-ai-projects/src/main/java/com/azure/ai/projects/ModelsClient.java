@@ -377,7 +377,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -387,9 +387,10 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> startModelPendingUploadWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.startModelPendingUploadWithResponse(name, version, body, requestOptions);
+    public Response<BinaryData> startModelPendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
+        return this.serviceClient.startModelPendingUploadWithResponse(name, version, pendingUploadRequest,
+            requestOptions);
     }
 
     /**
@@ -423,7 +424,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -433,9 +434,9 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getModelCredentialsWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getModelCredentialsWithResponse(name, version, body, requestOptions);
+    public Response<BinaryData> getModelCredentialsWithResponse(String name, String version,
+        BinaryData credentialRequest, RequestOptions requestOptions) {
+        return this.serviceClient.getModelCredentialsWithResponse(name, version, credentialRequest, requestOptions);
     }
 
     /**
@@ -554,7 +555,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -565,10 +566,12 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetCredential getModelCredentials(String name, String version, ModelCredentialRequest body) {
+    public DatasetCredential getModelCredentials(String name, String version,
+        ModelCredentialRequest credentialRequest) {
         // Generated convenience method for getModelCredentialsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(body), requestOptions).getValue()
+        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .getValue()
             .toObject(DatasetCredential.class);
     }
 
@@ -637,7 +640,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -647,9 +650,9 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createModelVersionAsyncWithResponse(name, version, body, requestOptions);
+    public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version,
+        BinaryData modelVersion, RequestOptions requestOptions) {
+        return this.serviceClient.createModelVersionAsyncWithResponse(name, version, modelVersion, requestOptions);
     }
 
     /**
@@ -658,7 +661,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -669,10 +672,10 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateAsyncResponse createModelVersionAsync(String name, String version, ModelVersion body) {
+    public CreateAsyncResponse createModelVersionAsync(String name, String version, ModelVersion modelVersion) {
         // Generated convenience method for createModelVersionAsyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
+        return createModelVersionAsyncWithResponse(name, version, BinaryData.fromObject(modelVersion), requestOptions)
             .getValue()
             .toObject(CreateAsyncResponse.class);
     }
@@ -682,7 +685,7 @@ public final class ModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -694,11 +697,10 @@ public final class ModelsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelPendingUploadResponse startModelPendingUpload(String name, String version,
-        ModelPendingUploadRequest body) {
+        ModelPendingUploadRequest pendingUploadRequest) {
         // Generated convenience method for startModelPendingUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(ModelPendingUploadResponse.class);
+        return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest),
+            requestOptions).getValue().toObject(ModelPendingUploadResponse.class);
     }
 }

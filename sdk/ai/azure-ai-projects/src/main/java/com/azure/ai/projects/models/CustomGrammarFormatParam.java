@@ -28,7 +28,7 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
      * The syntax of the grammar definition. One of `lark` or `regex`.
      */
     @Generated
-    private final GrammarSyntax1 syntax;
+    private final GrammarSyntax syntax;
 
     /*
      * The grammar definition.
@@ -53,7 +53,7 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
      * @return the syntax value.
      */
     @Generated
-    public GrammarSyntax1 getSyntax() {
+    public GrammarSyntax getSyntax() {
         return this.syntax;
     }
 
@@ -92,14 +92,14 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
     @Generated
     public static CustomGrammarFormatParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GrammarSyntax1 syntax = null;
+            GrammarSyntax syntax = null;
             String definition = null;
             CustomToolParamFormatType type = CustomToolParamFormatType.GRAMMAR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("syntax".equals(fieldName)) {
-                    syntax = GrammarSyntax1.fromString(reader.getString());
+                    syntax = GrammarSyntax.fromString(reader.getString());
                 } else if ("definition".equals(fieldName)) {
                     definition = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -122,7 +122,7 @@ public final class CustomGrammarFormatParam extends CustomToolParamFormat {
      * @param definition the definition value to set.
      */
     @Generated
-    public CustomGrammarFormatParam(GrammarSyntax1 syntax, String definition) {
+    public CustomGrammarFormatParam(GrammarSyntax syntax, String definition) {
         this.syntax = syntax;
         this.definition = definition;
     }

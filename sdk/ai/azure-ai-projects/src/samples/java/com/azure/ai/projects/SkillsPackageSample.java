@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.SkillDetails;
+import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
+import com.azure.ai.projects.models.FilesFileDetails;
+import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -40,28 +44,27 @@ public class SkillsPackageSample {
             // The sample skill does not already exist.
         }
 
-        SkillDetails imported = null;
+        SkillVersion imported = null;
         try {
-            // BEGIN:com.azure.ai.projects.SkillsPackageSample.createSkillFromPackage
+            // BEGIN:com.azure.ai.projects.SkillsPackageSample.createSkillVersionFromFiles
 
-            imported = SKILLS_CLIENT.createSkillFromPackage(createSkillPackage());
+            imported = SKILLS_CLIENT.createSkillVersionFromFiles(SKILL_NAME, createSkillPackageBody());
             System.out.println("Imported skill from package: " + imported.getName()
-                + " (" + imported.getSkillId() + ") blobPresent=" + imported.isBlobPresent());
+                + " (version=" + imported.getVersion() + ")");
 
-            // END:com.azure.ai.projects.SkillsPackageSample.createSkillFromPackage
+            // END:com.azure.ai.projects.SkillsPackageSample.createSkillVersionFromFiles
 
-            // BEGIN:com.azure.ai.projects.SkillsPackageSample.downloadSkill
+            // BEGIN:com.azure.ai.projects.SkillsPackageSample.getSkillContent
 
-            SkillDetails fetched = SKILLS_CLIENT.getSkill(imported.getName());
-            System.out.println("Fetched imported skill: " + fetched.getName()
-                + " (" + fetched.getSkillId() + ") blobPresent=" + fetched.isBlobPresent());
+            Skill fetched = SKILLS_CLIENT.getSkill(imported.getName());
+            System.out.println("Fetched imported skill: " + fetched.getName());
 
-            BinaryData downloaded = SKILLS_CLIENT.downloadSkill(fetched.getName());
+            BinaryData downloaded = SKILLS_CLIENT.getSkillContent(fetched.getName());
             Path downloadPath = Files.createTempFile(fetched.getName() + "-", ".zip");
             Files.write(downloadPath, downloaded.toBytes());
             System.out.println("Downloaded skill package path: " + downloadPath);
 
-            // END:com.azure.ai.projects.SkillsPackageSample.downloadSkill
+            // END:com.azure.ai.projects.SkillsPackageSample.getSkillContent
         } finally {
             String skillName = imported == null ? SKILL_NAME : imported.getName();
             try {
@@ -73,7 +76,7 @@ public class SkillsPackageSample {
         }
     }
 
-    private static BinaryData createSkillPackage() throws IOException {
+    private static CreateSkillVersionFromFilesBody createSkillPackageBody() throws IOException {
         String skillMarkdown = "---\n"
             + "name: " + SKILL_NAME + "\n"
             + "description: Answers product support questions using company policy and product guidance.\n"
@@ -87,6 +90,8 @@ public class SkillsPackageSample {
             zipOutputStream.closeEntry();
         }
 
-        return BinaryData.fromBytes(outputStream.toByteArray());
+        FilesFileDetails fileDetails = new FilesFileDetails(BinaryData.fromBytes(outputStream.toByteArray()))
+            .setFilename(SKILL_NAME + ".zip");
+        return new CreateSkillVersionFromFilesBody(Arrays.asList(fileDetails));
     }
 }

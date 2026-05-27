@@ -206,7 +206,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -305,7 +305,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -400,10 +400,6 @@ public final class DataGenerationJobsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>scenario</td><td>String</td><td>No</td><td>Filter data generation jobs by their scenario. Allowed values:
-     * "supervised_finetuning", "reinforcement_finetuning", "evaluation".</td></tr>
-     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter data generation jobs by their type. In the form
-     * of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -427,7 +423,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -523,10 +519,6 @@ public final class DataGenerationJobsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>scenario</td><td>String</td><td>No</td><td>Filter data generation jobs by their scenario. Allowed values:
-     * "supervised_finetuning", "reinforcement_finetuning", "evaluation".</td></tr>
-     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter data generation jobs by their type. In the form
-     * of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -550,7 +542,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -640,10 +632,6 @@ public final class DataGenerationJobsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>scenario</td><td>String</td><td>No</td><td>Filter data generation jobs by their scenario. Allowed values:
-     * "supervised_finetuning", "reinforcement_finetuning", "evaluation".</td></tr>
-     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter data generation jobs by their type. In the form
-     * of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -667,7 +655,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -761,10 +749,6 @@ public final class DataGenerationJobsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>scenario</td><td>String</td><td>No</td><td>Filter data generation jobs by their scenario. Allowed values:
-     * "supervised_finetuning", "reinforcement_finetuning", "evaluation".</td></tr>
-     * <tr><td>type</td><td>List&lt;String&gt;</td><td>No</td><td>Filter data generation jobs by their type. In the form
-     * of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -788,7 +772,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -881,7 +865,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -947,7 +931,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -1045,7 +1029,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -1111,7 +1095,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -1208,7 +1192,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]
@@ -1305,7 +1289,7 @@ public final class DataGenerationJobsImpl {
      *         name: String (Required)
      *         sources (Required): [
      *              (Required){
-     *                 type: String(prompt/agent/traces/dataset/file) (Required)
+     *                 type: String(prompt/agent/traces/file) (Required)
      *                 description: String (Optional)
      *             }
      *         ]

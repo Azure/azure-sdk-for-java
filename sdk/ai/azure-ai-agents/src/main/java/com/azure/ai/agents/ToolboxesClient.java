@@ -6,10 +6,12 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
+import com.azure.ai.agents.models.ToolboxSkill;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -19,6 +21,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -61,6 +64,11 @@ public final class ToolboxesClient {
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
@@ -86,6 +94,11 @@ public final class ToolboxesClient {
      *     tools (Required): [
      *          (Required){
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -228,6 +241,11 @@ public final class ToolboxesClient {
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
      *     policies (Optional): {
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
@@ -269,6 +287,11 @@ public final class ToolboxesClient {
      *     tools (Required): [
      *          (Required){
      *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -376,9 +399,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
-     * @param description A human-readable description of the toolbox.
-     * @param metadata Arbitrary key-value metadata to associate with the toolbox.
-     * @param policies Policy configuration for this toolbox version.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -387,39 +408,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools, String description,
-        Map<String, String> metadata, ToolboxPolicies policies) {
+    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateToolboxVersionRequest createToolboxVersionRequestObj
-            = new CreateToolboxVersionRequest(tools).setDescription(description)
-                .setMetadata(metadata)
-                .setPolicies(policies);
-        BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
-        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions).getValue()
-            .toObject(ToolboxVersionDetails.class);
-    }
-
-    /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
-     *
-     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
-     * @param tools The list of tools to include in this version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific version of a toolbox.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools) {
-        // Generated convenience method for createToolboxVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
         return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions).getValue()
@@ -430,6 +426,7 @@ public final class ToolboxesClient {
      * Retrieve a toolbox.
      *
      * @param name The name of the toolbox to retrieve.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -438,17 +435,20 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxDetails getToolbox(String name) {
+    public ToolboxDetails getToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxWithResponse(name, requestOptions).getValue().toObject(ToolboxDetails.class);
     }
 
     /**
      * List all toolboxes.
      *
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -467,11 +467,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes(Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
+        PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -491,6 +494,7 @@ public final class ToolboxesClient {
     /**
      * List all toolboxes.
      *
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -498,11 +502,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxDetails> listToolboxes() {
+    public PagedIterable<ToolboxDetails> listToolboxes(FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxes
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxes(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxDetails.class));
     }
@@ -511,6 +517,7 @@ public final class ToolboxesClient {
      * List all versions of a toolbox.
      *
      * @param name The name of the toolbox to list versions for.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -529,12 +536,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
-        String after, String before) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name,
+        FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -555,6 +564,7 @@ public final class ToolboxesClient {
      * List all versions of a toolbox.
      *
      * @param name The name of the toolbox to list versions for.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -563,11 +573,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name) {
+    public PagedIterable<ToolboxVersionDetails> listToolboxVersions(String name,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return serviceClient.listToolboxVersions(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ToolboxVersionDetails.class));
     }
@@ -577,6 +590,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -585,11 +599,14 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a toolbox.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxVersionDetails getToolboxVersion(String name, String version) {
+    public ToolboxVersionDetails getToolboxVersion(String name, String version,
+        FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         return getToolboxVersionWithResponse(name, version, requestOptions).getValue()
             .toObject(ToolboxVersionDetails.class);
     }
@@ -600,6 +617,7 @@ public final class ToolboxesClient {
      * @param name The name of the toolbox to update.
      * @param defaultVersion The version identifier that the toolbox should point to. When set, the toolbox's default
      * version will resolve to this version instead of the latest.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -608,11 +626,13 @@ public final class ToolboxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a toolbox that stores reusable tool definitions for agents.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ToolboxDetails updateToolbox(String name, String defaultVersion) {
+    public ToolboxDetails updateToolbox(String name, String defaultVersion, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
         BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
         return updateToolboxWithResponse(name, updateToolboxRequest, requestOptions).getValue()
@@ -623,6 +643,7 @@ public final class ToolboxesClient {
      * Delete a toolbox and all its versions.
      *
      * @param name The name of the toolbox to delete.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -630,11 +651,13 @@ public final class ToolboxesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteToolbox(String name) {
+    public void deleteToolbox(String name, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         deleteToolboxWithResponse(name, requestOptions).getValue();
     }
 
@@ -643,6 +666,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -650,11 +674,51 @@ public final class ToolboxesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteToolboxVersion(String name, String version) {
+    public void deleteToolboxVersion(String name, String version, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for deleteToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
         deleteToolboxVersionWithResponse(name, version, requestOptions).getValue();
+    }
+
+    /**
+     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     *
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param tools The list of tools to include in this version.
+     * @param description A human-readable description of the toolbox.
+     * @param metadata Arbitrary key-value metadata to associate with the toolbox.
+     * @param skills The list of skill sources to include in this version. A skill reference specifies a skill name and
+     * optionally a version. If version is omitted, the skill's default version is used.
+     * @param policies Policy configuration for this toolbox version.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a toolbox.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ToolboxVersionDetails createToolboxVersion(String name, List<Tool> tools, String description,
+        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies,
+        FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for createToolboxVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        CreateToolboxVersionRequest createToolboxVersionRequestObj
+            = new CreateToolboxVersionRequest(tools).setDescription(description)
+                .setMetadata(metadata)
+                .setSkills(skills)
+                .setPolicies(policies);
+        BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
+        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions).getValue()
+            .toObject(ToolboxVersionDetails.class);
     }
 }

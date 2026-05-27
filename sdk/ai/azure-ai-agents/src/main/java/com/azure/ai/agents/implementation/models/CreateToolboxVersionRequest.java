@@ -5,6 +5,7 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxPolicies;
+import com.azure.ai.agents.models.ToolboxSkill;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -141,6 +142,7 @@ public final class CreateToolboxVersionRequest implements JsonSerializable<Creat
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("policies", this.policies);
         return jsonWriter.writeEndObject();
     }
@@ -160,6 +162,7 @@ public final class CreateToolboxVersionRequest implements JsonSerializable<Creat
             List<Tool> tools = null;
             String description = null;
             Map<String, String> metadata = null;
+            List<ToolboxSkill> skills = null;
             ToolboxPolicies policies = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -170,6 +173,8 @@ public final class CreateToolboxVersionRequest implements JsonSerializable<Creat
                     description = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> ToolboxSkill.fromJson(reader1));
                 } else if ("policies".equals(fieldName)) {
                     policies = ToolboxPolicies.fromJson(reader);
                 } else {
@@ -180,8 +185,40 @@ public final class CreateToolboxVersionRequest implements JsonSerializable<Creat
                 = new CreateToolboxVersionRequest(tools);
             deserializedCreateToolboxVersionRequest.description = description;
             deserializedCreateToolboxVersionRequest.metadata = metadata;
+            deserializedCreateToolboxVersionRequest.skills = skills;
             deserializedCreateToolboxVersionRequest.policies = policies;
             return deserializedCreateToolboxVersionRequest;
         });
+    }
+
+    /*
+     * The list of skill sources to include in this version. A skill reference specifies a skill name and optionally a
+     * version. If version is omitted, the skill's default version is used.
+     */
+    @Generated
+    private List<ToolboxSkill> skills;
+
+    /**
+     * Get the skills property: The list of skill sources to include in this version. A skill reference specifies a
+     * skill name and optionally a version. If version is omitted, the skill's default version is used.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<ToolboxSkill> getSkills() {
+        return this.skills;
+    }
+
+    /**
+     * Set the skills property: The list of skill sources to include in this version. A skill reference specifies a
+     * skill name and optionally a version. If version is omitted, the skill's default version is used.
+     *
+     * @param skills the skills value to set.
+     * @return the CreateToolboxVersionRequest object itself.
+     */
+    @Generated
+    public CreateToolboxVersionRequest setSkills(List<ToolboxSkill> skills) {
+        this.skills = skills;
+        return this;
     }
 }

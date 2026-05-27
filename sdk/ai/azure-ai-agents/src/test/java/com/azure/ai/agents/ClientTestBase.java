@@ -15,7 +15,9 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.services.async.ConversationServiceAsync;
+import com.openai.services.async.ResponseServiceAsync;
 import com.openai.services.blocking.ConversationService;
+import com.openai.services.blocking.ResponseService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +84,16 @@ public class ClientTestBase extends TestProxyTestBase {
     protected ResponsesAsyncClient getResponsesAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
         return getClientBuilder(httpClient, agentsServiceVersion).buildResponsesAsyncClient();
+    }
+
+    protected ResponseService getResponseServiceSyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIClient().responses();
+    }
+
+    protected ResponseServiceAsync getResponseServiceAsyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().responses();
     }
 
     protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,

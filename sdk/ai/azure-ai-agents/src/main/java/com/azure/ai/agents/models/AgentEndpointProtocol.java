@@ -72,4 +72,10 @@ public final class AgentEndpointProtocol extends ExpandableStringEnum<AgentEndpo
      */
     @Generated
     public static final AgentEndpointProtocol MCP = fromString("mcp");
+
+    /**
+     * WebSocket-based protocol for hosted voice and real-time streaming agents.
+     */
+    @Generated
+    public static final AgentEndpointProtocol INVOCATIONS_WS = fromString("invocations_ws");
 }

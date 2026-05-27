@@ -31,12 +31,6 @@ public final class DataGenerationJobSourceType extends ExpandableStringEnum<Data
     public static final DataGenerationJobSourceType TRACES = fromString("traces");
 
     /**
-     * Dataset source — reference to a dataset.
-     */
-    @Generated
-    public static final DataGenerationJobSourceType DATASET = fromString("dataset");
-
-    /**
      * File source — Azure OpenAI file.
      */
     @Generated

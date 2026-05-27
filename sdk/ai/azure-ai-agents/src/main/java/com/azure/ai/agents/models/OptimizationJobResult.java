@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Terminal-state result body. Populated when `status` is `succeeded` or `failed`.
+ * Terminal-state result body. Populated when status is succeeded or failed.
  */
 @Immutable
 public final class OptimizationJobResult implements JsonSerializable<OptimizationJobResult> {
@@ -37,40 +37,16 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     private List<OptimizationCandidate> candidates;
 
     /*
-     * Candidates on the Pareto frontier (maximize score, minimize cost).
-     */
-    @Generated
-    private List<OptimizationCandidate> paretoFrontier;
-
-    /*
-     * Score of the best candidate on the held-out validation dataset. Null when no validation dataset was provided.
-     */
-    @Generated
-    private OptimizationCandidate validationScore;
-
-    /*
      * The options used for this optimization run.
      */
     @Generated
     private OptimizationOptions options;
 
     /*
-     * Number of tasks sampled during optimization iterations (null if sampling was not used).
-     */
-    @Generated
-    private Integer sampleSize;
-
-    /*
-     * Non-fatal warnings from the optimization run (e.g., strategy failures that were skipped).
+     * Non-fatal warnings from the optimization run (e.g., target attribute failures that were skipped).
      */
     @Generated
     private List<String> warnings;
-
-    /*
-     * True when all optimization strategies failed — only the baseline was evaluated.
-     */
-    @Generated
-    private Boolean allStrategiesFailed;
 
     /**
      * Creates an instance of OptimizationJobResult class.
@@ -110,27 +86,6 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the paretoFrontier property: Candidates on the Pareto frontier (maximize score, minimize cost).
-     *
-     * @return the paretoFrontier value.
-     */
-    @Generated
-    public List<OptimizationCandidate> getParetoFrontier() {
-        return this.paretoFrontier;
-    }
-
-    /**
-     * Get the validationScore property: Score of the best candidate on the held-out validation dataset. Null when no
-     * validation dataset was provided.
-     *
-     * @return the validationScore value.
-     */
-    @Generated
-    public OptimizationCandidate getValidationScore() {
-        return this.validationScore;
-    }
-
-    /**
      * Get the options property: The options used for this optimization run.
      *
      * @return the options value.
@@ -141,36 +96,14 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the sampleSize property: Number of tasks sampled during optimization iterations (null if sampling was not
-     * used).
-     *
-     * @return the sampleSize value.
-     */
-    @Generated
-    public Integer getSampleSize() {
-        return this.sampleSize;
-    }
-
-    /**
-     * Get the warnings property: Non-fatal warnings from the optimization run (e.g., strategy failures that were
-     * skipped).
+     * Get the warnings property: Non-fatal warnings from the optimization run (e.g., target attribute failures that
+     * were skipped).
      *
      * @return the warnings value.
      */
     @Generated
     public List<String> getWarnings() {
         return this.warnings;
-    }
-
-    /**
-     * Get the allStrategiesFailed property: True when all optimization strategies failed — only the baseline was
-     * evaluated.
-     *
-     * @return the allStrategiesFailed value.
-     */
-    @Generated
-    public Boolean isAllStrategiesFailed() {
-        return this.allStrategiesFailed;
     }
 
     /**
@@ -183,13 +116,9 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
         jsonWriter.writeJsonField("baseline", this.baseline);
         jsonWriter.writeJsonField("best", this.best);
         jsonWriter.writeArrayField("candidates", this.candidates, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("pareto_frontier", this.paretoFrontier,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("validation_score", this.validationScore);
         jsonWriter.writeJsonField("options", this.options);
-        jsonWriter.writeNumberField("sample_size", this.sampleSize);
         jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("all_strategies_failed", this.allStrategiesFailed);
+        jsonWriter.writeBooleanField("allTargetAttributesFailed", this.allTargetAttributesFailed);
         return jsonWriter.writeEndObject();
     }
 
@@ -216,26 +145,36 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
                     List<OptimizationCandidate> candidates
                         = reader.readArray(reader1 -> OptimizationCandidate.fromJson(reader1));
                     deserializedOptimizationJobResult.candidates = candidates;
-                } else if ("pareto_frontier".equals(fieldName)) {
-                    List<OptimizationCandidate> paretoFrontier
-                        = reader.readArray(reader1 -> OptimizationCandidate.fromJson(reader1));
-                    deserializedOptimizationJobResult.paretoFrontier = paretoFrontier;
-                } else if ("validation_score".equals(fieldName)) {
-                    deserializedOptimizationJobResult.validationScore = OptimizationCandidate.fromJson(reader);
                 } else if ("options".equals(fieldName)) {
                     deserializedOptimizationJobResult.options = OptimizationOptions.fromJson(reader);
-                } else if ("sample_size".equals(fieldName)) {
-                    deserializedOptimizationJobResult.sampleSize = reader.getNullable(JsonReader::getInt);
                 } else if ("warnings".equals(fieldName)) {
                     List<String> warnings = reader.readArray(reader1 -> reader1.getString());
                     deserializedOptimizationJobResult.warnings = warnings;
-                } else if ("all_strategies_failed".equals(fieldName)) {
-                    deserializedOptimizationJobResult.allStrategiesFailed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allTargetAttributesFailed".equals(fieldName)) {
+                    deserializedOptimizationJobResult.allTargetAttributesFailed
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedOptimizationJobResult;
         });
+    }
+
+    /*
+     * True when all target attributes failed — only the baseline was evaluated.
+     */
+    @Generated
+    private Boolean allTargetAttributesFailed;
+
+    /**
+     * Get the allTargetAttributesFailed property: True when all target attributes failed — only the baseline was
+     * evaluated.
+     *
+     * @return the allTargetAttributesFailed value.
+     */
+    @Generated
+    public Boolean isAllTargetAttributesFailed() {
+        return this.allTargetAttributesFailed;
     }
 }
