@@ -6,7 +6,6 @@ package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.implementation.MultipartFormDataHelper;
 import com.azure.analytics.planetarycomputer.implementation.StacsImpl;
-import com.azure.analytics.planetarycomputer.models.GetCollectionThumbnailContentType;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.analytics.planetarycomputer.models.PartitionType;
 import com.azure.analytics.planetarycomputer.models.QueryableDefinitionsResponse;
@@ -2066,8 +2065,6 @@ public final class StacAsyncClient {
      * </pre>
      * 
      * @param collectionId STAC Collection ID.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2079,9 +2076,9 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionThumbnailWithResponse(String collectionId, String accept,
+    public Mono<Response<BinaryData>> getCollectionThumbnailWithResponse(String collectionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionThumbnailWithResponseAsync(collectionId, accept, requestOptions);
+        return this.serviceClient.getCollectionThumbnailWithResponseAsync(collectionId, requestOptions);
     }
 
     /**
@@ -4065,7 +4062,6 @@ public final class StacAsyncClient {
      * Get thumbnail for given collection.
      * 
      * @param collectionId STAC Collection ID.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4078,11 +4074,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionThumbnail(String collectionId, GetCollectionThumbnailContentType accept) {
+    public Mono<BinaryData> getCollectionThumbnail(String collectionId) {
         // Generated convenience method for getCollectionThumbnailWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionThumbnailWithResponse(collectionId, accept.toString(), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCollectionThumbnailWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

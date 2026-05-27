@@ -1,14 +1,36 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0 (Unreleased)
+
+This is the first General Availability (GA) release of the Azure VoiceLive client library for Java.
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- **Avatar voice synchronization** for video avatars:
+  - New `AzureVoiceType.AVATAR_VOICE_SYNC` and `AzureAvatarVoiceSyncVoice` class
+  - New server events `ServerEventSessionAvatarSwitchToSpeaking` / `ServerEventSessionAvatarSwitchToIdle`
+  - New `ServerEventResponseVideoDelta` for streaming avatar video frames
+  - New `ClientEventOutputAudioBufferClear` (`output_audio_buffer.clear`) and `ServerEventOutputAudioBufferCleared` (`output_audio_buffer.cleared`) for clearing the avatar output audio buffer
+- **Web search and file search tool calls**:
+  - New `ItemType.WEB_SEARCH_CALL`, `ItemType.FILE_SEARCH_CALL`
+  - New `ResponseWebSearchCallItem` (with `ResponseWebSearchCallItemStatus`) and `ResponseFileSearchCallItem` (with `ResponseFileSearchCallItemStatus`, plus `FileSearchResult` results)
+  - New lifecycle server events: `ServerEventResponseWebSearchCall{Searching,InProgress,Completed}` and `ServerEventResponseFileSearchCall{Searching,InProgress,Completed}`
+- **Transcription enhancements**:
+  - New transcription models on `AudioInputTranscriptionOptionsModel`: `GPT_4O_TRANSCRIBE_DIARIZE`, `MAI_TRANSCRIBE_1`
+  - New `TranscriptionPhrase` and `TranscriptionWord` types with timing/confidence information
+  - `SessionUpdateConversationItemInputAudioTranscriptionCompleted` now exposes `getLogprobs()` and `getPhrases()`
+  - New `ServerEventResponseAudioTranscriptAnnotationAdded` event
+- **Session include options and metadata**:
+  - New `SessionIncludeOption` expandable enum for opting into additional response payloads (e.g. logprobs, phrases, file-search results)
+  - `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse` now expose `include` (`List<SessionIncludeOption>`) and `metadata` (`Map<String,String>`, up to 16 entries)
+- **Personal voice models**: added `PersonalVoiceModels.DRAGON_HDOMNI_LATEST_NEURAL` and `MAI_VOICE_1`
+- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokens()` exposes reasoning token counts
+- **Interim response on response.create**: `ResponseCreateParams.setInterimResponse(BinaryData)` lets callers attach interim response config to a single response request
+- Significantly improved Javadoc for `ServerVadTurnDetection`, `AzureCustomVoice`, `AzurePersonalVoice`, `AzureStandardVoice`, `AzureSemanticVadTurnDetection*`, and other model types
 
 ### Other Changes
+
+- Updated default service API version to track the latest TypeSpec spec.
 
 ## 1.0.0-beta.6 (2026-05-01)
 

@@ -62,6 +62,13 @@ public interface ExperimentExecution {
     OffsetDateTime stoppedAt();
 
     /**
+     * Gets the provisioningState property: Resource provisioning state. Not currently in use for executions.
+     * 
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
      * Gets the inner com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionInner object.
      * 
      * @return the inner object.

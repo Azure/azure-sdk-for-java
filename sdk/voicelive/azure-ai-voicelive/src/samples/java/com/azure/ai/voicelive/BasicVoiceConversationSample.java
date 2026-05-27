@@ -3,31 +3,64 @@
 
 package com.azure.ai.voicelive;
 
+import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
+import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
-import com.azure.ai.voicelive.models.InputAudioFormat;
+import com.azure.ai.voicelive.models.InputTextContentPart;
 import com.azure.ai.voicelive.models.InteractionModality;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
-import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionUpdateError;
+import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
+import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
-import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Basic voice conversation sample demonstrating minimal setup for VoiceLive service.
+ * Basic voice conversation sample demonstrating a minimal text exchange with the VoiceLive service.
  *
- * <p><strong>Start here if you're new to VoiceLive!</strong> This is the simplest sample showing core concepts.</p>
+ * <p><strong>Start here if you're new to VoiceLive!</strong> This is the simplest end-to-end sample:
+ * it sends one user message and prints the model's text reply, then exits.</p>
+ *
+ * <p>Use this sample to verify that your endpoint, credential, and basic realtime session setup are
+ * working before you add microphone input, speaker output, tool calls, or tracing.</p>
+ *
+ * <p>When you run it, the sample:</p>
+ * <ol>
+ *   <li>Opens a realtime session and configures it for text-only output.</li>
+ *   <li>Sends a fixed user message ("Say hello in one sentence.").</li>
+ *   <li>Asks the model to generate a response.</li>
+ *   <li>Prints text deltas as they stream in.</li>
+ *   <li>Exits automatically when the response completes (or after a timeout).</li>
+ * </ol>
  *
  * <p>This sample shows the simplest way to:</p>
  * <ul>
  *   <li>Create a VoiceLive client</li>
  *   <li>Start a session with basic configuration</li>
- *   <li>Subscribe to receive events</li>
+ *   <li>Send a user message and request a response</li>
+ *   <li>Subscribe to receive events using the reactor {@code subscribe(onNext, onError, onComplete)} pattern</li>
+ *   <li>Keep {@code main} alive with a {@link CountDownLatch} until the response finishes</li>
  * </ul>
+ *
+ * <p><strong>Reactor pattern used by this sample:</strong></p>
+ * <pre>{@code
+ * client.startSession(model)
+ *     .flatMap(session -> session.sendEvent(sessionUpdate).thenReturn(session))
+ *     .flatMap(session -> session.sendEvent(conversationItemCreate).thenReturn(session))
+ *     .flatMap(session -> session.sendEvent(responseCreate).thenReturn(session))
+ *     .flatMapMany(session -> session.receiveEvents())
+ *     .subscribe(this::handleEvent, this::onError, this::onComplete);
+ * }</pre>
+ * <p>Because {@code subscribe} is non-blocking, {@code main} would otherwise return immediately.
+ * The {@code CountDownLatch} blocks {@code main} until {@code RESPONSE_DONE} (or an error) fires.</p>
+ *
+ * <p><strong>How to stop:</strong> The sample exits automatically once the model's response is
+ * complete. You can also press {@code Ctrl+C} at any time to abort.</p>
  *
  * <p><strong>Next Steps - Learn More:</strong></p>
  * <ul>
@@ -37,11 +70,13 @@ import java.util.Arrays;
  *   <li>{@link VoiceAssistantSample} - See a complete production-ready voice assistant</li>
  * </ul>
  *
- * <p><strong>Environment Variables Required:</strong></p>
+ * <p><strong>Environment Variables:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
@@ -50,74 +85,105 @@ import java.util.Arrays;
  */
 public final class BasicVoiceConversationSample {
 
+    private static final long COMPLETION_TIMEOUT_SECONDS = 30;
+
     /**
      * Main method to run the basic voice conversation sample.
      *
      * @param args Unused command line arguments
      */
     public static void main(String[] args) {
-        // Get credentials from environment variables
+        // Get endpoint from environment variable
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
-
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set AZURE_VOICELIVE_ENDPOINT environment variable");
             return;
         }
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Starting basic voice conversation...");
 
-        // Configure basic session options
+        // Configure session for text-only output (no audio modality, so no speaker required).
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
-            .setInstructions("You are a helpful AI assistant.")
-            // Voice options:
-            // - OpenAI: new OpenAIVoice(OpenAIVoiceName.ALLOY) - use OpenAIVoiceName enum
-            // - Azure: AzureStandardVoice, AzureCustomVoice, AzurePersonalVoice (all extend AzureVoice)
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
-            .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
-            .setInputAudioFormat(InputAudioFormat.PCM16)
-            .setOutputAudioFormat(OutputAudioFormat.PCM16)
-            .setInputAudioSamplingRate(24000);
+            .setInstructions("You are a helpful AI assistant. Reply concisely.")
+            .setModalities(Collections.singletonList(InteractionModality.TEXT));
 
-        // Start session and subscribe to events
+        // Latch keeps main alive until the response completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
+        // Open a WebSocket session against the realtime model.
         client.startSession("gpt-realtime")
+            // Configure the session (text-only modality, instructions).
             .flatMap(session -> {
-                System.out.println("✓ Session started");
-
-                // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> System.out.println("✓ Session configured"))
-                    .thenMany(session.receiveEvents()
-                        .doOnNext(event -> handleEvent(event))
-                        .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-                        .doOnComplete(() -> System.out.println("Event stream completed")))
-                    .then(); // receiveEvents() never completes, so this keeps session alive
+                return session.sendEvent(updateEvent).thenReturn(session);
             })
-            .block(); // Block for demo purposes
+            // Send a user message into the conversation.
+            .flatMap(session -> {
+                InputTextContentPart textContent = new InputTextContentPart("Say hello in one sentence.");
+                UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
+                ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
+                    .setItem(messageItem);
+                return session.sendEvent(createEvent).thenReturn(session);
+            })
+            // Ask the model to generate a response for the queued message.
+            .flatMap(session -> {
+                ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
+                return session.sendEvent(responseEvent).thenReturn(session);
+            })
+            // Subscribe to the server event stream (text deltas, response.done, etc.).
+            .flatMapMany(session -> session.receiveEvents())
+            .subscribe(
+                event -> handleEvent(event, completionLatch),
+                error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    completionLatch.countDown();
+                },
+                completionLatch::countDown
+            );
+
+        try {
+            if (!completionLatch.await(COMPLETION_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+                System.err.println("Timed out waiting for response to complete.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
-     * Handle incoming server events.
-     *
-     * @param event The server event
+     * Handle incoming server events: print text deltas as they stream, and release the latch when
+     * the response is complete or an error occurs.
      */
-    private static void handleEvent(SessionUpdate event) {
+    private static void handleEvent(SessionUpdate event, CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
-        System.out.println("Received event: " + eventType);
 
         if (eventType == ServerEventType.SESSION_CREATED) {
-            System.out.println("  → Session created and ready");
+            System.out.println("✓ Session created");
         } else if (eventType == ServerEventType.SESSION_UPDATED) {
-            System.out.println("  → Session configuration updated");
+            System.out.println("✓ Session configured");
+            System.out.print("Assistant: ");
+        } else if (eventType == ServerEventType.RESPONSE_TEXT_DELTA) {
+            // Stream text deltas to the console as they arrive.
+            if (event instanceof SessionUpdateResponseTextDelta) {
+                String delta = ((SessionUpdateResponseTextDelta) event).getDelta();
+                if (delta != null) {
+                    System.out.print(delta);
+                }
+            }
+        } else if (eventType == ServerEventType.RESPONSE_TEXT_DONE) {
+            System.out.println();
+        } else if (eventType == ServerEventType.RESPONSE_DONE) {
+            System.out.println("✓ Response complete");
+            completionLatch.countDown();
         } else if (eventType == ServerEventType.ERROR) {
-            System.err.println("  → Error occurred in session");
+            System.err.println("❌ Error: " + ((SessionUpdateError) event).getError().getMessage());
+            completionLatch.countDown();
         }
     }
 

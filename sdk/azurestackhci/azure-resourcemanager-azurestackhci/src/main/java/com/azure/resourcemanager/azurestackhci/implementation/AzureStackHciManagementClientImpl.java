@@ -28,25 +28,15 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciManagementClient;
-import com.azure.resourcemanager.azurestackhci.fluent.ClusterJobsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.DeploymentSettingsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.DevicePoolsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.EdgeDeviceJobsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.EdgeDevicesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachineJobsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.EdgeMachinesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.KubernetesVersionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OffersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.OsImagesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.OwnershipVouchersClient;
-import com.azure.resourcemanager.azurestackhci.fluent.PlatformUpdatesClient;
-import com.azure.resourcemanager.azurestackhci.fluent.PublishersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SecuritySettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SkusClient;
-import com.azure.resourcemanager.azurestackhci.fluent.UpdateContentsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateRunsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationGroupsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationsClient;
@@ -148,62 +138,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
-    }
-
-    /**
-     * The KubernetesVersionsClient object to access its operations.
-     */
-    private final KubernetesVersionsClient kubernetesVersions;
-
-    /**
-     * Gets the KubernetesVersionsClient object to access its operations.
-     * 
-     * @return the KubernetesVersionsClient object.
-     */
-    public KubernetesVersionsClient getKubernetesVersions() {
-        return this.kubernetesVersions;
-    }
-
-    /**
-     * The PlatformUpdatesClient object to access its operations.
-     */
-    private final PlatformUpdatesClient platformUpdates;
-
-    /**
-     * Gets the PlatformUpdatesClient object to access its operations.
-     * 
-     * @return the PlatformUpdatesClient object.
-     */
-    public PlatformUpdatesClient getPlatformUpdates() {
-        return this.platformUpdates;
-    }
-
-    /**
-     * The OsImagesClient object to access its operations.
-     */
-    private final OsImagesClient osImages;
-
-    /**
-     * Gets the OsImagesClient object to access its operations.
-     * 
-     * @return the OsImagesClient object.
-     */
-    public OsImagesClient getOsImages() {
-        return this.osImages;
-    }
-
-    /**
-     * The UpdateContentsClient object to access its operations.
-     */
-    private final UpdateContentsClient updateContents;
-
-    /**
-     * Gets the UpdateContentsClient object to access its operations.
-     * 
-     * @return the UpdateContentsClient object.
-     */
-    public UpdateContentsClient getUpdateContents() {
-        return this.updateContents;
     }
 
     /**
@@ -319,20 +253,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
     }
 
     /**
-     * The PublishersClient object to access its operations.
-     */
-    private final PublishersClient publishers;
-
-    /**
-     * Gets the PublishersClient object to access its operations.
-     * 
-     * @return the PublishersClient object.
-     */
-    public PublishersClient getPublishers() {
-        return this.publishers;
-    }
-
-    /**
      * The SecuritySettingsClient object to access its operations.
      */
     private final SecuritySettingsClient securitySettings;
@@ -417,76 +337,6 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
     }
 
     /**
-     * The EdgeMachinesClient object to access its operations.
-     */
-    private final EdgeMachinesClient edgeMachines;
-
-    /**
-     * Gets the EdgeMachinesClient object to access its operations.
-     * 
-     * @return the EdgeMachinesClient object.
-     */
-    public EdgeMachinesClient getEdgeMachines() {
-        return this.edgeMachines;
-    }
-
-    /**
-     * The EdgeMachineJobsClient object to access its operations.
-     */
-    private final EdgeMachineJobsClient edgeMachineJobs;
-
-    /**
-     * Gets the EdgeMachineJobsClient object to access its operations.
-     * 
-     * @return the EdgeMachineJobsClient object.
-     */
-    public EdgeMachineJobsClient getEdgeMachineJobs() {
-        return this.edgeMachineJobs;
-    }
-
-    /**
-     * The OwnershipVouchersClient object to access its operations.
-     */
-    private final OwnershipVouchersClient ownershipVouchers;
-
-    /**
-     * Gets the OwnershipVouchersClient object to access its operations.
-     * 
-     * @return the OwnershipVouchersClient object.
-     */
-    public OwnershipVouchersClient getOwnershipVouchers() {
-        return this.ownershipVouchers;
-    }
-
-    /**
-     * The ClusterJobsClient object to access its operations.
-     */
-    private final ClusterJobsClient clusterJobs;
-
-    /**
-     * Gets the ClusterJobsClient object to access its operations.
-     * 
-     * @return the ClusterJobsClient object.
-     */
-    public ClusterJobsClient getClusterJobs() {
-        return this.clusterJobs;
-    }
-
-    /**
-     * The DevicePoolsClient object to access its operations.
-     */
-    private final DevicePoolsClient devicePools;
-
-    /**
-     * Gets the DevicePoolsClient object to access its operations.
-     * 
-     * @return the DevicePoolsClient object.
-     */
-    public DevicePoolsClient getDevicePools() {
-        return this.devicePools;
-    }
-
-    /**
      * The UpdateSummariesOperationsClient object to access its operations.
      */
     private final UpdateSummariesOperationsClient updateSummariesOperations;
@@ -517,11 +367,7 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-01-preview";
-        this.kubernetesVersions = new KubernetesVersionsClientImpl(this);
-        this.platformUpdates = new PlatformUpdatesClientImpl(this);
-        this.osImages = new OsImagesClientImpl(this);
-        this.updateContents = new UpdateContentsClientImpl(this);
+        this.apiVersion = "2026-04-30";
         this.operations = new OperationsClientImpl(this);
         this.arcSettings = new ArcSettingsClientImpl(this);
         this.offers = new OffersClientImpl(this);
@@ -530,18 +376,12 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.edgeDeviceJobs = new EdgeDeviceJobsClientImpl(this);
         this.edgeDevices = new EdgeDevicesClientImpl(this);
         this.extensions = new ExtensionsClientImpl(this);
-        this.publishers = new PublishersClientImpl(this);
         this.securitySettings = new SecuritySettingsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
         this.updateSummariesOperationGroups = new UpdateSummariesOperationGroupsClientImpl(this);
         this.validatedSolutionRecipes = new ValidatedSolutionRecipesClientImpl(this);
-        this.edgeMachines = new EdgeMachinesClientImpl(this);
-        this.edgeMachineJobs = new EdgeMachineJobsClientImpl(this);
-        this.ownershipVouchers = new OwnershipVouchersClientImpl(this);
-        this.clusterJobs = new ClusterJobsClientImpl(this);
-        this.devicePools = new DevicePoolsClientImpl(this);
         this.updateSummariesOperations = new UpdateSummariesOperationsClientImpl(this);
     }
 
