@@ -255,13 +255,13 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.10.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <version>4.11.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <version>4.9.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -317,13 +317,13 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.10.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <version>4.11.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <version>4.9.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
