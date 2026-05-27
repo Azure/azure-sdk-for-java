@@ -122,14 +122,15 @@ public class SamplesTests extends ClientTestBase {
         DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
             = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
 
-        StepVerifier.create(dataGenerationJobsAsyncClient
-            .listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
-            .take(5)
-            .doOnNext(job -> {
-                Assertions.assertNotNull(job);
-                Assertions.assertNotNull(job.getId());
-            })
-            .then()).verifyComplete();
+        StepVerifier.create(
+            dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
+                .take(5)
+                .doOnNext(job -> {
+                    Assertions.assertNotNull(job);
+                    Assertions.assertNotNull(job.getId());
+                })
+                .then())
+            .verifyComplete();
     }
 
     @LiveOnly
