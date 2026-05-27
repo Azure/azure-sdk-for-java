@@ -9,7 +9,6 @@ import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.DeleteSkillVersionResponse;
 import com.azure.ai.projects.models.FilesFileDetails;
 import com.azure.ai.projects.models.Skill;
 import com.azure.ai.projects.models.SkillInlineContent;
@@ -850,14 +849,12 @@ public final class SkillsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted skill version on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the skill version is deleted.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteSkillVersionResponse> deleteSkillVersion(String name, String version) {
+    public Mono<Void> deleteSkillVersion(String name, String version) {
         // Generated convenience method for deleteSkillVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteSkillVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteSkillVersionResponse.class));
+        return deleteSkillVersionWithResponse(name, version, requestOptions).then();
     }
 }
