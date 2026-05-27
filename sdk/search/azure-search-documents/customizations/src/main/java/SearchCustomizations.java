@@ -62,6 +62,12 @@ public class SearchCustomizations extends Customization {
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
         // that mirror what the sync client already has as hand-written methods.
         addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
+
+        // SearchResourceEncryptionKey workaround: the spec marks keyVaultUri and keyVaultKeyName as required,
+        // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
+        addNoArgConstructorToEncryptionKey(
+            libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+                .getClass("SearchResourceEncryptionKey"));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -193,6 +199,27 @@ public class SearchCustomizations extends Customization {
             for (String methodName : Arrays.asList("getNextLink", "getNextPageParameters")) {
                 clazz.getMethodsByName(methodName).forEach(MethodDeclaration::setModifiers);
             }
+        }));
+    }
+
+    // SearchResourceEncryptionKey has keyName and vaultUrl as required (final) fields, but when
+    // isServiceLevelKey is true, they are not needed. This adds a no-arg constructor and makes those fields non-final.
+    private static void addNoArgConstructorToEncryptionKey(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Make keyName and vaultUrl non-final
+            clazz.getFieldByName("keyName").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+            clazz.getFieldByName("vaultUrl").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+
+            // Add no-arg constructor
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "/**\n"
+                    + " * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is\n"
+                    + " * set to true, in which case keyName and vaultUrl are not required.\n"
+                    + " */\n"
+                    + "public SearchResourceEncryptionKey() {\n"
+                    + "    this.keyName = null;\n"
+                    + "    this.vaultUrl = null;\n"
+                    + "}\n"));
         }));
     }
 
