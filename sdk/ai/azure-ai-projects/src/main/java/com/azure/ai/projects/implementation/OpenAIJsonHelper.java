@@ -4,22 +4,22 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.StringReader;
+import java.util.List;
+import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.core.ObjectMappers;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Helper methods for adapting Azure SDK models to openai-java models.
+ */
 public final class OpenAIJsonHelper {
-
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
         .configure(MapperFeature.AUTO_DETECT_FIELDS, true)
@@ -27,6 +27,36 @@ public final class OpenAIJsonHelper {
         .configure(MapperFeature.AUTO_DETECT_CREATORS, true)
         .configure(MapperFeature.AUTO_DETECT_SETTERS, true)
         .build();
+
+    private OpenAIJsonHelper() {
+    }
+
+    /**
+     * Converts an Azure SDK type that implements {@link JsonSerializable} to an openai-java type.
+     *
+     * @param azureObject The Azure SDK model to convert.
+     * @param openAIType The target openai-java type.
+     * @param <S> The Azure SDK source type.
+     * @param <T> The openai-java target type.
+     * @return The openai-java model.
+     * @throws NullPointerException if {@code azureObject} or {@code openAIType} is null.
+     * @throws RuntimeException if conversion fails.
+     */
+    public static <S extends JsonSerializable<S>, T> T toOpenAIType(S azureObject, Class<T> openAIType) {
+        if (azureObject == null) {
+            throw new NullPointerException("'azureObject' cannot be null.");
+        }
+        if (openAIType == null) {
+            throw new NullPointerException("'openAIType' cannot be null.");
+        }
+
+        try {
+            return MAPPER.readValue(BinaryData.fromObject(azureObject).toString(), openAIType);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert Azure SDK type to OpenAI type.", e);
+        }
+    }
+
 
     /**
      * Serializes an openai-java object to {@link BinaryData} whose content is a JSON object.
@@ -97,8 +127,5 @@ public final class OpenAIJsonHelper {
             return null;
         }
         return dataList.stream().map(data -> fromBinaryData(data, type)).collect(Collectors.toList());
-    }
-
-    private OpenAIJsonHelper() {
     }
 }

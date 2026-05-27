@@ -3,41 +3,45 @@
 
 package com.azure.ai.agents.tools;
 
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ClientTestBase;
+import com.azure.ai.agents.ResponsesClient;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.Disabled;
+import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.openai.models.responses.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
-import static com.azure.core.test.TestProxyTestBase.getHttpClients;
+public class FabricIQSamplesTests extends FabricIQSamplesTestBase {
 
-public class FabricIQSamplesTests extends ClientTestBase {
-    private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    static Stream<Arguments> getTestParameters() {
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients().forEach(httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V1)));
-        return argumentsList.stream();
-    }
-
-    @Disabled("Requires FABRIC_IQ_PROJECT_CONNECTION_ID and FOUNDRY_MODEL_NAME.")
+    @Timeout(value = 5, unit = TimeUnit.MINUTES)
+    @Disabled("getting 500 from service")
+    @ResourceLock(FABRIC_IQ_RESOURCE_LOCK)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void fabricIqSyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        Assertions.fail("Enable after providing FABRIC_IQ_PROJECT_CONNECTION_ID and FOUNDRY_MODEL_NAME.");
-    }
+        AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
+        AgentsClient agentsClient = builder.buildAgentsClient();
+        ResponsesClient responsesClient = builder.buildResponsesClient();
 
-    @Disabled("Requires FABRIC_IQ_PROJECT_CONNECTION_ID and FOUNDRY_MODEL_NAME.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void fabricIqAsyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        Assertions.fail("Enable after providing FABRIC_IQ_PROJECT_CONNECTION_ID and FOUNDRY_MODEL_NAME.");
+        String agentName = testResourceNamer.randomName("fabric-iq-sync-", 40);
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, createAgentDefinition());
+        Assertions.assertNotNull(agent);
+
+        AgentReference agentReference = new AgentReference(agent.getName());
+        Response response = responsesClient.createAzureResponse(
+            new AzureCreateResponseOptions().setAgentReference(agentReference), createResponseParams());
+
+        assertCompletedResponse(response);
+        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
     }
 }

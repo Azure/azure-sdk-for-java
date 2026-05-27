@@ -67,6 +67,24 @@ EvalService evalService = builder.buildOpenAIClient().evals();
 EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
 ```
 
+When using Azure-specific evaluator models with OpenAI evaluations, use `EvaluationsHelper` to adapt the Azure model to
+the OpenAI request type. This keeps application code from depending on the serialization details used by the OpenAI SDK.
+
+```java com.azure.ai.projects.evaluationsHelper
+Map<String, String> dataMapping = new LinkedHashMap<>();
+dataMapping.put("query", "{{item.query}}");
+dataMapping.put("response", "{{sample.output_text}}");
+
+TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
+    "builtin.coherence")
+        .setInitializationParameters(Collections.singletonMap("deployment_name",
+            BinaryData.fromObject("gpt-4o-mini")))
+        .setDataMapping(dataMapping);
+
+EvalCreateParams.TestingCriterion testingCriterion
+    = EvaluationsHelper.toTestingCriterion(coherenceEvaluator);
+```
+
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
 
 ```java com.azure.ai.projects.agentsSubClients

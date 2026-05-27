@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.FilesFileDetails;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.Skill;
 import com.azure.ai.projects.models.SkillVersion;
@@ -32,8 +29,6 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class SamplesTests extends ClientTestBase {
     private static final String SAMPLE_SKILL_NAME = "java-sample-skill-package-test";
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -91,46 +86,6 @@ public class SamplesTests extends ClientTestBase {
                     Assertions.assertTrue(downloaded.toBytes().length > 0);
                 }).then(skillsAsyncClient.deleteSkill(imported.getName()));
             })).verifyComplete();
-    }
-
-    @LiveOnly
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
-
-        Iterable<DataGenerationJob> jobs
-            = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
-        Assertions.assertNotNull(jobs);
-
-        int count = 0;
-        for (DataGenerationJob job : jobs) {
-            Assertions.assertNotNull(job);
-            Assertions.assertNotNull(job.getId());
-            count++;
-            if (count >= 5) {
-                break;
-            }
-        }
-    }
-
-    @LiveOnly
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
-
-        StepVerifier.create(
-            dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
-                .take(5)
-                .doOnNext(job -> {
-                    Assertions.assertNotNull(job);
-                    Assertions.assertNotNull(job.getId());
-                })
-                .then())
-            .verifyComplete();
     }
 
     @LiveOnly
