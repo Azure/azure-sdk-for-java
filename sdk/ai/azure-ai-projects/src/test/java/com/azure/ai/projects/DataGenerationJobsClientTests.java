@@ -21,7 +21,6 @@ import com.openai.models.evals.runs.RunRetrieveParams;
 import com.openai.models.evals.runs.RunRetrieveResponse;
 import com.openai.models.evals.runs.outputitems.OutputItemListParams;
 import com.openai.models.evals.runs.outputitems.OutputItemListResponse;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,8 +41,8 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         DataGenerationJobsClient dataGenerationJobsClient
             = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
 
-        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5,
-            PageOrder.DESC, null, null, null, null);
+        Iterable<DataGenerationJob> jobs
+            = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -55,15 +54,6 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
                 break;
             }
         }
-    }
-
-    @Disabled("Requires FOUNDRY_MODEL_NAME and creates a long-running preview data generation job.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void dataGenerationCreateGetCancelDeleteSample(HttpClient httpClient,
-        AIProjectsServiceVersion serviceVersion) {
-        Assertions.fail(
-            "Enable after providing FOUNDRY_MODEL_NAME and deciding whether to record this long-running preview flow.");
     }
 
     @Timeout(value = 20, unit = TimeUnit.MINUTES)

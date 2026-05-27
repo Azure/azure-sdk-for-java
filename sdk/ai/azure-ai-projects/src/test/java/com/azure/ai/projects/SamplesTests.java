@@ -2,11 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.FilesFileDetails;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.Skill;
 import com.azure.ai.projects.models.SkillVersion;
@@ -32,8 +29,6 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class SamplesTests extends ClientTestBase {
     private static final String SAMPLE_SKILL_NAME = "java-sample-skill-package-test";
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
