@@ -57,7 +57,6 @@ public final class OpenAIJsonHelper {
         }
     }
 
-
     /**
      * Serializes an openai-java object to {@link BinaryData} whose content is a JSON object.
      * The resulting BinaryData can be written to a {@link com.azure.json.JsonWriter} via

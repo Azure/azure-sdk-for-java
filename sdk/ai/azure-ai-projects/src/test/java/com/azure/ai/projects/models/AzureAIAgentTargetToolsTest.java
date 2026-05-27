@@ -88,12 +88,10 @@ public class AzureAIAgentTargetToolsTest {
      */
     @Test
     public void testDeserializationWithMultipleTools() throws IOException {
-        String json = "{\"name\":\"test-agent\",\"type\":\"azure_ai_agent\","
-            + "\"tools\":["
+        String json = "{\"name\":\"test-agent\",\"type\":\"azure_ai_agent\"," + "\"tools\":["
             + "{\"type\":\"function\",\"name\":\"calculate\",\"parameters\":{\"type\":\"object\"}},"
             + "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_1\",\"vs_2\"]},"
-            + "{\"type\":\"web_search\",\"search_context_size\":\"low\"}"
-            + "]}";
+            + "{\"type\":\"web_search\",\"search_context_size\":\"low\"}" + "]}";
 
         AzureAIAgentTarget target = deserializeFromJson(json);
 
@@ -205,11 +203,9 @@ public class AzureAIAgentTargetToolsTest {
      */
     @Test
     public void testRoundTripViaTypedSetter() throws IOException {
-        String inputJson = "{\"name\":\"agent\",\"type\":\"azure_ai_agent\","
-            + "\"tools\":["
+        String inputJson = "{\"name\":\"agent\",\"type\":\"azure_ai_agent\"," + "\"tools\":["
             + "{\"type\":\"function\",\"name\":\"func1\",\"parameters\":{\"type\":\"object\"}},"
-            + "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_x\"]}"
-            + "]}";
+            + "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_x\"]}" + "]}";
 
         // Deserialize, get typed tools, set on new target, serialize, deserialize again
         AzureAIAgentTarget source = deserializeFromJson(inputJson);
