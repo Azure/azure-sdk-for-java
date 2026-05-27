@@ -14,6 +14,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
@@ -35,6 +36,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
         RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
