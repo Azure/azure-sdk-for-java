@@ -789,7 +789,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCandidateFile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getOptimizationCandidateFile(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -800,7 +800,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCandidateFileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getOptimizationCandidateFileSync(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -811,7 +811,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> promoteCandidate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> promoteOptimizationCandidate(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -823,7 +823,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> promoteCandidateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> promoteOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -7692,11 +7692,11 @@ public final class AgentsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCandidateFileWithResponseAsync(String jobId, String candidateId, String path,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOptimizationCandidateFileWithResponseAsync(String jobId, String candidateId,
+        String path, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getCandidateFile(this.client.getEndpoint(), jobId, candidateId,
-            path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getOptimizationCandidateFile(this.client.getEndpoint(), jobId,
+            candidateId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -7735,10 +7735,10 @@ public final class AgentsImpl {
      * Stream a specific file from the candidate's blob directory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCandidateFileWithResponse(String jobId, String candidateId, String path,
+    public Response<BinaryData> getOptimizationCandidateFileWithResponse(String jobId, String candidateId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.getCandidateFileSync(this.client.getEndpoint(), jobId, candidateId, path,
+        return service.getOptimizationCandidateFileSync(this.client.getEndpoint(), jobId, candidateId, path,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -7794,12 +7794,13 @@ public final class AgentsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> promoteCandidateWithResponseAsync(String jobId, String candidateId,
+    public Mono<Response<BinaryData>> promoteOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.promoteCandidate(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.promoteOptimizationCandidate(this.client.getEndpoint(), jobId, candidateId,
+                this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -7853,11 +7854,11 @@ public final class AgentsImpl {
      * @return response after successfully promoting a candidate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> promoteCandidateWithResponse(String jobId, String candidateId, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
+        BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.promoteCandidateSync(this.client.getEndpoint(), jobId, candidateId,
+        return service.promoteOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
             this.client.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 

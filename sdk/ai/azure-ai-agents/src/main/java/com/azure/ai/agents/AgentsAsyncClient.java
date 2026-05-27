@@ -5299,6 +5299,50 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Get a candidate file.
+     *
+     * Stream a specific file from the candidate's blob directory.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
+     * "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id.
+     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate file.
+     *
+     * Stream a specific file from the candidate's blob directory along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getOptimizationCandidateFileWithResponse(String jobId, String candidateId,
+        String path, RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationCandidateFileWithResponseAsync(jobId, candidateId, path,
+            requestOptions);
+    }
+
+    /**
      * Promote a candidate.
      *
      * Promotes a candidate, recording the deployment timestamp and target agent version.
@@ -5351,111 +5395,10 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> promoteCandidateWithResponse(String jobId, String candidateId, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.promoteCandidateWithResponseAsync(jobId, candidateId, body, requestOptions);
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param body Promotion details.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResponse> promoteCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest body, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for promoteCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return promoteCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param body Promotion details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResponse> promoteCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest body) {
-        // Generated convenience method for promoteCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return promoteCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
-    }
-
-    /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCandidateFileWithResponse(String jobId, String candidateId, String path,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getCandidateFileWithResponseAsync(jobId, candidateId, path, requestOptions);
+    public Mono<Response<BinaryData>> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.promoteOptimizationCandidateWithResponseAsync(jobId, candidateId, body,
+            requestOptions);
     }
 
     /**
@@ -5480,14 +5423,15 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCandidateFile(String jobId, String candidateId, String path,
+    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path,
         FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getCandidateFileWithResponse
+        // Generated convenience method for getOptimizationCandidateFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getCandidateFileWithResponse(jobId, candidateId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5510,9 +5454,69 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCandidateFile(String jobId, String candidateId, String path) {
-        // Generated convenience method for getCandidateFileWithResponse
+    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path) {
+        // Generated convenience method for getOptimizationCandidateFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCandidateFileWithResponse(jobId, candidateId, path, requestOptions).flatMap(FluxUtil::toMono);
+        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Promote a candidate.
+     *
+     * Promotes a candidate, recording the deployment timestamp and target agent version.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id to promote.
+     * @param body Promotion details.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PromoteCandidateResponse> promoteOptimizationCandidate(String jobId, String candidateId,
+        PromoteCandidateRequest body, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for promoteOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
+    }
+
+    /**
+     * Promote a candidate.
+     *
+     * Promotes a candidate, recording the deployment timestamp and target agent version.
+     *
+     * @param jobId The optimization job id.
+     * @param candidateId The candidate id to promote.
+     * @param body Promotion details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PromoteCandidateResponse> promoteOptimizationCandidate(String jobId, String candidateId,
+        PromoteCandidateRequest body) {
+        // Generated convenience method for promoteOptimizationCandidateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
     }
 }
