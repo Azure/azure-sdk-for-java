@@ -1,14 +1,24 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.9.0 (2026-05-26)
 
 ### Features Added
 
-### Breaking Changes
+- Added support for service version `V2025_07_01`.
+- Added the following methods to `SubjectAlternativeNames`:
+  - `setUniformResourceIdentifiers(java.util.List)`
+  - `setIpAddresses(java.util.List)`
+  - `getUniformResourceIdentifiers()`
+  - `getIpAddresses()`
 
-### Bugs Fixed
+## 4.8.7 (2026-05-05)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 4.9.0-beta.1 (2026-04-08)
 

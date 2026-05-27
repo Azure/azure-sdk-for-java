@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MachinesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/MachineGet.json
+     * x-ms-original-file: 2026-03-02-preview/MachineGet.json
      */
     /**
      * Sample code: Get a Machine in an Agent Pools by Managed Cluster.

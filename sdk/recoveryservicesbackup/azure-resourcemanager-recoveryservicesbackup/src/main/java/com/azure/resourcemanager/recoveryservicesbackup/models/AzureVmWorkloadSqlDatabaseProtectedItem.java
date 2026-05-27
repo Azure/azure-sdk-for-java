@@ -26,7 +26,7 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     private String protectedItemType = "AzureVmWorkloadSQLDatabase";
 
     /*
-     * Parent Protected item in case protected as part of a parent.
+     * Name of the parent protected item (e.g., SQL Instance name) when this database is protected as part of a parent.
      */
     private String parentProtectedItem;
 
@@ -52,7 +52,8 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     }
 
     /**
-     * Get the parentProtectedItem property: Parent Protected item in case protected as part of a parent.
+     * Get the parentProtectedItem property: Name of the parent protected item (e.g., SQL Instance name) when this
+     * database is protected as part of a parent.
      * 
      * @return the parentProtectedItem value.
      */
@@ -61,7 +62,8 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     }
 
     /**
-     * Set the parentProtectedItem property: Parent Protected item in case protected as part of a parent.
+     * Set the parentProtectedItem property: Name of the parent protected item (e.g., SQL Instance name) when this
+     * database is protected as part of a parent.
      * 
      * @param parentProtectedItem the parentProtectedItem value to set.
      * @return the AzureVmWorkloadSqlDatabaseProtectedItem object itself.

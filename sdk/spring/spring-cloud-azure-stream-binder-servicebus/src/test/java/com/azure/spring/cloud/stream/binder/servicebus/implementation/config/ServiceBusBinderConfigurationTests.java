@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.Field;
@@ -148,6 +149,19 @@ class ServiceBusBinderConfigurationTests {
                 assertEquals(ServiceBusEntityType.QUEUE, producerProperties.getEntityType());
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
+            });
+    }
+
+    @Test
+    void retryTemplateShouldBeWiredWhenBeanProvided() {
+        this.contextRunner
+            .withBean("serviceBusRetryTemplate", RetryTemplate.class, RetryTemplate::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                assertThat(context).hasSingleBean(RetryTemplate.class);
+                RetryTemplate retryTemplate = context.getBean(RetryTemplate.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
+                assertThat(binder.getRetryTemplate()).isSameAs(retryTemplate);
             });
     }
 

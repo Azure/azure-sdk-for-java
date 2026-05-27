@@ -7,12 +7,11 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
-    AsyncReadBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
-        super(cfg, scheduler);
+    AsyncReadBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override

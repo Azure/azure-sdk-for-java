@@ -80,7 +80,7 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName);
+    PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName);
 
     /**
      * List all Caches within the Capacity Pool.
@@ -94,8 +94,7 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Cache resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context);
+    PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
      * This operation will list the cluster peering command, cluster peering passphrase and the vserver peering command.

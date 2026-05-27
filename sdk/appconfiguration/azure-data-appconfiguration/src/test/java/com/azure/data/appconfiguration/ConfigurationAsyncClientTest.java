@@ -47,6 +47,7 @@ import java.util.List;
 import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -947,6 +948,104 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         StepVerifier.create(client.listConfigurationSettings(options))
             .assertNext(response -> assertConfigurationEquals(updated, response))
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can check configuration settings using HEAD requests and get page-level ETags.
+     */
+    @Test
+    public void checkConfigurationSettings() {
+        String key = getKey();
+        String key2 = getKey();
+        listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+            SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
+
+            // HEAD requests return empty items but pages should have ETags
+            StepVerifier.create(client.checkConfigurationSettings(selector).byPage()).assertNext(page -> {
+                assertNotNull(page.getHeaders());
+                // Items should be empty since HEAD returns no body
+                assertTrue(page.getElements() == null || !page.getElements().iterator().hasNext());
+                // Page should have an ETag header
+                assertNotNull(page.getHeaders().getValue(HttpHeaderName.ETAG));
+            }).verifyComplete();
+
+            return client.listConfigurationSettings(selector).collectList().block();
+        });
+    }
+
+    /**
+     * Verifies that we can check configuration settings using HEAD requests and detect changes
+     * via ETag comparison.
+     */
+    @Test
+    public void checkConfigurationSettingsETagChanged() {
+        String key = getKey();
+        ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+        StepVerifier.create(client.setConfigurationSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        SettingSelector selector = new SettingSelector().setKeyFilter(key);
+
+        // First HEAD request to get initial ETag
+        String initialETag = client.checkConfigurationSettings(selector)
+            .byPage()
+            .blockFirst()
+            .getHeaders()
+            .getValue(HttpHeaderName.ETAG);
+        assertNotNull(initialETag);
+
+        // Modify the setting
+        ConfigurationSetting updatedSetting = new ConfigurationSetting().setKey(key).setValue("updatedValue");
+        StepVerifier.create(client.setConfigurationSetting(updatedSetting))
+            .assertNext(response -> assertConfigurationEquals(updatedSetting, response))
+            .verifyComplete();
+
+        // Second HEAD request should give a different ETag
+        String updatedETag = client.checkConfigurationSettings(selector)
+            .byPage()
+            .blockFirst()
+            .getHeaders()
+            .getValue(HttpHeaderName.ETAG);
+        assertNotNull(updatedETag);
+        assertNotEquals(initialETag, updatedETag);
+    }
+
+    /**
+     * Verifies that we can check configuration settings with pagination and each page has an ETag.
+     */
+    @Disabled("Requires 200 settings to trigger pagination, prone to TOO_MANY_REQUESTS")
+    @Test
+    public void checkConfigurationSettingsWithPagination() {
+        final int numberExpected = 200;
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting
+                = new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix);
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
+        }
+
+        SettingSelector selector = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
+
+        // HEAD requests with pagination should return multiple pages, each with an ETag
+        List<String> pageTags = new ArrayList<>();
+        StepVerifier.create(client.checkConfigurationSettings(selector).byPage()).thenConsumeWhile(page -> {
+            assertNotNull(page.getHeaders());
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            assertNotNull(eTag);
+            pageTags.add(eTag);
+            return true;
+        }).verifyComplete();
+
+        // We should have more than one page
+        assertTrue(pageTags.size() > 1, "Expected multiple pages but got " + pageTags.size());
     }
 
     /**

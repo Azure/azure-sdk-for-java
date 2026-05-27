@@ -21,7 +21,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestor
  */
 public final class BackupInstancesValidateCrossRegionRestoreSamples {
     /*
-     * x-ms-original-file: 2025-07-01/CrossRegionRestore/ValidateCrossRegionRestore.json
+     * x-ms-original-file: 2026-03-01/CrossRegionRestore/ValidateCrossRegionRestore.json
      */
     /**
      * Sample code: Validate Cross Region Restore.

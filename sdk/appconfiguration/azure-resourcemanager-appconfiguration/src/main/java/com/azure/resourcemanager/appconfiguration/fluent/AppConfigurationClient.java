@@ -61,6 +61,13 @@ public interface AppConfigurationClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
      * @return the PrivateLinkResourcesClient object.
