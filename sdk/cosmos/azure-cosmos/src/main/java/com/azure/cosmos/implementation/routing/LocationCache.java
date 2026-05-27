@@ -27,10 +27,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -52,6 +54,7 @@ public class LocationCache {
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<RegionalRoutingContext, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
     private final ConcurrentHashMap<String, String> canonicalRegionNameCache;
+    private final Set<String> warnedUnmatchedRegions;
     private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
@@ -78,6 +81,7 @@ public class LocationCache {
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
         this.canonicalRegionNameCache = new ConcurrentHashMap<>();
+        this.warnedUnmatchedRegions = ConcurrentHashMap.newKeySet();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
@@ -832,6 +836,44 @@ public class LocationCache {
             logger.debug("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
                     nextLocationInfo.readRegionalRoutingContexts, nextLocationInfo.writeRegionalRoutingContexts);
             this.locationInfo = nextLocationInfo;
+
+            // Warn about customer-configured preferred regions that don't match any account region.
+            // Deduped: each unmatched region is warned only once across refreshes.
+            this.warnUnmatchedPreferredRegions(nextLocationInfo);
+        }
+    }
+
+    private void warnUnmatchedPreferredRegions(DatabaseAccountLocationsInfo locationInfo) {
+        List<String> customerPreferred = this.connectionPolicy.getPreferredRegions();
+        if (customerPreferred == null || customerPreferred.isEmpty()) {
+            return;
+        }
+
+        // Collect available region names (normalized for comparison)
+        Set<String> availableNormalized = new HashSet<>();
+        for (String region : locationInfo.availableReadLocations) {
+            availableNormalized.add(RegionUtils.getNormalizedRegionName(region));
+        }
+        for (String region : locationInfo.availableWriteLocations) {
+            availableNormalized.add(RegionUtils.getNormalizedRegionName(region));
+        }
+
+        for (String preferred : customerPreferred) {
+            if (preferred == null) {
+                continue;
+            }
+            String normalizedPreferred = RegionUtils.getNormalizedRegionName(preferred);
+            if (!availableNormalized.contains(normalizedPreferred)) {
+                // Dedupe: warn only once per unique normalized region
+                if (this.warnedUnmatchedRegions.add(normalizedPreferred)) {
+                    logger.warn(
+                        "Preferred region '{}' (normalized: '{}') does not match any available account region. "
+                            + "Available regions: {}. This region will be ignored for routing.",
+                        preferred,
+                        normalizedPreferred,
+                        locationInfo.availableReadLocations);
+                }
+            }
         }
     }
 
