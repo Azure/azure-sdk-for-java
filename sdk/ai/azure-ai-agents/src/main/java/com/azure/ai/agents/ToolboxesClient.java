@@ -399,6 +399,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,6 +426,7 @@ public final class ToolboxesClient {
      * Retrieve a toolbox.
      *
      * @param name The name of the toolbox to retrieve.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -446,6 +448,7 @@ public final class ToolboxesClient {
     /**
      * List all toolboxes.
      *
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -491,6 +494,7 @@ public final class ToolboxesClient {
     /**
      * List all toolboxes.
      *
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -513,6 +517,7 @@ public final class ToolboxesClient {
      * List all versions of a toolbox.
      *
      * @param name The name of the toolbox to list versions for.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -559,6 +564,7 @@ public final class ToolboxesClient {
      * List all versions of a toolbox.
      *
      * @param name The name of the toolbox to list versions for.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -584,6 +590,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -610,6 +617,7 @@ public final class ToolboxesClient {
      * @param name The name of the toolbox to update.
      * @param defaultVersion The version identifier that the toolbox should point to. When set, the toolbox's default
      * version will resolve to this version instead of the latest.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -635,6 +643,7 @@ public final class ToolboxesClient {
      * Delete a toolbox and all its versions.
      *
      * @param name The name of the toolbox to delete.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -657,6 +666,7 @@ public final class ToolboxesClient {
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -684,6 +694,7 @@ public final class ToolboxesClient {
      * @param skills The list of skill sources to include in this version. A skill reference specifies a skill name and
      * optionally a version. If version is omitted, the skill's default version is used.
      * @param policies Policy configuration for this toolbox version.
+     * @param foundryFeatures The Foundry preview feature opt-in header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
