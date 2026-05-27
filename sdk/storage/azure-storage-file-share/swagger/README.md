@@ -407,7 +407,7 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{shareName}/{fileName}?comp=rangelist"].get
   transform: >
-    $["x-ms-pageable"].itemName = "Ranges";
+    delete $["x-ms-pageable"];
 ```
 
 ### Change PutRange response file-last-write-time to ISO8601
