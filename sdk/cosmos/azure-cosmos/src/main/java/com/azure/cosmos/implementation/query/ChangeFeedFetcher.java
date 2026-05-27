@@ -136,47 +136,50 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                }
 
                                if (ModelBridgeInternal.<T>noChanges(r)) {
-                                   // if we have reached here, it means we have got 304 for the current feedRange,
-                                   // but we need to continue drain the changes from other sub-feedRange
-                                   if (this.emptyPagesAllowed) {
-                                       // Surface the empty page to the caller. When emptyPagesAllowed=true,
-                                       // isFullyDrained() does NOT flip shouldFetchMore off on noChanges
-                                       // (it only consults continuation.isDone()), so the outer Paginator
-                                       // generate-loop will issue the next nextPage() call to drain the
-                                       // remaining sub-feedRanges.
-                                       return Mono.just(r);
-                                   }
-                                   // Default path: isFullyDrained() returned true for this noChanges, so
-                                   // shouldFetchMore is currently false. Re-enable it before going through
-                                   // repeatWhenEmpty so Paginator will call nextPage() again.
-                                   this.reEnableShouldFetchMoreForRetry();
-                                   return Mono.empty();
+                                   // 304 for the current sub-feedRange; need to drain the next one.
+                                   return surfaceOrSwallowNoChangesPage(r);
                                }
                            }
                        } else {
-                           // complete query based on 304s
-                           if (continuationSnapshot != null &&
-                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
-
-                               // not all continuations have been drained yet
-                               // repeat with the next continuation
-                               if (this.emptyPagesAllowed) {
-                                   // Surface the empty/304 page to the caller. When emptyPagesAllowed=true,
-                                   // isFullyDrained() does NOT flip shouldFetchMore off on noChanges, so
-                                   // Paginator will keep calling nextPage() to drain remaining sub-feedRanges.
-                                   // Caller-side iteration terminates via the consumer (e.g., Spark task).
+                           // Streaming change feed (no endLSN). Terminate either when no continuation
+                           // exists or when handleChangeFeedNotModified signals NO_RETRY (single-partition
+                           // case, multi-partition full-cycle complete, or the >4*(size+1) consecutive-304
+                           // defense in FeedRangeCompositeContinuationImpl).
+                           if (continuationSnapshot != null) {
+                               ShouldRetryResult retryResult = continuationSnapshot.handleChangeFeedNotModified(r);
+                               if (retryResult == ShouldRetryResult.RETRY_NOW) {
+                                   // not all continuations have been drained yet; repeat with the next continuation
+                                   return surfaceOrSwallowNoChangesPage(r);
+                               }
+                               if (ModelBridgeInternal.<T>noChanges(r) && this.emptyPagesAllowed) {
+                                   // NO_RETRY on a noChanges page: the SDK's termination signal. Without
+                                   // emptyPagesAllowed=true, isFullyDrained() already flipped shouldFetchMore
+                                   // off. With emptyPagesAllowed=true, isFullyDrained() consults only
+                                   // continuation.isDone() (which is permanently false for incremental change
+                                   // feed), so we must explicitly disable further fetches here to preserve
+                                   // the defense-in-depth termination guarantee.
+                                   this.disableShouldFetchMore();
                                    return Mono.just(r);
                                }
-                               // Default path: isFullyDrained() returned true for this noChanges, so
-                               // re-enable shouldFetchMore before going through repeatWhenEmpty.
-                               this.reEnableShouldFetchMoreForRetry();
-                               return Mono.empty();
                            }
                        }
 
                        return Mono.just(r);
                    })
                    .repeatWhenEmpty(o -> o);
+    }
+
+    /**
+     * Either surface a noChanges page to the caller (when emptyPagesAllowed=true) or swallow it via
+     * Reactor's repeatWhenEmpty (the legacy behavior). When swallowing, shouldFetchMore must be
+     * re-enabled first because isFullyDrained() already flipped it off for the noChanges page.
+     */
+    private Mono<FeedResponse<T>> surfaceOrSwallowNoChangesPage(FeedResponse<T> r) {
+        if (this.emptyPagesAllowed) {
+            return Mono.just(r);
+        }
+        this.reEnableShouldFetchMoreForRetry();
+        return Mono.empty();
     }
 
     @Override
@@ -193,22 +196,16 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
     @Override
     protected boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response) {
-        // When emptyPagesAllowed=true we explicitly want to surface every noChanges
-        // page to the caller and let the outer Paginator generate-loop keep calling
-        // nextPage() until the caller stops consuming (e.g., until Spark's Iterator
-        // is exhausted). isDone() on FeedRangeCompositeContinuationImpl checks
-        // compositeContinuationTokens.size()==0, which never holds for normal
-        // incremental change-feed iteration (moveToNextToken rotates the deque,
-        // never shrinks it). So in that mode, "is the iteration over?" is decided
-        // by the consumer, not by us here.
+        // Short-circuit when emptyPagesAllowed=false: noChanges -> fully drained.
+        // Required because FeedRangeCompositeContinuationImpl.isDone() never flips
+        // true for incremental change feed (the deque is rotated, never shrunk),
+        // so handleChangeFeedNotModified()=NO_RETRY would otherwise leave
+        // shouldFetchMore=true and Paginator would poll indefinitely.
         //
-        // When emptyPagesAllowed=false (the SDK default for all non-Spark callers)
-        // we MUST short-circuit on noChanges. Otherwise, after
-        // FeedRangeCompositeContinuationImpl.handleChangeFeedNotModified returns
-        // NO_RETRY (single-partition case, multi-partition cycle-complete, or the
-        // >4*(size+1) consecutive-304 defense), nextPageInternal would fall through
-        // to Mono.just(r) and Paginator would call nextPage() again forever
-        // because isDone() never flips true for incremental change feed.
+        // When emptyPagesAllowed=true we deliberately skip the short-circuit so
+        // each noChanges page surfaces to the caller (e.g., the Spark connector
+        // iterator); termination is handled either by the consumer or, on
+        // NO_RETRY, by an explicit disableShouldFetchMore() in nextPageInternal.
         if (!this.emptyPagesAllowed && ModelBridgeInternal.noChanges(response)) {
             return true;
         }

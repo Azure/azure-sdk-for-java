@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -116,6 +117,11 @@ public class ChangeFeedFetcherEmptyPagesTest {
         assertThat(invokeIsFullyDrained(fetcher, noChangesResponse))
             .describedAs("With emptyPagesAllowed=false the noChanges short-circuit must remain to terminate iteration")
             .isTrue();
+        // The short-circuit must fire WITHOUT consulting the continuation; if a future
+        // refactor accidentally drops the noChanges check and falls through to
+        // continuation.isDone() (which is permanently false in incremental change feed),
+        // this verify catches it as a loud failure rather than a hard-to-diagnose hang.
+        Mockito.verify(continuation, Mockito.never()).isDone();
     }
 
     @Test(groups = { "unit" })
@@ -153,6 +159,52 @@ public class ChangeFeedFetcherEmptyPagesTest {
         StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == data).verifyComplete();
 
         assertThat(callIndex.get()).describedAs("executeFunc should have been called once per surfaced page").isEqualTo(4);
+    }
+
+    @Test(groups = { "unit" })
+    public void nextPage_emptyPagesAllowedTrueWithNoRetryOnNoChanges_terminatesIteration() {
+        // Defense-in-depth: with emptyPagesAllowed=true, isFullyDrained() consults only
+        // continuation.isDone() (permanently false in incremental change feed), so the
+        // SDK's own termination signal would otherwise be lost. nextPageInternal must
+        // explicitly disableShouldFetchMore() when handleChangeFeedNotModified returns
+        // NO_RETRY on a noChanges page (single-partition case, multi-partition full
+        // cycle complete, or the >4*(size+1) consecutive-304 defense).
+        //
+        // This test scripts: 3 noChanges with RETRY_NOW (mid-cycle), followed by a 4th
+        // noChanges with NO_RETRY (terminal). All 4 must surface, and shouldFetchMore()
+        // must be false after the terminal page so Paginator's outer loop stops.
+        FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
+        when(continuation.isDone()).thenReturn(false);
+
+        FeedResponse<Document> mid1 = changeFeedNoChanges("t1");
+        FeedResponse<Document> mid2 = changeFeedNoChanges("t2");
+        FeedResponse<Document> mid3 = changeFeedNoChanges("t3");
+        FeedResponse<Document> terminal = changeFeedNoChanges("t4");
+
+        // The continuation distinguishes terminal from mid-cycle by reference identity.
+        when(continuation.handleChangeFeedNotModified(any())).thenAnswer(invocation -> {
+            FeedResponse<?> rsp = invocation.getArgument(0);
+            return rsp == terminal ? ShouldRetryResult.noRetry() : ShouldRetryResult.RETRY_NOW;
+        });
+
+        FeedResponse<Document>[] script = new FeedResponse[] { mid1, mid2, mid3, terminal };
+        AtomicInteger callIndex = new AtomicInteger();
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc =
+            req -> Mono.just(script[callIndex.getAndIncrement()]);
+
+        ChangeFeedFetcher<Document> fetcher =
+            newFetcherWithExecuteFunc(continuation, /* emptyPagesAllowed */ true, executeFunc);
+
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == mid1).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after mid1").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == mid2).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after mid2").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == mid3).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after mid3").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == terminal).verifyComplete();
+        assertThat(fetcher.shouldFetchMore())
+            .describedAs("NO_RETRY on terminal noChanges page MUST stop Paginator from polling again")
+            .isFalse();
     }
 
     @Test(groups = { "unit" })
