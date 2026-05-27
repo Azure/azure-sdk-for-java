@@ -51,7 +51,7 @@ public class DataGenerationJobsAsyncSample {
 
         AtomicBoolean found = new AtomicBoolean(false);
         return DATA_GENERATION_JOBS_ASYNC_CLIENT.listGenerationJobs(
-            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null, null, null)
+            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
             .take(5)
             .doOnNext(job -> {
                 found.set(true);
