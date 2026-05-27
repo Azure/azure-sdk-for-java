@@ -1,6 +1,23 @@
 # Release History
-## 7.3.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 4.0.6 and Spring Cloud dependencies version to 2025.1.1
+## 7.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.3.0 (2026-05-27)
+- This release is compatible with Spring Boot 4.0.0-4.0.6. (Note: 4.0.x (x>6) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.1. (Note: 2025.1.x (x>1) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.7.
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -41,6 +58,10 @@ This section includes changes in `spring-cloud-azure-service` module.
   - `AZURESUBSCRIPTION_CLIENT_ID`
   - `AZURESUBSCRIPTION_TENANT_ID`
   - `SYSTEM_ACCESSTOKEN`
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#730-2026-05-27) for more details.
 
 ## 6.3.0 (2026-04-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)

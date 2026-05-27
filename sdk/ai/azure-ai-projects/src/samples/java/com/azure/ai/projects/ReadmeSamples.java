@@ -22,9 +22,6 @@ import java.util.Map;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
-        // BEGIN: com.azure.ai.projects.readme
-        // END: com.azure.ai.projects.readme
-
         // BEGIN: com.azure.ai.projects.clientInitialization
         AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
