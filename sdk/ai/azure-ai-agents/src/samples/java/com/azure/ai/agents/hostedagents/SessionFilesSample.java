@@ -9,7 +9,6 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
-import com.azure.ai.agents.models.SessionDirectoryListResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -59,9 +58,8 @@ public class SessionFilesSample {
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_2);
 
             System.out.println("Listing session files for the session at path '/remote'...");
-            SessionDirectoryListResponse files = sessionFilesClient.listSessionFiles(agentName, sessionId, "/remote",
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
-            for (SessionDirectoryEntry entry : files.getEntries()) {
+            for (SessionDirectoryEntry entry : sessionFilesClient.listSessionFiles(agentName, sessionId,
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, "/remote", null, null, null, null, null)) {
                 System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(), entry.getSize(),
                     entry.isDirectory());
             }

@@ -146,8 +146,8 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("agent", this.agent);
-        jsonWriter.writeJsonField("trainDatasetReference", this.trainDatasetReference);
-        jsonWriter.writeJsonField("validationDatasetReference", this.validationDatasetReference);
+        jsonWriter.writeJsonField("train_dataset_reference", this.trainDatasetReference);
+        jsonWriter.writeJsonField("validation_dataset_reference", this.validationDatasetReference);
         jsonWriter.writeArrayField("evaluators", this.evaluators, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("options", this.options);
         return jsonWriter.writeEndObject();
@@ -175,9 +175,9 @@ public final class OptimizationJobInputs implements JsonSerializable<Optimizatio
                 reader.nextToken();
                 if ("agent".equals(fieldName)) {
                     agent = AgentIdentifier.fromJson(reader);
-                } else if ("trainDatasetReference".equals(fieldName)) {
+                } else if ("train_dataset_reference".equals(fieldName)) {
                     trainDatasetReference = DatasetRef.fromJson(reader);
-                } else if ("validationDatasetReference".equals(fieldName)) {
+                } else if ("validation_dataset_reference".equals(fieldName)) {
                     validationDatasetReference = DatasetRef.fromJson(reader);
                 } else if ("evaluators".equals(fieldName)) {
                     evaluators = reader.readArray(reader1 -> reader1.getString());

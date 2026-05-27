@@ -72,9 +72,9 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("currentIteration", this.currentIteration);
-        jsonWriter.writeDoubleField("bestScore", this.bestScore);
-        jsonWriter.writeDoubleField("elapsedSeconds", this.elapsedSeconds);
+        jsonWriter.writeIntField("current_iteration", this.currentIteration);
+        jsonWriter.writeDoubleField("best_score", this.bestScore);
+        jsonWriter.writeDoubleField("elapsed_seconds", this.elapsedSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -96,11 +96,11 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("currentIteration".equals(fieldName)) {
+                if ("current_iteration".equals(fieldName)) {
                     currentIteration = reader.getInt();
-                } else if ("bestScore".equals(fieldName)) {
+                } else if ("best_score".equals(fieldName)) {
                     bestScore = reader.getDouble();
-                } else if ("elapsedSeconds".equals(fieldName)) {
+                } else if ("elapsed_seconds".equals(fieldName)) {
                     elapsedSeconds = reader.getDouble();
                 } else {
                     reader.skipChildren();

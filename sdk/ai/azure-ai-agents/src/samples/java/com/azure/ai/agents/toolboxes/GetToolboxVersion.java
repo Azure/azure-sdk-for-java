@@ -5,7 +5,6 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
@@ -35,8 +34,7 @@ public class GetToolboxVersion {
                 .endpoint(endpoint)
                 .buildToolboxesClient();
 
-        ToolboxVersionDetails toolboxVersion = toolboxesClient.getToolboxVersion(toolboxName, version,
-                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+        ToolboxVersionDetails toolboxVersion = toolboxesClient.getToolboxVersion(toolboxName, version);
 
         System.out.println("Toolbox Name: " + toolboxVersion.getName());
         System.out.println("Toolbox Version: " + toolboxVersion.getVersion());

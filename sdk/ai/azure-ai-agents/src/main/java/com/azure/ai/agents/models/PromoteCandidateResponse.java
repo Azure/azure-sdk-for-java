@@ -130,11 +130,11 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("candidateId", this.candidateId);
+        jsonWriter.writeStringField("candidate_id", this.candidateId);
         jsonWriter.writeStringField("status", this.status);
-        jsonWriter.writeLongField("promotedAt", this.promotedAt);
-        jsonWriter.writeStringField("agentName", this.agentName);
-        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeLongField("promoted_at", this.promotedAt);
+        jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("agent_version", this.agentVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -158,15 +158,15 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("candidateId".equals(fieldName)) {
+                if ("candidate_id".equals(fieldName)) {
                     candidateId = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = reader.getString();
-                } else if ("promotedAt".equals(fieldName)) {
+                } else if ("promoted_at".equals(fieldName)) {
                     promotedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("agentName".equals(fieldName)) {
+                } else if ("agent_name".equals(fieldName)) {
                     agentName = reader.getString();
-                } else if ("agentVersion".equals(fieldName)) {
+                } else if ("agent_version".equals(fieldName)) {
                     agentVersion = reader.getString();
                 } else {
                     reader.skipChildren();

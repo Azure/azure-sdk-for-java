@@ -1795,7 +1795,7 @@ public final class AgentsClient {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -1863,7 +1863,7 @@ public final class AgentsClient {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -2828,7 +2828,7 @@ public final class AgentsClient {
      *     version_indicator (Required): {
      *         type: String(version_ref) (Required)
      *     }
-     *     status: String(creating/active/idle/updating/failed/stopping/deleting/deleted/expired) (Required)
+     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
@@ -3343,8 +3343,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -3355,25 +3355,25 @@ public final class AgentsClient {
      * {@code
      * {
      *     agent (Required): {
-     *         agentName: String (Required)
-     *         agentVersion: String (Optional)
+     *         agent_name: String (Required)
+     *         agent_version: String (Optional)
      *     }
-     *     trainDatasetReference (Required): {
+     *     train_dataset_reference (Required): {
      *         name: String (Required)
      *         version: String (Optional)
      *     }
-     *     validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *     validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
      *     evaluators (Optional): [
      *         String (Optional)
      *     ]
      *     options (Optional): {
-     *         maxIterations: Integer (Optional)
-     *         optimizationConfig (Optional): {
+     *         max_iterations: Integer (Optional)
+     *         optimization_config (Optional): {
      *             String: BinaryData (Required)
      *         }
-     *         evalModel: String (Optional)
-     *         optimizationModel: String (Optional)
-     *         evaluationLevel: String(turn/conversation) (Optional)
+     *         eval_model: String (Optional)
+     *         optimization_model: String (Optional)
+     *         evaluation_level: String(turn/conversation) (Optional)
      *     }
      * }
      * }
@@ -3403,13 +3403,13 @@ public final class AgentsClient {
      *     }
      *     result (Optional): {
      *         baseline (Optional): {
-     *             candidateId: String (Optional)
+     *             candidate_id: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agentName: String (Optional)
-     *                 agentVersion: String (Optional)
+     *                 agent_name: String (Optional)
+     *                 agent_version: String (Optional)
      *                 model: String (Optional)
-     *                 systemPrompt: String (Optional)
+     *                 system_prompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
      *                         String: BinaryData (Required)
@@ -3424,35 +3424,35 @@ public final class AgentsClient {
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             avgScore: double (Required)
-     *             avgTokens: double (Required)
-     *             passRate: double (Required)
-     *             taskScores (Required): [
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
      *                  (Required){
-     *                     taskName: String (Required)
+     *                     task_name: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     compositeScore: double (Required)
+     *                     composite_score: double (Required)
      *                     tokens: int (Required)
-     *                     durationSeconds: double (Required)
+     *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
-     *                     errorMessage: String (Optional)
+     *                     error_message: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     runId: String (Optional)
+     *                     run_id: String (Optional)
      *                 }
      *             ]
-     *             isParetoOptimal: boolean (Required)
-     *             evalId: String (Optional)
-     *             evalRunId: String (Optional)
+     *             is_pareto_optimal: boolean (Required)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
      *             promotion (Optional): {
-     *                 promotedAt: long (Required)
-     *                 agentName: String (Required)
-     *                 agentVersion: String (Required)
+     *                 promoted_at: long (Required)
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Required)
      *             }
      *         }
      *         best (Optional): (recursive schema, see best above)
@@ -3460,52 +3460,52 @@ public final class AgentsClient {
      *             (recursive schema, see above)
      *         ]
      *         options (Optional): {
-     *             maxIterations: Integer (Optional)
-     *             optimizationConfig (Optional): {
+     *             max_iterations: Integer (Optional)
+     *             optimization_config (Optional): {
      *                 String: BinaryData (Required)
      *             }
-     *             evalModel: String (Optional)
-     *             optimizationModel: String (Optional)
-     *             evaluationLevel: String(turn/conversation) (Optional)
+     *             eval_model: String (Optional)
+     *             optimization_model: String (Optional)
+     *             evaluation_level: String(turn/conversation) (Optional)
      *         }
      *         warnings (Optional): [
      *             String (Optional)
      *         ]
-     *         allTargetAttributesFailed: Boolean (Optional)
+     *         all_target_attributes_failed: Boolean (Optional)
      *     }
      *     inputs (Optional): {
      *         agent (Required): {
-     *             agentName: String (Required)
-     *             agentVersion: String (Optional)
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
      *         }
-     *         trainDatasetReference (Required): {
+     *         train_dataset_reference (Required): {
      *             name: String (Required)
      *             version: String (Optional)
      *         }
-     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
      *         evaluators (Optional): [
      *             String (Optional)
      *         ]
      *         options (Optional): (recursive schema, see options above)
      *     }
-     *     createdAt: long (Required)
-     *     updatedAt: Long (Optional)
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
      *     progress (Optional): {
-     *         currentIteration: int (Required)
-     *         bestScore: double (Required)
-     *         elapsedSeconds: double (Required)
+     *         current_iteration: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
      *     }
      *     dataset (Optional): {
      *         name: String (Optional)
      *         version: String (Optional)
-     *         taskCount: int (Required)
-     *         isInline: boolean (Required)
+     *         task_count: int (Required)
+     *         is_inline: boolean (Required)
      *     }
      * }
      * }
      * </pre>
      *
-     * @param body The optimization job inputs.
+     * @param inputs The optimization job inputs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3516,8 +3516,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOptimizationJobWithResponse(body, requestOptions);
+    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
+        return this.serviceClient.createOptimizationJobWithResponse(inputs, requestOptions);
     }
 
     /**
@@ -3531,8 +3531,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -3559,13 +3559,13 @@ public final class AgentsClient {
      *     }
      *     result (Optional): {
      *         baseline (Optional): {
-     *             candidateId: String (Optional)
+     *             candidate_id: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agentName: String (Optional)
-     *                 agentVersion: String (Optional)
+     *                 agent_name: String (Optional)
+     *                 agent_version: String (Optional)
      *                 model: String (Optional)
-     *                 systemPrompt: String (Optional)
+     *                 system_prompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
      *                         String: BinaryData (Required)
@@ -3580,35 +3580,35 @@ public final class AgentsClient {
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             avgScore: double (Required)
-     *             avgTokens: double (Required)
-     *             passRate: double (Required)
-     *             taskScores (Required): [
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
      *                  (Required){
-     *                     taskName: String (Required)
+     *                     task_name: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     compositeScore: double (Required)
+     *                     composite_score: double (Required)
      *                     tokens: int (Required)
-     *                     durationSeconds: double (Required)
+     *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
-     *                     errorMessage: String (Optional)
+     *                     error_message: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     runId: String (Optional)
+     *                     run_id: String (Optional)
      *                 }
      *             ]
-     *             isParetoOptimal: boolean (Required)
-     *             evalId: String (Optional)
-     *             evalRunId: String (Optional)
+     *             is_pareto_optimal: boolean (Required)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
      *             promotion (Optional): {
-     *                 promotedAt: long (Required)
-     *                 agentName: String (Required)
-     *                 agentVersion: String (Required)
+     *                 promoted_at: long (Required)
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Required)
      *             }
      *         }
      *         best (Optional): (recursive schema, see best above)
@@ -3616,46 +3616,46 @@ public final class AgentsClient {
      *             (recursive schema, see above)
      *         ]
      *         options (Optional): {
-     *             maxIterations: Integer (Optional)
-     *             optimizationConfig (Optional): {
+     *             max_iterations: Integer (Optional)
+     *             optimization_config (Optional): {
      *                 String: BinaryData (Required)
      *             }
-     *             evalModel: String (Optional)
-     *             optimizationModel: String (Optional)
-     *             evaluationLevel: String(turn/conversation) (Optional)
+     *             eval_model: String (Optional)
+     *             optimization_model: String (Optional)
+     *             evaluation_level: String(turn/conversation) (Optional)
      *         }
      *         warnings (Optional): [
      *             String (Optional)
      *         ]
-     *         allTargetAttributesFailed: Boolean (Optional)
+     *         all_target_attributes_failed: Boolean (Optional)
      *     }
      *     inputs (Optional): {
      *         agent (Required): {
-     *             agentName: String (Required)
-     *             agentVersion: String (Optional)
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
      *         }
-     *         trainDatasetReference (Required): {
+     *         train_dataset_reference (Required): {
      *             name: String (Required)
      *             version: String (Optional)
      *         }
-     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
      *         evaluators (Optional): [
      *             String (Optional)
      *         ]
      *         options (Optional): (recursive schema, see options above)
      *     }
-     *     createdAt: long (Required)
-     *     updatedAt: Long (Optional)
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
      *     progress (Optional): {
-     *         currentIteration: int (Required)
-     *         bestScore: double (Required)
-     *         elapsedSeconds: double (Required)
+     *         current_iteration: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
      *     }
      *     dataset (Optional): {
      *         name: String (Optional)
      *         version: String (Optional)
-     *         taskCount: int (Required)
-     *         isInline: boolean (Required)
+     *         task_count: int (Required)
+     *         is_inline: boolean (Required)
      *     }
      * }
      * }
@@ -3680,7 +3680,7 @@ public final class AgentsClient {
     /**
      * Returns a list of agent optimization jobs.
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3701,7 +3701,7 @@ public final class AgentsClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
      * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3711,8 +3711,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -3739,13 +3739,13 @@ public final class AgentsClient {
      *     }
      *     result (Optional): {
      *         baseline (Optional): {
-     *             candidateId: String (Optional)
+     *             candidate_id: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agentName: String (Optional)
-     *                 agentVersion: String (Optional)
+     *                 agent_name: String (Optional)
+     *                 agent_version: String (Optional)
      *                 model: String (Optional)
-     *                 systemPrompt: String (Optional)
+     *                 system_prompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
      *                         String: BinaryData (Required)
@@ -3760,35 +3760,35 @@ public final class AgentsClient {
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             avgScore: double (Required)
-     *             avgTokens: double (Required)
-     *             passRate: double (Required)
-     *             taskScores (Required): [
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
      *                  (Required){
-     *                     taskName: String (Required)
+     *                     task_name: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     compositeScore: double (Required)
+     *                     composite_score: double (Required)
      *                     tokens: int (Required)
-     *                     durationSeconds: double (Required)
+     *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
-     *                     errorMessage: String (Optional)
+     *                     error_message: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     runId: String (Optional)
+     *                     run_id: String (Optional)
      *                 }
      *             ]
-     *             isParetoOptimal: boolean (Required)
-     *             evalId: String (Optional)
-     *             evalRunId: String (Optional)
+     *             is_pareto_optimal: boolean (Required)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
      *             promotion (Optional): {
-     *                 promotedAt: long (Required)
-     *                 agentName: String (Required)
-     *                 agentVersion: String (Required)
+     *                 promoted_at: long (Required)
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Required)
      *             }
      *         }
      *         best (Optional): (recursive schema, see best above)
@@ -3796,46 +3796,46 @@ public final class AgentsClient {
      *             (recursive schema, see above)
      *         ]
      *         options (Optional): {
-     *             maxIterations: Integer (Optional)
-     *             optimizationConfig (Optional): {
+     *             max_iterations: Integer (Optional)
+     *             optimization_config (Optional): {
      *                 String: BinaryData (Required)
      *             }
-     *             evalModel: String (Optional)
-     *             optimizationModel: String (Optional)
-     *             evaluationLevel: String(turn/conversation) (Optional)
+     *             eval_model: String (Optional)
+     *             optimization_model: String (Optional)
+     *             evaluation_level: String(turn/conversation) (Optional)
      *         }
      *         warnings (Optional): [
      *             String (Optional)
      *         ]
-     *         allTargetAttributesFailed: Boolean (Optional)
+     *         all_target_attributes_failed: Boolean (Optional)
      *     }
      *     inputs (Optional): {
      *         agent (Required): {
-     *             agentName: String (Required)
-     *             agentVersion: String (Optional)
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
      *         }
-     *         trainDatasetReference (Required): {
+     *         train_dataset_reference (Required): {
      *             name: String (Required)
      *             version: String (Optional)
      *         }
-     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
      *         evaluators (Optional): [
      *             String (Optional)
      *         ]
      *         options (Optional): (recursive schema, see options above)
      *     }
-     *     createdAt: long (Required)
-     *     updatedAt: Long (Optional)
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
      *     progress (Optional): {
-     *         currentIteration: int (Required)
-     *         bestScore: double (Required)
-     *         elapsedSeconds: double (Required)
+     *         current_iteration: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
      *     }
      *     dataset (Optional): {
      *         name: String (Optional)
      *         version: String (Optional)
-     *         taskCount: int (Required)
-     *         isInline: boolean (Required)
+     *         task_count: int (Required)
+     *         is_inline: boolean (Required)
      *     }
      * }
      * }
@@ -3865,8 +3865,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -3893,13 +3893,13 @@ public final class AgentsClient {
      *     }
      *     result (Optional): {
      *         baseline (Optional): {
-     *             candidateId: String (Optional)
+     *             candidate_id: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agentName: String (Optional)
-     *                 agentVersion: String (Optional)
+     *                 agent_name: String (Optional)
+     *                 agent_version: String (Optional)
      *                 model: String (Optional)
-     *                 systemPrompt: String (Optional)
+     *                 system_prompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
      *                         String: BinaryData (Required)
@@ -3914,35 +3914,35 @@ public final class AgentsClient {
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             avgScore: double (Required)
-     *             avgTokens: double (Required)
-     *             passRate: double (Required)
-     *             taskScores (Required): [
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
      *                  (Required){
-     *                     taskName: String (Required)
+     *                     task_name: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     compositeScore: double (Required)
+     *                     composite_score: double (Required)
      *                     tokens: int (Required)
-     *                     durationSeconds: double (Required)
+     *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
-     *                     errorMessage: String (Optional)
+     *                     error_message: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     runId: String (Optional)
+     *                     run_id: String (Optional)
      *                 }
      *             ]
-     *             isParetoOptimal: boolean (Required)
-     *             evalId: String (Optional)
-     *             evalRunId: String (Optional)
+     *             is_pareto_optimal: boolean (Required)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
      *             promotion (Optional): {
-     *                 promotedAt: long (Required)
-     *                 agentName: String (Required)
-     *                 agentVersion: String (Required)
+     *                 promoted_at: long (Required)
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Required)
      *             }
      *         }
      *         best (Optional): (recursive schema, see best above)
@@ -3950,46 +3950,46 @@ public final class AgentsClient {
      *             (recursive schema, see above)
      *         ]
      *         options (Optional): {
-     *             maxIterations: Integer (Optional)
-     *             optimizationConfig (Optional): {
+     *             max_iterations: Integer (Optional)
+     *             optimization_config (Optional): {
      *                 String: BinaryData (Required)
      *             }
-     *             evalModel: String (Optional)
-     *             optimizationModel: String (Optional)
-     *             evaluationLevel: String(turn/conversation) (Optional)
+     *             eval_model: String (Optional)
+     *             optimization_model: String (Optional)
+     *             evaluation_level: String(turn/conversation) (Optional)
      *         }
      *         warnings (Optional): [
      *             String (Optional)
      *         ]
-     *         allTargetAttributesFailed: Boolean (Optional)
+     *         all_target_attributes_failed: Boolean (Optional)
      *     }
      *     inputs (Optional): {
      *         agent (Required): {
-     *             agentName: String (Required)
-     *             agentVersion: String (Optional)
+     *             agent_name: String (Required)
+     *             agent_version: String (Optional)
      *         }
-     *         trainDatasetReference (Required): {
+     *         train_dataset_reference (Required): {
      *             name: String (Required)
      *             version: String (Optional)
      *         }
-     *         validationDatasetReference (Optional): (recursive schema, see validationDatasetReference above)
+     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
      *         evaluators (Optional): [
      *             String (Optional)
      *         ]
      *         options (Optional): (recursive schema, see options above)
      *     }
-     *     createdAt: long (Required)
-     *     updatedAt: Long (Optional)
+     *     created_at: long (Required)
+     *     updated_at: Long (Optional)
      *     progress (Optional): {
-     *         currentIteration: int (Required)
-     *         bestScore: double (Required)
-     *         elapsedSeconds: double (Required)
+     *         current_iteration: int (Required)
+     *         best_score: double (Required)
+     *         elapsed_seconds: double (Required)
      *     }
      *     dataset (Optional): {
      *         name: String (Optional)
      *         version: String (Optional)
-     *         taskCount: int (Required)
-     *         isInline: boolean (Required)
+     *         task_count: int (Required)
+     *         is_inline: boolean (Required)
      *     }
      * }
      * }
@@ -4029,8 +4029,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -4079,8 +4079,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4090,13 +4090,13 @@ public final class AgentsClient {
      * {
      *     data (Required): [
      *          (Required){
-     *             candidateId: String (Optional)
+     *             candidate_id: String (Optional)
      *             name: String (Required)
      *             config (Required): {
-     *                 agentName: String (Optional)
-     *                 agentVersion: String (Optional)
+     *                 agent_name: String (Optional)
+     *                 agent_version: String (Optional)
      *                 model: String (Optional)
-     *                 systemPrompt: String (Optional)
+     *                 system_prompt: String (Optional)
      *                 skills (Optional): [
      *                      (Optional){
      *                         String: BinaryData (Required)
@@ -4111,35 +4111,35 @@ public final class AgentsClient {
      *             mutations (Required): {
      *                 String: BinaryData (Required)
      *             }
-     *             avgScore: double (Required)
-     *             avgTokens: double (Required)
-     *             passRate: double (Required)
-     *             taskScores (Required): [
+     *             avg_score: double (Required)
+     *             avg_tokens: double (Required)
+     *             pass_rate: double (Required)
+     *             task_scores (Required): [
      *                  (Required){
-     *                     taskName: String (Required)
+     *                     task_name: String (Required)
      *                     query: String (Optional)
      *                     scores (Required): {
      *                         String: double (Required)
      *                     }
-     *                     compositeScore: double (Required)
+     *                     composite_score: double (Required)
      *                     tokens: int (Required)
-     *                     durationSeconds: double (Required)
+     *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
-     *                     errorMessage: String (Optional)
+     *                     error_message: String (Optional)
      *                     rationales (Optional): {
      *                         String: String (Required)
      *                     }
      *                     response: String (Optional)
-     *                     runId: String (Optional)
+     *                     run_id: String (Optional)
      *                 }
      *             ]
-     *             isParetoOptimal: boolean (Required)
-     *             evalId: String (Optional)
-     *             evalRunId: String (Optional)
+     *             is_pareto_optimal: boolean (Required)
+     *             eval_id: String (Optional)
+     *             eval_run_id: String (Optional)
      *             promotion (Optional): {
-     *                 promotedAt: long (Required)
-     *                 agentName: String (Required)
-     *                 agentVersion: String (Required)
+     *                 promoted_at: long (Required)
+     *                 agent_name: String (Required)
+     *                 agent_version: String (Required)
      *             }
      *         }
      *     ]
@@ -4175,8 +4175,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4184,24 +4184,24 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     candidateId: String (Required)
-     *     jobId: String (Required)
-     *     candidateName: String (Required)
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     candidate_name: String (Required)
      *     status: String (Required)
      *     score: Double (Optional)
-     *     hasResults: boolean (Required)
-     *     createdAt: long (Required)
-     *     updatedAt: long (Required)
+     *     has_results: boolean (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
      *     promotion (Optional): {
-     *         promotedAt: long (Required)
-     *         agentName: String (Required)
-     *         agentVersion: String (Required)
+     *         promoted_at: long (Required)
+     *         agent_name: String (Required)
+     *         agent_version: String (Required)
      *     }
      *     files (Required): [
      *          (Required){
      *             path: String (Required)
      *             type: String (Required)
-     *             sizeBytes: long (Required)
+     *             size_bytes: long (Required)
      *         }
      *     ]
      * }
@@ -4237,8 +4237,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4292,8 +4292,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -4301,24 +4301,24 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     candidateId: String (Required)
+     *     candidate_id: String (Required)
      *     results (Required): [
      *          (Required){
-     *             taskName: String (Required)
+     *             task_name: String (Required)
      *             query: String (Optional)
      *             scores (Required): {
      *                 String: double (Required)
      *             }
-     *             compositeScore: double (Required)
+     *             composite_score: double (Required)
      *             tokens: int (Required)
-     *             durationSeconds: double (Required)
+     *             duration_seconds: double (Required)
      *             passed: boolean (Required)
-     *             errorMessage: String (Optional)
+     *             error_message: String (Optional)
      *             rationales (Optional): {
      *                 String: String (Required)
      *             }
      *             response: String (Optional)
-     *             runId: String (Optional)
+     *             run_id: String (Optional)
      *         }
      *     ]
      * }
@@ -4399,7 +4399,7 @@ public final class AgentsClient {
     /**
      * Returns a list of agent optimization jobs.
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
      *
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
@@ -4448,7 +4448,7 @@ public final class AgentsClient {
             requestOptions.addQueryParam("status", status.toString(), false);
         }
         if (agentName != null) {
-            requestOptions.addQueryParam("agentName", agentName, false);
+            requestOptions.addQueryParam("agent_name", agentName, false);
         }
         return serviceClient.listOptimizationJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(OptimizationJob.class));
@@ -4457,7 +4457,7 @@ public final class AgentsClient {
     /**
      * Returns a list of agent optimization jobs.
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agentName filters.
+     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5030,7 +5030,7 @@ public final class AgentsClient {
      *
      * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
      *
-     * @param body The optimization job inputs.
+     * @param inputs The optimization job inputs.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
@@ -5046,7 +5046,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OptimizationJob createOptimizationJob(OptimizationJobInputs body, FoundryFeaturesOptInKeys foundryFeatures,
+    public OptimizationJob createOptimizationJob(OptimizationJobInputs inputs, FoundryFeaturesOptInKeys foundryFeatures,
         String operationId) {
         // Generated convenience method for createOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -5056,7 +5056,7 @@ public final class AgentsClient {
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
-        return createOptimizationJobWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions).getValue()
             .toObject(OptimizationJob.class);
     }
 
@@ -5065,7 +5065,7 @@ public final class AgentsClient {
      *
      * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
      *
-     * @param body The optimization job inputs.
+     * @param inputs The optimization job inputs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5077,10 +5077,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OptimizationJob createOptimizationJob(OptimizationJobInputs body) {
+    public OptimizationJob createOptimizationJob(OptimizationJobInputs inputs) {
         // Generated convenience method for createOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOptimizationJobWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions).getValue()
             .toObject(OptimizationJob.class);
     }
 
@@ -5125,8 +5125,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -5167,8 +5167,8 @@ public final class AgentsClient {
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
      * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview", "Models=V1Preview",
-     * "AgentsOptimization=V1Preview".</td></tr>
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -5176,8 +5176,8 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     agentName: String (Required)
-     *     agentVersion: String (Required)
+     *     agent_name: String (Required)
+     *     agent_version: String (Required)
      * }
      * }
      * </pre>
@@ -5187,18 +5187,18 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     candidateId: String (Required)
+     *     candidate_id: String (Required)
      *     status: String (Required)
-     *     promotedAt: long (Required)
-     *     agentName: String (Required)
-     *     agentVersion: String (Required)
+     *     promoted_at: long (Required)
+     *     agent_name: String (Required)
+     *     agent_version: String (Required)
      * }
      * }
      * </pre>
      *
      * @param jobId The optimization job id.
      * @param candidateId The candidate id to promote.
-     * @param body Promotion details.
+     * @param candidateRequest Promotion details.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5209,8 +5209,9 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.promoteOptimizationCandidateWithResponse(jobId, candidateId, body, requestOptions);
+        BinaryData candidateRequest, RequestOptions requestOptions) {
+        return this.serviceClient.promoteOptimizationCandidateWithResponse(jobId, candidateId, candidateRequest,
+            requestOptions);
     }
 
     /**
@@ -5278,7 +5279,7 @@ public final class AgentsClient {
      *
      * @param jobId The optimization job id.
      * @param candidateId The candidate id to promote.
-     * @param body Promotion details.
+     * @param candidateRequest Promotion details.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5292,15 +5293,14 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PromoteCandidateResponse promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest body, FoundryFeaturesOptInKeys foundryFeatures) {
+        PromoteCandidateRequest candidateRequest, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for promoteOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(PromoteCandidateResponse.class);
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
+            requestOptions).getValue().toObject(PromoteCandidateResponse.class);
     }
 
     /**
@@ -5310,7 +5310,7 @@ public final class AgentsClient {
      *
      * @param jobId The optimization job id.
      * @param candidateId The candidate id to promote.
-     * @param body Promotion details.
+     * @param candidateRequest Promotion details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5322,11 +5322,10 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PromoteCandidateResponse promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest body) {
+        PromoteCandidateRequest candidateRequest) {
         // Generated convenience method for promoteOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(PromoteCandidateResponse.class);
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
+            requestOptions).getValue().toObject(PromoteCandidateResponse.class);
     }
 }

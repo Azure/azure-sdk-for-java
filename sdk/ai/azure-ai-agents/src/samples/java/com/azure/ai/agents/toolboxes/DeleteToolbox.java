@@ -5,7 +5,6 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -31,7 +30,7 @@ public class DeleteToolbox {
                 .endpoint(endpoint)
                 .buildToolboxesClient();
 
-        toolboxesClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+        toolboxesClient.deleteToolbox(toolboxName);
 
         System.out.println("Deleted toolbox with the following details:");
         System.out.println("\tToolbox Name: " + toolboxName);

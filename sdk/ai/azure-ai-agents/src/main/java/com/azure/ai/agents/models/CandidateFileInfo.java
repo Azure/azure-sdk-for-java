@@ -88,7 +88,7 @@ public final class CandidateFileInfo implements JsonSerializable<CandidateFileIn
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeLongField("sizeBytes", this.sizeBytes);
+        jsonWriter.writeLongField("size_bytes", this.sizeBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,7 +114,7 @@ public final class CandidateFileInfo implements JsonSerializable<CandidateFileIn
                     path = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
-                } else if ("sizeBytes".equals(fieldName)) {
+                } else if ("size_bytes".equals(fieldName)) {
                     sizeBytes = reader.getLong();
                 } else {
                     reader.skipChildren();

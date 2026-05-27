@@ -12,8 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Identifies the registered Foundry agent to optimize (request-only). Skills, tools, and systemPrompt are specified in
- * options.optimizationConfig.
+ * Identifies the registered Foundry agent to optimize (request-only). Skills, tools, and system_prompt are specified in
+ * options.optimization_config.
  */
 @Fluent
 public final class AgentIdentifier implements JsonSerializable<AgentIdentifier> {
@@ -79,8 +79,8 @@ public final class AgentIdentifier implements JsonSerializable<AgentIdentifier> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("agentName", this.agentName);
-        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("agent_version", this.agentVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,9 +101,9 @@ public final class AgentIdentifier implements JsonSerializable<AgentIdentifier> 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("agentName".equals(fieldName)) {
+                if ("agent_name".equals(fieldName)) {
                     agentName = reader.getString();
-                } else if ("agentVersion".equals(fieldName)) {
+                } else if ("agent_version".equals(fieldName)) {
                     agentVersion = reader.getString();
                 } else {
                     reader.skipChildren();

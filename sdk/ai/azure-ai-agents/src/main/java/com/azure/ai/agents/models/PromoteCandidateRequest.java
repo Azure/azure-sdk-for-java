@@ -68,8 +68,8 @@ public final class PromoteCandidateRequest implements JsonSerializable<PromoteCa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("agentName", this.agentName);
-        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("agent_version", this.agentVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,9 +90,9 @@ public final class PromoteCandidateRequest implements JsonSerializable<PromoteCa
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("agentName".equals(fieldName)) {
+                if ("agent_name".equals(fieldName)) {
                     agentName = reader.getString();
-                } else if ("agentVersion".equals(fieldName)) {
+                } else if ("agent_version".equals(fieldName)) {
                     agentVersion = reader.getString();
                 } else {
                     reader.skipChildren();

@@ -118,7 +118,7 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
         jsonWriter.writeArrayField("candidates", this.candidates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("options", this.options);
         jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("allTargetAttributesFailed", this.allTargetAttributesFailed);
+        jsonWriter.writeBooleanField("all_target_attributes_failed", this.allTargetAttributesFailed);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,7 +150,7 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
                 } else if ("warnings".equals(fieldName)) {
                     List<String> warnings = reader.readArray(reader1 -> reader1.getString());
                     deserializedOptimizationJobResult.warnings = warnings;
-                } else if ("allTargetAttributesFailed".equals(fieldName)) {
+                } else if ("all_target_attributes_failed".equals(fieldName)) {
                     deserializedOptimizationJobResult.allTargetAttributesFailed
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {

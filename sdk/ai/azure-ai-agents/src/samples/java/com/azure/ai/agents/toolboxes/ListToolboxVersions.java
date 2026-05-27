@@ -5,7 +5,6 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -33,8 +32,7 @@ public class ListToolboxVersions {
                 .buildToolboxesClient();
 
         System.out.println("Listing all versions of toolbox '" + toolboxName + "':");
-        for (ToolboxVersionDetails version : toolboxesClient.listToolboxVersions(toolboxName,
-                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)) {
+        for (ToolboxVersionDetails version : toolboxesClient.listToolboxVersions(toolboxName)) {
             System.out.println("Version: " + version.getVersion());
             System.out.println("Version ID: " + version.getId());
             System.out.println("Description: " + version.getDescription());

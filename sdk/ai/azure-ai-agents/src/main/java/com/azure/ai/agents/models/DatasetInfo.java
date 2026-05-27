@@ -100,8 +100,8 @@ public final class DatasetInfo implements JsonSerializable<DatasetInfo> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("taskCount", this.taskCount);
-        jsonWriter.writeBooleanField("isInline", this.isInline);
+        jsonWriter.writeIntField("task_count", this.taskCount);
+        jsonWriter.writeBooleanField("is_inline", this.isInline);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
@@ -126,9 +126,9 @@ public final class DatasetInfo implements JsonSerializable<DatasetInfo> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("taskCount".equals(fieldName)) {
+                if ("task_count".equals(fieldName)) {
                     taskCount = reader.getInt();
-                } else if ("isInline".equals(fieldName)) {
+                } else if ("is_inline".equals(fieldName)) {
                     isInline = reader.getBoolean();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();

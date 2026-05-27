@@ -58,7 +58,7 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     private long createdAt;
 
     /*
-     * The timestamp when the job was last updated, represented in Unix time.
+     * The timestamp when the job was last updated (status, progress, or result change), represented in Unix time.
      */
     @Generated
     private Long updatedAt;
@@ -137,7 +137,8 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     }
 
     /**
-     * Get the updatedAt property: The timestamp when the job was last updated, represented in Unix time.
+     * Get the updatedAt property: The timestamp when the job was last updated (status, progress, or result change),
+     * represented in Unix time.
      *
      * @return the updatedAt value.
      */
@@ -190,7 +191,7 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
                     deserializedOptimizationJob.id = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedOptimizationJob.status = JobStatus.fromString(reader.getString());
-                } else if ("createdAt".equals(fieldName)) {
+                } else if ("created_at".equals(fieldName)) {
                     deserializedOptimizationJob.createdAt = reader.getLong();
                 } else if ("error".equals(fieldName)) {
                     deserializedOptimizationJob.error = ApiError.fromJson(reader);
@@ -198,7 +199,7 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
                     deserializedOptimizationJob.result = OptimizationJobResult.fromJson(reader);
                 } else if ("inputs".equals(fieldName)) {
                     deserializedOptimizationJob.inputs = OptimizationJobInputs.fromJson(reader);
-                } else if ("updatedAt".equals(fieldName)) {
+                } else if ("updated_at".equals(fieldName)) {
                     deserializedOptimizationJob.updatedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("progress".equals(fieldName)) {
                     deserializedOptimizationJob.progress = OptimizationJobProgress.fromJson(reader);

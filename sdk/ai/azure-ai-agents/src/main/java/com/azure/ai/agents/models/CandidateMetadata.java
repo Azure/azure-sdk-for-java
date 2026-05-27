@@ -221,13 +221,13 @@ public final class CandidateMetadata implements JsonSerializable<CandidateMetada
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("candidateId", this.candidateId);
-        jsonWriter.writeStringField("jobId", this.jobId);
-        jsonWriter.writeStringField("candidateName", this.candidateName);
+        jsonWriter.writeStringField("candidate_id", this.candidateId);
+        jsonWriter.writeStringField("job_id", this.jobId);
+        jsonWriter.writeStringField("candidate_name", this.candidateName);
         jsonWriter.writeStringField("status", this.status);
-        jsonWriter.writeBooleanField("hasResults", this.hasResults);
-        jsonWriter.writeLongField("createdAt", this.createdAt);
-        jsonWriter.writeLongField("updatedAt", this.updatedAt);
+        jsonWriter.writeBooleanField("has_results", this.hasResults);
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeLongField("updated_at", this.updatedAt);
         jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("score", this.score);
         jsonWriter.writeJsonField("promotion", this.promotion);
@@ -259,19 +259,19 @@ public final class CandidateMetadata implements JsonSerializable<CandidateMetada
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("candidateId".equals(fieldName)) {
+                if ("candidate_id".equals(fieldName)) {
                     candidateId = reader.getString();
-                } else if ("jobId".equals(fieldName)) {
+                } else if ("job_id".equals(fieldName)) {
                     jobId = reader.getString();
-                } else if ("candidateName".equals(fieldName)) {
+                } else if ("candidate_name".equals(fieldName)) {
                     candidateName = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     status = reader.getString();
-                } else if ("hasResults".equals(fieldName)) {
+                } else if ("has_results".equals(fieldName)) {
                     hasResults = reader.getBoolean();
-                } else if ("createdAt".equals(fieldName)) {
+                } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("updatedAt".equals(fieldName)) {
+                } else if ("updated_at".equals(fieldName)) {
                     updatedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("files".equals(fieldName)) {
                     files = reader.readArray(reader1 -> CandidateFileInfo.fromJson(reader1));

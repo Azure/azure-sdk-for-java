@@ -15,7 +15,6 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        addToolboxesV1PreviewEnumValue(libraryCustomization, logger);
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
@@ -52,21 +51,6 @@ public class AgentsCustomizations extends Customization {
                         .set(0, StaticJavaParser.parseStatement("super(PollingUtils.OPERATION_LOCATION_HEADER, AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));"));
 
                     clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
-                }));
-    }
-
-    private void addToolboxesV1PreviewEnumValue(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.ai.agents.models", "FoundryFeaturesOptInKeys")
-            .customizeAst(ast -> ast.getEnumByName("FoundryFeaturesOptInKeys")
-                .ifPresent(clazz -> {
-                    // Add TOOLBOXES_V1_PREVIEW enum constant if not already present
-                    boolean alreadyExists = clazz.getEntries().stream()
-                        .anyMatch(entry -> "TOOLBOXES_V1_PREVIEW".equals(entry.getName().getIdentifier()));
-                    if (!alreadyExists) {
-                        clazz.addEnumConstant("TOOLBOXES_V1_PREVIEW")
-                            .addArgument("\"Toolboxes=V1Preview\"")
-                            .setJavadocComment("Toolboxes V1 Preview.");
-                    }
                 }));
     }
 }

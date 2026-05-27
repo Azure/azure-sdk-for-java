@@ -89,17 +89,17 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("maxIterations", this.maxIterations);
-        jsonWriter.writeMapField("optimizationConfig", this.optimizationConfig, (writer, element) -> {
+        jsonWriter.writeNumberField("max_iterations", this.maxIterations);
+        jsonWriter.writeMapField("optimization_config", this.optimizationConfig, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeStringField("evalModel", this.evalModel);
-        jsonWriter.writeStringField("optimizationModel", this.optimizationModel);
-        jsonWriter.writeStringField("evaluationLevel",
+        jsonWriter.writeStringField("eval_model", this.evalModel);
+        jsonWriter.writeStringField("optimization_model", this.optimizationModel);
+        jsonWriter.writeStringField("evaluation_level",
             this.evaluationLevel == null ? null : this.evaluationLevel.toString());
         return jsonWriter.writeEndObject();
     }
@@ -119,17 +119,17 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("maxIterations".equals(fieldName)) {
+                if ("max_iterations".equals(fieldName)) {
                     deserializedOptimizationOptions.maxIterations = reader.getNullable(JsonReader::getInt);
-                } else if ("optimizationConfig".equals(fieldName)) {
+                } else if ("optimization_config".equals(fieldName)) {
                     Map<String, BinaryData> optimizationConfig = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedOptimizationOptions.optimizationConfig = optimizationConfig;
-                } else if ("evalModel".equals(fieldName)) {
+                } else if ("eval_model".equals(fieldName)) {
                     deserializedOptimizationOptions.evalModel = reader.getString();
-                } else if ("optimizationModel".equals(fieldName)) {
+                } else if ("optimization_model".equals(fieldName)) {
                     deserializedOptimizationOptions.optimizationModel = reader.getString();
-                } else if ("evaluationLevel".equals(fieldName)) {
+                } else if ("evaluation_level".equals(fieldName)) {
                     deserializedOptimizationOptions.evaluationLevel = EvaluationLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
@@ -140,7 +140,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     }
 
     /*
-     * Per-target-attribute configuration overrides. Contains skills, tools, systemPrompt for the agent, plus model
+     * Per-target-attribute configuration overrides. Contains skills, tools, system_prompt for the agent, plus model
      * space for model optimization.
      */
     @Generated
@@ -162,7 +162,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
 
     /**
      * Get the optimizationConfig property: Per-target-attribute configuration overrides. Contains skills, tools,
-     * systemPrompt for the agent, plus model space for model optimization.
+     * system_prompt for the agent, plus model space for model optimization.
      *
      * @return the optimizationConfig value.
      */
@@ -173,7 +173,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
 
     /**
      * Set the optimizationConfig property: Per-target-attribute configuration overrides. Contains skills, tools,
-     * systemPrompt for the agent, plus model space for model optimization.
+     * system_prompt for the agent, plus model space for model optimization.
      *
      * @param optimizationConfig the optimizationConfig value to set.
      * @return the OptimizationOptions object itself.

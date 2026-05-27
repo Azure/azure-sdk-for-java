@@ -8,7 +8,6 @@ import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.ToolboxesAsyncClient;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolType;
@@ -48,7 +47,7 @@ public class ToolboxSamplesTests extends ClientTestBase {
         String toolboxName = "toolbox-search-tool-java-test";
 
         try {
-            toolboxesClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+            toolboxesClient.deleteToolbox(toolboxName);
         } catch (ResourceNotFoundException ignored) {
             // The sample toolbox does not already exist.
         }
@@ -57,9 +56,9 @@ public class ToolboxSamplesTests extends ClientTestBase {
             ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool().setName("search_tools")
                 .setDescription("Search over available toolbox tools at runtime.");
 
-            ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(toolboxName,
-                Collections.singletonList(toolboxSearchTool), "Toolbox version with a Toolbox Search preview tool.",
-                null, null, null, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+            ToolboxVersionDetails version
+                = toolboxesClient.createToolboxVersion(toolboxName, Collections.singletonList(toolboxSearchTool),
+                    "Toolbox version with a Toolbox Search preview tool.", null, null, null);
 
             Assertions.assertNotNull(version);
             Assertions.assertEquals(toolboxName, version.getName());
@@ -67,7 +66,7 @@ public class ToolboxSamplesTests extends ClientTestBase {
             Assertions.assertEquals(ToolType.TOOLBOX_SEARCH_PREVIEW, version.getTools().get(0).getType());
         } finally {
             try {
-                toolboxesClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+                toolboxesClient.deleteToolbox(toolboxName);
             } catch (ResourceNotFoundException ignored) {
                 // The sample toolbox may not have been created.
             }
@@ -90,38 +89,31 @@ public class ToolboxSamplesTests extends ClientTestBase {
             .singletonList(new McpTool("api_specs").setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
                 .setRequireApproval("always"));
 
-        Mono<Void> testFlow
-            = toolboxesAsyncClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW)
-                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-                .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalNever,
-                    "Toolbox version with MCP require_approval set to 'never'.", null, null, null,
-                    FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .doOnNext(created -> {
-                    Assertions.assertEquals(toolboxName, created.getName());
-                    Assertions.assertEquals("1", created.getVersion());
-                })
-                .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalAlways,
-                    "Toolbox version with MCP require_approval set to 'always'.", null, null, null,
-                    FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .doOnNext(created -> {
-                    Assertions.assertEquals(toolboxName, created.getName());
-                    Assertions.assertEquals("2", created.getVersion());
-                })
-                .then(
-                    toolboxesAsyncClient.updateToolbox(toolboxName, "2", FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .flatMap(updated -> toolboxesAsyncClient.getToolboxVersion(updated.getName(),
-                    updated.getDefaultVersion(), FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .doOnNext(version -> assertMcpRequireApproval(version, "always"))
-                .then(
-                    toolboxesAsyncClient.updateToolbox(toolboxName, "1", FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .flatMap(updated -> toolboxesAsyncClient.getToolboxVersion(updated.getName(),
-                    updated.getDefaultVersion(), FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW))
-                .doOnNext(version -> assertMcpRequireApproval(version, "never"))
-                .thenMany(toolboxesAsyncClient.listToolboxes(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW).take(10))
-                .filter(toolbox -> toolboxName.equals(toolbox.getName()))
-                .next()
-                .doOnNext(toolbox -> Assertions.assertEquals(toolboxName, toolbox.getName()))
-                .then(toolboxesAsyncClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW));
+        Mono<Void> testFlow = toolboxesAsyncClient.deleteToolbox(toolboxName)
+            .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+            .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalNever,
+                "Toolbox version with MCP require_approval set to 'never'.", null, null, null))
+            .doOnNext(created -> {
+                Assertions.assertEquals(toolboxName, created.getName());
+                Assertions.assertEquals("1", created.getVersion());
+            })
+            .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalAlways,
+                "Toolbox version with MCP require_approval set to 'always'.", null, null, null))
+            .doOnNext(created -> {
+                Assertions.assertEquals(toolboxName, created.getName());
+                Assertions.assertEquals("2", created.getVersion());
+            })
+            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "2"))
+            .flatMap(updated -> toolboxesAsyncClient.getToolboxVersion(updated.getName(), updated.getDefaultVersion()))
+            .doOnNext(version -> assertMcpRequireApproval(version, "always"))
+            .then(toolboxesAsyncClient.updateToolbox(toolboxName, "1"))
+            .flatMap(updated -> toolboxesAsyncClient.getToolboxVersion(updated.getName(), updated.getDefaultVersion()))
+            .doOnNext(version -> assertMcpRequireApproval(version, "never"))
+            .thenMany(toolboxesAsyncClient.listToolboxes().take(10))
+            .filter(toolbox -> toolboxName.equals(toolbox.getName()))
+            .next()
+            .doOnNext(toolbox -> Assertions.assertEquals(toolboxName, toolbox.getName()))
+            .then(toolboxesAsyncClient.deleteToolbox(toolboxName));
 
         StepVerifier.create(testFlow).verifyComplete();
     }

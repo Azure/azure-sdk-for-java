@@ -39,7 +39,7 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private final OptimizationAgentDefinition config;
 
     /*
-     * What was mutated from the baseline (e.g., {systemPrompt: 'new prompt'}).
+     * What was mutated from the baseline (e.g., {system_prompt: 'new prompt'}).
      */
     @Generated
     private final Map<String, BinaryData> mutations;
@@ -117,7 +117,7 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the mutations property: What was mutated from the baseline (e.g., {systemPrompt: 'new prompt'}).
+     * Get the mutations property: What was mutated from the baseline (e.g., {system_prompt: 'new prompt'}).
      *
      * @return the mutations value.
      */
@@ -212,14 +212,14 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeDoubleField("avgScore", this.avgScore);
-        jsonWriter.writeDoubleField("avgTokens", this.avgTokens);
-        jsonWriter.writeDoubleField("passRate", this.passRate);
-        jsonWriter.writeArrayField("taskScores", this.taskScores, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeBooleanField("isParetoOptimal", this.isParetoOptimal);
-        jsonWriter.writeStringField("candidateId", this.candidateId);
-        jsonWriter.writeStringField("evalId", this.evalId);
-        jsonWriter.writeStringField("evalRunId", this.evalRunId);
+        jsonWriter.writeDoubleField("avg_score", this.avgScore);
+        jsonWriter.writeDoubleField("avg_tokens", this.avgTokens);
+        jsonWriter.writeDoubleField("pass_rate", this.passRate);
+        jsonWriter.writeArrayField("task_scores", this.taskScores, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("is_pareto_optimal", this.isParetoOptimal);
+        jsonWriter.writeStringField("candidate_id", this.candidateId);
+        jsonWriter.writeStringField("eval_id", this.evalId);
+        jsonWriter.writeStringField("eval_run_id", this.evalRunId);
         jsonWriter.writeJsonField("promotion", this.promotion);
         return jsonWriter.writeEndObject();
     }
@@ -258,21 +258,21 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 } else if ("mutations".equals(fieldName)) {
                     mutations = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                } else if ("avgScore".equals(fieldName)) {
+                } else if ("avg_score".equals(fieldName)) {
                     avgScore = reader.getDouble();
-                } else if ("avgTokens".equals(fieldName)) {
+                } else if ("avg_tokens".equals(fieldName)) {
                     avgTokens = reader.getDouble();
-                } else if ("passRate".equals(fieldName)) {
+                } else if ("pass_rate".equals(fieldName)) {
                     passRate = reader.getDouble();
-                } else if ("taskScores".equals(fieldName)) {
+                } else if ("task_scores".equals(fieldName)) {
                     taskScores = reader.readArray(reader1 -> OptimizationTaskResult.fromJson(reader1));
-                } else if ("isParetoOptimal".equals(fieldName)) {
+                } else if ("is_pareto_optimal".equals(fieldName)) {
                     isParetoOptimal = reader.getBoolean();
-                } else if ("candidateId".equals(fieldName)) {
+                } else if ("candidate_id".equals(fieldName)) {
                     candidateId = reader.getString();
-                } else if ("evalId".equals(fieldName)) {
+                } else if ("eval_id".equals(fieldName)) {
                     evalId = reader.getString();
-                } else if ("evalRunId".equals(fieldName)) {
+                } else if ("eval_run_id".equals(fieldName)) {
                     evalRunId = reader.getString();
                 } else if ("promotion".equals(fieldName)) {
                     promotion = PromotionInfo.fromJson(reader);

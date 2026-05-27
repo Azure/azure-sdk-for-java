@@ -107,10 +107,10 @@ public final class OptimizationAgentDefinition implements JsonSerializable<Optim
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("agentName", this.agentName);
-        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("agent_version", this.agentVersion);
         jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("systemPrompt", this.systemPrompt);
+        jsonWriter.writeStringField("system_prompt", this.systemPrompt);
         jsonWriter.writeArrayField("skills", this.skills,
             (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
                 if (element1 == null) {
@@ -145,13 +145,13 @@ public final class OptimizationAgentDefinition implements JsonSerializable<Optim
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("agentName".equals(fieldName)) {
+                if ("agent_name".equals(fieldName)) {
                     deserializedOptimizationAgentDefinition.agentName = reader.getString();
-                } else if ("agentVersion".equals(fieldName)) {
+                } else if ("agent_version".equals(fieldName)) {
                     deserializedOptimizationAgentDefinition.agentVersion = reader.getString();
                 } else if ("model".equals(fieldName)) {
                     deserializedOptimizationAgentDefinition.model = reader.getString();
-                } else if ("systemPrompt".equals(fieldName)) {
+                } else if ("system_prompt".equals(fieldName)) {
                     deserializedOptimizationAgentDefinition.systemPrompt = reader.getString();
                 } else if ("skills".equals(fieldName)) {
                     List<Map<String, BinaryData>> skills

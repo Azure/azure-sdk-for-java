@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -85,27 +86,6 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
     private String runId;
 
     /**
-     * Creates an instance of OptimizationTaskResult class.
-     *
-     * @param taskName the taskName value to set.
-     * @param scores the scores value to set.
-     * @param compositeScore the compositeScore value to set.
-     * @param tokens the tokens value to set.
-     * @param durationSeconds the durationSeconds value to set.
-     * @param passed the passed value to set.
-     */
-    @Generated
-    private OptimizationTaskResult(String taskName, Map<String, Double> scores, double compositeScore, int tokens,
-        double durationSeconds, boolean passed) {
-        this.taskName = taskName;
-        this.scores = scores;
-        this.compositeScore = compositeScore;
-        this.tokens = tokens;
-        this.durationSeconds = durationSeconds;
-        this.passed = passed;
-    }
-
-    /**
      * Get the taskName property: Task name (from the dataset).
      *
      * @return the taskName value.
@@ -161,8 +141,8 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
      * @return the durationSeconds value.
      */
     @Generated
-    public double getDurationSeconds() {
-        return this.durationSeconds;
+    public Duration getDurationSeconds() {
+        return Duration.ofNanos((long) (this.durationSeconds * 1000_000_000L));
     }
 
     /**
@@ -222,17 +202,17 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskName", this.taskName);
+        jsonWriter.writeStringField("task_name", this.taskName);
         jsonWriter.writeMapField("scores", this.scores, (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeDoubleField("compositeScore", this.compositeScore);
+        jsonWriter.writeDoubleField("composite_score", this.compositeScore);
         jsonWriter.writeIntField("tokens", this.tokens);
-        jsonWriter.writeDoubleField("durationSeconds", this.durationSeconds);
+        jsonWriter.writeDoubleField("duration_seconds", this.durationSeconds);
         jsonWriter.writeBooleanField("passed", this.passed);
         jsonWriter.writeStringField("query", this.query);
-        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("error_message", this.errorMessage);
         jsonWriter.writeMapField("rationales", this.rationales, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("response", this.response);
-        jsonWriter.writeStringField("runId", this.runId);
+        jsonWriter.writeStringField("run_id", this.runId);
         return jsonWriter.writeEndObject();
     }
 
@@ -252,7 +232,7 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
             Map<String, Double> scores = null;
             double compositeScore = 0.0;
             int tokens = 0;
-            double durationSeconds = 0.0;
+            Duration durationSeconds = null;
             boolean passed = false;
             String query = null;
             String errorMessage = null;
@@ -262,27 +242,27 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("taskName".equals(fieldName)) {
+                if ("task_name".equals(fieldName)) {
                     taskName = reader.getString();
                 } else if ("scores".equals(fieldName)) {
                     scores = reader.readMap(reader1 -> reader1.getDouble());
-                } else if ("compositeScore".equals(fieldName)) {
+                } else if ("composite_score".equals(fieldName)) {
                     compositeScore = reader.getDouble();
                 } else if ("tokens".equals(fieldName)) {
                     tokens = reader.getInt();
-                } else if ("durationSeconds".equals(fieldName)) {
-                    durationSeconds = reader.getDouble();
+                } else if ("duration_seconds".equals(fieldName)) {
+                    durationSeconds = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
                 } else if ("passed".equals(fieldName)) {
                     passed = reader.getBoolean();
                 } else if ("query".equals(fieldName)) {
                     query = reader.getString();
-                } else if ("errorMessage".equals(fieldName)) {
+                } else if ("error_message".equals(fieldName)) {
                     errorMessage = reader.getString();
                 } else if ("rationales".equals(fieldName)) {
                     rationales = reader.readMap(reader1 -> reader1.getString());
                 } else if ("response".equals(fieldName)) {
                     response = reader.getString();
-                } else if ("runId".equals(fieldName)) {
+                } else if ("run_id".equals(fieldName)) {
                     runId = reader.getString();
                 } else {
                     reader.skipChildren();
@@ -297,5 +277,30 @@ public final class OptimizationTaskResult implements JsonSerializable<Optimizati
             deserializedOptimizationTaskResult.runId = runId;
             return deserializedOptimizationTaskResult;
         });
+    }
+
+    /**
+     * Creates an instance of OptimizationTaskResult class.
+     *
+     * @param taskName the taskName value to set.
+     * @param scores the scores value to set.
+     * @param compositeScore the compositeScore value to set.
+     * @param tokens the tokens value to set.
+     * @param durationSeconds the durationSeconds value to set.
+     * @param passed the passed value to set.
+     */
+    @Generated
+    private OptimizationTaskResult(String taskName, Map<String, Double> scores, double compositeScore, int tokens,
+        Duration durationSeconds, boolean passed) {
+        this.taskName = taskName;
+        this.scores = scores;
+        this.compositeScore = compositeScore;
+        this.tokens = tokens;
+        if (durationSeconds == null) {
+            this.durationSeconds = 0.0;
+        } else {
+            this.durationSeconds = (double) durationSeconds.toNanos() / 1000_000_000L;
+        }
+        this.passed = passed;
     }
 }

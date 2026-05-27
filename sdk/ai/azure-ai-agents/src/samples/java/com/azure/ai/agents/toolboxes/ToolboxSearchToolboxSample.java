@@ -5,7 +5,6 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxSearchPreviewTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
@@ -32,7 +31,7 @@ public class ToolboxSearchToolboxSample {
             .buildToolboxesClient();
 
         try {
-            toolboxesClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+            toolboxesClient.deleteToolbox(toolboxName);
         } catch (ResourceNotFoundException ignored) {
             // The sample toolbox does not already exist.
         }
@@ -50,8 +49,7 @@ public class ToolboxSearchToolboxSample {
                 "Toolbox version with a Toolbox Search preview tool.",
                 null,
                 null,
-                null,
-                FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+                null);
 
             System.out.printf("Created toolbox: %s%n", version.getName());
             System.out.printf("Toolbox version: %s%n", version.getVersion());
@@ -62,7 +60,7 @@ public class ToolboxSearchToolboxSample {
             // END: com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
         } finally {
             try {
-                toolboxesClient.deleteToolbox(toolboxName, FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW);
+                toolboxesClient.deleteToolbox(toolboxName);
                 System.out.printf("Deleted toolbox: %s%n", toolboxName);
             } catch (ResourceNotFoundException ignored) {
                 // The sample toolbox may not have been created.
