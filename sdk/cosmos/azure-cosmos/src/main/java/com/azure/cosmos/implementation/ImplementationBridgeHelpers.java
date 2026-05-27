@@ -444,10 +444,6 @@ public class ImplementationBridgeHelpers {
             void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
             Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
-
-            boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
-
-            void setAllowEmptyPages(CosmosChangeFeedRequestOptions changeFeedRequestOptions, boolean emptyPagesAllowed);
         }
     }
 

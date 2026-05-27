@@ -31,7 +31,8 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .setAllowEmptyPages(src, true);
+            .getImpl(src)
+            .setEmptyPagesAllowed(true);
 
         // AND a continuation token supplied via the paged-flux pull mechanism
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
@@ -44,7 +45,8 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
         // THEN emptyPagesAllowed must be preserved on the freshly-built impl
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
+            .getImpl(effective)
+            .isEmptyPagesAllowed())
             .describedAs("emptyPagesAllowed must survive the paged-flux pull continuation rebuild")
             .isTrue();
     }
@@ -63,7 +65,8 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
+            .getImpl(effective)
+            .isEmptyPagesAllowed())
             .describedAs("emptyPagesAllowed default (false) must survive the paged-flux pull continuation rebuild")
             .isFalse();
     }
@@ -75,7 +78,8 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .setAllowEmptyPages(src, true);
+            .getImpl(src)
+            .setEmptyPagesAllowed(true);
 
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
         pagedFluxOptions.setMaxItemCount(50);
@@ -85,7 +89,8 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
+            .getImpl(effective)
+            .isEmptyPagesAllowed())
             .isTrue();
     }
 

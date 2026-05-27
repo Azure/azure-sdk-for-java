@@ -791,23 +791,6 @@ public final class CosmosChangeFeedRequestOptions {
                 public CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.disableSplitHandling();
                 }
-
-                @Override
-                public boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
-                    return changeFeedRequestOptions.getImpl().isEmptyPagesAllowed();
-                }
-
-                @Override
-                public void setAllowEmptyPages(
-                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
-                    boolean emptyPagesAllowed) {
-
-                    // Note: kept package-private (impl-side only). We deliberately do NOT
-                    // expose a public setEmptyPagesAllowed on CosmosChangeFeedRequestOptions
-                    // because the flag changes paging semantics in subtle ways the SDK
-                    // does not want most callers to opt into.
-                    changeFeedRequestOptions.getImpl().setEmptyPagesAllowed(emptyPagesAllowed);
-                }
             });
     }
 
