@@ -55,12 +55,14 @@ public class SpeechTranscriptionCustomization extends Customization {
             logger.info("Customizing TranscribedWord.getDuration()");
             customizeDurationGetter(models, "TranscribedWord");
 
-            // Rename getOffset() to getOffsetInMs() on TranscribedPhrase and TranscribedWord for clarity
-            // (the underlying int value is in milliseconds).
-            logger.info("Renaming TranscribedPhrase.getOffset() to getOffsetInMs()");
-            renameOffsetGetter(models, "TranscribedPhrase", "phrase");
-            logger.info("Renaming TranscribedWord.getOffset() to getOffsetInMs()");
-            renameOffsetGetter(models, "TranscribedWord", "word");
+            // Change the return type of getOffset() from int (milliseconds) to Duration on
+            // TranscribedPhrase and TranscribedWord. The Duration type makes the unit explicit and
+            // allows callers to easily convert/compare across units, so the method name does not
+            // need a "InMs" suffix.
+            logger.info("Customizing TranscribedPhrase.getOffset() to return Duration");
+            customizeOffsetGetter(models, "TranscribedPhrase", "phrase");
+            logger.info("Customizing TranscribedWord.getOffset() to return Duration");
+            customizeOffsetGetter(models, "TranscribedWord", "word");
 
             // Customize TranscriptionDiarizationOptions to properly serialize enabled field
             logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
@@ -144,23 +146,23 @@ public class SpeechTranscriptionCustomization extends Customization {
     }
 
     /**
-     * Rename the generated {@code getOffset()} getter to {@code getOffsetInMs()} and change its return type
-     * from {@code int} (milliseconds) to {@link java.time.Duration} so it matches the idiomatic Java type used
-     * by {@code getDuration()}. The backing field and JSON wire name remain unchanged.
+     * Change the return type of the generated {@code getOffset()} getter from {@code int} (milliseconds)
+     * to {@link java.time.Duration} so it matches the idiomatic Java type used by {@code getDuration()}.
+     * The method name is preserved (the {@code Duration} type itself conveys the unit). The backing field
+     * and JSON wire name remain unchanged.
      *
      * @param packageCustomization the package customization
      * @param className the name of the class to customize
      * @param subjectNoun the noun describing what the offset refers to (e.g. "phrase" or "word"), used in the JavaDoc.
      */
-    private void renameOffsetGetter(PackageCustomization packageCustomization, String className, String subjectNoun) {
+    private void customizeOffsetGetter(PackageCustomization packageCustomization, String className, String subjectNoun) {
         packageCustomization.getClass(className).customizeAst(ast -> {
             ast.addImport("java.time.Duration");
             ast.getClassByName(className).ifPresent(clazz -> clazz.getMethodsByName("getOffset").forEach(method -> {
-                method.setName("getOffsetInMs");
                 method.setType("Duration");
                 method.setBody(parseBlock("{ return Duration.ofMillis(this.offset); }"));
                 method.setJavadocComment(
-                    new Javadoc(parseText("Get the offset property: The start offset of the " + subjectNoun + " in milliseconds."))
+                    new Javadoc(parseText("Get the offset property: The start offset of the " + subjectNoun + "."))
                         .addBlockTag("return", "the offset value as Duration."));
             }));
         });
