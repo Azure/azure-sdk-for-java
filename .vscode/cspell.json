@@ -1608,7 +1608,10 @@
         "mqtt",
         "rservice", // appears in the name SignalRService
         "gcch",
-        "updation" // current typo in a swagger
+        "updation", // current typo in a swagger
+        "bsuid", // ACS Messaging recipient/sender identifier (BSUID / Bsuid)
+        "osscheduling", // VMSS lifecycle hook event: UpgradeAutoOSScheduling
+        "osrolling" // VMSS lifecycle hook event: UpgradeAutoOSRollingBatchStarting
       ]
     },
     {
