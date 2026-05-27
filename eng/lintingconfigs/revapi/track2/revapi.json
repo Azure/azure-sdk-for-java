@@ -312,12 +312,11 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
-          "code": "java.annotation.removed",
-          "new": {
-            "matcher": "regex",
-            "match": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*"
-          },
-          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
+          "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
+          "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
         },
         {
           "code": "java.method.removed",
