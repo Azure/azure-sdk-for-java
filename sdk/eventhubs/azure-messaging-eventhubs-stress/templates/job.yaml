@@ -4,8 +4,6 @@ metadata:
   labels:
     testName: "{{ .Release.Name }}"
 spec:
-  nodeSelector:
-    sku: chaosperf
   containers:
     - name: sender
       image: {{ .Stress.imageTag }}
