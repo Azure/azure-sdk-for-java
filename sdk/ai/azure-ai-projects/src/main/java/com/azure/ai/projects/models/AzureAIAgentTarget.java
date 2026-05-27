@@ -5,6 +5,7 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -120,7 +121,13 @@ public final class AzureAIAgentTarget extends Target {
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeArrayField("tool_descriptions", this.toolDescriptions,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -140,7 +147,7 @@ public final class AzureAIAgentTarget extends Target {
             String type = "azure_ai_agent";
             String version = null;
             List<ToolDescription> toolDescriptions = null;
-            List<Tool> tools = null;
+            List<BinaryData> tools = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -153,7 +160,8 @@ public final class AzureAIAgentTarget extends Target {
                 } else if ("tool_descriptions".equals(fieldName)) {
                     toolDescriptions = reader.readArray(reader1 -> ToolDescription.fromJson(reader1));
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
+                    tools = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }
@@ -171,7 +179,7 @@ public final class AzureAIAgentTarget extends Target {
      * The tools property.
      */
     @Generated
-    private List<Tool> tools;
+    private List<BinaryData> tools;
 
     /**
      * Get the tools property: The tools property.
@@ -179,7 +187,7 @@ public final class AzureAIAgentTarget extends Target {
      * @return the tools value.
      */
     @Generated
-    public List<Tool> getTools() {
+    public List<BinaryData> getTools() {
         return this.tools;
     }
 
@@ -190,7 +198,7 @@ public final class AzureAIAgentTarget extends Target {
      * @return the AzureAIAgentTarget object itself.
      */
     @Generated
-    public AzureAIAgentTarget setTools(List<Tool> tools) {
+    public AzureAIAgentTarget setTools(List<BinaryData> tools) {
         this.tools = tools;
         return this;
     }
