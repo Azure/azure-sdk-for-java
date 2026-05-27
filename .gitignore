@@ -129,5 +129,4 @@ TempTypeSpecFiles/
 
 # Azure Artifacts Credential Provider runtime
 .azure-artifacts/
-.coding-harness/
 
