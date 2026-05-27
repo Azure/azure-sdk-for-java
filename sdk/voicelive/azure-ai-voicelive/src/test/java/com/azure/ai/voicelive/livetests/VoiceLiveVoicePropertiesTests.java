@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> voicePropertiesParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -110,7 +110,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> audioTimestampAndVisemeParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 

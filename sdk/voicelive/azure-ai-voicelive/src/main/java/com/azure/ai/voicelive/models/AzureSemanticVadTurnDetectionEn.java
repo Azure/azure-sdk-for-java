@@ -23,55 +23,55 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     private TurnDetectionType type = TurnDetectionType.AZURE_SEMANTIC_VAD_EN;
 
     /*
-     * The threshold property.
+     * Activation threshold for VAD detection. Range: 0.0 to 1.0.
      */
     @Generated
     private Double threshold;
 
     /*
-     * The prefix_padding_ms property.
+     * Amount of audio to include before speech is detected, in milliseconds.
      */
     @Generated
     private Integer prefixPaddingMs;
 
     /*
-     * The silence_duration_ms property.
+     * Duration of silence required to end speech detection, in milliseconds.
      */
     @Generated
     private Integer silenceDurationMs;
 
     /*
-     * The end_of_utterance_detection property.
+     * Configuration for end-of-utterance detection.
      */
     @Generated
     private EouDetection endOfUtteranceDetection;
 
     /*
-     * The speech_duration_ms property.
+     * Minimum speech duration in milliseconds to trigger detection.
      */
     @Generated
     private Integer speechDurationMs;
 
     /*
-     * The remove_filler_words property.
+     * Whether to remove filler words (e.g., 'um', 'uh') from transcription.
      */
     @Generated
     private Boolean removeFillerWords;
 
     /*
-     * The auto_truncate property.
+     * Whether to automatically truncate the audio buffer when speech stops.
      */
     @Generated
     private Boolean autoTruncate;
 
     /*
-     * The create_response property.
+     * Whether to automatically create a response when speech stops.
      */
     @Generated
     private Boolean createResponse;
 
     /*
-     * The interrupt_response property.
+     * Whether to allow the user's speech to interrupt the assistant's response.
      */
     @Generated
     private Boolean interruptResponse;
@@ -95,7 +95,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the threshold property: The threshold property.
+     * Get the threshold property: Activation threshold for VAD detection. Range: 0.0 to 1.0.
      *
      * @return the threshold value.
      */
@@ -105,7 +105,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the threshold property: The threshold property.
+     * Set the threshold property: Activation threshold for VAD detection. Range: 0.0 to 1.0.
      *
      * @param threshold the threshold value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -117,7 +117,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the prefixPaddingMs property: The prefix_padding_ms property.
+     * Get the prefixPaddingMs property: Amount of audio to include before speech is detected, in milliseconds.
      *
      * @return the prefixPaddingMs value.
      */
@@ -127,7 +127,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the prefixPaddingMs property: The prefix_padding_ms property.
+     * Set the prefixPaddingMs property: Amount of audio to include before speech is detected, in milliseconds.
      *
      * @param prefixPaddingMs the prefixPaddingMs value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -139,7 +139,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the silenceDurationMs property: The silence_duration_ms property.
+     * Get the silenceDurationMs property: Duration of silence required to end speech detection, in milliseconds.
      *
      * @return the silenceDurationMs value.
      */
@@ -149,7 +149,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the silenceDurationMs property: The silence_duration_ms property.
+     * Set the silenceDurationMs property: Duration of silence required to end speech detection, in milliseconds.
      *
      * @param silenceDurationMs the silenceDurationMs value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -161,7 +161,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the endOfUtteranceDetection property: The end_of_utterance_detection property.
+     * Get the endOfUtteranceDetection property: Configuration for end-of-utterance detection.
      *
      * @return the endOfUtteranceDetection value.
      */
@@ -171,7 +171,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the endOfUtteranceDetection property: The end_of_utterance_detection property.
+     * Set the endOfUtteranceDetection property: Configuration for end-of-utterance detection.
      *
      * @param endOfUtteranceDetection the endOfUtteranceDetection value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -183,7 +183,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the speechDurationMs property: The speech_duration_ms property.
+     * Get the speechDurationMs property: Minimum speech duration in milliseconds to trigger detection.
      *
      * @return the speechDurationMs value.
      */
@@ -193,7 +193,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the speechDurationMs property: The speech_duration_ms property.
+     * Set the speechDurationMs property: Minimum speech duration in milliseconds to trigger detection.
      *
      * @param speechDurationMs the speechDurationMs value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -205,7 +205,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the removeFillerWords property: The remove_filler_words property.
+     * Get the removeFillerWords property: Whether to remove filler words (e.g., 'um', 'uh') from transcription.
      *
      * @return the removeFillerWords value.
      */
@@ -215,7 +215,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the removeFillerWords property: The remove_filler_words property.
+     * Set the removeFillerWords property: Whether to remove filler words (e.g., 'um', 'uh') from transcription.
      *
      * @param removeFillerWords the removeFillerWords value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -227,7 +227,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the autoTruncate property: The auto_truncate property.
+     * Get the autoTruncate property: Whether to automatically truncate the audio buffer when speech stops.
      *
      * @return the autoTruncate value.
      */
@@ -237,7 +237,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the autoTruncate property: The auto_truncate property.
+     * Set the autoTruncate property: Whether to automatically truncate the audio buffer when speech stops.
      *
      * @param autoTruncate the autoTruncate value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -249,7 +249,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the createResponse property: The create_response property.
+     * Get the createResponse property: Whether to automatically create a response when speech stops.
      *
      * @return the createResponse value.
      */
@@ -259,7 +259,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the createResponse property: The create_response property.
+     * Set the createResponse property: Whether to automatically create a response when speech stops.
      *
      * @param createResponse the createResponse value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.
@@ -271,7 +271,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Get the interruptResponse property: The interrupt_response property.
+     * Get the interruptResponse property: Whether to allow the user's speech to interrupt the assistant's response.
      *
      * @return the interruptResponse value.
      */
@@ -281,7 +281,7 @@ public final class AzureSemanticVadTurnDetectionEn extends TurnDetection {
     }
 
     /**
-     * Set the interruptResponse property: The interrupt_response property.
+     * Set the interruptResponse property: Whether to allow the user's speech to interrupt the assistant's response.
      *
      * @param interruptResponse the interruptResponse value to set.
      * @return the AzureSemanticVadTurnDetectionEn object itself.

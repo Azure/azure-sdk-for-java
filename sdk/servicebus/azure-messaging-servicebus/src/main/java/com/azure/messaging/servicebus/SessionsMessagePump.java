@@ -35,7 +35,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -148,9 +150,16 @@ final class SessionsMessagePump {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final Runnable onTerminate;
+    private final Duration drainTimeout;
     private final AtomicReference<List<RollingSessionReceiver>> rollingReceiversRef = new AtomicReference<>(EMPTY);
     private final SessionReceiversTracker receiversTracker;
     private final Mono<ServiceBusSessionAcquirer.Session> nextSession;
+    // True when the receive mode is PEEK_LOCK. Cached here from the ctor's receiveMode parameter
+    // (which is otherwise only forwarded to SessionReceiversTracker) so each rolling receiver can
+    // be told whether it is safe to skip handler dispatch during drain. RECEIVE_AND_DELETE
+    // sessions must always invoke processMessage even during shutdown - see RollingSessionReceiver
+    // for the data-loss rationale.
+    private final boolean skipDuringDrain;
 
     SessionsMessagePump(String identifier, String fullyQualifiedNamespace, String entityPath,
         ServiceBusReceiveMode receiveMode, ServiceBusReceiverInstrumentation instrumentation,
@@ -158,7 +167,7 @@ final class SessionsMessagePump {
         int maxConcurrentSessions, int concurrencyPerSession, int prefetch, boolean enableAutoDisposition,
         MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        Runnable onTerminate) {
+        Runnable onTerminate, Duration drainTimeout) {
         this.pumpId = COUNTER.incrementAndGet();
         final Map<String, Object> loggingContext = new HashMap<>(3);
         loggingContext.put(PUMP_ID_KEY, pumpId);
@@ -184,9 +193,11 @@ final class SessionsMessagePump {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.onTerminate = Objects.requireNonNull(onTerminate, "'onTerminate' cannot be null.");
+        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
         this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace,
             entityPath, receiveMode, instrumentation);
         this.nextSession = new NextSession(pumpId, fullyQualifiedNamespace, entityPath, sessionAcquirer).mono();
+        this.skipDuringDrain = receiveMode == ServiceBusReceiveMode.PEEK_LOCK;
     }
 
     String getIdentifier() {
@@ -272,10 +283,10 @@ final class SessionsMessagePump {
     private List<RollingSessionReceiver> createRollingSessionReceivers() {
         final ArrayList<RollingSessionReceiver> rollingReceivers = new ArrayList<>(maxConcurrentSessions);
         for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
-            final RollingSessionReceiver rollingReceiver
-                = new RollingSessionReceiver(pumpId, rollerId, instrumentation, fullyQualifiedNamespace, entityPath,
-                    nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession, prefetch,
-                    enableAutoDisposition, serializer, retryPolicy, processMessage, processError, receiversTracker);
+            final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
+                fullyQualifiedNamespace, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout,
+                concurrencyPerSession, prefetch, enableAutoDisposition, serializer, retryPolicy, processMessage,
+                processError, receiversTracker, drainTimeout, skipDuringDrain);
             rollingReceivers.add(rollingReceiver);
         }
         return rollingReceivers;
@@ -368,11 +379,22 @@ final class SessionsMessagePump {
         private final String fullyQualifiedNamespace;
         private final String entityPath;
         private final int concurrency;
+        private final AtomicInteger activeHandlerCount = new AtomicInteger(0);
+        private final Object drainLock = new Object();
+        private final ThreadLocal<Boolean> isHandlerThread = ThreadLocal.withInitial(() -> Boolean.FALSE);
+        private volatile boolean closing;
+        // True when the receive mode is PEEK_LOCK, in which case it is safe to skip handler
+        // dispatch for messages that arrive after closing=true (the broker still owns the lock
+        // and will redeliver). False for RECEIVE_AND_DELETE, where the broker has already removed
+        // the message before delivery - skipping the handler in that mode would lose the message
+        // permanently, so we must always invoke processMessage even during the drain window.
+        private final boolean skipDuringDrain;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final boolean enableAutoDisposition;
         private final Duration maxSessionLockRenew;
         private final Duration sessionIdleTimeout;
+        private final Duration drainTimeout;
         private final MessageSerializer serializer;
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
@@ -385,7 +407,7 @@ final class SessionsMessagePump {
             Duration maxSessionLockRenew, Duration sessionIdleTimeout, int concurrency, int prefetch,
             boolean enableAutoDisposition, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            SessionReceiversTracker receiversTracker) {
+            SessionReceiversTracker receiversTracker, Duration drainTimeout, boolean skipDuringDrain) {
             super(INIT);
             this.pumpId = pumpId;
             final Map<String, Object> loggingContext = new HashMap<>(3);
@@ -406,6 +428,8 @@ final class SessionsMessagePump {
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
+            this.drainTimeout = drainTimeout;
+            this.skipDuringDrain = skipDuringDrain;
             this.nextSessionStream
                 = new NextSessionStream(pumpId, rollerId, fullyQualifiedNamespace, entityPath, nextSession);
             final Flux<ServiceBusSessionReactorReceiver> nextSessionReceiverStream
@@ -446,8 +470,68 @@ final class SessionsMessagePump {
             // by the ServiceBusSessionReactorReceiver.
             logger.atInfo().log("Roller terminated. rollerId:" + rollerId + " signal:" + signalType);
             nextSessionStream.close();
+            // Drain in-flight message handlers BEFORE disposing the worker scheduler.
+            // Disposing the scheduler interrupts handler threads (via ScheduledExecutorService.shutdownNow()).
+            // Draining first ensures handlers can complete message settlement before threads are interrupted.
+            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
+            drainHandlers(drainTimeout);
             workerScheduler.dispose();
             return Mono.empty();
+        }
+
+        /**
+         * Wait for in-flight session message handlers to complete, up to the specified timeout.
+         * Called during session receiver termination to ensure graceful shutdown — messages
+         * currently being processed are allowed to complete (including settlement) before the
+         * worker scheduler is disposed.
+         *
+         * <p><strong>Re-entrant semantics:</strong> when invoked from within a session message
+         * handler (i.e. the calling thread is the handler thread itself), this method waits only
+         * for <em>other</em> concurrent handlers on this session and excludes the calling handler
+         * from the wait condition - waiting for the calling handler to finish would self-deadlock.
+         * In that case, this method may return while the calling handler is still executing.</p>
+         *
+         * @param timeout the maximum time to wait for in-flight handlers to complete.
+         */
+        private void drainHandlers(Duration timeout) {
+            closing = true;
+            final int threshold;
+            if (isHandlerThread.get()) {
+                // Re-entrant call from within a session message handler (e.g., user called close() inside processMessage).
+                // Cannot wait for this thread's own handler to complete (would self-deadlock), but we can
+                // wait for OTHER concurrent handlers to finish settlement before disposing the worker scheduler.
+                threshold = 1;
+                if (activeHandlerCount.get() <= threshold) {
+                    return;
+                }
+                logger.atInfo()
+                    .addKeyValue("otherActiveHandlers", activeHandlerCount.get() - 1)
+                    .log("drainHandlers called from within a session message handler (re-entrant). "
+                        + "Waiting for other active handlers to complete.");
+            } else {
+                threshold = 0;
+            }
+            final long deadline = System.nanoTime() + timeout.toNanos();
+            synchronized (drainLock) {
+                while (activeHandlerCount.get() > threshold) {
+                    final long remainingNanos = deadline - System.nanoTime();
+                    if (remainingNanos <= 0) {
+                        logger.atWarning()
+                            .addKeyValue("activeHandlers", activeHandlerCount.get())
+                            .log("Session drain timeout expired with active handlers still running.");
+                        return;
+                    }
+                    try {
+                        final long millis = TimeUnit.NANOSECONDS.toMillis(remainingNanos);
+                        final int nanos = (int) (remainingNanos % 1_000_000);
+                        drainLock.wait(millis, nanos);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        logger.atWarning().log("Session drain interrupted while waiting for in-flight handlers.");
+                        return;
+                    }
+                }
+            }
         }
 
         private ServiceBusSessionReactorReceiver nextSessionReceiver(ServiceBusSessionAcquirer.Session nextSession) {
@@ -486,22 +570,58 @@ final class SessionsMessagePump {
             final ServiceBusReceivedMessage message
                 = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
 
-            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
-                logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, message.getSessionId())
-                    .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
-                    .log("Received message.");
+            // Fast-path early return: avoid counting skip-path invocations against the drain.
+            // Under sustained throughput, the per-session messageFlux is still live while
+            // drainHandlers() is waiting (the worker scheduler is only disposed after drain
+            // returns), so flatMap keeps dispatching messages. If we incremented the counter for
+            // every skip we could keep activeHandlerCount > 0 long enough to push drain to its
+            // timeout. Reading the volatile flag here ensures messages that arrive after
+            // closing=true is set are dropped without touching the drain's exit condition.
+            //
+            // Skip is gated on PEEK_LOCK only: in that mode the broker still owns the lock and
+            // will redeliver any message we drop. In RECEIVE_AND_DELETE, the broker has already
+            // removed the message before delivery, so dropping it here would lose it permanently
+            // - those messages must always reach processMessage even during the drain window.
+            if (closing && skipDuringDrain) {
+                logger.atVerbose().log("Skipping handler execution (early), session pump is closing.");
+                return;
+            }
 
-                final Throwable error = notifyMessage(msg);
-                if (enableAutoDisposition) {
-                    if (error == null) {
-                        complete(msg);
-                    } else {
-                        abandon(msg);
+            activeHandlerCount.incrementAndGet();
+            isHandlerThread.set(Boolean.TRUE);
+            try {
+                // closing may have flipped between the early check above and this point
+                // (a check-then-act race). Re-check inside the counted region so the rare
+                // race-loser still skips work; the increment will be balanced by the decrement
+                // in finally and notifyAll the drain. Same RECEIVE_AND_DELETE exemption applies.
+                if (closing && skipDuringDrain) {
+                    logger.atVerbose().log("Skipping handler execution, session pump is closing.");
+                    return;
+                }
+                instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                    logger.atVerbose()
+                        .addKeyValue(SESSION_ID_KEY, message.getSessionId())
+                        .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
+                        .log("Received message.");
+
+                    final Throwable error = notifyMessage(msg);
+                    if (enableAutoDisposition) {
+                        if (error == null) {
+                            complete(msg);
+                        } else {
+                            abandon(msg);
+                        }
+                    }
+                    return error;
+                });
+            } finally {
+                isHandlerThread.remove();
+                if (activeHandlerCount.decrementAndGet() <= 1) {
+                    synchronized (drainLock) {
+                        drainLock.notifyAll();
                     }
                 }
-                return error;
-            });
+            }
         }
 
         private Throwable notifyMessage(ServiceBusReceivedMessage message) {

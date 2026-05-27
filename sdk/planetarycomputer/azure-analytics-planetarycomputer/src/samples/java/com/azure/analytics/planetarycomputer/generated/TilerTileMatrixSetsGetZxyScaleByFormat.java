@@ -19,9 +19,9 @@ public class TilerTileMatrixSetsGetZxyScaleByFormat {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
-        BinaryData response = dataClient.getTile("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad", 14.0,
-            4349.0, 6564.0, 1.0, "png",
-            new GetTileOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+        BinaryData response
+            = dataClient.getTile("naip-atl", "ga_m_3308421_se_16_060_20211114", "WebMercatorQuad", 14.0, 4349.0, 6564.0,
+                1.0, "png", new GetTileOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-tile.tiler-tile-matrix-sets-get-zxy-scale-by-format
     }
 }

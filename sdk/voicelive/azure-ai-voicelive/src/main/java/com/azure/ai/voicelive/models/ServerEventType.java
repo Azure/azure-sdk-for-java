@@ -317,4 +317,78 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
      */
     @Generated
     public static final ServerEventType WARNING = fromString("warning");
+
+    /**
+     * Avatar switches to speaking state.
+     */
+    @Generated
+    public static final ServerEventType SESSION_AVATAR_SWITCH_TO_SPEAKING
+        = fromString("session.avatar.switch_to_speaking");
+
+    /**
+     * Avatar switches to idle state.
+     */
+    @Generated
+    public static final ServerEventType SESSION_AVATAR_SWITCH_TO_IDLE = fromString("session.avatar.switch_to_idle");
+
+    /**
+     * Delta update for avatar video frames.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_VIDEO_DELTA = fromString("response.video.delta");
+
+    /**
+     * Web search call is searching.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_WEB_SEARCH_CALL_SEARCHING
+        = fromString("response.web_search_call.searching");
+
+    /**
+     * Web search call is in progress.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_WEB_SEARCH_CALL_IN_PROGRESS
+        = fromString("response.web_search_call.in_progress");
+
+    /**
+     * Web search call completed.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_WEB_SEARCH_CALL_COMPLETED
+        = fromString("response.web_search_call.completed");
+
+    /**
+     * File search call is searching.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_FILE_SEARCH_CALL_SEARCHING
+        = fromString("response.file_search_call.searching");
+
+    /**
+     * File search call is in progress.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_FILE_SEARCH_CALL_IN_PROGRESS
+        = fromString("response.file_search_call.in_progress");
+
+    /**
+     * File search call completed.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_FILE_SEARCH_CALL_COMPLETED
+        = fromString("response.file_search_call.completed");
+
+    /**
+     * Output audio buffer has been cleared.
+     */
+    @Generated
+    public static final ServerEventType OUTPUT_AUDIO_BUFFER_CLEARED = fromString("output_audio_buffer.cleared");
+
+    /**
+     * Audio transcript annotation added.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_AUDIO_TRANSCRIPT_ANNOTATION_ADDED
+        = fromString("response.audio_transcript.annotation.added");
 }

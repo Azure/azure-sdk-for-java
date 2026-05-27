@@ -69,18 +69,6 @@ public final class OneTimeTrigger extends Trigger {
     }
 
     /**
-     * Set the timeZone property: Time zone for the one-time trigger.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the OneTimeTrigger object itself.
-     */
-    @Generated
-    public OneTimeTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -138,5 +126,17 @@ public final class OneTimeTrigger extends Trigger {
     @Generated
     public OneTimeTrigger(OffsetDateTime triggerAt) {
         this.triggerAt = triggerAt;
+    }
+
+    /**
+     * Set the timeZone property: Time zone for the one-time trigger.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the OneTimeTrigger object itself.
+     */
+    @Generated
+    public OneTimeTrigger setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+        return this;
     }
 }

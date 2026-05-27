@@ -27,7 +27,7 @@ Use the Azure VoiceLive client library for Java to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-voicelive</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,20 +36,9 @@ Use the Azure VoiceLive client library for Java to:
 
 To interact with the Azure VoiceLive service, you'll need to create an instance of the [VoiceLiveAsyncClient][voicelive_client_async] using [VoiceLiveClientBuilder][voicelive_client_builder]. The client supports two authentication methods:
 
-#### Authenticate with API Key
+#### Authenticate with Microsoft Entra ID (recommended)
 
-Get your Azure VoiceLive API key from the Azure Portal:
-
-```java com.azure.ai.voicelive.authentication.apikey
-VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-    .endpoint("https://your-resource.openai.azure.com/")
-    .credential(new AzureKeyCredential("your-api-key"))
-    .buildAsyncClient();
-```
-
-#### Authenticate with Azure AD (Token Credential)
-
-Azure SDK for Java supports Azure Identity, making it easy to use Microsoft identity platform for authentication.
+Azure SDK for Java supports Azure Identity, making it easy to use Microsoft identity platform for authentication. This is the recommended approach for production workloads — it works with managed identity in Azure, and falls back to developer credentials (Azure CLI, Visual Studio Code, etc.) locally.
 
 First, add the Azure Identity package:
 
@@ -63,7 +52,7 @@ First, add the Azure Identity package:
 ```
 [//]: # ({x-version-update-end})
 
-Then create a client with DefaultAzureCredential:
+Then create a client with `DefaultAzureCredential`:
 
 ```java com.azure.ai.voicelive.authentication.defaultcredential
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -73,13 +62,24 @@ VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .buildAsyncClient();
 ```
 
-For development and testing, you can use Azure CLI credentials:
+For development and testing, you can also use Azure CLI credentials directly:
 
 ```java com.azure.ai.voicelive.authentication.azurecli
 TokenCredential credential = new AzureCliCredentialBuilder().build();
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint("https://your-resource.openai.azure.com/")
     .credential(credential)
+    .buildAsyncClient();
+```
+
+#### Authenticate with API Key
+
+For quick local experimentation you can authenticate with a static API key from the Azure Portal. API keys cannot be scoped per-user and are harder to rotate, so prefer `DefaultAzureCredential` for production.
+
+```java com.azure.ai.voicelive.authentication.apikey
+VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+    .endpoint("https://your-resource.openai.azure.com/")
+    .credential(new AzureKeyCredential("your-api-key"))
     .buildAsyncClient();
 ```
 
@@ -141,8 +141,9 @@ For easier learning, explore these focused samples in order:
    - Basic event handling
 
 2. **AuthenticationMethodsSample.java** - Learn authentication options
-   - API Key authentication (default)
-   - Token Credential authentication with DefaultAzureCredential
+   - Token Credential authentication with `DefaultAzureCredential` (recommended)
+   - API key authentication with `KeyCredential` (convenient for local testing)
+   - All other samples in this package use `DefaultAzureCredential`
 
 3. **MicrophoneInputSample.java** - Add audio input capability
    - Real-time microphone audio capture
@@ -347,7 +348,7 @@ VoiceLiveSessionOptions options2 = new VoiceLiveSessionOptions()
     .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
 // Azure Personal Voice - requires speaker profile ID and model
-// Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+// Models: DRAGON_LATEST_NEURAL, DRAGON_HDOMNI_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, MAI_VOICE_1
 VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
     .setVoice(BinaryData.fromObject(
         new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
@@ -495,7 +496,7 @@ tracing is automatically active when a global OpenTelemetry instance exists (e.g
 // No special configuration needed — tracing is picked up from GlobalOpenTelemetry
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
@@ -564,12 +565,11 @@ A full example demonstrating real-time microphone input and audio playback:
 <!-- BEGIN: com.azure.ai.voicelive.readme -->
 ```java
 String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-// Create the VoiceLive client
+// Create the VoiceLive client using DefaultAzureCredential (Entra ID).
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
 // Configure session options for voice conversation

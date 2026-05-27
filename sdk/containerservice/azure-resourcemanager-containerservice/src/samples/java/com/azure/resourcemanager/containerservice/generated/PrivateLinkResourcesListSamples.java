@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-02-01/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2026-03-02-preview/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: List Private Link Resources by Managed Cluster.

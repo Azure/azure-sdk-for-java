@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,10 +56,12 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
                 .buildAgentsAsyncClient();
 ``` 
 
-The Agents client library has 3 sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents.
+The Agents client library has the following sub-clients which group the different operations that can be performed: 
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes agent-session operations (`createSession`, `getSession`, `deleteSession`, `listSessions`, `getSessionLogStream`, `getSessionLogStreamWithResponse`).
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+- `ToolboxesClient` / `ToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+- `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` **(preview)**: Work with files in an agent session, including uploading, downloading, listing, and deleting session files.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -79,6 +81,12 @@ ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 // Memory Stores sub-clients (preview).
 MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
 MemoryStoresAsyncClient memoryStoresAsyncClient = builder.buildMemoryStoresAsyncClient();
+//Toolboxes sub-clients (preview).
+ToolboxesClient toolboxesClient = builder.buildToolboxesClient();
+ToolboxesAsyncClient toolboxesAsyncClient = builder.buildToolboxesAsyncClient();
+// Agent Session Files sub-clients (preview).
+AgentSessionFilesClient agentSessionFilesClient = builder.buildAgentSessionFilesClient();
+AgentSessionFilesAsyncClient agentSessionFilesAsyncClient = builder.buildAgentSessionFilesAsyncClient();
 ```
 
 The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
@@ -118,15 +126,16 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
 | `SharepointPreviewTool` | SharePoint grounding |
 | `WebSearchPreviewTool` | Web search |
+| `WorkIqPreviewTool` | Work IQ |
 
 ### Experimental features and opt-in flags
 
 Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
 
-- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
-- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `CONTAINER_AGENTS_V1_PREVIEW`, `AGENT_ENDPOINT_V1_PREVIEW`.
+- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`.
 
-> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request.
+> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `ToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request.
 
 ```java
 // OpenAI SDK ResponseService accessed from ResponsesClient
@@ -627,6 +636,42 @@ return responsesAsyncClient.createStreamingAzureResponse(
 ```
 
 See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
+
+### Stream hosted agent session logs
+
+Hosted agent session logs can be streamed as `SessionLogEvent` values after a session has been created. The `data` property contains the log payload as an opaque string.
+
+Session log streams are long-lived and may remain open until the client cancels or the session ends. Bound the stream with `take`, `timeout`, by disposing the subscription, or by breaking iteration when appropriate.
+
+#### Synchronous session log streaming
+
+The synchronous session log method returns `IterableStream<SessionLogEvent>`, which can be consumed with a standard for-each loop:
+
+```java com.azure.ai.agents.session_logs_sync
+IterableStream<SessionLogEvent> sessionLogs =
+    agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+
+int logsRead = 0;
+for (SessionLogEvent event : sessionLogs) {
+    System.out.printf("[%s] %s%n", event.getEvent(), event.getData());
+
+    // Session log streams are long-lived; connection is closed on client disconnection
+    if (++logsRead == 100) {
+        break;
+    }
+}
+```
+
+#### Asynchronous session log streaming
+
+The asynchronous session log method returns `Flux<SessionLogEvent>`, integrating naturally with Reactor pipelines:
+
+```java com.azure.ai.agents.session_logs_async
+agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+    .take(100)
+    .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
+    .blockLast();
+```
 
 ---
 

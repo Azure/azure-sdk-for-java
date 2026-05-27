@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class TargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Targets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Targets_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Target that extends a virtual machine resource.
