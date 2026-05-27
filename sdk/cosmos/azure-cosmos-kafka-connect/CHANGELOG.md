@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed per-record ID-generation failures in Kafka sink transformer to isolate bad records instead of failing the entire batch. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
 
 #### Other Changes
 
