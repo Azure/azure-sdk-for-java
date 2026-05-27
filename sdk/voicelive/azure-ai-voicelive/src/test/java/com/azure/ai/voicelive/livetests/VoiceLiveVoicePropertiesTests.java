@@ -61,7 +61,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
                 = new VoiceLiveSessionOptions().setVoice(BinaryData.fromObject(voice))
                     .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -137,7 +137,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
                     new AnimationOptions().setOutputTypes(Arrays.asList(AnimationOutputType.VISEME_ID)))
                 .setOutputAudioTimestampTypes(Arrays.asList(AudioTimestampType.WORD));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 

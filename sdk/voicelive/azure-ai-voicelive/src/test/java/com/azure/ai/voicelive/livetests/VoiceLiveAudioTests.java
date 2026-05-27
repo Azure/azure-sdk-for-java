@@ -60,7 +60,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
                 .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                 .setInputAudioFormat(InputAudioFormat.PCM16);
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -134,7 +134,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
                     new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION))
                 .setInputAudioEchoCancellation(new AudioEchoCancellation());
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 

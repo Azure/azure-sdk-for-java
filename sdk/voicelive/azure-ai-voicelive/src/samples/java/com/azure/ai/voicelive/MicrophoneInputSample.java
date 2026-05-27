@@ -125,7 +125,7 @@ public final class MicrophoneInputSample {
 
         // Start session. Session lifetime is local to this reactive chain; the session
         // instance is captured only inside the flatMapMany lambda.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started");
                 AudioProcessor audioProcessor = new AudioProcessor(session);

@@ -62,7 +62,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.")
                     .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -156,7 +156,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.");
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 

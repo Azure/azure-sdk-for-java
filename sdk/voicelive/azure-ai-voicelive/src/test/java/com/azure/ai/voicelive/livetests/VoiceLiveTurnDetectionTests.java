@@ -87,7 +87,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         VoiceLiveSessionAsyncClient session = null;
         Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -180,7 +180,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         VoiceLiveSessionAsyncClient session = null;
         Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -297,7 +297,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         VoiceLiveSessionAsyncClient session = null;
         Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {

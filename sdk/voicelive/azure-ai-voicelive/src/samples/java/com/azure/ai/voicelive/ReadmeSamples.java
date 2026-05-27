@@ -99,8 +99,8 @@ public final class ReadmeSamples {
             .setInputAudioTranscription(transcriptionOptions)
             .setTurnDetection(turnDetection);
 
-        // Start session and handle events
-        client.startSession("gpt-realtime")
+        // Start session (null VoiceLiveRequestOptions), then handle events
+        client.startSession("gpt-realtime", null)
             .flatMap(session -> {
                 // Send session configuration, then listen for events.
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
@@ -162,8 +162,8 @@ public final class ReadmeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.simple.session
-        // Start session with default options
-        client.startSession("gpt-realtime")
+        // Start session with a specific model; pass null when no VoiceLiveRequestOptions value is needed
+        client.startSession("gpt-realtime", null)
             .flatMap(session -> {
                 System.out.println("Session started");
 
@@ -213,8 +213,8 @@ public final class ReadmeSamples {
             .setInputAudioTranscription(transcription)
             .setTurnDetection(turnDetection);
 
-        // Start session with options
-        client.startSession("gpt-realtime")
+        // Start session and then send session configuration
+        client.startSession("gpt-realtime", null)
             .flatMap(session -> {
                 // Send session configuration
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -236,7 +236,7 @@ public final class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime", null).block();
 
         // BEGIN: com.azure.ai.voicelive.send.audioinput
         // Send audio chunk
@@ -265,7 +265,7 @@ public final class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime", null).block();
 
         // BEGIN: com.azure.ai.voicelive.handle.eventtypes
         session.receiveEvents()
@@ -362,7 +362,7 @@ public final class ReadmeSamples {
             .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
         // 3. Handle function call events
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             .flatMap(session -> {
                 return session.receiveEvents()
                     .doOnNext(event -> {
@@ -424,7 +424,7 @@ public final class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
+        VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime", null).block();
 
         // BEGIN: com.azure.ai.voicelive.mcp
         // Configure MCP servers as tools
@@ -469,13 +469,13 @@ public final class ReadmeSamples {
         AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
             .setAgentVersion("1.0");
 
-        // Start session with agent config (uses DefaultAzureCredential)
+        // Start session with agent config; pass null when no VoiceLiveRequestOptions value is needed
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        client.startSession(agentConfig)
+        client.startSession(agentConfig, null)
             .flatMap(session -> {
                 return session.receiveEvents()
                     .doOnNext(event -> handleEvent(event))

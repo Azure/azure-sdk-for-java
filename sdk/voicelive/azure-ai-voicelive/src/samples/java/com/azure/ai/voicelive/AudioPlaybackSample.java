@@ -142,7 +142,7 @@ public final class AudioPlaybackSample {
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
         // Open a WebSocket session against the realtime model.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             // Configure the session (voice, modalities, audio formats, instructions).
             .flatMap(session -> {
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);

@@ -6,6 +6,10 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
 
 ### Breaking Changes
 
+- Narrowed `VoiceLiveAsyncClient` session startup to three overloads:
+  - `startSession()`
+  - `startSession(String, VoiceLiveRequestOptions)`
+  - `startSession(AgentSessionConfig, VoiceLiveRequestOptions)`
 - Renamed base event types for client↔server symmetry:
   - `ClientEvent` (base for outbound events) → `SessionClientEvent`
   - `SessionUpdate` (base for inbound events) → `SessionServerEvent`

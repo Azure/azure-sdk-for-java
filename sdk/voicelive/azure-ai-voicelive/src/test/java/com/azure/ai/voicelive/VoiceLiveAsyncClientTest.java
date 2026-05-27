@@ -67,14 +67,14 @@ class VoiceLiveAsyncClientTest {
         // Note: This test might need to be adjusted based on actual implementation
         // For now, we're testing that the method exists and can be called
         assertDoesNotThrow(() -> {
-            client.startSession(sessionOptions.getModel());
+            client.startSession(sessionOptions.getModel(), null);
         });
     }
 
     @Test
     void testStartSessionWithNullOptions() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null, null));
     }
 
     @Test
@@ -93,14 +93,25 @@ class VoiceLiveAsyncClientTest {
 
         // Act & Assert
         assertDoesNotThrow(() -> {
-            client.startSession(model);
+            client.startSession(model, null);
         });
     }
 
     @Test
     void testStartSessionWithNullModel() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null, null));
+    }
+
+    @Test
+    void testStartSessionWithModelAndRequestOptions() {
+        String model = "gpt-4o-realtime-preview";
+        VoiceLiveRequestOptions requestOptions = new VoiceLiveRequestOptions();
+
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(model, requestOptions);
+            assertNotNull(sessionMono);
+        });
     }
 
     @Test
@@ -128,20 +139,19 @@ class VoiceLiveAsyncClientTest {
 
         // Test startSession with model string
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> result = client.startSession("gpt-4o-realtime-preview");
+            Mono<VoiceLiveSessionAsyncClient> result = client.startSession("gpt-4o-realtime-preview", null);
             assertNotNull(result);
         });
 
         // Test startSession with session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> result = client.startSession(sessionOptions.getModel());
+            Mono<VoiceLiveSessionAsyncClient> result = client.startSession(sessionOptions.getModel(), null);
             assertNotNull(result);
         });
 
         // Test null parameter validation for startSession methods
-        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
-        assertThrows(NullPointerException.class, () -> client.startSession((VoiceLiveRequestOptions) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null, null));
     }
 
     @Test
@@ -150,14 +160,14 @@ class VoiceLiveAsyncClientTest {
         String model = "gpt-4o-realtime-preview";
 
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(model);
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(model, null);
             assertNotNull(sessionMono);
             // The returned Mono should contain a VoiceLiveSessionAsyncClient when subscribed
         });
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel(model);
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(options.getModel());
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(options.getModel(), null);
             assertNotNull(sessionMono);
             // The returned Mono should contain a VoiceLiveSessionAsyncClient when subscribed
         });
@@ -170,7 +180,7 @@ class VoiceLiveAsyncClientTest {
 
         // Act & Assert
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig);
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig, null);
             assertNotNull(sessionMono);
         });
     }
@@ -184,7 +194,7 @@ class VoiceLiveAsyncClientTest {
 
         // Act & Assert
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig);
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig, null);
             assertNotNull(sessionMono);
         });
     }
@@ -192,7 +202,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullAgentConfig() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession((AgentSessionConfig) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((AgentSessionConfig) null, null));
     }
 
     @Test
@@ -215,7 +225,10 @@ class VoiceLiveAsyncClientTest {
         AgentSessionConfig agentConfig = new AgentSessionConfig("test-agent", "test-project");
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession(agentConfig, null));
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(agentConfig, null);
+            assertNotNull(sessionMono);
+        });
     }
 
     @Test

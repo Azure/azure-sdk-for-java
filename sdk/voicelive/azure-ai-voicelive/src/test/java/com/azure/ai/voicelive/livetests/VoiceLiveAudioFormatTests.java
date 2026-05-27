@@ -101,7 +101,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(turnDetection)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -203,7 +203,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                     ? new ServerVadTurnDetection().setSilenceDurationMs(200)
                     : new ServerVadTurnDetection());
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -319,7 +319,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -395,7 +395,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 

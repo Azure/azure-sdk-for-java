@@ -240,7 +240,7 @@ public class AgentV2Sample {
                 .buildAsyncClient();
 
             // Connect using AgentSessionConfig.
-            client.startSession(agentConfig)
+            client.startSession(agentConfig, null)
                 .flatMapMany(voiceLiveSession -> {
                     System.out.println("Connected to VoiceLive service");
                     this.audioProcessor = new AudioProcessor(voiceLiveSession);

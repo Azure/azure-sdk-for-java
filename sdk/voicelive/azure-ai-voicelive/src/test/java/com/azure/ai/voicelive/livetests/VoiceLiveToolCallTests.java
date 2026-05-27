@@ -113,7 +113,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(assessTool))
                 .setToolChoice(BinaryData.fromObject("auto"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -210,7 +210,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(weatherTool, timeTool))
                 .setToolChoice(BinaryData.fromObject(new ToolChoiceFunctionSelection("get_time")));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -311,7 +311,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(weatherTool))
                 .setToolChoice(BinaryData.fromObject("auto"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -428,7 +428,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         VoiceLiveSessionAsyncClient session = null;
         Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             // Phase tracking: 1 = no tools, 2 = with tools, 3 = post-response.create

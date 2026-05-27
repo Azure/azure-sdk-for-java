@@ -68,7 +68,10 @@ import reactor.netty.http.websocket.WebsocketOutbound;
  * simultaneously sending and receiving WebSocket messages.
  * </p>
  * <p>
- * Users can obtain a VoiceLiveSessionAsyncClient instance from {@link VoiceLiveAsyncClient#startSession(String)} and work directly with it for optimal performance.
+ * Users can obtain a VoiceLiveSessionAsyncClient instance from {@link VoiceLiveAsyncClient#startSession()},
+ * {@link VoiceLiveAsyncClient#startSession(String, com.azure.ai.voicelive.models.VoiceLiveRequestOptions)}, or
+ * {@link VoiceLiveAsyncClient#startSession(com.azure.ai.voicelive.models.AgentSessionConfig,
+ * com.azure.ai.voicelive.models.VoiceLiveRequestOptions)} and work directly with it for optimal performance.
  * Alternatively, users can use the convenience methods on {@link VoiceLiveAsyncClient} which delegate to
  * the internal session.
  * </p>

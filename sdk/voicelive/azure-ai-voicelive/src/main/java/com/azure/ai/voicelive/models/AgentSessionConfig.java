@@ -20,7 +20,7 @@ import java.util.Objects;
  *     .setAgentVersion("1.0")
  *     .setConversationId("conv-123");
  *
- * client.startSession(config).subscribe(session -> {
+ * client.startSession(config, null).subscribe(session -> {
  *     // Use the session
  * });
  * }</pre>

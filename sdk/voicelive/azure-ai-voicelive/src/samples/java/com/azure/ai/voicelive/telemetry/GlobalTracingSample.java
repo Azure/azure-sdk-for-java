@@ -109,7 +109,7 @@ public final class GlobalTracingSample {
         //    Session lifetime is local to this reactive chain; the session is captured by the
         //    lambda passed to flatMapMany and then threaded into per-event handling via flatMap,
         //    so no instance field or shared holder is needed.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             .flatMapMany(session -> configureSession(session, sessionOptions, prompts)
                 .thenMany(session.receiveEvents())
                 .flatMap(GlobalTracingSample::handleServerEvent))

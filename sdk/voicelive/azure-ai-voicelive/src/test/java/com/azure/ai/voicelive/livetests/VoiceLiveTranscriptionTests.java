@@ -60,7 +60,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
                 .setInputAudioFormat(InputAudioFormat.PCM16)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -136,7 +136,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setInputAudioTranscription(
                 new AudioInputTranscriptionOptions(transcriptionOptionsModel).setLanguage("en-US"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 

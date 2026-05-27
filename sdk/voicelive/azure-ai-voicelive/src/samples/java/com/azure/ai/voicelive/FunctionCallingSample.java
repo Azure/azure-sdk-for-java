@@ -164,7 +164,7 @@ public final class FunctionCallingSample {
         // Start session. Session lifetime is local to this reactive chain — the session is
         // captured by the lambda passed to flatMapMany and then threaded into per-event handling
         // via flatMap, so no instance field or shared holder is needed.
-        client.startSession(DEFAULT_MODEL)
+        client.startSession(DEFAULT_MODEL, null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
                 audioProcessorRef.set(new AudioProcessor(session));
