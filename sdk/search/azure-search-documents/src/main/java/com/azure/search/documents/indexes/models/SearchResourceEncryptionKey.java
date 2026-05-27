@@ -22,7 +22,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * The name of your Azure Key Vault key to be used to encrypt your data at rest.
      */
     @Generated
-    private final String keyName;
+    private String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data at rest.
@@ -210,7 +210,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
     @Generated
-    private final String vaultUrl;
+    private String vaultUrl;
 
     /**
      * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
@@ -251,5 +251,14 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public SearchResourceEncryptionKey setIsServiceLevelKey(Boolean isServiceLevelKey) {
         this.isServiceLevelKey = isServiceLevelKey;
         return this;
+    }
+
+    /**
+     * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is
+     * set to true, in which case keyName and vaultUrl are not required.
+     */
+    public SearchResourceEncryptionKey() {
+        this.keyName = null;
+        this.vaultUrl = null;
     }
 }
