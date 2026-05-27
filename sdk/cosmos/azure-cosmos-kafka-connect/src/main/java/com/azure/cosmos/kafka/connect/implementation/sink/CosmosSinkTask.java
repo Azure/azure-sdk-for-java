@@ -51,18 +51,9 @@ public class CosmosSinkTask extends SinkTask {
             LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
             this.throughputControlClientItem = this.getThroughputControlCosmosClient();
 
-            ErrantRecordReporter errantRecordReporter = null;
-            try {
-                errantRecordReporter = this.context.errantRecordReporter();
-            } catch (NoClassDefFoundError | NoSuchMethodError e) {
-                LOGGER.info(
-                    "ErrantRecordReporter not available in this Kafka Connect runtime; "
-                        + "DLQ will not be used for transform errors.");
-            }
-
             this.sinkRecordTransformer = new SinkRecordTransformer(
                 this.sinkTaskConfig,
-                errantRecordReporter,
+                this.context.errantRecordReporter(),
                 this.sinkTaskConfig.getWriteConfig().getToleranceOnErrorLevel());
 
             if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {

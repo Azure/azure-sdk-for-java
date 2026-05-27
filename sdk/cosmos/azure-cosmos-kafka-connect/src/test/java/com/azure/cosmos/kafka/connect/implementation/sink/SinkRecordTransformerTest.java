@@ -66,7 +66,7 @@ public class SinkRecordTransformerTest {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
-        Future<?> mockFuture = Mockito.mock(Future.class);
+        Future<Void> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
         SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
@@ -201,11 +201,12 @@ public class SinkRecordTransformerTest {
     // T5: All records bad with reporter + tolerance ALL — all reported to DLQ, empty output
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void allBadRecordsWithReporterToleranceAll_allReportedEmptyOutput() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
-        Future<?> mockFuture = Mockito.mock(Future.class);
+        Future<Void> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
         SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
@@ -301,11 +302,12 @@ public class SinkRecordTransformerTest {
     //     (consistent with writer-level pattern: DLQ is side-effect, tolerance controls flow)
     // ============================================================
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
     public void toleranceNoneWithReporter_reportedToDlqAndExceptionThrown() throws Exception {
         // Arrange
         IdStrategy idStrategy = createSelectivelyFailingIdStrategy();
         ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
-        Future<?> mockFuture = Mockito.mock(Future.class);
+        Future<Void> mockFuture = Mockito.mock(Future.class);
         when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
 
         // Tolerance is NONE — task should fail even though reporter is available
