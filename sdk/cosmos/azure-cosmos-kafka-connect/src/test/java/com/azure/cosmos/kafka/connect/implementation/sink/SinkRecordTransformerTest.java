@@ -4,6 +4,9 @@
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.IdStrategy;
+import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.SchemaBuilder;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -12,6 +15,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -329,5 +333,80 @@ public class SinkRecordTransformerTest {
 
         // Assert — reporter WAS called (DLQ is side-effect for observability)
         verify(reporter, times(1)).report(any(SinkRecord.class), any(ConnectException.class));
+    }
+
+    // ============================================================
+    // T9: Value conversion failure (Struct → JSON) with reporter + tolerance ALL
+    //     — exercises the broader catch scope beyond just ID generation
+    // ============================================================
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    @SuppressWarnings("unchecked")
+    public void structConversionFailure_toleranceAll_reportedToDlqAndSkipped() throws Exception {
+        // Arrange — ID strategy that always succeeds; the failure comes from Struct conversion
+        IdStrategy idStrategy = Mockito.mock(IdStrategy.class);
+        when(idStrategy.generateId(any(SinkRecord.class))).thenReturn("any-id");
+
+        ErrantRecordReporter reporter = Mockito.mock(ErrantRecordReporter.class);
+        Future<Void> mockFuture = Mockito.mock(Future.class);
+        when(reporter.report(any(SinkRecord.class), any(Throwable.class))).thenReturn(mockFuture);
+
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, reporter, ToleranceOnErrorLevel.ALL);
+
+        // A Struct whose schema has a field, but accessing that field throws
+        // (simulates malformed Struct data that fails during StructToJsonMap.toJsonMap())
+        Schema schema = SchemaBuilder.struct().field("data", Schema.STRING_SCHEMA).build();
+        Struct malformedStruct = Mockito.mock(Struct.class);
+        when(malformedStruct.schema()).thenReturn(schema);
+        when(malformedStruct.getString("data")).thenThrow(new org.apache.kafka.connect.errors.DataException("Schema mismatch"));
+
+        SinkRecord badStructRecord = new SinkRecord("topicI", 0, null, "key-bad", schema, malformedStruct, 0L);
+
+        Map<String, Object> goodValue = new HashMap<>();
+        goodValue.put("data", "ok");
+        SinkRecord goodRecord = createMapRecord("topicI", 0, 1L, goodValue);
+
+        List<SinkRecord> batch = Arrays.asList(badStructRecord, goodRecord);
+
+        // Act — should NOT throw
+        List<SinkRecord> result = transformer.transform("container10", batch);
+
+        // Assert — only the good Map record survives
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(((Map<String, Object>) result.get(0).value()).get("id")).isEqualTo("any-id");
+
+        // Assert — reporter called once for the malformed Struct record
+        ArgumentCaptor<SinkRecord> recordCaptor = ArgumentCaptor.forClass(SinkRecord.class);
+        ArgumentCaptor<Throwable> errorCaptor = ArgumentCaptor.forClass(Throwable.class);
+        verify(reporter, times(1)).report(recordCaptor.capture(), errorCaptor.capture());
+        assertThat(recordCaptor.getValue().kafkaOffset()).isEqualTo(0L);
+        assertThat(errorCaptor.getValue()).isInstanceOf(org.apache.kafka.connect.errors.DataException.class);
+    }
+
+    // ============================================================
+    // T10: Value conversion failure with tolerance NONE — exception thrown (fail-fast)
+    // ============================================================
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void structConversionFailure_toleranceNone_exceptionThrown() throws Exception {
+        // Arrange
+        IdStrategy idStrategy = Mockito.mock(IdStrategy.class);
+        when(idStrategy.generateId(any(SinkRecord.class))).thenReturn("any-id");
+
+        SinkRecordTransformer transformer = new SinkRecordTransformer(idStrategy, null, ToleranceOnErrorLevel.NONE);
+
+        Schema schema = SchemaBuilder.struct().field("data", Schema.STRING_SCHEMA).build();
+        Struct malformedStruct = Mockito.mock(Struct.class);
+        when(malformedStruct.schema()).thenReturn(schema);
+        when(malformedStruct.getString("data")).thenThrow(new org.apache.kafka.connect.errors.DataException("Schema mismatch"));
+
+        SinkRecord badStructRecord = new SinkRecord("topicJ", 0, null, "key-bad", schema, malformedStruct, 0L);
+
+        List<SinkRecord> batch = Collections.singletonList(badStructRecord);
+
+        // Act
+        Throwable thrown = catchThrowable(() -> transformer.transform("container11", batch));
+
+        // Assert — DataException is thrown (fail-fast preserved)
+        assertThat(thrown).isInstanceOf(org.apache.kafka.connect.errors.DataException.class);
+        assertThat(thrown.getMessage()).contains("Schema mismatch");
     }
 }
