@@ -403,9 +403,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionFilesWithResponse(String agentName, String agentSessionId, String path,
+    public Mono<Response<BinaryData>> listSessionFilesWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
+        return this.serviceClient.listSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -429,9 +429,9 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path,
+    public Mono<SessionDirectoryListResponse> listSessionFiles(String agentName, String agentSessionId, String path,
         AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
-        // Generated convenience method for getSessionFilesWithResponse
+        // Generated convenience method for listSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -439,7 +439,7 @@ public final class AgentSessionFilesAsyncClient {
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
     }
 
@@ -460,10 +460,10 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path) {
-        // Generated convenience method for getSessionFilesWithResponse
+    public Mono<SessionDirectoryListResponse> listSessionFiles(String agentName, String agentSessionId, String path) {
+        // Generated convenience method for listSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
+        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
     }
 }

@@ -393,9 +393,9 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSessionFilesWithResponse(String agentName, String agentSessionId, String path,
+    public Response<BinaryData> listSessionFilesWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions);
+        return this.serviceClient.listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -419,9 +419,9 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionDirectoryListResponse getSessionFiles(String agentName, String agentSessionId, String path,
+    public SessionDirectoryListResponse listSessionFiles(String agentName, String agentSessionId, String path,
         AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
-        // Generated convenience method for getSessionFilesWithResponse
+        // Generated convenience method for listSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
@@ -429,7 +429,7 @@ public final class AgentSessionFilesClient {
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).getValue()
+        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).getValue()
             .toObject(SessionDirectoryListResponse.class);
     }
 
@@ -450,10 +450,10 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionDirectoryListResponse getSessionFiles(String agentName, String agentSessionId, String path) {
-        // Generated convenience method for getSessionFilesWithResponse
+    public SessionDirectoryListResponse listSessionFiles(String agentName, String agentSessionId, String path) {
+        // Generated convenience method for listSessionFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).getValue()
+        return listSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).getValue()
             .toObject(SessionDirectoryListResponse.class);
     }
 }
