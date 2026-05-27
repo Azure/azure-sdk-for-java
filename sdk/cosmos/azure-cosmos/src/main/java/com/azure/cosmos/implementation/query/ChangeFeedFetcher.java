@@ -151,6 +151,12 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                    // not all continuations have been drained yet; repeat with the next continuation
                                    return surfaceOrSwallowNoChangesPage(r);
                                }
+                               // The noChanges(r) guard is LOAD-BEARING: in production,
+                               // FeedRangeCompositeContinuationImpl.handleChangeFeedNotModified
+                               // returns NO_RETRY for EVERY non-noChanges (i.e. data) response too
+                               // (the early `if (!noChanges(r))` clause resets state and falls
+                               // through to the final `return NO_RETRY`). Without this guard, every
+                               // data page would silently truncate iteration after the first emission.
                                if (ModelBridgeInternal.<T>noChanges(r) && this.emptyPagesAllowed) {
                                    // NO_RETRY on a noChanges page: the SDK's termination signal. Without
                                    // emptyPagesAllowed=true, isFullyDrained() already flipped shouldFetchMore

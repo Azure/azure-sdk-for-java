@@ -205,6 +205,49 @@ public class ChangeFeedFetcherEmptyPagesTest {
         assertThat(fetcher.shouldFetchMore())
             .describedAs("NO_RETRY on terminal noChanges page MUST stop Paginator from polling again")
             .isFalse();
+        assertThat(callIndex.get())
+            .describedAs("after NO_RETRY termination, executeFunc must NOT be called again")
+            .isEqualTo(4);
+    }
+
+    @Test(groups = { "unit" })
+    public void nextPage_emptyPagesAllowedTrueWithDataPages_doesNotTerminate() {
+        // Defense-in-depth contract guard: handleChangeFeedNotModified in the real
+        // FeedRangeCompositeContinuationImpl returns NO_RETRY for EVERY non-noChanges
+        // response (the early `if (!noChanges(r))` clause resets state and then falls
+        // through to the final `return NO_RETRY`). The branch-2 termination logic in
+        // ChangeFeedFetcher.nextPageInternal therefore MUST gate the
+        // disableShouldFetchMore() call on `noChanges(r) && emptyPagesAllowed`; if a
+        // future refactor drops the noChanges(r) guard, every data page would silently
+        // truncate iteration after the first emission. This test pins that contract.
+        FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
+        when(continuation.isDone()).thenReturn(false);
+        // Match real production behavior: NO_RETRY on data pages, RETRY_NOW on noChanges.
+        when(continuation.handleChangeFeedNotModified(any())).thenAnswer(invocation -> {
+            FeedResponse<?> rsp = invocation.getArgument(0);
+            return ModelBridgeInternal.noChanges(rsp) ? ShouldRetryResult.RETRY_NOW : ShouldRetryResult.noRetry();
+        });
+
+        FeedResponse<Document> data1 = changeFeedDataPage("d1", new Document());
+        FeedResponse<Document> data2 = changeFeedDataPage("d2", new Document());
+        FeedResponse<Document> data3 = changeFeedDataPage("d3", new Document());
+
+        FeedResponse<Document>[] script = new FeedResponse[] { data1, data2, data3 };
+        AtomicInteger callIndex = new AtomicInteger();
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc =
+            req -> Mono.just(script[callIndex.getAndIncrement()]);
+
+        ChangeFeedFetcher<Document> fetcher =
+            newFetcherWithExecuteFunc(continuation, /* emptyPagesAllowed */ true, executeFunc);
+
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == data1).verifyComplete();
+        assertThat(fetcher.shouldFetchMore())
+            .describedAs("data pages must NOT terminate iteration even when handleChangeFeedNotModified returns NO_RETRY")
+            .isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == data2).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after data2").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == data3).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after data3").isTrue();
     }
 
     @Test(groups = { "unit" })
