@@ -414,7 +414,7 @@ public final class BlobsDownloadHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsDownloadHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsDownloadHeaders(HttpHeaders rawHeaders) {
@@ -616,7 +616,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     @Generated
@@ -629,7 +629,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -645,7 +645,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCreationTime property: The x-ms-creation-time property.
-     * 
+     *
      * @return the xMsCreationTime value.
      */
     @Generated
@@ -658,7 +658,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCreationTime property: The x-ms-creation-time property.
-     * 
+     *
      * @param xMsCreationTime the xMsCreationTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -674,7 +674,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @return the xMsMeta value.
      */
     @Generated
@@ -684,7 +684,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @param xMsMeta the xMsMeta value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -696,7 +696,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsOrPolicyId property: The x-ms-or-policy-id property.
-     * 
+     *
      * @return the xMsOrPolicyId value.
      */
     @Generated
@@ -706,7 +706,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsOrPolicyId property: The x-ms-or-policy-id property.
-     * 
+     *
      * @param xMsOrPolicyId the xMsOrPolicyId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -718,7 +718,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsOr property: The x-ms-or- property.
-     * 
+     *
      * @return the xMsOr value.
      */
     @Generated
@@ -728,7 +728,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsOr property: The x-ms-or- property.
-     * 
+     *
      * @param xMsOr the xMsOr value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -740,7 +740,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     * 
+     *
      * @return the contentLength value.
      */
     @Generated
@@ -750,7 +750,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     * 
+     *
      * @param contentLength the contentLength value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -762,7 +762,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     * 
+     *
      * @return the contentType value.
      */
     @Generated
@@ -772,7 +772,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -784,7 +784,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentRange property: The Content-Range property.
-     * 
+     *
      * @return the contentRange value.
      */
     @Generated
@@ -794,7 +794,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentRange property: The Content-Range property.
-     * 
+     *
      * @param contentRange the contentRange value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -806,7 +806,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     @Generated
@@ -816,7 +816,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -828,7 +828,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @return the contentMD5 value.
      */
     @Generated
@@ -838,7 +838,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -850,7 +850,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @return the contentEncoding value.
      */
     @Generated
@@ -860,7 +860,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -872,7 +872,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @return the cacheControl value.
      */
     @Generated
@@ -882,7 +882,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @param cacheControl the cacheControl value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -894,7 +894,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @return the contentDisposition value.
      */
     @Generated
@@ -904,7 +904,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -916,7 +916,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @return the contentLanguage value.
      */
     @Generated
@@ -926,7 +926,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -938,7 +938,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
+     *
      * @return the xMsBlobSequenceNumber value.
      */
     @Generated
@@ -948,7 +948,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
+     *
      * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -960,7 +960,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsBlobType property: The x-ms-blob-type property.
-     * 
+     *
      * @return the xMsBlobType value.
      */
     @Generated
@@ -970,7 +970,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsBlobType property: The x-ms-blob-type property.
-     * 
+     *
      * @param xMsBlobType the xMsBlobType value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -982,7 +982,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopyCompletionTime property: The x-ms-copy-completion-time property.
-     * 
+     *
      * @return the xMsCopyCompletionTime value.
      */
     @Generated
@@ -995,7 +995,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopyCompletionTime property: The x-ms-copy-completion-time property.
-     * 
+     *
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1011,7 +1011,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopyStatusDescription property: The x-ms-copy-status-description property.
-     * 
+     *
      * @return the xMsCopyStatusDescription value.
      */
     @Generated
@@ -1021,7 +1021,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopyStatusDescription property: The x-ms-copy-status-description property.
-     * 
+     *
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1033,7 +1033,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopyId property: The x-ms-copy-id property.
-     * 
+     *
      * @return the xMsCopyId value.
      */
     @Generated
@@ -1043,7 +1043,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopyId property: The x-ms-copy-id property.
-     * 
+     *
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1055,7 +1055,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopyProgress property: The x-ms-copy-progress property.
-     * 
+     *
      * @return the xMsCopyProgress value.
      */
     @Generated
@@ -1065,7 +1065,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopyProgress property: The x-ms-copy-progress property.
-     * 
+     *
      * @param xMsCopyProgress the xMsCopyProgress value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1077,7 +1077,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopySource property: The x-ms-copy-source property.
-     * 
+     *
      * @return the xMsCopySource value.
      */
     @Generated
@@ -1087,7 +1087,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopySource property: The x-ms-copy-source property.
-     * 
+     *
      * @param xMsCopySource the xMsCopySource value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1099,7 +1099,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
+     *
      * @return the xMsCopyStatus value.
      */
     @Generated
@@ -1109,7 +1109,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
+     *
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1121,7 +1121,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @return the xMsLeaseDuration value.
      */
     @Generated
@@ -1131,7 +1131,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1143,7 +1143,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @return the xMsLeaseState value.
      */
     @Generated
@@ -1153,7 +1153,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1165,7 +1165,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @return the xMsLeaseStatus value.
      */
     @Generated
@@ -1175,7 +1175,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1187,7 +1187,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     @Generated
@@ -1197,7 +1197,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1209,7 +1209,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     @Generated
@@ -1219,7 +1219,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1231,7 +1231,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     @Generated
@@ -1241,7 +1241,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1253,7 +1253,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @return the xMsVersionId value.
      */
     @Generated
@@ -1263,7 +1263,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1275,7 +1275,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsIsCurrentVersion property: The x-ms-is-current-version property.
-     * 
+     *
      * @return the xMsIsCurrentVersion value.
      */
     @Generated
@@ -1285,7 +1285,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsIsCurrentVersion property: The x-ms-is-current-version property.
-     * 
+     *
      * @param xMsIsCurrentVersion the xMsIsCurrentVersion value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1297,7 +1297,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @return the acceptRanges value.
      */
     @Generated
@@ -1307,7 +1307,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1319,7 +1319,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     @Generated
@@ -1332,7 +1332,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1348,7 +1348,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsBlobCommittedBlockCount property: The x-ms-blob-committed-block-count property.
-     * 
+     *
      * @return the xMsBlobCommittedBlockCount value.
      */
     @Generated
@@ -1358,7 +1358,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsBlobCommittedBlockCount property: The x-ms-blob-committed-block-count property.
-     * 
+     *
      * @param xMsBlobCommittedBlockCount the xMsBlobCommittedBlockCount value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1370,7 +1370,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     * 
+     *
      * @return the xMsServerEncrypted value.
      */
     @Generated
@@ -1380,7 +1380,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     * 
+     *
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1392,7 +1392,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
+     *
      * @return the xMsEncryptionKeySha256 value.
      */
     @Generated
@@ -1402,7 +1402,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
+     *
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1414,7 +1414,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     * 
+     *
      * @return the xMsEncryptionScope value.
      */
     @Generated
@@ -1424,7 +1424,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     * 
+     *
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1436,7 +1436,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsBlobContentMd5 property: The x-ms-blob-content-md5 property.
-     * 
+     *
      * @return the xMsBlobContentMd5 value.
      */
     @Generated
@@ -1446,7 +1446,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsBlobContentMd5 property: The x-ms-blob-content-md5 property.
-     * 
+     *
      * @param xMsBlobContentMd5 the xMsBlobContentMd5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1458,7 +1458,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsTagCount property: The x-ms-tag-count property.
-     * 
+     *
      * @return the xMsTagCount value.
      */
     @Generated
@@ -1468,7 +1468,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsTagCount property: The x-ms-tag-count property.
-     * 
+     *
      * @param xMsTagCount the xMsTagCount value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1480,7 +1480,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsBlobSealed property: The x-ms-blob-sealed property.
-     * 
+     *
      * @return the xMsBlobSealed value.
      */
     @Generated
@@ -1490,7 +1490,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsBlobSealed property: The x-ms-blob-sealed property.
-     * 
+     *
      * @param xMsBlobSealed the xMsBlobSealed value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1502,7 +1502,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsLastAccessTime property: The x-ms-last-access-time property.
-     * 
+     *
      * @return the xMsLastAccessTime value.
      */
     @Generated
@@ -1515,7 +1515,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsLastAccessTime property: The x-ms-last-access-time property.
-     * 
+     *
      * @param xMsLastAccessTime the xMsLastAccessTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1531,7 +1531,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
-     * 
+     *
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
     @Generated
@@ -1544,7 +1544,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
-     * 
+     *
      * @param xMsImmutabilityPolicyUntilDate the xMsImmutabilityPolicyUntilDate value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1560,7 +1560,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
-     * 
+     *
      * @return the xMsImmutabilityPolicyMode value.
      */
     @Generated
@@ -1570,7 +1570,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
-     * 
+     *
      * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1582,7 +1582,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
+     *
      * @return the xMsLegalHold value.
      */
     @Generated
@@ -1592,7 +1592,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
+     *
      * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1604,7 +1604,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
+     *
      * @return the xMsStructuredBody value.
      */
     @Generated
@@ -1614,7 +1614,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
+     *
      * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1626,7 +1626,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsStructuredContentLength property: The x-ms-structured-content-length property.
-     * 
+     *
      * @return the xMsStructuredContentLength value.
      */
     @Generated
@@ -1636,7 +1636,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsStructuredContentLength property: The x-ms-structured-content-length property.
-     * 
+     *
      * @param xMsStructuredContentLength the xMsStructuredContentLength value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1648,7 +1648,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @return the xMsAccessTier value.
      */
     @Generated
@@ -1658,7 +1658,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @param xMsAccessTier the xMsAccessTier value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1670,7 +1670,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
-     * 
+     *
      * @return the xMsAccessTierInferred value.
      */
     @Generated
@@ -1680,7 +1680,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
-     * 
+     *
      * @param xMsAccessTierInferred the xMsAccessTierInferred value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1692,7 +1692,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @return the xMsAccessTierChangeTime value.
      */
     @Generated
@@ -1705,7 +1705,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @param xMsAccessTierChangeTime the xMsAccessTierChangeTime value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1721,7 +1721,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
-     * 
+     *
      * @return the xMsSmartAccessTier value.
      */
     @Generated
@@ -1731,7 +1731,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
-     * 
+     *
      * @param xMsSmartAccessTier the xMsSmartAccessTier value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1743,7 +1743,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsDownloadHint property: The x-ms-download-hint property.
-     * 
+     *
      * @return the xMsDownloadHint value.
      */
     @Generated
@@ -1753,7 +1753,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsDownloadHint property: The x-ms-download-hint property.
-     * 
+     *
      * @param xMsDownloadHint the xMsDownloadHint value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
@@ -1765,7 +1765,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Get the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
+     *
      * @return the xMsContentCrc64 value.
      */
     @Generated
@@ -1775,7 +1775,7 @@ public final class BlobsDownloadHeaders {
 
     /**
      * Set the xMsContentCrc64 property: The x-ms-content-crc64 property.
-     * 
+     *
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
