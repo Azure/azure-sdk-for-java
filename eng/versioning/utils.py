@@ -27,7 +27,10 @@ external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 
 # External dependency versions do not have to match semver format and the semver regular expressions
 # will partially match and produce some hilarious results.
-external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
+# Match version content inside <version> or custom property tags ending with .version
+# (e.g. <scala-jackson.version>). The lookahead restricts to closing tags that are
+# either </version> or </something.version>, rejecting unrelated tags like </description>.
+external_dependency_version_regex = r'(?<=>)[^<]+(?=</(?:[\w.\-]+\.)?version>)'
 
 # This is the original regular expression for semver. This differs from the
 # previous one in that start of line and end of line anchors are left in place.
