@@ -1,4 +1,14 @@
 # Release History
+## 7.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.3.0 (2026-05-27)
 - This release is compatible with Spring Boot 4.0.0-4.0.6. (Note: 4.0.x (x>6) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0-2025.1.1. (Note: 2025.1.x (x>1) should be supported, but they aren't tested with this release.)
