@@ -162,14 +162,19 @@ public class ReactorNettyClient implements HttpClient {
                 // itself. The connection is lost (server-side close), but the pool replaces it, and
                 // no further PINGs are sent from this CosmosClient.
                 if (Configs.isHttp2PingHealthEnabled()
-                    && !pingDisabledRef.get()
-                    && connection.channel().pipeline().get(Http2MultiplexHandler.class) != null) {
-                    int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                    int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
-                    int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
-                    if (pingIntervalSeconds > 0) {
-                        Http2PingHandler.installIfAbsent(connection.channel(), pingIntervalSeconds,
-                            pingTimeoutSeconds, pingFailureThreshold, pingDisabledRef);
+                    && !pingDisabledRef.get()) {
+                    // Resolve to the parent (TCP) channel -- doOnConnected may fire for
+                    // child stream channels where Http2MultiplexHandler is absent.
+                    Channel ch = connection.channel();
+                    Channel parent = ch.parent() != null ? ch.parent() : ch;
+                    if (parent.pipeline().get(Http2MultiplexHandler.class) != null) {
+                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                        int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
+                        int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
+                        if (pingIntervalSeconds > 0) {
+                            Http2PingHandler.installIfAbsent(parent, pingIntervalSeconds,
+                                pingTimeoutSeconds, pingFailureThreshold, pingDisabledRef);
+                        }
                     }
                 }
             });
@@ -192,7 +197,8 @@ public class ReactorNettyClient implements HttpClient {
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
                     // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
+                    if (channelPipeline.get("reactor.left.httpCodec") != null
+                        && channelPipeline.get("customHeaderCleaner") == null) {
                         channelPipeline.addAfter(
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
