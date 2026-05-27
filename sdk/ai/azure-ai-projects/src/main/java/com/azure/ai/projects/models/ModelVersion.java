@@ -26,12 +26,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     private SystemDataV3 systemData;
 
     /*
-     * URI of the model artifact in blob storage
-     */
-    @Generated
-    private final String blobUri;
-
-    /*
      * The weight type of the model
      */
     @Generated
@@ -102,11 +96,11 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     /**
      * Creates an instance of ModelVersion class.
      *
-     * @param blobUri the blobUri value to set.
+     * @param blobUrl the blobUrl value to set.
      */
     @Generated
-    public ModelVersion(String blobUri) {
-        this.blobUri = blobUri;
+    public ModelVersion(String blobUrl) {
+        this.blobUrl = blobUrl;
     }
 
     /**
@@ -117,16 +111,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     @Generated
     public SystemDataV3 getSystemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the blobUri property: URI of the model artifact in blob storage.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
     }
 
     /**
@@ -322,7 +306,7 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("blobUri", this.blobUri);
+        jsonWriter.writeStringField("blobUri", this.blobUrl);
         jsonWriter.writeStringField("weightType", this.weightType == null ? null : this.weightType.toString());
         jsonWriter.writeStringField("baseModel", this.baseModel);
         jsonWriter.writeJsonField("source", this.source);
@@ -344,7 +328,7 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     @Generated
     public static ModelVersion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String blobUri = null;
+            String blobUrl = null;
             String name = null;
             String version = null;
             SystemDataV3 systemData = null;
@@ -361,7 +345,7 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("blobUri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {
@@ -390,7 +374,7 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
                     reader.skipChildren();
                 }
             }
-            ModelVersion deserializedModelVersion = new ModelVersion(blobUri);
+            ModelVersion deserializedModelVersion = new ModelVersion(blobUrl);
             deserializedModelVersion.name = name;
             deserializedModelVersion.version = version;
             deserializedModelVersion.systemData = systemData;
@@ -405,5 +389,21 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
             deserializedModelVersion.tags = tags;
             return deserializedModelVersion;
         });
+    }
+
+    /*
+     * URI of the model artifact in blob storage
+     */
+    @Generated
+    private final String blobUrl;
+
+    /**
+     * Get the blobUrl property: URI of the model artifact in blob storage.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }

@@ -17,30 +17,14 @@ import java.io.IOException;
 @Immutable
 public final class ModelCredentialRequest implements JsonSerializable<ModelCredentialRequest> {
 
-    /*
-     * Blob URI of the model asset to fetch credentials for.
-     */
-    @Generated
-    private final String blobUri;
-
     /**
      * Creates an instance of ModelCredentialRequest class.
      *
-     * @param blobUri the blobUri value to set.
+     * @param blobUrl the blobUrl value to set.
      */
     @Generated
-    public ModelCredentialRequest(String blobUri) {
-        this.blobUri = blobUri;
-    }
-
-    /**
-     * Get the blobUri property: Blob URI of the model asset to fetch credentials for.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
+    public ModelCredentialRequest(String blobUrl) {
+        this.blobUrl = blobUrl;
     }
 
     /**
@@ -50,7 +34,7 @@ public final class ModelCredentialRequest implements JsonSerializable<ModelCrede
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("blobUri", this.blobUri);
+        jsonWriter.writeStringField("blobUri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,17 +50,33 @@ public final class ModelCredentialRequest implements JsonSerializable<ModelCrede
     @Generated
     public static ModelCredentialRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String blobUri = null;
+            String blobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("blobUri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ModelCredentialRequest(blobUri);
+            return new ModelCredentialRequest(blobUrl);
         });
+    }
+
+    /*
+     * Blob URI of the model asset to fetch credentials for.
+     */
+    @Generated
+    private final String blobUrl;
+
+    /**
+     * Get the blobUrl property: Blob URI of the model asset to fetch credentials for.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }
