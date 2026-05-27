@@ -648,21 +648,17 @@ Skills are a preview feature. The `SkillsClient` automatically sets the `Skills=
 
 #### Create a skill
 
-```java com.azure.ai.projects.SkillsSample.createSkill
+```java com.azure.ai.projects.SkillsSample.createSkillVersion
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-
-SkillDetails skill = skillsClient.createSkill(
-    "product-support-skill",
+SkillInlineContent inlineContent = new SkillInlineContent(
     "Answers product support questions using company policy.",
-    "You help answer product support questions using company policy and product guidance.",
-    metadata
+    "You help answer product support questions using company policy and product guidance."
 );
 
-System.out.println("Created skill: " + skill.getName());
-System.out.println("Skill ID: " + skill.getSkillId());
-System.out.println("Blob present: " + skill.isBlobPresent());
+SkillVersion skillVersion = skillsClient.createSkillVersion("product-support-skill", inlineContent, true);
+
+System.out.println("Created skill version: " + skillVersion.getName());
+System.out.println("Version: " + skillVersion.getVersion());
 
 ```
 
@@ -671,11 +667,11 @@ System.out.println("Blob present: " + skill.isBlobPresent());
 ```java com.azure.ai.projects.SkillsSample.getSkill
 
 String skillName = "product-support-skill";
-SkillDetails skill = skillsClient.getSkill(skillName);
+Skill skill = skillsClient.getSkill(skillName);
 
 System.out.println("Skill name: " + skill.getName());
-System.out.println("Skill ID: " + skill.getSkillId());
 System.out.println("Description: " + skill.getDescription());
+System.out.println("Default version: " + skill.getDefaultVersion());
 
 ```
 
@@ -685,20 +681,10 @@ System.out.println("Description: " + skill.getDescription());
 
 String skillName = "product-support-skill";
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-metadata.put("status", "updated");
-
-SkillDetails updated = skillsClient.updateSkill(
-    skillName,
-    "Updated description for the sample skill.",
-    null,
-    metadata
-);
+Skill updated = skillsClient.updateSkill(skillName, "2");
 
 System.out.println("Updated skill: " + updated.getName());
-System.out.println("Description: " + updated.getDescription());
-System.out.println("Metadata: " + updated.getMetadata());
+System.out.println("Default version: " + updated.getDefaultVersion());
 
 ```
 
@@ -706,11 +692,10 @@ System.out.println("Metadata: " + updated.getMetadata());
 
 ```java com.azure.ai.projects.SkillsSample.listSkills
 
-PagedIterable<SkillDetails> skills = skillsClient.listSkills();
-for (SkillDetails skill : skills) {
+PagedIterable<Skill> skills = skillsClient.listSkills();
+for (Skill skill : skills) {
     System.out.println("Skill name: " + skill.getName());
-    System.out.println("Skill ID: " + skill.getSkillId());
-    System.out.println("Blob present: " + skill.isBlobPresent());
+    System.out.println("Description: " + skill.getDescription());
     System.out.println("-------------------------------------------------");
 }
 
@@ -729,21 +714,18 @@ System.out.println("Deleted skill: " + skillName);
 
 #### Asynchronous skills operations
 
-```java com.azure.ai.projects.SkillsAsyncSample.createSkill
+```java com.azure.ai.projects.SkillsAsyncSample.createSkillVersion
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-
-return skillsAsyncClient.createSkill(
-    "product-support-skill",
+SkillInlineContent inlineContent = new SkillInlineContent(
     "Answers product support questions using company policy.",
-    "You help answer product support questions using company policy and product guidance.",
-    metadata
-).doOnNext(skill -> {
-    System.out.println("Created skill: " + skill.getName());
-    System.out.println("Skill ID: " + skill.getSkillId());
-    System.out.println("Blob present: " + skill.isBlobPresent());
-});
+    "You help answer product support questions using company policy and product guidance."
+);
+
+return skillsAsyncClient.createSkillVersion("product-support-skill", inlineContent, true)
+    .doOnNext(skillVersion -> {
+        System.out.println("Created skill version: " + skillVersion.getName());
+        System.out.println("Version: " + skillVersion.getVersion());
+    });
 
 ```
 
@@ -754,8 +736,8 @@ String skillName = "product-support-skill";
 return skillsAsyncClient.getSkill(skillName)
     .doOnNext(skill -> {
         System.out.println("Skill name: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
         System.out.println("Description: " + skill.getDescription());
+        System.out.println("Default version: " + skill.getDefaultVersion());
     });
 
 ```
@@ -764,20 +746,11 @@ return skillsAsyncClient.getSkill(skillName)
 
 String skillName = "product-support-skill";
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-metadata.put("status", "updated");
-
-return skillsAsyncClient.updateSkill(
-    skillName,
-    "Updated description for the sample skill.",
-    null,
-    metadata
-).doOnNext(updated -> {
-    System.out.println("Updated skill: " + updated.getName());
-    System.out.println("Description: " + updated.getDescription());
-    System.out.println("Metadata: " + updated.getMetadata());
-});
+return skillsAsyncClient.updateSkill(skillName, "2")
+    .doOnNext(updated -> {
+        System.out.println("Updated skill: " + updated.getName());
+        System.out.println("Default version: " + updated.getDefaultVersion());
+    });
 
 ```
 
@@ -786,8 +759,7 @@ return skillsAsyncClient.updateSkill(
 return skillsAsyncClient.listSkills()
     .doOnNext(skill -> {
         System.out.println("Skill name: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
-        System.out.println("Blob present: " + skill.isBlobPresent());
+        System.out.println("Description: " + skill.getDescription());
         System.out.println("-------------------------------------------------");
     });
 
