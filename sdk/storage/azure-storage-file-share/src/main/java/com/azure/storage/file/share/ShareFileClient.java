@@ -2538,35 +2538,43 @@ public class ShareFileClient {
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        String rangeString = range == null ? null : range.toString();
 
         try {
-            Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
-                = () -> this.azureFileStorageClient.getFiles()
-                    .getRangeListWithResponse(shareName, filePath, snapshot, null, null, rangeString,
-                        finalRequestConditions.getLeaseId(), null, finalContext);
+            BiFunction<String, Integer, PagedResponse<ShareFileRange>> retriever = (marker, pageSize) -> {
+                ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(range,
+                    requestConditions, null, null, marker, pageSize, timeout, finalContext);
 
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                = sendRequest(operation, timeout, ShareStorageException.class);
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    response.getValue()
+                        .getRanges()
+                        .stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new)
+                        .collect(Collectors.toList()),
+                    // The service marker is surfaced as the PagedIterable continuation token.
+                    response.getValue().getNextMarker(), response.getDeserializedHeaders());
+            };
 
-            List<ShareFileRange> shareFileRangeList = response.getValue()
-                .getRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .collect(Collectors.toList());
-
-            Supplier<PagedResponse<ShareFileRange>> finalResponse
-                = () -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    shareFileRangeList, null, response.getDeserializedHeaders());
-
-            return new PagedIterable<>(finalResponse);
+            return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
 
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
+    }
+
+    ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
+        Integer maxResultsPerPage, Duration timeout, Context context) {
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+
+        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+                .getRangeListWithResponse(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
+                    finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context);
+
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -2639,7 +2647,7 @@ public class ShareFileClient {
         String rangeString = options.getRange() == null ? null : options.getRange().toString();
         Callable<Response<ShareFileRangeList>> operation = () -> this.azureFileStorageClient.getFiles()
             .getRangeListNoCustomHeadersWithResponse(shareName, filePath, snapshot, options.getPreviousSnapshot(), null,
-                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), finalContext);
+                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), null, null, finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }

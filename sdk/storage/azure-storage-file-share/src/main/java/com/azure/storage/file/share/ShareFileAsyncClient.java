@@ -2832,7 +2832,7 @@ public class ShareFileAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
+                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2841,23 +2841,26 @@ public class ShareFileAsyncClient {
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
 
-        Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
-            .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, null, null, context), timeout)
-            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue()
-                    .getRanges()
-                    .stream()
-                    .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                    .map(ShareFileRange::new)
-                    .collect(Collectors.toList()),
-                null, response.getHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRange>>> retriever = (marker,
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, null, marker, pageSize, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue()
+                        .getRanges()
+                        .stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new)
+                        .collect(Collectors.toList()),
+                    // The service marker is surfaced as the PagedFlux continuation token.
+                    response.getValue().getNextMarker(), response.getHeaders()));
 
-        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+        return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, Context context) {
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
+        Integer maxResultsPerPage, Context context) {
 
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2866,7 +2869,7 @@ public class ShareFileAsyncClient {
 
         return this.azureFileStorageClient.getFiles()
             .getRangeListWithResponseAsync(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, context)
+                finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
