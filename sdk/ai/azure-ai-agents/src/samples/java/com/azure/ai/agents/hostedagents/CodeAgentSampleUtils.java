@@ -65,7 +65,7 @@ final class CodeAgentSampleUtils {
         if (version.getDefinition() instanceof HostedAgentDefinition) {
             HostedAgentDefinition definition = (HostedAgentDefinition) version.getDefinition();
             if (definition.getCodeConfiguration() != null) {
-                System.out.printf("Code content hash: %s%n", definition.getCodeConfiguration().getContentHash());
+                System.out.printf("Code content hash: %s%n", definition.getCodeConfiguration().getContentSha256());
             }
         }
     }
