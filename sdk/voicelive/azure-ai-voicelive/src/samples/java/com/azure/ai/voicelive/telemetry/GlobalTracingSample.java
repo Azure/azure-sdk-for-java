@@ -157,7 +157,7 @@ public final class GlobalTracingSample {
         if (serverEvent instanceof SessionUpdateResponseDone) {
             SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();
             if (response.getUsage() != null) {
-                System.out.println("  Total tokens: " + response.getUsage().getTotalTokens());
+                System.out.println("  Total tokens: " + response.getUsage().getTotalTokenCount());
             }
         }
         return Mono.empty();

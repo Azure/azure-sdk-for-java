@@ -10,6 +10,14 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
   - `startSession()`
   - `startSession(String, VoiceLiveRequestOptions)`
   - `startSession(AgentSessionConfig, VoiceLiveRequestOptions)`
+- Renamed token-count accessors on token statistic models (JSON wire format unchanged):
+  - `CachedTokenDetails.getTextTokens()` / `getAudioTokens()` / `getImageTokens()` → `getTextTokenCount()` / `getAudioTokenCount()` / `getImageTokenCount()`
+  - `InputTokenDetails.getCachedTokens()` / `getTextTokens()` / `getAudioTokens()` / `getImageTokens()` → `getCachedTokenCount()` / `getTextTokenCount()` / `getAudioTokenCount()` / `getImageTokenCount()`
+  - `OutputTokenDetails.getTextTokens()` / `getAudioTokens()` / `getReasoningTokens()` → `getTextTokenCount()` / `getAudioTokenCount()` / `getReasoningTokenCount()`
+  - `ResponseTokenStatistics.getTotalTokens()` / `getInputTokens()` / `getOutputTokens()` → `getTotalTokenCount()` / `getInputTokenCount()` / `getOutputTokenCount()`
+- `RequestImageContentPart` URL accessor renamed and JSON field changed:
+  - `getUrl()` / `setUrl(String)` → `getImageUrl()` / `setImageUrl(String)`
+  - JSON property `url` → `image_url`
 - Renamed base event types for client↔server symmetry:
   - `ClientEvent` (base for outbound events) → `SessionClientEvent`
   - `SessionUpdate` (base for inbound events) → `SessionServerEvent`
@@ -45,7 +53,7 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
   - New `SessionIncludeOption` expandable enum for opting into additional response payloads (e.g. logprobs, phrases, file-search results)
   - `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse` now expose `include` (`List<SessionIncludeOption>`) and `metadata` (`Map<String,String>`, up to 16 entries)
 - **Personal voice models**: added `PersonalVoiceModels.DRAGON_HDOMNI_LATEST_NEURAL` and `MAI_VOICE_1`
-- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokens()` exposes reasoning token counts
+- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokenCount()` exposes reasoning token counts
 - **Interim response on response.create**: `ResponseCreateParams.setInterimResponse(BinaryData)` lets callers attach interim response config to a single response request
 - Restored no-arg `VoiceLiveAsyncClient.startSession()` overload (uses the deployment's default model).
 - Significantly improved Javadoc for `ServerVadTurnDetection`, `AzureCustomVoice`, `AzurePersonalVoice`, `AzureStandardVoice`, `AzureSemanticVadTurnDetection*`, and other model types
