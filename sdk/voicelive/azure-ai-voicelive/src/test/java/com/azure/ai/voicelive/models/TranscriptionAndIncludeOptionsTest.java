@@ -286,9 +286,9 @@ class TranscriptionAndIncludeOptionsTest {
 
         OutputTokenDetails details = BinaryData.fromString(json).toObject(OutputTokenDetails.class);
 
-        assertEquals(10, details.getTextTokens());
-        assertEquals(20, details.getAudioTokens());
-        assertEquals(Integer.valueOf(7), details.getReasoningTokens());
+        assertEquals(10, details.getTextTokenCount());
+        assertEquals(20, details.getAudioTokenCount());
+        assertEquals(Integer.valueOf(7), details.getReasoningTokenCount());
     }
 
     @Test
@@ -297,7 +297,7 @@ class TranscriptionAndIncludeOptionsTest {
 
         OutputTokenDetails details = BinaryData.fromString(json).toObject(OutputTokenDetails.class);
 
-        assertNull(details.getReasoningTokens());
+        assertNull(details.getReasoningTokenCount());
     }
 
     // -------- ResponseAudioTranscriptAnnotationAdded --------
