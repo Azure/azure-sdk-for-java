@@ -45,9 +45,6 @@ import java.util.stream.Stream;
  */
 public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
-    // API version for the older preview used by session update test
-    private static final String API_VERSION_2025_05_01_PREVIEW = "2025-05-01-preview";
-
     // ===== test_realtime_service_tool_call =====
     // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-04-10]
     // Uses _get_speech_recognition_setting(model), audio=4-1.wav, tool=assess_pronunciation
@@ -396,15 +393,14 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     }
 
     // ===== test_realtime_service_live_session_update =====
-    // Python: model=[gpt-realtime], api_versions=[2025-05-01-preview, 2026-04-10]
+    // Python: model=[gpt-realtime], api_versions=[2025-10-01, 2026-04-10]
     // Two-phase test:
     //   Phase 1: Session without tools -> send audio -> expect no function call in response
     //   Phase 2: New session with tools -> send audio -> expect function call
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
 
     static Stream<Arguments> liveSessionUpdateParams() {
-        return crossProduct(new String[] { MODEL_GPT_REALTIME },
-            new String[] { API_VERSION_2025_05_01_PREVIEW, API_VERSIONS[1] });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME }, API_VERSIONS);
     }
 
     @ParameterizedTest
