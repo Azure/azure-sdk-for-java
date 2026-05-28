@@ -5,15 +5,15 @@
 
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-### Features Added
+#### Features Added
 
-### Breaking Changes
+#### Breaking Changes
 
-### Bugs Fixed
+#### Bugs Fixed
 
 - Fixed Redis Lettuce passwordless autoconfiguration so a user-defined `LettuceClientConfigurationBuilderCustomizer` no longer suppresses the Azure customizer bean that configures Azure Redis credentials and RESP2 support.
 
-### Other Changes
+#### Other Changes
 
 ## 7.3.0 (2026-05-27)
 - This release is compatible with Spring Boot 4.0.0-4.0.6. (Note: 4.0.x (x>6) should be supported, but they aren't tested with this release.)
