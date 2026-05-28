@@ -39,14 +39,13 @@ import java.util.stream.Stream;
 public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
 
     // ===== test_realtime_service_with_turn_detection_long_tts_vad_duration =====
-    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-04-10]
     // turn_detection: {"type": "azure_semantic_vad", "speech_duration_assistant_speaking_ms": 800}
     // Note: speechDurationAssistantSpeakingMs not available in Java SDK;
     // using speechDurationMs(800) as the closest available parameter.
 
     static Stream<Arguments> longTtsVadDurationParams() {
-        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -131,7 +130,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     }
 
     // ===== test_realtime_service_with_turn_detection_multilingual =====
-    // Python: models × semanticVadParams, api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models × semanticVadParams, api_versions=[2025-10-01, 2026-04-10]
     // Uses AzureSemanticVadMultilingual(**semantic_vad_params)
 
     static Stream<Arguments> multilingualParams() {
@@ -232,7 +231,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_with_eou =====
     // Python: model=gpt-4o, turn_detection_cls × end_of_detection combinations
     // 6 combos: ServerVad/AzureSemanticVad/AzureSemanticVadMultilingual × AzureSemanticDetection/AzureSemanticDetectionEn
-    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // api_versions=[2025-10-01, 2026-04-10]
 
     static Stream<Arguments> eouParams() {
         return withApiVersions(Stream.of(

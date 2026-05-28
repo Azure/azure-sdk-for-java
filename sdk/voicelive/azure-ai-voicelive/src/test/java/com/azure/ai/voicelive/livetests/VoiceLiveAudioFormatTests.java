@@ -46,7 +46,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     static Stream<Arguments> modelAndSamplingRateProvider() {
         return withApiVersions(Stream.of(Arguments.of("gpt-realtime", 16000), Arguments.of("gpt-realtime", 44100),
             Arguments.of("gpt-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
-            Arguments.of("gpt-4.1", 8000)), API_VERSION_GA, API_VERSION_PREVIEW);
+            Arguments.of("gpt-4.1", 8000)));
     }
 
     static Stream<Arguments> modelAndInputAudioFormatProvider() {
@@ -199,7 +199,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model))
                 .setInstructions(
                     "You are a helpful assistant. Please respond briefly to the user's question about lakes.")
-                .setTurnDetection(API_VERSION_PREVIEW.equals(apiVersion)
+                .setTurnDetection(API_VERSIONS[1].equals(apiVersion)
                     ? new ServerVadTurnDetection().setSilenceDurationMs(200)
                     : new ServerVadTurnDetection());
 

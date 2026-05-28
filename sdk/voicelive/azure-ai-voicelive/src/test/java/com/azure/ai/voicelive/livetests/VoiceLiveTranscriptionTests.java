@@ -35,8 +35,7 @@ import java.util.stream.Stream;
 public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> whisperTranscriptionParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -109,8 +108,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> gpt4oTranscribeParams() {
-        return crossProduct(new String[] { "gpt-4o-transcribe", "gpt-4o-mini-transcribe" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-4o-transcribe", "gpt-4o-mini-transcribe" }, API_VERSIONS);
     }
 
     @ParameterizedTest

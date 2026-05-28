@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 public class VoiceLiveSessionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> apiVersionParams() {
-        return Stream.of(Arguments.of(API_VERSION_GA), Arguments.of(API_VERSION_PREVIEW));
+        return Arrays.stream(API_VERSIONS).map(Arguments::of);
     }
 
     @ParameterizedTest
