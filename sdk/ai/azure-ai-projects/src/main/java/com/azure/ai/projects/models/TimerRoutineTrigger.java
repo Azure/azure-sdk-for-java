@@ -5,10 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A one-shot timer routine trigger.
@@ -23,27 +26,10 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
     private RoutineTriggerType type = RoutineTriggerType.TIMER;
 
     /*
-     * A future timer expression. Supported values include an ISO-8601 timestamp with an explicit offset, a local
-     * timestamp paired with time_zone, or a positive duration from now.
+     * The UTC date and time at which the timer fires.
      */
     @Generated
-    private final String at;
-
-    /*
-     * An optional IANA or Windows time zone identifier when the timer uses a local timestamp.
-     */
-    @Generated
-    private String timeZone;
-
-    /**
-     * Creates an instance of TimerRoutineTrigger class.
-     *
-     * @param at the at value to set.
-     */
-    @Generated
-    public TimerRoutineTrigger(String at) {
-        this.at = at;
-    }
+    private OffsetDateTime at;
 
     /**
      * Get the type property: The trigger type.
@@ -57,38 +43,13 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
     }
 
     /**
-     * Get the at property: A future timer expression. Supported values include an ISO-8601 timestamp with an explicit
-     * offset, a local timestamp paired with time_zone, or a positive duration from now.
+     * Get the at property: The UTC date and time at which the timer fires.
      *
      * @return the at value.
      */
     @Generated
-    public String getAt() {
+    public OffsetDateTime getAt() {
         return this.at;
-    }
-
-    /**
-     * Get the timeZone property: An optional IANA or Windows time zone identifier when the timer uses a local
-     * timestamp.
-     *
-     * @return the timeZone value.
-     */
-    @Generated
-    public String getTimeZone() {
-        return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: An optional IANA or Windows time zone identifier when the timer uses a local
-     * timestamp.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the TimerRoutineTrigger object itself.
-     */
-    @Generated
-    public TimerRoutineTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
     }
 
     /**
@@ -98,9 +59,9 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("at", this.at);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("time_zone", this.timeZone);
+        jsonWriter.writeStringField("at",
+            this.at == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.at));
         return jsonWriter.writeEndObject();
     }
 
@@ -110,32 +71,44 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
      * @param jsonReader The JsonReader being read.
      * @return An instance of TimerRoutineTrigger if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TimerRoutineTrigger.
      */
     @Generated
     public static TimerRoutineTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String at = null;
-            RoutineTriggerType type = RoutineTriggerType.TIMER;
-            String timeZone = null;
+            TimerRoutineTrigger deserializedTimerRoutineTrigger = new TimerRoutineTrigger();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("at".equals(fieldName)) {
-                    at = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = RoutineTriggerType.fromString(reader.getString());
-                } else if ("time_zone".equals(fieldName)) {
-                    timeZone = reader.getString();
+                if ("type".equals(fieldName)) {
+                    deserializedTimerRoutineTrigger.type = RoutineTriggerType.fromString(reader.getString());
+                } else if ("at".equals(fieldName)) {
+                    deserializedTimerRoutineTrigger.at = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            TimerRoutineTrigger deserializedTimerRoutineTrigger = new TimerRoutineTrigger(at);
-            deserializedTimerRoutineTrigger.type = type;
-            deserializedTimerRoutineTrigger.timeZone = timeZone;
             return deserializedTimerRoutineTrigger;
         });
+    }
+
+    /**
+     * Creates an instance of TimerRoutineTrigger class.
+     */
+    @Generated
+    public TimerRoutineTrigger() {
+    }
+
+    /**
+     * Set the at property: The UTC date and time at which the timer fires.
+     *
+     * @param at the at value to set.
+     * @return the TimerRoutineTrigger object itself.
+     */
+    @Generated
+    public TimerRoutineTrigger setAt(OffsetDateTime at) {
+        this.at = at;
+        return this;
     }
 }

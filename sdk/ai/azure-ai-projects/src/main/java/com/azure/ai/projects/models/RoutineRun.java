@@ -21,16 +21,16 @@ import java.time.ZoneOffset;
 public final class RoutineRun implements JsonSerializable<RoutineRun> {
 
     /*
-     * The MLflow run identifier for the routine attempt.
+     * The unique run identifier for the routine attempt.
      */
     @Generated
-    private final String id;
+    private String id;
 
     /*
-     * The underlying MLflow run status.
+     * The run status.
      */
     @Generated
-    private final String status;
+    private String status;
 
     /*
      * The AgentExtensions lifecycle phase for the routine attempt.
@@ -42,7 +42,7 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
      * The trigger type that produced the routine attempt.
      */
     @Generated
-    private final RoutineTriggerType triggerType;
+    private RoutineTriggerType triggerType;
 
     /*
      * The source path that created the routine attempt.
@@ -66,7 +66,7 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
      * The time when the underlying run started.
      */
     @Generated
-    private final long startedAt;
+    private Long startedAt;
 
     /*
      * The time when the underlying run reached a terminal state.
@@ -110,34 +110,8 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     @Generated
     private String errorMessage;
 
-    /*
-     * Diagnostic data captured for the routine attempt.
-     */
-    @Generated
-    private RoutineRunDiagnostics diagnostics;
-
     /**
-     * Creates an instance of RoutineRun class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param triggerType the triggerType value to set.
-     * @param startedAt the startedAt value to set.
-     */
-    @Generated
-    private RoutineRun(String id, String status, RoutineTriggerType triggerType, OffsetDateTime startedAt) {
-        this.id = id;
-        this.status = status;
-        this.triggerType = triggerType;
-        if (startedAt == null) {
-            this.startedAt = 0L;
-        } else {
-            this.startedAt = startedAt.toEpochSecond();
-        }
-    }
-
-    /**
-     * Get the id property: The MLflow run identifier for the routine attempt.
+     * Get the id property: The unique run identifier for the routine attempt.
      *
      * @return the id value.
      */
@@ -147,7 +121,7 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     }
 
     /**
-     * Get the status property: The underlying MLflow run status.
+     * Get the status property: The run status.
      *
      * @return the status value.
      */
@@ -216,6 +190,9 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
      */
     @Generated
     public OffsetDateTime getStartedAt() {
+        if (this.startedAt == null) {
+            return null;
+        }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startedAt), ZoneOffset.UTC);
     }
 
@@ -293,39 +270,34 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     }
 
     /**
-     * Get the diagnostics property: Diagnostic data captured for the routine attempt.
-     *
-     * @return the diagnostics value.
-     */
-    @Generated
-    public RoutineRunDiagnostics getDiagnostics() {
-        return this.diagnostics;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("status", this.status);
-        jsonWriter.writeStringField("trigger_type", this.triggerType == null ? null : this.triggerType.toString());
-        jsonWriter.writeLongField("started_at", this.startedAt);
         jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
+        jsonWriter.writeStringField("trigger_type", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeStringField("trigger_name", this.triggerName);
         jsonWriter.writeStringField("attempt_source",
             this.attemptSource == null ? null : this.attemptSource.toString());
         jsonWriter.writeStringField("action_type", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeStringField("agent_id", this.agentId);
+        jsonWriter.writeStringField("agent_endpoint_id", this.agentEndpointId);
+        jsonWriter.writeStringField("conversation_id", this.conversationId);
+        jsonWriter.writeStringField("session_id", this.sessionId);
         jsonWriter.writeNumberField("triggered_at", this.triggeredAt);
+        jsonWriter.writeNumberField("scheduled_fire_at", this.scheduledFireAt);
+        jsonWriter.writeNumberField("started_at", this.startedAt);
         jsonWriter.writeNumberField("ended_at", this.endedAt);
         jsonWriter.writeStringField("dispatch_id", this.dispatchId);
         jsonWriter.writeStringField("action_correlation_id", this.actionCorrelationId);
         jsonWriter.writeStringField("response_id", this.responseId);
         jsonWriter.writeStringField("task_id", this.taskId);
+        jsonWriter.writeNumberField("error_status_code", this.errorStatusCode);
         jsonWriter.writeStringField("error_type", this.errorType);
         jsonWriter.writeStringField("error_message", this.errorMessage);
-        jsonWriter.writeJsonField("diagnostics", this.diagnostics);
         return jsonWriter.writeEndObject();
     }
 
@@ -341,75 +313,181 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     @Generated
     public static RoutineRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String id = null;
-            String status = null;
-            RoutineTriggerType triggerType = null;
-            OffsetDateTime startedAt = null;
-            RoutineRunPhase phase = null;
-            RoutineAttemptSource attemptSource = null;
-            RoutineActionType actionType = null;
-            Long triggeredAt = null;
-            Long endedAt = null;
-            String dispatchId = null;
-            String actionCorrelationId = null;
-            String responseId = null;
-            String taskId = null;
-            String errorType = null;
-            String errorMessage = null;
-            RoutineRunDiagnostics diagnostics = null;
+            RoutineRun deserializedRoutineRun = new RoutineRun();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    id = reader.getString();
+                    deserializedRoutineRun.id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = reader.getString();
-                } else if ("trigger_type".equals(fieldName)) {
-                    triggerType = RoutineTriggerType.fromString(reader.getString());
-                } else if ("started_at".equals(fieldName)) {
-                    startedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                    deserializedRoutineRun.status = reader.getString();
                 } else if ("phase".equals(fieldName)) {
-                    phase = RoutineRunPhase.fromString(reader.getString());
+                    deserializedRoutineRun.phase = RoutineRunPhase.fromString(reader.getString());
+                } else if ("trigger_type".equals(fieldName)) {
+                    deserializedRoutineRun.triggerType = RoutineTriggerType.fromString(reader.getString());
+                } else if ("trigger_name".equals(fieldName)) {
+                    deserializedRoutineRun.triggerName = reader.getString();
                 } else if ("attempt_source".equals(fieldName)) {
-                    attemptSource = RoutineAttemptSource.fromString(reader.getString());
+                    deserializedRoutineRun.attemptSource = RoutineAttemptSource.fromString(reader.getString());
                 } else if ("action_type".equals(fieldName)) {
-                    actionType = RoutineActionType.fromString(reader.getString());
+                    deserializedRoutineRun.actionType = RoutineActionType.fromString(reader.getString());
+                } else if ("agent_id".equals(fieldName)) {
+                    deserializedRoutineRun.agentId = reader.getString();
+                } else if ("agent_endpoint_id".equals(fieldName)) {
+                    deserializedRoutineRun.agentEndpointId = reader.getString();
+                } else if ("conversation_id".equals(fieldName)) {
+                    deserializedRoutineRun.conversationId = reader.getString();
+                } else if ("session_id".equals(fieldName)) {
+                    deserializedRoutineRun.sessionId = reader.getString();
                 } else if ("triggered_at".equals(fieldName)) {
-                    triggeredAt = reader.getNullable(JsonReader::getLong);
+                    deserializedRoutineRun.triggeredAt = reader.getNullable(JsonReader::getLong);
+                } else if ("scheduled_fire_at".equals(fieldName)) {
+                    deserializedRoutineRun.scheduledFireAt = reader.getNullable(JsonReader::getLong);
+                } else if ("started_at".equals(fieldName)) {
+                    deserializedRoutineRun.startedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("ended_at".equals(fieldName)) {
-                    endedAt = reader.getNullable(JsonReader::getLong);
+                    deserializedRoutineRun.endedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("dispatch_id".equals(fieldName)) {
-                    dispatchId = reader.getString();
+                    deserializedRoutineRun.dispatchId = reader.getString();
                 } else if ("action_correlation_id".equals(fieldName)) {
-                    actionCorrelationId = reader.getString();
+                    deserializedRoutineRun.actionCorrelationId = reader.getString();
                 } else if ("response_id".equals(fieldName)) {
-                    responseId = reader.getString();
+                    deserializedRoutineRun.responseId = reader.getString();
                 } else if ("task_id".equals(fieldName)) {
-                    taskId = reader.getString();
+                    deserializedRoutineRun.taskId = reader.getString();
+                } else if ("error_status_code".equals(fieldName)) {
+                    deserializedRoutineRun.errorStatusCode = reader.getNullable(JsonReader::getInt);
                 } else if ("error_type".equals(fieldName)) {
-                    errorType = reader.getString();
+                    deserializedRoutineRun.errorType = reader.getString();
                 } else if ("error_message".equals(fieldName)) {
-                    errorMessage = reader.getString();
-                } else if ("diagnostics".equals(fieldName)) {
-                    diagnostics = RoutineRunDiagnostics.fromJson(reader);
+                    deserializedRoutineRun.errorMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            RoutineRun deserializedRoutineRun = new RoutineRun(id, status, triggerType, startedAt);
-            deserializedRoutineRun.phase = phase;
-            deserializedRoutineRun.attemptSource = attemptSource;
-            deserializedRoutineRun.actionType = actionType;
-            deserializedRoutineRun.triggeredAt = triggeredAt;
-            deserializedRoutineRun.endedAt = endedAt;
-            deserializedRoutineRun.dispatchId = dispatchId;
-            deserializedRoutineRun.actionCorrelationId = actionCorrelationId;
-            deserializedRoutineRun.responseId = responseId;
-            deserializedRoutineRun.taskId = taskId;
-            deserializedRoutineRun.errorType = errorType;
-            deserializedRoutineRun.errorMessage = errorMessage;
-            deserializedRoutineRun.diagnostics = diagnostics;
             return deserializedRoutineRun;
         });
+    }
+
+    /*
+     * The configured trigger name that produced the routine attempt.
+     */
+    @Generated
+    private String triggerName;
+
+    /*
+     * The project-scoped agent identifier recorded for the routine attempt.
+     */
+    @Generated
+    private String agentId;
+
+    /*
+     * The legacy endpoint-scoped agent identifier recorded for the routine attempt.
+     */
+    @Generated
+    private String agentEndpointId;
+
+    /*
+     * The conversation identifier used by a responses API dispatch.
+     */
+    @Generated
+    private String conversationId;
+
+    /*
+     * The hosted-agent session identifier used by an invocations API dispatch.
+     */
+    @Generated
+    private String sessionId;
+
+    /*
+     * The scheduled fire time recorded for timer and schedule deliveries.
+     */
+    @Generated
+    private Long scheduledFireAt;
+
+    /*
+     * The downstream error status code captured for a failed attempt, when available.
+     */
+    @Generated
+    private Integer errorStatusCode;
+
+    /**
+     * Creates an instance of RoutineRun class.
+     */
+    @Generated
+    private RoutineRun() {
+    }
+
+    /**
+     * Get the triggerName property: The configured trigger name that produced the routine attempt.
+     *
+     * @return the triggerName value.
+     */
+    @Generated
+    public String getTriggerName() {
+        return this.triggerName;
+    }
+
+    /**
+     * Get the agentId property: The project-scoped agent identifier recorded for the routine attempt.
+     *
+     * @return the agentId value.
+     */
+    @Generated
+    public String getAgentId() {
+        return this.agentId;
+    }
+
+    /**
+     * Get the agentEndpointId property: The legacy endpoint-scoped agent identifier recorded for the routine attempt.
+     *
+     * @return the agentEndpointId value.
+     */
+    @Generated
+    public String getAgentEndpointId() {
+        return this.agentEndpointId;
+    }
+
+    /**
+     * Get the conversationId property: The conversation identifier used by a responses API dispatch.
+     *
+     * @return the conversationId value.
+     */
+    @Generated
+    public String getConversationId() {
+        return this.conversationId;
+    }
+
+    /**
+     * Get the sessionId property: The hosted-agent session identifier used by an invocations API dispatch.
+     *
+     * @return the sessionId value.
+     */
+    @Generated
+    public String getSessionId() {
+        return this.sessionId;
+    }
+
+    /**
+     * Get the scheduledFireAt property: The scheduled fire time recorded for timer and schedule deliveries.
+     *
+     * @return the scheduledFireAt value.
+     */
+    @Generated
+    public OffsetDateTime getScheduledFireAt() {
+        if (this.scheduledFireAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.scheduledFireAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the errorStatusCode property: The downstream error status code captured for a failed attempt, when available.
+     *
+     * @return the errorStatusCode value.
+     */
+    @Generated
+    public Integer getErrorStatusCode() {
+        return this.errorStatusCode;
     }
 }

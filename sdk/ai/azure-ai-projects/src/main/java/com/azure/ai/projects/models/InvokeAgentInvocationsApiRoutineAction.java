@@ -5,13 +5,15 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Dispatches a routine through the raw invocations API.
+ * Dispatches a routine through the raw invocations API. Exactly one of agent_name or agent_endpoint_id must be
+ * provided.
  */
 @Fluent
 public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction {
@@ -23,26 +25,16 @@ public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction 
     private RoutineActionType type = RoutineActionType.INVOKE_AGENT_INVOCATIONS_API;
 
     /*
-     * The endpoint-scoped agent identifier for invocations API dispatch.
+     * Legacy endpoint-scoped agent identifier for routine dispatch.
      */
     @Generated
-    private final String agentEndpointId;
+    private String agentEndpointId;
 
     /*
      * An optional existing hosted-agent session identifier to continue during the downstream dispatch.
      */
     @Generated
     private String sessionId;
-
-    /**
-     * Creates an instance of InvokeAgentInvocationsApiRoutineAction class.
-     *
-     * @param agentEndpointId the agentEndpointId value to set.
-     */
-    @Generated
-    public InvokeAgentInvocationsApiRoutineAction(String agentEndpointId) {
-        this.agentEndpointId = agentEndpointId;
-    }
 
     /**
      * Get the type property: The action type.
@@ -56,7 +48,7 @@ public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction 
     }
 
     /**
-     * Get the agentEndpointId property: The endpoint-scoped agent identifier for invocations API dispatch.
+     * Get the agentEndpointId property: Legacy endpoint-scoped agent identifier for routine dispatch.
      *
      * @return the agentEndpointId value.
      */
@@ -96,8 +88,13 @@ public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("agent_endpoint_id", this.agentEndpointId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("agent_name", this.agentName);
+        jsonWriter.writeStringField("agent_endpoint_id", this.agentEndpointId);
+        if (this.input != null) {
+            jsonWriter.writeFieldName("input");
+            this.input.writeTo(jsonWriter);
+        }
         jsonWriter.writeStringField("session_id", this.sessionId);
         return jsonWriter.writeEndObject();
     }
@@ -108,33 +105,111 @@ public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction 
      * @param jsonReader The JsonReader being read.
      * @return An instance of InvokeAgentInvocationsApiRoutineAction if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InvokeAgentInvocationsApiRoutineAction.
      */
     @Generated
     public static InvokeAgentInvocationsApiRoutineAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String agentEndpointId = null;
-            RoutineActionType type = RoutineActionType.INVOKE_AGENT_INVOCATIONS_API;
-            String sessionId = null;
+            InvokeAgentInvocationsApiRoutineAction deserializedInvokeAgentInvocationsApiRoutineAction
+                = new InvokeAgentInvocationsApiRoutineAction();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("agent_endpoint_id".equals(fieldName)) {
-                    agentEndpointId = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = RoutineActionType.fromString(reader.getString());
+                if ("type".equals(fieldName)) {
+                    deserializedInvokeAgentInvocationsApiRoutineAction.type
+                        = RoutineActionType.fromString(reader.getString());
+                } else if ("agent_name".equals(fieldName)) {
+                    deserializedInvokeAgentInvocationsApiRoutineAction.agentName = reader.getString();
+                } else if ("agent_endpoint_id".equals(fieldName)) {
+                    deserializedInvokeAgentInvocationsApiRoutineAction.agentEndpointId = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedInvokeAgentInvocationsApiRoutineAction.input
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("session_id".equals(fieldName)) {
-                    sessionId = reader.getString();
+                    deserializedInvokeAgentInvocationsApiRoutineAction.sessionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            InvokeAgentInvocationsApiRoutineAction deserializedInvokeAgentInvocationsApiRoutineAction
-                = new InvokeAgentInvocationsApiRoutineAction(agentEndpointId);
-            deserializedInvokeAgentInvocationsApiRoutineAction.type = type;
-            deserializedInvokeAgentInvocationsApiRoutineAction.sessionId = sessionId;
             return deserializedInvokeAgentInvocationsApiRoutineAction;
         });
+    }
+
+    /*
+     * The project-scoped agent name for routine dispatch.
+     */
+    @Generated
+    private String agentName;
+
+    /*
+     * Static JSON value sent as the complete downstream input when the routine fires. The value is passed through
+     * as-is; no templating is applied.
+     */
+    @Generated
+    private BinaryData input;
+
+    /**
+     * Creates an instance of InvokeAgentInvocationsApiRoutineAction class.
+     */
+    @Generated
+    public InvokeAgentInvocationsApiRoutineAction() {
+    }
+
+    /**
+     * Get the agentName property: The project-scoped agent name for routine dispatch.
+     *
+     * @return the agentName value.
+     */
+    @Generated
+    public String getAgentName() {
+        return this.agentName;
+    }
+
+    /**
+     * Set the agentName property: The project-scoped agent name for routine dispatch.
+     *
+     * @param agentName the agentName value to set.
+     * @return the InvokeAgentInvocationsApiRoutineAction object itself.
+     */
+    @Generated
+    public InvokeAgentInvocationsApiRoutineAction setAgentName(String agentName) {
+        this.agentName = agentName;
+        return this;
+    }
+
+    /**
+     * Set the agentEndpointId property: Legacy endpoint-scoped agent identifier for routine dispatch.
+     *
+     * @param agentEndpointId the agentEndpointId value to set.
+     * @return the InvokeAgentInvocationsApiRoutineAction object itself.
+     */
+    @Generated
+    public InvokeAgentInvocationsApiRoutineAction setAgentEndpointId(String agentEndpointId) {
+        this.agentEndpointId = agentEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the input property: Static JSON value sent as the complete downstream input when the routine fires. The value
+     * is passed through as-is; no templating is applied.
+     *
+     * @return the input value.
+     */
+    @Generated
+    public BinaryData getInput() {
+        return this.input;
+    }
+
+    /**
+     * Set the input property: Static JSON value sent as the complete downstream input when the routine fires. The value
+     * is passed through as-is; no templating is applied.
+     *
+     * @param input the input value to set.
+     * @return the InvokeAgentInvocationsApiRoutineAction object itself.
+     */
+    @Generated
+    public InvokeAgentInvocationsApiRoutineAction setInput(BinaryData input) {
+        this.input = input;
+        return this;
     }
 }

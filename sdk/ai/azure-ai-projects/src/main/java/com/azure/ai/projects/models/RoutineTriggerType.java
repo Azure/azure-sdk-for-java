@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class RoutineTriggerType extends ExpandableStringEnum<RoutineTriggerType> {
 
     /**
-     * A GitHub issue-opened trigger.
-     */
-    @Generated
-    public static final RoutineTriggerType GITHUB_ISSUE_OPENED = fromString("github_issue_opened");
-
-    /**
      * A recurring cron-based trigger.
      */
     @Generated
@@ -60,4 +54,16 @@ public final class RoutineTriggerType extends ExpandableStringEnum<RoutineTrigge
     public static Collection<RoutineTriggerType> values() {
         return values(RoutineTriggerType.class);
     }
+
+    /**
+     * A custom event trigger.
+     */
+    @Generated
+    public static final RoutineTriggerType CUSTOM = fromString("custom");
+
+    /**
+     * A GitHub issue trigger.
+     */
+    @Generated
+    public static final RoutineTriggerType GITHUB_ISSUE = fromString("github_issue");
 }

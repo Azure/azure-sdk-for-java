@@ -326,7 +326,7 @@ public final class ModelsClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the UpdateModelVersionRequest to create or update.
-     * @param body The UpdateModelVersionRequest to create or update.
+     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -336,9 +336,9 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateModelVersionWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateModelVersionWithResponse(name, version, body, requestOptions);
+    public Response<BinaryData> updateModelVersionWithResponse(String name, String version,
+        BinaryData modelVersionUpdate, RequestOptions requestOptions) {
+        return this.serviceClient.updateModelVersionWithResponse(name, version, modelVersionUpdate, requestOptions);
     }
 
     /**
@@ -527,7 +527,7 @@ public final class ModelsClient {
      *
      * @param name The name of the resource.
      * @param version The specific version id of the UpdateModelVersionRequest to create or update.
-     * @param body The UpdateModelVersionRequest to create or update.
+     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -538,15 +538,17 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelVersion updateModelVersion(String name, String version, UpdateModelVersionRequest body) {
+    public ModelVersion updateModelVersion(String name, String version, UpdateModelVersionRequest modelVersionUpdate) {
         // Generated convenience method for updateModelVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor()
+            .prepareModelForJsonMergePatch(modelVersionUpdate, true);
+        BinaryData modelVersionUpdateInBinaryData = BinaryData.fromObject(modelVersionUpdate);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor().prepareModelForJsonMergePatch(body, false);
-        return updateModelVersionWithResponse(name, version, bodyInBinaryData, requestOptions).getValue()
+        modelVersionUpdateInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor()
+            .prepareModelForJsonMergePatch(modelVersionUpdate, false);
+        return updateModelVersionWithResponse(name, version, modelVersionUpdateInBinaryData, requestOptions).getValue()
             .toObject(ModelVersion.class);
     }
 
