@@ -5,7 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
-import com.azure.ai.agents.models.FabricIQPreviewTool;
+import com.azure.ai.agents.models.FabricIqPreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -35,8 +35,8 @@ abstract class FabricIQSamplesTestBase extends ClientTestBase {
     }
 
     PromptAgentDefinition createAgentDefinition() {
-        FabricIQPreviewTool fabricIqTool
-            = new FabricIQPreviewTool(getRecordedConfig("FABRIC_IQ_PROJECT_CONNECTION_ID")).setRequireApproval("never");
+        FabricIqPreviewTool fabricIqTool
+            = new FabricIqPreviewTool(getRecordedConfig("FABRIC_IQ_PROJECT_CONNECTION_ID")).setRequireApproval("never");
 
         return new PromptAgentDefinition(getRecordedConfig("FOUNDRY_MODEL_NAME"))
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")

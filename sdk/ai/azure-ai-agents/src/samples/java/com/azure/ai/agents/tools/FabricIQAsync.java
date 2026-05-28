@@ -9,7 +9,7 @@ import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.FabricIQPreviewTool;
+import com.azure.ai.agents.models.FabricIqPreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -47,7 +47,7 @@ public class FabricIQAsync {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        FabricIQPreviewTool fabricIqTool = new FabricIQPreviewTool(fabricIqConnectionId)
+        FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabric_iq")
             .setRequireApproval("never")
             .setName("fabric_iq_lookup")

@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for FabricIQPreviewTool serialization, focusing on the requireApproval union type handling.
+ * Tests for FabricIqPreviewTool serialization, focusing on the requireApproval union type handling.
  * requireApproval is a union type: String ("always"/"never") | McpToolRequireApproval.
  */
-public class FabricIQPreviewToolSerializationTests {
+public class FabricIqPreviewToolSerializationTests {
 
     private static final String TEST_CONNECTION_ID = "test-connection-id";
 
@@ -33,7 +33,7 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testSerializationWithoutRequireApproval() throws IOException {
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID);
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID);
 
         String json = serializeToJson(tool);
 
@@ -47,7 +47,7 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testSerializationWithRequireApprovalAlwaysString() throws IOException {
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
 
         String json = serializeToJson(tool);
 
@@ -60,7 +60,7 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testSerializationWithRequireApprovalNeverString() throws IOException {
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("never");
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("never");
 
         String json = serializeToJson(tool);
 
@@ -77,7 +77,7 @@ public class FabricIQPreviewToolSerializationTests {
         McpToolFilter neverFilter = new McpToolFilter().setToolNames(Arrays.asList("safe_tool"));
         McpToolRequireApproval approval = new McpToolRequireApproval().setAlways(alwaysFilter).setNever(neverFilter);
 
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval(approval);
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval(approval);
 
         String json = serializeToJson(tool);
 
@@ -97,7 +97,7 @@ public class FabricIQPreviewToolSerializationTests {
         String json
             = "{\"project_connection_id\":\"test-connection-id\",\"type\":\"fabric_iq_preview\",\"require_approval\":\"always\"}";
 
-        FabricIQPreviewTool tool = deserializeFromJson(json);
+        FabricIqPreviewTool tool = deserializeFromJson(json);
 
         assertNotNull(tool);
         assertEquals("always", tool.getRequireApprovalAsString());
@@ -111,7 +111,7 @@ public class FabricIQPreviewToolSerializationTests {
         String json
             = "{\"project_connection_id\":\"test-connection-id\",\"type\":\"fabric_iq_preview\",\"require_approval\":\"never\"}";
 
-        FabricIQPreviewTool tool = deserializeFromJson(json);
+        FabricIqPreviewTool tool = deserializeFromJson(json);
 
         assertNotNull(tool);
         assertEquals("never", tool.getRequireApprovalAsString());
@@ -125,7 +125,7 @@ public class FabricIQPreviewToolSerializationTests {
         String json
             = "{\"project_connection_id\":\"test-connection-id\",\"type\":\"fabric_iq_preview\",\"require_approval\":{\"always\":{\"tool_names\":[\"dangerous_tool\"]},\"never\":{\"tool_names\":[\"safe_tool\"]}}}";
 
-        FabricIQPreviewTool tool = deserializeFromJson(json);
+        FabricIqPreviewTool tool = deserializeFromJson(json);
 
         assertNotNull(tool);
         McpToolRequireApproval approval = tool.getRequireApprovalAsMcpToolRequireApproval();
@@ -144,7 +144,7 @@ public class FabricIQPreviewToolSerializationTests {
     public void testDeserializationWithoutRequireApproval() throws IOException {
         String json = "{\"project_connection_id\":\"test-connection-id\",\"type\":\"fabric_iq_preview\"}";
 
-        FabricIQPreviewTool tool = deserializeFromJson(json);
+        FabricIqPreviewTool tool = deserializeFromJson(json);
 
         assertNotNull(tool);
         assertNull(tool.getRequireApprovalAsString());
@@ -156,10 +156,10 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testRoundTripWithRequireApprovalAlwaysString() throws IOException {
-        FabricIQPreviewTool original = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
+        FabricIqPreviewTool original = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
 
         String json = serializeToJson(original);
-        FabricIQPreviewTool deserialized = deserializeFromJson(json);
+        FabricIqPreviewTool deserialized = deserializeFromJson(json);
 
         assertNotNull(deserialized);
         assertEquals("always", deserialized.getRequireApprovalAsString());
@@ -170,10 +170,10 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testRoundTripWithRequireApprovalNeverString() throws IOException {
-        FabricIQPreviewTool original = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("never");
+        FabricIqPreviewTool original = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("never");
 
         String json = serializeToJson(original);
-        FabricIQPreviewTool deserialized = deserializeFromJson(json);
+        FabricIqPreviewTool deserialized = deserializeFromJson(json);
 
         assertNotNull(deserialized);
         assertEquals("never", deserialized.getRequireApprovalAsString());
@@ -187,10 +187,10 @@ public class FabricIQPreviewToolSerializationTests {
         McpToolFilter alwaysFilter = new McpToolFilter().setToolNames(Arrays.asList("tool_1"));
         McpToolRequireApproval approval = new McpToolRequireApproval().setAlways(alwaysFilter);
 
-        FabricIQPreviewTool original = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval(approval);
+        FabricIqPreviewTool original = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval(approval);
 
         String json = serializeToJson(original);
-        FabricIQPreviewTool deserialized = deserializeFromJson(json);
+        FabricIqPreviewTool deserialized = deserializeFromJson(json);
 
         assertNotNull(deserialized);
         McpToolRequireApproval deserializedApproval = deserialized.getRequireApprovalAsMcpToolRequireApproval();
@@ -207,7 +207,7 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testRequireApprovalStringNoDoubleQuoting() throws IOException {
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
 
         String json = serializeToJson(tool);
 
@@ -222,10 +222,10 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testRequireApprovalStringRoundTripNoExtraQuotes() throws IOException {
-        FabricIQPreviewTool original = new FabricIQPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
+        FabricIqPreviewTool original = new FabricIqPreviewTool(TEST_CONNECTION_ID).setRequireApproval("always");
 
         String json = serializeToJson(original);
-        FabricIQPreviewTool deserialized = deserializeFromJson(json);
+        FabricIqPreviewTool deserialized = deserializeFromJson(json);
 
         assertEquals("always", deserialized.getRequireApprovalAsString(),
             "Round-tripped requireApproval string must not have extra quotes");
@@ -236,7 +236,7 @@ public class FabricIQPreviewToolSerializationTests {
      */
     @Test
     public void testSerializationWithAllProperties() throws IOException {
-        FabricIQPreviewTool tool = new FabricIQPreviewTool(TEST_CONNECTION_ID).setServerLabel("my-server")
+        FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setServerLabel("my-server")
             .setServerUrl("https://fabriciq.example.com")
             .setRequireApproval("always")
             .setName("my-fabric-tool")
@@ -255,7 +255,7 @@ public class FabricIQPreviewToolSerializationTests {
     }
 
     // Helper method to serialize to JSON string
-    private String serializeToJson(FabricIQPreviewTool tool) throws IOException {
+    private String serializeToJson(FabricIqPreviewTool tool) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             tool.toJson(jsonWriter);
@@ -264,9 +264,9 @@ public class FabricIQPreviewToolSerializationTests {
     }
 
     // Helper method to deserialize from JSON string
-    private FabricIQPreviewTool deserializeFromJson(String json) throws IOException {
+    private FabricIqPreviewTool deserializeFromJson(String json) throws IOException {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            return FabricIQPreviewTool.fromJson(jsonReader);
+            return FabricIqPreviewTool.fromJson(jsonReader);
         }
     }
 }
