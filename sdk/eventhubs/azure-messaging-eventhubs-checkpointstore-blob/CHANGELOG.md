@@ -1,20 +1,13 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed `BlobCheckpointStore.updateCheckpoint` so that it falls back to the deprecated
-  `Checkpoint.getOffset()` (Long) value when `Checkpoint.getOffsetString()` is not populated. This restores writing of
-  the `offset` blob metadata for callers that still build `Checkpoint` instances using the legacy long offset, fixing
-  a regression introduced in 1.21.0 that broke partition switch-over and consumer-group lag monitoring.
-  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+## 1.21.7 (2026-05-28)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.34.0`.
+
 
 ## 1.21.6 (2026-05-05)
 
@@ -22,8 +15,9 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-blob` from `12.33.3` to version `12.33.4`.
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.4`.
 - Upgraded `azure-messaging-eventhubs` from `5.21.3` to version `5.21.4`.
+
 
 ## 1.21.5 (2026-03-30)
 
@@ -40,7 +34,9 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-blob` from `12.33.1` to version `12.33.2`.
+- Upgraded `azure-storage-blob` from `12.33.0` to version `12.33.2`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.3` to version `5.22.0-beta.1`.
+
 
 ## 1.21.3 (2026-01-29)
 
@@ -48,8 +44,9 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-blob` from `12.33.0` to version `12.33.1`.
+- Upgraded `azure-storage-blob` from `12.32.0` to version `12.33.0`.
 - Upgraded `azure-messaging-eventhubs` from `5.21.2` to version `5.21.3`.
+
 
 ## 1.21.2 (2025-10-27)
 
@@ -60,6 +57,7 @@
 - Upgraded `azure-messaging-eventhubs` from `5.21.1` to version `5.21.2`.
 - Upgraded `azure-storage-blob` from `12.31.2` to version `12.32.0`.
 
+
 ## 1.21.1 (2025-09-25)
 
 ### Other Changes
@@ -68,6 +66,7 @@
 
 - Upgraded `azure-messaging-eventhubs` from `5.21.0` to version `5.21.1`.
 - Upgraded `azure-storage-blob` from `12.31.1` to version `12.31.2`.
+
 
 ## 1.21.0 (2025-08-11)
 
@@ -183,6 +182,7 @@
 - Experimental checkpointing metrics are no longer reported by this package. They've been moved to `azure-messaging-eventhubs` package.
   ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
 
+
 ### Other Changes
 
 #### Dependency Updates
@@ -253,6 +253,7 @@
 - Upgraded `azure-messaging-eventhubs` from `5.18.1` to version `5.18.2`.
 - Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
 
+
 ## 1.19.1 (2024-02-16)
 
 ### Other Changes
@@ -320,6 +321,7 @@
 
 - Upgraded `azure-messaging-eventhubs` from `5.15.6` to version `5.15.7`.
 - Upgraded `azure-storage-blob` from `12.22.3` to version `12.23.0`.
+
 
 ## 1.16.7 (2023-06-21)
 
@@ -658,4 +660,5 @@ store checkpoints and balance partition load among all instances of Event Proces
 
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
+
 
