@@ -1040,8 +1040,8 @@ public final class VoiceLiveTracer {
             if (response != null) {
                 ResponseTokenStatistics usage = response.getUsage();
                 if (usage != null) {
-                    span.setAttribute(GEN_AI_USAGE_INPUT_TOKENS, (long) usage.getInputTokens());
-                    span.setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, (long) usage.getOutputTokens());
+                    span.setAttribute(GEN_AI_USAGE_INPUT_TOKENS, usage.getInputTokenCount());
+                    span.setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, usage.getOutputTokenCount());
                 }
             }
         }
