@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0-beta.1 (Unreleased)
+## 12.1.0-beta.1 (2026-05-28)
 
 ### Features Added
 
@@ -24,9 +24,7 @@
 - Renamed `getInputTokens()`/`getOutputTokens()` to `getInputTokensCount()`/`getOutputTokensCount()` on `KnowledgeBaseModelWebSummarizationActivityRecord`.
 - Changed `KnowledgeBaseRetrievalClient` and `KnowledgeBaseRetrievalAsyncClient` `retrieve()` and `retrieveWithResponse()` signatures — client is now scoped to a single knowledge base at construction; `knowledgeBaseName` parameter replaced with `KnowledgeBaseRetrievalOptions`.
 
-### Bugs Fixed
 
-### Other Changes
 
 ## 12.0.0 (2026-04-10)
 
