@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (Unreleased)
+## 2.0.0 (2026-06-06)
 
 ### Features Added
 
@@ -13,9 +13,6 @@
 - Removed `grade` property from `TranslationTarget`.
 - Renamed count properties on `TranslationText` for clarity to `getSourceCharacterCount()`, `getInstructionTokenCount()`, `getSourceTokenCount()`, `getResponseTokenCount()`, and `getTargetTokenCount()`; wire format unchanged.
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.1.9 (2026-05-05)
 
