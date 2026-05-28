@@ -65,7 +65,7 @@ public class JsonSerializable {
 
     private static final ObjectMapper OBJECT_MAPPER= Utils.getSimpleObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
-    transient ObjectNode propertyBag = null;
+    final transient ObjectNode propertyBag;
     private ObjectMapper om;
 
     public JsonSerializable() {
