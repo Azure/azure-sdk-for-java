@@ -40,8 +40,7 @@ public final class FixedRatioVersionSelectionRule extends VersionSelectionRule {
     /**
      * Creates an instance of FixedRatioVersionSelectionRule class.
      */
-    @Generated
-    public FixedRatioVersionSelectionRule() {
+    FixedRatioVersionSelectionRule() {
     }
 
     /**
