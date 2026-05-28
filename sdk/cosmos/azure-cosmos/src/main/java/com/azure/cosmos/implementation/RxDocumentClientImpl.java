@@ -1990,16 +1990,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
+    public void validateNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
         if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
             && readConsistencyStrategyName != null
             && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
 
-            logger.warn(
-                "ReadConsistencyStrategy {} defined in Gateway mode. "
-                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
-                    + "This setting will be ignored.",
-                readConsistencyStrategyName);
+            throw new IllegalArgumentException(
+                "ReadConsistencyStrategy " + readConsistencyStrategyName + " is not supported in Gateway mode. "
+                    + "ReadConsistencyStrategy is only supported when using DIRECT connection mode.");
         }
     }
 
@@ -2031,7 +2029,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
         }
 
@@ -2076,7 +2074,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
@@ -5500,8 +5498,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            public void validateNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
+                RxDocumentClientImpl.this.validateNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             }
 
             @Override

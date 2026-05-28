@@ -2365,4 +2365,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    public enum GatewayVariant {
+        GATEWAY_V1,
+        GATEWAY_V2
+    }
+
 }

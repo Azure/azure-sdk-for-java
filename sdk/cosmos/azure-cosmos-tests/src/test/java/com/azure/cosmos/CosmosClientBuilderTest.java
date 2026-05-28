@@ -37,6 +37,107 @@ import static org.assertj.core.api.Assertions.fail;
 public class CosmosClientBuilderTest {
     String hostName = "https://sample-account.documents.azure.com:443/";
 
+    @DataProvider(name = "nonDefaultReadConsistencyStrategies")
+    public Object[][] nonDefaultReadConsistencyStrategies() {
+        return new Object[][] {
+            { ReadConsistencyStrategy.EVENTUAL },
+            { ReadConsistencyStrategy.SESSION },
+            { ReadConsistencyStrategy.LATEST_COMMITTED },
+            { ReadConsistencyStrategy.GLOBAL_STRONG },
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "nonDefaultReadConsistencyStrategies")
+    public void validateReadConsistencyStrategyBlockedInGatewayMode(ReadConsistencyStrategy strategy) {
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(hostName)
+                .gatewayMode()
+                .readConsistencyStrategy(strategy)
+                .buildAsyncClient();
+            fail("Should have thrown IllegalArgumentException for ReadConsistencyStrategy "
+                + strategy + " in Gateway mode");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("ReadConsistencyStrategy");
+            assertThat(e.getMessage()).contains("is not supported in Gateway mode");
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "nonDefaultReadConsistencyStrategies")
+    public void validateReadConsistencyStrategyBlockedInGatewayModeSyncClient(ReadConsistencyStrategy strategy) {
+        CosmosClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(hostName)
+                .gatewayMode()
+                .readConsistencyStrategy(strategy)
+                .buildClient();
+            fail("Should have thrown IllegalArgumentException for ReadConsistencyStrategy "
+                + strategy + " in Gateway mode");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage()).contains("ReadConsistencyStrategy");
+            assertThat(e.getMessage()).contains("is not supported in Gateway mode");
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void validateReadConsistencyStrategyDefaultAllowedInGatewayMode() {
+        // DEFAULT ReadConsistencyStrategy should be allowed in Gateway mode
+        // The builder validation should not throw IllegalArgumentException
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(hostName)
+                .gatewayMode()
+                .readConsistencyStrategy(ReadConsistencyStrategy.DEFAULT)
+                .buildAsyncClient();
+        } catch (IllegalArgumentException e) {
+            fail("ReadConsistencyStrategy.DEFAULT should be allowed in Gateway mode, but got: " + e.getMessage());
+        } catch (RuntimeException e) {
+            // Expected - the fake hostname causes a connection error during initialization,
+            // which is unrelated to the ReadConsistencyStrategy validation
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void validateReadConsistencyStrategyNullAllowedInGatewayMode() {
+        // null ReadConsistencyStrategy should be allowed in Gateway mode
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(hostName)
+                .gatewayMode()
+                .readConsistencyStrategy(null)
+                .buildAsyncClient();
+        } catch (IllegalArgumentException e) {
+            fail("null ReadConsistencyStrategy should be allowed in Gateway mode, but got: " + e.getMessage());
+        } catch (RuntimeException e) {
+            // Expected - the fake hostname causes a connection error during initialization,
+            // which is unrelated to the ReadConsistencyStrategy validation
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
     @DataProvider(name = "regionScopedSessionContainerConfigs")
     public Object[] regionScopedSessionContainerConfigs() {
         return new Object[] {false, true};
