@@ -45,18 +45,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private final Map<String, BinaryData> mutations;
 
     /*
-     * Average composite score across all tasks.
-     */
-    @Generated
-    private final double avgScore;
-
-    /*
-     * Average token usage across all tasks.
-     */
-    @Generated
-    private final double avgTokens;
-
-    /*
      * Fraction of tasks that met the pass threshold.
      */
     @Generated
@@ -127,26 +115,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the avgScore property: Average composite score across all tasks.
-     *
-     * @return the avgScore value.
-     */
-    @Generated
-    public double getAvgScore() {
-        return this.avgScore;
-    }
-
-    /**
-     * Get the avgTokens property: Average token usage across all tasks.
-     *
-     * @return the avgTokens value.
-     */
-    @Generated
-    public double getAvgTokens() {
-        return this.avgTokens;
-    }
-
-    /**
      * Get the passRate property: Fraction of tasks that met the pass threshold.
      *
      * @return the passRate value.
@@ -212,8 +180,8 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeDoubleField("avg_score", this.avgScore);
-        jsonWriter.writeDoubleField("avg_tokens", this.avgTokens);
+        jsonWriter.writeDoubleField("avg_score", this.averageScore);
+        jsonWriter.writeDoubleField("avg_tokens", this.averageTokens);
         jsonWriter.writeDoubleField("pass_rate", this.passRate);
         jsonWriter.writeArrayField("task_scores", this.taskScores, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("is_pareto_optimal", this.isParetoOptimal);
@@ -239,8 +207,8 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
             String name = null;
             OptimizationAgentDefinition config = null;
             Map<String, BinaryData> mutations = null;
-            double avgScore = 0.0;
-            double avgTokens = 0.0;
+            double averageScore = 0.0;
+            double averageTokens = 0.0;
             double passRate = 0.0;
             List<OptimizationTaskResult> taskScores = null;
             boolean isParetoOptimal = false;
@@ -259,9 +227,9 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                     mutations = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("avg_score".equals(fieldName)) {
-                    avgScore = reader.getDouble();
+                    averageScore = reader.getDouble();
                 } else if ("avg_tokens".equals(fieldName)) {
-                    avgTokens = reader.getDouble();
+                    averageTokens = reader.getDouble();
                 } else if ("pass_rate".equals(fieldName)) {
                     passRate = reader.getDouble();
                 } else if ("task_scores".equals(fieldName)) {
@@ -281,7 +249,7 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 }
             }
             OptimizationCandidate deserializedOptimizationCandidate = new OptimizationCandidate(name, config, mutations,
-                avgScore, avgTokens, passRate, taskScores, isParetoOptimal);
+                averageScore, averageTokens, passRate, taskScores, isParetoOptimal);
             deserializedOptimizationCandidate.candidateId = candidateId;
             deserializedOptimizationCandidate.evalId = evalId;
             deserializedOptimizationCandidate.evalRunId = evalRunId;
@@ -302,21 +270,21 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
      * @param name the name value to set.
      * @param config the config value to set.
      * @param mutations the mutations value to set.
-     * @param avgScore the avgScore value to set.
-     * @param avgTokens the avgTokens value to set.
+     * @param averageScore the averageScore value to set.
+     * @param averageTokens the averageTokens value to set.
      * @param passRate the passRate value to set.
      * @param taskScores the taskScores value to set.
      * @param isParetoOptimal the isParetoOptimal value to set.
      */
     @Generated
     private OptimizationCandidate(String name, OptimizationAgentDefinition config, Map<String, BinaryData> mutations,
-        double avgScore, double avgTokens, double passRate, List<OptimizationTaskResult> taskScores,
+        double averageScore, double averageTokens, double passRate, List<OptimizationTaskResult> taskScores,
         boolean isParetoOptimal) {
         this.name = name;
         this.config = config;
         this.mutations = mutations;
-        this.avgScore = avgScore;
-        this.avgTokens = avgTokens;
+        this.averageScore = averageScore;
+        this.averageTokens = averageTokens;
         this.passRate = passRate;
         this.taskScores = taskScores;
         this.isParetoOptimal = isParetoOptimal;
@@ -330,5 +298,37 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     @Generated
     public PromotionInfo getPromotion() {
         return this.promotion;
+    }
+
+    /*
+     * Average composite score across all tasks.
+     */
+    @Generated
+    private final double averageScore;
+
+    /*
+     * Average token usage across all tasks.
+     */
+    @Generated
+    private final double averageTokens;
+
+    /**
+     * Get the averageScore property: Average composite score across all tasks.
+     *
+     * @return the averageScore value.
+     */
+    @Generated
+    public double getAverageScore() {
+        return this.averageScore;
+    }
+
+    /**
+     * Get the averageTokens property: Average token usage across all tasks.
+     *
+     * @return the averageTokens value.
+     */
+    @Generated
+    public double getAverageTokens() {
+        return this.averageTokens;
     }
 }
