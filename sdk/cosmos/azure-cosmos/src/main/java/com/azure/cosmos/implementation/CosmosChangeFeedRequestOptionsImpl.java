@@ -84,6 +84,47 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.emptyPagesAllowed = toBeCloned.emptyPagesAllowed;
     }
 
+    /**
+     * Inherits all non-token-encoded fields from {@code source} onto this instance, preserving the
+     * caller-supplied configuration when this instance was freshly built from a continuation token.
+     *
+     * <p>The four fields encoded in the continuation token itself ({@code continuationState},
+     * {@code feedRangeInternal}, {@code mode}, {@code startFromInternal}) are intentionally NOT
+     * copied — they describe "where to resume from" and must come from the token, not the caller's
+     * pre-resume options. Every other field IS copied so the caller's configuration (endLSN,
+     * customSerializer, excludeRegions, read-consistency strategy, throughput-control group,
+     * diagnostic thresholds, etc.) survives the {@code byPage(savedContinuation)} round-trip.
+     *
+     * <p>Maintenance contract: when a new field is added to this class, decide whether the
+     * continuation token encodes it. If not (the common case for caller-supplied configuration),
+     * propagate it here.
+     */
+    public void inheritNonContinuationFieldsFrom(CosmosChangeFeedRequestOptionsImpl source) {
+        // continuationState, feedRangeInternal, mode, startFromInternal:
+        // intentionally NOT copied (encoded in the continuation token itself).
+        // collectionRid IS preserved: it lives on the impl but is not embedded in the
+        // continuation token (the token's separate containerRid lives on ChangeFeedStateV1).
+        // The rest-of-SDK clone path (RxDocumentClientImpl.queryDocumentChangeFeedFromPagedFluxInternal
+        // -> accessor.clone -> copy ctor) preserves collectionRid; we match that here.
+        this.maxItemCount = source.maxItemCount;
+        this.maxPrefetchPageCount = source.maxPrefetchPageCount;
+        this.isSplitHandlingDisabled = source.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = source.quotaInfoEnabled;
+        this.throughputControlGroupName = source.throughputControlGroupName;
+        this.customOptions = source.customOptions;
+        this.operationContextAndListenerTuple = source.operationContextAndListenerTuple;
+        this.thresholds = source.thresholds;
+        this.excludeRegions = source.excludeRegions;
+        this.customSerializer = source.customSerializer;
+        this.partitionKeyDefinition = source.partitionKeyDefinition;
+        this.collectionRid = source.collectionRid;
+        this.keywordIdentifiers = source.keywordIdentifiers;
+        this.completeAfterAllCurrentChangesRetrieved = source.completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = source.endLSN;
+        this.readConsistencyStrategy = source.readConsistencyStrategy;
+        this.emptyPagesAllowed = source.emptyPagesAllowed;
+    }
+
     public CosmosChangeFeedRequestOptionsImpl(
         FeedRangeInternal feedRange,
         ChangeFeedStartFromInternal startFromInternal,
@@ -187,10 +228,34 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
+    /**
+     * Returns whether the change-feed pipeline surfaces 304/noChanges (empty) pages to the caller.
+     *
+     * @return {@code true} when each 304/noChanges page is surfaced individually (default is {@code false}).
+     */
     public boolean isEmptyPagesAllowed() {
         return this.emptyPagesAllowed;
     }
 
+    /**
+     * Controls whether {@code ChangeFeedFetcher} surfaces 304/noChanges pages to the caller instead
+     * of swallowing them via Reactor's {@code repeatWhenEmpty}. Defaults to {@code false} (legacy
+     * behavior: empty pages are absorbed and only the next non-empty page is emitted).
+     *
+     * <p>When set to {@code true}, every physical 304 response surfaces as its own
+     * {@code FeedResponse}, so the SDK's per-page end-to-end timeout applies to each page rather
+     * than being exceeded by serial empty-page drains. Caller iterators MUST handle empty
+     * {@code FeedResponse} pages without entering retry loops.
+     *
+     * <p><strong>Intentionally not surfaced on the public {@link com.azure.cosmos.models.CosmosChangeFeedRequestOptions}
+     * API.</strong> The flag changes paging semantics in subtle ways the SDK does not want most callers
+     * to opt into; reachable only from sibling modules (e.g. the Cosmos Spark connector) via the
+     * {@code ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper} bridge accessor.
+     *
+     * @param emptyPagesAllowed {@code true} to surface 304/noChanges pages individually;
+     *                          {@code false} (default) to swallow them via {@code repeatWhenEmpty}.
+     * @return this instance for fluent chaining.
+     */
     public CosmosChangeFeedRequestOptionsImpl setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;

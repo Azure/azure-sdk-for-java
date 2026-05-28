@@ -121,58 +121,65 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private Mono<FeedResponse<T>> nextPageInternal(DocumentClientRetryPolicy retryPolicy) {
         return Mono.fromSupplier(() -> nextPageCore(retryPolicy))
                    .flatMap(Function.identity())
-                   .flatMap((r) -> {
-                       FeedRangeContinuation continuationSnapshot =
-                           this.changeFeedState.getContinuation();
-
-                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
-                           if (continuationSnapshot != null) {
-
-                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
-                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
-                               if (shouldComplete) {
-                                   this.disableShouldFetchMore();
-                                   return Mono.just(r);
-                               }
-
-                               if (ModelBridgeInternal.<T>noChanges(r)) {
-                                   // 304 for the current sub-feedRange; need to drain the next one.
-                                   return surfaceOrSwallowNoChangesPage(r);
-                               }
-                           }
-                       } else {
-                           // Streaming change feed (no endLSN). Terminate either when no continuation
-                           // exists or when handleChangeFeedNotModified signals NO_RETRY (single-partition
-                           // case, multi-partition full-cycle complete, or the >4*(size+1) consecutive-304
-                           // defense in FeedRangeCompositeContinuationImpl).
-                           if (continuationSnapshot != null) {
-                               ShouldRetryResult retryResult = continuationSnapshot.handleChangeFeedNotModified(r);
-                               if (retryResult == ShouldRetryResult.RETRY_NOW) {
-                                   // not all continuations have been drained yet; repeat with the next continuation
-                                   return surfaceOrSwallowNoChangesPage(r);
-                               }
-                               // The noChanges(r) guard is LOAD-BEARING: in production,
-                               // FeedRangeCompositeContinuationImpl.handleChangeFeedNotModified
-                               // returns NO_RETRY for EVERY non-noChanges (i.e. data) response too
-                               // (the early `if (!noChanges(r))` clause resets state and falls
-                               // through to the final `return NO_RETRY`). Without this guard, every
-                               // data page would silently truncate iteration after the first emission.
-                               if (ModelBridgeInternal.<T>noChanges(r) && this.emptyPagesAllowed) {
-                                   // NO_RETRY on a noChanges page: the SDK's termination signal. Without
-                                   // emptyPagesAllowed=true, isFullyDrained() already flipped shouldFetchMore
-                                   // off. With emptyPagesAllowed=true, isFullyDrained() consults only
-                                   // continuation.isDone() (which is permanently false for incremental change
-                                   // feed), so we must explicitly disable further fetches here to preserve
-                                   // the defense-in-depth termination guarantee.
-                                   this.disableShouldFetchMore();
-                                   return Mono.just(r);
-                               }
-                           }
-                       }
-
-                       return Mono.just(r);
-                   })
+                   .flatMap(this::applyNoChangesDecision)
                    .repeatWhenEmpty(o -> o);
+    }
+
+    /**
+     * Decides what to do with a single FeedResponse before it reaches the outer Paginator loop:
+     * surface it, swallow it via {@code repeatWhenEmpty}, or terminate iteration entirely. The
+     * decision depends on the change-feed mode (bounded vs streaming), whether the response is
+     * a noChanges 304, the continuation's {@code handleChangeFeedNotModified} signal, and whether
+     * the caller opted into {@code emptyPagesAllowed=true}.
+     */
+    private Mono<FeedResponse<T>> applyNoChangesDecision(FeedResponse<T> r) {
+        FeedRangeContinuation continuationSnapshot = this.changeFeedState.getContinuation();
+
+        if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
+            if (continuationSnapshot != null) {
+                //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
+                if (shouldComplete) {
+                    this.disableShouldFetchMore();
+                    return Mono.just(r);
+                }
+
+                if (ModelBridgeInternal.<T>noChanges(r)) {
+                    // 304 for the current sub-feedRange; need to drain the next one.
+                    return surfaceOrSwallowNoChangesPage(r);
+                }
+            }
+        } else {
+            // Streaming change feed (no endLSN). Terminate either when no continuation
+            // exists or when handleChangeFeedNotModified signals NO_RETRY (single-partition
+            // case, multi-partition full-cycle complete, or the >4*(size+1) consecutive-304
+            // defense in FeedRangeCompositeContinuationImpl).
+            if (continuationSnapshot != null) {
+                ShouldRetryResult retryResult = continuationSnapshot.handleChangeFeedNotModified(r);
+                if (retryResult == ShouldRetryResult.RETRY_NOW) {
+                    // not all continuations have been drained yet; repeat with the next continuation
+                    return surfaceOrSwallowNoChangesPage(r);
+                }
+                // The noChanges(r) guard is LOAD-BEARING: in production,
+                // FeedRangeCompositeContinuationImpl.handleChangeFeedNotModified
+                // returns NO_RETRY for EVERY non-noChanges (i.e. data) response too
+                // (the early `if (!noChanges(r))` clause resets state and falls
+                // through to the final `return NO_RETRY`). Without this guard, every
+                // data page would silently truncate iteration after the first emission.
+                if (ModelBridgeInternal.<T>noChanges(r) && this.emptyPagesAllowed) {
+                    // NO_RETRY on a noChanges page: the SDK's termination signal. Without
+                    // emptyPagesAllowed=true, isFullyDrained() already flipped shouldFetchMore
+                    // off. With emptyPagesAllowed=true, isFullyDrained() consults only
+                    // continuation.isDone() (which is permanently false for incremental change
+                    // feed), so we must explicitly disable further fetches here to preserve
+                    // the defense-in-depth termination guarantee.
+                    this.disableShouldFetchMore();
+                    return Mono.just(r);
+                }
+            }
+        }
+
+        return Mono.just(r);
     }
 
     /**

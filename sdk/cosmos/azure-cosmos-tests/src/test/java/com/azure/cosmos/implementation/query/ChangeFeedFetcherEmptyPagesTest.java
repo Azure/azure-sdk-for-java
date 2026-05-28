@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,7 +57,7 @@ import static org.mockito.Mockito.when;
 public class ChangeFeedFetcherEmptyPagesTest {
 
     @Test(groups = { "unit" })
-    public void isFullyDrained_noChangesResponseWithUnfinishedContinuation_returnsFalse() throws Exception {
+    public void isFullyDrained_noChangesResponseWithUnfinishedContinuation_returnsFalse() {
         // GIVEN a ChangeFeedFetcher and a noChanges response with continuation not yet done
         FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
         when(continuation.isDone()).thenReturn(false);
@@ -76,7 +75,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
     }
 
     @Test(groups = { "unit" })
-    public void isFullyDrained_noChangesResponseWithFinishedContinuation_returnsTrue() throws Exception {
+    public void isFullyDrained_noChangesResponseWithFinishedContinuation_returnsTrue() {
         FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
         when(continuation.isDone()).thenReturn(true);
         ChangeFeedFetcher<Document> fetcher = newFetcher(continuation, /* emptyPagesAllowed */ true);
@@ -87,7 +86,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
     }
 
     @Test(groups = { "unit" })
-    public void isFullyDrained_realResponseWithFinishedContinuation_returnsTrue() throws Exception {
+    public void isFullyDrained_realResponseWithFinishedContinuation_returnsTrue() {
         FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
         when(continuation.isDone()).thenReturn(true);
         ChangeFeedFetcher<Document> fetcher = newFetcher(continuation, /* emptyPagesAllowed */ false);
@@ -98,7 +97,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
     }
 
     @Test(groups = { "unit" })
-    public void isFullyDrained_noChangesResponseWithEmptyPagesAllowedFalse_returnsTrue() throws Exception {
+    public void isFullyDrained_noChangesResponseWithEmptyPagesAllowedFalse_returnsTrue() {
         // Regression test: with the default emptyPagesAllowed=false the noChanges short-circuit
         // MUST stay in place. Otherwise any non-Spark caller that drains the change feed flux
         // (e.g. queryChangeFeed(...).byPage().toIterable().iterator()) would loop forever,
@@ -124,7 +123,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
         Mockito.verify(continuation, Mockito.never()).isDone();
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, timeOut = 10_000)
     public void nextPage_emptyPagesAllowedTrue_surfacesNoChangesPagesIndividually() {
         // Scenario: 3 consecutive noChanges (304) pages from the same sub-feedRange,
         // followed by a real data page. With emptyPagesAllowed=true, each of the 4
@@ -161,7 +160,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
         assertThat(callIndex.get()).describedAs("executeFunc should have been called once per surfaced page").isEqualTo(4);
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, timeOut = 10_000)
     public void nextPage_emptyPagesAllowedTrueWithNoRetryOnNoChanges_terminatesIteration() {
         // Defense-in-depth: with emptyPagesAllowed=true, isFullyDrained() consults only
         // continuation.isDone() (permanently false in incremental change feed), so the
@@ -210,7 +209,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
             .isEqualTo(4);
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, timeOut = 10_000)
     public void nextPage_emptyPagesAllowedTrueWithDataPages_doesNotTerminate() {
         // Defense-in-depth contract guard: handleChangeFeedNotModified in the real
         // FeedRangeCompositeContinuationImpl returns NO_RETRY for EVERY non-noChanges
@@ -250,7 +249,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
         assertThat(fetcher.shouldFetchMore()).describedAs("after data3").isTrue();
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "unit" }, timeOut = 10_000)
     public void nextPage_emptyPagesAllowedFalse_swallowsNoChangesPagesUntilData() {
         // Same scenario, but with the default emptyPagesAllowed=false. The
         // 3 noChanges responses should be swallowed via repeatWhenEmpty and
@@ -282,6 +281,83 @@ public class ChangeFeedFetcherEmptyPagesTest {
         assertThat(callIndex.get()).describedAs("executeFunc should be called once per physical fetch").isEqualTo(4);
     }
 
+    @Test(groups = { "unit" }, timeOut = 10_000)
+    public void nextPage_endLsnSet_emptyPagesAllowedTrue_surfacesNoChangesUntilHasFetchedAllChanges() {
+        // Spark batch reads set BOTH endLSN AND emptyPagesAllowed=true, routing through
+        // ChangeFeedFetcher.nextPageInternal branch 1 (the
+        // `completeAfterAllCurrentChangesRetrieved || endLSN != null` path). That branch calls
+        // surfaceOrSwallowNoChangesPage(r) on noChanges pages, then terminates via
+        // hasFetchedAllChanges -> disableShouldFetchMore(). This test pins both halves of the
+        // contract: empty pages surface to the caller (per-page timeout enforcement) AND
+        // iteration eventually terminates when hasFetchedAllChanges returns true.
+        FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
+        when(continuation.isDone()).thenReturn(false);
+
+        FeedResponse<Document> noChanges1 = changeFeedNoChanges("t1");
+        FeedResponse<Document> noChanges2 = changeFeedNoChanges("t2");
+        FeedResponse<Document> terminal = changeFeedNoChanges("t3");
+
+        // hasFetchedAllChanges returns true only for the terminal page (reference identity).
+        when(continuation.hasFetchedAllChanges(any(), any())).thenAnswer(invocation -> {
+            FeedResponse<?> rsp = invocation.getArgument(0);
+            return rsp == terminal;
+        });
+
+        FeedResponse<Document>[] script = new FeedResponse[] { noChanges1, noChanges2, terminal };
+        AtomicInteger callIndex = new AtomicInteger();
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc =
+            req -> Mono.just(script[callIndex.getAndIncrement()]);
+
+        ChangeFeedFetcher<Document> fetcher =
+            newFetcherWithExecuteFunc(continuation, /* emptyPagesAllowed */ true, /* endLSN */ 999L, executeFunc);
+
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == noChanges1).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after noChanges1, mid-cycle").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == noChanges2).verifyComplete();
+        assertThat(fetcher.shouldFetchMore()).describedAs("after noChanges2, mid-cycle").isTrue();
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == terminal).verifyComplete();
+        assertThat(fetcher.shouldFetchMore())
+            .describedAs("hasFetchedAllChanges=true on terminal page MUST stop Paginator from polling again")
+            .isFalse();
+        assertThat(callIndex.get())
+            .describedAs("after termination, executeFunc must NOT be called again")
+            .isEqualTo(3);
+    }
+
+    @Test(groups = { "unit" }, timeOut = 10_000)
+    public void nextPage_endLsnSet_emptyPagesAllowedFalse_swallowsNoChangesViaRepeatWhenEmpty() {
+        // Legacy regression guard for branch 1 with the default emptyPagesAllowed=false.
+        // The 2 noChanges responses should be swallowed via repeatWhenEmpty; only the data
+        // page should surface from a SINGLE nextPage() call (matching legacy behavior).
+        FeedRangeContinuation continuation = mock(FeedRangeContinuation.class);
+        when(continuation.isDone()).thenReturn(false);
+
+        FeedResponse<Document> noChanges1 = changeFeedNoChanges("t1");
+        FeedResponse<Document> noChanges2 = changeFeedNoChanges("t2");
+        FeedResponse<Document> data = changeFeedDataPage("t3", new Document());
+
+        // hasFetchedAllChanges returns false for all 3 (iteration shouldn't terminate via this signal).
+        when(continuation.hasFetchedAllChanges(any(), any())).thenReturn(false);
+
+        FeedResponse<Document>[] script = new FeedResponse[] { noChanges1, noChanges2, data };
+        AtomicInteger callIndex = new AtomicInteger();
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc =
+            req -> Mono.just(script[callIndex.getAndIncrement()]);
+
+        ChangeFeedFetcher<Document> fetcher =
+            newFetcherWithExecuteFunc(continuation, /* emptyPagesAllowed */ false, /* endLSN */ 999L, executeFunc);
+
+        // A single nextPage() should drain all 2 noChanges responses via repeatWhenEmpty
+        // and surface the data page.
+        StepVerifier.create(fetcher.nextPage()).expectNextMatches(r -> r == data).verifyComplete();
+        assertThat(callIndex.get()).describedAs("executeFunc should be called once per physical fetch").isEqualTo(3);
+    }
+
+    // Note: the >4*(size+1) consecutive-304 defense in FeedRangeCompositeContinuationImpl is
+    // pinned end-to-end by CosmosContainerChangeFeedTest.changeFeedQuery_emptyPagesAllowed_*
+    // (emulator group). That impl class is package-private, so a unit-level integration test
+    // here would require reflection — the emulator test exercises the real production path.
+
     // ---- helpers ----
 
     private static FeedResponse<Document> changeFeedNoChanges(String continuationToken) {
@@ -299,12 +375,21 @@ public class ChangeFeedFetcherEmptyPagesTest {
     }
 
     private static ChangeFeedFetcher<Document> newFetcher(FeedRangeContinuation continuation, boolean emptyPagesAllowed) {
-        return newFetcherWithExecuteFunc(continuation, emptyPagesAllowed, req -> Mono.empty());
+        return newFetcherWithExecuteFunc(continuation, emptyPagesAllowed, /* endLSN */ null, req -> Mono.empty());
     }
 
     private static ChangeFeedFetcher<Document> newFetcherWithExecuteFunc(
         FeedRangeContinuation continuation,
         boolean emptyPagesAllowed,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc) {
+
+        return newFetcherWithExecuteFunc(continuation, emptyPagesAllowed, /* endLSN */ null, executeFunc);
+    }
+
+    private static ChangeFeedFetcher<Document> newFetcherWithExecuteFunc(
+        FeedRangeContinuation continuation,
+        boolean emptyPagesAllowed,
+        Long endLSN,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc) {
 
         RxDocumentClientImpl client = mock(RxDocumentClientImpl.class);
@@ -338,7 +423,7 @@ public class ChangeFeedFetcherEmptyPagesTest {
             /* isSplitHandlingDisabled */ true,
             /* completeAfterAllCurrentChangesRetrieved */ false,
             emptyPagesAllowed,
-            /* endLSN */ null,
+            endLSN,
             /* operationContext */ null,
             gem,
             gpe,
@@ -358,12 +443,12 @@ public class ChangeFeedFetcherEmptyPagesTest {
         return request;
     }
 
+    // isFullyDrained is `protected` on Fetcher; this test class lives in the same package
+    // (com.azure.cosmos.implementation.query), so we can call it directly without reflection.
     private static boolean invokeIsFullyDrained(
         ChangeFeedFetcher<Document> fetcher,
-        FeedResponse<Document> response) throws Exception {
+        FeedResponse<Document> response) {
 
-        Method m = Fetcher.class.getDeclaredMethod("isFullyDrained", boolean.class, FeedResponse.class);
-        m.setAccessible(true);
-        return (Boolean) m.invoke(fetcher, true, response);
+        return fetcher.isFullyDrained(/* isChangeFeed */ true, response);
     }
 }

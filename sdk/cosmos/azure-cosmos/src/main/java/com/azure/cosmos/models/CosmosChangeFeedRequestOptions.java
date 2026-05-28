@@ -442,19 +442,18 @@ public final class CosmosChangeFeedRequestOptions {
         CosmosChangeFeedRequestOptions effectiveRequestOptions = this;
 
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            // NOTE: this hand-maintained copy list is a known drift hazard.
-            // `createForProcessingFromContinuation` builds a fresh
-            // CosmosChangeFeedRequestOptionsImpl from the parsed continuation
-            // token, so any field NOT explicitly copied below is silently
-            // dropped. If you add a new field to CosmosChangeFeedRequestOptions
-            // and it must survive the paged-flux pull continuation path,
-            // propagate it here (and ideally add a test covering it).
+            // Rebuild from the saved continuation token (this produces the 4 token-encoded
+            // fields: continuationState, feedRangeInternal, mode, startFromInternal) and then
+            // inherit every other field from the caller's original options. Without this
+            // inheritance, a byPage(savedContinuation) round-trip would silently drop
+            // caller-supplied configuration like endLSN, customSerializer, excludeRegions,
+            // readConsistencyStrategy, etc. See
+            // CosmosChangeFeedRequestOptionsImpl.inheritNonContinuationFieldsFrom for the
+            // exhaustive field-by-field rationale.
             effectiveRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
-            effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
-            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
-            effectiveRequestOptions.getImpl().setEmptyPagesAllowed(this.getImpl().isEmptyPagesAllowed());
+            effectiveRequestOptions.getImpl().inheritNonContinuationFieldsFrom(this.actualRequestOptions);
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
@@ -790,6 +789,16 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.disableSplitHandling();
+                }
+
+                @Override
+                public void setAllowEmptyPages(CosmosChangeFeedRequestOptions options, boolean emptyPagesAllowed) {
+                    options.getImpl().setEmptyPagesAllowed(emptyPagesAllowed);
+                }
+
+                @Override
+                public boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions options) {
+                    return options.getImpl().isEmptyPagesAllowed();
                 }
             });
     }

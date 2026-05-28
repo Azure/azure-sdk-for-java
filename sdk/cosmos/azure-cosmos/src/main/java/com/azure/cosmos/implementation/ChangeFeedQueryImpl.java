@@ -121,7 +121,7 @@ class ChangeFeedQueryImpl<T> {
             this.options.getMaxPrefetchPageCount(),
             ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options),
             this.options.isCompleteAfterAllCurrentChangesRetrieved(),
-            changeFeedOptionsAccessor().getImpl(this.options).isEmptyPagesAllowed(),
+            changeFeedOptionsAccessor().getAllowEmptyPages(this.options),
             changeFeedOptionsAccessor()
                 .getEndLSN(this.options),
             changeFeedOptionsAccessor()

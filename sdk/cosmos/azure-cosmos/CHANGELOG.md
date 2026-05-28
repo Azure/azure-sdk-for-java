@@ -10,7 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Added an internal `emptyPagesAllowed` field on `CosmosChangeFeedRequestOptionsImpl` (default `false`; not exposed via the public `CosmosChangeFeedRequestOptions` API). When set, `ChangeFeedFetcher` surfaces empty / 304 pages to the caller instead of swallowing them via `repeatWhenEmpty`, so the per-page end-to-end timeout applies to each individual page rather than being exceeded by serial empty-page drains. Consumed by the Cosmos Spark connector to fix an `OperationCancelledException` on sparse cross-partition change-feed workloads. Default behavior of `CosmosChangeFeedRequestOptions` is unchanged. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+* Added an internal `emptyPagesAllowed` field on `CosmosChangeFeedRequestOptionsImpl` (default `false`; not exposed publicly). When set, `ChangeFeedFetcher` surfaces 304/empty pages to the caller. Consumed by the Cosmos Spark connector to fix an `OperationCancelledException` on sparse cross-partition change-feed workloads. Default behavior is unchanged. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
 
 ### 4.80.0 (2026-05-01)

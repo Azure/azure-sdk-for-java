@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
@@ -31,8 +32,7 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getImpl(src)
-            .setEmptyPagesAllowed(true);
+            .setAllowEmptyPages(src, true);
 
         // AND a continuation token supplied via the paged-flux pull mechanism
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
@@ -45,8 +45,7 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
         // THEN emptyPagesAllowed must be preserved on the freshly-built impl
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getImpl(effective)
-            .isEmptyPagesAllowed())
+            .getAllowEmptyPages(effective))
             .describedAs("emptyPagesAllowed must survive the paged-flux pull continuation rebuild")
             .isTrue();
     }
@@ -65,8 +64,7 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getImpl(effective)
-            .isEmptyPagesAllowed())
+            .getAllowEmptyPages(effective))
             .describedAs("emptyPagesAllowed default (false) must survive the paged-flux pull continuation rebuild")
             .isFalse();
     }
@@ -78,8 +76,7 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getImpl(src)
-            .setEmptyPagesAllowed(true);
+            .setAllowEmptyPages(src, true);
 
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
         pagedFluxOptions.setMaxItemCount(50);
@@ -89,9 +86,88 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getImpl(effective)
-            .isEmptyPagesAllowed())
+            .getAllowEmptyPages(effective))
             .isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void endLSN_isPropagated_whenContinuationTokenSupplied() {
+        // Locks in the bounded-change-feed contract across a byPage(savedContinuation) round-trip:
+        // a caller who set endLSN=42 must continue to see iteration bounded by LSN 42 after resume.
+        // Before the inheritNonContinuationFieldsFrom fix, endLSN was silently dropped on the rebuild
+        // path, turning a bounded change feed into an unbounded one.
+        CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .setEndLSN(src, 42L);
+
+        CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
+        pagedFluxOptions.setRequestContinuation(buildContinuationToken());
+
+        CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
+
+        assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getEndLSN(effective))
+            .describedAs("endLSN must survive the paged-flux pull continuation rebuild")
+            .isEqualTo(42L);
+    }
+
+    @Test(groups = { "unit" })
+    public void customSerializer_isPropagated_whenContinuationTokenSupplied() {
+        // Locks in custom-serializer preservation across a byPage(savedContinuation) round-trip:
+        // a caller who registered a custom CosmosItemSerializer must continue to see items
+        // deserialized through that serializer after resume. Before the inheritNonContinuationFieldsFrom
+        // fix, the customSerializer was silently dropped on the rebuild path, falling back to the
+        // SDK's internal default serializer and potentially producing wrong field values.
+        CosmosItemSerializer sentinel = new CosmosItemSerializer() {
+            @Override
+            public <T> java.util.Map<String, Object> serialize(T item) { return null; }
+
+            @Override
+            public <T> T deserialize(java.util.Map<String, Object> jsonNodeMap, Class<T> classType) { return null; }
+        };
+        CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
+        src.setCustomItemSerializer(sentinel);
+
+        CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
+        pagedFluxOptions.setRequestContinuation(buildContinuationToken());
+
+        CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
+
+        assertThat(effective.getCustomItemSerializer())
+            .describedAs("customSerializer must survive the paged-flux pull continuation rebuild")
+            .isSameAs(sentinel);
+    }
+
+    @Test(groups = { "unit" })
+    public void tokenEncodedFields_overrideCallerSuppliedValues_whenContinuationTokenSupplied() {
+        // Negative pin: the four token-encoded fields (continuationState, feedRangeInternal, mode,
+        // startFromInternal) MUST come from the token, not from the caller's pre-resume options.
+        // The caller's options here have continuationState=null (createForProcessingFromBeginning),
+        // but the resulting effective options must have a non-null continuationState parsed from
+        // the supplied token. If a future refactor accidentally inherits the token-encoded fields
+        // from the source impl (e.g. moving them into inheritNonContinuationFieldsFrom), this test
+        // catches the regression because the source's continuationState would clobber the token's.
+        CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
+
+        CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
+        pagedFluxOptions.setRequestContinuation(buildContinuationToken());
+
+        CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
+
+        assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getImpl(effective)
+            .getContinuation())
+            .describedAs("continuationState is encoded in the token and MUST override the caller's pre-resume value")
+            .isNotNull();
     }
 
     private static String buildContinuationToken() {

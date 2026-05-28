@@ -218,8 +218,7 @@ private case class ChangeFeedPartitionReader
     // applies to each individual page rather than being exceeded by serial
     // empty-page drains inside ChangeFeedFetcher.
     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
-      .getImpl(options)
-      .setEmptyPagesAllowed(true)
+      .setAllowEmptyPages(options, true)
 
     options.setCustomItemSerializer(itemDeserializer)
   }

@@ -444,6 +444,24 @@ public class ImplementationBridgeHelpers {
             void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
             Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+
+            /**
+             * Mirrors {@link CosmosQueryRequestOptionsAccessor#setAllowEmptyPages(CosmosQueryRequestOptions, boolean)}
+             * for the change-feed path. Controls whether {@code ChangeFeedFetcher} surfaces
+             * 304/noChanges pages to the caller instead of swallowing them via {@code repeatWhenEmpty}.
+             *
+             * <p>Default is {@code false} (legacy swallow behavior). When {@code true}, every physical
+             * 304 response surfaces as its own {@code FeedResponse}; caller iterators must handle
+             * empty {@code FeedResponse} pages without entering retry loops. Intentionally NOT
+             * exposed on the public {@code CosmosChangeFeedRequestOptions} API — friend-only.
+             */
+            void setAllowEmptyPages(CosmosChangeFeedRequestOptions options, boolean emptyPagesAllowed);
+
+            /**
+             * Returns whether 304/noChanges pages are surfaced individually to the caller. See
+             * {@link #setAllowEmptyPages(CosmosChangeFeedRequestOptions, boolean)}.
+             */
+            boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions options);
         }
     }
 
