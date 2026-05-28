@@ -44,6 +44,16 @@ public final class FixedRatioVersionSelectionRule extends VersionSelectionRule {
     }
 
     /**
+     * Creates an instance of FixedRatioVersionSelectionRule class.
+     *
+     * @param trafficPercentage the percentage of traffic to route to the version. Must be between 0 and 100.
+     */
+    public FixedRatioVersionSelectionRule(int trafficPercentage) {
+        this.trafficPercentage = trafficPercentage;
+        this.updatedProperties.add("trafficPercentage");
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.

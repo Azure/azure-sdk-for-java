@@ -53,9 +53,8 @@ public class SessionLogStreamSample {
 
             AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
                 .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule()
-                        .setAgentVersion(resources.getAgent().getVersion())
-                        .setTrafficPercentage(100))))
+                    new FixedRatioVersionSelectionRule(100)
+                        .setAgentVersion(resources.getAgent().getVersion()))))
                 .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
 
             agentsClient.updateAgentDetails(agentName,
