@@ -7,6 +7,8 @@
 
 ### Bugs Fixed
 
+- Fixed Redis Lettuce passwordless autoconfiguration so a user-defined `LettuceClientConfigurationBuilderCustomizer` no longer suppresses the Azure customizer bean that configures Azure Redis credentials and RESP2 support.
+
 ### Other Changes
 
 ## 7.3.0 (2026-05-27)
