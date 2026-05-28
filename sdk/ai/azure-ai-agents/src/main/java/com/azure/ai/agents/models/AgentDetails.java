@@ -98,7 +98,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             AgentDetailsVersions versions = null;
             AgentEndpointConfig agentEndpoint = null;
             AgentIdentity instanceIdentity = null;
-            AgentIdentity blueprint = null;
+            AgentIdentity blueprintIdentity = null;
             AgentBlueprintReference blueprintReference = null;
             AgentCard agentCard = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -115,7 +115,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                 } else if ("instance_identity".equals(fieldName)) {
                     instanceIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint".equals(fieldName)) {
-                    blueprint = AgentIdentity.fromJson(reader);
+                    blueprintIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
                 } else if ("agent_card".equals(fieldName)) {
@@ -127,7 +127,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
             deserializedAgentDetails.instanceIdentity = instanceIdentity;
-            deserializedAgentDetails.blueprint = blueprint;
+            deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
             deserializedAgentDetails.blueprintReference = blueprintReference;
             deserializedAgentDetails.agentCard = agentCard;
             return deserializedAgentDetails;
@@ -180,12 +180,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The blueprint for the agent
      */
     @Generated
-    private AgentIdentity blueprint;
-
-    /*
-     * The blueprint for the agent
-     */
-    @Generated
     private AgentBlueprintReference blueprintReference;
 
     /*
@@ -215,16 +209,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     }
 
     /**
-     * Get the blueprint property: The blueprint for the agent.
-     *
-     * @return the blueprint value.
-     */
-    @Generated
-    public AgentIdentity getBlueprint() {
-        return this.blueprint;
-    }
-
-    /**
      * Get the blueprintReference property: The blueprint for the agent.
      *
      * @return the blueprintReference value.
@@ -242,5 +226,21 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Generated
     public AgentCard getAgentCard() {
         return this.agentCard;
+    }
+
+    /*
+     * The blueprint for the agent
+     */
+    @Generated
+    private AgentIdentity blueprintIdentity;
+
+    /**
+     * Get the blueprintIdentity property: The blueprint for the agent.
+     *
+     * @return the blueprintIdentity value.
+     */
+    @Generated
+    public AgentIdentity getBlueprintIdentity() {
+        return this.blueprintIdentity;
     }
 }
