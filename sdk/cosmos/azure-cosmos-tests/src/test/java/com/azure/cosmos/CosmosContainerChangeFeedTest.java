@@ -68,9 +68,11 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -334,6 +336,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider", timeOut = TIMEOUT)
     public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
+        // De-flaked: previously this test relied on `.subscribe()` + `Thread.sleep(3000)` for
+        // both subscriptions, which raced both with the continuation propagation between the
+        // two subscriptions AND with the page-arrival cadence on slower CI runners. Now the
+        // first subscription is awaited via a CountDownLatch on a known minimum page count
+        // before the second is started, and the final bounded `take(2, true)` block is awaited
+        // via `.blockLast(...)` rather than fire-and-forget.
+        final long awaitSeconds = 30L;
+
         this.createContainer(
             (cp) -> {
                 if (changeFeedMode.equals(ChangeFeedMode.INCREMENTAL)) {
@@ -354,11 +364,31 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         AtomicInteger count = new AtomicInteger(0);
         insertDocuments(5, 20);
         AtomicReference<String> continuation = new AtomicReference<>("");
-        createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) -> {
+
+        // First subscription: drain at least 3 pages deterministically before proceeding.
+        final int firstMinPages = 3;
+        CountDownLatch firstLatch = new CountDownLatch(firstMinPages);
+        AtomicReference<Throwable> firstError = new AtomicReference<>();
+        reactor.core.Disposable firstSub = createdContainer.asyncContainer
+            .queryChangeFeed(options, ObjectNode.class)
+            .handle((r) -> {
                 count.incrementAndGet();
                 continuation.set(r.getContinuationToken());
-            }
-        ).byPage().subscribe();
+                firstLatch.countDown();
+            })
+            .byPage()
+            .subscribe(r -> { /* page consumed by handle() */ }, firstError::set);
+        try {
+            assertThat(firstLatch.await(awaitSeconds, TimeUnit.SECONDS))
+                .as("first change-feed subscription should produce at least %d pages within %d seconds",
+                    firstMinPages, awaitSeconds)
+                .isTrue();
+            assertThat(firstError.get()).as("first subscription must not error").isNull();
+            // intent of the original assertion: prefetch surfaces more than 2 pages
+            assertThat(count.get()).isGreaterThan(2);
+        } finally {
+            firstSub.dispose();
+        }
 
         CosmosChangeFeedRequestOptions optionsFF = null;
         if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
@@ -367,25 +397,46 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             optionsFF = CosmosChangeFeedRequestOptions
                 .createForProcessingFromContinuation(continuation.get())
                 .setMaxItemCount(10).allVersionsAndDeletes();
-            createdContainer.asyncContainer.queryChangeFeed(optionsFF, ObjectNode.class).handle((r) -> {
-                count.incrementAndGet();
-                continuation.set(r.getContinuationToken());
+
+            final int secondMinPages = 3;
+            CountDownLatch secondLatch = new CountDownLatch(secondMinPages);
+            AtomicReference<Throwable> secondError = new AtomicReference<>();
+            reactor.core.Disposable secondSub = createdContainer.asyncContainer
+                .queryChangeFeed(optionsFF, ObjectNode.class)
+                .handle((r) -> {
+                    count.incrementAndGet();
+                    continuation.set(r.getContinuationToken());
+                    secondLatch.countDown();
+                })
+                .byPage()
+                .subscribe(r -> { /* page consumed by handle() */ }, secondError::set);
+            try {
+                assertThat(secondLatch.await(awaitSeconds, TimeUnit.SECONDS))
+                    .as("FULL_FIDELITY resume-from-continuation subscription should produce at least %d pages within %d seconds",
+                        secondMinPages, awaitSeconds)
+                    .isTrue();
+                assertThat(secondError.get()).as("second subscription must not error").isNull();
+                assertThat(count.get()).isGreaterThan(2);
+            } finally {
+                secondSub.dispose();
             }
-        ).byPage().subscribe();
         }
-        Thread.sleep(3000);
-        assertThat(count.get()).isGreaterThan(2);
 
         if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
             // full fidelity is only from now so need to insert more documents
             insertDocuments(5, 20);
         }
         count.set(0);
-        // should only get two pages
-        createdContainer.asyncContainer.queryChangeFeed(changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)? optionsFF
-            : options, ObjectNode.class).handle((r) -> count.incrementAndGet())
-            .byPage().take(2, true).subscribe();
-        Thread.sleep(3000);
+        // should only get two pages — `take(2, true)` bounds the upstream request, so the
+        // pipeline completes naturally after 2 pages. Use blockLast() instead of fire-and-forget
+        // to wait for that completion deterministically.
+        createdContainer.asyncContainer
+            .queryChangeFeed(changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY) ? optionsFF : options,
+                ObjectNode.class)
+            .handle((r) -> count.incrementAndGet())
+            .byPage()
+            .take(2, true)
+            .blockLast(Duration.ofSeconds(awaitSeconds));
         assertThat(count.get()).isEqualTo(2);
     }
 
