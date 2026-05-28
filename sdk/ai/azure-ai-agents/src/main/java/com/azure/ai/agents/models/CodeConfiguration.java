@@ -80,7 +80,7 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
             String runtime = null;
             List<String> entryPoint = null;
             CodeDependencyResolution dependencyResolution = null;
-            String contentHash = null;
+            String contentSha256 = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -91,14 +91,14 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
                 } else if ("dependency_resolution".equals(fieldName)) {
                     dependencyResolution = CodeDependencyResolution.fromString(reader.getString());
                 } else if ("content_hash".equals(fieldName)) {
-                    contentHash = reader.getString();
+                    contentSha256 = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             CodeConfiguration deserializedCodeConfiguration
                 = new CodeConfiguration(runtime, entryPoint, dependencyResolution);
-            deserializedCodeConfiguration.contentHash = contentHash;
+            deserializedCodeConfiguration.contentSha256 = contentSha256;
             return deserializedCodeConfiguration;
         });
     }
@@ -111,13 +111,6 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
      */
     @Generated
     private final CodeDependencyResolution dependencyResolution;
-
-    /*
-     * The SHA-256 hex digest of the uploaded code zip. Set by the service from the `x-ms-code-zip-sha256` request
-     * header; read-only in responses and never accepted in request payloads.
-     */
-    @Generated
-    private String contentHash;
 
     /**
      * Creates an instance of CodeConfiguration class.
@@ -147,14 +140,21 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
         return this.dependencyResolution;
     }
 
-    /**
-     * Get the contentHash property: The SHA-256 hex digest of the uploaded code zip. Set by the service from the
-     * `x-ms-code-zip-sha256` request header; read-only in responses and never accepted in request payloads.
-     *
-     * @return the contentHash value.
+    /*
+     * The SHA-256 hex digest of the uploaded code zip. Set by the service from the `x-ms-code-zip-sha256` request
+     * header; read-only in responses and never accepted in request payloads.
      */
     @Generated
-    public String getContentHash() {
-        return this.contentHash;
+    private String contentSha256;
+
+    /**
+     * Get the contentSha256 property: The SHA-256 hex digest of the uploaded code zip. Set by the service from the
+     * `x-ms-code-zip-sha256` request header; read-only in responses and never accepted in request payloads.
+     *
+     * @return the contentSha256 value.
+     */
+    @Generated
+    public String getContentSha256() {
+        return this.contentSha256;
     }
 }
