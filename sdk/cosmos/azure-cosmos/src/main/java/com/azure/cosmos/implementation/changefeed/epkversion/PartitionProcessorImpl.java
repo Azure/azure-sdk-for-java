@@ -198,9 +198,17 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
                     CosmosException clientException = (CosmosException) throwable;
                     logger.warn(
-                        "Lease with token " + this.lease.getLeaseToken() + ": CosmosException was thrown from thread " +
-                            Thread.currentThread().getId() + " for lease with owner " + this.lease.getOwner(),
-                        clientException);
+                        "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {} {}",
+                        this.lease.getLeaseToken(),
+                        Thread.currentThread().getId(),
+                        this.lease.getOwner(),
+                        clientException.getShortMessage());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            "Lease with token " + this.lease.getLeaseToken() + ": CosmosException was thrown from thread " +
+                                Thread.currentThread().getId() + " for lease with owner " + this.lease.getOwner(),
+                            clientException);
+                    }
                     StatusCodeErrorType docDbError =
                         ExceptionClassifier.classifyClientException(clientException);
 
