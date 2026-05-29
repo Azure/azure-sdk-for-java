@@ -175,9 +175,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         this.reEnableShouldFetchMoreForRetry();
 
         if (this.notModifiedPagesAllowed) {
-            // I think we will need to update the feedResponse here, because for empty pages we do not rotate tokens, so the worst case I can think of
-            // is when the feedRange spans multi-partitions, when customer using a continuationToken to resume the process, we will always only process the first child partition
-            // if we keeps getting 304s
             ModelBridgeInternal.setFeedResponseContinuationToken(this.changeFeedState.toString(), r);
             return Mono.just(r);
         }
