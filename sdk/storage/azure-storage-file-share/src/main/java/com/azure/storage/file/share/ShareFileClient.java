@@ -2645,11 +2645,26 @@ public class ShareFileClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         String rangeString = options.getRange() == null ? null : options.getRange().toString();
-        Callable<Response<ShareFileRangeList>> operation = () -> this.azureFileStorageClient.getFiles()
-            .getRangeListNoCustomHeadersWithResponse(shareName, filePath, snapshot, options.getPreviousSnapshot(), null,
-                rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), null, null, finalContext);
+        ShareFileRangeList rangeList = new ShareFileRangeList();
+        Response<ShareFileRangeList> firstResponseWithMetadata = null;
+        String marker = null;
 
-        return sendRequest(operation, timeout, ShareStorageException.class);
+        do {
+            String finalMarker = marker;
+            Callable<Response<ShareFileRangeList>> operation = () -> this.azureFileStorageClient.getFiles()
+                .getRangeListNoCustomHeadersWithResponse(shareName, filePath, snapshot, options.getPreviousSnapshot(),
+                    null, rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), finalMarker, null,
+                    finalContext);
+            Response<ShareFileRangeList> response = sendRequest(operation, timeout, ShareStorageException.class);
+            ShareFileRangeList responseValue = response.getValue();
+            rangeList.getRanges().addAll(responseValue.getRanges());
+            rangeList.getClearRanges().addAll(responseValue.getClearRanges());
+
+            firstResponseWithMetadata = firstResponseWithMetadata == null ? response : firstResponseWithMetadata;
+            marker = responseValue.getNextMarker();
+        } while (!CoreUtils.isNullOrEmpty(marker));
+
+        return new SimpleResponse<>(firstResponseWithMetadata, rangeList);
     }
 
     /**

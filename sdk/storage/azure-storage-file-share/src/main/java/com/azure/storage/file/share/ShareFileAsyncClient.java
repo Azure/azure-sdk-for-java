@@ -2831,11 +2831,46 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
+            ShareFileRange range = options.getRange();
+            ShareRequestConditions requestConditions = options.getRequestConditions() == null
+                ? new ShareRequestConditions()
+                : options.getRequestConditions();
+            String previousSnapshot = options.getPreviousSnapshot();
+            Boolean supportRename = options.isRenameIncluded();
+
+            return listRangesWithResponse(range, requestConditions, previousSnapshot, supportRename, null, null,
+                Context.NONE)
+                    .expand(response -> getNextListRangesDiffPage(response, range, requestConditions, previousSnapshot,
+                        supportRename))
+                    .collectList()
+                    .map(this::aggregateListRangesDiffResponses);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    private Mono<Response<ShareFileRangeList>> getNextListRangesDiffPage(Response<ShareFileRangeList> response,
+        ShareFileRange range, ShareRequestConditions requestConditions, String previousSnapshot,
+        Boolean supportRename) {
+        String marker = response.getValue().getNextMarker();
+
+        return CoreUtils.isNullOrEmpty(marker)
+            ? Mono.empty()
+            : listRangesWithResponse(range, requestConditions, previousSnapshot, supportRename, marker, null,
+                Context.NONE);
+    }
+
+    private Response<ShareFileRangeList>
+        aggregateListRangesDiffResponses(List<Response<ShareFileRangeList>> responses) {
+        ShareFileRangeList rangeList = new ShareFileRangeList();
+
+        responses.forEach(response -> {
+            ShareFileRangeList responseValue = response.getValue();
+            rangeList.getRanges().addAll(responseValue.getRanges());
+            rangeList.getClearRanges().addAll(responseValue.getClearRanges());
+        });
+
+        return new SimpleResponse<>(responses.get(0), rangeList);
     }
 
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
