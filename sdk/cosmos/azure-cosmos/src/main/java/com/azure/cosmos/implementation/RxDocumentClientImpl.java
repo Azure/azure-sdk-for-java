@@ -68,7 +68,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.routing.RegionUtils;
+import com.azure.cosmos.implementation.routing.RegionIdRegistry;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -833,7 +833,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         while (readableLocationsIterator.hasNext()) {
             DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
 
-            if (RegionUtils.getRegionId(readableLocation.getName()) == -1) {
+            if (RegionIdRegistry.getRegionId(readableLocation.getName()) == -1) {
                 return false;
             }
         }

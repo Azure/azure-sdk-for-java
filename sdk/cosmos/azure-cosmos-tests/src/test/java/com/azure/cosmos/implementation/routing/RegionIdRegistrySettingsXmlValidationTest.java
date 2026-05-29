@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Validates that {@link RegionUtils#CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS}
+ * Validates that {@link RegionIdRegistry#CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS}
  * stays in sync with the authoritative regionToIdMapping from Settings.xml.
  *
  * <p>The source of truth is a checked-in copy of Settings.xml at
@@ -35,9 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * overwrite {@code region-to-id-settings.xml}, run this test — it will report
  * exactly which regions are missing, extra, or have mismatched IDs.
  */
-public class RegionUtilsSettingsXmlValidationTest {
+public class RegionIdRegistrySettingsXmlValidationTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegionUtilsSettingsXmlValidationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegionIdRegistrySettingsXmlValidationTest.class);
 
     private static final String SETTINGS_XML_RESOURCE = "region-to-id-settings.xml";
 
@@ -46,52 +46,52 @@ public class RegionUtilsSettingsXmlValidationTest {
         Pattern.compile("\"regionIdByRegion\"\\s*:\\s*\\{([^}]+)}");
 
     @Test(groups = {"unit"})
-    public void regionUtilsMappingMatchesSettingsXml() throws Exception {
+    public void regionIdRegistryMappingMatchesSettingsXml() throws Exception {
 
         Map<String, Integer> settingsXmlMapping = parseRegionToIdMappingFromResource();
 
-        Map<String, Integer> sdkMapping = RegionUtils.CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS;
+        Map<String, Integer> sdkMapping = RegionIdRegistry.CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS;
 
         List<String> errors = new ArrayList<>();
 
-        // Check every Settings.xml entry exists in RegionUtils with the correct ID
+        // Check every Settings.xml entry exists in RegionIdRegistry with the correct ID
         for (Map.Entry<String, Integer> expected : settingsXmlMapping.entrySet()) {
             String region = expected.getKey();
             int expectedId = expected.getValue();
 
             if (!sdkMapping.containsKey(region)) {
                 errors.add(String.format(
-                    "MISSING in RegionUtils: '%s' (ID=%d) exists in Settings.xml but not in RegionUtils",
+                    "MISSING in RegionIdRegistry: '%s' (ID=%d) exists in Settings.xml but not in RegionIdRegistry",
                     region, expectedId));
             } else if (!sdkMapping.get(region).equals(expectedId)) {
                 errors.add(String.format(
-                    "ID MISMATCH for '%s': Settings.xml has ID=%d, RegionUtils has ID=%d",
+                    "ID MISMATCH for '%s': Settings.xml has ID=%d, RegionIdRegistry has ID=%d",
                     region, expectedId, sdkMapping.get(region)));
             }
         }
 
-        // Check RegionUtils has no extra entries absent from Settings.xml
+        // Check RegionIdRegistry has no extra entries absent from Settings.xml
         for (Map.Entry<String, Integer> actual : sdkMapping.entrySet()) {
             if (!settingsXmlMapping.containsKey(actual.getKey())) {
                 errors.add(String.format(
-                    "EXTRA in RegionUtils: '%s' (ID=%d) is not in Settings.xml — stale entry?",
+                    "EXTRA in RegionIdRegistry: '%s' (ID=%d) is not in Settings.xml — stale entry?",
                     actual.getKey(), actual.getValue()));
             }
         }
 
         if (!errors.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            sb.append("RegionUtils is out of sync with Settings.xml (")
+            sb.append("RegionIdRegistry is out of sync with Settings.xml (")
               .append(errors.size()).append(" issue(s)):\n");
             for (String error : errors) {
                 sb.append("  - ").append(error).append("\n");
             }
-            sb.append("\nFix: update CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS in RegionUtils.java");
+            sb.append("\nFix: update CANONICAL_REGION_NAME_TO_REGION_ID_MAPPINGS in RegionIdRegistry.java");
 
             assertThat(errors).as(sb.toString()).isEmpty();
         }
 
-        logger.info("RegionUtils validated against Settings.xml — {} region mappings match", sdkMapping.size());
+        logger.info("RegionIdRegistry validated against Settings.xml — {} region mappings match", sdkMapping.size());
     }
 
     /**

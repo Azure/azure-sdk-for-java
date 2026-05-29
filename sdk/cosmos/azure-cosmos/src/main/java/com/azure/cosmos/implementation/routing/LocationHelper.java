@@ -49,8 +49,8 @@ public class LocationHelper {
         // DNS is case-insensitive (RFC 4343), so the lowercase change vs. the old space-strip-only
         // behavior is invisible to resolution. The hyphen/underscore strips are no-ops on real
         // server-returned region names (e.g., "West US 3") but keep this aligned with the single
-        // toNormalizedForm used across all lookup paths.
-        return RegionUtils.getNormalizedRegionName(dataCenter);
+        // normalization used across all lookup paths.
+        return RegionNameNormalizer.normalize(dataCenter);
     }
 }
 

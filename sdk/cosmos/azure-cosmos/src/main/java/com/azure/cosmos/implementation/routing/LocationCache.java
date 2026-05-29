@@ -357,7 +357,7 @@ public class LocationCache {
             normalizedExcludes = new HashSet<>(userConfiguredExcludeRegions.size());
             for (String excludeRegion : userConfiguredExcludeRegions) {
                 if (excludeRegion != null) {
-                    normalizedExcludes.add(RegionUtils.getNormalizedRegionName(excludeRegion));
+                    normalizedExcludes.add(RegionNameNormalizer.normalize(excludeRegion));
                 }
             }
         }
@@ -365,7 +365,7 @@ public class LocationCache {
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)
-                    && !normalizedExcludes.contains(RegionUtils.getNormalizedRegionName(regionName.v))) {
+                    && !normalizedExcludes.contains(RegionNameNormalizer.normalize(regionName.v))) {
                 applicableEndpoints.add(endpoint);
             }
         }
@@ -520,7 +520,7 @@ public class LocationCache {
                         // unknown regions in any input form (e.g., "plutocentral" vs "Pluto Central")
                         // match consistently.
                         if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext)
-                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionUtils.getNormalizedRegionName(internalExcludeRegion))) {
+                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionNameNormalizer.normalize(internalExcludeRegion))) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
@@ -543,7 +543,7 @@ public class LocationCache {
             return false;
         }
         for (String region : userExcludeRegions) {
-            if (region != null && normalizedTarget.equals(RegionUtils.getNormalizedRegionName(region))) {
+            if (region != null && normalizedTarget.equals(RegionNameNormalizer.normalize(region))) {
                 return true;
             }
         }
@@ -608,7 +608,7 @@ public class LocationCache {
                 // mostPreferredLocation came from preferredLocations (normalized form) or
                 // effectivePreferredLocations (server-form). Look up against the parallel
                 // normalized map after normalizing the key to handle both cases.
-                String normalizedMostPreferredLocation = RegionUtils.getNormalizedRegionName(mostPreferredLocation);
+                String normalizedMostPreferredLocation = RegionNameNormalizer.normalize(mostPreferredLocation);
 
                 if (Utils.tryGetValue(currentLocationInfo.availableReadRegionalRoutingContextsByNormalizedRegionName, normalizedMostPreferredLocation, mostPreferredReadEndpointHolder)) {
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
@@ -652,7 +652,7 @@ public class LocationCache {
                     return shouldRefresh;
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                String normalizedMostPreferredLocationForWrite = RegionUtils.getNormalizedRegionName(mostPreferredLocation);
+                String normalizedMostPreferredLocationForWrite = RegionNameNormalizer.normalize(mostPreferredLocation);
                 if (Utils.tryGetValue(currentLocationInfo.availableWriteRegionalRoutingContextsByNormalizedRegionName, normalizedMostPreferredLocationForWrite, mostPreferredWriteEndpointHolder)) {
                     shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
 
@@ -976,7 +976,7 @@ public class LocationCache {
                         // customer preferred/excluded-region routing. Lets unknown regions in
                         // no-space form like "plutocentral" resolve to the same endpoint as the
                         // server-form-lowercased entry above.
-                        String normalizedLocation = RegionUtils.getNormalizedRegionName(gatewayDbAccountLocation.getName());
+                        String normalizedLocation = RegionNameNormalizer.normalize(gatewayDbAccountLocation.getName());
                         if (!endpointsByNormalizedLocation.containsKey(normalizedLocation)) {
                             endpointsByNormalizedLocation.put(normalizedLocation, regionalRoutingContext);
                         }
@@ -1142,7 +1142,7 @@ public class LocationCache {
             // any input variant — "West US 3", "westus3", "WEST-US-3", or unknown regions in
             // no-space form like "plutocentral" — resolves consistently.
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream()
-                .map(RegionUtils::getNormalizedRegionName)
+                .map(RegionNameNormalizer::normalize)
                 .collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
