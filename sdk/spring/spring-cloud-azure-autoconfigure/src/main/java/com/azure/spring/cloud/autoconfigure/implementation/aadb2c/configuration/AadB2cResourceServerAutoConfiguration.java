@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -58,6 +59,7 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AadTrustedIssuerRepository trustedIssuerRepository() {
+        validateTenantId(getTrimmedTenantId(properties));
         return new AadB2cTrustedIssuerRepository(properties);
     }
 
@@ -93,6 +95,8 @@ public class AadB2cResourceServerAutoConfiguration {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
+        String tenantId = getTrimmedTenantId(properties);
+        validateTenantId(tenantId);
         if (StringUtils.hasText(properties.getAppIdUri())) {
             validAudiences.add(properties.getAppIdUri());
         }
@@ -100,12 +104,40 @@ public class AadB2cResourceServerAutoConfiguration {
             validAudiences.add(properties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
+            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD,
+                audiences -> audiences != null
+                    && !audiences.isEmpty()
+                    && audiences.stream().anyMatch(validAudiences::contains)));
         }
+        validators.add(new JwtClaimValidator<String>(AadJwtClaimNames.TID, tenantId::equals));
         validators.add(new AadJwtIssuerValidator(trustedIssuerRepository));
         validators.add(new JwtTimestampValidator());
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return decoder;
+    }
+
+    private static String getTrimmedTenantId(AadB2cProperties aadB2cProperties) {
+        String tenantId = aadB2cProperties.getProfile().getTenantId();
+        return tenantId != null ? tenantId.trim().toLowerCase(Locale.ROOT) : null;
+    }
+
+    private static void validateTenantId(String tenantId) {
+        if (!StringUtils.hasText(tenantId)
+            || "common".equalsIgnoreCase(tenantId)
+            || "organizations".equalsIgnoreCase(tenantId)
+            || "consumers".equalsIgnoreCase(tenantId)) {
+            throw new IllegalArgumentException(
+                "For B2C resource server, "
+                    + "'spring.cloud.azure.active-directory.b2c.profile.tenant-id' "
+                    + "cannot be null, empty, or set to 'common', "
+                    + "'organizations', or 'consumers'. "
+                    + "These values are not supported for resource server token "
+                    + "validation because a specific tenant ID is required to "
+                    + "validate the token 'tid' claim and issuer against a "
+                    + "single B2C tenant. "
+                    + "Please configure an explicit tenant ID for your "
+                    + "organization's tenant.");
+        }
     }
 }
 
