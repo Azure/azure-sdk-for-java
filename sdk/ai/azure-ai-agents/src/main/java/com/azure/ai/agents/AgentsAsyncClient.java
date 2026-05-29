@@ -1776,9 +1776,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the agent even if its
-     * versions have active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is
-     * not relevant for other Agent types.</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the agent even if
+     * its versions have active sessions, cascading deletion to all associated sessions. The service defaults to `false`
+     * if a value is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1815,9 +1815,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the version even if it
-     * has active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is not
-     * relevant for other Agent types.</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the version even if
+     * it has active sessions, cascading deletion to all associated sessions. The service defaults to `false` if a value
+     * is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3566,7 +3566,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -3724,7 +3724,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -3904,7 +3904,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4058,7 +4058,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4256,7 +4256,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4447,7 +4447,7 @@ public final class AgentsAsyncClient {
      *                 String: double (Required)
      *             }
      *             composite_score: double (Required)
-     *             tokens: int (Required)
+     *             tokens: long (Required)
      *             duration_seconds: double (Required)
      *             passed: boolean (Required)
      *             error_message: String (Optional)

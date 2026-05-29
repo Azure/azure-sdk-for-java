@@ -140,8 +140,8 @@ public final class AgentSessionFilesClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. Defaults
-     * to false.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -322,7 +322,8 @@ public final class AgentSessionFilesClient {
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
-     * @param recursive Whether to recursively delete directory contents. Defaults to false.
+     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
+     * not specified by the caller.
      * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
      * conversations, sessions) to a specific end user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
