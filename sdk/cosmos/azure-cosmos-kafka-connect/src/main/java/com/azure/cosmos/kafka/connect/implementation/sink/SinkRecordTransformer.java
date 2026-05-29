@@ -86,21 +86,7 @@ public class SinkRecordTransformer {
                 toBeWrittenRecordList.add(updatedRecord);
             } catch (RuntimeException e) {
                 // Report to DLQ if configured (fire-and-forget, guarded against reporter failures).
-                // Per Kafka Connect best practices, DLQ reporting is a side-effect for observability —
-                // reporter failures are swallowed so they do not mask the original processing error.
-                if (this.errantRecordReporter != null) {
-                    try {
-                        this.errantRecordReporter.report(record, e);
-                    } catch (Exception reportException) {
-                        LOGGER.error(
-                            "Failed to report errant record to DLQ for topic {}, partition {}, offset {}, container {}.",
-                            record.topic(),
-                            record.kafkaPartition(),
-                            record.kafkaOffset(),
-                            containerName,
-                            reportException);
-                    }
-                }
+                DlqReportHelper.reportToDlqIfConfigured(this.errantRecordReporter, record, e, LOGGER);
 
                 // Use tolerance level to decide continue-vs-throw.
                 if (this.toleranceOnErrorLevel == ToleranceOnErrorLevel.ALL) {

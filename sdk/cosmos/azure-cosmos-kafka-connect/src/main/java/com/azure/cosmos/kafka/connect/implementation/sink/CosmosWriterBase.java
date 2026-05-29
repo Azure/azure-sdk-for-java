@@ -83,17 +83,10 @@ public abstract class CosmosWriterBase implements IWriter {
     }
 
     protected void sendToDlqIfConfigured(SinkOperation sinkOperationContext) {
-        if (this.errantRecordReporter != null) {
-            try {
-                errantRecordReporter.report(sinkOperationContext.getSinkRecord(), sinkOperationContext.getException());
-            } catch (Exception reportException) {
-                LOGGER.error(
-                    "Failed to report errant record to DLQ for topic {}, partition {}, offset {}.",
-                    sinkOperationContext.getTopic(),
-                    sinkOperationContext.getKafkaPartition(),
-                    sinkOperationContext.getKafkaOffset(),
-                    reportException);
-            }
-        }
+        DlqReportHelper.reportToDlqIfConfigured(
+            this.errantRecordReporter,
+            sinkOperationContext.getSinkRecord(),
+            sinkOperationContext.getException(),
+            LOGGER);
     }
 }
