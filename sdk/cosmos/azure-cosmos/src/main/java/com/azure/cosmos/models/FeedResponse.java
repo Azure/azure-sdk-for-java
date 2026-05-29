@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.queryadvisor.QueryAdvice;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -44,7 +45,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
-    private final Map<String, String> header;
+    private Map<String, String> header;
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
@@ -449,19 +450,19 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     private void setContinuationTokenInternal(String headerName, String continuationToken) {
-        if (!Strings.isNullOrWhiteSpace(continuationToken)) {
+        boolean setting = !Strings.isNullOrWhiteSpace(continuationToken);
+        boolean clearing = !setting && !this.header.isEmpty() && this.header.containsKey(headerName);
+        if (!setting && !clearing) {
+            return;
+        }
+
+        if (Utils.isImmutableMap(this.header)) {
+            this.header = new HashMap<>(this.header);
+        }
+
+        if (setting) {
             this.header.put(headerName, continuationToken);
-        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
-            // The query API returns unmodifiable header collections for empty
-            // responses (no documents returned - when only header set is request charge)
-            // the protection here to check for existence of the header before attempting
-            // to remove it would not be robust enough against unknown headers
-            // but since we only ever call our own query pipeline
-            // avoiding cloning in all cases and gating on continuation header
-            // existence is a reasonable trade-off - test coverage exists that uncovered
-            // the problem - so, this acts as regression test as well
-            // --> the test coverage is in ItemsPartitionReaderWithReadManyByPartitionKeyITest
-            // it should "return empty results for non-existent partition keys"
+        } else {
             this.header.remove(headerName);
         }
     }

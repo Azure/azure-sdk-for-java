@@ -150,6 +150,30 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
         assertThat(normalResponse.getResponseHeaders()).isSameAs(normalHeaders);
     }
 
+    /**
+     * Reproduces the customer-reported failure path: the parallel query pipeline's
+     * "artificial empty page" branch (ParallelDocumentQueryExecutionContext.headerResponse)
+     * emits a FeedResponse whose header map is {@code Utils.immutableMapOf(...)} - i.e. a
+     * non-empty {@code Collections.unmodifiableMap} wrapper. When such a page reaches the
+     * readManyByPartitionKeys stamping lambda, setFeedResponseContinuationToken attempts
+     * to put the composite token into the immutable map, throwing UnsupportedOperationException.
+     */
+    @Test(groups = { "unit" })
+    public void setFeedResponseContinuationToken_immutableNonEmptyHeaders_doesNotThrow() {
+        Map<String, String> immutableSingleEntryHeaders =
+            Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, "1.23");
+        FeedResponse<String> response = ModelBridgeInternal.createFeedResponse(
+            Collections.emptyList(),
+            immutableSingleEntryHeaders);
+
+        ModelBridgeInternal.setFeedResponseContinuationToken("composite-token", response);
+
+        assertThat(response.getContinuationToken()).isEqualTo("composite-token");
+        assertThat(response.getResponseHeaders())
+            .containsEntry(HttpConstants.HttpHeaders.CONTINUATION, "composite-token")
+            .containsEntry(HttpConstants.HttpHeaders.REQUEST_CHARGE, "1.23");
+    }
+
     @Test(groups = { "unit" })
     public void deserialize_malformedInput_throws() {
         // Either the base64 decoder or the JSON parsing layer rejects garbage; both raise
