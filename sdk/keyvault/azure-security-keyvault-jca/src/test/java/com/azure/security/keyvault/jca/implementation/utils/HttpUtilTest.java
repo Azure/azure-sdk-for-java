@@ -6,6 +6,16 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_USER_AGENT_VALUE_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +26,39 @@ public class HttpUtilTest {
     public void getUserAgentPrefixTest() {
         assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX, HttpUtil.getUserAgentPrefix());
         assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX + VERSION, HttpUtil.USER_AGENT_VALUE);
+    }
+
+    @Test
+    public void getUsesJvmProxySystemProperties() throws Exception {
+        String previousProxyHost = System.getProperty("http.proxyHost");
+        String previousProxyPort = System.getProperty("http.proxyPort");
+        String previousNonProxyHosts = System.getProperty("http.nonProxyHosts");
+
+        try (ServerSocket proxyServer = new ServerSocket(0)) {
+            CountDownLatch requestReceived = new CountDownLatch(1);
+            AtomicReference<String> requestLine = new AtomicReference<>();
+            AtomicReference<Exception> proxyFailure = new AtomicReference<>();
+
+            Thread proxyThread
+                = new Thread(() -> handleProxyRequest(proxyServer, requestLine, requestReceived, proxyFailure));
+            proxyThread.setDaemon(true);
+            proxyThread.start();
+
+            System.setProperty("http.proxyHost", "localhost");
+            System.setProperty("http.proxyPort", String.valueOf(proxyServer.getLocalPort()));
+            System.clearProperty("http.nonProxyHosts");
+
+            String response = HttpUtil.get("http://azure-keyvault-jca-proxy-test.invalid/path", null);
+
+            assertTrue(requestReceived.await(5, TimeUnit.SECONDS), "Expected proxy server to receive the request.");
+            assertNull(proxyFailure.get(), "Proxy server failed while handling the request.");
+            assertEquals("proxied", response);
+            assertEquals("GET http://azure-keyvault-jca-proxy-test.invalid/path HTTP/1.1", requestLine.get());
+        } finally {
+            restoreProperty("http.proxyHost", previousProxyHost);
+            restoreProperty("http.proxyPort", previousProxyPort);
+            restoreProperty("http.nonProxyHosts", previousNonProxyHosts);
+        }
     }
 
     @Test
@@ -34,5 +77,38 @@ public class HttpUtilTest {
         String result = HttpUtil.get(url, null);
         assertNotNull(result);
         assertFalse(result.isEmpty());
+    }
+
+    private static void handleProxyRequest(ServerSocket proxyServer, AtomicReference<String> requestLine,
+        CountDownLatch requestReceived, AtomicReference<Exception> proxyFailure) {
+        try (Socket socket = proxyServer.accept();
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            OutputStream outputStream = socket.getOutputStream()) {
+
+            requestLine.set(reader.readLine());
+            String line;
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                // Consume request headers before writing the response.
+            }
+
+            byte[] body = "proxied".getBytes(StandardCharsets.UTF_8);
+            outputStream.write(("HTTP/1.1 200 OK\r\nContent-Length: " + body.length + "\r\n\r\n")
+                .getBytes(StandardCharsets.UTF_8));
+            outputStream.write(body);
+            outputStream.flush();
+            requestReceived.countDown();
+        } catch (Exception e) {
+            proxyFailure.set(e);
+            requestReceived.countDown();
+        }
+    }
+
+    private static void restoreProperty(String name, String value) {
+        if (value == null) {
+            System.clearProperty(name);
+        } else {
+            System.setProperty(name, value);
+        }
     }
 }

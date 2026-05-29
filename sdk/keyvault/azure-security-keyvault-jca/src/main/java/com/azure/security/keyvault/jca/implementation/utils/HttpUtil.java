@@ -186,7 +186,7 @@ public final class HttpUtil {
                 .register("https", sslConnectionSocketFactory)
                 .build());
 
-        return HttpClients.custom().setConnectionManager(manager).build();
+        return HttpClients.custom().useSystemProperties().setConnectionManager(manager).build();
     }
 
     public static String validateUri(String uri, String propertyName) {
