@@ -26,6 +26,7 @@ public final class ReadmeSamples {
         AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+        DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
@@ -33,7 +34,9 @@ public final class ReadmeSamples {
         EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         InsightsClient insightsClient = builder.buildInsightsClient();
+        ModelsClient modelsClient = builder.buildModelsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
+        RoutinesClient routinesClient = builder.buildRoutinesClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
         SkillsClient skillsClient = builder.buildSkillsClient();
         // END: com.azure.ai.projects.clientInitialization
