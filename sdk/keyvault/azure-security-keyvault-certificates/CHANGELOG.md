@@ -4,12 +4,8 @@
 
 ### Features Added
 
-- Added support for service API version `2026-03-01-preview` and the `models.PlatformManaged` certificate policy
-  property. This is currently intended for internal use only. The default service version remains `V2025_07_01`.
-
-#### `CertificateServiceVersion` was modified
-
-* `V2026_03_01_PREVIEW` was added
+- Added an experimental `models.PlatformManaged` certificate policy property for Azure Key Vault internal usage.
+  Any calls using this property will fail and it is not recommended to be used at this point.
 
 ## 4.9.0 (2026-05-26)
 
