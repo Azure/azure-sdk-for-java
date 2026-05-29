@@ -545,20 +545,22 @@ az role assignment create \
  ```
 
 If you run `jarsigner` behind a proxy, pass the standard JVM proxy system properties with `-J`:
- ```bash
- jarsigner   -keystore NONE -storetype AzureKeyVault \
-             -signedjar signerjar.jar ${PARAM_YOUR_JAR_FILE_PATH} "${CERT_NAME}" \
-             -verbose  -storepass "" \
-             -providerName AzureKeyVault \
-             -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
-             -J-Dazure.keyvault.uri=${KEYVAULT_URL} \
-             -J-Dazure.keyvault.tenant-id=${TENANT} \
-             -J-Dazure.keyvault.client-id=${CLIENT_ID} \
-             -J-Dazure.keyvault.client-secret=${CLIENT_SECRET} \
-             -J-Dhttps.proxyHost=proxy.company.local \
-             -J-Dhttps.proxyPort=8080 \
-             '-J-Dhttp.nonProxyHosts=169.254.169.254|localhost|127.*'
- ```
+
+```bash
+jarsigner   -keystore NONE -storetype AzureKeyVault \
+            -signedjar signerjar.jar ${PARAM_YOUR_JAR_FILE_PATH} "${CERT_NAME}" \
+            -verbose  -storepass "" \
+            -providerName AzureKeyVault \
+            -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
+            -J-Dazure.keyvault.uri=${KEYVAULT_URL} \
+            -J-Dazure.keyvault.tenant-id=${TENANT} \
+            -J-Dazure.keyvault.client-id=${CLIENT_ID} \
+            -J-Dazure.keyvault.client-secret=${CLIENT_SECRET} \
+            -J-Dhttps.proxyHost=proxy.company.local \
+            -J-Dhttps.proxyPort=8080 \
+            '-J-Dhttp.nonProxyHosts=169.254.169.254|localhost|127.*'
+```
+
 `http.nonProxyHosts` may be needed for local or managed identity endpoints, such as `169.254.169.254`,
 that should bypass the proxy.
 
