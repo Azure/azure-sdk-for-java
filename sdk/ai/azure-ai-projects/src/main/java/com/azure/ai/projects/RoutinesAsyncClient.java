@@ -6,7 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.RoutinesImpl;
 import com.azure.ai.projects.implementation.models.CreateOrUpdateRoutineRequest;
 import com.azure.ai.projects.implementation.models.DispatchRoutineAsyncRequest;
-import com.azure.ai.projects.models.DispatchRoutineResponse;
+import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
@@ -923,7 +923,7 @@ public final class RoutinesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DispatchRoutineResponse> dispatchRoutine(String routineName, RoutineDispatchPayload payload) {
+    public Mono<DispatchRoutineResult> dispatchRoutine(String routineName, RoutineDispatchPayload payload) {
         // Generated convenience method for dispatchRoutineWithResponse
         RequestOptions requestOptions = new RequestOptions();
         DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj
@@ -931,7 +931,7 @@ public final class RoutinesAsyncClient {
         BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
         return dispatchRoutineWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResult.class));
     }
 
     /**
@@ -948,13 +948,13 @@ public final class RoutinesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DispatchRoutineResponse> dispatchRoutine(String routineName) {
+    public Mono<DispatchRoutineResult> dispatchRoutine(String routineName) {
         // Generated convenience method for dispatchRoutineWithResponse
         RequestOptions requestOptions = new RequestOptions();
         DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj = new DispatchRoutineAsyncRequest();
         BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
         return dispatchRoutineWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResult.class));
     }
 }

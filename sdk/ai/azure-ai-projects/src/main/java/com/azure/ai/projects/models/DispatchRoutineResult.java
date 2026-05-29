@@ -15,7 +15,7 @@ import java.io.IOException;
  * Identifiers returned after a routine dispatch is queued.
  */
 @Immutable
-public final class DispatchRoutineResponse implements JsonSerializable<DispatchRoutineResponse> {
+public final class DispatchRoutineResult implements JsonSerializable<DispatchRoutineResult> {
 
     /*
      * The dispatch identifier created for the routine dispatch.
@@ -36,10 +36,10 @@ public final class DispatchRoutineResponse implements JsonSerializable<DispatchR
     private String taskId;
 
     /**
-     * Creates an instance of DispatchRoutineResponse class.
+     * Creates an instance of DispatchRoutineResult class.
      */
     @Generated
-    private DispatchRoutineResponse() {
+    private DispatchRoutineResult() {
     }
 
     /**
@@ -86,31 +86,31 @@ public final class DispatchRoutineResponse implements JsonSerializable<DispatchR
     }
 
     /**
-     * Reads an instance of DispatchRoutineResponse from the JsonReader.
+     * Reads an instance of DispatchRoutineResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DispatchRoutineResponse if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of DispatchRoutineResult if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DispatchRoutineResponse.
+     * @throws IOException If an error occurs while reading the DispatchRoutineResult.
      */
     @Generated
-    public static DispatchRoutineResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static DispatchRoutineResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DispatchRoutineResponse deserializedDispatchRoutineResponse = new DispatchRoutineResponse();
+            DispatchRoutineResult deserializedDispatchRoutineResult = new DispatchRoutineResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dispatch_id".equals(fieldName)) {
-                    deserializedDispatchRoutineResponse.dispatchId = reader.getString();
+                    deserializedDispatchRoutineResult.dispatchId = reader.getString();
                 } else if ("action_correlation_id".equals(fieldName)) {
-                    deserializedDispatchRoutineResponse.actionCorrelationId = reader.getString();
+                    deserializedDispatchRoutineResult.actionCorrelationId = reader.getString();
                 } else if ("task_id".equals(fieldName)) {
-                    deserializedDispatchRoutineResponse.taskId = reader.getString();
+                    deserializedDispatchRoutineResult.taskId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedDispatchRoutineResponse;
+            return deserializedDispatchRoutineResult;
         });
     }
 }

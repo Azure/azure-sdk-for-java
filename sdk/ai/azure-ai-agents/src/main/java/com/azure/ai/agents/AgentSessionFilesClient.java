@@ -7,7 +7,7 @@ import com.azure.ai.agents.implementation.AgentSessionFilesImpl;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
-import com.azure.ai.agents.models.SessionFileWriteResponse;
+import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -192,12 +192,12 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResponse uploadSessionFile(String agentName, String agentSessionId, String path,
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
-            .toObject(SessionFileWriteResponse.class);
+            .toObject(SessionFileWriteResult.class);
     }
 
     /**
@@ -266,7 +266,7 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResponse uploadSessionFile(String agentName, String agentSessionId, String path,
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content, AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -277,7 +277,7 @@ public final class AgentSessionFilesClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
-            .toObject(SessionFileWriteResponse.class);
+            .toObject(SessionFileWriteResult.class);
     }
 
     /**

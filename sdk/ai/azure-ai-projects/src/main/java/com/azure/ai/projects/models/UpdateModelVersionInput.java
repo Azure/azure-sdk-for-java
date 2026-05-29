@@ -19,7 +19,7 @@ import java.util.Set;
  * Request body for updating a model version. Only description and tags can be modified.
  */
 @Fluent
-public final class UpdateModelVersionRequest implements JsonSerializable<UpdateModelVersionRequest> {
+public final class UpdateModelVersionInput implements JsonSerializable<UpdateModelVersionInput> {
 
     /*
      * The asset description text.
@@ -49,27 +49,27 @@ public final class UpdateModelVersionRequest implements JsonSerializable<UpdateM
 
     static {
         JsonMergePatchHelper
-            .setUpdateModelVersionRequestAccessor(new JsonMergePatchHelper.UpdateModelVersionRequestAccessor() {
+            .setUpdateModelVersionInputAccessor(new JsonMergePatchHelper.UpdateModelVersionInputAccessor() {
 
                 @Override
-                public UpdateModelVersionRequest prepareModelForJsonMergePatch(UpdateModelVersionRequest model,
+                public UpdateModelVersionInput prepareModelForJsonMergePatch(UpdateModelVersionInput model,
                     boolean jsonMergePatchEnabled) {
                     model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
                     return model;
                 }
 
                 @Override
-                public boolean isJsonMergePatch(UpdateModelVersionRequest model) {
+                public boolean isJsonMergePatch(UpdateModelVersionInput model) {
                     return model.jsonMergePatch;
                 }
             });
     }
 
     /**
-     * Creates an instance of UpdateModelVersionRequest class.
+     * Creates an instance of UpdateModelVersionInput class.
      */
     @Generated
-    public UpdateModelVersionRequest() {
+    public UpdateModelVersionInput() {
     }
 
     /**
@@ -86,10 +86,10 @@ public final class UpdateModelVersionRequest implements JsonSerializable<UpdateM
      * Set the description property: The asset description text.
      *
      * @param description the description value to set.
-     * @return the UpdateModelVersionRequest object itself.
+     * @return the UpdateModelVersionInput object itself.
      */
     @Generated
-    public UpdateModelVersionRequest setDescription(String description) {
+    public UpdateModelVersionInput setDescription(String description) {
         this.description = description;
         this.updatedProperties.add("description");
         return this;
@@ -109,10 +109,10 @@ public final class UpdateModelVersionRequest implements JsonSerializable<UpdateM
      * Set the tags property: Tag dictionary. Tags can be added, removed, and updated.
      *
      * @param tags the tags value to set.
-     * @return the UpdateModelVersionRequest object itself.
+     * @return the UpdateModelVersionInput object itself.
      */
     @Generated
-    public UpdateModelVersionRequest setTags(Map<String, String> tags) {
+    public UpdateModelVersionInput setTags(Map<String, String> tags) {
         this.tags = tags;
         this.updatedProperties.add("tags");
         return this;
@@ -161,30 +161,30 @@ public final class UpdateModelVersionRequest implements JsonSerializable<UpdateM
     }
 
     /**
-     * Reads an instance of UpdateModelVersionRequest from the JsonReader.
+     * Reads an instance of UpdateModelVersionInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UpdateModelVersionRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the UpdateModelVersionRequest.
+     * @return An instance of UpdateModelVersionInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateModelVersionInput.
      */
     @Generated
-    public static UpdateModelVersionRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static UpdateModelVersionInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UpdateModelVersionRequest deserializedUpdateModelVersionRequest = new UpdateModelVersionRequest();
+            UpdateModelVersionInput deserializedUpdateModelVersionInput = new UpdateModelVersionInput();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("description".equals(fieldName)) {
-                    deserializedUpdateModelVersionRequest.description = reader.getString();
+                    deserializedUpdateModelVersionInput.description = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedUpdateModelVersionRequest.tags = tags;
+                    deserializedUpdateModelVersionInput.tags = tags;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedUpdateModelVersionRequest;
+            return deserializedUpdateModelVersionInput;
         });
     }
 }

@@ -18,8 +18,6 @@
 - The Skills API is now versioned. `SkillDetails` was removed and replaced by `Skill` and `SkillVersion`. Use `createSkillVersion` instead of `createSkill`, `createSkillVersionFromFiles` instead of `createSkillFromPackage`, `getSkillContent`/`getSkillVersionContent` instead of `downloadSkill`, and `deleteSkillVersion` for deleting a specific skill version. `updateSkill` now updates the default version only.
 - The `body` parameter on `EvaluationTaxonomiesClient.createEvaluationTaxonomy`, `EvaluationTaxonomiesClient.updateEvaluationTaxonomy`, and their async counterparts was renamed to `taxonomy`.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Regenerated client from the updated TypeSpec specification.

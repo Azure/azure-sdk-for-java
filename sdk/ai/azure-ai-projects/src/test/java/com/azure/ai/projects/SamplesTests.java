@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.FilesFileDetails;
+import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.Skill;
 import com.azure.ai.projects.models.SkillVersion;
@@ -155,7 +155,7 @@ public class SamplesTests extends ClientTestBase {
             zipOutputStream.closeEntry();
         }
 
-        FilesFileDetails fileDetails = new FilesFileDetails(BinaryData.fromBytes(outputStream.toByteArray()))
+        SkillFileDetails fileDetails = new SkillFileDetails(BinaryData.fromBytes(outputStream.toByteArray()))
             .setFilename(SAMPLE_SKILL_NAME + ".zip");
         return new CreateSkillVersionFromFilesBody(Arrays.asList(fileDetails));
     }

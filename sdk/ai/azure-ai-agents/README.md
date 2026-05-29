@@ -518,11 +518,13 @@ See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-
 Connect agents to Fabric IQ project connections for enterprise data grounding:
 
 ```java com.azure.ai.agents.define_fabric_iq
+
 FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
     .setServerLabel("fabric_iq")
     .setRequireApproval("never")
     .setName("fabric_iq_lookup")
     .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+
 ```
 
 See the full sample in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java).
@@ -622,6 +624,7 @@ Toolbox tools are defined in toolbox versions and managed through `ToolboxesClie
 Use `ToolboxSearchPreviewTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
+
 ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool()
     .setName("search_tools")
     .setDescription("Search over available toolbox tools at runtime.");
@@ -639,6 +642,7 @@ System.out.printf("Toolbox version: %s%n", version.getVersion());
 for (Tool tool : version.getTools()) {
     System.out.printf("Tool type: %s%n", tool.getType());
 }
+
 ```
 
 See the full sample in [ToolboxSearchToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ToolboxSearchToolboxSample.java).

@@ -6,7 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.EvaluatorsImpl;
 import com.azure.ai.projects.models.DatasetCredential;
-import com.azure.ai.projects.models.EvaluatorCredentialRequest;
+import com.azure.ai.projects.models.EvaluatorCredentialInput;
 import com.azure.ai.projects.models.EvaluatorGenerationJob;
 import com.azure.ai.projects.models.EvaluatorVersion;
 import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
@@ -980,63 +980,6 @@ public final class EvaluatorsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with an Evaluator version.
-     *
-     * @param name The name parameter.
-     * @param version The specific version id of the EvaluatorVersion to operate on.
-     * @param credentialRequest The credential request parameters.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with an Evaluator version on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetCredential> getCredentials(String name, String version,
-        EvaluatorCredentialRequest credentialRequest, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getCredentialsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
-    }
-
-    /**
-     * Get the SAS credential to access the storage account associated with an Evaluator version.
-     *
-     * @param name The name parameter.
-     * @param version The specific version id of the EvaluatorVersion to operate on.
-     * @param credentialRequest The credential request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with an Evaluator version on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetCredential> getCredentials(String name, String version,
-        EvaluatorCredentialRequest credentialRequest) {
-        // Generated convenience method for getCredentialsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
-    }
-
-    /**
      * Creates an evaluator generation job.
      *
      * Creates an evaluator generation job. The service generates rubric-based evaluator
@@ -1978,5 +1921,62 @@ public final class EvaluatorsAsyncClient {
         // Generated convenience method for deleteEvaluatorGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteEvaluatorGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with an Evaluator version on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatasetCredential> getCredentials(String name, String version,
+        EvaluatorCredentialInput credentialRequest, FoundryFeaturesOptInKeys foundryFeatures) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
+    }
+
+    /**
+     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     *
+     * @param name The name parameter.
+     * @param version The specific version id of the EvaluatorVersion to operate on.
+     * @param credentialRequest The credential request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAS credential to access the storage account associated with an Evaluator version on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatasetCredential> getCredentials(String name, String version,
+        EvaluatorCredentialInput credentialRequest) {
+        // Generated convenience method for getCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DatasetCredential.class));
     }
 }

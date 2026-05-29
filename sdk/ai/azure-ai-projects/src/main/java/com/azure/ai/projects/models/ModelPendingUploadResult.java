@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents the response for a model pending upload request.
  */
 @Immutable
-public final class ModelPendingUploadResponse implements JsonSerializable<ModelPendingUploadResponse> {
+public final class ModelPendingUploadResult implements JsonSerializable<ModelPendingUploadResult> {
 
     /*
      * Container-level read, write, list SAS.
@@ -42,13 +42,13 @@ public final class ModelPendingUploadResponse implements JsonSerializable<ModelP
     private final PendingUploadType pendingUploadType = PendingUploadType.TEMPORARY_BLOB_REFERENCE;
 
     /**
-     * Creates an instance of ModelPendingUploadResponse class.
+     * Creates an instance of ModelPendingUploadResult class.
      *
      * @param blobReference the blobReference value to set.
      * @param pendingUploadId the pendingUploadId value to set.
      */
     @Generated
-    private ModelPendingUploadResponse(BlobReference blobReference, String pendingUploadId) {
+    private ModelPendingUploadResult(BlobReference blobReference, String pendingUploadId) {
         this.blobReference = blobReference;
         this.pendingUploadId = pendingUploadId;
     }
@@ -111,16 +111,16 @@ public final class ModelPendingUploadResponse implements JsonSerializable<ModelP
     }
 
     /**
-     * Reads an instance of ModelPendingUploadResponse from the JsonReader.
+     * Reads an instance of ModelPendingUploadResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ModelPendingUploadResponse if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of ModelPendingUploadResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ModelPendingUploadResponse.
+     * @throws IOException If an error occurs while reading the ModelPendingUploadResult.
      */
     @Generated
-    public static ModelPendingUploadResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static ModelPendingUploadResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BlobReference blobReference = null;
             String pendingUploadId = null;
@@ -138,10 +138,10 @@ public final class ModelPendingUploadResponse implements JsonSerializable<ModelP
                     reader.skipChildren();
                 }
             }
-            ModelPendingUploadResponse deserializedModelPendingUploadResponse
-                = new ModelPendingUploadResponse(blobReference, pendingUploadId);
-            deserializedModelPendingUploadResponse.version = version;
-            return deserializedModelPendingUploadResponse;
+            ModelPendingUploadResult deserializedModelPendingUploadResult
+                = new ModelPendingUploadResult(blobReference, pendingUploadId);
+            deserializedModelPendingUploadResult.version = version;
+            return deserializedModelPendingUploadResult;
         });
     }
 }

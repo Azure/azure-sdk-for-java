@@ -18,7 +18,7 @@ import java.time.ZoneOffset;
  * Response after successfully promoting a candidate.
  */
 @Immutable
-public final class PromoteCandidateResponse implements JsonSerializable<PromoteCandidateResponse> {
+public final class PromoteCandidateResult implements JsonSerializable<PromoteCandidateResult> {
 
     /*
      * The promoted candidate id.
@@ -51,7 +51,7 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
     private final String agentVersion;
 
     /**
-     * Creates an instance of PromoteCandidateResponse class.
+     * Creates an instance of PromoteCandidateResult class.
      *
      * @param candidateId the candidateId value to set.
      * @param status the status value to set.
@@ -60,7 +60,7 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
      * @param agentVersion the agentVersion value to set.
      */
     @Generated
-    private PromoteCandidateResponse(String candidateId, String status, OffsetDateTime promotedAt, String agentName,
+    private PromoteCandidateResult(String candidateId, String status, OffsetDateTime promotedAt, String agentName,
         String agentVersion) {
         this.candidateId = candidateId;
         this.status = status;
@@ -139,16 +139,16 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
     }
 
     /**
-     * Reads an instance of PromoteCandidateResponse from the JsonReader.
+     * Reads an instance of PromoteCandidateResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PromoteCandidateResponse if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of PromoteCandidateResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PromoteCandidateResponse.
+     * @throws IOException If an error occurs while reading the PromoteCandidateResult.
      */
     @Generated
-    public static PromoteCandidateResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static PromoteCandidateResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String candidateId = null;
             String status = null;
@@ -172,7 +172,7 @@ public final class PromoteCandidateResponse implements JsonSerializable<PromoteC
                     reader.skipChildren();
                 }
             }
-            return new PromoteCandidateResponse(candidateId, status, promotedAt, agentName, agentVersion);
+            return new PromoteCandidateResult(candidateId, status, promotedAt, agentName, agentVersion);
         });
     }
 }

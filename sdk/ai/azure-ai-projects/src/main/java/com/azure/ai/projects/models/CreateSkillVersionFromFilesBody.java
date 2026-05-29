@@ -19,7 +19,7 @@ public final class CreateSkillVersionFromFilesBody {
      * Skill files to upload. Upload a single zip file or multiple individual files with relative paths.
      */
     @Generated
-    private final List<FilesFileDetails> files;
+    private final List<SkillFileDetails> files;
 
     /*
      * Whether to set this version as the default. Defaults to false.
@@ -33,7 +33,7 @@ public final class CreateSkillVersionFromFilesBody {
      * @param files the files value to set.
      */
     @Generated
-    public CreateSkillVersionFromFilesBody(List<FilesFileDetails> files) {
+    public CreateSkillVersionFromFilesBody(List<SkillFileDetails> files) {
         this.files = files;
     }
 
@@ -44,7 +44,7 @@ public final class CreateSkillVersionFromFilesBody {
      * @return the files value.
      */
     @Generated
-    public List<FilesFileDetails> getFiles() {
+    public List<SkillFileDetails> getFiles() {
         return this.files;
     }
 

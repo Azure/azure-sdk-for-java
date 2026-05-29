@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents a request for a pending upload of a model version.
  */
 @Fluent
-public final class ModelPendingUploadRequest implements JsonSerializable<ModelPendingUploadRequest> {
+public final class ModelPendingUploadInput implements JsonSerializable<ModelPendingUploadInput> {
 
     /*
      * If PendingUploadId is not provided, a random GUID will be used.
@@ -36,10 +36,10 @@ public final class ModelPendingUploadRequest implements JsonSerializable<ModelPe
     private final PendingUploadType pendingUploadType = PendingUploadType.TEMPORARY_BLOB_REFERENCE;
 
     /**
-     * Creates an instance of ModelPendingUploadRequest class.
+     * Creates an instance of ModelPendingUploadInput class.
      */
     @Generated
-    public ModelPendingUploadRequest() {
+    public ModelPendingUploadInput() {
     }
 
     /**
@@ -56,10 +56,10 @@ public final class ModelPendingUploadRequest implements JsonSerializable<ModelPe
      * Set the pendingUploadId property: If PendingUploadId is not provided, a random GUID will be used.
      *
      * @param pendingUploadId the pendingUploadId value to set.
-     * @return the ModelPendingUploadRequest object itself.
+     * @return the ModelPendingUploadInput object itself.
      */
     @Generated
-    public ModelPendingUploadRequest setPendingUploadId(String pendingUploadId) {
+    public ModelPendingUploadInput setPendingUploadId(String pendingUploadId) {
         this.pendingUploadId = pendingUploadId;
         return this;
     }
@@ -78,10 +78,10 @@ public final class ModelPendingUploadRequest implements JsonSerializable<ModelPe
      * Set the connectionName property: Azure Storage Account connection name to use for generating temporary SAS token.
      *
      * @param connectionName the connectionName value to set.
-     * @return the ModelPendingUploadRequest object itself.
+     * @return the ModelPendingUploadInput object itself.
      */
     @Generated
-    public ModelPendingUploadRequest setConnectionName(String connectionName) {
+    public ModelPendingUploadInput setConnectionName(String connectionName) {
         this.connectionName = connectionName;
         return this;
     }
@@ -112,30 +112,30 @@ public final class ModelPendingUploadRequest implements JsonSerializable<ModelPe
     }
 
     /**
-     * Reads an instance of ModelPendingUploadRequest from the JsonReader.
+     * Reads an instance of ModelPendingUploadInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ModelPendingUploadRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of ModelPendingUploadInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ModelPendingUploadRequest.
+     * @throws IOException If an error occurs while reading the ModelPendingUploadInput.
      */
     @Generated
-    public static ModelPendingUploadRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ModelPendingUploadInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ModelPendingUploadRequest deserializedModelPendingUploadRequest = new ModelPendingUploadRequest();
+            ModelPendingUploadInput deserializedModelPendingUploadInput = new ModelPendingUploadInput();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("pendingUploadId".equals(fieldName)) {
-                    deserializedModelPendingUploadRequest.pendingUploadId = reader.getString();
+                    deserializedModelPendingUploadInput.pendingUploadId = reader.getString();
                 } else if ("connectionName".equals(fieldName)) {
-                    deserializedModelPendingUploadRequest.connectionName = reader.getString();
+                    deserializedModelPendingUploadInput.connectionName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedModelPendingUploadRequest;
+            return deserializedModelPendingUploadInput;
         });
     }
 }

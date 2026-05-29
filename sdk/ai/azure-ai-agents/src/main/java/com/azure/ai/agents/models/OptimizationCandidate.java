@@ -62,18 +62,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     @Generated
     private final boolean isParetoOptimal;
 
-    /*
-     * Foundry evaluation identifier used to score this candidate.
-     */
-    @Generated
-    private String evalId;
-
-    /*
-     * Foundry evaluation run identifier for this candidate's scoring run.
-     */
-    @Generated
-    private String evalRunId;
-
     /**
      * Get the candidateId property: Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
      *
@@ -145,26 +133,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the evalId property: Foundry evaluation identifier used to score this candidate.
-     *
-     * @return the evalId value.
-     */
-    @Generated
-    public String getEvalId() {
-        return this.evalId;
-    }
-
-    /**
-     * Get the evalRunId property: Foundry evaluation run identifier for this candidate's scoring run.
-     *
-     * @return the evalRunId value.
-     */
-    @Generated
-    public String getEvalRunId() {
-        return this.evalRunId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -186,8 +154,8 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
         jsonWriter.writeArrayField("task_scores", this.taskScores, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("is_pareto_optimal", this.isParetoOptimal);
         jsonWriter.writeStringField("candidate_id", this.candidateId);
-        jsonWriter.writeStringField("eval_id", this.evalId);
-        jsonWriter.writeStringField("eval_run_id", this.evalRunId);
+        jsonWriter.writeStringField("eval_id", this.evaluationId);
+        jsonWriter.writeStringField("eval_run_id", this.evaluationRunId);
         jsonWriter.writeJsonField("promotion", this.promotion);
         return jsonWriter.writeEndObject();
     }
@@ -213,8 +181,8 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
             List<OptimizationTaskResult> taskScores = null;
             boolean isParetoOptimal = false;
             String candidateId = null;
-            String evalId = null;
-            String evalRunId = null;
+            String evaluationId = null;
+            String evaluationRunId = null;
             PromotionInfo promotion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -239,9 +207,9 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 } else if ("candidate_id".equals(fieldName)) {
                     candidateId = reader.getString();
                 } else if ("eval_id".equals(fieldName)) {
-                    evalId = reader.getString();
+                    evaluationId = reader.getString();
                 } else if ("eval_run_id".equals(fieldName)) {
-                    evalRunId = reader.getString();
+                    evaluationRunId = reader.getString();
                 } else if ("promotion".equals(fieldName)) {
                     promotion = PromotionInfo.fromJson(reader);
                 } else {
@@ -251,8 +219,8 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
             OptimizationCandidate deserializedOptimizationCandidate = new OptimizationCandidate(name, config, mutations,
                 averageScore, averageTokens, passRate, taskScores, isParetoOptimal);
             deserializedOptimizationCandidate.candidateId = candidateId;
-            deserializedOptimizationCandidate.evalId = evalId;
-            deserializedOptimizationCandidate.evalRunId = evalRunId;
+            deserializedOptimizationCandidate.evaluationId = evaluationId;
+            deserializedOptimizationCandidate.evaluationRunId = evaluationRunId;
             deserializedOptimizationCandidate.promotion = promotion;
             return deserializedOptimizationCandidate;
         });
@@ -330,5 +298,37 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     @Generated
     public double getAverageTokens() {
         return this.averageTokens;
+    }
+
+    /*
+     * Foundry evaluation identifier used to score this candidate.
+     */
+    @Generated
+    private String evaluationId;
+
+    /*
+     * Foundry evaluation run identifier for this candidate's scoring run.
+     */
+    @Generated
+    private String evaluationRunId;
+
+    /**
+     * Get the evaluationId property: Foundry evaluation identifier used to score this candidate.
+     *
+     * @return the evaluationId value.
+     */
+    @Generated
+    public String getEvaluationId() {
+        return this.evaluationId;
+    }
+
+    /**
+     * Get the evaluationRunId property: Foundry evaluation run identifier for this candidate's scoring run.
+     *
+     * @return the evaluationRunId value.
+     */
+    @Generated
+    public String getEvaluationRunId() {
+        return this.evaluationRunId;
     }
 }

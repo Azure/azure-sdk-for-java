@@ -7,7 +7,7 @@ import com.azure.ai.agents.implementation.AgentSessionFilesImpl;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
-import com.azure.ai.agents.models.SessionFileWriteResponse;
+import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -199,13 +199,13 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
+    public Mono<SessionFileWriteResult> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResult.class));
     }
 
     /**
@@ -276,7 +276,7 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
+    public Mono<SessionFileWriteResult> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content, AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -288,7 +288,7 @@ public final class AgentSessionFilesAsyncClient {
         }
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResult.class));
     }
 
     /**

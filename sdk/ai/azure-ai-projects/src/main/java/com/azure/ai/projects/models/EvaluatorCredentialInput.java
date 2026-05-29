@@ -12,19 +12,36 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Request to fetch credentials for a model asset.
+ * Request body for getting evaluator credentials.
  */
 @Immutable
-public final class ModelCredentialRequest implements JsonSerializable<ModelCredentialRequest> {
+public final class EvaluatorCredentialInput implements JsonSerializable<EvaluatorCredentialInput> {
+
+    /*
+     * The blob URI for the evaluator storage. Example: `https://account.blob.core.windows.net:443/container`
+     */
+    @Generated
+    private final String blobUrl;
 
     /**
-     * Creates an instance of ModelCredentialRequest class.
+     * Creates an instance of EvaluatorCredentialInput class.
      *
      * @param blobUrl the blobUrl value to set.
      */
     @Generated
-    public ModelCredentialRequest(String blobUrl) {
+    public EvaluatorCredentialInput(String blobUrl) {
         this.blobUrl = blobUrl;
+    }
+
+    /**
+     * Get the blobUrl property: The blob URI for the evaluator storage. Example:
+     * `https://account.blob.core.windows.net:443/container`.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 
     /**
@@ -34,49 +51,33 @@ public final class ModelCredentialRequest implements JsonSerializable<ModelCrede
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("blobUri", this.blobUrl);
+        jsonWriter.writeStringField("blob_uri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ModelCredentialRequest from the JsonReader.
+     * Reads an instance of EvaluatorCredentialInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ModelCredentialRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of EvaluatorCredentialInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ModelCredentialRequest.
+     * @throws IOException If an error occurs while reading the EvaluatorCredentialInput.
      */
     @Generated
-    public static ModelCredentialRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluatorCredentialInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String blobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("blobUri".equals(fieldName)) {
+                if ("blob_uri".equals(fieldName)) {
                     blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ModelCredentialRequest(blobUrl);
+            return new EvaluatorCredentialInput(blobUrl);
         });
-    }
-
-    /*
-     * Blob URI of the model asset to fetch credentials for.
-     */
-    @Generated
-    private final String blobUrl;
-
-    /**
-     * Get the blobUrl property: Blob URI of the model asset to fetch credentials for.
-     *
-     * @return the blobUrl value.
-     */
-    @Generated
-    public String getBlobUrl() {
-        return this.blobUrl;
     }
 }

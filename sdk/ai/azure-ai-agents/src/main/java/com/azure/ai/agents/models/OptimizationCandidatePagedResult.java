@@ -16,8 +16,7 @@ import java.util.List;
  * The response data for a requested list of items.
  */
 @Immutable
-public final class AgentsPagedResultOptimizationCandidate
-    implements JsonSerializable<AgentsPagedResultOptimizationCandidate> {
+public final class OptimizationCandidatePagedResult implements JsonSerializable<OptimizationCandidatePagedResult> {
 
     /*
      * The requested list of items.
@@ -44,13 +43,13 @@ public final class AgentsPagedResultOptimizationCandidate
     private final boolean hasMore;
 
     /**
-     * Creates an instance of AgentsPagedResultOptimizationCandidate class.
+     * Creates an instance of OptimizationCandidatePagedResult class.
      *
      * @param data the data value to set.
      * @param hasMore the hasMore value to set.
      */
     @Generated
-    private AgentsPagedResultOptimizationCandidate(List<OptimizationCandidate> data, boolean hasMore) {
+    private OptimizationCandidatePagedResult(List<OptimizationCandidate> data, boolean hasMore) {
         this.data = data;
         this.hasMore = hasMore;
     }
@@ -111,16 +110,16 @@ public final class AgentsPagedResultOptimizationCandidate
     }
 
     /**
-     * Reads an instance of AgentsPagedResultOptimizationCandidate from the JsonReader.
+     * Reads an instance of OptimizationCandidatePagedResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AgentsPagedResultOptimizationCandidate if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of OptimizationCandidatePagedResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AgentsPagedResultOptimizationCandidate.
+     * @throws IOException If an error occurs while reading the OptimizationCandidatePagedResult.
      */
     @Generated
-    public static AgentsPagedResultOptimizationCandidate fromJson(JsonReader jsonReader) throws IOException {
+    public static OptimizationCandidatePagedResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<OptimizationCandidate> data = null;
             boolean hasMore = false;
@@ -141,11 +140,11 @@ public final class AgentsPagedResultOptimizationCandidate
                     reader.skipChildren();
                 }
             }
-            AgentsPagedResultOptimizationCandidate deserializedAgentsPagedResultOptimizationCandidate
-                = new AgentsPagedResultOptimizationCandidate(data, hasMore);
-            deserializedAgentsPagedResultOptimizationCandidate.firstId = firstId;
-            deserializedAgentsPagedResultOptimizationCandidate.lastId = lastId;
-            return deserializedAgentsPagedResultOptimizationCandidate;
+            OptimizationCandidatePagedResult deserializedOptimizationCandidatePagedResult
+                = new OptimizationCandidatePagedResult(data, hasMore);
+            deserializedOptimizationCandidatePagedResult.firstId = firstId;
+            deserializedOptimizationCandidatePagedResult.lastId = lastId;
+            return deserializedOptimizationCandidatePagedResult;
         });
     }
 }

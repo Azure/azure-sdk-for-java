@@ -51,7 +51,7 @@ import com.azure.core.util.BinaryData;
  * is overridden, as shown in the examples below.
  */
 @Fluent
-public final class FilesFileDetails {
+public final class SkillFileDetails {
 
     /*
      * The content of the file.
@@ -72,12 +72,12 @@ public final class FilesFileDetails {
     private String contentType = "application/octet-stream";
 
     /**
-     * Creates an instance of FilesFileDetails class.
+     * Creates an instance of SkillFileDetails class.
      *
      * @param content the content value to set.
      */
     @Generated
-    public FilesFileDetails(BinaryData content) {
+    public SkillFileDetails(BinaryData content) {
         this.content = content;
     }
 
@@ -105,10 +105,10 @@ public final class FilesFileDetails {
      * Set the filename property: The filename of the file.
      *
      * @param filename the filename value to set.
-     * @return the FilesFileDetails object itself.
+     * @return the SkillFileDetails object itself.
      */
     @Generated
-    public FilesFileDetails setFilename(String filename) {
+    public SkillFileDetails setFilename(String filename) {
         this.filename = filename;
         return this;
     }
@@ -127,10 +127,10 @@ public final class FilesFileDetails {
      * Set the contentType property: The content-type of the file.
      *
      * @param contentType the contentType value to set.
-     * @return the FilesFileDetails object itself.
+     * @return the SkillFileDetails object itself.
      */
     @Generated
-    public FilesFileDetails setContentType(String contentType) {
+    public SkillFileDetails setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

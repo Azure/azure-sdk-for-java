@@ -9,8 +9,8 @@ import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.FilesFileDetails;
 import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.SkillInlineContent;
 import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.annotation.Generated;
@@ -679,9 +679,9 @@ public final class SkillsAsyncClient {
         return createSkillVersionFromFilesWithResponse(name,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileFields("files",
-                    content.getFiles().stream().map(FilesFileDetails::getContent).collect(Collectors.toList()),
-                    content.getFiles().stream().map(FilesFileDetails::getContentType).collect(Collectors.toList()),
-                    content.getFiles().stream().map(FilesFileDetails::getFilename).collect(Collectors.toList()))
+                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
                 .serializeTextField("default", Objects.toString(content.isDefaultProperty()))
                 .end()
                 .getRequestBody(),

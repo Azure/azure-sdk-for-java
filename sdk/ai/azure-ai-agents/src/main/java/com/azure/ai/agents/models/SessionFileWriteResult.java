@@ -15,7 +15,7 @@ import java.io.IOException;
  * Response from uploading a file to a session sandbox.
  */
 @Immutable
-public final class SessionFileWriteResponse implements JsonSerializable<SessionFileWriteResponse> {
+public final class SessionFileWriteResult implements JsonSerializable<SessionFileWriteResult> {
 
     /*
      * The path where the file was written, relative to the session home directory.
@@ -30,13 +30,13 @@ public final class SessionFileWriteResponse implements JsonSerializable<SessionF
     private final long bytesWritten;
 
     /**
-     * Creates an instance of SessionFileWriteResponse class.
+     * Creates an instance of SessionFileWriteResult class.
      *
      * @param path the path value to set.
      * @param bytesWritten the bytesWritten value to set.
      */
     @Generated
-    private SessionFileWriteResponse(String path, long bytesWritten) {
+    private SessionFileWriteResult(String path, long bytesWritten) {
         this.path = path;
         this.bytesWritten = bytesWritten;
     }
@@ -74,16 +74,16 @@ public final class SessionFileWriteResponse implements JsonSerializable<SessionF
     }
 
     /**
-     * Reads an instance of SessionFileWriteResponse from the JsonReader.
+     * Reads an instance of SessionFileWriteResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SessionFileWriteResponse if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of SessionFileWriteResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SessionFileWriteResponse.
+     * @throws IOException If an error occurs while reading the SessionFileWriteResult.
      */
     @Generated
-    public static SessionFileWriteResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static SessionFileWriteResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String path = null;
             long bytesWritten = 0L;
@@ -98,7 +98,7 @@ public final class SessionFileWriteResponse implements JsonSerializable<SessionF
                     reader.skipChildren();
                 }
             }
-            return new SessionFileWriteResponse(path, bytesWritten);
+            return new SessionFileWriteResult(path, bytesWritten);
         });
     }
 }

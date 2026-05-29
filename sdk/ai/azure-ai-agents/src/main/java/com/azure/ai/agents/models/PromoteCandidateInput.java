@@ -15,7 +15,7 @@ import java.io.IOException;
  * Request body for promoting a candidate to a Foundry agent version.
  */
 @Immutable
-public final class PromoteCandidateRequest implements JsonSerializable<PromoteCandidateRequest> {
+public final class PromoteCandidateInput implements JsonSerializable<PromoteCandidateInput> {
 
     /*
      * Name of the Foundry agent to promote to.
@@ -30,13 +30,13 @@ public final class PromoteCandidateRequest implements JsonSerializable<PromoteCa
     private final String agentVersion;
 
     /**
-     * Creates an instance of PromoteCandidateRequest class.
+     * Creates an instance of PromoteCandidateInput class.
      *
      * @param agentName the agentName value to set.
      * @param agentVersion the agentVersion value to set.
      */
     @Generated
-    public PromoteCandidateRequest(String agentName, String agentVersion) {
+    public PromoteCandidateInput(String agentName, String agentVersion) {
         this.agentName = agentName;
         this.agentVersion = agentVersion;
     }
@@ -74,16 +74,16 @@ public final class PromoteCandidateRequest implements JsonSerializable<PromoteCa
     }
 
     /**
-     * Reads an instance of PromoteCandidateRequest from the JsonReader.
+     * Reads an instance of PromoteCandidateInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PromoteCandidateRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of PromoteCandidateInput if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PromoteCandidateRequest.
+     * @throws IOException If an error occurs while reading the PromoteCandidateInput.
      */
     @Generated
-    public static PromoteCandidateRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static PromoteCandidateInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String agentName = null;
             String agentVersion = null;
@@ -98,7 +98,7 @@ public final class PromoteCandidateRequest implements JsonSerializable<PromoteCa
                     reader.skipChildren();
                 }
             }
-            return new PromoteCandidateRequest(agentName, agentVersion);
+            return new PromoteCandidateInput(agentName, agentVersion);
         });
     }
 }
