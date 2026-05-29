@@ -4,11 +4,19 @@
 
 ### Features Added
 
+- Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
+
+### Other Changes
+
+- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Re-enabled `SessionLogSyncTest` and `SessionLogAsyncTest`; both tests are recordable via `@RecordWithoutRequestBody` and run live against the configured Foundry project.
 
 ## 2.1.0-beta.1 (2026-05-12)
 
@@ -17,7 +25,7 @@
 - Added new `ToolboxesClient` and `ToolboxesAsyncClient` sub-clients (preview, opt-in via `FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW`) for managing toolboxes and toolbox versions, with operations including `createToolboxVersion`, `getToolbox`, `getToolboxVersion`, `listToolboxes`, `listToolboxVersions`, `updateToolbox`, `deleteToolbox`, and `deleteToolboxVersion`. New `buildToolboxesClient()` and `buildToolboxesAsyncClient()` methods on `AgentsClientBuilder`.
 - Added new `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` sub-clients for working with files in an agent session, with `uploadSessionFile`, `downloadSessionFile`, `getSessionFiles`, and `deleteSessionFile`. New `buildAgentSessionFilesClient()` and `buildAgentSessionFilesAsyncClient()` methods on `AgentsClientBuilder`.
 - Added `buildAgentScopedOpenAIClient(String agentName)` and `buildAgentScopedOpenAIAsyncClient(String agentName)` to `AgentsClientBuilder` for constructing OpenAI clients targeting a specific agent's endpoint (base URL `{endpoint}/agents/{agentName}/endpoint/protocols/openai`). The default `buildOpenAIClient()` / `buildOpenAIAsyncClient()` continue to target `{endpoint}/openai/v1`.
-- Added agent-session operations to `AgentsClient` and `AgentsAsyncClient`: `createSession`, `getSession`, `deleteSession`, `listSessions`, and `getSessionLogStreamWithResponse`. New related models: `AgentSessionResource`, `AgentSessionStatus`, `SessionDirectoryEntry`, `SessionDirectoryListResponse`, `SessionFileWriteResponse`, `SessionLogEvent`, `SessionLogEventType`, `IsolationKeySource` (with `Kind`), `EntraIsolationKeySource`, and `HeaderIsolationKeySource`.
+- Added agent-session operations to `AgentsClient` and `AgentsAsyncClient`: `createSession`, `getSession`, `deleteSession`, `listSessions`, and `getSessionLogStreamWithResponse`. Added typed session log streaming convenience methods: `AgentsClient.getSessionLogStream(...)`, and `AgentsAsyncClient.getSessionLogStream(...)`, returning `SessionLogEvent`. New related models: `AgentSessionResource`, `AgentSessionStatus`, `SessionDirectoryEntry`, `SessionDirectoryListResponse`, `SessionFileWriteResponse`, `SessionLogEvent`, `SessionLogEventType`, `IsolationKeySource` (with `Kind`), `EntraIsolationKeySource`, and `HeaderIsolationKeySource`.
 - Added `updateAgentDetails(String, UpdateAgentDetailsPatchRequest, ...)` and `updateAgentDetailsWithResponse` on `AgentsClient`/`AgentsAsyncClient` for patching agent details, plus new `UpdateAgentDetailsPatchRequest` model.
 - Added new agent-endpoint and identity model types for hosted agents: `AgentEndpoint`, `AgentEndpointProtocol`, `AgentEndpointAuthorizationScheme` (with `Type`), `EntraAuthorizationScheme`, `BotServiceAuthorizationScheme`, `BotServiceRbacAuthorizationScheme`, `AgentIdentity`, `AgentBlueprintReference` (with `Type`), `ManagedAgentIdentityBlueprintReference`, `AgentCard`, and `AgentCardSkill`. `AgentDetails` now exposes `getAgentEndpoint`, `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentCard`. `AgentVersionDetails` now exposes `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentGuid`.
 - Added agent-versioning model types: `VersionIndicator` (with `Type`), `VersionRefIndicator`, `VersionSelector` (with `Type`), `VersionSelectionRule`, `FixedRatioVersionSelectionRule`, and `CreateAgentVersionInput`.
@@ -35,6 +43,7 @@
 ### Other Changes
 
 - Regenerated client from the updated TypeSpec specification.
+- Added README examples for synchronous and asynchronous hosted agent session log streaming.
 
 ## 2.0.1 (2026-04-16)
 

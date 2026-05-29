@@ -9,7 +9,6 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -58,13 +57,12 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
             String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-            AgentDetails agent = agentsClient.createAgentFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentFromCodeContent(codeZip),
+            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
                 AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
-            Assertions.assertNotNull(agent);
-            Assertions.assertEquals(agentName, agent.getName());
-            Assertions.assertNotNull(agent.getVersions());
-            Assertions.assertNotNull(agent.getVersions().getLatest());
+            Assertions.assertNotNull(version);
+            Assertions.assertEquals(agentName, version.getName());
+            Assertions.assertNotNull(version.getVersion());
 
             BinaryData downloadedCode
                 = agentsClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
@@ -102,14 +100,13 @@ public class CodeAgentSamplesTests extends ClientTestBase {
 
         Mono<Void> testFlow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-            .then(agentsAsyncClient.createAgentFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentFromCodeContent(codeZip),
+            .then(agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
                 AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW))
-            .flatMap(agent -> {
-                Assertions.assertNotNull(agent);
-                Assertions.assertEquals(agentName, agent.getName());
-                Assertions.assertNotNull(agent.getVersions());
-                Assertions.assertNotNull(agent.getVersions().getLatest());
+            .flatMap(version -> {
+                Assertions.assertNotNull(version);
+                Assertions.assertEquals(agentName, version.getName());
+                Assertions.assertNotNull(version.getVersion());
 
                 return agentsAsyncClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW,
                     null);

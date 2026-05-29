@@ -5,7 +5,8 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentSessionFilesImpl;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.SessionDirectoryListResponse;
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.ai.agents.models.SessionFileWriteResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -16,10 +17,15 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -50,7 +56,7 @@ public final class AgentSessionFilesAsyncClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
      * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
@@ -103,7 +109,7 @@ public final class AgentSessionFilesAsyncClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
      * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
@@ -151,7 +157,7 @@ public final class AgentSessionFilesAsyncClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
      * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
@@ -360,13 +366,36 @@ public final class AgentSessionFilesAsyncClient {
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
      * "ExternalAgents=V1Preview".</td></tr>
      * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
      * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
@@ -377,93 +406,138 @@ public final class AgentSessionFilesAsyncClient {
      * <pre>
      * {@code
      * {
-     *     path: String (Required)
-     *     entries (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             size: long (Required)
-     *             is_directory: boolean (Required)
-     *             modified_time: long (Required)
-     *         }
-     *     ]
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from listing a directory in a session sandbox along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionFilesWithResponse(String agentName, String agentSessionId, String path,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listSessionFiles(String agentName, String agentSessionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSessionFilesWithResponseAsync(agentName, agentSessionId, path, requestOptions);
+        return this.serviceClient.listSessionFilesAsync(agentName, agentSessionId, requestOptions);
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
+     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
+     * not provided.
      * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
      * conversations, sessions) to a specific end user.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path,
-        AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
-        // Generated convenience method for getSessionFilesWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId,
+        AgentDefinitionOptInKeys foundryFeatures, String path, String userIsolationKey, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
+        if (path != null) {
+            requestOptions.addQueryParam("path", path, false);
+        }
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, agentSessionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SessionDirectoryEntry>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryEntry.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox on successful completion of {@link Mono}.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionDirectoryListResponse> getSessionFiles(String agentName, String agentSessionId, String path) {
-        // Generated convenience method for getSessionFilesWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId) {
+        // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
-        return getSessionFilesWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryListResponse.class));
+        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, agentSessionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SessionDirectoryEntry>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryEntry.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 }

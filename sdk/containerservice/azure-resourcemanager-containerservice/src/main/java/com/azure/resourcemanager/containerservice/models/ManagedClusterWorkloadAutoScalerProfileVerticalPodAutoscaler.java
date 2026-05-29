@@ -22,6 +22,11 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
      */
     private boolean enabled;
 
+    /*
+     * Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
+     */
+    private AddonAutoscaling addonAutoscaling;
+
     /**
      * Creates an instance of ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler class.
      */
@@ -49,6 +54,27 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     }
 
     /**
+     * Get the addonAutoscaling property: Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
+     * 
+     * @return the addonAutoscaling value.
+     */
+    public AddonAutoscaling addonAutoscaling() {
+        return this.addonAutoscaling;
+    }
+
+    /**
+     * Set the addonAutoscaling property: Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
+     * 
+     * @param addonAutoscaling the addonAutoscaling value to set.
+     * @return the ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler object itself.
+     */
+    public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
+        withAddonAutoscaling(AddonAutoscaling addonAutoscaling) {
+        this.addonAutoscaling = addonAutoscaling;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +89,8 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("addonAutoscaling",
+            this.addonAutoscaling == null ? null : this.addonAutoscaling.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -88,6 +116,9 @@ public final class ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler.enabled
                         = reader.getBoolean();
+                } else if ("addonAutoscaling".equals(fieldName)) {
+                    deserializedManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler.addonAutoscaling
+                        = AddonAutoscaling.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

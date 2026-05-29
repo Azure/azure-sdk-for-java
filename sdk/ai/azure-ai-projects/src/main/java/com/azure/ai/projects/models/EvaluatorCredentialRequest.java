@@ -17,31 +17,14 @@ import java.io.IOException;
 @Immutable
 public final class EvaluatorCredentialRequest implements JsonSerializable<EvaluatorCredentialRequest> {
 
-    /*
-     * The blob URI for the evaluator storage. Example: `https://account.blob.core.windows.net:443/container`
-     */
-    @Generated
-    private final String blobUri;
-
     /**
      * Creates an instance of EvaluatorCredentialRequest class.
      *
-     * @param blobUri the blobUri value to set.
+     * @param blobUrl the blobUrl value to set.
      */
     @Generated
-    public EvaluatorCredentialRequest(String blobUri) {
-        this.blobUri = blobUri;
-    }
-
-    /**
-     * Get the blobUri property: The blob URI for the evaluator storage. Example:
-     * `https://account.blob.core.windows.net:443/container`.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
+    public EvaluatorCredentialRequest(String blobUrl) {
+        this.blobUrl = blobUrl;
     }
 
     /**
@@ -51,7 +34,7 @@ public final class EvaluatorCredentialRequest implements JsonSerializable<Evalua
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("blob_uri", this.blobUri);
+        jsonWriter.writeStringField("blob_uri", this.blobUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -67,17 +50,34 @@ public final class EvaluatorCredentialRequest implements JsonSerializable<Evalua
     @Generated
     public static EvaluatorCredentialRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String blobUri = null;
+            String blobUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("blob_uri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new EvaluatorCredentialRequest(blobUri);
+            return new EvaluatorCredentialRequest(blobUrl);
         });
+    }
+
+    /*
+     * The blob URI for the evaluator storage. Example: `https://account.blob.core.windows.net:443/container`
+     */
+    @Generated
+    private final String blobUrl;
+
+    /**
+     * Get the blobUrl property: The blob URI for the evaluator storage. Example:
+     * `https://account.blob.core.windows.net:443/container`.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }

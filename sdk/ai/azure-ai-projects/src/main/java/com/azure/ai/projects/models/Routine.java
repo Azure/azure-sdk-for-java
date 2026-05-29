@@ -25,7 +25,7 @@ public final class Routine implements JsonSerializable<Routine> {
      * The routine name.
      */
     @Generated
-    private final String name;
+    private String name;
 
     /*
      * A human-readable description of the routine.
@@ -43,13 +43,13 @@ public final class Routine implements JsonSerializable<Routine> {
      * The triggers configured for the routine.
      */
     @Generated
-    private final Map<String, RoutineTrigger> triggers;
+    private Map<String, RoutineTrigger> triggers;
 
     /*
      * The action executed when the routine fires.
      */
     @Generated
-    private final RoutineAction action;
+    private RoutineAction action;
 
     /*
      * The time when the routine was created.
@@ -62,22 +62,6 @@ public final class Routine implements JsonSerializable<Routine> {
      */
     @Generated
     private Long updatedAt;
-
-    /**
-     * Creates an instance of Routine class.
-     *
-     * @param name the name value to set.
-     * @param enabled the enabled value to set.
-     * @param triggers the triggers value to set.
-     * @param action the action value to set.
-     */
-    @Generated
-    private Routine(String name, boolean enabled, Map<String, RoutineTrigger> triggers, RoutineAction action) {
-        this.name = name;
-        this.enabled = enabled;
-        this.triggers = triggers;
-        this.action = action;
-    }
 
     /**
      * Get the name property: The routine name.
@@ -162,11 +146,11 @@ public final class Routine implements JsonSerializable<Routine> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("triggers", this.triggers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("action", this.action);
-        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeNumberField("created_at", this.createdAt);
         jsonWriter.writeNumberField("updated_at", this.updatedAt);
         return jsonWriter.writeEndObject();
@@ -184,26 +168,26 @@ public final class Routine implements JsonSerializable<Routine> {
     @Generated
     public static Routine fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
             boolean enabled = false;
+            String name = null;
+            String description = null;
             Map<String, RoutineTrigger> triggers = null;
             RoutineAction action = null;
-            String description = null;
             Long createdAt = null;
             Long updatedAt = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("enabled".equals(fieldName)) {
+                if ("enabled".equals(fieldName)) {
                     enabled = reader.getBoolean();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else if ("triggers".equals(fieldName)) {
                     triggers = reader.readMap(reader1 -> RoutineTrigger.fromJson(reader1));
                 } else if ("action".equals(fieldName)) {
                     action = RoutineAction.fromJson(reader);
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getNullable(JsonReader::getLong);
                 } else if ("updated_at".equals(fieldName)) {
@@ -212,11 +196,24 @@ public final class Routine implements JsonSerializable<Routine> {
                     reader.skipChildren();
                 }
             }
-            Routine deserializedRoutine = new Routine(name, enabled, triggers, action);
+            Routine deserializedRoutine = new Routine(enabled);
+            deserializedRoutine.name = name;
             deserializedRoutine.description = description;
+            deserializedRoutine.triggers = triggers;
+            deserializedRoutine.action = action;
             deserializedRoutine.createdAt = createdAt;
             deserializedRoutine.updatedAt = updatedAt;
             return deserializedRoutine;
         });
+    }
+
+    /**
+     * Creates an instance of Routine class.
+     *
+     * @param enabled the enabled value to set.
+     */
+    @Generated
+    private Routine(boolean enabled) {
+        this.enabled = enabled;
     }
 }

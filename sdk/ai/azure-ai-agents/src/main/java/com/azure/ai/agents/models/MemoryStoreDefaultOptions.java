@@ -31,7 +31,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     private String userProfileDetails;
 
     /*
-     * Whether to enable chat summary extraction and storage. Default is true.
+     * Whether to enable chat summary extraction and storage. Defaults to `true`.
      */
     @Generated
     private final boolean chatSummaryEnabled;
@@ -83,7 +83,7 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /**
-     * Get the chatSummaryEnabled property: Whether to enable chat summary extraction and storage. Default is true.
+     * Get the chatSummaryEnabled property: Whether to enable chat summary extraction and storage. Defaults to `true`.
      *
      * @return the chatSummaryEnabled value.
      */
@@ -151,20 +151,21 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /*
-     * Whether to enable procedural memory extraction and storage. Default is true.
+     * Whether to enable procedural memory extraction and storage. Defaults to `true`.
      */
     @Generated
     private Boolean proceduralMemoryEnabled;
 
     /*
-     * The default time-to-live for memories in seconds. A value of 0 indicates that memories do not expire.
+     * The default time-to-live for memories in seconds. A value of `0` indicates that memories do not expire. Defaults
+     * to `0`.
      */
     @Generated
     private Long defaultTtlSeconds;
 
     /**
-     * Get the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Default is
-     * true.
+     * Get the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Defaults to
+     * `true`.
      *
      * @return the proceduralMemoryEnabled value.
      */
@@ -174,8 +175,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /**
-     * Set the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Default is
-     * true.
+     * Set the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Defaults to
+     * `true`.
      *
      * @param proceduralMemoryEnabled the proceduralMemoryEnabled value to set.
      * @return the MemoryStoreDefaultOptions object itself.
@@ -187,8 +188,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /**
-     * Get the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of 0 indicates that
-     * memories do not expire.
+     * Get the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of `0` indicates
+     * that memories do not expire. Defaults to `0`.
      *
      * @return the defaultTtlSeconds value.
      */
@@ -201,8 +202,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /**
-     * Set the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of 0 indicates that
-     * memories do not expire.
+     * Set the defaultTtlSeconds property: The default time-to-live for memories in seconds. A value of `0` indicates
+     * that memories do not expire. Defaults to `0`.
      *
      * @param defaultTtlSeconds the defaultTtlSeconds value to set.
      * @return the MemoryStoreDefaultOptions object itself.

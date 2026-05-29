@@ -268,12 +268,12 @@ public final class RoutinesImpl {
      * {
      *     description: String (Optional)
      *     enabled: Boolean (Optional)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      * }
@@ -285,15 +285,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -342,12 +342,12 @@ public final class RoutinesImpl {
      * {
      *     description: String (Optional)
      *     enabled: Boolean (Optional)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      * }
@@ -359,15 +359,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -413,15 +413,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -464,15 +464,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -514,15 +514,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -566,15 +566,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -616,15 +616,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -668,15 +668,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -706,20 +706,13 @@ public final class RoutinesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -738,15 +731,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -779,20 +772,13 @@ public final class RoutinesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -811,15 +797,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -846,20 +832,13 @@ public final class RoutinesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -878,15 +857,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -917,20 +896,13 @@ public final class RoutinesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of routines to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -949,15 +921,15 @@ public final class RoutinesImpl {
      * <pre>
      * {@code
      * {
-     *     name: String (Required)
+     *     name: String (Optional)
      *     description: String (Optional)
      *     enabled: boolean (Required)
-     *     triggers (Required): {
+     *     triggers (Optional): {
      *         String (Required): {
-     *             type: String(github_issue_opened/schedule/timer) (Required)
+     *             type: String(custom/github_issue/schedule/timer) (Required)
      *         }
      *     }
-     *     action (Required): {
+     *     action (Optional): {
      *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
      *     }
      *     created_at: Long (Optional)
@@ -1042,20 +1014,13 @@ public final class RoutinesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -1075,31 +1040,27 @@ public final class RoutinesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String (Optional)
      *     phase: String(queued/dispatching/completed/failed) (Optional)
-     *     trigger_type: String(github_issue_opened/schedule/timer) (Required)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
      *     triggered_at: Long (Optional)
-     *     started_at: long (Required)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     dispatch_id: String (Optional)
      *     action_correlation_id: String (Optional)
      *     response_id: String (Optional)
      *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
      *     error_type: String (Optional)
      *     error_message: String (Optional)
-     *     diagnostics (Optional): {
-     *         parameters (Required): {
-     *             String: String (Required)
-     *         }
-     *         tags (Required): {
-     *             String: String (Required)
-     *         }
-     *         metrics (Required): {
-     *             String: double (Required)
-     *         }
-     *     }
      * }
      * }
      * </pre>
@@ -1132,20 +1093,13 @@ public final class RoutinesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -1165,31 +1119,27 @@ public final class RoutinesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String (Optional)
      *     phase: String(queued/dispatching/completed/failed) (Optional)
-     *     trigger_type: String(github_issue_opened/schedule/timer) (Required)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
      *     triggered_at: Long (Optional)
-     *     started_at: long (Required)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     dispatch_id: String (Optional)
      *     action_correlation_id: String (Optional)
      *     response_id: String (Optional)
      *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
      *     error_type: String (Optional)
      *     error_message: String (Optional)
-     *     diagnostics (Optional): {
-     *         parameters (Required): {
-     *             String: String (Required)
-     *         }
-     *         tags (Required): {
-     *             String: String (Required)
-     *         }
-     *         metrics (Required): {
-     *             String: double (Required)
-     *         }
-     *     }
      * }
      * }
      * </pre>
@@ -1215,20 +1165,13 @@ public final class RoutinesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -1248,31 +1191,27 @@ public final class RoutinesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String (Optional)
      *     phase: String(queued/dispatching/completed/failed) (Optional)
-     *     trigger_type: String(github_issue_opened/schedule/timer) (Required)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
      *     triggered_at: Long (Optional)
-     *     started_at: long (Required)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     dispatch_id: String (Optional)
      *     action_correlation_id: String (Optional)
      *     response_id: String (Optional)
      *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
      *     error_type: String (Optional)
      *     error_message: String (Optional)
-     *     diagnostics (Optional): {
-     *         parameters (Required): {
-     *             String: String (Required)
-     *         }
-     *         tags (Required): {
-     *             String: String (Required)
-     *         }
-     *         metrics (Required): {
-     *             String: double (Required)
-     *         }
-     *     }
      * }
      * }
      * </pre>
@@ -1302,20 +1241,13 @@ public final class RoutinesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>An optional MLflow search-runs filter expression applied within
      * the routine's experiment.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The maximum number of runs to return.</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>An opaque cursor returned as last_id by the previous list-runs
+     * response.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Unsupported. Reserved for future backward pagination
+     * support.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>The ordering direction. Supported values are asc and
+     * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -1335,31 +1267,27 @@ public final class RoutinesImpl {
      * {@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     status: String (Optional)
      *     phase: String(queued/dispatching/completed/failed) (Optional)
-     *     trigger_type: String(github_issue_opened/schedule/timer) (Required)
+     *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
+     *     trigger_name: String (Optional)
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
+     *     agent_id: String (Optional)
+     *     agent_endpoint_id: String (Optional)
+     *     conversation_id: String (Optional)
+     *     session_id: String (Optional)
      *     triggered_at: Long (Optional)
-     *     started_at: long (Required)
+     *     scheduled_fire_at: Long (Optional)
+     *     started_at: Long (Optional)
      *     ended_at: Long (Optional)
      *     dispatch_id: String (Optional)
      *     action_correlation_id: String (Optional)
      *     response_id: String (Optional)
      *     task_id: String (Optional)
+     *     error_status_code: Integer (Optional)
      *     error_type: String (Optional)
      *     error_message: String (Optional)
-     *     diagnostics (Optional): {
-     *         parameters (Required): {
-     *             String: String (Required)
-     *         }
-     *         tags (Required): {
-     *             String: String (Required)
-     *         }
-     *         metrics (Required): {
-     *             String: double (Required)
-     *         }
-     *     }
      * }
      * }
      * </pre>

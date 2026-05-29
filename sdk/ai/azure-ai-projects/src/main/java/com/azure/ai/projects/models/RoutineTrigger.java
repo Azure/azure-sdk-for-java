@@ -81,8 +81,10 @@ public class RoutineTrigger implements JsonSerializable<RoutineTrigger> {
                     return ScheduleRoutineTrigger.fromJson(readerToUse.reset());
                 } else if ("timer".equals(discriminatorValue)) {
                     return TimerRoutineTrigger.fromJson(readerToUse.reset());
-                } else if ("github_issue_opened".equals(discriminatorValue)) {
-                    return GitHubIssueOpenedRoutineTrigger.fromJson(readerToUse.reset());
+                } else if ("github_issue".equals(discriminatorValue)) {
+                    return GitHubIssueRoutineTrigger.fromJson(readerToUse.reset());
+                } else if ("custom".equals(discriminatorValue)) {
+                    return CustomRoutineTrigger.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

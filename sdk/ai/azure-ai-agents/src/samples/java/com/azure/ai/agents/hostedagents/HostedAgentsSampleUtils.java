@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AgentVersionStatus;
+import com.azure.ai.agents.models.ContainerConfiguration;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
@@ -189,8 +190,8 @@ final class HostedAgentsSampleUtils {
 
     private static HostedAgentDefinition createHostedAgentDefinition(String image) {
         return new HostedAgentDefinition("0.5", "1Gi")
-            .setImage(image)
-            .setContainerProtocolVersions(Collections.singletonList(
+            .setContainerConfiguration(new ContainerConfiguration(image))
+            .setProtocolVersions(Collections.singletonList(
                 new ProtocolVersionRecord(AgentProtocol.RESPONSES, "1.0.0")));
     }
 

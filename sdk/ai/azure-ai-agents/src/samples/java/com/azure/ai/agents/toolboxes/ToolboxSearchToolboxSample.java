@@ -48,6 +48,7 @@ public class ToolboxSearchToolboxSample {
                 Collections.singletonList(toolboxSearchTool),
                 "Toolbox version with a Toolbox Search preview tool.",
                 null,
+                null,
                 null);
 
             System.out.printf("Created toolbox: %s%n", version.getName());

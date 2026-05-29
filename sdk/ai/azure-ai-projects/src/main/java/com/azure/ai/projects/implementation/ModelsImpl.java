@@ -175,7 +175,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/merge-patch+json") BinaryData modelVersionUpdate, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200, 201 })
@@ -187,7 +188,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/merge-patch+json") BinaryData modelVersionUpdate, RequestOptions requestOptions,
+            Context context);
 
         @Post("/models/{name}/versions/{version}/createAsync")
         @ExpectedResponses({ 202 })
@@ -199,7 +201,7 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData modelVersion, RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/createAsync")
         @ExpectedResponses({ 202 })
@@ -211,7 +213,7 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData modelVersion, RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -223,7 +225,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData pendingUploadRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/models/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -235,7 +238,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData pendingUploadRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/models/{name}/versions/{version}/credentials")
         @ExpectedResponses({ 200 })
@@ -247,7 +251,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/models/{name}/versions/{version}/credentials")
         @ExpectedResponses({ 200 })
@@ -259,7 +264,8 @@ public final class ModelsImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -1102,7 +1108,7 @@ public final class ModelsImpl {
      * 
      * @param name The name of the resource.
      * @param version The specific version id of the UpdateModelVersionRequest to create or update.
-     * @param body The UpdateModelVersionRequest to create or update.
+     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1111,14 +1117,14 @@ public final class ModelsImpl {
      * @return model Version Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateModelVersionWithResponseAsync(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateModelVersionWithResponseAsync(String name, String version,
+        BinaryData modelVersionUpdate, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateModelVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, contentType, version, foundryFeatures, accept, body,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, version, foundryFeatures, accept,
+            modelVersionUpdate, requestOptions, context));
     }
 
     /**
@@ -1187,7 +1193,7 @@ public final class ModelsImpl {
      * 
      * @param name The name of the resource.
      * @param version The specific version id of the UpdateModelVersionRequest to create or update.
-     * @param body The UpdateModelVersionRequest to create or update.
+     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1196,13 +1202,13 @@ public final class ModelsImpl {
      * @return model Version Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateModelVersionWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateModelVersionWithResponse(String name, String version,
+        BinaryData modelVersionUpdate, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return service.updateModelVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, contentType, version, foundryFeatures, accept, body, requestOptions, Context.NONE);
+            name, contentType, version, foundryFeatures, accept, modelVersionUpdate, requestOptions, Context.NONE);
     }
 
     /**
@@ -1270,7 +1276,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1280,13 +1286,13 @@ public final class ModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createModelVersionAsyncWithResponseAsync(String name, String version,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData modelVersion, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createModelVersionAsync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept, body,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
+            modelVersion, requestOptions, context));
     }
 
     /**
@@ -1354,7 +1360,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body Model version to create.
+     * @param modelVersion Model version to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1363,14 +1369,14 @@ public final class ModelsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version,
+        BinaryData modelVersion, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createModelVersionAsyncSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept, body,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
+            modelVersion, requestOptions, Context.NONE);
     }
 
     /**
@@ -1409,7 +1415,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1420,13 +1426,13 @@ public final class ModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> startModelPendingUploadWithResponseAsync(String name, String version,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.startModelPendingUpload(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept, body,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
+            pendingUploadRequest, requestOptions, context));
     }
 
     /**
@@ -1465,7 +1471,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param pendingUploadRequest The pendingUploadRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1474,14 +1480,14 @@ public final class ModelsImpl {
      * @return represents the response for a model pending upload request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> startModelPendingUploadWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> startModelPendingUploadWithResponse(String name, String version,
+        BinaryData pendingUploadRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.startModelPendingUploadSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept, body,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
+            pendingUploadRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1515,7 +1521,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1525,14 +1531,14 @@ public final class ModelsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getModelCredentialsWithResponseAsync(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getModelCredentialsWithResponseAsync(String name, String version,
+        BinaryData credentialRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getModelCredentials(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept, body,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
+            credentialRequest, requestOptions, context));
     }
 
     /**
@@ -1566,7 +1572,7 @@ public final class ModelsImpl {
      * 
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param body The body parameter.
+     * @param credentialRequest The credentialRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1575,13 +1581,13 @@ public final class ModelsImpl {
      * @return credentials for a model version asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getModelCredentialsWithResponse(String name, String version, BinaryData body,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getModelCredentialsWithResponse(String name, String version,
+        BinaryData credentialRequest, RequestOptions requestOptions) {
         final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.getModelCredentialsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            foundryFeatures, name, version, contentType, accept, body, requestOptions, Context.NONE);
+            foundryFeatures, name, version, contentType, accept, credentialRequest, requestOptions, Context.NONE);
     }
 
     /**

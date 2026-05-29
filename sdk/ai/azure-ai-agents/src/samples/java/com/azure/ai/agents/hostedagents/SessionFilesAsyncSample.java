@@ -8,7 +8,6 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -60,15 +59,14 @@ public class SessionFilesAsyncSample {
                         BinaryData.fromString("Sample session file 2."),
                         AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
-                    .then(sessionFilesAsyncClient.getSessionFiles(agentName, sessionId, "/remote",
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
-                    .doOnNext(files -> {
+                    .then(Mono.defer(() -> {
                         System.out.println("Listing session files for the session at path '/remote'...");
-                        for (SessionDirectoryEntry entry : files.getEntries()) {
-                            System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(),
-                                entry.getSize(), entry.isDirectory());
-                        }
-                    })
+                        return sessionFilesAsyncClient.listSessionFiles(agentName, sessionId,
+                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, "/remote", null, null, null, null, null)
+                            .doOnNext(entry -> System.out.printf("  - name=%s, size=%d, isDirectory=%s%n",
+                                entry.getName(), entry.getSize(), entry.isDirectory()))
+                            .then();
+                    }))
                     .then(sessionFilesAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
                         AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(downloaded -> {

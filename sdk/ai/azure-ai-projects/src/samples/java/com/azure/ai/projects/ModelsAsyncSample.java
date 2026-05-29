@@ -46,7 +46,7 @@ public class ModelsAsyncSample {
                 found.set(true);
                 System.out.printf("Model name: %s%n", modelVersion.getName());
                 System.out.printf("Model version: %s%n", modelVersion.getVersion());
-                System.out.printf("Blob URI: %s%n", modelVersion.getBlobUri());
+                System.out.printf("Blob URI: %s%n", modelVersion.getBlobUrl());
                 System.out.println("-------------------------------------------------");
             })
             .then(Mono.fromRunnable(() -> {

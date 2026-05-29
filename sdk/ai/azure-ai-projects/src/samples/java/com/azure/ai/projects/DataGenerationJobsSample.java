@@ -45,7 +45,7 @@ public class DataGenerationJobsSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsSample.listGenerationJobs
 
         Iterable<DataGenerationJob> jobs = DATA_GENERATION_JOBS_CLIENT.listGenerationJobs(
-            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null, null, null);
+            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
 
         int count = 0;
         for (DataGenerationJob job : jobs) {

@@ -22,7 +22,7 @@ public final class TargetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{},\"location\":\"vfvpdbodaciz\",\"id\":\"q\",\"name\":\"hkr\",\"type\":\"ibdeibq\"}]}";
+            = "{\"value\":[{\"properties\":{\"wnwvroevytlyokr\":\"\\\"dataoxczytp\\\"\",\"o\":\"\\\"datarouuxvnsasbcry\\\"\",\"xnazpmkml\":\"\\\"dataizrxklob\\\"\"},\"location\":\"evfxzopjhbzxlioh\",\"id\":\"dd\",\"name\":\"fg\",\"type\":\"qbawpcbbnzqcykn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class TargetsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Target> response = manager.targets()
-            .list("pnmdyodnwzxltjcv", "hlt", "ugcxnavvwxq", "byqunyow", "wlmdjrkv", com.azure.core.util.Context.NONE);
+            .list("udbchaqdtv", "ec", "qct", "xxdtddmflh", "ytxzvtznapxbanno", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vfvpdbodaciz", response.iterator().next().location());
+        Assertions.assertEquals("evfxzopjhbzxlioh", response.iterator().next().location());
     }
 }

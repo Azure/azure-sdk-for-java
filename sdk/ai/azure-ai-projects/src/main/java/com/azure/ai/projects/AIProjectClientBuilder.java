@@ -60,7 +60,6 @@ import java.util.Objects;
         EvaluationRulesClient.class,
         EvaluationTaxonomiesClient.class,
         EvaluatorsClient.class,
-        EvaluatorGenerationJobsClient.class,
         InsightsClient.class,
         SchedulesClient.class,
         RoutinesClient.class,
@@ -75,7 +74,6 @@ import java.util.Objects;
         EvaluationRulesAsyncClient.class,
         EvaluationTaxonomiesAsyncClient.class,
         EvaluatorsAsyncClient.class,
-        EvaluatorGenerationJobsAsyncClient.class,
         InsightsAsyncClient.class,
         SchedulesAsyncClient.class,
         RoutinesAsyncClient.class,
@@ -678,16 +676,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of EvaluatorGenerationJobsAsyncClient class.
-     *
-     * @return an instance of EvaluatorGenerationJobsAsyncClient.
-     */
-    @Generated
-    public EvaluatorGenerationJobsAsyncClient buildEvaluatorGenerationJobsAsyncClient() {
-        return new EvaluatorGenerationJobsAsyncClient(buildInnerClient().getEvaluatorGenerationJobs());
-    }
-
-    /**
      * Builds an instance of RoutinesAsyncClient class.
      *
      * @return an instance of RoutinesAsyncClient.
@@ -705,16 +693,6 @@ public final class AIProjectClientBuilder
     @Generated
     public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
         return new DataGenerationJobsAsyncClient(buildInnerClient().getDataGenerationJobs());
-    }
-
-    /**
-     * Builds an instance of EvaluatorGenerationJobsClient class.
-     *
-     * @return an instance of EvaluatorGenerationJobsClient.
-     */
-    @Generated
-    public EvaluatorGenerationJobsClient buildEvaluatorGenerationJobsClient() {
-        return new EvaluatorGenerationJobsClient(buildInnerClient().getEvaluatorGenerationJobs());
     }
 
     /**

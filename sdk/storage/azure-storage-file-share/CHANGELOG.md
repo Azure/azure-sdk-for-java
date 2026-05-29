@@ -10,12 +10,23 @@
 
 ### Other Changes
 
+## 12.30.0 (2026-05-14)
+
+### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
+
 ## 12.29.3 (2026-05-05)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-common` from `12.32.2` to version `12.32.3`.
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.

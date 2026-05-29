@@ -56,7 +56,7 @@ public class ToolboxSamplesTests extends ClientTestBase {
 
             ToolboxVersionDetails version
                 = toolboxesClient.createToolboxVersion(toolboxName, Collections.singletonList(toolboxSearchTool),
-                    "Toolbox version with a Toolbox Search preview tool.", null, null);
+                    "Toolbox version with a Toolbox Search preview tool.", null, null, null);
 
             Assertions.assertNotNull(version);
             Assertions.assertEquals(toolboxName, version.getName());
@@ -89,13 +89,13 @@ public class ToolboxSamplesTests extends ClientTestBase {
         Mono<Void> testFlow = toolboxesAsyncClient.deleteToolbox(toolboxName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalNever,
-                "Toolbox version with MCP require_approval set to 'never'.", null, null))
+                "Toolbox version with MCP require_approval set to 'never'.", null, null, null))
             .doOnNext(created -> {
                 Assertions.assertEquals(toolboxName, created.getName());
                 Assertions.assertEquals("1", created.getVersion());
             })
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalAlways,
-                "Toolbox version with MCP require_approval set to 'always'.", null, null))
+                "Toolbox version with MCP require_approval set to 'always'.", null, null, null))
             .doOnNext(created -> {
                 Assertions.assertEquals(toolboxName, created.getName());
                 Assertions.assertEquals("2", created.getVersion());

@@ -5,6 +5,7 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,22 +24,16 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     private RoutineActionType type = RoutineActionType.INVOKE_AGENT_RESPONSES_API;
 
     /*
-     * The project-scoped agent name for responses API dispatch.
+     * The project-scoped agent name for routine dispatch.
      */
     @Generated
     private String agentName;
 
     /*
-     * The endpoint-scoped agent identifier for responses API dispatch.
+     * Legacy endpoint-scoped agent identifier for routine dispatch.
      */
     @Generated
     private String agentEndpointId;
-
-    /*
-     * An optional existing conversation identifier to continue during the downstream dispatch.
-     */
-    @Generated
-    private String conversationId;
 
     /**
      * Creates an instance of InvokeAgentResponsesApiRoutineAction class.
@@ -59,7 +54,7 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     }
 
     /**
-     * Get the agentName property: The project-scoped agent name for responses API dispatch.
+     * Get the agentName property: The project-scoped agent name for routine dispatch.
      *
      * @return the agentName value.
      */
@@ -69,7 +64,7 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     }
 
     /**
-     * Set the agentName property: The project-scoped agent name for responses API dispatch.
+     * Set the agentName property: The project-scoped agent name for routine dispatch.
      *
      * @param agentName the agentName value to set.
      * @return the InvokeAgentResponsesApiRoutineAction object itself.
@@ -81,7 +76,7 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     }
 
     /**
-     * Get the agentEndpointId property: The endpoint-scoped agent identifier for responses API dispatch.
+     * Get the agentEndpointId property: Legacy endpoint-scoped agent identifier for routine dispatch.
      *
      * @return the agentEndpointId value.
      */
@@ -91,7 +86,7 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     }
 
     /**
-     * Set the agentEndpointId property: The endpoint-scoped agent identifier for responses API dispatch.
+     * Set the agentEndpointId property: Legacy endpoint-scoped agent identifier for routine dispatch.
      *
      * @param agentEndpointId the agentEndpointId value to set.
      * @return the InvokeAgentResponsesApiRoutineAction object itself.
@@ -99,30 +94,6 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
     @Generated
     public InvokeAgentResponsesApiRoutineAction setAgentEndpointId(String agentEndpointId) {
         this.agentEndpointId = agentEndpointId;
-        return this;
-    }
-
-    /**
-     * Get the conversationId property: An optional existing conversation identifier to continue during the downstream
-     * dispatch.
-     *
-     * @return the conversationId value.
-     */
-    @Generated
-    public String getConversationId() {
-        return this.conversationId;
-    }
-
-    /**
-     * Set the conversationId property: An optional existing conversation identifier to continue during the downstream
-     * dispatch.
-     *
-     * @param conversationId the conversationId value to set.
-     * @return the InvokeAgentResponsesApiRoutineAction object itself.
-     */
-    @Generated
-    public InvokeAgentResponsesApiRoutineAction setConversationId(String conversationId) {
-        this.conversationId = conversationId;
         return this;
     }
 
@@ -136,7 +107,11 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("agent_endpoint_id", this.agentEndpointId);
-        jsonWriter.writeStringField("conversation_id", this.conversationId);
+        if (this.input != null) {
+            jsonWriter.writeFieldName("input");
+            this.input.writeTo(jsonWriter);
+        }
+        jsonWriter.writeStringField("conversation", this.conversation);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,13 +138,77 @@ public final class InvokeAgentResponsesApiRoutineAction extends RoutineAction {
                     deserializedInvokeAgentResponsesApiRoutineAction.agentName = reader.getString();
                 } else if ("agent_endpoint_id".equals(fieldName)) {
                     deserializedInvokeAgentResponsesApiRoutineAction.agentEndpointId = reader.getString();
-                } else if ("conversation_id".equals(fieldName)) {
-                    deserializedInvokeAgentResponsesApiRoutineAction.conversationId = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedInvokeAgentResponsesApiRoutineAction.input
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("conversation".equals(fieldName)) {
+                    deserializedInvokeAgentResponsesApiRoutineAction.conversation = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedInvokeAgentResponsesApiRoutineAction;
         });
+    }
+
+    /*
+     * Static JSON value sent as the complete downstream input when the routine fires. The value is passed through
+     * as-is; no templating is applied.
+     */
+    @Generated
+    private BinaryData input;
+
+    /*
+     * An optional existing conversation identifier to continue during the downstream dispatch.
+     */
+    @Generated
+    private String conversation;
+
+    /**
+     * Get the input property: Static JSON value sent as the complete downstream input when the routine fires. The value
+     * is passed through as-is; no templating is applied.
+     *
+     * @return the input value.
+     */
+    @Generated
+    public BinaryData getInput() {
+        return this.input;
+    }
+
+    /**
+     * Set the input property: Static JSON value sent as the complete downstream input when the routine fires. The value
+     * is passed through as-is; no templating is applied.
+     *
+     * @param input the input value to set.
+     * @return the InvokeAgentResponsesApiRoutineAction object itself.
+     */
+    @Generated
+    public InvokeAgentResponsesApiRoutineAction setInput(BinaryData input) {
+        this.input = input;
+        return this;
+    }
+
+    /**
+     * Get the conversation property: An optional existing conversation identifier to continue during the downstream
+     * dispatch.
+     *
+     * @return the conversation value.
+     */
+    @Generated
+    public String getConversation() {
+        return this.conversation;
+    }
+
+    /**
+     * Set the conversation property: An optional existing conversation identifier to continue during the downstream
+     * dispatch.
+     *
+     * @param conversation the conversation value to set.
+     * @return the InvokeAgentResponsesApiRoutineAction object itself.
+     */
+    @Generated
+    public InvokeAgentResponsesApiRoutineAction setConversation(String conversation) {
+        this.conversation = conversation;
+        return this;
     }
 }

@@ -54,12 +54,12 @@ public class ToolboxesAsyncSample {
             .doOnSuccess(unused -> System.out.printf("Toolbox `%s` deleted%n", toolboxName))
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalNever,
-                "Toolbox version with MCP require_approval set to 'never'.", null, null))
+                "Toolbox version with MCP require_approval set to 'never'.", null, null, null))
             .doOnNext(created -> System.out.printf(
                 "Created toolbox: %s with MCP tools requiring approval 'never' in version %s%n",
                 created.getName(), created.getVersion()))
             .then(toolboxesAsyncClient.createToolboxVersion(toolboxName, toolsWithMcpApprovalAlways,
-                "Toolbox version with MCP require_approval set to 'always'.", null, null))
+                "Toolbox version with MCP require_approval set to 'always'.", null, null, null))
             .doOnNext(created -> System.out.printf(
                 "Created toolbox: %s with MCP tools requiring approval 'always' in version %s%n",
                 created.getName(), created.getVersion()))
@@ -89,7 +89,8 @@ public class ToolboxesAsyncSample {
         return toolboxesAsyncClient.getToolbox(updated.getName())
             .doOnNext(fetched -> System.out.printf("Retrieved toolbox with default version: %s%n",
                 fetched.getDefaultVersion()))
-            .flatMap(fetched -> toolboxesAsyncClient.getToolboxVersion(fetched.getName(), fetched.getDefaultVersion()))
+            .flatMap(fetched -> toolboxesAsyncClient.getToolboxVersion(fetched.getName(),
+                fetched.getDefaultVersion()))
             .doOnNext(version -> printMcpRequireApproval(version.getTools()));
     }
 
