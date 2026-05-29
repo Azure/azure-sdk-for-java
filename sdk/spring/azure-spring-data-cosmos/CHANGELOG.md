@@ -1,14 +1,9 @@
 ## Release History
 
-### 6.4.0 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 6.4.0 (2026-06-01)
 
 #### Other Changes
+* regular release
 
 ### 6.3.0 (2026-04-29)
 
