@@ -26,10 +26,10 @@ import java.util.Collections;
  *
  * <p>All schedule {@code startDate}/{@code endDate} values are derived from
  * {@link #scheduleStartDate()} (a {@code Z}-offset {@code OffsetDateTime} of
- * {@code now() + 1 day}, sanitized in recordings to a fixed placeholder so
- * playback is deterministic) so playback recordings stay portable and the
- * server does not see the {@code +00:00}-suffix that triggers an RP bug — see
- * the cross-language playbook.
+ * {@code now() + 1 day} captured via {@code testResourceNamer.now()} so the
+ * value is recorded once and replayed deterministically) so playback recordings
+ * stay portable and the server does not see the {@code +00:00}-suffix that
+ * triggers an RP bug — see the cross-language playbook.
  */
 public class JobDefinitionScheduleTests extends StorageMoverManagementTestBase {
 

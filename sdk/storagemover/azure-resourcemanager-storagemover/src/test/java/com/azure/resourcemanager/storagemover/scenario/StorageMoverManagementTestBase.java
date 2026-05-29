@@ -37,7 +37,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,27 +70,20 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
     protected static final Region WEST_CENTRAL_US = Region.US_WEST_CENTRAL;
 
     /**
-     * Placeholder value the {@code $..startDate} / {@code $..endDate} body-key
-     * sanitizers rewrite all schedule dates to. Both the stored recording and
-     * the live request body during playback get this value, so playback matches
-     * succeed regardless of when the test is run.
-     */
-    private static final String REDACTED_SCHEDULE_DATE = "2030-01-01T00:00:00Z";
-
-    /**
      * Returns a {@code startDate} suitable for schedule tests.
      *
      * <p>The Storage Mover RP rejects any {@code endDate} more than one year
      * past wall-clock {@code now()}, so a hard-coded far-future date does not
-     * work. The body-key sanitizer registered in {@link #beforeTest} rewrites
-     * the value to {@link #REDACTED_SCHEDULE_DATE} in both the stored recording
-     * and the live request during playback, keeping the recordings portable.
+     * work. Uses {@link com.azure.core.test.utils.TestResourceNamer#now()}
+     * which records the value during {@code RECORD} mode and replays the
+     * same value during {@code PLAYBACK}, keeping recordings portable across
+     * dates without an extra body-key sanitizer.
      *
      * @return a UTC {@link OffsetDateTime} one day in the future, truncated to
      *     the day so the JSON payload is stable.
      */
-    protected static OffsetDateTime scheduleStartDate() {
-        return OffsetDateTime.now(ZoneOffset.UTC).plusDays(1).truncatedTo(ChronoUnit.DAYS);
+    protected OffsetDateTime scheduleStartDate() {
+        return testResourceNamer.now().plusDays(1).truncatedTo(ChronoUnit.DAYS);
     }
 
     /**
@@ -209,20 +201,26 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
 
     @Override
     protected void beforeTest() {
-        // Schedule dates are dynamic ("now + N days") so the RP accepts them,
-        // but we sanitize them to a fixed placeholder so recordings replay on
-        // any date. The sanitizer is bidirectional: applied both when storing
-        // recordings and when matching incoming requests during playback.
-        // Cross-sub principalIds and PE names are server-generated per-run and
-        // must be redacted in body too — URL sub-id sanitization is already
-        // handled by the framework's default sanitizers.
+        // Cross-sub principalIds, tenantIds, and any custom resource-id-typed
+        // properties in the body are server-generated per-run and must be
+        // redacted from the persisted recordings. URL-side subscription-id
+        // sanitization is handled by the framework's default sanitizers.
+        //
+        // The two ARM-id fields ($..privateLinkServiceId and
+        // $..privateEndpointResourceId) carry full /subscriptions/.../ paths
+        // referencing the shared XDataMove-Synthetics sub and the cross-sub
+        // PE-provisioning sub respectively. The default URL sanitizer does not
+        // reach these custom property names — sanitize them explicitly here so
+        // real subscription IDs never make it into azure-sdk-assets.
         interceptorManager.addSanitizers(Arrays.asList(
-            new TestProxySanitizer("$..startDate", null, REDACTED_SCHEDULE_DATE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endDate", null, REDACTED_SCHEDULE_DATE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..principalId", null, "00000000-0000-0000-0000-000000000000",
                 TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..tenantId", null, "00000000-0000-0000-0000-000000000000",
-                TestProxySanitizerType.BODY_KEY)));
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..privateLinkServiceId", SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX,
+                "/subscriptions/00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..privateEndpointResourceId", SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX,
+                "/subscriptions/00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY)));
         super.beforeTest();
     }
 
@@ -260,15 +258,24 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
     }
 
     /**
+     * Regex matching the subscription-id segment of an ARM resource id. Used by
+     * body-key sanitizers to redact only the subscription portion while keeping
+     * the rest of the URL (resource group, resource type, name) intact for
+     * cross-checking.
+     */
+    private static final String SUBSCRIPTION_ID_IN_RESOURCE_ID_REGEX
+        = "/subscriptions/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+
+    /**
      * Asserts that the given operation throws a {@link ManagementException}
-     * carrying an HTTP status code in {@code [400, 500)}. Used as the Java
-     * analogue of .NET's {@code Assert.IsFalse(await coll.ExistsAsync(name))}
-     * pattern (where the SDK does not surface an {@code Exists} helper).
+     * carrying the expected HTTP status code. Used as the Java analogue of
+     * .NET's {@code Assert.IsFalse(await coll.ExistsAsync(name))} pattern
+     * (where the SDK does not surface an {@code Exists} helper).
      *
      * @param expectedStatus expected HTTP status (typically 404).
      * @param action the operation that should throw.
      */
-    protected static void assertHttpStatus(int expectedStatus, Runnable action) {
+    protected static void assertManagementExceptionAndHttpStatus(int expectedStatus, Runnable action) {
         ManagementException ex = Assertions.assertThrows(ManagementException.class, action::run);
         Assertions.assertEquals(expectedStatus, ex.getResponse().getStatusCode(), "expected HTTP " + expectedStatus
             + " but got " + ex.getResponse().getStatusCode() + " — body: " + ex.getValue());
@@ -280,7 +287,7 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
      * @param action the operation that should produce a 404.
      */
     protected static void assertNotFound(Runnable action) {
-        assertHttpStatus(404, action);
+        assertManagementExceptionAndHttpStatus(404, action);
     }
 
     /**

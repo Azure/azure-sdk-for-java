@@ -59,16 +59,30 @@ public class ConnectionTests extends StorageMoverManagementTestBase {
             Assertions.assertEquals(connectionName, created.name());
             Assertions.assertNotNull(created.properties());
             Assertions.assertEquals("initial description", created.properties().description());
-            Assertions.assertEquals(PRIVATE_LINK_SERVICE_ID, created.properties().privateLinkServiceId());
+            // The body-key sanitizer registered in the base redacts the
+            // subscription segment of $..privateLinkServiceId to all-zeros, so
+            // assert only the resource-group + name suffix (which is what the
+            // round-trip actually verifies). The sub segment is identical in
+            // record and playback after sanitization.
+            String expectedPlsSuffix = "/resourceGroups/" + PRIVATE_LINK_SERVICE_RG
+                + "/providers/Microsoft.Network/privateLinkServices/" + PRIVATE_LINK_SERVICE_NAME;
+            Assertions.assertNotNull(created.properties().privateLinkServiceId());
+            Assertions.assertTrue(created.properties().privateLinkServiceId().endsWith(expectedPlsSuffix),
+                "expected privateLinkServiceId to end with " + expectedPlsSuffix + " but was "
+                    + created.properties().privateLinkServiceId());
 
             Connection fetched = storageMoverManager.connections().get(resourceGroupName, sm.name(), connectionName);
             Assertions.assertEquals(connectionName, fetched.name());
-            Assertions.assertEquals(PRIVATE_LINK_SERVICE_ID, fetched.properties().privateLinkServiceId());
+            Assertions.assertNotNull(fetched.properties().privateLinkServiceId());
+            Assertions.assertTrue(fetched.properties().privateLinkServiceId().endsWith(expectedPlsSuffix),
+                "expected fetched privateLinkServiceId to end with " + expectedPlsSuffix + " but was "
+                    + fetched.properties().privateLinkServiceId());
 
-            long count = StreamSupport
+            boolean foundConnection = StreamSupport
                 .stream(storageMoverManager.connections().list(resourceGroupName, sm.name()).spliterator(), false)
-                .count();
-            Assertions.assertTrue(count >= 1, "expected at least one connection but found " + count);
+                .anyMatch(c -> connectionName.equals(c.name()));
+            Assertions.assertTrue(foundConnection,
+                "expected connection " + connectionName + " in list but it was not found");
 
             // Update keeps the same PLS id (cannot be changed post-create) and
             // changes only the description. The new description is intentionally
