@@ -3,7 +3,7 @@
 ### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
-
+* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
 
 #### Breaking Changes
 
@@ -12,6 +12,7 @@
 #### Other Changes
 * Added an internal `emptyPagesAllowed` field on `CosmosChangeFeedRequestOptionsImpl` (default `false`; not exposed publicly). When set, `ChangeFeedFetcher` surfaces 304/empty pages to the caller. Consumed by the Cosmos Spark connector to fix an `OperationCancelledException` on sparse cross-partition change-feed workloads. Default behavior is unchanged. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
+* Fixed a sporadic `NullPointerException` in `JsonSerializable.getWithMapping` triggered by concurrent first-time calls to `DatabaseAccount.getConsistencyPolicy()` and its sibling lazy getters (`getReplicationPolicy`, `getSystemReplicationPolicy`, `getQueryEngineConfiguration`). The fix makes `JsonSerializable.propertyBag` `final`, closing an unsafe-publication race in the lazy-initialisation pattern. - See [Issue 49256](https://github.com/Azure/azure-sdk-for-java/issues/49256) and [PR #49258](https://github.com/Azure/azure-sdk-for-java/pull/49258)
 
 ### 4.80.0 (2026-05-01)
 
