@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +34,24 @@ public class JsonSerializableTest {
             JsonSerializable jsonSerializable = JsonSerializable.instantiateFromObjectNodeAndType(objectNode, klass);
             assertThat(jsonSerializable).isNotNull();
             assertThat(jsonSerializable).isInstanceOf(klass);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void instantiateFromNonObjectJsonReturnsEmptyObject() {
+        for (String body : Arrays.asList("", "   ", "null", "[]", "123")) {
+            JsonSerializable jsonSerializable = new JsonSerializable(body);
+            assertThat(jsonSerializable.propertyBag).isNotNull();
+            assertThat(jsonSerializable.propertyBag.isEmpty()).isTrue();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void instantiateFromNonObjectJsonBytesReturnsEmptyObject() {
+        for (String body : Arrays.asList("", "null", "[]", "123")) {
+            byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+            assertThat(new JsonSerializable(bytes).propertyBag.isEmpty()).isTrue();
+            assertThat(new JsonSerializable(ByteBuffer.wrap(bytes)).propertyBag.isEmpty()).isTrue();
         }
     }
 }

@@ -606,7 +606,11 @@ public class JsonSerializable {
 
     private ObjectNode fromJson(byte[] bytes) {
         try {
-            return (ObjectNode) OBJECT_MAPPER.readTree(bytes);
+            JsonNode jsonNode = OBJECT_MAPPER.readTree(bytes);
+            if (jsonNode instanceof ObjectNode) {
+                return (ObjectNode) jsonNode;
+            }
+            return OBJECT_MAPPER.createObjectNode();
         } catch (IOException e) {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", Arrays.toString(bytes)), e);
@@ -615,7 +619,11 @@ public class JsonSerializable {
 
     private ObjectNode fromJson(String json, ObjectMapper objectMapper) {
         try {
-            return (ObjectNode) objectMapper.readTree(json);
+            JsonNode jsonNode = objectMapper.readTree(json);
+            if (jsonNode instanceof ObjectNode) {
+                return (ObjectNode) jsonNode;
+            }
+            return objectMapper.createObjectNode();
         } catch (IOException e) {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", json), e);
@@ -624,7 +632,11 @@ public class JsonSerializable {
 
     private ObjectNode fromJson(ByteBuffer json) {
         try {
-            return (ObjectNode) OBJECT_MAPPER.readTree(new ByteBufferBackedInputStream(json));
+            JsonNode jsonNode = OBJECT_MAPPER.readTree(new ByteBufferBackedInputStream(json));
+            if (jsonNode instanceof ObjectNode) {
+                return (ObjectNode) jsonNode;
+            }
+            return OBJECT_MAPPER.createObjectNode();
         } catch (IOException e) {
             throw new IllegalArgumentException("Unable to parse JSON from ByteBuffer", e);
         }
