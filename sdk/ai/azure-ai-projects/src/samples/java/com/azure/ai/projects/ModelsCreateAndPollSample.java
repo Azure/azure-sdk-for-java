@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.FoundryModelWeightType;
-import com.azure.ai.projects.models.ModelPendingUploadRequest;
+import com.azure.ai.projects.models.ModelPendingUploadInput;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
@@ -80,7 +80,7 @@ public class ModelsCreateAndPollSample {
     private static BlobUploadLocation startPendingUpload(ModelsClient modelsClient, String modelName,
         String modelVersion) {
         Response<BinaryData> pendingUploadResponse = modelsClient.startModelPendingUploadWithResponse(modelName,
-            modelVersion, BinaryData.fromObject(new ModelPendingUploadRequest()), new RequestOptions());
+            modelVersion, BinaryData.fromObject(new ModelPendingUploadInput()), new RequestOptions());
 
         Map<?, ?> payload = pendingUploadResponse.getValue().toObject(Map.class);
         Object blobReference = payload.get("blobReferenceForConsumption");
