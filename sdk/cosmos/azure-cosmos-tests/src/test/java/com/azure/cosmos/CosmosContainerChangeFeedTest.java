@@ -342,7 +342,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // first subscription is awaited via a CountDownLatch on a known minimum page count
         // before the second is started, and the final bounded `take(2, true)` block is awaited
         // via `.blockLast(...)` rather than fire-and-forget.
+        //
+        // Mode interaction: FULL_FIDELITY uses createForProcessingFromNow, so docs inserted
+        // BEFORE the subscription are invisible — for that mode we insert after subscribing.
+        // INCREMENTAL uses createForProcessingFromBeginning and sees pre-existing docs.
         final long awaitSeconds = 30L;
+        final boolean isFullFidelity = changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY);
 
         this.createContainer(
             (cp) -> {
@@ -353,7 +358,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             }
         );
         CosmosChangeFeedRequestOptions options;
-        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+        if (isFullFidelity) {
             options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forFullRange())
                 .setMaxItemCount(10).allVersionsAndDeletes();
@@ -362,7 +367,10 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromBeginning(FeedRange.forFullRange()).setMaxItemCount(10);
         }
         AtomicInteger count = new AtomicInteger(0);
-        insertDocuments(5, 20);
+        if (!isFullFidelity) {
+            // INCREMENTAL: insert first so createForProcessingFromBeginning sees the docs.
+            insertDocuments(5, 20);
+        }
         AtomicReference<String> continuation = new AtomicReference<>("");
 
         // First subscription: drain at least 3 pages deterministically before proceeding.
@@ -379,6 +387,11 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .byPage()
             .subscribe(r -> { /* page consumed by handle() */ }, firstError::set);
         try {
+            if (isFullFidelity) {
+                // FULL_FIDELITY: subscription is from-now; insert AFTER subscribing so the
+                // change-feed pipeline sees the writes.
+                insertDocuments(5, 20);
+            }
             assertThat(firstLatch.await(awaitSeconds, TimeUnit.SECONDS))
                 .as("first change-feed subscription should produce at least %d pages within %d seconds",
                     firstMinPages, awaitSeconds)
@@ -391,8 +404,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
 
         CosmosChangeFeedRequestOptions optionsFF = null;
-        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
-            insertDocuments(5, 20);
+        if (isFullFidelity) {
             count.set(0);
             optionsFF = CosmosChangeFeedRequestOptions
                 .createForProcessingFromContinuation(continuation.get())
@@ -411,6 +423,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .byPage()
                 .subscribe(r -> { /* page consumed by handle() */ }, secondError::set);
             try {
+                // Insert AFTER subscribing so the resume-from-continuation pipeline sees the writes.
+                insertDocuments(5, 20);
                 assertThat(secondLatch.await(awaitSeconds, TimeUnit.SECONDS))
                     .as("FULL_FIDELITY resume-from-continuation subscription should produce at least %d pages within %d seconds",
                         secondMinPages, awaitSeconds)
@@ -422,17 +436,19 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             }
         }
 
-        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
-            // full fidelity is only from now so need to insert more documents
-            insertDocuments(5, 20);
-        }
         count.set(0);
         // should only get two pages — `take(2, true)` bounds the upstream request, so the
         // pipeline completes naturally after 2 pages. Use blockLast() instead of fire-and-forget
-        // to wait for that completion deterministically.
+        // to wait for that completion deterministically. For FULL_FIDELITY we need writes after
+        // subscribing because the continuation reflects the previous read position.
+        if (isFullFidelity) {
+            // Insert documents BEFORE the bounded take so they're visible when the
+            // subscription opens. Continuation tokens persist read position; the new writes
+            // will surface on the resumed-from-token subscription.
+            insertDocuments(5, 20);
+        }
         createdContainer.asyncContainer
-            .queryChangeFeed(changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY) ? optionsFF : options,
-                ObjectNode.class)
+            .queryChangeFeed(isFullFidelity ? optionsFF : options, ObjectNode.class)
             .handle((r) -> count.incrementAndGet())
             .byPage()
             .take(2, true)
