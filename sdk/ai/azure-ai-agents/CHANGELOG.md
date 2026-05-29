@@ -1,22 +1,39 @@
 # Release History
 
-## 2.1.0 (Unreleased)
+## 2.1.0 (2026-05-29)
 
 ### Features Added
 
 - Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
-
-### Other Changes
-
-- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
+- Added preview support for external agents via `ExternalAgentDefinition`, `AgentKind.EXTERNAL`, and `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`.
+- Added preview code-based hosted agent operations on `AgentsClient` and `AgentsAsyncClient`, including `createAgentVersionFromCode`, `updateAgentFromCode`, and `downloadAgentCode`, plus related code package models such as `CreateAgentVersionFromCodeContent`, `CodeFileDetails`, and `CodeDependencyResolution`. `CodeConfiguration` now exposes the service-computed code package hash via `getContentSha256()`.
+- Added preview agent optimization job and candidate management operations on `AgentsClient` and `AgentsAsyncClient`, including creating, listing, retrieving, canceling, and deleting optimization jobs, listing and inspecting candidates, downloading candidate files, and promoting candidates.
+- Added `stopSession` and `stopSessionWithResponse` to stop hosted-agent sessions.
+- Added `force` query parameter support for hosted-agent `deleteAgentWithResponse` and `deleteAgentVersionWithResponse` requests through `RequestOptions`, allowing active sessions to be cascade-deleted.
+- Added individual memory item operations to `MemoryStoresClient` and `MemoryStoresAsyncClient`: `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory`, with new `ListMemoriesOptions`, `DeleteMemoryResponse`, and `MemoryItemKind.PROCEDURAL` support.
+- Added new preview tools `FabricIqPreviewTool` and `ToolboxSearchPreviewTool`, plus related tool call/output models for Azure tools.
+- Added optional per-tool configuration via `ToolConfig` and `toolConfigs` accessors on supported tool classes.
+- Added `getComparisonFilter()` and `getCompoundFilter()` convenience getters on `FileSearchTool` for retrieving OpenAI filter types.
+- Added new feature-flag values, including `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW`, `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`, and `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`.
+- Added hosted-agent, Fabric IQ, Toolbox Search, and async toolbox samples.
 
 ### Breaking Changes
+
+- `AgentEndpoint` renamed to `AgentEndpointConfig`.
+- Session file listing methods on `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` were renamed from `getSessionFiles` to `listSessionFiles` and now return paged `SessionDirectoryEntry` results. `SessionDirectoryListResponse` was removed.
+- Hosted-agent session methods no longer take a required `isolationKey` argument. Use overloads that accept the optional `userIsolationKey` value, or set the `x-ms-user-isolation-key` header through `RequestOptions`.
+- `AgentDefinitionOptInKeys.CONTAINER_AGENTS_V1_PREVIEW` was removed. Use the applicable hosted-agent, code-agent, agent-endpoint, workflow-agent, or external-agent opt-in key instead.
+- `HostedAgentDefinition` no longer exposes top-level `image` or `containerProtocolVersions` accessors. Use `ContainerConfiguration` for container images and `protocolVersions` for ingress protocol configuration.
+- `CodeConfiguration` constructor now requires `CodeDependencyResolution` in addition to runtime and entry point.
+- `WorkIqPreviewTool` now takes the Work IQ project connection ID directly. `WorkIQPreviewToolParameters` was removed.
 
 ### Bugs Fixed
 
 ### Other Changes
 
+- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
 - Re-enabled `SessionLogSyncTest` and `SessionLogAsyncTest`; both tests are recordable via `@RecordWithoutRequestBody` and run live against the configured Foundry project.
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.1.0-beta.1 (2026-05-12)
 
