@@ -312,6 +312,9 @@ public class ChunkTests {
         cfEventData.put("url", data.getBlobUrl());
         cfEventData.put("sequencer", data.getSequencer());
         cfEventData.put("recursive", data.isRecursive());
+        cfEventData.put("createTime", null);
+        cfEventData.put("lastAccessTime", null);
+        cfEventData.put("restoredContainerVersion", null);
         return cfEventData;
     }
 }

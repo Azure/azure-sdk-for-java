@@ -44,7 +44,7 @@ final class MockedChangefeedResources {
     static BlobChangefeedEventData getMockBlobChangefeedEventData() {
         return new InternalBlobChangefeedEventData("PutBlob", "clientRequestId", "requestId", "etag",
             "application/octet-stream", 100L, BlobType.BLOCK_BLOB, 0L, "destinationUrl", "sourceUrl", "", false,
-            "sequencer");
+            "sequencer", null, null, null);
     }
 
     private MockedChangefeedResources() {

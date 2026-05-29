@@ -23,6 +23,31 @@ public final class BlobChangefeedEventType extends ExpandableStringEnum<BlobChan
     public static final BlobChangefeedEventType BLOB_DELETED = fromString("BlobDeleted");
 
     /**
+     * Static value AppendBlobDataUpdated for BlobChangefeedEventType. Schema V6.
+     */
+    public static final BlobChangefeedEventType APPEND_BLOB_DATA_UPDATED = fromString("AppendBlobDataUpdated");
+
+    /**
+     * Static value BlobLastAccessTimeUpdated for BlobChangefeedEventType. Schema V7.
+     */
+    public static final BlobChangefeedEventType BLOB_LAST_ACCESS_TIME_UPDATED = fromString("BlobLastAccessTimeUpdated");
+
+    /**
+     * Static value ContainerCreated for BlobChangefeedEventType. Schema V8.
+     */
+    public static final BlobChangefeedEventType CONTAINER_CREATED = fromString("ContainerCreated");
+
+    /**
+     * Static value ContainerDeleted for BlobChangefeedEventType. Schema V8.
+     */
+    public static final BlobChangefeedEventType CONTAINER_DELETED = fromString("ContainerDeleted");
+
+    /**
+     * Static value ContainerPropertiesUpdated for BlobChangefeedEventType. Schema V8.
+     */
+    public static final BlobChangefeedEventType CONTAINER_PROPERTIES_UPDATED = fromString("ContainerPropertiesUpdated");
+
+    /**
      * Creates a new instance of {@link BlobChangefeedEventType} with no string value.
      *
      * @deprecated Please use {@link #fromString(String)} to create an instance of BlobChangefeedEventType.
