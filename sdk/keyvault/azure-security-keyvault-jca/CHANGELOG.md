@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where the internal HTTP client did not honor JVM proxy system properties.
+  ([#28801](https://github.com/Azure/azure-sdk-for-java/issues/28801))
+
 ### Other Changes
 
 ## 2.11.0 (2026-02-28)

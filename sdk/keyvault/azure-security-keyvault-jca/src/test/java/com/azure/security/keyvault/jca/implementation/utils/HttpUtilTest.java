@@ -5,6 +5,8 @@ package com.azure.security.keyvault.jca.implementation.utils;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -29,6 +31,7 @@ public class HttpUtilTest {
     }
 
     @Test
+    @ResourceLock(Resources.SYSTEM_PROPERTIES)
     public void getUsesJvmProxySystemProperties() throws Exception {
         String previousProxyHost = System.getProperty("http.proxyHost");
         String previousProxyPort = System.getProperty("http.proxyPort");
