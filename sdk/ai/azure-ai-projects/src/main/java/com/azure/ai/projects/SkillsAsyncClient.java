@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.Objects;
@@ -179,7 +180,7 @@ public final class SkillsAsyncClient {
     /**
      * Deletes a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -198,10 +199,10 @@ public final class SkillsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillWithResponseAsync(name, requestOptions);
+    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteSkillWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -577,9 +578,9 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillVersionWithResponse(String name, String version,
+    Mono<Response<BinaryData>> internalDeleteSkillVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillVersionWithResponseAsync(name, version, requestOptions);
+        return this.serviceClient.internalDeleteSkillVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
@@ -840,6 +841,37 @@ public final class SkillsAsyncClient {
 
     /**
      * Delete a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     *     version: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return internalDeleteSkillVersionWithResponse(name, version, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete a specific version of a skill.
      *
      * @param name The name of the skill.
      * @param version The version identifier to delete.
@@ -856,5 +888,33 @@ public final class SkillsAsyncClient {
         // Generated convenience method for deleteSkillVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteSkillVersionWithResponse(name, version, requestOptions).then();
+    }
+
+    /**
+     * Deletes a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteSkillWithResponseAsync(name, requestOptions);
     }
 }

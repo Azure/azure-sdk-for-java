@@ -24,6 +24,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -174,7 +175,7 @@ public final class SkillsClient {
     /**
      * Deletes a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -193,10 +194,9 @@ public final class SkillsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deleted skill along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillWithResponse(name, requestOptions);
+    public Response<Void> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillWithResponse(name, requestOptions), null);
     }
 
     /**
@@ -546,9 +546,9 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillVersionWithResponse(String name, String version,
+    Response<BinaryData> internalDeleteSkillVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillVersionWithResponse(name, version, requestOptions);
+        return this.serviceClient.internalDeleteSkillVersionWithResponse(name, version, requestOptions);
     }
 
     /**
@@ -783,6 +783,35 @@ public final class SkillsClient {
 
     /**
      * Delete a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     *     version: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSkillVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return new SimpleResponse<>(internalDeleteSkillVersionWithResponse(name, version, requestOptions), null);
+    }
+
+    /**
+     * Delete a specific version of a skill.
      *
      * @param name The name of the skill.
      * @param version The version identifier to delete.
@@ -798,5 +827,33 @@ public final class SkillsClient {
         // Generated convenience method for deleteSkillVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteSkillVersionWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * Deletes a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted skill along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> internalDeleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteSkillWithResponse(name, requestOptions);
     }
 }

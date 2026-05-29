@@ -148,9 +148,10 @@ public final class SkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> internalDeleteSkill(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -158,9 +159,10 @@ public final class SkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> internalDeleteSkillSync(@HostParam("endpoint") String endpoint,
+            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/skills/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -305,7 +307,7 @@ public final class SkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteSkillVersion(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalDeleteSkillVersion(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -316,7 +318,7 @@ public final class SkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteSkillVersionSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> internalDeleteSkillVersionSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
             @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -713,11 +715,11 @@ public final class SkillsImpl {
      * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> internalDeleteSkillWithResponseAsync(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSkill(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteSkill(this.client.getEndpoint(), name,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -743,10 +745,10 @@ public final class SkillsImpl {
      * @return a deleted skill along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> internalDeleteSkillWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.deleteSkillSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteSkillSync(this.client.getEndpoint(), name, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1357,12 +1359,12 @@ public final class SkillsImpl {
      * @return a deleted skill version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillVersionWithResponseAsync(String name, String version,
+    public Mono<Response<BinaryData>> internalDeleteSkillVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSkillVersion(this.client.getEndpoint(), name, version,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteSkillVersion(this.client.getEndpoint(), name,
+            version, foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1390,11 +1392,11 @@ public final class SkillsImpl {
      * @return a deleted skill version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteSkillVersionWithResponse(String name, String version,
+    public Response<BinaryData> internalDeleteSkillVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
         final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.deleteSkillVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.internalDeleteSkillVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
