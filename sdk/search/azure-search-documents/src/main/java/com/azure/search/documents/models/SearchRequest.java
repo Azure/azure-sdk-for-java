@@ -586,6 +586,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     .collect(Collectors.joining(",")));
         }
         jsonWriter.writeStringField("searchMode", this.searchMode == null ? null : this.searchMode.toString());
+        jsonWriter.writeStringField("queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString());
+        jsonWriter.writeStringField("speller", this.querySpeller == null ? null : this.querySpeller.toString());
         if (this.select != null) {
             jsonWriter.writeStringField("select",
                 this.select.stream().map(element -> element == null ? "" : element).collect(Collectors.joining(",")));
@@ -599,9 +601,17 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("answers", this.answers == null ? null : this.answers.toString());
         jsonWriter.writeStringField("captions", this.captions == null ? null : this.captions.toString());
+        jsonWriter.writeStringField("queryRewrites", this.queryRewrites == null ? null : this.queryRewrites.toString());
+        if (this.semanticFields != null) {
+            jsonWriter.writeStringField("semanticFields",
+                this.semanticFields.stream()
+                    .map(element -> element == null ? "" : element)
+                    .collect(Collectors.joining(",")));
+        }
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
             this.vectorFilterMode == null ? null : this.vectorFilterMode.toString());
+        jsonWriter.writeJsonField("hybridSearch", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -674,6 +684,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.searchFields = searchFields;
                 } else if ("searchMode".equals(fieldName)) {
                     deserializedSearchRequest.searchMode = SearchMode.fromString(reader.getString());
+                } else if ("queryLanguage".equals(fieldName)) {
+                    deserializedSearchRequest.queryLanguage = QueryLanguage.fromString(reader.getString());
+                } else if ("speller".equals(fieldName)) {
+                    deserializedSearchRequest.querySpeller = QuerySpellerType.fromString(reader.getString());
                 } else if ("select".equals(fieldName)) {
                     List<String> select = reader.getNullable(nonNullReader -> {
                         String selectEncodedAsString = nonNullReader.getString();
@@ -698,11 +712,23 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.answers = QueryAnswerType.fromString(reader.getString());
                 } else if ("captions".equals(fieldName)) {
                     deserializedSearchRequest.captions = QueryCaptionType.fromString(reader.getString());
+                } else if ("queryRewrites".equals(fieldName)) {
+                    deserializedSearchRequest.queryRewrites = QueryRewritesType.fromString(reader.getString());
+                } else if ("semanticFields".equals(fieldName)) {
+                    List<String> semanticFields = reader.getNullable(nonNullReader -> {
+                        String semanticFieldsEncodedAsString = nonNullReader.getString();
+                        return semanticFieldsEncodedAsString.isEmpty()
+                            ? new LinkedList<>()
+                            : new LinkedList<>(Arrays.asList(semanticFieldsEncodedAsString.split(",", -1)));
+                    });
+                    deserializedSearchRequest.semanticFields = semanticFields;
                 } else if ("vectorQueries".equals(fieldName)) {
                     List<VectorQuery> vectorQueries = reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
                     deserializedSearchRequest.vectorQueries = vectorQueries;
                 } else if ("vectorFilterMode".equals(fieldName)) {
                     deserializedSearchRequest.vectorFilterMode = VectorFilterMode.fromString(reader.getString());
+                } else if ("hybridSearch".equals(fieldName)) {
+                    deserializedSearchRequest.hybridSearch = HybridSearch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -1084,6 +1110,150 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     @Generated
     public SearchRequest setVectorFilterMode(VectorFilterMode vectorFilterMode) {
         this.vectorFilterMode = vectorFilterMode;
+        return this;
+    }
+
+    /*
+     * A value that specifies the language of the search query.
+     */
+    @Generated
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
+     */
+    @Generated
+    private QuerySpellerType querySpeller;
+
+    /*
+     * A value that specifies whether query rewrites should be generated to augment the search query.
+     */
+    @Generated
+    private QueryRewritesType queryRewrites;
+
+    /*
+     * The comma-separated list of field names used for semantic ranking.
+     */
+    @Generated
+    private List<String> semanticFields;
+
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    @Generated
+    private HybridSearch hybridSearch;
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    @Generated
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the querySpeller value.
+     */
+    @Generated
+    public QuerySpellerType getQuerySpeller() {
+        return this.querySpeller;
+    }
+
+    /**
+     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param querySpeller the querySpeller value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setQuerySpeller(QuerySpellerType querySpeller) {
+        this.querySpeller = querySpeller;
+        return this;
+    }
+
+    /**
+     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @return the queryRewrites value.
+     */
+    @Generated
+    public QueryRewritesType getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setQueryRewrites(QueryRewritesType queryRewrites) {
+        this.queryRewrites = queryRewrites;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @return the semanticFields value.
+     */
+    @Generated
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
+        return this;
+    }
+
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @return the hybridSearch value.
+     */
+    @Generated
+    public HybridSearch getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchRequest object itself.
+     */
+    @Generated
+    public SearchRequest setHybridSearch(HybridSearch hybridSearch) {
+        this.hybridSearch = hybridSearch;
         return this;
     }
 }

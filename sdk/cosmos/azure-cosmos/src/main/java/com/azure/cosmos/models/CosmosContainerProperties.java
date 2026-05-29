@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
@@ -161,8 +160,6 @@ public final class CosmosContainerProperties {
      *
      * @return ChangeFeedPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedPolicy getChangeFeedPolicy() {
         return this.documentCollection.getChangeFeedPolicy();
     }
@@ -173,8 +170,6 @@ public final class CosmosContainerProperties {
      * @param value ChangeFeedPolicy to be used.
      * @return the CosmosContainerProperties.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
         this.documentCollection.setChangeFeedPolicy(value);
         return this;

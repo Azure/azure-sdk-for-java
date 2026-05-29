@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ProjectCapabilityHostsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/ProjectCapabilityHost/get.json
+     * x-ms-original-file: 2026-03-15-preview/ProjectCapabilityHost/get.json
      */
     /**
      * Sample code: Get Project CapabilityHost.
