@@ -158,6 +158,16 @@ public interface SqlServer
     void removeActiveDirectoryAdministrator();
 
     /**
+     * Checks whether Azure Active Directory (AAD) only authentication enabled.
+     *
+     * @return true if Azure Active Directory (AAD) only authentication enabled
+     */
+    default boolean isAzureActiveDirectoryOnlyAuthenticationEnabled() {
+        throw new UnsupportedOperationException(
+            "[isAzureActiveDirectoryOnlyAuthenticationEnabled] is not supported in " + getClass());
+    }
+
+    /**
      * Gets a SQL server automatic tuning state and options.
      *
      * @return the SQL server automatic tuning state and options
@@ -283,13 +293,13 @@ public interface SqlServer
             /**
              * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
              *
-             * @param userLogin the user, group, or application login name
+             * @param adminLogin the user, group, or application login name
              * @param sid the user, group, or application object ID
-             * @param principalType the principal type (User, Group, or Application). Must be specified explicitly;
+             * @param principalType the principal type (User, Group, or Application). Must be specified explicitly, since
              *                      the service does not reliably infer it from the SID
              * @return Next stage of the SQL Server definition
              */
-            WithCreate withExternalActiveDirectoryAdministrator(String userLogin, String sid,
+            WithCreate withExternalActiveDirectoryAdministrator(String adminLogin, String sid,
                 PrincipalType principalType);
         }
 

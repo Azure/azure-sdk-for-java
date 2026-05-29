@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -71,8 +72,10 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
             .flatMap(storageAccountKey -> {
                 self.inner.withStorageUri(
                     String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
-                self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                self.inner.withStorageKey(storageAccountKey.value());
+                if (storageAccount.isSharedKeyAccessAllowed() && CoreUtils.isNullOrEmpty(self.inner.storageKey())) {
+                    self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                    self.inner.withStorageKey(storageAccountKey.value());
+                }
                 BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
                 return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
                     .onErrorResume(error -> {
@@ -165,6 +168,10 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         this.inner.withAdministratorLogin(managedIdentityResourceId);
         // No administrator password is required for managed identity authentication.
         this.inner.withAdministratorLoginPassword(null);
+
+        // Use the same MI for storage account access.
+        this.inner.withStorageKeyType(StorageKeyType.MANAGED_IDENTITY);
+        this.inner.withStorageKey(managedIdentityResourceId);
         return this;
     }
 

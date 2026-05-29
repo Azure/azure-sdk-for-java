@@ -33,6 +33,8 @@ import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.ReplicationState;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
@@ -42,6 +44,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
@@ -577,10 +580,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     @DoNotRecord(skipInPlayback = true)
     // The test makes calls to the Azure Storage data plane APIs which are not mocked at this time.
-    public void canCRUDSqlServerWithImportDatabase() throws Exception {
+    public void canCRUDSqlServerWithImportDatabase() {
         String storageName = generateRandomResourceName(sqlServerName, 22);
         String uamiName = generateRandomResourceName("uami", 18);
-        AzureUser user = azureCliSignedInUser();
 
         resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
 
@@ -611,9 +613,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withRegion(DEFAULT_REGION)
             .withExistingResourceGroup(rgName)
             .withAzureActiveDirectoryOnlyAuthentication()
-            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
+            .withExternalActiveDirectoryAdministrator(uamiName, uami.principalId(), PrincipalType.APPLICATION)
             .withPrimaryUserAssignedManagedServiceIdentity(uami.id())
             .create();
+
+        Assertions.assertTrue(sqlServer.isAzureActiveDirectoryOnlyAuthenticationEnabled());
 
         SqlDatabase dbFromSample = sqlServer.databases()
             .define("db-from-sample")
@@ -897,9 +901,37 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled("Legacy threat detection policy doesn't support MI. The new Advanced Threat Protection(ATP) "
+        + "does not require storage account any more. "
+        + "See Oury Ba's answer: https://learn.microsoft.com/answers/questions/2276392/how-to-create-microsoft-sql-servers-securityalertp")
     public void canCRUDSqlDatabase() throws Exception {
+        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
+        AzureUser user = azureCliSignedInUser();
+
         // Create
-        SqlServer sqlServer = createSqlServer();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(DEFAULT_REGION)
+            .withNewResourceGroup(rgName)
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(user.userPrincipalName(), user.id(), PrincipalType.USER)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageAccountName)
+            .withRegion(DEFAULT_REGION)
+            .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
+        authorizationManager.roleAssignments()
+            .define(generateRandomUuid())
+            .forObjectId(sqlServer.systemAssignedManagedServiceIdentityPrincipalId())
+            .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
+            .withResourceScope(storageAccount)
+            .create();
+
         Mono<SqlDatabase> resourceStream = sqlServer.databases()
             .define(SQL_DATABASE_NAME)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -910,57 +942,25 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
-        // Threat detection policy test is disabled.
-        //
-        // The storage account used here is provisioned with shared-key access disabled
-        // (`disableSharedKeyAccess()`) because the target test subscription is an AAD-only tenant:
-        // storage accounts created there must reject shared-key authentication and only accept
-        // Microsoft Entra (Azure AD) credentials. As a result, the access-key path returns a key
-        // value that the storage data plane will not accept.
-        // The database-level "securityAlertPolicies" ARM resource does not offer a Managed
-        // Identity alternative either: the latest schema (api-version 2025-01-01) defines only
-        // state / disabledAlerts / emailAccountAdmins / emailAddresses / retentionDays /
-        // storageAccountAccessKey / storageEndpoint, with no identity / isManagedIdentityInUse
-        // field. Compare with "auditingSettings", which on the same api-version explicitly
-        // exposes isManagedIdentityInUse and documents the "omit access key to use SAMI" path.
-        // The service enforces this: omitting storageAccountAccessKey when storageEndpoint is
-        // set fails with "DataSecurityInvalidUserSuppliedParameter: storageAccountAccessKey
-        // parameter can not be null when storageEndpoint parameter is not null".
-        //
-        // References:
-        //   https://learn.microsoft.com/en-us/rest/api/sql/database-security-alert-policies/create-or-update?view=rest-sql-2025-01-01
-        //   https://learn.microsoft.com/en-us/rest/api/sql/database-blob-auditing-policies/create-or-update?view=rest-sql-2025-01-01
-        //
-        // Re-enable when either (a) the storage account in this test is recreated with shared
-        // key access enabled, or (b) the SQL securityAlertPolicies resource adds first-class
-        // Managed Identity support.
+        String blobEntrypoint = storageAccount.endPoints().primary().blob();
 
-        // final String storageAccountName = generateRandomResourceName("sqlsa", 20);
-        // StorageAccount storageAccount = storageManager.storageAccounts()
-        //     .define(storageAccountName)
-        //     .withRegion(DEFAULT_REGION)
-        //     .withExistingResourceGroup(rgName)
-        //     .disableSharedKeyAccess()
-        //     .create();
-        // String accountKey = storageAccount.getKeys().get(0).value();
-        // String blobEntrypoint = storageAccount.endPoints().primary().blob();
+        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
 
-        // List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
+        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
+            .withPolicyEnabled()
+            .withStorageEndpoint(blobEntrypoint)
+            // use system-assigned MI
+            .withStorageAccountAccessKey(null)
+            .withAlertsFilter(disabledAlerts)
+            .create();
 
-        // sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
-        //     .withPolicyEnabled()
-        //     .withStorageEndpoint(blobEntrypoint)
-        //     .withStorageAccountAccessKey(accountKey)
-        //     .withAlertsFilter(disabledAlerts)
-        //     .create();
+        sqlDatabase.refresh();
 
-        // sqlDatabase.refresh();
-
-        // SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
-        // Assertions.assertNotNull(alertPolicy);
-        // Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
-        // Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
-        // Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
+        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
+        Assertions.assertNotNull(alertPolicy);
+        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
+        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
 
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();

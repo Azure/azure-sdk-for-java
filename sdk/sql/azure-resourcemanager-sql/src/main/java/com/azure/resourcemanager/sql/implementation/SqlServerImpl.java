@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
@@ -328,6 +329,12 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
+    public boolean isAzureActiveDirectoryOnlyAuthenticationEnabled() {
+        return this.innerModel().administrators() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().administrators().azureADOnlyAuthentication());
+    }
+
+    @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
         ServerAutomaticTuningInner serverAutomaticTuningInner
             = this.manager().serviceClient().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
@@ -377,7 +384,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public SqlServerImpl withExternalActiveDirectoryAdministrator(String userLogin, String sid,
+    public SqlServerImpl withExternalActiveDirectoryAdministrator(String adminLogin, String sid,
         PrincipalType principalType) {
         if (this.innerModel().administrators() == null) {
             this.innerModel()
@@ -389,7 +396,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         }
         this.innerModel()
             .administrators()
-            .withLogin(userLogin)
+            .withLogin(adminLogin)
             .withSid(UUID.fromString(sid))
             .withPrincipalType(principalType);
         return this;
