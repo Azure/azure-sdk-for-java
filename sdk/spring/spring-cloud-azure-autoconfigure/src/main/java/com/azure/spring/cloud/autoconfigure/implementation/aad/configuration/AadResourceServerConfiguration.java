@@ -32,6 +32,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +43,9 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadR
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
 class AadResourceServerConfiguration {
+
+    private Duration JWT_DECODER_CONNECT_TIMEOUT = Duration.ofMillis(500);
+    private Duration JWT_DECODER_READ_TIMEOUT = Duration.ofMillis(500);
 
     private final RestTemplateBuilder restTemplateBuilder;
 
@@ -57,8 +61,10 @@ class AadResourceServerConfiguration {
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-                .restOperations(createRestTemplate(restTemplateBuilder))
-                .build();
+            .restOperations(createRestTemplate(restTemplateBuilder
+                .connectTimeout(JWT_DECODER_CONNECT_TIMEOUT)
+                .readTimeout(JWT_DECODER_READ_TIMEOUT)))
+            .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
