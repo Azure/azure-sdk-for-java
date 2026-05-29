@@ -45,18 +45,18 @@ public class SessionsAsyncSample {
                 AgentSessionResource session = resources.getSession();
 
                 return agentsAsyncClient.getSession(agentName, session.getAgentSessionId(),
-                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
                     .thenMany(agentsAsyncClient.listSessions(agentName,
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null)
+                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
                         return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(),
-                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));

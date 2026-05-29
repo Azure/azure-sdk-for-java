@@ -103,8 +103,8 @@ public class SamplesTests extends ClientTestBase {
         DataGenerationJobsClient dataGenerationJobsClient
             = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
 
-        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5,
-            PageOrder.DESC, null, null, null, null);
+        Iterable<DataGenerationJob> jobs
+            = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -125,14 +125,15 @@ public class SamplesTests extends ClientTestBase {
         DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
             = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
 
-        StepVerifier.create(dataGenerationJobsAsyncClient
-            .listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null, null, null)
-            .take(5)
-            .doOnNext(job -> {
-                Assertions.assertNotNull(job);
-                Assertions.assertNotNull(job.getId());
-            })
-            .then()).verifyComplete();
+        StepVerifier.create(
+            dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
+                .take(5)
+                .doOnNext(job -> {
+                    Assertions.assertNotNull(job);
+                    Assertions.assertNotNull(job.getId());
+                })
+                .then())
+            .verifyComplete();
     }
 
     @LiveOnly
@@ -204,8 +205,8 @@ public class SamplesTests extends ClientTestBase {
             zipOutputStream.closeEntry();
         }
 
-        FilesFileDetails fileDetails = new FilesFileDetails(BinaryData.fromBytes(outputStream.toByteArray()))
-            .setFilename(skillName + ".zip");
+        FilesFileDetails fileDetails
+            = new FilesFileDetails(BinaryData.fromBytes(outputStream.toByteArray())).setFilename(skillName + ".zip");
         return new CreateSkillVersionFromFilesBody(Arrays.asList(fileDetails));
     }
 }
