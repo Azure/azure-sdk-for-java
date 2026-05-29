@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.util.Beta;
+
 /**
  * Represents the build status of a global secondary index as returned by the Azure Cosmos DB service.
  */
+@Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum CosmosGlobalSecondaryIndexBuildStatus {
 
     /**

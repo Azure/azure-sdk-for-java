@@ -397,6 +397,7 @@ public final class CosmosContainerProperties {
      *
      * @return the CosmosGlobalSecondaryIndexDefinition
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
         return this.documentCollection.getGlobalSecondaryIndexDefinition();
     }
@@ -415,6 +416,7 @@ public final class CosmosContainerProperties {
      * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
      * @return the CosmosContainerProperties.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         this.documentCollection.setGlobalSecondaryIndexDefinition(value);
         return this;

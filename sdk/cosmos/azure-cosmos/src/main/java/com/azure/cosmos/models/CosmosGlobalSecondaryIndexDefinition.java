@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  *     new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
  * }</pre>
  */
+@Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosGlobalSecondaryIndexDefinition {
 
     private final JsonSerializable jsonSerializable;
@@ -36,6 +38,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @param definition the SQL-like query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
      * @throws IllegalArgumentException if {@code sourceContainerId} or {@code definition} is {@code null} or empty.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosGlobalSecondaryIndexDefinition(String sourceContainerId, String definition) {
         if (sourceContainerId == null || sourceContainerId.trim().isEmpty()) {
             throw new IllegalArgumentException("sourceContainerId cannot be null, empty, or blank");
@@ -62,6 +65,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      *
      * @return the source container id.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSourceContainerId() {
         return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID);
     }
@@ -76,6 +80,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      *
      * @return the source container resource id.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSourceContainerRid() {
         return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_RID);
     }
@@ -88,6 +93,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      *
      * @return the GlobalSecondaryIndex build status.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosGlobalSecondaryIndexBuildStatus getStatus() {
         return CosmosGlobalSecondaryIndexBuildStatus.fromString(
             this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_STATUS));
@@ -98,6 +104,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      *
      * @return the query definition.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getDefinition() {
         return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION);
     }
