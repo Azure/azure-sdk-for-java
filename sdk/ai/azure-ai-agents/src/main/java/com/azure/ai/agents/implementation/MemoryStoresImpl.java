@@ -394,7 +394,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteMemory(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> internalDeleteMemory(@HostParam("endpoint") String endpoint,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -405,7 +405,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteMemorySync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> internalDeleteMemorySync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -2512,12 +2512,12 @@ public final class MemoryStoresImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteMemoryWithResponseAsync(String name, String memoryId,
+    public Mono<Response<BinaryData>> internalDeleteMemoryWithResponseAsync(String name, String memoryId,
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteMemory(this.client.getEndpoint(), foundryFeatures, name,
-            memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteMemory(this.client.getEndpoint(), foundryFeatures,
+            name, memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2544,10 +2544,11 @@ public final class MemoryStoresImpl {
      * @return response for deleting a memory item from a memory store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+    public Response<BinaryData> internalDeleteMemoryWithResponse(String name, String memoryId,
+        RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.deleteMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+        return service.internalDeleteMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

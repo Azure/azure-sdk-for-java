@@ -12,7 +12,6 @@ import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
-import com.azure.ai.agents.models.DeleteMemoryResponse;
 import com.azure.ai.agents.models.ListMemoriesOptions;
 import com.azure.ai.agents.models.MemoryItem;
 import com.azure.ai.agents.models.MemoryItemKind;
@@ -1231,9 +1230,9 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteMemoryWithResponse(String name, String memoryId,
+    Mono<Response<BinaryData>> internalDeleteMemoryWithResponse(String name, String memoryId,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteMemoryWithResponseAsync(name, memoryId, requestOptions);
+        return this.serviceClient.internalDeleteMemoryWithResponseAsync(name, memoryId, requestOptions);
     }
 
     /**
@@ -1317,6 +1316,7 @@ public final class MemoryStoresAsyncClient {
      *
      * @param name The name of the memory store.
      * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1325,13 +1325,29 @@ public final class MemoryStoresAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for deleting a memory item from a memory store on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteMemoryResponse> deleteMemory(String name, String memoryId) {
-        // Generated convenience method for deleteMemoryWithResponse
+    public Mono<Response<Void>> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+        return internalDeleteMemoryWithResponse(name, memoryId, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the memory item is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMemory(String name, String memoryId) {
         RequestOptions requestOptions = new RequestOptions();
-        return deleteMemoryWithResponse(name, memoryId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteMemoryResponse.class));
+        return deleteMemoryWithResponse(name, memoryId, requestOptions).then();
     }
 
     /**
