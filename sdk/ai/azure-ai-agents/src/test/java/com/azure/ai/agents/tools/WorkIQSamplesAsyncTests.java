@@ -3,10 +3,10 @@
 
 package com.azure.ai.agents.tools;
 
-import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
@@ -19,32 +19,37 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-public class FabricIQSamplesTests extends FabricIQSamplesTestBase {
+public class WorkIQSamplesAsyncTests extends WorkIQSamplesTestBase {
 
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
-    @Disabled("Requires FABRIC_IQ_PROJECT_CONNECTION_ID in work resources; service returned 500 when validating with the Fabric connection.")
-    @ResourceLock(FABRIC_IQ_RESOURCE_LOCK)
+    @Disabled("Requires WORK_IQ_PROJECT_CONNECTION_ID, which is not available in the current Java work resources.")
+    @ResourceLock(WORK_IQ_RESOURCE_LOCK)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void fabricIqSyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+    public void workIqAsyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
-        AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
+        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
-        String agentName = testResourceNamer.randomName("fabric-iq-sync-", 40);
-        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, createAgentDefinition());
+        String agentName = testResourceNamer.randomName("work-iq-async-", 40);
+        AgentVersionDetails agent
+            = agentsAsyncClient.createAgentVersion(agentName, createAgentDefinition()).block(Duration.ofMinutes(2));
         Assertions.assertNotNull(agent);
 
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference), createResponseParams());
+            Response response
+                = responsesAsyncClient
+                    .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        createResponseParams())
+                    .block(Duration.ofMinutes(3));
 
             assertCompletedResponse(response);
         } finally {
-            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+            agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block(Duration.ofMinutes(1));
         }
     }
 }

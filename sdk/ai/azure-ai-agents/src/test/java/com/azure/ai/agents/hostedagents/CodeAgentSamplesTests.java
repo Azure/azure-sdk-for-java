@@ -14,6 +14,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,6 +30,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
+@Disabled("Direct code deployment is not enabled for the current test subscription.")
 public class CodeAgentSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 

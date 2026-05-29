@@ -14,7 +14,6 @@ import com.azure.ai.agents.models.ContainerConfiguration;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
-import com.azure.ai.agents.models.VersionRefIndicator;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
@@ -51,7 +50,9 @@ final class HostedAgentsSampleUtils {
         AgentVersionDetails agent = createHostedAgentVersion(agentsClient, agentName, image);
         waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
 
-        AgentSessionResource session = agentsClient.createSession(agentName, new VersionRefIndicator(agent.getVersion()));
+        AgentSessionResource session = agentsClient.createSessionWithResponse(agentName,
+            BinaryData.fromObject(createSessionRequest(agent.getVersion())), foundryFeaturesRequestOptions()).getValue()
+            .toObject(AgentSessionResource.class);
         System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(), session.getStatus());
 
         return new HostedAgentSessionResources(agent, session);
@@ -61,7 +62,9 @@ final class HostedAgentsSampleUtils {
         String agentName, String image) {
         return createHostedAgentVersionAsync(agentsAsyncClient, agentName, image)
             .flatMap(agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion())
-                .then(agentsAsyncClient.createSession(agentName, new VersionRefIndicator(agent.getVersion())))
+                .then(agentsAsyncClient.createSessionWithResponse(agentName,
+                    BinaryData.fromObject(createSessionRequest(agent.getVersion())), foundryFeaturesRequestOptions())
+                    .map(response -> response.getValue().toObject(AgentSessionResource.class)))
                 .map(session -> {
                     System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(),
                         session.getStatus());
@@ -76,7 +79,8 @@ final class HostedAgentsSampleUtils {
 
         if (resources.getSession() != null) {
             try {
-                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId());
+                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(),
+                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
                 System.out.printf("Session with id: %s deleted.%n", resources.getSession().getAgentSessionId());
             } catch (ResourceNotFoundException ignored) {
                 // The sample may have already deleted the session.
@@ -102,7 +106,8 @@ final class HostedAgentsSampleUtils {
         Mono<Void> deleteSession = Mono.empty();
         if (resources.getSession() != null) {
             String sessionId = resources.getSession().getAgentSessionId();
-            deleteSession = agentsAsyncClient.deleteSession(agentName, sessionId)
+            deleteSession = agentsAsyncClient.deleteSession(agentName, sessionId,
+                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
                 .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n", sessionId))
                 .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
         }
@@ -233,6 +238,16 @@ final class HostedAgentsSampleUtils {
     private static RequestOptions foundryFeaturesRequestOptions() {
         return new RequestOptions()
             .setHeader(HttpHeaderName.fromString("Foundry-Features"), FOUNDRY_FEATURES_HEADER_VALUE);
+    }
+
+    private static Map<String, Object> createSessionRequest(String agentVersion) {
+        Map<String, Object> versionIndicator = new HashMap<>();
+        versionIndicator.put("agent_version", agentVersion);
+        versionIndicator.put("type", "version_ref");
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("version_indicator", versionIndicator);
+        return request;
     }
 
     private static Map<String, String> sampleMetadata() {

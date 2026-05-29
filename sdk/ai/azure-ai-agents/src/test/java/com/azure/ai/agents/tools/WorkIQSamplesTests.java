@@ -21,19 +21,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.concurrent.TimeUnit;
 
-public class FabricIQSamplesTests extends FabricIQSamplesTestBase {
+public class WorkIQSamplesTests extends WorkIQSamplesTestBase {
 
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
-    @Disabled("Requires FABRIC_IQ_PROJECT_CONNECTION_ID in work resources; service returned 500 when validating with the Fabric connection.")
-    @ResourceLock(FABRIC_IQ_RESOURCE_LOCK)
+    @Disabled("Requires WORK_IQ_PROJECT_CONNECTION_ID, which is not available in the current Java work resources.")
+    @ResourceLock(WORK_IQ_RESOURCE_LOCK)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void fabricIqSyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+    public void workIqSyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
-        String agentName = testResourceNamer.randomName("fabric-iq-sync-", 40);
+        String agentName = testResourceNamer.randomName("work-iq-sync-", 40);
         AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, createAgentDefinition());
         Assertions.assertNotNull(agent);
 
