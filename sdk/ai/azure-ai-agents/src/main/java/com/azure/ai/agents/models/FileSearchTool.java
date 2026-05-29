@@ -246,6 +246,21 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
+     * Gets the file search filters as an openai-java {@link ComparisonFilter}.
+     *
+     * @return the openai-java ComparisonFilter, or {@code null} if filters are not set or contain a different filter
+     * type.
+     */
+    public ComparisonFilter getComparisonFilter() {
+        // AI Tooling: openai-java de-dup
+        Object filter = getOpenAIFileSearchFilter();
+        if (filter instanceof ComparisonFilter) {
+            return (ComparisonFilter) filter;
+        }
+        return null;
+    }
+
+    /**
      * Sets the file search filters using an openai-java {@link CompoundFilter}.
      * <p>
      * The provided filter is serialized using the openai-java JSON schema and stored in the
@@ -258,6 +273,51 @@ public final class FileSearchTool extends Tool {
         // AI Tooling: openai-java de-dup
         this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
         return this;
+    }
+
+    /**
+     * Gets the file search filters as an openai-java {@link CompoundFilter}.
+     *
+     * @return the openai-java CompoundFilter, or {@code null} if filters are not set or contain a different filter
+     * type.
+     */
+    public CompoundFilter getCompoundFilter() {
+        // AI Tooling: openai-java de-dup
+        Object filter = getOpenAIFileSearchFilter();
+        if (filter instanceof CompoundFilter) {
+            return (CompoundFilter) filter;
+        }
+        return null;
+    }
+
+    private Object getOpenAIFileSearchFilter() {
+        // AI Tooling: openai-java de-dup
+        com.openai.models.responses.FileSearchTool.Filters filter = com.azure.ai.agents.implementation.OpenAIJsonHelper
+            .fromBinaryData(this.filters, com.openai.models.responses.FileSearchTool.Filters.class);
+        if (filter == null) {
+            return null;
+        }
+        if (filter.isComparisonFilter()) {
+            ComparisonFilter comparisonFilter = filter.asComparisonFilter();
+            if (!comparisonFilter._key().isMissing()
+                && !comparisonFilter._key().isNull()
+                && !comparisonFilter._type().isMissing()
+                && !comparisonFilter._type().isNull()
+                && !comparisonFilter._value().isMissing()
+                && !comparisonFilter._value().isNull()) {
+                return comparisonFilter;
+            }
+        }
+        if (filter.isCompoundFilter()) {
+            CompoundFilter compoundFilter = filter.asCompoundFilter();
+            if (!compoundFilter._type().isMissing()
+                && !compoundFilter._type().isNull()
+                && !compoundFilter._filters().isMissing()
+                && !compoundFilter._filters().isNull()) {
+                return compoundFilter;
+            }
+        }
+        return null;
     }
 
     /*
