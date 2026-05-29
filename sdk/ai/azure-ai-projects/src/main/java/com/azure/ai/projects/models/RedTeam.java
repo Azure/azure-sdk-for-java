@@ -44,8 +44,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     private List<AttackStrategy> attackStrategies;
 
     /*
-     * Simulation-only or Simulation + Evaluation. Default false, if true the scan outputs conversation not evaluation
-     * result.
+     * Simulation-only or Simulation + Evaluation. If `true` the scan outputs conversation not evaluation result. The
+     * service defaults to `false` if a value is not specified by the caller.
      */
     @Generated
     private Boolean simulationOnly;
@@ -163,8 +163,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     }
 
     /**
-     * Get the simulationOnly property: Simulation-only or Simulation + Evaluation. Default false, if true the scan
-     * outputs conversation not evaluation result.
+     * Get the simulationOnly property: Simulation-only or Simulation + Evaluation. If `true` the scan outputs
+     * conversation not evaluation result. The service defaults to `false` if a value is not specified by the caller.
      *
      * @return the simulationOnly value.
      */
@@ -174,8 +174,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     }
 
     /**
-     * Set the simulationOnly property: Simulation-only or Simulation + Evaluation. Default false, if true the scan
-     * outputs conversation not evaluation result.
+     * Set the simulationOnly property: Simulation-only or Simulation + Evaluation. If `true` the scan outputs
+     * conversation not evaluation result. The service defaults to `false` if a value is not specified by the caller.
      *
      * @param simulationOnly the simulationOnly value to set.
      * @return the RedTeam object itself.

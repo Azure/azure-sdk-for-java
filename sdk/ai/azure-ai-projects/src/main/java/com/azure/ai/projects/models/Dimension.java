@@ -34,7 +34,7 @@ public final class Dimension implements JsonSerializable<Dimension> {
     /*
      * When true, the LLM judge always scores this dimension regardless of relevance (skips applicability assessment).
      * The service-generated general quality/policy dimension has this set to true and is non-editable. Users may set
-     * this on their own custom dimensions. Defaults to `false`.
+     * this on their own custom dimensions. The service defaults to `false` if a value is not specified by the caller.
      */
     @Generated
     private Boolean alwaysApplicable;
@@ -78,7 +78,8 @@ public final class Dimension implements JsonSerializable<Dimension> {
     /**
      * Get the alwaysApplicable property: When true, the LLM judge always scores this dimension regardless of relevance
      * (skips applicability assessment). The service-generated general quality/policy dimension has this set to true and
-     * is non-editable. Users may set this on their own custom dimensions. Defaults to `false`.
+     * is non-editable. Users may set this on their own custom dimensions. The service defaults to `false` if a value is
+     * not specified by the caller.
      *
      * @return the alwaysApplicable value.
      */
@@ -90,7 +91,8 @@ public final class Dimension implements JsonSerializable<Dimension> {
     /**
      * Set the alwaysApplicable property: When true, the LLM judge always scores this dimension regardless of relevance
      * (skips applicability assessment). The service-generated general quality/policy dimension has this set to true and
-     * is non-editable. Users may set this on their own custom dimensions. Defaults to `false`.
+     * is non-editable. Users may set this on their own custom dimensions. The service defaults to `false` if a value is
+     * not specified by the caller.
      *
      * @param alwaysApplicable the alwaysApplicable value to set.
      * @return the Dimension object itself.
