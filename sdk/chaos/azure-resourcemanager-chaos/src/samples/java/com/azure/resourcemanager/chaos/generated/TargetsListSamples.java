@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class TargetsListSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Targets_List.json
+     * x-ms-original-file: 2026-05-01-preview/Targets_List.json
      */
     /**
      * Sample code: List all Targets that extend a virtual machine resource.

@@ -1,14 +1,348 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2026-05-26)
 
-### Features Added
+- Azure Resource Manager Chaos client library for Java. This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+- Azure Resource Manager Chaos client library for Java. This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. Package api-version 2025-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ChaosTargetListSelector` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosTargetSimpleFilterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ContinuousAction` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosExperimentBranch` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosExperimentStep` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosExperimentAction` was modified
+
+* `validate()` was removed
+
+#### `models.DiscreteAction` was modified
+
+* `validate()` was removed
+
+#### `models.ActionStatus` was modified
+
+* `validate()` was removed
+
+#### `models.ExperimentExecutionActionTargetDetailsProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExperimentUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.DelayAction` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosTargetQuerySelector` was modified
+
+* `validate()` was removed
+
+#### `models.ExperimentExecutionDetailsPropertiesRunInformation` was modified
+
+* `validate()` was removed
+
+#### `models.StepStatus` was modified
+
+* `validate()` was removed
+
+#### `models.CapabilityTypePropertiesRuntimeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExperimentExecutionActionTargetDetailsError` was modified
+
+* `validate()` was removed
+
+#### `models.KeyValuePair` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosTargetFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosTargetSimpleFilter` was modified
+
+* `validate()` was removed
+
+#### `models.BranchStatus` was modified
+
+* `validate()` was removed
+
+#### `models.ChaosTargetSelector` was modified
+
+* `validate()` was removed
+
+#### `models.TargetReference` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ScenarioConfigurationProperties` was added
+
+* `models.ScenarioRunsGetHeaders` was added
+
+* `models.ScenarioRuns` was added
+
+* `models.ConfigurationExclusions` was added
+
+* `models.PrivateAccessProperties` was added
+
+* `models.PrivateEndpointConnectionProperties` was added
+
+* `models.ResourceStateError` was added
+
+* `models.PrivateAccess` was added
+
+* `models.ScenarioRun` was added
+
+* `models.RunAfterBehavior` was added
+
+* `models.ActionSupportedTargetType` was added
+
+* `models.ScenarioConfigurationsExecuteResponse` was added
+
+* `models.ActionLifecycle` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.Scenarios` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.ScenarioRunsCancelResponse` was added
+
+* `models.ScenarioProperties` was added
+
+* `models.ScenarioRunProperties` was added
+
+* `models.ScenarioParameter` was added
+
+* `models.ExternalResource` was added
+
+* `models.ActionDependencyType` was added
+
+* `models.Scenario$DefinitionStages` was added
+
+* `models.ScenarioEvaluationResultItem` was added
+
+* `models.RecommendationStatus` was added
+
+* `models.ScenarioRunsGetResponse` was added
+
+* `models.CustomerDataStorageProperties` was added
+
+* `models.ParameterType` was added
+
+* `models.EntraIdentity` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.WorkspaceEvaluationProperties` was added
+
+* `models.FixResourcePermissionsRequest` was added
+
+* `models.PermissionsFixSummary` was added
+
+* `models.PrivateAccess$Update` was added
+
+* `models.ZoneResolutionInfo` was added
+
+* `models.ScenarioErrors` was added
+
+* `models.DiscoveredResources` was added
+
+* `models.PermissionsFix` was added
+
+* `models.WorkspaceProperties` was added
+
+* `models.RoleAssignmentStatus` was added
+
+* `models.Workspace$Update` was added
+
+* `models.Workspace$Definition` was added
+
+* `models.PublicNetworkAccessOption` was added
+
+* `models.ActionDependency` was added
+
+* `models.PermissionError` was added
+
+* `models.ZoneResolutionMode` was added
+
+* `models.Recommendation` was added
+
+* `models.Validation` was added
+
+* `models.ConfigurationFilters` was added
+
+* `models.WorkspaceEvaluationStatus` was added
+
+* `models.ScenarioConfiguration` was added
+
+* `models.Scenario$UpdateStages` was added
+
+* `models.PrivateAccessPatch` was added
+
+* `models.PrivateAccess$DefinitionStages` was added
+
+* `models.Workspace` was added
+
+* `models.ScenarioConfiguration$UpdateStages` was added
+
+* `models.Actions` was added
+
+* `models.PermissionsFixState` was added
+
+* `models.ActionPropertiesParametersSchema` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.Scenario` was added
+
+* `models.PrivateAccess$Definition` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.ScenarioSummaryState` was added
+
+* `models.RoleAssignmentError` was added
+
+* `models.ScenarioConfiguration$Definition` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.DiscoveredResourceProperties` was added
+
+* `models.Action` was added
+
+* `models.ScenarioRunResource` was added
+
+* `models.ScenarioAction` was added
+
+* `models.ValidationProperties` was added
+
+* `models.Workspace$DefinitionStages` was added
+
+* `models.PrivateAccess$UpdateStages` was added
+
+* `models.ZoneResolutionMapping` was added
+
+* `models.ScenarioConfiguration$DefinitionStages` was added
+
+* `models.WorkspaceUpdate` was added
+
+* `models.OperationError` was added
+
+* `models.PrivateAccesses` was added
+
+* `models.PhysicalToLogicalZoneMapping` was added
+
+* `models.ActionVersion` was added
+
+* `models.ActionVersions` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.Scenario$Update` was added
+
+* `models.PermissionsFixProperties` was added
+
+* `models.ActionKind` was added
+
+* `models.WorkspaceEvaluation` was added
+
+* `models.DiscoveredResource` was added
+
+* `models.Workspaces` was added
+
+* `models.ScenarioValidationState` was added
+
+* `models.Scenario$Definition` was added
+
+* `models.ScenarioConfiguration$Update` was added
+
+* `models.ScenarioConfigurations` was added
+
+* `models.ScenarioRunsCancelHeaders` was added
+
+* `models.ScenarioRunState` was added
+
+* `models.ScenarioRunSummaryAction` was added
+
+* `models.Workspace$UpdateStages` was added
+
+* `models.RoleAssignmentResult` was added
+
+* `models.ScenarioConfigurationsExecuteHeaders` was added
+
+* `models.RunAfter` was added
+
+#### `models.ExperimentExecution` was modified
+
+* `provisioningState()` was added
+
+#### `models.ProvisioningState` was modified
+
+* `RUNNING` was added
+
+#### `models.Experiment` was modified
+
+* `customerDataStorage()` was added
+
+#### `models.ExperimentExecutionDetails` was modified
+
+* `provisioningState()` was added
+
+#### `models.Experiment$Definition` was modified
+
+* `withCustomerDataStorage(models.CustomerDataStorageProperties)` was added
+
+#### `models.Capability` was modified
+
+* `provisioningState()` was added
+
+#### `ChaosManager` was modified
+
+* `scenarioConfigurations()` was added
+* `actionVersions()` was added
+* `discoveredResources()` was added
+* `privateAccesses()` was added
+* `actions()` was added
+* `scenarios()` was added
+* `workspaces()` was added
+* `scenarioRuns()` was added
 
 ## 1.3.0 (2025-05-15)
 

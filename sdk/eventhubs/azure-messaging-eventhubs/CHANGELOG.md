@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+- Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated
+  to the `Checkpoint` passed to the `CheckpointStore`. Previously only the deprecated `offset` (Long) was set, which
+  caused checkpoint stores that read `offsetString` (such as `BlobCheckpointStore`) to persist a `null` offset, breaking
+  partition switch-over and consumer-group lag monitoring.
+  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+
 ### Other Changes
 
 ## 5.21.4 (2026-05-05)
