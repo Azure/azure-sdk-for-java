@@ -75,6 +75,11 @@ extends:
             value: '${{ convertToJson(parameters.Artifacts) }}'
           - name: AdditionalModulesJson
             value: '${{ convertToJson(parameters.AdditionalModules) }}'
+          # TestContainers ACR Cache configuration:
+          # Set TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX to redirect Docker Hub pulls through an ACR Cache
+          # (e.g., 'myacr.azurecr.io/'). When empty, images pull directly from Docker Hub.
+          - name: TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX
+            value: ''
         jobs:
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
@@ -98,7 +103,25 @@ extends:
               ServiceDirectory: cosmos
               TimeoutInMinutes: 120
               TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+              EnvVars:
+                TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: $(TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX)
               PreSteps:
+              - powershell: |
+                  $registryUrl = "$(TESTCONTAINERS_DOCKER_REGISTRY_URL)"
+                  $registryUsername = "$(TESTCONTAINERS_DOCKER_REGISTRY_USERNAME)"
+                  $registryPassword = "$(TESTCONTAINERS_DOCKER_REGISTRY_PASSWORD)"
+                  if ($registryUrl -and $registryUrl -ne '$(TESTCONTAINERS_DOCKER_REGISTRY_URL)') {
+                    Write-Host "Logging in to container registry: $registryUrl"
+                    docker login $registryUrl -u $registryUsername -p $registryPassword
+                    if ($LASTEXITCODE -ne 0) {
+                      Write-Error "Docker login failed with exit code $LASTEXITCODE"
+                      exit 1
+                    }
+                    Write-Host "Docker login successful"
+                  } else {
+                    Write-Host "No container registry configured, skipping Docker login"
+                  }
+                displayName: 'Login to container registry for TestContainers'
               - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
                 parameters:
                   StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /SqlComputePort=9999 /disableratelimiting /partitioncount=50 /consistency=Strong'
