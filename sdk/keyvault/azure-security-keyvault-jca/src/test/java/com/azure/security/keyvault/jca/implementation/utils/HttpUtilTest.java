@@ -85,19 +85,21 @@ public class HttpUtilTest {
     private static void handleProxyRequest(ServerSocket proxyServer, AtomicReference<String> requestLine,
         CountDownLatch requestReceived, AtomicReference<Exception> proxyFailure) {
         try (Socket socket = proxyServer.accept();
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader reader
+                = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             OutputStream outputStream = socket.getOutputStream()) {
 
             requestLine.set(reader.readLine());
             String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                // Consume request headers before writing the response.
+            while ((line = reader.readLine()) != null) {
+                if (line.isEmpty()) {
+                    break;
+                }
             }
 
             byte[] body = "proxied".getBytes(StandardCharsets.UTF_8);
-            outputStream.write(("HTTP/1.1 200 OK\r\nContent-Length: " + body.length + "\r\n\r\n")
-                .getBytes(StandardCharsets.UTF_8));
+            outputStream.write(
+                ("HTTP/1.1 200 OK\r\nContent-Length: " + body.length + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
             outputStream.write(body);
             outputStream.flush();
             requestReceived.countDown();
