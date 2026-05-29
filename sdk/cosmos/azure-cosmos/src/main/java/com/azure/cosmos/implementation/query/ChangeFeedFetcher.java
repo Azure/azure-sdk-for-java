@@ -45,7 +45,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
-    private final boolean emptyPagesAllowed;
+    private final boolean notModifiedPagesAllowed;
     private final Long endLSN;
 
     public ChangeFeedFetcher(
@@ -58,7 +58,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
-        boolean emptyPagesAllowed,
+        boolean notModifiedPagesAllowed,
         Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
@@ -87,7 +87,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 diagnosticsClientContext);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
-        this.emptyPagesAllowed = emptyPagesAllowed;
+        this.notModifiedPagesAllowed = notModifiedPagesAllowed;
         this.endLSN = endLSN;
     }
 
@@ -130,7 +130,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
      * surface it, swallow it via {@code repeatWhenEmpty}, or terminate iteration entirely. The
      * decision depends on the change-feed mode (bounded vs streaming), whether the response is
      * a noChanges 304, the continuation's {@code handleChangeFeedNotModified} signal, and whether
-     * the caller opted into {@code emptyPagesAllowed=true}.
+     * the caller opted into {@code notModifiedPagesAllowed=true}.
      */
     private Mono<FeedResponse<T>> applyNoChangesDecision(FeedResponse<T> r) {
         FeedRangeContinuation continuationSnapshot = this.changeFeedState.getContinuation();
@@ -167,14 +167,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     }
 
     /**
-     * Either surface a noChanges page to the caller (when emptyPagesAllowed=true) or swallow it via
+     * Either surface a noChanges page to the caller (when notModifiedPagesAllowed=true) or swallow it via
      * Reactor's repeatWhenEmpty (the legacy behavior). When swallowing, shouldFetchMore must be
      * re-enabled first because isFullyDrained() already flipped it off for the noChanges page.
      */
     private Mono<FeedResponse<T>> surfaceOrRetryNoChangesPage(FeedResponse<T> r) {
         this.reEnableShouldFetchMoreForRetry();
 
-        if (this.emptyPagesAllowed) {
+        if (this.notModifiedPagesAllowed) {
             // I think we will need to update the feedResponse here, because for empty pages we do not rotate tokens, so the worst case I can think of
             // is when the feedRange spans multi-partitions, when customer using a continuationToken to resume the process, we will always only process the first child partition
             // if we keeps getting 304s

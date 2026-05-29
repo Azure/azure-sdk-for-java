@@ -446,22 +446,27 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
 
             /**
-             * Mirrors {@link CosmosQueryRequestOptionsAccessor#setAllowEmptyPages(CosmosQueryRequestOptions, boolean)}
-             * for the change-feed path. Controls whether {@code ChangeFeedFetcher} surfaces
-             * 304/noChanges pages to the caller instead of swallowing them via {@code repeatWhenEmpty}.
+             * Change-feed-side analogue of {@link CosmosQueryRequestOptionsAccessor#setAllowEmptyPages(CosmosQueryRequestOptions, boolean)}.
+             * Controls whether {@code ChangeFeedFetcher} surfaces 304/NotModified pages (originating from
+             * sub-partitions that report no changes) to the caller instead of swallowing them via
+             * {@code repeatWhenEmpty}.
              *
              * <p>Default is {@code false} (legacy swallow behavior). When {@code true}, every physical
              * 304 response surfaces as its own {@code FeedResponse}; caller iterators must handle
              * empty {@code FeedResponse} pages without entering retry loops. Intentionally NOT
              * exposed on the public {@code CosmosChangeFeedRequestOptions} API — friend-only.
+             *
+             * <p>Naming differs from the query-side {@code setAllowEmptyPages} on purpose: on change
+             * feed, data-bearing empty pages already bubble up; this flag specifically opts into
+             * surfacing 304/NotModified sub-partition pages.
              */
-            void setAllowEmptyPages(CosmosChangeFeedRequestOptions options, boolean emptyPagesAllowed);
+            void setAllowNotModifiedPages(CosmosChangeFeedRequestOptions options, boolean notModifiedPagesAllowed);
 
             /**
-             * Returns whether 304/noChanges pages are surfaced individually to the caller. See
-             * {@link #setAllowEmptyPages(CosmosChangeFeedRequestOptions, boolean)}.
+             * Returns whether 304/NotModified pages are surfaced individually to the caller. See
+             * {@link #setAllowNotModifiedPages(CosmosChangeFeedRequestOptions, boolean)}.
              */
-            boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions options);
+            boolean getAllowNotModifiedPages(CosmosChangeFeedRequestOptions options);
         }
     }
 

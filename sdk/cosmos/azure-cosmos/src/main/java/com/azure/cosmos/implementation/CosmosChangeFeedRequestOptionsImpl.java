@@ -53,7 +53,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
     private ReadConsistencyStrategy readConsistencyStrategy;
-    private boolean emptyPagesAllowed;
+    private boolean notModifiedPagesAllowed;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         if (toBeCloned.continuationState != null) {
@@ -81,7 +81,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
-        this.emptyPagesAllowed = toBeCloned.emptyPagesAllowed;
+        this.notModifiedPagesAllowed = toBeCloned.notModifiedPagesAllowed;
     }
 
     /**
@@ -122,7 +122,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.completeAfterAllCurrentChangesRetrieved = source.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = source.endLSN;
         this.readConsistencyStrategy = source.readConsistencyStrategy;
-        this.emptyPagesAllowed = source.emptyPagesAllowed;
+        this.notModifiedPagesAllowed = source.notModifiedPagesAllowed;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -233,8 +233,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
      *
      * @return {@code true} when each 304/noChanges page is surfaced individually (default is {@code false}).
      */
-    public boolean isEmptyPagesAllowed() {
-        return this.emptyPagesAllowed;
+    public boolean isNotModifiedPagesAllowed() {
+        return this.notModifiedPagesAllowed;
     }
 
     /**
@@ -252,12 +252,12 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
      * to opt into; reachable only from sibling modules (e.g. the Cosmos Spark connector) via the
      * {@code ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper} bridge accessor.
      *
-     * @param emptyPagesAllowed {@code true} to surface 304/noChanges pages individually;
+     * @param notModifiedPagesAllowed {@code true} to surface 304/noChanges pages individually;
      *                          {@code false} (default) to swallow them via {@code repeatWhenEmpty}.
      * @return this instance for fluent chaining.
      */
-    public CosmosChangeFeedRequestOptionsImpl setEmptyPagesAllowed(boolean emptyPagesAllowed) {
-        this.emptyPagesAllowed = emptyPagesAllowed;
+    public CosmosChangeFeedRequestOptionsImpl setNotModifiedPagesAllowed(boolean notModifiedPagesAllowed) {
+        this.notModifiedPagesAllowed = notModifiedPagesAllowed;
         return this;
     }
 

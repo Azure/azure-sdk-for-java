@@ -792,13 +792,13 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public void setAllowEmptyPages(CosmosChangeFeedRequestOptions options, boolean emptyPagesAllowed) {
-                    options.getImpl().setEmptyPagesAllowed(emptyPagesAllowed);
+                public void setAllowNotModifiedPages(CosmosChangeFeedRequestOptions options, boolean notModifiedPagesAllowed) {
+                    options.getImpl().setNotModifiedPagesAllowed(notModifiedPagesAllowed);
                 }
 
                 @Override
-                public boolean getAllowEmptyPages(CosmosChangeFeedRequestOptions options) {
-                    return options.getImpl().isEmptyPagesAllowed();
+                public boolean getAllowNotModifiedPages(CosmosChangeFeedRequestOptions options) {
+                    return options.getImpl().isNotModifiedPagesAllowed();
                 }
             });
     }

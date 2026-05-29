@@ -1165,8 +1165,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT * 5)
-    public void changeFeedQuery_emptyPagesAllowed_surfacesNoChangesPagesAndTerminates() {
-        // End-to-end guard for IcM 51000001033272: when the SDK is opted into emptyPagesAllowed=true
+    public void changeFeedQuery_notModifiedPagesAllowed_surfacesNoChangesPagesAndTerminates() {
+        // End-to-end guard: when the SDK is opted into notModifiedPagesAllowed=true
         // (via the friend-API bridge accessor — the same opt-in the Cosmos Spark connector uses),
         // change-feed reads against a multi-partition container must:
         //   (a) surface 304/noChanges pages individually to the caller, AND
@@ -1196,11 +1196,11 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
-                .setAllowEmptyPages(options, true);
+                .setAllowNotModifiedPages(options, true);
 
             AtomicInteger totalPagesObserved = new AtomicInteger(0);
             AtomicInteger totalDocsObserved = new AtomicInteger(0);
-            AtomicInteger emptyPagesObserved = new AtomicInteger(0);
+            AtomicInteger notModifiedPagesObserved = new AtomicInteger(0);
 
             // Drain a bounded slice of the change feed - the iteration must terminate within
             // a reasonable page count via the SDK's consecutive-304 defense.
@@ -1212,14 +1212,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                     int pageSize = response.getResults().size();
                     totalDocsObserved.addAndGet(pageSize);
                     if (pageSize == 0) {
-                        emptyPagesObserved.incrementAndGet();
+                        notModifiedPagesObserved.incrementAndGet();
                     }
                 })
                 .blockLast();
 
             // (a) at least some empty pages must have surfaced - the whole point of the opt-in
-            assertThat(emptyPagesObserved.get())
-                .describedAs("emptyPagesAllowed=true must surface 304/noChanges pages individually")
+            assertThat(notModifiedPagesObserved.get())
+                .describedAs("notModifiedPagesAllowed=true must surface 304/noChanges pages individually")
                 .isGreaterThan(0);
             // (b) all inserted docs must be observed - empty-page surfacing must not interfere
             //     with data-page emission

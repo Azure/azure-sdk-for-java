@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Improved partition planning performance for change feed with large number of feed ranges. - See [PR 49086](https://github.com/Azure/azure-sdk-for-java/pull/49086)
+* Fixed `OperationCancelledException` ("End-to-end timeout hit") on sparse cross-partition queries / change feed by opting into the SDK's `emptyPagesAllowed` behavior, so the per-page timeout applies per page instead of being exceeded by serial empty-page drains. Note: this surfaces one iterator callback per empty page where previously a single callback could drain many. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
 
 #### Other Changes
 

@@ -26,13 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
     @Test(groups = { "unit" })
-    public void emptyPagesAllowed_isPropagated_whenContinuationTokenSupplied() {
-        // GIVEN a CosmosChangeFeedRequestOptions with emptyPagesAllowed=true (the value the Spark connector sets)
+    public void notModifiedPagesAllowed_isPropagated_whenContinuationTokenSupplied() {
+        // GIVEN a CosmosChangeFeedRequestOptions with notModifiedPagesAllowed=true (the value the Spark connector sets)
         CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .setAllowEmptyPages(src, true);
+            .setAllowNotModifiedPages(src, true);
 
         // AND a continuation token supplied via the paged-flux pull mechanism
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
@@ -42,16 +42,16 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
         CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
             .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
 
-        // THEN emptyPagesAllowed must be preserved on the freshly-built impl
+        // THEN notModifiedPagesAllowed must be preserved on the freshly-built impl
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
-            .describedAs("emptyPagesAllowed must survive the paged-flux pull continuation rebuild")
+            .getAllowNotModifiedPages(effective))
+            .describedAs("notModifiedPagesAllowed must survive the paged-flux pull continuation rebuild")
             .isTrue();
     }
 
     @Test(groups = { "unit" })
-    public void emptyPagesAllowedFalse_isPropagated_whenContinuationTokenSupplied() {
+    public void notModifiedPagesAllowedFalse_isPropagated_whenContinuationTokenSupplied() {
         // The default value should also round-trip cleanly (sanity check that we're not just hard-coding true).
         CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
@@ -64,19 +64,19 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
-            .describedAs("emptyPagesAllowed default (false) must survive the paged-flux pull continuation rebuild")
+            .getAllowNotModifiedPages(effective))
+            .describedAs("notModifiedPagesAllowed default (false) must survive the paged-flux pull continuation rebuild")
             .isFalse();
     }
 
     @Test(groups = { "unit" })
-    public void emptyPagesAllowed_isPreserved_whenNoContinuationTokenSupplied() {
+    public void notModifiedPagesAllowed_isPreserved_whenNoContinuationTokenSupplied() {
         // No continuation → withCosmosPagedFluxOptions returns `this` unchanged.
         CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRangeEpkImpl.forFullRange());
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .setAllowEmptyPages(src, true);
+            .setAllowNotModifiedPages(src, true);
 
         CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
         pagedFluxOptions.setMaxItemCount(50);
@@ -86,7 +86,7 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
 
         assertThat(ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
-            .getAllowEmptyPages(effective))
+            .getAllowNotModifiedPages(effective))
             .isTrue();
     }
 
