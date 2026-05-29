@@ -9,15 +9,35 @@ package com.azure.cosmos.models;
 public enum CosmosGlobalSecondaryIndexBuildStatus {
 
     /**
+     * The build status returned by the service is not a value that this SDK version recognizes,
+     * or no status was returned.
+     */
+    UNKNOWN("Unknown"),
+
+    /**
+     * The global secondary index has been created and is initializing.
+     */
+    INITIALIZING("Initializing"),
+
+    /**
+     * The global secondary index is performing its initial build after being created.
+     */
+    INITIAL_BUILD_AFTER_CREATE("InitialBuildAfterCreate"),
+
+    /**
+     * The global secondary index is performing its initial build after the source container was restored.
+     */
+    INITIAL_BUILD_AFTER_RESTORE("InitialBuildAfterRestore"),
+
+    /**
      * The global secondary index has been fully built and is actively serving queries.
      */
     ACTIVE("Active"),
 
     /**
-     * The build status returned by the service is not a value that this SDK version recognizes,
-     * or no status was returned.
+     * The global secondary index is being deleted.
      */
-    UNKNOWN("Unknown");
+    DELETE_IN_PROGRESS("DeleteInProgress");
 
     private final String overWireValue;
 
