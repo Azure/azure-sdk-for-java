@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VmFamilyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmFamilyProperties model = BinaryData.fromString("{\"category\":\"ejk\",\"provisioningState\":\"Failed\"}")
+        VmFamilyProperties model = BinaryData.fromString("{\"category\":\"s\",\"provisioningState\":\"Canceled\"}")
             .toObject(VmFamilyProperties.class);
-        Assertions.assertEquals("ejk", model.category());
+        Assertions.assertEquals("s", model.category());
     }
 }
