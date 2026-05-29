@@ -27,10 +27,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -345,37 +347,26 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
-        // Pre-normalize user-configured exclude regions once per call (drops nulls).
-        // Comparison uses normalized form (lowercase + no spaces/hyphens/underscores) so that
-        // any input variant — including unknown regions in no-space form — matches the server-
-        // returned region name consistently with how routing resolves preferred regions.
-        List<String> normalizedUserExcludeRegions;
+        // Normalize user-configured exclude regions into a Set once (drops nulls).
+        // Normalized form (lowercase + strip spaces/hyphens/underscores) ensures any input
+        // variant matches the server-form region name, including unknown regions in no-space form.
+        Set<String> normalizedExcludes;
         if (userConfiguredExcludeRegions == null || userConfiguredExcludeRegions.isEmpty()) {
-            normalizedUserExcludeRegions = Collections.emptyList();
+            normalizedExcludes = Collections.emptySet();
         } else {
-            normalizedUserExcludeRegions = new ArrayList<>(userConfiguredExcludeRegions.size());
+            normalizedExcludes = new HashSet<>(userConfiguredExcludeRegions.size());
             for (String excludeRegion : userConfiguredExcludeRegions) {
                 if (excludeRegion != null) {
-                    normalizedUserExcludeRegions.add(RegionUtils.getNormalizedRegionName(excludeRegion));
+                    normalizedExcludes.add(RegionUtils.getNormalizedRegionName(excludeRegion));
                 }
             }
         }
 
-        // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
-            if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)) {
-                String normalizedRegionName = RegionUtils.getNormalizedRegionName(regionName.v);
-                boolean isExcluded = false;
-                for (String normalizedExclude : normalizedUserExcludeRegions) {
-                    if (normalizedExclude.equals(normalizedRegionName)) {
-                        isExcluded = true;
-                        break;
-                    }
-                }
-                if (!isExcluded) {
-                    applicableEndpoints.add(endpoint);
-                }
+            if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)
+                    && !normalizedExcludes.contains(RegionUtils.getNormalizedRegionName(regionName.v))) {
+                applicableEndpoints.add(endpoint);
             }
         }
 
