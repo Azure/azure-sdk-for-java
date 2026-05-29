@@ -38,7 +38,7 @@
  */
 public final class FeaturesDisableSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_Disable.json
+     * x-ms-original-file: 2026-06-01/Features_Disable.json
      */
     /**
      * Sample code: Disable feature.
@@ -54,12 +54,14 @@ public final class FeaturesDisableSamples {
 ### Features_Enable
 
 ```java
+import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
+
 /**
  * Samples for Features Enable.
  */
 public final class FeaturesEnableSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_Enable.json
+     * x-ms-original-file: 2026-06-01/Features_Enable.json
      */
     /**
      * Sample code: Enable feature.
@@ -67,7 +69,10 @@ public final class FeaturesEnableSamples {
      * @param manager Entry point to ComputeLimitManager.
      */
     public static void enableFeature(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
-        manager.features().enable("eastus", "VmCategoryQuota", com.azure.core.util.Context.NONE);
+        manager.features()
+            .enable("eastus", "VmCategoryQuota",
+                new FeatureEnableRequest().withServiceTreeId("a1b2c3d4-5678-90ab-cdef-1234567890ab"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -80,7 +85,7 @@ public final class FeaturesEnableSamples {
  */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_Get_SharedLimit.json
+     * x-ms-original-file: 2026-06-01/Features_Get_SharedLimit.json
      */
     /**
      * Sample code: Get SharedLimit feature.
@@ -92,7 +97,7 @@ public final class FeaturesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-30/Features_Get.json
+     * x-ms-original-file: 2026-06-01/Features_Get.json
      */
     /**
      * Sample code: Get feature.
@@ -113,7 +118,7 @@ public final class FeaturesGetSamples {
  */
 public final class FeaturesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_List.json
+     * x-ms-original-file: 2026-06-01/Features_List.json
      */
     /**
      * Sample code: List features.
@@ -136,7 +141,7 @@ import com.azure.resourcemanager.computelimit.models.GuestSubscriptionProperties
  */
 public final class GuestSubscriptionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-04-30/GuestSubscriptions_Create.json
+     * x-ms-original-file: 2026-06-01/GuestSubscriptions_Create.json
      */
     /**
      * Sample code: Create a guest subscription.
@@ -161,7 +166,7 @@ public final class GuestSubscriptionsCreateSamples {
  */
 public final class GuestSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-30/GuestSubscriptions_Delete.json
+     * x-ms-original-file: 2026-06-01/GuestSubscriptions_Delete.json
      */
     /**
      * Sample code: Delete a guest subscription.
@@ -184,7 +189,7 @@ public final class GuestSubscriptionsDeleteSamples {
  */
 public final class GuestSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-30/GuestSubscriptions_Get.json
+     * x-ms-original-file: 2026-06-01/GuestSubscriptions_Get.json
      */
     /**
      * Sample code: Get a guest subscription.
@@ -206,7 +211,7 @@ public final class GuestSubscriptionsGetSamples {
  */
 public final class GuestSubscriptionsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/GuestSubscriptions_List.json
+     * x-ms-original-file: 2026-06-01/GuestSubscriptions_List.json
      */
     /**
      * Sample code: List guest subscriptions for a scope.
@@ -228,7 +233,7 @@ public final class GuestSubscriptionsListBySubscriptionLocationResourceSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Operations_List.json
+     * x-ms-original-file: 2026-06-01/Operations_List.json
      */
     /**
      * Sample code: List operations.
@@ -251,7 +256,7 @@ import com.azure.resourcemanager.computelimit.models.SharedLimitProperties;
  */
 public final class SharedLimitsCreateSamples {
     /*
-     * x-ms-original-file: 2026-04-30/SharedLimits_Create.json
+     * x-ms-original-file: 2026-06-01/SharedLimits_Create.json
      */
     /**
      * Sample code: Create a shared limit.
@@ -276,7 +281,7 @@ public final class SharedLimitsCreateSamples {
  */
 public final class SharedLimitsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-30/SharedLimits_Delete.json
+     * x-ms-original-file: 2026-06-01/SharedLimits_Delete.json
      */
     /**
      * Sample code: Delete a shared limit.
@@ -298,7 +303,7 @@ public final class SharedLimitsDeleteSamples {
  */
 public final class SharedLimitsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-30/SharedLimits_Get.json
+     * x-ms-original-file: 2026-06-01/SharedLimits_Get.json
      */
     /**
      * Sample code: Get a shared limit.
@@ -319,7 +324,7 @@ public final class SharedLimitsGetSamples {
  */
 public final class SharedLimitsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/SharedLimits_List.json
+     * x-ms-original-file: 2026-06-01/SharedLimits_List.json
      */
     /**
      * Sample code: List all shared limits for a scope.
@@ -341,7 +346,7 @@ public final class SharedLimitsListBySubscriptionLocationResourceSamples {
  */
 public final class VmFamiliesGetSamples {
     /*
-     * x-ms-original-file: 2026-04-30/VmFamilies_Get.json
+     * x-ms-original-file: 2026-06-01/VmFamilies_Get.json
      */
     /**
      * Sample code: Get a VM family.
@@ -362,7 +367,7 @@ public final class VmFamiliesGetSamples {
  */
 public final class VmFamiliesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/VmFamilies_List.json
+     * x-ms-original-file: 2026-06-01/VmFamilies_List.json
      */
     /**
      * Sample code: List VM families.
