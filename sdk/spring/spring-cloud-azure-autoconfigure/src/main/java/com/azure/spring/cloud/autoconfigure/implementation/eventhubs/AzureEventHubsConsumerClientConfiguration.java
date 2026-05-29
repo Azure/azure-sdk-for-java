@@ -53,7 +53,7 @@ class AzureEventHubsConsumerClientConfiguration {
                                               @Qualifier(EVENT_HUB_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             this.builder = builder;
 
-            PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();;
+            PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
             mapper.from(properties.getConsumer().getConsumerGroup()).to(builder::consumerGroup);
             mapper.from(properties.getConsumer().getPrefetchCount()).to(builder::prefetchCount);
         }
