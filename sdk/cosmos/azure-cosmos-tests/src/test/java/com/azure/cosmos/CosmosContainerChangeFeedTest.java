@@ -68,11 +68,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -335,28 +333,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider",
-        timeOut = TIMEOUT * 5, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+        timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
-        // De-flaked: previously this test relied on `.subscribe()` + `Thread.sleep(3000)` for
-        // both subscriptions, which raced both with the continuation propagation between the
-        // two subscriptions AND with the page-arrival cadence on slower CI runners. Now the
-        // first subscription is awaited via a CountDownLatch on a known minimum page count
-        // before the second is started, and the final bounded `take(2, true)` block is awaited
-        // via `.blockLast(...)` rather than fire-and-forget.
-        //
-        // The method timeOut is TIMEOUT * 5 (200s) and per-phase awaitSeconds is 60s because the
-        // Windows EmulatorTcp runner is materially slower than mac/linux — at TIMEOUT (40s) the
-        // first-phase latch await alone (30s) plus the second phase (30s) plus the bounded
-        // take(.blockLast(30s)) would routinely race the TestNG method timeout. retryAnalyzer
-        // is FlakyTestRetryAnalyzer (consistent with other change-feed tests) to absorb
-        // residual page-cadence jitter that survives the longer bounds.
-        //
-        // Mode interaction: FULL_FIDELITY uses createForProcessingFromNow, so docs inserted
-        // BEFORE the subscription are invisible — for that mode we insert after subscribing.
-        // INCREMENTAL uses createForProcessingFromBeginning and sees pre-existing docs.
-        final long awaitSeconds = 60L;
-        final boolean isFullFidelity = changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY);
-
+        // Note on shape: this test verifies Reactor's prefetch behavior on the change-feed
+        // byPage stream. The two fire-and-forget `.subscribe()` calls + `Thread.sleep(3000)`
+        // are intentional — they exercise the prefetch path without backpressure-bounded
+        // collection. retryAnalyzer = FlakyTestRetryAnalyzer absorbs occasional slow-runner
+        // jitter (Windows EmulatorTcp Java 8 can take >3s to deliver the first 3 pages).
         this.createContainer(
             (cp) -> {
                 if (changeFeedMode.equals(ChangeFeedMode.INCREMENTAL)) {
@@ -366,7 +349,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             }
         );
         CosmosChangeFeedRequestOptions options;
-        if (isFullFidelity) {
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
             options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forFullRange())
                 .setMaxItemCount(10).allVersionsAndDeletes();
@@ -375,92 +358,40 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromBeginning(FeedRange.forFullRange()).setMaxItemCount(10);
         }
         AtomicInteger count = new AtomicInteger(0);
-        if (!isFullFidelity) {
-            // INCREMENTAL: insert first so createForProcessingFromBeginning sees the docs.
-            insertDocuments(5, 20);
-        }
+        insertDocuments(5, 20);
         AtomicReference<String> continuation = new AtomicReference<>("");
-
-        // First subscription: drain at least 3 pages deterministically before proceeding.
-        final int firstMinPages = 3;
-        CountDownLatch firstLatch = new CountDownLatch(firstMinPages);
-        AtomicReference<Throwable> firstError = new AtomicReference<>();
-        reactor.core.Disposable firstSub = createdContainer.asyncContainer
-            .queryChangeFeed(options, ObjectNode.class)
-            .handle((r) -> {
+        createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) -> {
                 count.incrementAndGet();
                 continuation.set(r.getContinuationToken());
-                firstLatch.countDown();
-            })
-            .byPage()
-            .subscribe(r -> { /* page consumed by handle() */ }, firstError::set);
-        try {
-            if (isFullFidelity) {
-                // FULL_FIDELITY: subscription is from-now; insert AFTER subscribing so the
-                // change-feed pipeline sees the writes.
-                insertDocuments(5, 20);
             }
-            assertThat(firstLatch.await(awaitSeconds, TimeUnit.SECONDS))
-                .as("first change-feed subscription should produce at least %d pages within %d seconds",
-                    firstMinPages, awaitSeconds)
-                .isTrue();
-            assertThat(firstError.get()).as("first subscription must not error").isNull();
-            // intent of the original assertion: prefetch surfaces more than 2 pages
-            assertThat(count.get()).isGreaterThan(2);
-        } finally {
-            firstSub.dispose();
-        }
+        ).byPage().subscribe();
 
         CosmosChangeFeedRequestOptions optionsFF = null;
-        if (isFullFidelity) {
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+            insertDocuments(5, 20);
             count.set(0);
             optionsFF = CosmosChangeFeedRequestOptions
                 .createForProcessingFromContinuation(continuation.get())
                 .setMaxItemCount(10).allVersionsAndDeletes();
-
-            final int secondMinPages = 3;
-            CountDownLatch secondLatch = new CountDownLatch(secondMinPages);
-            AtomicReference<Throwable> secondError = new AtomicReference<>();
-            reactor.core.Disposable secondSub = createdContainer.asyncContainer
-                .queryChangeFeed(optionsFF, ObjectNode.class)
-                .handle((r) -> {
-                    count.incrementAndGet();
-                    continuation.set(r.getContinuationToken());
-                    secondLatch.countDown();
-                })
-                .byPage()
-                .subscribe(r -> { /* page consumed by handle() */ }, secondError::set);
-            try {
-                // Insert AFTER subscribing so the resume-from-continuation pipeline sees the writes.
-                insertDocuments(5, 20);
-                assertThat(secondLatch.await(awaitSeconds, TimeUnit.SECONDS))
-                    .as("FULL_FIDELITY resume-from-continuation subscription should produce at least %d pages within %d seconds",
-                        secondMinPages, awaitSeconds)
-                    .isTrue();
-                assertThat(secondError.get()).as("second subscription must not error").isNull();
-                assertThat(count.get()).isGreaterThan(2);
-            } finally {
-                secondSub.dispose();
+            createdContainer.asyncContainer.queryChangeFeed(optionsFF, ObjectNode.class).handle((r) -> {
+                count.incrementAndGet();
+                continuation.set(r.getContinuationToken());
             }
+        ).byPage().subscribe();
         }
+        Thread.sleep(3000);
+        assertThat(count.get()).isGreaterThan(2);
 
-        count.set(0);
-        // should only get two pages — `take(2, true)` bounds the upstream request, so the
-        // pipeline completes naturally after 2 pages. Use blockLast() instead of fire-and-forget
-        // to wait for that completion deterministically. For FULL_FIDELITY we need writes after
-        // subscribing because the continuation reflects the previous read position.
-        if (isFullFidelity) {
-            // Insert documents BEFORE the bounded take so they're visible when the
-            // subscription opens. Continuation tokens persist read position; the new writes
-            // will surface on the resumed-from-token subscription.
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+            // full fidelity is only from now so need to insert more documents
             insertDocuments(5, 20);
         }
-        createdContainer.asyncContainer
-            .queryChangeFeed(isFullFidelity ? optionsFF : options, ObjectNode.class)
-            .handle((r) -> count.incrementAndGet())
-            .byPage()
-            .take(2, true)
-            .blockLast(Duration.ofSeconds(awaitSeconds));
+        count.set(0);
+        // should only get two pages
+        createdContainer.asyncContainer.queryChangeFeed(changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)? optionsFF
+            : options, ObjectNode.class).handle((r) -> count.incrementAndGet())
+            .byPage().take(2, true).subscribe();
+        Thread.sleep(3000);
         assertThat(count.get()).isEqualTo(2);
     }
 
