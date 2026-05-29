@@ -638,6 +638,7 @@
         "AICLIPIMAGE",
         "AISERVICES",
         "AITOKENS",
+        "azsearch",
         "Bangla",
         "bokmaal",
         "Bokm",
@@ -669,7 +670,8 @@
         "TLARGE",
         "vectorizable",
         "vectorizer",
-        "vectorizers"
+        "vectorizers",
+        "workiq"
       ]
     },
     {

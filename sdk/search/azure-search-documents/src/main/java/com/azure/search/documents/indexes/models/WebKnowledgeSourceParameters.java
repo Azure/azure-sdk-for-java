@@ -60,6 +60,10 @@ public final class WebKnowledgeSourceParameters implements JsonSerializable<WebK
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("domains", this.domains);
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("market", this.market);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("freshness", this.freshness);
         return jsonWriter.writeEndObject();
     }
 
@@ -80,11 +84,141 @@ public final class WebKnowledgeSourceParameters implements JsonSerializable<WebK
                 reader.nextToken();
                 if ("domains".equals(fieldName)) {
                     deserializedWebKnowledgeSourceParameters.domains = WebKnowledgeSourceDomains.fromJson(reader);
+                } else if ("language".equals(fieldName)) {
+                    deserializedWebKnowledgeSourceParameters.language = reader.getString();
+                } else if ("market".equals(fieldName)) {
+                    deserializedWebKnowledgeSourceParameters.market = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedWebKnowledgeSourceParameters.count = reader.getNullable(JsonReader::getInt);
+                } else if ("freshness".equals(fieldName)) {
+                    deserializedWebKnowledgeSourceParameters.freshness = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedWebKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * The default language for web results. Can be overridden at query time via knowledge source runtime parameters.
+     */
+    @Generated
+    private String language;
+
+    /*
+     * The default market for web results. Can be overridden at query time via knowledge source runtime parameters.
+     */
+    @Generated
+    private String market;
+
+    /*
+     * The default number of web results to return. Can be overridden at query time via knowledge source runtime
+     * parameters.
+     */
+    @Generated
+    private Integer count;
+
+    /*
+     * The default freshness filter for web results. Can be overridden at query time via knowledge source runtime
+     * parameters.
+     */
+    @Generated
+    private String freshness;
+
+    /**
+     * Get the language property: The default language for web results. Can be overridden at query time via knowledge
+     * source runtime parameters.
+     *
+     * @return the language value.
+     */
+    @Generated
+    public String getLanguage() {
+        return this.language;
+    }
+
+    /**
+     * Set the language property: The default language for web results. Can be overridden at query time via knowledge
+     * source runtime parameters.
+     *
+     * @param language the language value to set.
+     * @return the WebKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public WebKnowledgeSourceParameters setLanguage(String language) {
+        this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the market property: The default market for web results. Can be overridden at query time via knowledge source
+     * runtime parameters.
+     *
+     * @return the market value.
+     */
+    @Generated
+    public String getMarket() {
+        return this.market;
+    }
+
+    /**
+     * Set the market property: The default market for web results. Can be overridden at query time via knowledge source
+     * runtime parameters.
+     *
+     * @param market the market value to set.
+     * @return the WebKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public WebKnowledgeSourceParameters setMarket(String market) {
+        this.market = market;
+        return this;
+    }
+
+    /**
+     * Get the count property: The default number of web results to return. Can be overridden at query time via
+     * knowledge source runtime parameters.
+     *
+     * @return the count value.
+     */
+    @Generated
+    public Integer getCount() {
+        return this.count;
+    }
+
+    /**
+     * Set the count property: The default number of web results to return. Can be overridden at query time via
+     * knowledge source runtime parameters.
+     *
+     * @param count the count value to set.
+     * @return the WebKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public WebKnowledgeSourceParameters setCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the freshness property: The default freshness filter for web results. Can be overridden at query time via
+     * knowledge source runtime parameters.
+     *
+     * @return the freshness value.
+     */
+    @Generated
+    public String getFreshness() {
+        return this.freshness;
+    }
+
+    /**
+     * Set the freshness property: The default freshness filter for web results. Can be overridden at query time via
+     * knowledge source runtime parameters.
+     *
+     * @param freshness the freshness value to set.
+     * @return the WebKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public WebKnowledgeSourceParameters setFreshness(String freshness) {
+        this.freshness = freshness;
+        return this;
     }
 }
