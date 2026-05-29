@@ -35,6 +35,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 
+import java.lang.reflect.Constructor;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -134,12 +135,6 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
             + "/providers/Microsoft.Storage/storageAccounts/" + TEST_STORAGE_ACCOUNT_NAME;
 
     /**
-     * Built-in {@code Storage Blob Data Contributor} role definition GUID
-     * (subscription-scope role-definition id is composed by the helper).
-     */
-    protected static final String STORAGE_BLOB_DATA_CONTRIBUTOR_ROLE_ID = "ba92f5b4-2d11-453d-a403-e96b0029c9fe";
-
-    /**
      * Placeholder storage account resource id used when an endpoint requires a
      * storage-account ARM id but the test does not actually hit the storage
      * account. The Storage Mover RP accepts any well-formed id at endpoint
@@ -231,10 +226,12 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
         this.sharedHttpPipeline = httpPipeline;
         this.sharedTestProfile = profile;
 
-        // StorageMoverManager has no public 2-arg constructor, so the generic
-        // buildManager() helper from the base does not work — use the static
-        // authenticate factory instead.
-        storageMoverManager = StorageMoverManager.authenticate(httpPipeline, profile);
+        // StorageMoverManager does not consult InternalRuntimeContext.delayProvider, so
+        // the static authenticate factory leaves defaultPollInterval = null and playback
+        // waits the recorded LRO duration on every poll. Build the manager via its
+        // private 3-arg constructor so the test delay provider can collapse it.
+        // Track removal once https://github.com/Azure/azure-sdk-for-java/issues/49294 lands.
+        storageMoverManager = buildStorageMoverManager(httpPipeline, profile);
         resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 
         // Now that ResourceManager exists we can hand its provider collection to
@@ -254,6 +251,29 @@ public abstract class StorageMoverManagementTestBase extends ResourceManagerTest
                 // Best-effort cleanup; resource-group deletion failures should not
                 // mask the underlying test failure.
             }
+        }
+    }
+
+    /**
+     * Builds a {@link StorageMoverManager} via its package-private 3-arg
+     * constructor so a test-managed {@code defaultPollInterval} can be supplied.
+     * Mirrors {@link ResourceManagerTestProxyTestBase#buildManager} but targets
+     * the {@code (HttpPipeline, AzureProfile, Duration)} signature that the
+     * generated manager exposes.
+     *
+     * @param httpPipeline shared test pipeline.
+     * @param profile shared azure profile.
+     * @return a manager whose LROs honour the test delay provider.
+     */
+    private static StorageMoverManager buildStorageMoverManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        try {
+            Constructor<StorageMoverManager> constructor = StorageMoverManager.class
+                .getDeclaredConstructor(HttpPipeline.class, AzureProfile.class, Duration.class);
+            constructor.setAccessible(true);
+            return constructor.newInstance(httpPipeline, profile,
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)));
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
