@@ -27,12 +27,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -53,8 +51,6 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<RegionalRoutingContext, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
-    private final ConcurrentHashMap<String, String> canonicalRegionNameCache;
-    private final Set<String> warnedUnmatchedRegions;
     private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
@@ -80,8 +76,6 @@ public class LocationCache {
         this.lockObject = new Object();
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
-        this.canonicalRegionNameCache = new ConcurrentHashMap<>();
-        this.warnedUnmatchedRegions = ConcurrentHashMap.newKeySet();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
@@ -351,17 +345,35 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
-        // Canonicalize user-configured exclude regions inline using cache to avoid per-request list allocation.
-        // canonicalRegionNameCache: raw customer string → canonical form (e.g., "westus3" → "West US 3").
+        // Pre-normalize user-configured exclude regions once per call (drops nulls).
+        // Comparison uses normalized form (lowercase + no spaces/hyphens/underscores) so that
+        // any input variant — including unknown regions in no-space form — matches the server-
+        // returned region name consistently with how routing resolves preferred regions.
+        List<String> normalizedUserExcludeRegions;
+        if (userConfiguredExcludeRegions == null || userConfiguredExcludeRegions.isEmpty()) {
+            normalizedUserExcludeRegions = Collections.emptyList();
+        } else {
+            normalizedUserExcludeRegions = new ArrayList<>(userConfiguredExcludeRegions.size());
+            for (String excludeRegion : userConfiguredExcludeRegions) {
+                if (excludeRegion != null) {
+                    normalizedUserExcludeRegions.add(RegionUtils.getNormalizedRegionName(excludeRegion));
+                }
+            }
+        }
 
         // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)) {
-                if (!userConfiguredExcludeRegions.stream()
-                    .anyMatch(excludeRegion -> this.canonicalRegionNameCache
-                        .computeIfAbsent(excludeRegion, RegionUtils::getCanonicalRegionName)
-                        .equalsIgnoreCase(regionName.v))) {
+                String normalizedRegionName = RegionUtils.getNormalizedRegionName(regionName.v);
+                boolean isExcluded = false;
+                for (String normalizedExclude : normalizedUserExcludeRegions) {
+                    if (normalizedExclude.equals(normalizedRegionName)) {
+                        isExcluded = true;
+                        break;
+                    }
+                }
+                if (!isExcluded) {
                     applicableEndpoints.add(endpoint);
                 }
             }
@@ -497,6 +509,8 @@ public class LocationCache {
 
                     Utils.ValueHolder<RegionalRoutingContext> regionalRoutingContextValueHolder = new Utils.ValueHolder<>(null);
 
+                    // internalExcludeRegion is server-form (PPCB convention); the forward map
+                    // is keyed by server-form-lowercased, so look it up directly.
                     if (Utils.tryGetValue(regionalRoutingContextsByRegionName, internalExcludeRegion, regionalRoutingContextValueHolder)) {
 
                         if (!regionalRoutingContextValueHolder.v.equals(hubRoutingContext)) {
@@ -511,7 +525,11 @@ public class LocationCache {
                     Utils.ValueHolder<RegionalRoutingContext> regionalRoutingContextValueHolder = new Utils.ValueHolder<>(null);
 
                     if (Utils.tryGetValue(regionalRoutingContextsByRegionName, internalExcludeRegion, regionalRoutingContextValueHolder)) {
-                        if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext) && !RegionUtils.containsRegionIgnoreCase(userConfiguredExcludeRegions, internalExcludeRegion)) {
+                        // For the user-exclude membership check, compare in normalized form so
+                        // unknown regions in any input form (e.g., "plutocentral" vs "Pluto Central")
+                        // match consistently.
+                        if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext)
+                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionUtils.getNormalizedRegionName(internalExcludeRegion))) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
@@ -521,6 +539,24 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<>(modifiedRegionalRoutingContexts);
+    }
+
+    /**
+     * Checks whether {@code userExcludeRegions} contains {@code normalizedTarget} after normalizing
+     * each user-supplied entry. Uses the same normalization (lowercase + strip spaces/hyphens/underscores)
+     * that {@link #getApplicableRegionRoutingContexts} uses for the user-exclude check, so that unknown
+     * regions in any input form (e.g., "westus3" vs "West US 3") match consistently.
+     */
+    private static boolean containsNormalizedRegion(List<String> userExcludeRegions, String normalizedTarget) {
+        if (userExcludeRegions == null || userExcludeRegions.isEmpty()) {
+            return false;
+        }
+        for (String region : userExcludeRegions) {
+            if (region != null && normalizedTarget.equals(RegionUtils.getNormalizedRegionName(region))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
@@ -578,7 +614,12 @@ public class LocationCache {
                 Utils.ValueHolder<RegionalRoutingContext> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
-                if (Utils.tryGetValue(currentLocationInfo.availableReadRegionalRoutingContextsByRegionName, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                // mostPreferredLocation came from preferredLocations (normalized form) or
+                // effectivePreferredLocations (server-form). Look up against the parallel
+                // normalized map after normalizing the key to handle both cases.
+                String normalizedMostPreferredLocation = RegionUtils.getNormalizedRegionName(mostPreferredLocation);
+
+                if (Utils.tryGetValue(currentLocationInfo.availableReadRegionalRoutingContextsByNormalizedRegionName, normalizedMostPreferredLocation, mostPreferredReadEndpointHolder)) {
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
                             mostPreferredLocation, mostPreferredReadEndpointHolder.v);
                     if (!areEqual(mostPreferredReadEndpointHolder.v, readLocationEndpoints.get(0))) {
@@ -620,7 +661,8 @@ public class LocationCache {
                     return shouldRefresh;
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                if (Utils.tryGetValue(currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
+                String normalizedMostPreferredLocationForWrite = RegionUtils.getNormalizedRegionName(mostPreferredLocation);
+                if (Utils.tryGetValue(currentLocationInfo.availableWriteRegionalRoutingContextsByNormalizedRegionName, normalizedMostPreferredLocationForWrite, mostPreferredWriteEndpointHolder)) {
                     shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
 
                     if (shouldRefresh) {
@@ -798,11 +840,13 @@ public class LocationCache {
                 Utils.ValueHolder<UnmodifiableList<String>> readLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
                 Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> availableReadEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadRegionalRoutingContexts);
                 Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> readRegionMapValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadRegionalRoutingContexts);
-                nextLocationInfo.availableReadRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayReadLocations, thinClientReadLocations, readLocationsValueHolderOut, availableReadEndpointsOut, readRegionMapValueHolderOut);
+                Utils.ValueHolder<UnmodifiableMap<String, RegionalRoutingContext>> readEndpointsByNormalizedLocationOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadRegionalRoutingContextsByNormalizedRegionName);
+                nextLocationInfo.availableReadRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayReadLocations, thinClientReadLocations, readLocationsValueHolderOut, availableReadEndpointsOut, readRegionMapValueHolderOut, readEndpointsByNormalizedLocationOut);
 
                 nextLocationInfo.availableReadLocations = readLocationsValueHolderOut.v;
                 nextLocationInfo.regionNameByReadRegionalRoutingContexts = readRegionMapValueHolderOut.v;
                 nextLocationInfo.availableReadRegionalRoutingContexts = availableReadEndpointsOut.v;
+                nextLocationInfo.availableReadRegionalRoutingContextsByNormalizedRegionName = readEndpointsByNormalizedLocationOut.v;
                 nextLocationInfo.hubRoutingContext = nextLocationInfo.availableReadRegionalRoutingContexts.get(0);
             }
 
@@ -810,16 +854,18 @@ public class LocationCache {
                 Utils.ValueHolder<UnmodifiableList<String>> writeLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
                 Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> writeRegionMapOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteRegionalRoutingContexts);
                 Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> availableWriteEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteRegionalRoutingContexts);
+                Utils.ValueHolder<UnmodifiableMap<String, RegionalRoutingContext>> writeEndpointsByNormalizedLocationOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteRegionalRoutingContextsByNormalizedRegionName);
 
-                nextLocationInfo.availableWriteRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayWriteLocations, thinClientWriteLocations, writeLocationsValueHolderOut, availableWriteEndpointsOut, writeRegionMapOut);
+                nextLocationInfo.availableWriteRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayWriteLocations, thinClientWriteLocations, writeLocationsValueHolderOut, availableWriteEndpointsOut, writeRegionMapOut, writeEndpointsByNormalizedLocationOut);
                 nextLocationInfo.availableWriteLocations = writeLocationsValueHolderOut.v;
                 nextLocationInfo.regionNameByWriteRegionalRoutingContexts = writeRegionMapOut.v;
                 nextLocationInfo.availableWriteRegionalRoutingContexts = availableWriteEndpointsOut.v;
+                nextLocationInfo.availableWriteRegionalRoutingContextsByNormalizedRegionName = writeEndpointsByNormalizedLocationOut.v;
                 nextLocationInfo.hubRoutingContext = nextLocationInfo.availableWriteRegionalRoutingContexts.get(0);
             }
 
-            nextLocationInfo.writeRegionalRoutingContexts = this.getPreferredAvailableRoutingContexts(nextLocationInfo.availableWriteRegionalRoutingContextsByRegionName, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultRoutingContext);
-            nextLocationInfo.readRegionalRoutingContexts = this.getPreferredAvailableRoutingContexts(nextLocationInfo.availableReadRegionalRoutingContextsByRegionName, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeRegionalRoutingContexts.get(0));
+            nextLocationInfo.writeRegionalRoutingContexts = this.getPreferredAvailableRoutingContexts(nextLocationInfo.availableWriteRegionalRoutingContextsByRegionName, nextLocationInfo.availableWriteRegionalRoutingContextsByNormalizedRegionName, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultRoutingContext);
+            nextLocationInfo.readRegionalRoutingContexts = this.getPreferredAvailableRoutingContexts(nextLocationInfo.availableReadRegionalRoutingContextsByRegionName, nextLocationInfo.availableReadRegionalRoutingContextsByNormalizedRegionName, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeRegionalRoutingContexts.get(0));
 
             if (nextLocationInfo.preferredLocations == null || nextLocationInfo.preferredLocations.isEmpty()) {
 
@@ -836,48 +882,11 @@ public class LocationCache {
             logger.debug("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
                     nextLocationInfo.readRegionalRoutingContexts, nextLocationInfo.writeRegionalRoutingContexts);
             this.locationInfo = nextLocationInfo;
-
-            // Warn about customer-configured preferred regions that don't match any account region.
-            // Deduped: each unmatched region is warned only once across refreshes.
-            this.warnUnmatchedPreferredRegions(nextLocationInfo);
-        }
-    }
-
-    private void warnUnmatchedPreferredRegions(DatabaseAccountLocationsInfo locationInfo) {
-        List<String> customerPreferred = this.connectionPolicy.getPreferredRegions();
-        if (customerPreferred == null || customerPreferred.isEmpty()) {
-            return;
-        }
-
-        // Collect available region names (normalized for comparison)
-        Set<String> availableNormalized = new HashSet<>();
-        for (String region : locationInfo.availableReadLocations) {
-            availableNormalized.add(RegionUtils.getNormalizedRegionName(region));
-        }
-        for (String region : locationInfo.availableWriteLocations) {
-            availableNormalized.add(RegionUtils.getNormalizedRegionName(region));
-        }
-
-        for (String preferred : customerPreferred) {
-            if (preferred == null) {
-                continue;
-            }
-            String normalizedPreferred = RegionUtils.getNormalizedRegionName(preferred);
-            if (!availableNormalized.contains(normalizedPreferred)) {
-                // Dedupe: warn only once per unique normalized region
-                if (this.warnedUnmatchedRegions.add(normalizedPreferred)) {
-                    logger.warn(
-                        "Preferred region '{}' (normalized: '{}') does not match any available account region. "
-                            + "Available regions: {}. This region will be ignored for routing.",
-                        preferred,
-                        normalizedPreferred,
-                        locationInfo.availableReadLocations);
-                }
-            }
         }
     }
 
     private UnmodifiableList<RegionalRoutingContext> getPreferredAvailableRoutingContexts(UnmodifiableMap<String, RegionalRoutingContext> endpointsByLocation,
+                                                                                          UnmodifiableMap<String, RegionalRoutingContext> endpointsByNormalizedLocation,
                                                                                           UnmodifiableList<String> orderedLocations,
                                                                                           OperationType expectedAvailableOperation,
                                                                                           RegionalRoutingContext fallbackRegionalRoutingContext) {
@@ -895,8 +904,11 @@ public class LocationCache {
 
                 if (currentLocationInfo.preferredLocations != null && !currentLocationInfo.preferredLocations.isEmpty()) {
                     for (String location: currentLocationInfo.preferredLocations) {
+                        // location is in normalized form (see DatabaseAccountLocationsInfo ctor);
+                        // look it up against the parallel normalized-keyed map so any input form —
+                        // including unknown regions in no-space form — resolves to the right endpoint.
                         Utils.ValueHolder<RegionalRoutingContext> endpoint = new Utils.ValueHolder<>();
-                        if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
+                        if (Utils.tryGetValue(endpointsByNormalizedLocation, location, endpoint)) {
                             if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
                                 unavailableEndpoints.add(endpoint.v);
                             } else {
@@ -951,6 +963,7 @@ public class LocationCache {
         Iterable<DatabaseAccountLocation> gatewayDbAccountLocations,
         Iterable<DatabaseAccountLocation> thinclientDbAccountLocations,
         Map<String, RegionalRoutingContext> endpointsByLocation,
+        Map<String, RegionalRoutingContext> endpointsByNormalizedLocation,
         Map<RegionalRoutingContext, String> regionByEndpoint,
         List<String> parsedLocations,
         List<RegionalRoutingContext> orderedEndpoints) {
@@ -967,6 +980,14 @@ public class LocationCache {
 
                         if (!endpointsByLocation.containsKey(location)) {
                             endpointsByLocation.put(location, regionalRoutingContext);
+                        }
+                        // Parallel normalized-form map (lowercase, no spaces/separators) for
+                        // customer preferred/excluded-region routing. Lets unknown regions in
+                        // no-space form like "plutocentral" resolve to the same endpoint as the
+                        // server-form-lowercased entry above.
+                        String normalizedLocation = RegionUtils.getNormalizedRegionName(gatewayDbAccountLocation.getName());
+                        if (!endpointsByNormalizedLocation.containsKey(normalizedLocation)) {
+                            endpointsByNormalizedLocation.put(normalizedLocation, regionalRoutingContext);
                         }
 
                         if (!regionByEndpoint.containsKey(regionalRoutingContext)) {
@@ -1010,17 +1031,20 @@ public class LocationCache {
                                                                                    Iterable<DatabaseAccountLocation> thinclientLocations,
                                                                                    Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
                                                                                    Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> orderedEndpointsHolder,
-                                                                                   Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap) {
+                                                                                   Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap,
+                                                                                   Utils.ValueHolder<UnmodifiableMap<String, RegionalRoutingContext>> endpointsByNormalizedLocationHolder) {
         Map<String, RegionalRoutingContext> endpointsByLocation = new CaseInsensitiveMap<>();
+        Map<String, RegionalRoutingContext> endpointsByNormalizedLocation = new CaseInsensitiveMap<>();
         Map<RegionalRoutingContext, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
         List<RegionalRoutingContext> orderedEndpoints = new ArrayList<>();
 
-        addRoutingContexts(gatewayLocations, thinclientLocations, endpointsByLocation, regionByEndpoint, parsedLocations, orderedEndpoints);
+        addRoutingContexts(gatewayLocations, thinclientLocations, endpointsByLocation, endpointsByNormalizedLocation, regionByEndpoint, parsedLocations, orderedEndpoints);
 
         orderedLocations.v = new UnmodifiableList<>(parsedLocations);
         orderedEndpointsHolder.v = new UnmodifiableList<>(orderedEndpoints);
         regionMap.v = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.unmodifiableMap(regionByEndpoint);
+        endpointsByNormalizedLocationHolder.v = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.unmodifiableMap(endpointsByNormalizedLocation);
 
         return (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.unmodifiableMap(endpointsByLocation);
     }
@@ -1108,6 +1132,12 @@ public class LocationCache {
         private UnmodifiableList<String> availableReadLocations;
         private UnmodifiableMap<String, RegionalRoutingContext> availableWriteRegionalRoutingContextsByRegionName;
         private UnmodifiableMap<String, RegionalRoutingContext> availableReadRegionalRoutingContextsByRegionName;
+        // Parallel maps keyed by normalized region name (lowercase, no spaces/separators). Used
+        // for customer-supplied preferred/excluded region lookups so that any input form —
+        // including unknown regions in no-space form — resolves to the same endpoint as the
+        // server-form-lowercased entry in the maps above.
+        private UnmodifiableMap<String, RegionalRoutingContext> availableWriteRegionalRoutingContextsByNormalizedRegionName;
+        private UnmodifiableMap<String, RegionalRoutingContext> availableReadRegionalRoutingContextsByNormalizedRegionName;
         private UnmodifiableMap<RegionalRoutingContext, String> regionNameByWriteRegionalRoutingContexts;
         private UnmodifiableMap<RegionalRoutingContext, String> regionNameByReadRegionalRoutingContexts;
         private UnmodifiableList<RegionalRoutingContext> availableWriteRegionalRoutingContexts;
@@ -1116,16 +1146,21 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
-            // Canonicalize each preferred region, then lowercase for CaseInsensitiveMap key matching.
-            // Canonical = official display form (e.g., "westus3" → "West US 3" → "west us 3").
-            // Unknown regions are passed through as-is, then lowercased.
+            // Normalize each preferred region (lowercase, no spaces/separators). Routing lookups
+            // hit the parallel availableXxxRegionalRoutingContextsByNormalizedRegionName map, so
+            // any input variant — "West US 3", "westus3", "WEST-US-3", or unknown regions in
+            // no-space form like "plutocentral" — resolves consistently.
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream()
-                .map(loc -> RegionUtils.getCanonicalRegionName(loc).toLowerCase(Locale.ROOT))
+                .map(RegionUtils::getNormalizedRegionName)
                 .collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteRegionalRoutingContextsByRegionName
                 = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadRegionalRoutingContextsByRegionName
+                = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableWriteRegionalRoutingContextsByNormalizedRegionName
+                = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableReadRegionalRoutingContextsByNormalizedRegionName
                 = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByWriteRegionalRoutingContexts
                 = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.<RegionalRoutingContext, String>unmodifiableMap(new CaseInsensitiveMap<>());
@@ -1145,6 +1180,8 @@ public class LocationCache {
             this.availableWriteLocations = other.availableWriteLocations;
             this.availableReadLocations = other.availableReadLocations;
             this.availableWriteRegionalRoutingContextsByRegionName = other.availableWriteRegionalRoutingContextsByRegionName;
+            this.availableWriteRegionalRoutingContextsByNormalizedRegionName = other.availableWriteRegionalRoutingContextsByNormalizedRegionName;
+            this.availableReadRegionalRoutingContextsByNormalizedRegionName = other.availableReadRegionalRoutingContextsByNormalizedRegionName;
             this.regionNameByWriteRegionalRoutingContexts = other.regionNameByWriteRegionalRoutingContexts;
             this.regionNameByReadRegionalRoutingContexts = other.regionNameByReadRegionalRoutingContexts;
             this.availableReadRegionalRoutingContextsByRegionName = other.availableReadRegionalRoutingContextsByRegionName;
