@@ -7,7 +7,7 @@ import com.azure.ai.agents.implementation.AgentSessionFilesImpl;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
-import com.azure.ai.agents.models.SessionFileWriteResponse;
+import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -147,8 +147,8 @@ public final class AgentSessionFilesAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. Defaults
-     * to false.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -199,13 +199,13 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
+    public Mono<SessionFileWriteResult> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResult.class));
     }
 
     /**
@@ -276,7 +276,7 @@ public final class AgentSessionFilesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResponse> uploadSessionFile(String agentName, String agentSessionId, String path,
+    public Mono<SessionFileWriteResult> uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content, AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -288,7 +288,7 @@ public final class AgentSessionFilesAsyncClient {
         }
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResult.class));
     }
 
     /**
@@ -334,7 +334,8 @@ public final class AgentSessionFilesAsyncClient {
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
-     * @param recursive Whether to recursively delete directory contents. Defaults to false.
+     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
+     * not specified by the caller.
      * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
      * conversations, sessions) to a specific end user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

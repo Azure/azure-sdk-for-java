@@ -6,7 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.RoutinesImpl;
 import com.azure.ai.projects.implementation.models.CreateOrUpdateRoutineRequest;
 import com.azure.ai.projects.implementation.models.DispatchRoutineAsyncRequest;
-import com.azure.ai.projects.models.DispatchRoutineResponse;
+import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
@@ -438,61 +438,6 @@ public final class RoutinesAsyncClient {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     payload (Optional): {
-     *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     dispatch_id: String (Optional)
-     *     action_correlation_id: String (Optional)
-     *     task_id: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param routineName The unique name of the routine.
-     * @param dispatchRoutineAsyncRequest The dispatchRoutineAsyncRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return identifiers returned after a routine dispatch is queued along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dispatchRoutineAsyncWithResponse(String routineName,
-        BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions) {
-        return this.serviceClient.dispatchRoutineAsyncWithResponseAsync(routineName, dispatchRoutineAsyncRequest,
-            requestOptions);
-    }
-
-    /**
      * Retrieve a routine.
      *
      * @param routineName The unique name of the routine.
@@ -741,56 +686,6 @@ public final class RoutinesAsyncClient {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
-     *
-     * @param routineName The unique name of the routine.
-     * @param payload A direct action-input override sent downstream when testing a routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identifiers returned after a routine dispatch is queued on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DispatchRoutineResponse> dispatchRoutineAsync(String routineName, RoutineDispatchPayload payload) {
-        // Generated convenience method for dispatchRoutineAsyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj
-            = new DispatchRoutineAsyncRequest().setPayload(payload);
-        BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
-        return dispatchRoutineAsyncWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResponse.class));
-    }
-
-    /**
-     * Queue an asynchronous routine dispatch.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identifiers returned after a routine dispatch is queued on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DispatchRoutineResponse> dispatchRoutineAsync(String routineName) {
-        // Generated convenience method for dispatchRoutineAsyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj = new DispatchRoutineAsyncRequest();
-        BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
-        return dispatchRoutineAsyncWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResponse.class));
-    }
-
-    /**
      * Create or update a routine.
      *
      * @param routineName The unique name of the routine.
@@ -956,5 +851,110 @@ public final class RoutinesAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Queue an asynchronous routine dispatch.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
+     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
+     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
+     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     payload (Optional): {
+     *         type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     dispatch_id: String (Optional)
+     *     action_correlation_id: String (Optional)
+     *     task_id: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param routineName The unique name of the routine.
+     * @param dispatchRoutineAsyncRequest The dispatchRoutineAsyncRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return identifiers returned after a routine dispatch is queued along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> dispatchRoutineWithResponse(String routineName,
+        BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions) {
+        return this.serviceClient.dispatchRoutineWithResponseAsync(routineName, dispatchRoutineAsyncRequest,
+            requestOptions);
+    }
+
+    /**
+     * Queue an asynchronous routine dispatch.
+     *
+     * @param routineName The unique name of the routine.
+     * @param payload A direct action-input override sent downstream when testing a routine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return identifiers returned after a routine dispatch is queued on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DispatchRoutineResult> dispatchRoutine(String routineName, RoutineDispatchPayload payload) {
+        // Generated convenience method for dispatchRoutineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj
+            = new DispatchRoutineAsyncRequest().setPayload(payload);
+        BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
+        return dispatchRoutineWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResult.class));
+    }
+
+    /**
+     * Queue an asynchronous routine dispatch.
+     *
+     * @param routineName The unique name of the routine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return identifiers returned after a routine dispatch is queued on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DispatchRoutineResult> dispatchRoutine(String routineName) {
+        // Generated convenience method for dispatchRoutineWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        DispatchRoutineAsyncRequest dispatchRoutineAsyncRequestObj = new DispatchRoutineAsyncRequest();
+        BinaryData dispatchRoutineAsyncRequest = BinaryData.fromObject(dispatchRoutineAsyncRequestObj);
+        return dispatchRoutineWithResponse(routineName, dispatchRoutineAsyncRequest, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DispatchRoutineResult.class));
     }
 }

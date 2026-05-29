@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.ModelVersion;
-import com.azure.ai.projects.models.UpdateModelVersionRequest;
+import com.azure.ai.projects.models.UpdateModelVersionInput;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -116,7 +116,7 @@ public class ModelsAsyncSample {
         tags.put("sample", "true");
 
         return MODELS_ASYNC_CLIENT.updateModelVersion(modelName, modelVersion,
-            new UpdateModelVersionRequest()
+            new UpdateModelVersionInput()
                 .setDescription("Updated by the Azure AI Projects Java SDK sample.")
                 .setTags(tags))
             .doOnNext(updated -> System.out.printf("Updated model version: %s/%s%n", updated.getName(),

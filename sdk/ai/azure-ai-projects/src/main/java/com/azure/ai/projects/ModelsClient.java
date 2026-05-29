@@ -7,11 +7,11 @@ import com.azure.ai.projects.implementation.JsonMergePatchHelper;
 import com.azure.ai.projects.implementation.ModelsImpl;
 import com.azure.ai.projects.models.CreateAsyncResponse;
 import com.azure.ai.projects.models.DatasetCredential;
-import com.azure.ai.projects.models.ModelCredentialRequest;
-import com.azure.ai.projects.models.ModelPendingUploadRequest;
-import com.azure.ai.projects.models.ModelPendingUploadResponse;
+import com.azure.ai.projects.models.ModelCredentialInput;
+import com.azure.ai.projects.models.ModelPendingUploadInput;
+import com.azure.ai.projects.models.ModelPendingUploadResult;
 import com.azure.ai.projects.models.ModelVersion;
-import com.azure.ai.projects.models.UpdateModelVersionRequest;
+import com.azure.ai.projects.models.UpdateModelVersionInput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -523,61 +523,6 @@ public final class ModelsClient {
     }
 
     /**
-     * Update an existing ModelVersion with the given version id.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the UpdateModelVersionRequest to create or update.
-     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model Version Definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelVersion updateModelVersion(String name, String version, UpdateModelVersionRequest modelVersionUpdate) {
-        // Generated convenience method for updateModelVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor()
-            .prepareModelForJsonMergePatch(modelVersionUpdate, true);
-        BinaryData modelVersionUpdateInBinaryData = BinaryData.fromObject(modelVersionUpdate);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        modelVersionUpdateInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateModelVersionRequestAccessor()
-            .prepareModelForJsonMergePatch(modelVersionUpdate, false);
-        return updateModelVersionWithResponse(name, version, modelVersionUpdateInBinaryData, requestOptions).getValue()
-            .toObject(ModelVersion.class);
-    }
-
-    /**
-     * Get credentials for a model version asset.
-     *
-     * @param name Name of the model.
-     * @param version Version of the model.
-     * @param credentialRequest The credentialRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return credentials for a model version asset.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetCredential getModelCredentials(String name, String version,
-        ModelCredentialRequest credentialRequest) {
-        // Generated convenience method for getModelCredentialsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
-            .getValue()
-            .toObject(DatasetCredential.class);
-    }
-
-    /**
      * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
      * for polling.
      * <p><strong>Request Body Schema</strong></p>
@@ -683,6 +628,36 @@ public final class ModelsClient {
     }
 
     /**
+     * Update an existing ModelVersion with the given version id.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the UpdateModelVersionRequest to create or update.
+     * @param modelVersionUpdate The UpdateModelVersionRequest to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return model Version Definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelVersion updateModelVersion(String name, String version, UpdateModelVersionInput modelVersionUpdate) {
+        // Generated convenience method for updateModelVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateModelVersionInputAccessor()
+            .prepareModelForJsonMergePatch(modelVersionUpdate, true);
+        BinaryData modelVersionUpdateInBinaryData = BinaryData.fromObject(modelVersionUpdate);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        modelVersionUpdateInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateModelVersionInputAccessor()
+            .prepareModelForJsonMergePatch(modelVersionUpdate, false);
+        return updateModelVersionWithResponse(name, version, modelVersionUpdateInBinaryData, requestOptions).getValue()
+            .toObject(ModelVersion.class);
+    }
+
+    /**
      * Start or retrieve a pending upload for a model version.
      *
      * @param name Name of the model.
@@ -698,11 +673,35 @@ public final class ModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelPendingUploadResponse startModelPendingUpload(String name, String version,
-        ModelPendingUploadRequest pendingUploadRequest) {
+    public ModelPendingUploadResult startModelPendingUpload(String name, String version,
+        ModelPendingUploadInput pendingUploadRequest) {
         // Generated convenience method for startModelPendingUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return startModelPendingUploadWithResponse(name, version, BinaryData.fromObject(pendingUploadRequest),
-            requestOptions).getValue().toObject(ModelPendingUploadResponse.class);
+            requestOptions).getValue().toObject(ModelPendingUploadResult.class);
+    }
+
+    /**
+     * Get credentials for a model version asset.
+     *
+     * @param name Name of the model.
+     * @param version Version of the model.
+     * @param credentialRequest The credentialRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return credentials for a model version asset.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetCredential getModelCredentials(String name, String version, ModelCredentialInput credentialRequest) {
+        // Generated convenience method for getModelCredentialsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getModelCredentialsWithResponse(name, version, BinaryData.fromObject(credentialRequest), requestOptions)
+            .getValue()
+            .toObject(DatasetCredential.class);
     }
 }

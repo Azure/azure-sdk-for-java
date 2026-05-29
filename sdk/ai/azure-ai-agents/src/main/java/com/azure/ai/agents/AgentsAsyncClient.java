@@ -23,7 +23,6 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.AgentsPagedResultOptimizationCandidate;
 import com.azure.ai.agents.models.CandidateDeployConfig;
 import com.azure.ai.agents.models.CandidateMetadata;
 import com.azure.ai.agents.models.CandidateResults;
@@ -31,11 +30,12 @@ import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.OptimizationCandidatePagedResult;
 import com.azure.ai.agents.models.OptimizationJob;
 import com.azure.ai.agents.models.OptimizationJobInputs;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PromoteCandidateRequest;
-import com.azure.ai.agents.models.PromoteCandidateResponse;
+import com.azure.ai.agents.models.PromoteCandidateInput;
+import com.azure.ai.agents.models.PromoteCandidateResult;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
@@ -1776,9 +1776,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the agent even if its
-     * versions have active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is
-     * not relevant for other Agent types.</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the agent even if
+     * its versions have active sessions, cascading deletion to all associated sessions. The service defaults to `false`
+     * if a value is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1815,9 +1815,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if true, force-deletes the version even if it
-     * has active sessions, cascading deletion to all associated sessions. Defaults to `false`. This value is not
-     * relevant for other Agent types.</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the version even if
+     * it has active sessions, cascading deletion to all associated sessions. The service defaults to `false` if a value
+     * is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3566,7 +3566,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -3724,7 +3724,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -3904,7 +3904,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4058,7 +4058,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4256,7 +4256,7 @@ public final class AgentsAsyncClient {
      *                         String: double (Required)
      *                     }
      *                     composite_score: double (Required)
-     *                     tokens: int (Required)
+     *                     tokens: long (Required)
      *                     duration_seconds: double (Required)
      *                     passed: boolean (Required)
      *                     error_message: String (Optional)
@@ -4447,7 +4447,7 @@ public final class AgentsAsyncClient {
      *                 String: double (Required)
      *             }
      *             composite_score: double (Required)
-     *             tokens: int (Required)
+     *             tokens: long (Required)
      *             duration_seconds: double (Required)
      *             passed: boolean (Required)
      *             error_message: String (Optional)
@@ -4740,7 +4740,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentsPagedResultOptimizationCandidate> listOptimizationCandidates(String jobId,
+    public Mono<OptimizationCandidatePagedResult> listOptimizationCandidates(String jobId,
         FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listOptimizationCandidatesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -4760,7 +4760,7 @@ public final class AgentsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listOptimizationCandidatesWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentsPagedResultOptimizationCandidate.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidatePagedResult.class));
     }
 
     /**
@@ -4779,11 +4779,11 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentsPagedResultOptimizationCandidate> listOptimizationCandidates(String jobId) {
+    public Mono<OptimizationCandidatePagedResult> listOptimizationCandidates(String jobId) {
         // Generated convenience method for listOptimizationCandidatesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return listOptimizationCandidatesWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentsPagedResultOptimizationCandidate.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidatePagedResult.class));
     }
 
     /**
@@ -5483,8 +5483,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResponse> promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest candidateRequest, FoundryFeaturesOptInKeys foundryFeatures) {
+    public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
+        PromoteCandidateInput candidateRequest, FoundryFeaturesOptInKeys foundryFeatures) {
         // Generated convenience method for promoteOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
@@ -5492,7 +5492,7 @@ public final class AgentsAsyncClient {
         }
         return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
     }
 
     /**
@@ -5513,12 +5513,12 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResponse> promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateRequest candidateRequest) {
+    public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
+        PromoteCandidateInput candidateRequest) {
         // Generated convenience method for promoteOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResponse.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
     }
 }

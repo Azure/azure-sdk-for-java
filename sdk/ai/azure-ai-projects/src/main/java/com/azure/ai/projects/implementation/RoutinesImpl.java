@@ -229,7 +229,7 @@ public final class RoutinesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> dispatchRoutineAsync(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> dispatchRoutine(@HostParam("endpoint") String endpoint,
             @PathParam("routine_name") String routineName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions,
@@ -241,7 +241,7 @@ public final class RoutinesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> dispatchRoutineAsyncSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> dispatchRoutineSync(@HostParam("endpoint") String endpoint,
             @PathParam("routine_name") String routineName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions,
@@ -1353,11 +1353,11 @@ public final class RoutinesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> dispatchRoutineAsyncWithResponseAsync(String routineName,
+    public Mono<Response<BinaryData>> dispatchRoutineWithResponseAsync(String routineName,
         BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.dispatchRoutineAsync(this.client.getEndpoint(), routineName,
+        return FluxUtil.withContext(context -> service.dispatchRoutine(this.client.getEndpoint(), routineName,
             this.client.getServiceVersion().getVersion(), contentType, accept, dispatchRoutineAsyncRequest,
             requestOptions, context));
     }
@@ -1409,11 +1409,11 @@ public final class RoutinesImpl {
      * @return identifiers returned after a routine dispatch is queued along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> dispatchRoutineAsyncWithResponse(String routineName,
-        BinaryData dispatchRoutineAsyncRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> dispatchRoutineWithResponse(String routineName, BinaryData dispatchRoutineAsyncRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.dispatchRoutineAsyncSync(this.client.getEndpoint(), routineName,
+        return service.dispatchRoutineSync(this.client.getEndpoint(), routineName,
             this.client.getServiceVersion().getVersion(), contentType, accept, dispatchRoutineAsyncRequest,
             requestOptions, Context.NONE);
     }

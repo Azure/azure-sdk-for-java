@@ -151,7 +151,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /*
-     * Whether to enable procedural memory extraction and storage. Defaults to `true`.
+     * Whether to enable procedural memory extraction and storage. The service defaults to `true` if a value is not
+     * specified by the caller.
      */
     @Generated
     private Boolean proceduralMemoryEnabled;
@@ -164,8 +165,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     private Long defaultTtlSeconds;
 
     /**
-     * Get the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Defaults to
-     * `true`.
+     * Get the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. The service
+     * defaults to `true` if a value is not specified by the caller.
      *
      * @return the proceduralMemoryEnabled value.
      */
@@ -175,8 +176,8 @@ public final class MemoryStoreDefaultOptions implements JsonSerializable<MemoryS
     }
 
     /**
-     * Set the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. Defaults to
-     * `true`.
+     * Set the proceduralMemoryEnabled property: Whether to enable procedural memory extraction and storage. The service
+     * defaults to `true` if a value is not specified by the caller.
      *
      * @param proceduralMemoryEnabled the proceduralMemoryEnabled value to set.
      * @return the MemoryStoreDefaultOptions object itself.

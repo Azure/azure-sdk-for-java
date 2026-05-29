@@ -21,7 +21,7 @@ public final class GuestSubscriptionsListBySubscriptionLocationResourceMockTests
     @Test
     public void testListBySubscriptionLocationResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"uht\",\"name\":\"mwisdkfthwxmnt\",\"type\":\"i\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"t\",\"name\":\"ehzzvypyqrim\",\"type\":\"inpvswjdkirsoodq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class GuestSubscriptionsListBySubscriptionLocationResourceMockTests
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<GuestSubscription> response
-            = manager.guestSubscriptions().listBySubscriptionLocationResource("idf", com.azure.core.util.Context.NONE);
+        PagedIterable<GuestSubscription> response = manager.guestSubscriptions()
+            .listBySubscriptionLocationResource("oosflnr", com.azure.core.util.Context.NONE);
 
     }
 }

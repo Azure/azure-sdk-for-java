@@ -1823,6 +1823,63 @@
           "code": "java.method.returnTypeChanged",
           "old" : "method com.azure.resourcemanager.monitor.models.ConditionOperator[] com.azure.resourcemanager.monitor.models.ConditionOperator::values()",
           "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, values() return type changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com.azure.search.documents.SearchServiceVersion.V2026_04_01",
+          "justification": "Non-breaking change: new API version V2026_05_01_PREVIEW inserted before existing version."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
+          },
+          "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieve\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieve() signature restructured, knowledgeBaseName removed from parameters."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieveWithResponse\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieveWithResponse() signature restructured."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.knowledgebases.models.AIServices",
+          "justification": "Intentional rename in knowledgebases preview: AIServices renamed to AiServices per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeBaseModelWebSummarizationActivityRecord::get(Input|Output)Tokens\\(\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getInputTokens()/getOutputTokens() renamed to getInputTokensCount()/getOutputTokensCount() per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeSourceIngestionParameters::(get|set)AIServices\\(.*\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getAIServices()/setAIServices() renamed to getAiServices()/setAiServices() following AIServices to AiServices rename per archboard guidance."
         }
       ]
     }
