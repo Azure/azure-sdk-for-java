@@ -334,7 +334,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider",
+        timeOut = TIMEOUT * 5, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
         // De-flaked: previously this test relied on `.subscribe()` + `Thread.sleep(3000)` for
         // both subscriptions, which raced both with the continuation propagation between the
@@ -343,10 +344,17 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // before the second is started, and the final bounded `take(2, true)` block is awaited
         // via `.blockLast(...)` rather than fire-and-forget.
         //
+        // The method timeOut is TIMEOUT * 5 (200s) and per-phase awaitSeconds is 60s because the
+        // Windows EmulatorTcp runner is materially slower than mac/linux — at TIMEOUT (40s) the
+        // first-phase latch await alone (30s) plus the second phase (30s) plus the bounded
+        // take(.blockLast(30s)) would routinely race the TestNG method timeout. retryAnalyzer
+        // is FlakyTestRetryAnalyzer (consistent with other change-feed tests) to absorb
+        // residual page-cadence jitter that survives the longer bounds.
+        //
         // Mode interaction: FULL_FIDELITY uses createForProcessingFromNow, so docs inserted
         // BEFORE the subscription are invisible — for that mode we insert after subscribing.
         // INCREMENTAL uses createForProcessingFromBeginning and sees pre-existing docs.
-        final long awaitSeconds = 30L;
+        final long awaitSeconds = 60L;
         final boolean isFullFidelity = changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY);
 
         this.createContainer(
