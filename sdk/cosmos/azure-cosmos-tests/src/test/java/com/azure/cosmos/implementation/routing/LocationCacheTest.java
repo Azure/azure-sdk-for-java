@@ -1222,4 +1222,136 @@ public class LocationCacheTest {
             .collect(Collectors.toList()))
             .doesNotContain(PlutoCentralEndpoint);
     }
+    // ========================================================================
+    // Exclude-region normalization cache tests — exercises the per-LocationCache
+    // ConcurrentHashMap<rawCustomerString, normalizedForm> fast path used by
+    // getApplicableRegionRoutingContexts on the per-request hot path. Asserts on
+    // cache occupancy via reflection to prove that:
+    //   - repeated invocations with the same exclude string reuse the cached entry
+    //   - distinct strings each get their own entry
+    //   - growth halts at the documented cap and the fallback still normalizes correctly
+    // ========================================================================
+
+    @SuppressWarnings("unchecked")
+    private static java.util.concurrent.ConcurrentHashMap<String, String> getExcludeRegionCache(LocationCache locationCache) {
+        try {
+            java.lang.reflect.Field field = LocationCache.class.getDeclaredField("rawToNormalizedExcludeRegionCache");
+            field.setAccessible(true);
+            return (java.util.concurrent.ConcurrentHashMap<String, String>) field.get(locationCache);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError("Could not read rawToNormalizedExcludeRegionCache via reflection", e);
+        }
+    }
+
+    private static int getExcludeRegionCacheCap() {
+        try {
+            java.lang.reflect.Field field = LocationCache.class.getDeclaredField("EXCLUDE_REGION_CACHE_MAX_SIZE");
+            field.setAccessible(true);
+            return (int) field.get(null);
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError("Could not read EXCLUDE_REGION_CACHE_MAX_SIZE via reflection", e);
+        }
+    }
+
+    private static List<RegionalRoutingContext> requestWithExcludeRegions(LocationCache cache, List<String> excludeRegions) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+        request.requestContext.setExcludeRegions(excludeRegions);
+        return cache.getApplicableReadRegionRoutingContexts(request);
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegionCache_populatesOnFirstCall() {
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+        java.util.concurrent.ConcurrentHashMap<String, String> cache = getExcludeRegionCache(locationCache);
+        assertThat(cache).isEmpty();
+
+        requestWithExcludeRegions(locationCache, Arrays.asList("West US 3"));
+
+        assertThat(cache).hasSize(1);
+        assertThat(cache.get("West US 3")).isEqualTo("westus3");
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegionCache_reusesCachedEntryOnRepeatedCall() {
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+        java.util.concurrent.ConcurrentHashMap<String, String> cache = getExcludeRegionCache(locationCache);
+
+        for (int i = 0; i < 50; i++) {
+            requestWithExcludeRegions(locationCache, Arrays.asList("West US 3", "East US"));
+        }
+
+        // Cache size should equal the number of distinct customer-supplied strings, not the
+        // number of normalize calls.
+        assertThat(cache).hasSize(2);
+        assertThat(cache).containsEntry("West US 3", "westus3");
+        assertThat(cache).containsEntry("East US", "eastus");
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegionCache_distinctStringsGetDistinctEntries() {
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+        java.util.concurrent.ConcurrentHashMap<String, String> cache = getExcludeRegionCache(locationCache);
+
+        // Same normalized result, different raw inputs - each raw input gets its own entry.
+        requestWithExcludeRegions(locationCache, Arrays.asList("West US 3"));
+        requestWithExcludeRegions(locationCache, Arrays.asList("WEST US 3"));
+        requestWithExcludeRegions(locationCache, Arrays.asList("westus3"));
+        requestWithExcludeRegions(locationCache, Arrays.asList("west-us-3"));
+
+        assertThat(cache).hasSize(4);
+        assertThat(cache.values()).containsOnly("westus3");
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegionCache_haltsAtCapAndFallsBackToDirectNormalize() {
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+        java.util.concurrent.ConcurrentHashMap<String, String> cache = getExcludeRegionCache(locationCache);
+        int cap = getExcludeRegionCacheCap();
+
+        // Fill the cache exactly to the cap with synthetic unique exclude-region strings.
+        // None of these match real account regions, so routing is unaffected - we're just
+        // exercising the cache-population path.
+        for (int i = 0; i < cap; i++) {
+            requestWithExcludeRegions(locationCache, Arrays.asList("synthetic-region-" + i));
+        }
+        assertThat(cache).hasSize(cap);
+
+        // Push past the cap with a region that DOES match (East US in no-space form).
+        // Cache must NOT grow, AND routing must still correctly exclude East US (fallback
+        // to direct normalize must produce the same answer the cache would have).
+        List<RegionalRoutingContext> applicable = requestWithExcludeRegions(
+            locationCache, Arrays.asList("eastus"));
+        assertThat(cache).hasSize(cap);
+        assertThat(applicable.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(EastUSEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void excludeRegionCache_skipsNullExcludeEntries() {
+        LocationCache locationCache = createCacheWithRealRegions(
+            Arrays.asList("West US 3", "East US", "North Europe"));
+        java.util.concurrent.ConcurrentHashMap<String, String> cache = getExcludeRegionCache(locationCache);
+
+        List<String> withNull = new ArrayList<>();
+        withNull.add(null);
+        withNull.add("eastus");
+        withNull.add(null);
+
+        // Must not NPE and must not insert a null key into the cache.
+        List<RegionalRoutingContext> applicable = requestWithExcludeRegions(locationCache, withNull);
+
+        assertThat(cache).hasSize(1).containsKey("eastus");
+        assertThat(cache).doesNotContainKey(null);
+        assertThat(applicable.stream()
+            .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+            .collect(Collectors.toList()))
+            .doesNotContain(EastUSEndpoint);
+    }
 }
