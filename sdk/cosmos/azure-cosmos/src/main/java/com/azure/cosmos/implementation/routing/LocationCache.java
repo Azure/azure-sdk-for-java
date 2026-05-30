@@ -504,7 +504,11 @@ public class LocationCache {
                     // is keyed by server-form-lowercased, so look it up directly.
                     if (Utils.tryGetValue(regionalRoutingContextsByRegionName, internalExcludeRegion, regionalRoutingContextValueHolder)) {
 
-                        if (!regionalRoutingContextValueHolder.v.equals(hubRoutingContext)) {
+                        // Also honor the user-exclude list here so the global-fallback path does
+                        // not re-add a region the user explicitly excluded. Mirrors the guard in
+                        // the sibling else-branch below.
+                        if (!regionalRoutingContextValueHolder.v.equals(hubRoutingContext)
+                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionNameNormalizer.normalize(internalExcludeRegion))) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
