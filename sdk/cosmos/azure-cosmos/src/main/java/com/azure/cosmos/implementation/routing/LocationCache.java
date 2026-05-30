@@ -53,7 +53,23 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<RegionalRoutingContext, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
+    /**
+     * Caches {@code rawUserSuppliedExcludeRegion -> normalizedForm} so the per-request
+     * exclude-region hot path skips repeated {@link RegionNameNormalizer#normalize(String)}
+     * work for customers that pass the same exclude region strings on every request (the
+     * common case). Bounded by {@link #EXCLUDE_REGION_CACHE_MAX_SIZE} so a customer that
+     * supplies a different string per request cannot drive unbounded memory growth -
+     * beyond the cap we fall back to direct normalization (still correct, just no caching).
+     */
+    private final ConcurrentHashMap<String, String> rawToNormalizedExcludeRegionCache;
     private final ConnectionPolicy connectionPolicy;
+
+    /**
+     * Soft cap on {@link #rawToNormalizedExcludeRegionCache}. Realistic customers configure
+     * a small fixed set of exclude regions (1-5), so 256 leaves abundant headroom while
+     * keeping worst-case memory at ~10 KB.
+     */
+    private static final int EXCLUDE_REGION_CACHE_MAX_SIZE = 256;
 
     private DatabaseAccountLocationsInfo locationInfo;
 
@@ -78,6 +94,7 @@ public class LocationCache {
         this.lockObject = new Object();
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
+        this.rawToNormalizedExcludeRegionCache = new ConcurrentHashMap<>();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
@@ -357,7 +374,7 @@ public class LocationCache {
             normalizedExcludes = new HashSet<>(userConfiguredExcludeRegions.size());
             for (String excludeRegion : userConfiguredExcludeRegions) {
                 if (excludeRegion != null) {
-                    normalizedExcludes.add(RegionNameNormalizer.normalize(excludeRegion));
+                    normalizedExcludes.add(this.normalizeExcludeRegion(excludeRegion));
                 }
             }
         }
@@ -541,17 +558,35 @@ public class LocationCache {
      * each user-supplied entry. Uses the same normalization (lowercase + strip spaces/hyphens/underscores)
      * that {@link #getApplicableRegionRoutingContexts} uses for the user-exclude check, so that unknown
      * regions in any input form (e.g., "westus3" vs "West US 3") match consistently.
+     * Normalization of each user-supplied entry goes through {@link #normalizeExcludeRegion(String)}
+     * so the per-client cache is reused.
      */
-    private static boolean containsNormalizedRegion(List<String> userExcludeRegions, String normalizedTarget) {
+    private boolean containsNormalizedRegion(List<String> userExcludeRegions, String normalizedTarget) {
         if (userExcludeRegions == null || userExcludeRegions.isEmpty()) {
             return false;
         }
         for (String region : userExcludeRegions) {
-            if (region != null && normalizedTarget.equals(RegionNameNormalizer.normalize(region))) {
+            if (region != null && normalizedTarget.equals(this.normalizeExcludeRegion(region))) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Fast-path normalization for customer-supplied exclude region strings. Customers in the
+     * common case pass the same exclude regions on every request, so caching
+     * {@code raw -> normalized} avoids repeated allocations from the per-request hot path.
+     * Falls back to direct {@link RegionNameNormalizer#normalize(String)} once the cache
+     * reaches {@link #EXCLUDE_REGION_CACHE_MAX_SIZE} so customers that supply distinct
+     * strings per request cannot drive unbounded memory growth.
+     */
+    private String normalizeExcludeRegion(String rawExcludeRegion) {
+        if (this.rawToNormalizedExcludeRegionCache.size() < EXCLUDE_REGION_CACHE_MAX_SIZE) {
+            return this.rawToNormalizedExcludeRegionCache
+                .computeIfAbsent(rawExcludeRegion, RegionNameNormalizer::normalize);
+        }
+        return RegionNameNormalizer.normalize(rawExcludeRegion);
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
