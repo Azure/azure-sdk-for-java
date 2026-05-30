@@ -12,17 +12,17 @@ public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"displayName\":\"utlwexxwla\",\"description\":\"iexzsrzpge\",\"endpoints\":{\"wwpgdakchzyvlixq\":\"yb\",\"bn\":\"rkcxkj\",\"swqrntvlwijp\":\"mysu\"},\"isDefault\":true}")
+            "{\"provisioningState\":\"Canceled\",\"displayName\":\"zjqatucoig\",\"description\":\"xncnwfe\",\"endpoints\":{\"gcgbjb\":\"wgfmx\",\"flq\":\"dlfgtdysnaq\",\"zeqyjleziun\":\"ctqhamzjrwdk\",\"eg\":\"xdfzantkw\"},\"isDefault\":false}")
             .toObject(ProjectProperties.class);
-        Assertions.assertEquals("utlwexxwla", model.displayName());
-        Assertions.assertEquals("iexzsrzpge", model.description());
+        Assertions.assertEquals("zjqatucoig", model.displayName());
+        Assertions.assertEquals("xncnwfe", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDisplayName("utlwexxwla").withDescription("iexzsrzpge");
+        ProjectProperties model = new ProjectProperties().withDisplayName("zjqatucoig").withDescription("xncnwfe");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("utlwexxwla", model.displayName());
-        Assertions.assertEquals("iexzsrzpge", model.description());
+        Assertions.assertEquals("zjqatucoig", model.displayName());
+        Assertions.assertEquals("xncnwfe", model.description());
     }
 }

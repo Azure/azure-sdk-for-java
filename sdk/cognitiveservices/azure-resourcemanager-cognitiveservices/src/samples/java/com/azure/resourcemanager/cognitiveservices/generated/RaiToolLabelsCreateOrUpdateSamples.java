@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class RaiToolLabelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/PutRaiToolLabel.json
+     * x-ms-original-file: 2026-03-15-preview/PutRaiToolLabel.json
      */
     /**
      * Sample code: PutRaiToolLabel.

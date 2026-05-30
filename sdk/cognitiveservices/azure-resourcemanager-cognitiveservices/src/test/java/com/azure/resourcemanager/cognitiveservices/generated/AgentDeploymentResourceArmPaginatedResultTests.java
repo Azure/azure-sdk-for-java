@@ -14,18 +14,18 @@ public final class AgentDeploymentResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentDeploymentResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"wotmmwllcolsrsxa\",\"value\":[{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"hexcgjokj\",\"deploymentId\":\"nhvlqjbekp\",\"state\":\"Deleting\",\"protocols\":[{\"protocol\":\"A2A\",\"version\":\"dqhjvyklxeslkhhu\"},{\"protocol\":\"Agent\",\"version\":\"oqmavnwqjwgo\"}],\"agents\":[{\"agentVersion\":\"jjjkxybwfdbk\",\"agentId\":\"ztensvkzykjtj\",\"agentName\":\"sxfwushcdp\"},{\"agentVersion\":\"pn\",\"agentId\":\"mgjfbpkuwxeoio\",\"agentName\":\"izfavkjzwf\"}],\"provisioningState\":\"Canceled\",\"description\":\"y\",\"tags\":{\"bfw\":\"fz\",\"dew\":\"rzx\"}},\"id\":\"sxkrpl\",\"name\":\"jazejwwviyoyp\",\"type\":\"uhbrnnhjxsq\"}]}")
+            "{\"nextLink\":\"fbbmtlp\",\"value\":[{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"noiprnzcali\",\"deploymentId\":\"ryqxzxa\",\"state\":\"Running\",\"protocols\":[{\"protocol\":\"Agent\",\"version\":\"iymqr\"},{\"protocol\":\"Agent\",\"version\":\"hfupetasvvoqsbpk\"},{\"protocol\":\"Agent\",\"version\":\"fkg\"}],\"agents\":[{\"agentVersion\":\"owuz\",\"agentId\":\"puohdkcprgukxrz\",\"agentName\":\"ochlu\"}],\"provisioningState\":\"Succeeded\",\"description\":\"qrudjizcbfzmcr\",\"tags\":{\"tk\":\"hiucnmfbcpaq\"}},\"id\":\"mzuedkyzbfvxovq\",\"name\":\"xiuxqggvqrnhy\",\"type\":\"lwcjsqggjhffb\"},{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"qrkijpeuq\",\"deploymentId\":\"dxeqztvxw\",\"state\":\"Failed\",\"protocols\":[{\"protocol\":\"Responses\",\"version\":\"na\"},{\"protocol\":\"Responses\",\"version\":\"ecleqioulndhzyo\"}],\"agents\":[{\"agentVersion\":\"tollh\",\"agentId\":\"idmytzln\",\"agentName\":\"xpno\"},{\"agentVersion\":\"oanfbcswqagyw\",\"agentId\":\"xigvjrktpgaeuk\",\"agentName\":\"wohpmwhqnucs\"}],\"provisioningState\":\"Creating\",\"description\":\"i\",\"tags\":{\"njg\":\"tdlpbn\",\"jcciklhsyek\":\"zlsvbzfcpuoeed\"}},\"id\":\"renxolriyehqbe\",\"name\":\"vdlhydwbdbfgr\",\"type\":\"punytjl\"},{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"smmpathubt\",\"deploymentId\":\"deani\",\"state\":\"Updating\",\"protocols\":[{\"protocol\":\"Agent\",\"version\":\"zsffte\"},{\"protocol\":\"Responses\",\"version\":\"nktjtgr\"}],\"agents\":[{\"agentVersion\":\"ogfkbebauzlqb\",\"agentId\":\"xwpfhnjzud\",\"agentName\":\"pzkg\"}],\"provisioningState\":\"Succeeded\",\"description\":\"ywhczzq\",\"tags\":{\"qbedygisrzwn\":\"n\",\"lrmpwctofldse\":\"kdidjc\"}},\"id\":\"dhztxkbr\",\"name\":\"g\",\"type\":\"rwjiyew\"},{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"jsrwqrxetf\",\"deploymentId\":\"wvrrmdqn\",\"state\":\"Stopping\",\"protocols\":[{\"protocol\":\"A2A\",\"version\":\"vmaxgnuyea\"},{\"protocol\":\"Responses\",\"version\":\"udf\"},{\"protocol\":\"Responses\",\"version\":\"h\"}],\"agents\":[{\"agentVersion\":\"pqtwloesqrggvrb\",\"agentId\":\"rukoi\",\"agentName\":\"ciduwjle\"},{\"agentVersion\":\"jlhwyxpzruzyt\",\"agentId\":\"kkwhbgxvellvulnx\",\"agentName\":\"nitmujdtvmclyymf\"}],\"provisioningState\":\"Creating\",\"description\":\"pddny\",\"tags\":{\"pv\":\"uvrzmzqmzjqrb\",\"pglaoh\":\"mdyfoebojtj\",\"jtnqjil\":\"qk\"}},\"id\":\"wkdcwmqs\",\"name\":\"ri\",\"type\":\"mhxdqaolfy\"}]}")
             .toObject(AgentDeploymentResourceArmPaginatedResult.class);
-        Assertions.assertEquals("wotmmwllcolsrsxa", model.nextLink());
-        Assertions.assertEquals("y", model.value().get(0).properties().description());
-        Assertions.assertEquals("fz", model.value().get(0).properties().tags().get("bfw"));
-        Assertions.assertEquals("hexcgjokj", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("nhvlqjbekp", model.value().get(0).properties().deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.DELETING, model.value().get(0).properties().state());
-        Assertions.assertEquals(AgentProtocol.A2A, model.value().get(0).properties().protocols().get(0).protocol());
-        Assertions.assertEquals("dqhjvyklxeslkhhu", model.value().get(0).properties().protocols().get(0).version());
-        Assertions.assertEquals("ztensvkzykjtj", model.value().get(0).properties().agents().get(0).agentId());
-        Assertions.assertEquals("sxfwushcdp", model.value().get(0).properties().agents().get(0).agentName());
-        Assertions.assertEquals("jjjkxybwfdbk", model.value().get(0).properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("fbbmtlp", model.nextLink());
+        Assertions.assertEquals("qrudjizcbfzmcr", model.value().get(0).properties().description());
+        Assertions.assertEquals("hiucnmfbcpaq", model.value().get(0).properties().tags().get("tk"));
+        Assertions.assertEquals("noiprnzcali", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ryqxzxa", model.value().get(0).properties().deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.RUNNING, model.value().get(0).properties().state());
+        Assertions.assertEquals(AgentProtocol.AGENT, model.value().get(0).properties().protocols().get(0).protocol());
+        Assertions.assertEquals("iymqr", model.value().get(0).properties().protocols().get(0).version());
+        Assertions.assertEquals("puohdkcprgukxrz", model.value().get(0).properties().agents().get(0).agentId());
+        Assertions.assertEquals("ochlu", model.value().get(0).properties().agents().get(0).agentName());
+        Assertions.assertEquals("owuz", model.value().get(0).properties().agents().get(0).agentVersion());
     }
 }

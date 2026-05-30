@@ -15,31 +15,25 @@ public final class PropertySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertySelector model = BinaryData.fromString(
-            "{\"matchExpressions\":[{\"name\":\"lpbuxwgipwhonowk\",\"operator\":\"Lt\",\"values\":[\"wankixzbi\",\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"]},{\"name\":\"lsicohoqqnwv\",\"operator\":\"Ne\",\"values\":[\"avwhheunm\"]},{\"name\":\"qhgyxzkonocukok\",\"operator\":\"Ne\",\"values\":[\"xuconu\",\"szfkbe\"]},{\"name\":\"pewr\",\"operator\":\"Eq\",\"values\":[\"wv\",\"jektcxsenh\",\"lrsf\",\"rzpwvlqdqgbiq\"]}]}")
+            "{\"matchExpressions\":[{\"name\":\"pnazzm\",\"operator\":\"Le\",\"values\":[\"unmpxttd\",\"hrbnlankxmyskpbh\"]},{\"name\":\"nbtkcxywnytnr\",\"operator\":\"Lt\",\"values\":[\"lqidyby\",\"czfc\",\"haaxdbabphl\"]}]}")
             .toObject(PropertySelector.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.matchExpressions().get(0).name());
-        Assertions.assertEquals(PropertySelectorOperator.LT, model.matchExpressions().get(0).operator());
-        Assertions.assertEquals("wankixzbi", model.matchExpressions().get(0).values().get(0));
+        Assertions.assertEquals("pnazzm", model.matchExpressions().get(0).name());
+        Assertions.assertEquals(PropertySelectorOperator.LE, model.matchExpressions().get(0).operator());
+        Assertions.assertEquals("unmpxttd", model.matchExpressions().get(0).values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PropertySelector model = new PropertySelector().withMatchExpressions(Arrays.asList(
-            new PropertySelectorRequirement().withName("lpbuxwgipwhonowk")
+            new PropertySelectorRequirement().withName("pnazzm")
+                .withOperator(PropertySelectorOperator.LE)
+                .withValues(Arrays.asList("unmpxttd", "hrbnlankxmyskpbh")),
+            new PropertySelectorRequirement().withName("nbtkcxywnytnr")
                 .withOperator(PropertySelectorOperator.LT)
-                .withValues(Arrays.asList("wankixzbi", "jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh")),
-            new PropertySelectorRequirement().withName("lsicohoqqnwv")
-                .withOperator(PropertySelectorOperator.NE)
-                .withValues(Arrays.asList("avwhheunm")),
-            new PropertySelectorRequirement().withName("qhgyxzkonocukok")
-                .withOperator(PropertySelectorOperator.NE)
-                .withValues(Arrays.asList("xuconu", "szfkbe")),
-            new PropertySelectorRequirement().withName("pewr")
-                .withOperator(PropertySelectorOperator.EQ)
-                .withValues(Arrays.asList("wv", "jektcxsenh", "lrsf", "rzpwvlqdqgbiq"))));
+                .withValues(Arrays.asList("lqidyby", "czfc", "haaxdbabphl"))));
         model = BinaryData.fromObject(model).toObject(PropertySelector.class);
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.matchExpressions().get(0).name());
-        Assertions.assertEquals(PropertySelectorOperator.LT, model.matchExpressions().get(0).operator());
-        Assertions.assertEquals("wankixzbi", model.matchExpressions().get(0).values().get(0));
+        Assertions.assertEquals("pnazzm", model.matchExpressions().get(0).name());
+        Assertions.assertEquals(PropertySelectorOperator.LE, model.matchExpressions().get(0).operator());
+        Assertions.assertEquals("unmpxttd", model.matchExpressions().get(0).values().get(0));
     }
 }

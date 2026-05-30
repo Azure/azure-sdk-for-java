@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentDeploymentsStartSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/AgentDeployment/start.json
+     * x-ms-original-file: 2026-03-15-preview/AgentDeployment/start.json
      */
     /**
      * Sample code: Start Agent Deployment.

@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"roqksmfxm\"},\"etag\":\"prstvkitbfj\",\"tags\":{\"rqxw\":\"otnplfacqocc\",\"a\":\"tjtdrhutfd\",\"eh\":\"txop\"},\"id\":\"dkmdzgsszx\",\"name\":\"ctkbbxuha\",\"type\":\"lsi\"}";
+            = "{\"properties\":{\"description\":\"cwn\"},\"etag\":\"tfmcqbsudzpgc\",\"tags\":{\"kynrceqavf\":\"gfqumjdjxhzghgo\",\"jdnaju\":\"bdfmm\"},\"id\":\"jyyqmkw\",\"name\":\"hvcw\",\"type\":\"oqdejkluxxr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,17 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RaiBlocklist response = manager.raiBlocklistItems()
-            .batchAddWithResponse("oxudnmckap", "hknqiijge", "cdgmoqu",
-                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("hkkyowltjouw")
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("x").withIsRegex(true))),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        RaiBlocklist response
+            = manager.raiBlocklistItems()
+                .batchAddWithResponse("djiah", "qymjzucwwmejjqhd", "wvmqxi",
+                    Arrays.asList(new RaiBlocklistItemBulkRequest().withName("kyfozkbnzxbyp")
+                        .withProperties(new RaiBlocklistItemProperties().withPattern("gaixwrgrkkd").withIsRegex(true)),
+                        new RaiBlocklistItemBulkRequest().withName("swqi")
+                            .withProperties(new RaiBlocklistItemProperties().withPattern("pw").withIsRegex(true))),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("roqksmfxm", response.properties().description());
-        Assertions.assertEquals("otnplfacqocc", response.tags().get("rqxw"));
+        Assertions.assertEquals("cwn", response.properties().description());
+        Assertions.assertEquals("gfqumjdjxhzghgo", response.tags().get("kynrceqavf"));
     }
 }

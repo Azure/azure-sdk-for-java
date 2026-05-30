@@ -57,7 +57,7 @@ com.azure:azure-ai-projects;2.0.1;2.1.0-beta.2
 com.azure:azure-ai-speech-transcription;1.0.0;1.1.0-beta.1
 com.azure:azure-ai-textanalytics;5.5.13;5.6.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-translation-text;1.1.9;2.0.0
+com.azure:azure-ai-translation-text;2.0.0;2.1.0-beta.1
 com.azure:azure-ai-translation-document;1.0.8;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-voicelive;1.0.0-beta.6;1.0.0
@@ -180,15 +180,15 @@ com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-planetarycomputer;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;12.0.0;12.1.0-beta.1
+com.azure:azure-search-documents;12.0.0;12.1.0-beta.2
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.39;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.35;1.1.0-beta.3
-com.azure:azure-security-keyvault-administration;4.7.7;4.8.0-beta.1
+com.azure:azure-security-keyvault-administration;4.8.0;4.9.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.8.7;4.9.0
 com.azure:azure-security-keyvault-jca;2.11.0;2.12.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.10.7;4.11.0-beta.1
+com.azure:azure-security-keyvault-keys;4.11.0;4.12.0-beta.1
 com.azure:azure-security-keyvault-secrets;4.10.7;4.11.0
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
@@ -518,7 +518,7 @@ com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-virtualenclaves;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.2
