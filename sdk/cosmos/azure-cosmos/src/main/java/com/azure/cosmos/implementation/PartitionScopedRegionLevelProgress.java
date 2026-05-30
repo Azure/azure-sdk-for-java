@@ -9,12 +9,12 @@ import com.azure.cosmos.implementation.apachecommons.collections.map.Unmodifiabl
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionIdRegistry;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -121,7 +121,7 @@ public class PartitionScopedRegionLevelProgress {
                     return regionLevelProgressAsVal;
                 }
 
-                this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, (regionRoutedToAsVal) -> regionRoutedToAsVal.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
+                this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, RegionNameNormalizer::normalize);
 
                 String normalizedRegionRoutedTo = this.normalizedRegionLookupMap.get(regionRoutedTo);
 
