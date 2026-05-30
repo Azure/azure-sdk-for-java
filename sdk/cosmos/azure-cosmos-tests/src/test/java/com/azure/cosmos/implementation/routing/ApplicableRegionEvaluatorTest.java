@@ -2425,11 +2425,17 @@ public class ApplicableRegionEvaluatorTest {
         locationCache.onDatabaseAccountRead(databaseAccount);
 
         try {
-            // Create request: user excludes "eastus" (non-canonical, no spaces)
-            // PPCB marks "east us" (server-returned, lowercased with spaces) as unavailable
+            // Reaching containsNormalizedRegion requires the reevaluate path to enter its
+            // PPCB-internal-exclude inner loop, which only happens when
+            // applicableRegionalRoutingContexts.size() < 2 (early-return at LocationCache:440).
+            // Exclude 2 of 3 regions so only Central US remains applicable; then PPCB excludes
+            // "east us" - reevaluate iterates internalExcludeRegions and consults
+            // containsNormalizedRegion(["eastus","westus"], "east us"). Pre-fix string-equal
+            // check ("east us".equals("eastus") -> false) would silently re-add East US to the
+            // retry list; the normalized check correctly recognises the match and blocks it.
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-            request.requestContext.setExcludeRegions(Arrays.asList("eastus"));
+            request.requestContext.setExcludeRegions(Arrays.asList("eastus", "westus"));
             request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(Arrays.asList("east us"));
 
             request.requestContext.setCrossRegionAvailabilityContext(
@@ -2448,19 +2454,21 @@ public class ApplicableRegionEvaluatorTest {
             List<RegionalRoutingContext> applicableEndpoints =
                 globalEndpointManager.getApplicableReadRegionalRoutingContexts(request);
 
-            // "East US" / "eastus" / "east us" should all be excluded — the reevaluate path
-            // should NOT re-add "east us" because containsRegionIgnoreCase recognizes
-            // that "eastus" (user exclude) matches "east us" (PPCB internal exclude).
+            // East US is in both user-exclude and PPCB-internal-exclude lists. Without the
+            // containsNormalizedRegion fix the reevaluate loop would silently re-add East US;
+            // with the fix the only applicable endpoint is Central US.
             for (RegionalRoutingContext endpoint : applicableEndpoints) {
                 Assertions.assertThat(endpoint.getGatewayRegionalEndpoint())
                     .as("East US endpoint should not be re-added by reevaluate when user excluded 'eastus' and PPCB excluded 'east us'")
                     .isNotEqualTo(TestAccountEastUsEndpoint);
+                Assertions.assertThat(endpoint.getGatewayRegionalEndpoint())
+                    .as("West US endpoint should remain excluded by the user-exclude main loop")
+                    .isNotEqualTo(TestAccountWestUsEndpoint);
             }
 
-            // Should route to West US or Central US only
-            Assertions.assertThat(applicableEndpoints.size()).isGreaterThanOrEqualTo(1);
+            Assertions.assertThat(applicableEndpoints).hasSize(1);
             Assertions.assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint())
-                .isIn(TestAccountWestUsEndpoint, TestAccountCentralUsEndpoint);
+                .isEqualTo(TestAccountCentralUsEndpoint);
         } finally {
             globalEndpointManager.close();
         }

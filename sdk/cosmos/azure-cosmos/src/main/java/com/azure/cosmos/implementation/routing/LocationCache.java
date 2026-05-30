@@ -1119,12 +1119,24 @@ public class LocationCache {
     static class DatabaseAccountLocationsInfo {
         private UnmodifiableList<RegionalRoutingContext> writeRegionalRoutingContexts;
         private UnmodifiableList<RegionalRoutingContext> readRegionalRoutingContexts;
-        private UnmodifiableList<String> preferredLocations;
-        private UnmodifiableList<String> effectivePreferredLocations;
-        // lower-case region
-        private UnmodifiableList<String> availableWriteLocations;
-        // lower-case region
-        private UnmodifiableList<String> availableReadLocations;
+    /**
+     * Customer-supplied preferred regions, stored in <b>normalized form</b>
+     * (see {@link RegionNameNormalizer}). Lookups target the parallel
+     * {@code availableXxxRegionalRoutingContextsByNormalizedRegionName} maps.
+     */
+    private UnmodifiableList<String> preferredLocations;
+    /**
+     * Fallback ordering when {@link #preferredLocations} is empty. Stored in
+     * <b>server-form</b> (lowercased, spaces preserved, e.g. {@code "west us 3"}),
+     * mirroring {@link #availableReadLocations}. Callers must normalize before any
+     * lookup against the normalized routing maps - see {@link #shouldRefreshEndpoints}
+     * and {@link #getPreferredAvailableRoutingContexts} for the existing call sites.
+     */
+    private UnmodifiableList<String> effectivePreferredLocations;
+    // lower-case region
+    private UnmodifiableList<String> availableWriteLocations;
+    // lower-case region
+    private UnmodifiableList<String> availableReadLocations;
         private UnmodifiableMap<String, RegionalRoutingContext> availableWriteRegionalRoutingContextsByRegionName;
         private UnmodifiableMap<String, RegionalRoutingContext> availableReadRegionalRoutingContextsByRegionName;
         // Parallel maps keyed by normalized region name (lowercase, no spaces/separators). Used
