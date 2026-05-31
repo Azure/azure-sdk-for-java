@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.RepeatingInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,7 @@ import java.util.zip.CRC32;
 
 public class CrcInputStream extends InputStream {
     private final static ClientLogger LOGGER = new ClientLogger(CrcInputStream.class);
+    private final Sinks.One<ContentInfo> sink = Sinks.one();
     private final InputStream inputStream;
     private final CRC32 crc = new CRC32();
     private final ByteBuffer head = ByteBuffer.allocate(1024);
@@ -42,6 +44,7 @@ public class CrcInputStream extends InputStream {
     public synchronized int read() throws IOException {
         int b = inputStream.read();
         if (b < 0) {
+            emitContentInfo();
             return b;
         }
 
@@ -57,6 +60,7 @@ public class CrcInputStream extends InputStream {
     public synchronized int read(byte buf[], int off, int len) throws IOException {
         int read = inputStream.read(buf, off, len);
         if (read < 0) {
+            emitContentInfo();
             return read;
         }
 
@@ -66,6 +70,33 @@ public class CrcInputStream extends InputStream {
         }
         length += read;
         return read;
+    }
+
+    // Uses tryEmitValue instead of emitValue(FAIL_FAST) so that resubscriptions
+    // (SDK retries, verification passes) don't throw on the second EOF.
+    private void emitContentInfo() {
+        String baseErrorMessage = "Failed to emit content because ";
+        Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
+        switch (emitResult) {
+            case OK:
+            case FAIL_TERMINATED:
+                // No action needed for successful or already-terminated emissions.
+                break;
+            case FAIL_CANCELLED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    " the sink was previously interrupted by its consumer: " + emitResult));
+            case FAIL_OVERFLOW:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the buffer is full: " + emitResult));
+            case FAIL_NON_SERIALIZED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "two threads called emit at " +
+                    "once: " + emitResult));
+            case FAIL_ZERO_SUBSCRIBER:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
+                    "subscriber:" + emitResult));
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "unexpected emit result: "
+                    + emitResult));
+        }
     }
 
     @Override
@@ -93,32 +124,8 @@ public class CrcInputStream extends InputStream {
         return markSupported;
     }
 
-    /**
-     * Returns a {@link Mono} that, on subscription, captures a snapshot of the stream's
-     * current CRC, byte count and head buffer.
-     *
-     * <p>The returned Mono is intentionally lazy: it does <strong>not</strong> wait for EOF or
-     * for any sink to be signaled. Callers are therefore responsible for subscribing only
-     * <em>after</em> the stream has been fully consumed (for example, after the SDK upload
-     * call has returned for synchronous flows, or via {@code .then(data.getContentInfo())}
-     * for reactive flows). Subscribing before the stream is done will produce a snapshot of
-     * whatever has been read so far.</p>
-     *
-     * <p>This contract avoids the previous design's dependence on the SDK reading past EOF
-     * (which never happened on known-length uploads and could leave the legacy sink waiting
-     * indefinitely) and naturally tolerates SDK retries: the snapshot reflects the bytes
-     * that were actually delivered on the final, successful pass.</p>
-     *
-     * @return a cold Mono that emits a {@link ContentInfo} snapshot on each subscription.
-     */
     public Mono<ContentInfo> getContentInfo() {
-        return Mono.fromCallable(() -> {
-            synchronized (this) {
-                // duplicate() shares the underlying byte[] but gives the caller an independent
-                // position/limit so subsequent reads on this stream don't perturb the snapshot.
-                return new ContentInfo(crc.getValue(), length, head.duplicate());
-            }
-        });
+        return sink.asMono();
     }
 
     @Override
