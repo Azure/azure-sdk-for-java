@@ -90,11 +90,6 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
                 return sourceOffset < resourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
-        } catch (RuntimeException e) {
-            if (resourceLength > 0 && sourceOffset >= resourceLength && e.getCause() instanceof IOException) {
-                return -1;
-            }
-            throw e;
         }
     }
 
