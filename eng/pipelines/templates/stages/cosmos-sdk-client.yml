@@ -61,7 +61,12 @@ extends:
             MatrixReplace:
               - AZURE_TEST.*=.*/
               - .*Version=1.2(1|5)/1.17
-            BuildParallelization: 2
+            # NOTE: keep BuildParallelization at 1 — scala-maven-plugin 4.8.1 has a known
+            # classloader race on the Zinc compiler bridge when two Spark modules compile
+            # concurrently (manifests as `ClassNotFoundException: xsbt.CompilerInterface`).
+            # The race is fixed in 4.9.x but the SDK proxy feed does not have 4.9.x cached.
+            # Raise back to 2 once the plugin is bumped.
+            BuildParallelization: 1
             BuildOptions: '-Dshade.skip=true -Dmaven.antrun.skip=true'
             TestOptions: '-Punit'
 
