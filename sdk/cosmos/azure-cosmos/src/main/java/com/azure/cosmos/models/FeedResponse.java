@@ -45,7 +45,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
-    private Map<String, String> header;
+    private final Map<String, String> header;
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
@@ -56,19 +56,21 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
-    // All header maps are produced by the SDK's own query pipeline. Non-null maps
-    // are always mutable (HashMap or ConcurrentHashMap) - the SDK intentionally
-    // allows callers to add/modify headers on FeedResponse. The only known
-    // exception is empty-page responses where the query pipeline may pass null.
-    // We do NOT clone non-null maps here to avoid unnecessary allocations on every
-    // FeedResponse construction - the wider blast radius of cloning (every query,
-    // change feed, readMany response) is not justified by the narrow null case.
-    // If a future code path introduces an immutable non-null header map, the
-    // setContinuationTokenInternal method will fail fast with
-    // UnsupportedOperationException, and the fix should be to make the upstream
-    // pipeline emit a mutable map rather than adding defensive cloning here.
+    // The header map stored on FeedResponse must be mutable: downstream stages
+    // (e.g. the readManyByPartitionKeys stamping lambda) may add or replace
+    // headers in place. Normalize at construction time so the field can stay
+    // final and getResponseHeaders() consistently returns the same instance.
+    // Mutable inputs are passed through without copying; null and the known
+    // immutable shapes produced by Utils.immutableMapOf / Collections.emptyMap
+    // are replaced with a fresh HashMap (preserving entries).
     private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
-        return headers == null ? new HashMap<>() : headers;
+        if (headers == null) {
+            return new HashMap<>();
+        }
+        if (Utils.isImmutableMap(headers)) {
+            return new HashMap<>(headers);
+        }
+        return headers;
     }
 
     FeedResponse(List<T> results, Map<String, String> headers) {
@@ -450,19 +452,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     private void setContinuationTokenInternal(String headerName, String continuationToken) {
-        boolean setting = !Strings.isNullOrWhiteSpace(continuationToken);
-        boolean clearing = !setting && !this.header.isEmpty() && this.header.containsKey(headerName);
-        if (!setting && !clearing) {
-            return;
-        }
-
-        if (Utils.isImmutableMap(this.header)) {
-            this.header = new HashMap<>(this.header);
-        }
-
-        if (setting) {
+        if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
-        } else {
+        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
             this.header.remove(headerName);
         }
     }

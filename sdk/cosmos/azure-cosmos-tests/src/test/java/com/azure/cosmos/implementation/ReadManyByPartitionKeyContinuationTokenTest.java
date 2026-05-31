@@ -127,17 +127,20 @@ public class ReadManyByPartitionKeyContinuationTokenTest {
 
     @Test(groups = { "unit" })
     public void setFeedResponseContinuationToken_handlesEmptyHeadersWithoutCopyingNormalCase() {
-        Map<String, String> immutableEmptyHeaders = Collections.emptyMap();
+        // Immutable inputs are normalized to a mutable map at FeedResponse construction
+        // time (so the field stays final). Clearing a continuation token on an empty
+        // header map is a no-op and must not throw.
         FeedResponse<String> emptyResponse = ModelBridgeInternal.createFeedResponse(
             Collections.emptyList(),
-            immutableEmptyHeaders);
+            Collections.emptyMap());
 
         ModelBridgeInternal.setFeedResponseContinuationToken(null, emptyResponse);
 
         assertThat(emptyResponse.getContinuationToken()).isNull();
-        assertThat(emptyResponse.getResponseHeaders()).isSameAs(immutableEmptyHeaders);
         assertThat(emptyResponse.getResponseHeaders()).isEmpty();
 
+        // Mutable header maps are passed through without copying, preserving the
+        // reference returned by getResponseHeaders().
         Map<String, String> normalHeaders = new HashMap<>();
         normalHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "test-activity-id");
         FeedResponse<String> normalResponse = ModelBridgeInternal.createFeedResponse(
