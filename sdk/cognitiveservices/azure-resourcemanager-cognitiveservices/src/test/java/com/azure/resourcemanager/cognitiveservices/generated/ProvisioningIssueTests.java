@@ -13,19 +13,19 @@ public final class ProvisioningIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssue model = BinaryData.fromString(
-            "{\"name\":\"mdy\",\"properties\":{\"issueType\":\"wdigumbnraauz\",\"severity\":\"tj\",\"description\":\"ysdzhez\",\"suggestedResourceIds\":[\"aiqyuvvfo\",\"kphhq\",\"ikvylauya\"],\"suggestedAccessRules\":[{\"name\":\"mncsttijfybvp\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"sgbdhuz\",\"gnjdgkynscliqhz\",\"h\"],\"subscriptions\":[{},{},{}],\"networkSecurityPerimeters\":[{}],\"fullyQualifiedDomainNames\":[\"u\",\"otppnv\",\"xz\"]}},{\"name\":\"ihfrbbcevqa\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"lfkqojpy\",\"vgtrdcnifmzzs\",\"ymbrnysuxmpraf\"],\"subscriptions\":[{}],\"networkSecurityPerimeters\":[{},{},{},{}],\"fullyQualifiedDomainNames\":[\"xvd\",\"ffwafq\",\"oudaspavehhrvk\",\"unzo\"]}}]}}")
+            "{\"name\":\"mqfoudorh\",\"properties\":{\"issueType\":\"yprotwyp\",\"severity\":\"d\",\"description\":\"xhugcm\",\"suggestedResourceIds\":[\"vlgo\"],\"suggestedAccessRules\":[{\"name\":\"tp\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"ltfvnz\",\"yj\",\"otp\",\"opv\"],\"subscriptions\":[{},{},{}],\"networkSecurityPerimeters\":[{}],\"fullyQualifiedDomainNames\":[\"qqihedsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\"]}},{\"name\":\"hdxbzlm\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"vhdbevwqqxey\"],\"subscriptions\":[{},{},{},{}],\"networkSecurityPerimeters\":[{},{},{}],\"fullyQualifiedDomainNames\":[\"nkfkbgbzb\",\"wxeqocljmygvkzqk\",\"jeokbzefezrxccz\"]}}]}}")
             .toObject(ProvisioningIssue.class);
-        Assertions.assertEquals("mdy", model.name());
-        Assertions.assertEquals("wdigumbnraauz", model.properties().issueType());
-        Assertions.assertEquals("tj", model.properties().severity());
-        Assertions.assertEquals("ysdzhez", model.properties().description());
-        Assertions.assertEquals("aiqyuvvfo", model.properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("mncsttijfybvp", model.properties().suggestedAccessRules().get(0).name());
-        Assertions.assertEquals(NspAccessRuleDirection.INBOUND,
+        Assertions.assertEquals("mqfoudorh", model.name());
+        Assertions.assertEquals("yprotwyp", model.properties().issueType());
+        Assertions.assertEquals("d", model.properties().severity());
+        Assertions.assertEquals("xhugcm", model.properties().description());
+        Assertions.assertEquals("vlgo", model.properties().suggestedResourceIds().get(0));
+        Assertions.assertEquals("tp", model.properties().suggestedAccessRules().get(0).name());
+        Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND,
             model.properties().suggestedAccessRules().get(0).properties().direction());
-        Assertions.assertEquals("sgbdhuz",
+        Assertions.assertEquals("ltfvnz",
             model.properties().suggestedAccessRules().get(0).properties().addressPrefixes().get(0));
-        Assertions.assertEquals("u",
+        Assertions.assertEquals("qqihedsvqwthmk",
             model.properties().suggestedAccessRules().get(0).properties().fullyQualifiedDomainNames().get(0));
     }
 }

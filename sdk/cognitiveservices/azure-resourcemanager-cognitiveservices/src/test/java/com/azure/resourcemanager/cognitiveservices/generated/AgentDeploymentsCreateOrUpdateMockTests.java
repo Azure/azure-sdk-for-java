@@ -29,7 +29,7 @@ public final class AgentDeploymentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"ara\",\"deploymentId\":\"wuasnjeglhtrx\",\"state\":\"Updating\",\"protocols\":[{\"protocol\":\"A2A\",\"version\":\"wjzb\"},{\"protocol\":\"Responses\",\"version\":\"rnwv\"}],\"agents\":[{\"agentVersion\":\"qizawwsds\",\"agentId\":\"gfhjxsawoo\",\"agentName\":\"ffhx\"},{\"agentVersion\":\"kmwzrdqyoy\",\"agentId\":\"rn\",\"agentName\":\"ocjnzdaiovrbhr\"},{\"agentVersion\":\"phkvyyz\",\"agentId\":\"crxylaypdt\",\"agentName\":\"velffohuriw\"}],\"provisioningState\":\"Succeeded\",\"description\":\"rwpsshrmnkcclp\",\"tags\":{\"s\":\"ogkscxj\",\"nxs\":\"mospoe\",\"bqhsujkafu\":\"cowscuyfqlam\"}},\"id\":\"nxqpwnikxkcajgrb\",\"name\":\"ct\",\"type\":\"vgoo\"}";
+            = "{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"nefnoafp\",\"deploymentId\":\"rx\",\"state\":\"Updating\",\"protocols\":[{\"protocol\":\"A2A\",\"version\":\"ufcmuajwblxp\"}],\"agents\":[{\"agentVersion\":\"frfa\",\"agentId\":\"nnsvrfajynihti\",\"agentName\":\"fgzqzhl\"},{\"agentVersion\":\"tb\",\"agentId\":\"ehbgcgyohrcmeqlj\",\"agentName\":\"umhycxonebld\"},{\"agentVersion\":\"gmdfjwc\",\"agentId\":\"kwx\",\"agentName\":\"jq\"}],\"provisioningState\":\"Succeeded\",\"description\":\"ufzdtsrpju\",\"tags\":{\"huqczouanbfulv\":\"acrzhnsbylgmg\",\"bzbwbgwzhbhfljey\":\"xglxoqwbztil\",\"lhrwyakzuafapwx\":\"dpiov\",\"extqd\":\"vdeatjiobnirg\"}},\"id\":\"tg\",\"name\":\"timznupbmt\",\"type\":\"setk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,35 +39,37 @@ public final class AgentDeploymentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentDeployment response = manager.agentDeployments()
-            .define("mw")
-            .withExistingApplication("xxicee", "vjwyuveox", "pzzwahdrdvhaztk", "bivzfgxmbry")
-            .withProperties(new AgentDeploymentProperties().withDescription("nstp")
-                .withTags(mapOf("vswmehfxrtt", "ibjg", "ectcxsfmbzdx", "bmsennqfabqcama"))
-                .withDisplayName("iosiqsy")
-                .withDeploymentId("f")
+            .define("ycudus")
+            .withExistingApplication("nsbqoitwhmuc", "iuh", "xy", "ehyklelyqdvpqfbx")
+            .withProperties(new AgentDeploymentProperties().withDescription("wbywaazba")
+                .withTags(mapOf("vnabfbbt", "kfz"))
+                .withDisplayName("tx")
+                .withDeploymentId("ef")
                 .withState(AgentDeploymentState.UPDATING)
-                .withProtocols(Arrays.asList(
-                    new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("fdaglmrcokzzert"),
-                    new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("zsi")))
+                .withProtocols(Arrays
+                    .asList(new AgentProtocolVersion().withProtocol(AgentProtocol.A2A).withVersion("opkyllreyenjpw")))
                 .withAgents(Arrays.asList(
-                    new VersionedAgentReference().withAgentId("opikzebqnnfywtkq")
-                        .withAgentName("sdlkhcz")
-                        .withAgentVersion("bym"),
-                    new VersionedAgentReference().withAgentId("vfiyymot")
-                        .withAgentName("bybwjmtftcvelnir")
-                        .withAgentVersion("pmgfjculojhhylx"))))
+                    new VersionedAgentReference().withAgentId("rsvevcneqswxhqh")
+                        .withAgentName("htbzvulqevvj")
+                        .withAgentVersion("w"),
+                    new VersionedAgentReference().withAgentId("vghcmi")
+                        .withAgentName("lwkfef")
+                        .withAgentVersion("pmyhtxg"),
+                    new VersionedAgentReference().withAgentId("yimooaezkto")
+                        .withAgentName("go")
+                        .withAgentVersion("yjrtalqeebu"))))
             .create();
 
-        Assertions.assertEquals("rwpsshrmnkcclp", response.properties().description());
-        Assertions.assertEquals("ogkscxj", response.properties().tags().get("s"));
-        Assertions.assertEquals("ara", response.properties().displayName());
-        Assertions.assertEquals("wuasnjeglhtrx", response.properties().deploymentId());
+        Assertions.assertEquals("ufzdtsrpju", response.properties().description());
+        Assertions.assertEquals("acrzhnsbylgmg", response.properties().tags().get("huqczouanbfulv"));
+        Assertions.assertEquals("nefnoafp", response.properties().displayName());
+        Assertions.assertEquals("rx", response.properties().deploymentId());
         Assertions.assertEquals(AgentDeploymentState.UPDATING, response.properties().state());
         Assertions.assertEquals(AgentProtocol.A2A, response.properties().protocols().get(0).protocol());
-        Assertions.assertEquals("wjzb", response.properties().protocols().get(0).version());
-        Assertions.assertEquals("gfhjxsawoo", response.properties().agents().get(0).agentId());
-        Assertions.assertEquals("ffhx", response.properties().agents().get(0).agentName());
-        Assertions.assertEquals("qizawwsds", response.properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("ufcmuajwblxp", response.properties().protocols().get(0).version());
+        Assertions.assertEquals("nnsvrfajynihti", response.properties().agents().get(0).agentId());
+        Assertions.assertEquals("fgzqzhl", response.properties().agents().get(0).agentName());
+        Assertions.assertEquals("frfa", response.properties().agents().get(0).agentVersion());
     }
 
     // Use "Map.of" if available
