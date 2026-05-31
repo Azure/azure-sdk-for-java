@@ -2425,14 +2425,14 @@ public class ApplicableRegionEvaluatorTest {
         locationCache.onDatabaseAccountRead(databaseAccount);
 
         try {
-            // Reaching containsNormalizedRegion requires the reevaluate path to enter its
-            // PPCB-internal-exclude inner loop, which only happens when
+            // Reaching the user-exclude membership guard inside reevaluate requires that path to
+            // enter its PPCB-internal-exclude inner loop, which only happens when
             // applicableRegionalRoutingContexts.size() < 2 (early-return at LocationCache:440).
             // Exclude 2 of 3 regions so only Central US remains applicable; then PPCB excludes
-            // "east us" - reevaluate iterates internalExcludeRegions and consults
-            // containsNormalizedRegion(["eastus","westus"], "east us"). Pre-fix string-equal
-            // check ("east us".equals("eastus") -> false) would silently re-add East US to the
-            // retry list; the normalized check correctly recognises the match and blocks it.
+            // "east us" - reevaluate iterates internalExcludeRegions and consults the pre-built
+            // normalizedExcludes Set ({"eastus","westus"}). Pre-fix string-equal check
+            // ("east us".equals("eastus") -> false) would silently re-add East US to the retry
+            // list; the normalized check correctly recognises the match and blocks it.
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
             request.requestContext.setExcludeRegions(Arrays.asList("eastus", "westus"));
@@ -2455,7 +2455,7 @@ public class ApplicableRegionEvaluatorTest {
                 globalEndpointManager.getApplicableReadRegionalRoutingContexts(request);
 
             // East US is in both user-exclude and PPCB-internal-exclude lists. Without the
-            // containsNormalizedRegion fix the reevaluate loop would silently re-add East US;
+            // normalized-Set membership check the reevaluate loop would silently re-add East US;
             // with the fix the only applicable endpoint is Central US.
             for (RegionalRoutingContext endpoint : applicableEndpoints) {
                 Assertions.assertThat(endpoint.getGatewayRegionalEndpoint())

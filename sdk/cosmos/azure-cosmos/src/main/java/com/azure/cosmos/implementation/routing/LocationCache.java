@@ -424,7 +424,7 @@ public class LocationCache {
             new UnmodifiableList<>(applicableEndpoints),
             regionNameByRegionalRoutingContext,
             regionalRoutingContextByRegionName,
-            userConfiguredExcludeRegions,
+            normalizedExcludes,
             endpointsRemovedByInternalExcludeRegions,
             internalExcludeRegions,
             regionalRoutingContexts,
@@ -439,8 +439,9 @@ public class LocationCache {
         UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts,
         UnmodifiableMap<RegionalRoutingContext, String> regionNameByRegionalRoutingContexts,
         UnmodifiableMap<String, RegionalRoutingContext> regionalRoutingContextsByRegionName,
-        // exclude regions from request options or client
-        List<String> userConfiguredExcludeRegions,
+        // user-configured exclude regions, pre-normalized once in the caller and threaded through
+        // so downstream membership checks are O(1) Set.contains lookups instead of repeated walks
+        Set<String> normalizedExcludes,
         // exclude URIs from per-partition circuit breaker
         List<RegionalRoutingContext> regionalRoutingContextsRemovedByInternalExcludeRegions,
         // exclude regions from per-partition circuit breaker
@@ -486,7 +487,7 @@ public class LocationCache {
         if (isFallbackRoutingContextUsed) {
             // user wishes to exclude all regions - use partition-set level primary region [or] account-level primary region
             // no cross region retries applicable
-            if (!userConfiguredExcludeRegions.isEmpty() && regionalRoutingContextsRemovedByInternalExcludeRegions.isEmpty()) {
+            if (!normalizedExcludes.isEmpty() && regionalRoutingContextsRemovedByInternalExcludeRegions.isEmpty()) {
                 crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
                 return applicableRegionalRoutingContexts;
             }
@@ -523,9 +524,9 @@ public class LocationCache {
 
                         // Also honor the user-exclude list here so the global-fallback path does
                         // not re-add a region the user explicitly excluded. Mirrors the guard in
-                        // the sibling else-branch below.
+                        // the sibling else-branch below. O(1) lookup against the pre-normalized set.
                         if (!regionalRoutingContextValueHolder.v.equals(hubRoutingContext)
-                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionNameNormalizer.normalize(internalExcludeRegion))) {
+                                && !normalizedExcludes.contains(this.normalizeExcludeRegion(internalExcludeRegion))) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
@@ -539,9 +540,9 @@ public class LocationCache {
                     if (Utils.tryGetValue(regionalRoutingContextsByRegionName, internalExcludeRegion, regionalRoutingContextValueHolder)) {
                         // For the user-exclude membership check, compare in normalized form so
                         // unknown regions in any input form (e.g., "plutocentral" vs "Pluto Central")
-                        // match consistently.
+                        // match consistently. O(1) lookup against the pre-normalized set.
                         if (!regionalRoutingContextValueHolder.v.equals(firstApplicableRegionalRoutingContext)
-                                && !containsNormalizedRegion(userConfiguredExcludeRegions, RegionNameNormalizer.normalize(internalExcludeRegion))) {
+                                && !normalizedExcludes.contains(this.normalizeExcludeRegion(internalExcludeRegion))) {
                             modifiedRegionalRoutingContexts.add(regionalRoutingContextValueHolder.v);
                             break;
                         }
@@ -551,26 +552,6 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<>(modifiedRegionalRoutingContexts);
-    }
-
-    /**
-     * Checks whether {@code userExcludeRegions} contains {@code normalizedTarget} after normalizing
-     * each user-supplied entry. Uses the same normalization (lowercase + strip spaces/hyphens/underscores)
-     * that {@link #getApplicableRegionRoutingContexts} uses for the user-exclude check, so that unknown
-     * regions in any input form (e.g., "westus3" vs "West US 3") match consistently.
-     * Normalization of each user-supplied entry goes through {@link #normalizeExcludeRegion(String)}
-     * so the per-client cache is reused.
-     */
-    private boolean containsNormalizedRegion(List<String> userExcludeRegions, String normalizedTarget) {
-        if (userExcludeRegions == null || userExcludeRegions.isEmpty()) {
-            return false;
-        }
-        for (String region : userExcludeRegions) {
-            if (region != null && normalizedTarget.equals(this.normalizeExcludeRegion(region))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
