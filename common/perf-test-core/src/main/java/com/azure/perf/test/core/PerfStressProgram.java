@@ -348,21 +348,8 @@ public class PerfStressProgram {
                     .block();
             }
         } catch (Exception e) {
-            // Previously this catch swallowed the exception, printed a stack trace, and let the
-            // method fall through to "=== Results ===" / globalCleanupAsync, which caused the
-            // process to exit 0. That made real test failures (e.g. an SDK NullPointerException
-            // surfaced by a retry path during a stress run) invisible to CI and dashboards: the
-            // Kubernetes Job reported Succeeded and the workbook showed a healthy success ratio
-            // even though the test loop had aborted partway through its configured duration.
-            //
-            // Rethrow as an unchecked exception so the surrounding lifecycle still runs the
-            // `finally` block below (progressStatus.cancel()) and the outer `try { ... } finally`
-            // in run(...) still drives globalCleanupAsync, but the JVM ultimately exits non-zero
-            // and the failure is visible. See sdk/storage/BUG-payload-size-gate-npe.md for the
-            // specific case that motivated this change.
             System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
             e.printStackTrace(System.err);
-            throw (e instanceof RuntimeException) ? (RuntimeException) e : new RuntimeException(e);
         } finally {
             progressStatus.cancel();
         }
