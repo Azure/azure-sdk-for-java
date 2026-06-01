@@ -101,9 +101,19 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
      * {@inheritDoc}
      */
     @Override
+    public AzureStorageBlobContainerEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("blobContainerName", this.blobContainerName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -129,6 +139,9 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureStorageBlobContainerEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureStorageBlobContainerEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

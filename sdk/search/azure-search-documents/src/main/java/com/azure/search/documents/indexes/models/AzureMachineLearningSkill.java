@@ -31,7 +31,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * payload will be sent. Only the https URI scheme is allowed.
      */
     @Generated
-    private String scoringUri;
+    private String scoringUrl;
 
     /*
      * (Required for key authentication) The key for the AML service.
@@ -93,26 +93,26 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the scoringUri property: (Required for no authentication or key authentication) The scoring URI of the AML
+     * Get the scoringUrl property: (Required for no authentication or key authentication) The scoring URI of the AML
      * service to which the JSON payload will be sent. Only the https URI scheme is allowed.
      *
-     * @return the scoringUri value.
+     * @return the scoringUrl value.
      */
     @Generated
-    public String getScoringUri() {
-        return this.scoringUri;
+    public String getScoringUrl() {
+        return this.scoringUrl;
     }
 
     /**
-     * Set the scoringUri property: (Required for no authentication or key authentication) The scoring URI of the AML
+     * Set the scoringUrl property: (Required for no authentication or key authentication) The scoring URI of the AML
      * service to which the JSON payload will be sent. Only the https URI scheme is allowed.
      *
-     * @param scoringUri the scoringUri value to set.
+     * @param scoringUrl the scoringUrl value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
     @Generated
-    public AzureMachineLearningSkill setScoringUri(String scoringUri) {
-        this.scoringUri = scoringUri;
+    public AzureMachineLearningSkill setScoringUrl(String scoringUrl) {
+        this.scoringUrl = scoringUrl;
         return this;
     }
 
@@ -283,7 +283,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeStringField("uri", this.scoringUri);
+        jsonWriter.writeStringField("uri", this.scoringUrl);
         jsonWriter.writeStringField("key", this.authenticationKey);
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
@@ -310,7 +310,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
             String description = null;
             String context = null;
             String odataType = "#Microsoft.Skills.Custom.AmlSkill";
-            String scoringUri = null;
+            String scoringUrl = null;
             String authenticationKey = null;
             String resourceId = null;
             Duration timeout = null;
@@ -332,7 +332,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
                 } else if ("uri".equals(fieldName)) {
-                    scoringUri = reader.getString();
+                    scoringUrl = reader.getString();
                 } else if ("key".equals(fieldName)) {
                     authenticationKey = reader.getString();
                 } else if ("resourceId".equals(fieldName)) {
@@ -353,7 +353,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
             deserializedAzureMachineLearningSkill.setDescription(description);
             deserializedAzureMachineLearningSkill.setContext(context);
             deserializedAzureMachineLearningSkill.odataType = odataType;
-            deserializedAzureMachineLearningSkill.scoringUri = scoringUri;
+            deserializedAzureMachineLearningSkill.scoringUrl = scoringUrl;
             deserializedAzureMachineLearningSkill.authenticationKey = authenticationKey;
             deserializedAzureMachineLearningSkill.resourceId = resourceId;
             deserializedAzureMachineLearningSkill.timeout = timeout;

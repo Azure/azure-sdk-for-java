@@ -419,12 +419,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
-        try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
-                contentValidationAlgorithm);
-        } catch (IllegalArgumentException ex) {
-            return monoError(LOGGER, ex);
-        }
 
         Mono<BinaryData> dataMono;
         BinaryData binaryData = options.getData();
@@ -770,13 +764,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockWithResponseInternal(BlockBlobStageBlockOptions options, Context context) {
         Objects.requireNonNull(options.getData(), "data must not be null");
         Objects.requireNonNull(options.getData().getLength(), "data must have defined length");
-
-        try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(options.getContentMd5(),
-                options.getContentValidationAlgorithm());
-        } catch (IllegalArgumentException ex) {
-            return monoError(LOGGER, ex);
-        }
 
         context = ContentValidationModeResolver.addContentValidationMode(context,
             options.getContentValidationAlgorithm(), options.getData().getLength(), false);

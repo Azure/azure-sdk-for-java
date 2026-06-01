@@ -151,9 +151,9 @@ public class EnhancedModeSample {
                 return;
             }
 
-            TranscriptionResult result = translateWithEnhancedMode(audioData, "zh");
+            TranscriptionResult result = translateWithEnhancedMode(audioData, "ko");
 
-            System.out.println("Translated to Chinese:");
+            System.out.println("Translated to Korean:");
             if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
                 System.out.println(result.getCombinedPhrases().get(0).getText());
             }
@@ -279,7 +279,7 @@ public class EnhancedModeSample {
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setEnhancedModeOptions(enhancedMode)
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarizationOptions(new TranscriptionDiarizationOptions()
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true)
                 .setMaxSpeakers(2));
 
         return client.transcribe(options);

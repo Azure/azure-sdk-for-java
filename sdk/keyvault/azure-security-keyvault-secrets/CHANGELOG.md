@@ -1,5 +1,22 @@
 # Release History
 
+## 4.11.0 (2026-05-26)
+
+### Features Added
+
+- Added support for service version `V2025_07_01`.
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret()` and `getSecretWithResponse()` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+
+## 4.10.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
 ## 4.11.0-beta.1 (2026-03-23)
 
 ### Features Added
@@ -8,6 +25,7 @@
   applicable. Applies only to secrets created after June 1, 2025.
 - Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret` and
   `getSecretWithResponse` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+- Added support for service API version `2025-07-01`. This is now the default service version used by the client.
 
 ## 4.10.6 (2026-03-23)
 

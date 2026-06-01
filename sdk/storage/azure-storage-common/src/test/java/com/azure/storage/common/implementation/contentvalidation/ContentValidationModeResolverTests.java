@@ -6,7 +6,6 @@ package com.azure.storage.common.implementation.contentvalidation;
 import com.azure.core.util.Context;
 import com.azure.core.util.ProgressListener;
 import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ParallelTransferOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,7 +21,9 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContentValidationModeResolverTests {
 
@@ -154,39 +155,6 @@ public class ContentValidationModeResolverTests {
     }
 
     // ===========================================================================================
-    // validateTransactionalChecksumOptions (byte[])
-    // ===========================================================================================
-
-    @Test
-    public void validateByteArrayPassesForCompatibleOptions() {
-        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null,
-            ContentValidationAlgorithm.CRC64));
-        assertDoesNotThrow(
-            () -> ContentValidationModeResolver.validateTransactionalChecksumOptions(new byte[] { 1 }, null));
-        assertDoesNotThrow(() -> ContentValidationModeResolver.validateTransactionalChecksumOptions(null, null));
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndCrc64() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.CRC64));
-        assertEquals(ContentValidationModeResolver.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE,
-            ex.getMessage());
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndAuto() {
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1, 2 }, ContentValidationAlgorithm.AUTO));
-    }
-
-    @Test
-    public void validateByteArrayThrowsForContentMd5AndNone() {
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateTransactionalChecksumOptions(new byte[] { 1 }, ContentValidationAlgorithm.NONE));
-    }
-
-    // ===========================================================================================
     // validateTransactionalChecksumOptions (boolean computeMd5)
     // ===========================================================================================
 
@@ -241,12 +209,6 @@ public class ContentValidationModeResolverTests {
     }
 
     @Test
-    public void validateProgressWithContentValidationPassesWhenParallelOptionsNull() {
-        assertDoesNotThrow(() -> ContentValidationModeResolver
-            .validateProgressWithContentValidation((ParallelTransferOptions) null, ContentValidationAlgorithm.CRC64));
-    }
-
-    @Test
     public void validateProgressWithContentValidationThrowsForCrc64() {
         ProgressListener listener = l -> {
         };
@@ -265,10 +227,10 @@ public class ContentValidationModeResolverTests {
     }
 
     @Test
-    public void validateProgressWithContentValidationParallelOptionsDelegatesToListener() {
-        ParallelTransferOptions opts = new ParallelTransferOptions().setProgressListener(l -> {
-        });
-        assertThrows(IllegalArgumentException.class, () -> ContentValidationModeResolver
-            .validateProgressWithContentValidation(opts, ContentValidationAlgorithm.CRC64));
+    public void isCrc64OrAutoReflectsCrc64AndAutoOnly() {
+        assertTrue(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.CRC64));
+        assertTrue(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.AUTO));
+        assertFalse(ContentValidationModeResolver.isCrc64OrAuto(ContentValidationAlgorithm.NONE));
+        assertFalse(ContentValidationModeResolver.isCrc64OrAuto(null));
     }
 }

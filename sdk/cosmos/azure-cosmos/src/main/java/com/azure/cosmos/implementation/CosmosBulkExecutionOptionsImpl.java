@@ -139,6 +139,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         this.minTargetMicroBatchSize = minTargetMicroBatchSize;
     }
 
+    @Override
     public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
@@ -357,6 +358,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.customSerializer = overrideOption(cosmosRequestOptions.getCustomItemSerializer(), this.customSerializer);
     }
 
 }

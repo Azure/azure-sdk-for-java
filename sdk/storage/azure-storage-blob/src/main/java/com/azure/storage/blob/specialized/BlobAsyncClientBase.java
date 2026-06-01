@@ -1266,11 +1266,14 @@ public class BlobAsyncClientBase {
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
+        context
+            = ContentValidationModeResolver.addStructuredMessageDecodingToContext(context, contentValidationAlgorithm);
+
         // The first range should eagerly convert headers as they'll be used to create response types.
         Context firstRangeContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
-
+        Context nextRangeContext = context;
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5,
             firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
@@ -1315,7 +1318,7 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(new BlobRange(initialOffset + offset, newCount), finalRequestConditions,
-                            eTag, getMD5, context);
+                            eTag, getMD5, nextRangeContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
@@ -1535,8 +1538,6 @@ public class BlobAsyncClientBase {
         BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
         final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
             = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
-        ContentValidationModeResolver.validateProgressWithContentValidation(finalParallelTransferOptions,
-            options.getContentValidationAlgorithm());
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 

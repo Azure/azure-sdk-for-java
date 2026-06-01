@@ -545,12 +545,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
 
-        try {
-            ContentValidationModeResolver.validateTransactionalChecksumOptions(contentMd5, contentValidationAlgorithm);
-        } catch (IllegalArgumentException ex) {
-            return monoError(LOGGER, ex);
-        }
-
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         long length = pageRange.getEnd() - pageRange.getStart() + 1;
         context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,

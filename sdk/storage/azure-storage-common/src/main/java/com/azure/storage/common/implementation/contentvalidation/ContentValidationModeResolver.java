@@ -7,6 +7,7 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -80,7 +81,7 @@ public final class ContentValidationModeResolver {
      * message.
      */
     private static String getModeForSingleShotUpload(ContentValidationAlgorithm algorithm, long length) {
-        if (algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO) {
+        if (isCrc64OrAuto(algorithm)) {
             return length < MAXIMUM_SINGLE_SHOT_UPLOAD_SIZE_TO_USE_CRC64_HEADER
                 ? USE_CRC64_CHECKSUM_HEADER_CONTEXT
                 : USE_STRUCTURED_MESSAGE_CONTEXT;
@@ -92,28 +93,10 @@ public final class ContentValidationModeResolver {
      * Mode for a chunked (multi-shot) upload. Always use structured message.
      */
     private static String getModeForChunkedUpload(ContentValidationAlgorithm algorithm) {
-        if (algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO) {
+        if (isCrc64OrAuto(algorithm)) {
             return USE_STRUCTURED_MESSAGE_CONTEXT;
         }
         return null;
-    }
-
-    /**
-     * Validates transactional checksum options. Throws if {@code contentMd5} and a non-null
-     * {@code contentValidationAlgorithm} are both set.
-     * <p>
-     * Async clients typically wrap the call in {@code try}/{@code catch} and return
-     * {@code com.azure.core.util.FluxUtil.monoError(logger, ex)} so the failure remains a deferred reactive error.
-     *
-     * @param contentMd5 Caller-provided transactional MD5, if any.
-     * @param contentValidationAlgorithm Transfer validation checksum algorithm from options.
-     * @throws IllegalArgumentException if options conflict.
-     */
-    public static void validateTransactionalChecksumOptions(byte[] contentMd5,
-        ContentValidationAlgorithm contentValidationAlgorithm) {
-        if (contentMd5 != null && contentValidationAlgorithm != null) {
-            throw new IllegalArgumentException(CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE);
-        }
     }
 
     /**
@@ -140,19 +123,32 @@ public final class ContentValidationModeResolver {
     }
 
     /**
-     * Validates that parallel transfer progress reporting is not combined with CRC64/AUTO content validation.
-     *
-     * @param parallelTransferOptions May be {@code null}.
-     * @param contentValidationAlgorithm Transfer validation algorithm from options.
-     * @throws IllegalArgumentException if a progress listener is set and {@link #isCrc64OrAutoContentValidation} is true.
+     * @return {@code true} when {@code algorithm} is {@link ContentValidationAlgorithm#CRC64} or
+     * {@link ContentValidationAlgorithm#AUTO}. Upload and download structured-message validation use this rule.
      */
-    public static void validateProgressWithContentValidation(ParallelTransferOptions parallelTransferOptions,
+    public static boolean isCrc64OrAuto(ContentValidationAlgorithm algorithm) {
+        return algorithm == ContentValidationAlgorithm.CRC64 || algorithm == ContentValidationAlgorithm.AUTO;
+    }
+
+    /**
+     * When the transfer validation mode is {@link ContentValidationAlgorithm#CRC64} or
+     * {@link ContentValidationAlgorithm#AUTO}, adds
+     * {@link StructuredMessageConstants#STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY} so the HTTP
+     * pipeline can decode/validate the structured message response. For {@code null} or
+     * {@link ContentValidationAlgorithm#NONE}, returns the context unchanged (no key added), matching "no
+     * structured-message validation" for that download.
+     *
+     * @param context The base {@link Context}; null is treated as {@link Context#NONE}.
+     * @param contentValidationAlgorithm The algorithm from download options, or null.
+     * @return The same context, or a copy with the decoding key set when applicable.
+     */
+    public static Context addStructuredMessageDecodingToContext(Context context,
         ContentValidationAlgorithm contentValidationAlgorithm) {
-        if (parallelTransferOptions == null) {
-            return;
+        Context base = context == null ? Context.NONE : context;
+        if (!isCrc64OrAuto(contentValidationAlgorithm)) {
+            return base;
         }
-        validateProgressWithContentValidation(parallelTransferOptions.getProgressListener(),
-            contentValidationAlgorithm);
+        return base.addData(STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
     }
 
     /**

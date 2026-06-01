@@ -21,7 +21,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObj
  */
 public final class BackupInstancesValidateForRestoreSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/ValidateRestore.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ValidateRestore.json
      */
     /**
      * Sample code: Validate Restore.

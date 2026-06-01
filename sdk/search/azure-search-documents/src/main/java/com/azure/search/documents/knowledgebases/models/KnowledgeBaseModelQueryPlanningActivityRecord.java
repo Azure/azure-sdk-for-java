@@ -34,6 +34,12 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
     @Generated
     private Integer outputTokens;
 
+    /*
+     * The name of the model used for the LLM query planning activity.
+     */
+    @Generated
+    private String modelName;
+
     /**
      * Creates an instance of KnowledgeBaseModelQueryPlanningActivityRecord class.
      *
@@ -76,6 +82,16 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
     }
 
     /**
+     * Get the modelName property: The name of the model used for the LLM query planning activity.
+     *
+     * @return the modelName value.
+     */
+    @Generated
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -85,9 +101,11 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
         jsonWriter.writeIntField("id", getId());
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokens);
         jsonWriter.writeNumberField("outputTokens", this.outputTokens);
+        jsonWriter.writeStringField("modelName", this.modelName);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,9 +124,11 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
             int id = 0;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
+            String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_QUERY_PLANNING;
             Integer inputTokens = null;
             Integer outputTokens = null;
+            String modelName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,12 +138,16 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
                     error = KnowledgeBaseErrorDetail.fromJson(reader);
+                } else if ("warning".equals(fieldName)) {
+                    warning = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
                 } else if ("inputTokens".equals(fieldName)) {
                     inputTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("modelName".equals(fieldName)) {
+                    modelName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -132,9 +156,11 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
                 = new KnowledgeBaseModelQueryPlanningActivityRecord(id);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setError(error);
+            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.type = type;
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.inputTokens = inputTokens;
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.outputTokens = outputTokens;
+            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.modelName = modelName;
             return deserializedKnowledgeBaseModelQueryPlanningActivityRecord;
         });
     }

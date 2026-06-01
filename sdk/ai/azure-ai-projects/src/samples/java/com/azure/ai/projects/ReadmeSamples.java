@@ -15,9 +15,6 @@ import com.openai.services.blocking.EvalService;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
-        // BEGIN: com.azure.ai.projects.readme
-        // END: com.azure.ai.projects.readme
-
         // BEGIN: com.azure.ai.projects.clientInitialization
         AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
@@ -31,6 +28,7 @@ public final class ReadmeSamples {
         InsightsClient insightsClient = builder.buildInsightsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
+        SkillsClient skillsClient = builder.buildSkillsClient();
         // END: com.azure.ai.projects.clientInitialization
 
         // BEGIN: com.azure.ai.projects.evalsServices

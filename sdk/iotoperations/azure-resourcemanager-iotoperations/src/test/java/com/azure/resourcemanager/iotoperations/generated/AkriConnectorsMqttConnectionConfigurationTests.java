@@ -16,35 +16,35 @@ public final class AkriConnectorsMqttConnectionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorsMqttConnectionConfiguration model = BinaryData.fromString(
-            "{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"pxdtnkdmkq\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1784311457,\"maxInflightMessages\":953269937,\"sessionExpirySeconds\":1886433502,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"uaibrebqaaysj\"}}")
+            "{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"npirgnepttw\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1901745406,\"maxInflightMessages\":1579066306,\"sessionExpirySeconds\":584179057,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"ojlpijnkrxf\"}}")
             .toObject(AkriConnectorsMqttConnectionConfiguration.class);
-        Assertions.assertEquals("pxdtnkdmkq", model.host());
+        Assertions.assertEquals("npirgnepttw", model.host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT, model.protocol());
-        Assertions.assertEquals(1784311457, model.keepAliveSeconds());
-        Assertions.assertEquals(953269937, model.maxInflightMessages());
-        Assertions.assertEquals(1886433502, model.sessionExpirySeconds());
-        Assertions.assertEquals(OperationalMode.ENABLED, model.tls().mode());
-        Assertions.assertEquals("uaibrebqaaysj", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals(1901745406, model.keepAliveSeconds());
+        Assertions.assertEquals(1579066306, model.maxInflightMessages());
+        Assertions.assertEquals(584179057, model.sessionExpirySeconds());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.tls().mode());
+        Assertions.assertEquals("ojlpijnkrxf", model.tls().trustedCaCertificateConfigMapRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorsMqttConnectionConfiguration model
             = new AkriConnectorsMqttConnectionConfiguration().withAuthentication(new AkriConnectorsMqttAuthentication())
-                .withHost("pxdtnkdmkq")
+                .withHost("npirgnepttw")
                 .withProtocol(AkriConnectorsMqttProtocolType.MQTT)
-                .withKeepAliveSeconds(1784311457)
-                .withMaxInflightMessages(953269937)
-                .withSessionExpirySeconds(1886433502)
-                .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
-                    .withTrustedCaCertificateConfigMapRef("uaibrebqaaysj"));
+                .withKeepAliveSeconds(1901745406)
+                .withMaxInflightMessages(1579066306)
+                .withSessionExpirySeconds(584179057)
+                .withTls(new TlsProperties().withMode(OperationalMode.DISABLED)
+                    .withTrustedCaCertificateConfigMapRef("ojlpijnkrxf"));
         model = BinaryData.fromObject(model).toObject(AkriConnectorsMqttConnectionConfiguration.class);
-        Assertions.assertEquals("pxdtnkdmkq", model.host());
+        Assertions.assertEquals("npirgnepttw", model.host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT, model.protocol());
-        Assertions.assertEquals(1784311457, model.keepAliveSeconds());
-        Assertions.assertEquals(953269937, model.maxInflightMessages());
-        Assertions.assertEquals(1886433502, model.sessionExpirySeconds());
-        Assertions.assertEquals(OperationalMode.ENABLED, model.tls().mode());
-        Assertions.assertEquals("uaibrebqaaysj", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals(1901745406, model.keepAliveSeconds());
+        Assertions.assertEquals(1579066306, model.maxInflightMessages());
+        Assertions.assertEquals(584179057, model.sessionExpirySeconds());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.tls().mode());
+        Assertions.assertEquals("ojlpijnkrxf", model.tls().trustedCaCertificateConfigMapRef());
     }
 }

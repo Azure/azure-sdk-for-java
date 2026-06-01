@@ -118,7 +118,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
-        @ExpectedResponses({ 200, 204, 404 })
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -420,7 +420,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,7 +467,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -512,7 +514,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -533,7 +536,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -556,7 +560,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,7 +579,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -594,7 +600,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -613,7 +620,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -633,7 +641,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -651,7 +660,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param serviceParam The definition of the search service to create or update.
+     * @param serviceParam The definition of the search service to create or update. Create applies to both serverless
+     * and dedicated search services; update applies only to dedicated search services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -808,6 +818,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
+     * Returns 200 (OK) on successful deletion, or 204 (No Content) if the service is not found.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -842,6 +853,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
+     * Returns 200 (OK) on successful deletion, or 204 (No Content) if the service is not found.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -877,6 +889,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
+     * Returns 200 (OK) on successful deletion, or 204 (No Content) if the service is not found.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -892,6 +905,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
+     * Returns 200 (OK) on successful deletion, or 204 (No Content) if the service is not found.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -908,6 +922,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
+     * Returns 200 (OK) on successful deletion, or 204 (No Content) if the service is not found.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
@@ -921,13 +936,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given resource group along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -954,14 +969,14 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given resource group along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -989,13 +1004,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with {@link PagedFlux}.
+     * @return a list of all search services in the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1004,14 +1019,14 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with {@link PagedFlux}.
+     * @return a list of all search services in the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1020,13 +1035,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with
+     * @return a list of all search services in the given resource group as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1035,14 +1050,14 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given resource group.
+     * Gets a list of all search services in the given resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with
+     * @return a list of all search services in the given resource group as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1051,11 +1066,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1078,13 +1093,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1107,11 +1122,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all search services in the given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listAsync() {
@@ -1120,13 +1135,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all search services in the given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SearchServiceInner> listAsync(Context context) {
@@ -1135,11 +1150,11 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription as paginated response with {@link PagedIterable}.
+     * @return a list of all search services in the given subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchServiceInner> list() {
@@ -1147,13 +1162,13 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
     }
 
     /**
-     * Gets a list of all Search services in the given subscription.
+     * Gets a list of all search services in the given subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription as paginated response with {@link PagedIterable}.
+     * @return a list of all search services in the given subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchServiceInner> list(Context context) {
@@ -1168,7 +1183,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1205,7 +1221,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1240,7 +1257,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
@@ -1259,7 +1276,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
@@ -1278,7 +1295,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
@@ -1295,7 +1312,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
@@ -1311,7 +1328,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName) {
@@ -1328,7 +1345,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName, Context context) {
@@ -1344,7 +1361,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName) {
@@ -1360,7 +1377,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName, Context context) {
@@ -1374,7 +1391,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given resource group along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1403,7 +1420,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given resource group along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1430,7 +1447,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1459,7 +1476,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
+     * @return a list of all search services in the given subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

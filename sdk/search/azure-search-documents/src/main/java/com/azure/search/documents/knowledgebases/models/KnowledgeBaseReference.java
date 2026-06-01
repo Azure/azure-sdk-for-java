@@ -188,6 +188,18 @@ public class KnowledgeBaseReference implements JsonSerializable<KnowledgeBaseRef
                     return KnowledgeBaseWebReference.fromJson(readerToUse.reset());
                 } else if ("remoteSharePoint".equals(discriminatorValue)) {
                     return KnowledgeBaseRemoteSharePointReference.fromJson(readerToUse.reset());
+                } else if ("workIQ".equals(discriminatorValue)) {
+                    return KnowledgeBaseWorkIQReference.fromJson(readerToUse.reset());
+                } else if ("fabricDataAgent".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricDataAgentReference.fromJson(readerToUse.reset());
+                } else if ("fabricOntology".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricOntologyReference.fromJson(readerToUse.reset());
+                } else if ("mcpServer".equals(discriminatorValue)) {
+                    return KnowledgeBaseMcpServerReference.fromJson(readerToUse.reset());
+                } else if ("file".equals(discriminatorValue)) {
+                    return KnowledgeBaseFileReference.fromJson(readerToUse.reset());
+                } else if ("indexedSql".equals(discriminatorValue)) {
+                    return KnowledgeBaseIndexedSqlReference.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

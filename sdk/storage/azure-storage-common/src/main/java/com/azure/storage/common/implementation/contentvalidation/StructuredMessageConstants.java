@@ -52,4 +52,6 @@ public final class StructuredMessageConstants {
     public static final String USE_CRC64_CHECKSUM_HEADER_CONTEXT = "crc64ChecksumHeaderContext";
 
     public static final String USE_STRUCTURED_MESSAGE_CONTEXT = "structuredMessageChecksumAlgorithm";
+
+    public static final String STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY = "azure-storage-structured-message-decoding";
 }

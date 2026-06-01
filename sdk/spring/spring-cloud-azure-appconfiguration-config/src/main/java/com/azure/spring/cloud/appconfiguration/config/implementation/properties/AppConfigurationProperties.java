@@ -4,9 +4,9 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -37,9 +37,12 @@ public class AppConfigurationProperties {
     private Duration refreshInterval;
 
     /**
-     * Returns whether Azure App Configuration is enabled.
-     *
-     * @return {@code true} if enabled, {@code false} otherwise
+     * The timeout duration for retry attempts during startup.
+     */
+    private Duration startupTimeout = Duration.ofSeconds(100);
+
+    /**
+     * @return the enabled
      */
     public boolean isEnabled() {
         return enabled;
@@ -91,10 +94,22 @@ public class AppConfigurationProperties {
     }
 
     /**
-     * Validates that at least one store is configured with a valid endpoint or
-     * connection string, and that no duplicate endpoints exist.
-     *
-     * @throws IllegalArgumentException if validation fails or duplicate endpoints are found
+     * @return the startupTimeout
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
+    }
+
+    /**
+     * @param startupTimeout the startupTimeout to set
+     */
+    public void setStartupTimeout(Duration startupTimeout) {
+        this.startupTimeout = startupTimeout;
+    }
+
+    /**
+     * Validates at least one store is configured for use, and that they are valid.
+     * @throws IllegalArgumentException when duplicate endpoints are configured
      */
     @PostConstruct
     public void validateAndInit() {
@@ -106,33 +121,38 @@ public class AppConfigurationProperties {
             }
             Assert.isTrue(
                 StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
-                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
+                    || !store.getEndpoints().isEmpty() || !store.getConnectionStrings().isEmpty(),
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         }
 
-        Map<String, Boolean> existingEndpoints = new HashMap<>();
+        Set<String> existingEndpoints = new HashSet<>();
 
         for (ConfigStore store : this.stores) {
             if (!store.isEnabled()) {
                 continue;
             }
-            if (store.getEndpoints().size() > 0) {
+            if (!store.getEndpoints().isEmpty()) {
                 for (String endpoint : store.getEndpoints()) {
-                    if (existingEndpoints.containsKey(endpoint)) {
-                        throw new IllegalArgumentException("Duplicate store name exists.");
+                    if (!existingEndpoints.add(endpoint)) {
+                        throw new IllegalArgumentException("Duplicate endpoint exists: " + endpoint);
                     }
-                    existingEndpoints.put(endpoint, true);
                 }
             } else if (StringUtils.hasText(store.getEndpoint())) {
-                if (existingEndpoints.containsKey(store.getEndpoint())) {
-                    throw new IllegalArgumentException("Duplicate store name exists.");
+                if (!existingEndpoints.add(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate endpoint exists: " + store.getEndpoint());
                 }
-                existingEndpoints.put(store.getEndpoint(), true);
             }
         }
         if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
+        }
+        if (startupTimeout == null) {
+            throw new IllegalArgumentException("startupTimeout cannot be null.");
+        }
+        if (startupTimeout.compareTo(Duration.ofSeconds(30)) < 0
+            || startupTimeout.compareTo(Duration.ofSeconds(600)) > 0) {
+            throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
         }
     }
 }
