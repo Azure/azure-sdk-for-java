@@ -55,13 +55,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ConfigurationClient type.
+ * Initializes a new instance of the AzureAppConfiguration type.
  */
 public final class ConfigurationClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ConfigurationClientService service;
+    private final AzureAppConfigurationService service;
 
     /**
      */
@@ -119,7 +119,7 @@ public final class ConfigurationClientImpl {
     }
 
     /**
-     * Initializes an instance of ConfigurationClient client.
+     * Initializes an instance of AzureAppConfiguration client.
      * 
      * @param endpoint
      * @param serviceVersion Service version.
@@ -130,7 +130,7 @@ public final class ConfigurationClientImpl {
     }
 
     /**
-     * Initializes an instance of ConfigurationClient client.
+     * Initializes an instance of AzureAppConfiguration client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
@@ -142,7 +142,7 @@ public final class ConfigurationClientImpl {
     }
 
     /**
-     * Initializes an instance of ConfigurationClient client.
+     * Initializes an instance of AzureAppConfiguration client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -156,16 +156,16 @@ public final class ConfigurationClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service
-            = RestProxy.create(ConfigurationClientService.class, this.httpPipeline, this.getSerializerAdapter());
+            = RestProxy.create(AzureAppConfigurationService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for ConfigurationClient to be used by the proxy service to perform REST
+     * The interface defining all the services for AzureAppConfiguration to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConfigurationClient")
-    public interface ConfigurationClientService {
+    @ServiceInterface(name = "AzureAppConfiguration")
+    public interface AzureAppConfigurationService {
         @Get("/keys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

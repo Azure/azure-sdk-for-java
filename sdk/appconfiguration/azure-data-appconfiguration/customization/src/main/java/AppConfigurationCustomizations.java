@@ -26,17 +26,20 @@ public class AppConfigurationCustomizations extends Customization {
 
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/data/appconfiguration/";
 
+    // typespec-java emits the impl as AzureAppConfigurationImpl. The hand-written public client code
+    // references ConfigurationClientImpl, so we rename the generated class+file in customization.
+    private static final String GENERATED_IMPL_PATH
+        = ROOT_FILE_PATH + "implementation/AzureAppConfigurationImpl.java";
     private static final String IMPL_CLIENT_PATH
         = ROOT_FILE_PATH + "implementation/ConfigurationClientImpl.java";
 
     private static final String[] FILES_TO_REMOVE = new String[] {
+        // The public client surface (ConfigurationClient/AsyncClient/Builder/ServiceVersion) is hand-written.
+        // Drop the codegen-emitted Azure*-prefixed copies so the hand-written versions survive regeneration.
         "AzureAppConfigurationServiceVersion.java",
-        // The public client surface is hand-written. Drop any codegen-emitted copies so the hand-written
-        // versions in the repo survive a regeneration.
-        "ConfigurationClient.java",
-        "ConfigurationAsyncClient.java",
-        "ConfigurationClientBuilder.java",
-        "ConfigurationServiceVersion.java"
+        "AzureAppConfigurationClient.java",
+        "AzureAppConfigurationAsyncClient.java",
+        "AzureAppConfigurationBuilder.java"
     };
 
     // Matches: "    private Mono<PagedResponse<BinaryData>> fooSinglePageAsync("
@@ -63,10 +66,29 @@ public class AppConfigurationCustomizations extends Customization {
                 logger.info("Generated file {} not present; skipping removal.", path);
             }
         }
+        renameGeneratedImpl(editor, logger);
         promoteSinglePageMethodsToPublic(editor, logger);
         patchModuleInfo(editor, logger);
         addKeyValueSetKey(editor, logger);
-        rewriteServiceVersionType(editor, logger);
+    }
+
+    // typespec-java emits implementation/AzureAppConfigurationImpl.java with class AzureAppConfigurationImpl
+    // and references to AzureAppConfigurationServiceVersion. The hand-written public client surface
+    // (ConfigurationClient/AsyncClient/Builder) targets ConfigurationClientImpl + ConfigurationServiceVersion,
+    // so rewrite both the class name and the service-version type, and move the file to the expected path.
+    private static void renameGeneratedImpl(Editor editor, Logger logger) {
+        String content = editor.getContents().get(GENERATED_IMPL_PATH);
+        if (content == null) {
+            logger.info("{} not present; skipping impl rename.", GENERATED_IMPL_PATH);
+            return;
+        }
+        String renamed = content
+            .replace("AzureAppConfigurationImpl", "ConfigurationClientImpl")
+            .replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion");
+        editor.addFile(IMPL_CLIENT_PATH, renamed);
+        editor.removeFile(GENERATED_IMPL_PATH);
+        logger.info("Renamed generated impl {} -> {} (class AzureAppConfigurationImpl -> ConfigurationClientImpl).",
+            GENERATED_IMPL_PATH, IMPL_CLIENT_PATH);
     }
 
     // The TypeSpec @key decorator drops the setter for KeyValue.key. We still need to populate it on
@@ -131,16 +153,7 @@ public class AppConfigurationCustomizations extends Customization {
     }
 
     // The generated impl references typespec-generated AzureAppConfigurationServiceVersion which we delete.
-    // Rewrite to use the hand-written ConfigurationServiceVersion enum.
-    private static void rewriteServiceVersionType(Editor editor, Logger logger) {
-        String content = editor.getContents().get(IMPL_CLIENT_PATH);
-        if (content == null || !content.contains("AzureAppConfigurationServiceVersion")) {
-            return;
-        }
-        editor.replaceFile(IMPL_CLIENT_PATH,
-            content.replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion"));
-        logger.info("Rewrote AzureAppConfigurationServiceVersion -> ConfigurationServiceVersion in impl.");
-    }
+    // The rename in renameGeneratedImpl handles rewriting this.
 
     private static void promoteSinglePageMethodsToPublic(Editor editor, Logger logger) {
         String content = editor.getContents().get(IMPL_CLIENT_PATH);
@@ -164,10 +177,10 @@ public class AppConfigurationCustomizations extends Customization {
         }
         matcher.appendTail(sb);
         if (count > 0) {
-            logger.info("Promoted {} {} method(s) on AzureAppConfigurationImpl from private to public.",
+            logger.info("Promoted {} {} method(s) on ConfigurationClientImpl from private to public.",
                 count, label);
         } else {
-            logger.info("No private {} methods found on AzureAppConfigurationImpl to promote.", label);
+            logger.info("No private {} methods found on ConfigurationClientImpl to promote.", label);
         }
         return sb.toString();
     }

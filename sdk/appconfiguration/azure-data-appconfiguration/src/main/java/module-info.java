@@ -4,12 +4,10 @@
 
 module com.azure.data.appconfiguration {
     requires transitive com.azure.core;
-    requires com.azure.json;
 
     exports com.azure.data.appconfiguration;
     exports com.azure.data.appconfiguration.models;
 
     opens com.azure.data.appconfiguration.implementation.models to com.azure.core;
     opens com.azure.data.appconfiguration.models to com.azure.core;
-    opens com.azure.data.appconfiguration.implementation to com.azure.core;
 }
