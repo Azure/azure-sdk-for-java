@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentApplicationsEnableSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/AgentApplication/enable.json
+     * x-ms-original-file: 2026-03-15-preview/AgentApplication/enable.json
      */
     /**
      * Sample code: Enable Agent Application.

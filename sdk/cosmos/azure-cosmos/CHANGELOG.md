@@ -3,7 +3,7 @@
 ### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
-
+* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
 
 #### Breaking Changes
 
