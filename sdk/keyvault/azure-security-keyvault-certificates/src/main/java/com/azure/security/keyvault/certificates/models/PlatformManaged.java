@@ -104,6 +104,7 @@ public final class PlatformManaged implements JsonSerializable<PlatformManaged> 
      * @return An instance of PlatformManaged if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PlatformManaged.
+     * @throws IllegalStateException If the required {@code certificateUsage} property is missing.
      */
     public static PlatformManaged fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
