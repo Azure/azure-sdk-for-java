@@ -61,7 +61,7 @@ public final class ConfigurationClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AzureAppConfigurationService service;
+    private final ConfigurationClientService service;
 
     /**
      */
@@ -156,7 +156,7 @@ public final class ConfigurationClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service
-            = RestProxy.create(AzureAppConfigurationService.class, this.httpPipeline, this.getSerializerAdapter());
+            = RestProxy.create(ConfigurationClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -165,7 +165,7 @@ public final class ConfigurationClientImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureAppConfiguration")
-    public interface AzureAppConfigurationService {
+    public interface ConfigurationClientService {
         @Get("/keys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

@@ -82,9 +82,12 @@ public class AppConfigurationCustomizations extends Customization {
             logger.info("{} not present; skipping impl rename.", GENERATED_IMPL_PATH);
             return;
         }
+        // Order matters: rewrite the longer ServiceVersion token first so the bare
+        // "AzureAppConfigurationService" rename below doesn't partially clobber it.
         String renamed = content
+            .replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion")
             .replace("AzureAppConfigurationImpl", "ConfigurationClientImpl")
-            .replace("AzureAppConfigurationServiceVersion", "ConfigurationServiceVersion");
+            .replace("AzureAppConfigurationService", "ConfigurationClientService");
         editor.addFile(IMPL_CLIENT_PATH, renamed);
         editor.removeFile(GENERATED_IMPL_PATH);
         logger.info("Renamed generated impl {} -> {} (class AzureAppConfigurationImpl -> ConfigurationClientImpl).",
