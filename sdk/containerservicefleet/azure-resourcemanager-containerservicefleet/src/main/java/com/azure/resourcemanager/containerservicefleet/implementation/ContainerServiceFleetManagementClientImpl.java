@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfileOperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.ClusterMeshProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetManagedNamespacesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
@@ -146,6 +147,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The ClusterMeshProfilesClient object to access its operations.
+     */
+    private final ClusterMeshProfilesClient clusterMeshProfiles;
+
+    /**
+     * Gets the ClusterMeshProfilesClient object to access its operations.
+     * 
+     * @return the ClusterMeshProfilesClient object.
+     */
+    public ClusterMeshProfilesClient getClusterMeshProfiles() {
+        return this.clusterMeshProfiles;
     }
 
     /**
@@ -277,8 +292,9 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-02-01-preview";
+        this.apiVersion = "2026-03-02-preview";
         this.operations = new OperationsClientImpl(this);
+        this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
