@@ -6,14 +6,6 @@
 > after `2025-10-31`. The Change Analysis service has been retired and its
 > APIs are no longer available. There is no replacement package.
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.1.0 (2024-12-06)
 
 - Azure Resource Manager AzureChangeAnalysis client library for Java. This package contains Microsoft Azure SDK for AzureChangeAnalysis Management SDK.  Package tag package-2021-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
