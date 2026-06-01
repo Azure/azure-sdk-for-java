@@ -351,16 +351,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * <em>not</em> strip this header. This divergence is intentional — it prevents dual-header rejection
      * (HTTP 400) by the compute gateway / thin-client proxy, which does not expect both headers simultaneously.</p>
      *
-     * Thread safety: availability-strategy clones share the same {@link java.util.HashMap}
-     * reference (shallow copy in {@link RxDocumentServiceRequest#clone()}). {@code HashMap}
-     * is <b>not</b> thread-safe even for logically idempotent mutations, but the mutations
-     * performed here (a single {@code remove(CONSISTENCY_LEVEL)} when a non-DEFAULT
-     * {@code readConsistencyStrategy} is effective) are convergent — every concurrent caller
-     * computes the same removal — and never add new keys, so no resize is triggered. The
-     * outcome is therefore practically deterministic. If stronger guarantees are ever needed,
-     * the fix is to deep-copy the header map in {@code clone()} (the same defensive-copy
-     * pattern already used for {@code requestContext} and {@code faultInjectionRequestContext}),
-     * not to add synchronization here.
+     * Thread safety: availability-strategy clones each receive their own deep-copied
+     * {@link java.util.HashMap} of headers (see {@link RxDocumentServiceRequest#clone()}),
+     * so concurrent hedged requests do not race on the same map instance. The mutations
+     * performed here ({@code remove(CONSISTENCY_LEVEL)} and {@code put(READ_CONSISTENCY_STRATEGY, ...)})
+     * are therefore safe by isolation — each clone mutates its own map.
      */
     private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
         resolveEffectiveConsistencyHeaders(
