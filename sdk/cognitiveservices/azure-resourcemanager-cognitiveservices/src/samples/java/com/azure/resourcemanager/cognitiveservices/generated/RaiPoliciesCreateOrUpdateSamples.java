@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class RaiPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/PutRaiPolicy.json
+     * x-ms-original-file: 2026-03-15-preview/PutRaiPolicy.json
      */
     /**
      * Sample code: PutRaiPolicy.

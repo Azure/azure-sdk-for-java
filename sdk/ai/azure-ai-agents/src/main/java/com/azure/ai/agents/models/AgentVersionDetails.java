@@ -185,6 +185,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -207,6 +208,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             OffsetDateTime createdAt = null;
             AgentDefinition definition = null;
             String description = null;
+            AgentVersionStatus status = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprint = null;
             AgentBlueprintReference blueprintReference = null;
@@ -228,6 +230,8 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
                     definition = AgentDefinition.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = AgentVersionStatus.fromString(reader.getString());
                 } else if ("instance_identity".equals(fieldName)) {
                     instanceIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint".equals(fieldName)) {
@@ -243,6 +247,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             AgentVersionDetails deserializedAgentVersionDetails
                 = new AgentVersionDetails(metadata, id, name, version, createdAt, definition);
             deserializedAgentVersionDetails.description = description;
+            deserializedAgentVersionDetails.status = status;
             deserializedAgentVersionDetails.instanceIdentity = instanceIdentity;
             deserializedAgentVersionDetails.blueprint = blueprint;
             deserializedAgentVersionDetails.blueprintReference = blueprintReference;
@@ -329,5 +334,23 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     @Generated
     public String getAgentGuid() {
         return this.agentGuid;
+    }
+
+    /*
+     * The provisioning status of the agent version. Defaults to 'active' for non-hosted agents. For hosted agents,
+     * reflects infrastructure readiness.
+     */
+    @Generated
+    private AgentVersionStatus status;
+
+    /**
+     * Get the status property: The provisioning status of the agent version. Defaults to 'active' for non-hosted
+     * agents. For hosted agents, reflects infrastructure readiness.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public AgentVersionStatus getStatus() {
+        return this.status;
     }
 }

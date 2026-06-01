@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * The HeaderIsolationKeySource model.
  */
-@Fluent
+@Immutable
 public final class HeaderIsolationKeySource extends IsolationKeySource {
 
     /*
@@ -24,18 +24,6 @@ public final class HeaderIsolationKeySource extends IsolationKeySource {
      */
     @Generated
     private IsolationKeySourceKind kind = IsolationKeySourceKind.HEADER;
-
-    /*
-     * The user isolation key header value
-     */
-    @Generated
-    private String userIsolationKey;
-
-    /*
-     * The chat isolation key header value
-     */
-    @Generated
-    private String chatIsolationKey;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -62,54 +50,6 @@ public final class HeaderIsolationKeySource extends IsolationKeySource {
     }
 
     /**
-     * Get the userIsolationKey property: The user isolation key header value.
-     *
-     * @return the userIsolationKey value.
-     */
-    @Generated
-    public String getUserIsolationKey() {
-        return this.userIsolationKey;
-    }
-
-    /**
-     * Set the userIsolationKey property: The user isolation key header value.
-     * <p>Required when create the resource.</p>
-     *
-     * @param userIsolationKey the userIsolationKey value to set.
-     * @return the HeaderIsolationKeySource object itself.
-     */
-    @Generated
-    public HeaderIsolationKeySource setUserIsolationKey(String userIsolationKey) {
-        this.userIsolationKey = userIsolationKey;
-        this.updatedProperties.add("userIsolationKey");
-        return this;
-    }
-
-    /**
-     * Get the chatIsolationKey property: The chat isolation key header value.
-     *
-     * @return the chatIsolationKey value.
-     */
-    @Generated
-    public String getChatIsolationKey() {
-        return this.chatIsolationKey;
-    }
-
-    /**
-     * Set the chatIsolationKey property: The chat isolation key header value.
-     * <p>Required when create the resource.</p>
-     *
-     * @param chatIsolationKey the chatIsolationKey value to set.
-     * @return the HeaderIsolationKeySource object itself.
-     */
-    @Generated
-    public HeaderIsolationKeySource setChatIsolationKey(String chatIsolationKey) {
-        this.chatIsolationKey = chatIsolationKey;
-        this.updatedProperties.add("chatIsolationKey");
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -120,8 +60,6 @@ public final class HeaderIsolationKeySource extends IsolationKeySource {
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-            jsonWriter.writeStringField("user_isolation_key", this.userIsolationKey);
-            jsonWriter.writeStringField("chat_isolation_key", this.chatIsolationKey);
             return jsonWriter.writeEndObject();
         }
     }
@@ -130,20 +68,6 @@ public final class HeaderIsolationKeySource extends IsolationKeySource {
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", this.kind.toString());
-        if (updatedProperties.contains("userIsolationKey")) {
-            if (this.userIsolationKey == null) {
-                jsonWriter.writeNullField("user_isolation_key");
-            } else {
-                jsonWriter.writeStringField("user_isolation_key", this.userIsolationKey);
-            }
-        }
-        if (updatedProperties.contains("chatIsolationKey")) {
-            if (this.chatIsolationKey == null) {
-                jsonWriter.writeNullField("chat_isolation_key");
-            } else {
-                jsonWriter.writeStringField("chat_isolation_key", this.chatIsolationKey);
-            }
-        }
         return jsonWriter.writeEndObject();
     }
 
@@ -164,10 +88,6 @@ public final class HeaderIsolationKeySource extends IsolationKeySource {
                 reader.nextToken();
                 if ("kind".equals(fieldName)) {
                     deserializedHeaderIsolationKeySource.kind = IsolationKeySourceKind.fromString(reader.getString());
-                } else if ("user_isolation_key".equals(fieldName)) {
-                    deserializedHeaderIsolationKeySource.userIsolationKey = reader.getString();
-                } else if ("chat_isolation_key".equals(fieldName)) {
-                    deserializedHeaderIsolationKeySource.chatIsolationKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

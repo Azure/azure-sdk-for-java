@@ -186,6 +186,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
                     });
 
                 CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+                bulkExecutionOptions.setExcludedRegions(workloadCfg.getExcludedRegionsList());
                 List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
                 asyncContainer
                     .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)

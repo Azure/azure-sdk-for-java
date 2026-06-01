@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Delete.json
      */
     /**
      * Sample code: Deletes a FleetMember resource asynchronously with a long running operation.
