@@ -151,6 +151,10 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
             assertThat(properties.getJwtReadTimeout())
                 .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+            // Verify the default timeouts are applied to the RestTemplate used by the ResourceRetriever
+            verifyResourceRetrieverRestTemplateTimeouts(context,
+                RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
         });
     }
 
@@ -164,6 +168,8 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 AadB2cProperties properties = context.getBean(AadB2cProperties.class);
                 assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
                 assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+                // Verify the custom timeouts are applied to the RestTemplate used by the ResourceRetriever
+                verifyResourceRetrieverRestTemplateTimeouts(context, 2000, 3000);
             });
     }
 
@@ -326,5 +332,34 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 assertThat(jwsKeySelector).isNotNull();
                 assertThat(jwsKeySelector).isExactlyInstanceOf(AadIssuerJwsKeySelector.class);
             });
+    }
+
+    /**
+     * Verifies that the RestTemplate used by the ResourceRetriever for JWK retrieval
+     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     */
+    private static void verifyResourceRetrieverRestTemplateTimeouts(ApplicationContext context,
+                                                                     int expectedConnectTimeoutMs,
+                                                                     int expectedReadTimeoutMs) {
+        com.nimbusds.jose.util.ResourceRetriever resourceRetriever =
+            context.getBean(com.nimbusds.jose.util.ResourceRetriever.class);
+        assertThat(resourceRetriever).isNotNull();
+
+        // RestOperationsResourceRetriever -> restOperations (RestTemplate)
+        Object restOperations = org.springframework.test.util.ReflectionTestUtils
+            .getField(resourceRetriever, "restOperations");
+        assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
+
+        // RestTemplate -> ClientHttpRequestFactory
+        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
+            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
+
+        // Verify timeouts on the request factory
+        int connectTimeout = (int) org.springframework.test.util.ReflectionTestUtils
+            .getField(requestFactory, "connectTimeout");
+        int readTimeout = (int) org.springframework.test.util.ReflectionTestUtils
+            .getField(requestFactory, "readTimeout");
+        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
+        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }
 }

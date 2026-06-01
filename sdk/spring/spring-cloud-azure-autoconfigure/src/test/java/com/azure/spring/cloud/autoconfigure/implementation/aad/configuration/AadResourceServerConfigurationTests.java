@@ -79,6 +79,11 @@ class AadResourceServerConfigurationTests {
                     .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
                 assertThat(properties.getJwtReadTimeout())
                     .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+                // Verify the default timeouts are applied to the RestTemplate used by the JwtDecoder
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder,
+                    RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                    RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
             });
     }
 
@@ -97,6 +102,8 @@ class AadResourceServerConfigurationTests {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+                // Verify the configured timeouts are applied to the RestTemplate used by the JwtDecoder
+                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder, 2000, 3000);
             });
     }
 
@@ -396,5 +403,46 @@ class AadResourceServerConfigurationTests {
         public Collection<GrantedAuthority> convert(Jwt source) {
             return null;
         }
+    }
+
+    /**
+     * Verifies that the RestTemplate used by the NimbusJwtDecoder for JWK retrieval
+     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     */
+    @SuppressWarnings("unchecked")
+    private static void verifyJwtDecoderRestTemplateTimeouts(JwtDecoder jwtDecoder,
+                                                             int expectedConnectTimeoutMs,
+                                                             int expectedReadTimeoutMs) {
+        // NimbusJwtDecoder -> jwtProcessor (DefaultJWTProcessor)
+        Object jwtProcessor = ReflectionTestUtils.getField(jwtDecoder, "jwtProcessor");
+        assertThat(jwtProcessor).isInstanceOf(com.nimbusds.jwt.proc.DefaultJWTProcessor.class);
+
+        // DefaultJWTProcessor -> JWSKeySelector (JWSVerificationKeySelector)
+        com.nimbusds.jose.proc.JWSKeySelector<?> keySelector =
+            ((com.nimbusds.jwt.proc.DefaultJWTProcessor<?>) jwtProcessor).getJWSKeySelector();
+        assertThat(keySelector).isInstanceOf(com.nimbusds.jose.proc.JWSVerificationKeySelector.class);
+
+        // JWSVerificationKeySelector -> JWKSource (JWKSetBasedJWKSource)
+        com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
+            ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
+        assertThat(jwkSource).isInstanceOf(com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource.class);
+
+        // JWKSetBasedJWKSource -> JWKSetSource (SpringJWKSource)
+        Object jwkSetSource =
+            ((com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource<?>) jwkSource).getJWKSetSource();
+
+        // SpringJWKSource -> restOperations (RestTemplate)
+        Object restOperations = ReflectionTestUtils.getField(jwkSetSource, "restOperations");
+        assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
+
+        // RestTemplate -> ClientHttpRequestFactory
+        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
+            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
+
+        // Verify timeouts on the request factory
+        int connectTimeout = (int) ReflectionTestUtils.getField(requestFactory, "connectTimeout");
+        int readTimeout = (int) ReflectionTestUtils.getField(requestFactory, "readTimeout");
+        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
+        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }
 }
