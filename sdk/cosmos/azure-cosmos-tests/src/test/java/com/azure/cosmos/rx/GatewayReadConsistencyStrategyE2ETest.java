@@ -6,6 +6,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -451,6 +453,19 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT, dataProvider = "transportModes", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItem_globalStrong_invalidAccount_throwsBadRequest(String mode) {
+        // Account-level consistency is global; always probe via gatewayV1Client to avoid hitting
+        // a Direct-mode DatabaseAccount read path that can NPE on thin-client endpoints
+        // (regionalRoutingContextToRoute null in StoreReader).
+        ConsistencyLevel accountLevel = CosmosBridgeInternal.getAsyncDocumentClient(gatewayV1Client)
+            .getDatabaseAccount()
+            .map(account -> ConsistencyLevel.valueOf(account.getConsistencyPolicy().getDefaultConsistencyLevel().name()))
+            .block();
+        if (accountLevel == ConsistencyLevel.STRONG) {
+            throw new SkipException(
+                "Skipping " + mode + " — account default consistency is STRONG; GLOBAL_STRONG is valid here so the "
+                    + "BadRequest assertion does not apply.");
+        }
+
         String id = seedDocument(mode);
 
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
@@ -645,6 +660,14 @@ public class GatewayReadConsistencyStrategyE2ETest {
             case GATEWAY_V2: return gatewayV2Container;
             case DIRECT: return directContainer;
             default: return gatewayV1Container;
+        }
+    }
+
+    private CosmosAsyncClient clientFor(String mode) {
+        switch (mode) {
+            case GATEWAY_V2: return gatewayV2Client;
+            case DIRECT: return directClient;
+            default: return gatewayV1Client;
         }
     }
 

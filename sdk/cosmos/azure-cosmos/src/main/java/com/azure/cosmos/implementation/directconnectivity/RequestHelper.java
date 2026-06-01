@@ -66,16 +66,6 @@ public class RequestHelper {
                             requestReadConsistencyStrategyHeaderValue,
                             HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY));
                 }
-
-                if (!validateReadConsistencyStrategy(defaultConsistencySnapshot, requestLevelReadConsistencyStrategy)) {
-                    throw new BadRequestException(
-                        String.format(
-                            RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
-                            requestReadConsistencyStrategyHeaderValue,
-                            HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
-                            ConsistencyLevel.STRONG,
-                            defaultConsistencySnapshot));
-                }
             }
         } else {
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, requestLevelReadConsistencyStrategy.toString());
@@ -84,6 +74,21 @@ public class RequestHelper {
         if (requestLevelReadConsistencyStrategy != null
             && requestLevelReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT)
         {
+            // Validate the effective read-consistency-strategy against the account's default consistency
+            // regardless of whether the strategy was sourced from the request header or from the
+            // requestContext (request-level / client-level programmatic setting). Without this guard,
+            // a non-Strong account would route a GLOBAL_STRONG read through the Direct quorum reader
+            // and surface as an INVALID_RESULT (500/20910) instead of a clean client-side BadRequest.
+            if (!validateReadConsistencyStrategy(defaultConsistencySnapshot, requestLevelReadConsistencyStrategy)) {
+                throw new BadRequestException(
+                    String.format(
+                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                        requestLevelReadConsistencyStrategy.toString(),
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                        ConsistencyLevel.STRONG,
+                        defaultConsistencySnapshot));
+            }
+
             // Update the consistency level header - this is needed to ensure
             // service telemetry / Kusto have appropriate data
             switch (requestLevelReadConsistencyStrategy) {
