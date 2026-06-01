@@ -371,7 +371,7 @@ public class LocationCache {
         if (userConfiguredExcludeRegions == null || userConfiguredExcludeRegions.isEmpty()) {
             normalizedExcludes = Collections.emptySet();
         } else {
-            normalizedExcludes = new HashSet<>(userConfiguredExcludeRegions.size());
+            normalizedExcludes = new HashSet<>((userConfiguredExcludeRegions.size() * 4) / 3 + 1);
             for (String excludeRegion : userConfiguredExcludeRegions) {
                 if (excludeRegion != null) {
                     normalizedExcludes.add(this.normalizeExcludeRegion(excludeRegion));
