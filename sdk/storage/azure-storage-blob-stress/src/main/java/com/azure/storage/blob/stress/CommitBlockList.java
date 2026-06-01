@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.stress;
 
 import com.azure.core.util.Context;
@@ -8,6 +11,7 @@ import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.Utility;
 import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
@@ -15,17 +19,10 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 
 public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
-    // Per-operation ceilings. Must be smaller than the Azure LB idle timeout (~4 min)
-    // so that a stalled request fails fast rather than hangs the whole test run.
-    private static final Duration STAGE_TIMEOUT = Duration.ofSeconds(120);
-    private static final Duration COMMIT_TIMEOUT = Duration.ofSeconds(30);
-    private static final Duration CHECK_MATCH_TIMEOUT = Duration.ofSeconds(30);
-
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
@@ -48,11 +45,14 @@ public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
         String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
             .getBytes(StandardCharsets.UTF_8));
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
-            blockBlobClientNoFault.stageBlockWithResponse(blockId, inputStream, options.getSize(), null, null,
-                STAGE_TIMEOUT, span);
+            // First perform non-faulted stage block to send data to the service
+            blockBlobClientNoFault.stageBlockWithResponse(blockId, inputStream, options.getSize(), null, null, null,
+                span);
+            // Then perform faulted commit block list to commit the block
             blockBlobClient.commitBlockListWithResponse(
-                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), COMMIT_TIMEOUT, span);
-            originalContent.checkMatch(inputStream.getContentInfo(), span).block(CHECK_MATCH_TIMEOUT);
+                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), null, span);
+            // Confirm the CRC matches for the uploaded input stream
+            originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
 
@@ -64,14 +64,13 @@ public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
             .getBytes(StandardCharsets.UTF_8));
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
             .convertStreamToByteBuffer();
-        return blockBlobAsyncClientNoFault
-            .stageBlockWithResponse(blockId, byteBufferFlux, options.getSize(), null, null)
-            .timeout(STAGE_TIMEOUT)
-            .then(blockBlobAsyncClient
-                .commitBlockListWithResponse(
-                    new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)))
-                .timeout(COMMIT_TIMEOUT))
-            .then(originalContent.checkMatch(byteBufferFlux, span).timeout(CHECK_MATCH_TIMEOUT));
+        // First perform non-faulted stage block to send data to the service
+        return blockBlobAsyncClientNoFault.stageBlockWithResponse(blockId, byteBufferFlux, options.getSize(), null, null)
+            // Then perform faulted commit block list to commit the block
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(
+                new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId))))
+            // Confirm the CRC matches for the uploaded byte buffer flux
+            .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
     @Override
