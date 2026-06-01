@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
  */
 public final class FleetMembersUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Update.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Update.json
      */
     /**
      * Sample code: Updates a FleetMember resource synchronously.

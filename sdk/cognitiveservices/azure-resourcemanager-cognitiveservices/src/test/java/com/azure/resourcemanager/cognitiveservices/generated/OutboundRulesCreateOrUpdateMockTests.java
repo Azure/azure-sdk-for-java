@@ -24,7 +24,7 @@ public final class OutboundRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Active\",\"errorInformation\":\"krjflsgaojb\",\"parentRuleNames\":[\"q\",\"doctpz\"]},\"id\":\"jzflmcdsgxc\",\"name\":\"lujiswlluunxhfw\",\"type\":\"fxzf\"}";
+            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Inactive\",\"errorInformation\":\"f\",\"parentRuleNames\":[\"tqscjpvqerqxk\",\"mwdz\",\"zlhcu\"]},\"id\":\"lqpwwvmb\",\"name\":\"ecfwlbghnkfrw\",\"type\":\"oh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class OutboundRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundRuleBasicResource response = manager.outboundRules()
-            .define("ampqocl")
-            .withExistingManagedNetwork("trsvjmnsvujnjkt", "olefcjisepkdbxo", "fb")
-            .withProperties(
-                new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.PROVISIONING))
+            .define("e")
+            .withExistingManagedNetwork("fsvpzxg", "ywxuymlfjym", "wtmszcfyzq")
+            .withProperties(new OutboundRule().withCategory(RuleCategory.DEPENDENCY).withStatus(RuleStatus.ACTIVE))
             .create();
 
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, response.properties().category());
-        Assertions.assertEquals(RuleStatus.ACTIVE, response.properties().status());
+        Assertions.assertEquals(RuleCategory.USER_DEFINED, response.properties().category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, response.properties().status());
     }
 }

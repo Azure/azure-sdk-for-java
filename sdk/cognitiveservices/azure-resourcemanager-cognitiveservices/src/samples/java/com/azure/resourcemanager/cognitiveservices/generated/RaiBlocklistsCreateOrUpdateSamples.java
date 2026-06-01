@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistProperties
  */
 public final class RaiBlocklistsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/PutRaiBlocklist.json
+     * x-ms-original-file: 2026-03-15-preview/PutRaiBlocklist.json
      */
     /**
      * Sample code: PutRaiBlocklist.

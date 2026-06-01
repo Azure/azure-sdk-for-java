@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsSkipSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Skip.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Skip.json
      */
     /**
      * Sample code: Skips one or more member/group/stage/afterStageWait(s) of an UpdateRun.

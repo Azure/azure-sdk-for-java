@@ -99,6 +99,17 @@ The following sections provide several code snippets covering some of the most c
 - [Rewrite Request URL to replace OData URL syntax with standard syntax](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/SearchRequestUrlRewriterPolicy.java)
 - [Vector search using reduced embeddings](https://github.com/Azure/azure-sdk-for-java/blob/40261403b3a75aa56a3eeaf18c2ba0fd071c87a6/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchReducedEmbeddings.java)
 
+### Knowledge Base & Knowledge Source Preview Samples
+- [Knowledge Base configuration (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBasePreviewConfigurationExample.java)
+- [Knowledge Base retrieval response parsing (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeRetrievalPreviewResponseExample.java)
+- [Knowledge service statistics (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeServiceStatsPreviewExample.java)
+- [Knowledge Source freshness and defaults (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFreshnessPreviewExample.java)
+- [File Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFilePreviewExample.java)
+- [MCP Server Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceMcpServerPreviewExample.java)
+- [Work IQ Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceWorkIqPreviewExample.java)
+- [Fabric Ontology Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricOntologyPreviewExample.java)
+- [Fabric Data Agent Knowledge Source (preview)](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeSourceFabricDataAgentPreviewExample.java)
+
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
