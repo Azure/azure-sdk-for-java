@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.AfterEach;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
@@ -272,5 +274,21 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         // buffer correctly filled
         assertEquals(buffer.capacity(), buffer.position());
         TestUtils.assertArraysEqual(data, halfLength, buffer.array(), 0, data.length - halfLength);
+    }
+
+    @Test
+    void readPassesNonNullDownloadRetryOptionsToClient() throws IOException {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        ArgumentCaptor<DownloadRetryOptions> retryCaptor = ArgumentCaptor.forClass(DownloadRetryOptions.class);
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenReturn(createMockDownloadResponse("bytes 0-1023/1024"));
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, Constants.KB, null);
+        behavior.read(ByteBuffer.allocate(Constants.KB), 0);
+
+        verify(client).downloadStreamWithResponse(any(), any(), retryCaptor.capture(), any(), anyBoolean(), any(),
+            any());
+        assertNotNull(retryCaptor.getValue());
     }
 }
