@@ -354,11 +354,13 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
         org.springframework.http.client.ClientHttpRequestFactory requestFactory =
             ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
 
-        // Verify timeouts on the request factory
-        int connectTimeout = (int) org.springframework.test.util.ReflectionTestUtils
+        // Verify timeouts on the request factory (may be stored as Duration or int)
+        Object connectTimeoutValue = org.springframework.test.util.ReflectionTestUtils
             .getField(requestFactory, "connectTimeout");
-        int readTimeout = (int) org.springframework.test.util.ReflectionTestUtils
+        Object readTimeoutValue = org.springframework.test.util.ReflectionTestUtils
             .getField(requestFactory, "readTimeout");
+        int connectTimeout = connectTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
+        int readTimeout = readTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
         assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
         assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }

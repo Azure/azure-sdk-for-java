@@ -427,11 +427,16 @@ class AadResourceServerConfigurationTests {
             ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
         assertThat(jwkSource).isInstanceOf(com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource.class);
 
-        // JWKSetBasedJWKSource -> JWKSetSource (SpringJWKSource)
+        // JWKSetBasedJWKSource -> JWKSetSource (CachingJWKSetSource -> JWKSetSourceWrapper -> actual source)
         Object jwkSetSource =
             ((com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource<?>) jwkSource).getJWKSetSource();
 
-        // SpringJWKSource -> restOperations (RestTemplate)
+        // Unwrap JWKSetSourceWrapper chain to find the source with restOperations
+        while (jwkSetSource instanceof com.nimbusds.jose.jwk.source.JWKSetSourceWrapper<?> wrapper) {
+            jwkSetSource = wrapper.getSource();
+        }
+
+        // actual source -> restOperations (RestTemplate)
         Object restOperations = ReflectionTestUtils.getField(jwkSetSource, "restOperations");
         assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
 
@@ -439,9 +444,11 @@ class AadResourceServerConfigurationTests {
         org.springframework.http.client.ClientHttpRequestFactory requestFactory =
             ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
 
-        // Verify timeouts on the request factory
-        int connectTimeout = (int) ReflectionTestUtils.getField(requestFactory, "connectTimeout");
-        int readTimeout = (int) ReflectionTestUtils.getField(requestFactory, "readTimeout");
+        // Verify timeouts on the request factory (may be stored as Duration or int)
+        Object connectTimeoutValue = ReflectionTestUtils.getField(requestFactory, "connectTimeout");
+        Object readTimeoutValue = ReflectionTestUtils.getField(requestFactory, "readTimeout");
+        int connectTimeout = connectTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
+        int readTimeout = readTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
         assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
         assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }
