@@ -105,9 +105,8 @@ public final class ConfigurationSettingDeserializationHelper {
         } catch (Exception exception) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("The setting is neither a 'FeatureFlagConfigurationSetting' nor "
-                    + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. " + "Key: '"
-                    + setting.getKey() + "', contentType: '" + contentType + "', value: '" + value + "'. Error: "
-                    + exception.getClass().getName() + ": " + exception.getMessage(), exception));
+                    + "'SecretReferenceConfigurationSetting', return the setting as 'ConfigurationSetting'. "
+                    + "Error: ", exception));
         }
     }
 

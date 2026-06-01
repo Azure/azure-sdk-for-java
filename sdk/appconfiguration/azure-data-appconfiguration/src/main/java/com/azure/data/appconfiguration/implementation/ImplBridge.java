@@ -18,7 +18,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.OperationDetails;
+import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -31,7 +35,7 @@ import reactor.core.publisher.Mono;
 /**
  * Internal bridge that exposes the old typed convenience method shapes (Response&lt;KeyValue&gt;,
  * PagedResponse&lt;KeyValue&gt;, etc.) on top of the new TypeSpec-generated protocol methods
- * (RequestOptions + BinaryData) on {@link AzureAppConfigurationImpl}.
+ * (RequestOptions + BinaryData) on {@link ConfigurationClientImpl}.
  *
  * <p>This exists so the hand-written {@code ConfigurationClient}/{@code ConfigurationAsyncClient} call sites
  * keep working without being rewritten end-to-end after migrating from autorest to typespec-java.</p>
@@ -124,14 +128,14 @@ public final class ImplBridge {
     // putKeyValue (now setConfigurationSettingWithResponse)
     // -----------------------------------------------------------------------------------------------------
 
-    public static Response<KeyValue> putKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
-        String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
+    public static Response<KeyValue> putKeyValueWithResponse(ConfigurationClientImpl service, String key, String label,
+        String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         options.setBody(BinaryData.fromObject(entity));
         return remap(() -> toKeyValueResponse(service.setConfigurationSettingWithResponse(key, options)));
     }
 
-    public static Mono<Response<KeyValue>> putKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
+    public static Mono<Response<KeyValue>> putKeyValueWithResponseAsync(ConfigurationClientImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         options.setBody(BinaryData.fromObject(entity));
@@ -144,15 +148,15 @@ public final class ImplBridge {
     // getKeyValue (now getKeyValueWithResponse, protocol)
     // -----------------------------------------------------------------------------------------------------
 
-    public static Response<KeyValue> getKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
-        String label, String acceptDateTime, String syncToken, String ifMatch, String ifNoneMatch,
-        List<SettingFields> fields, Context context) {
+    public static Response<KeyValue> getKeyValueWithResponse(ConfigurationClientImpl service, String key, String label,
+        String acceptDateTime, String syncToken, String ifMatch, String ifNoneMatch, List<SettingFields> fields,
+        Context context) {
         RequestOptions options
             = singleKvOptions(label, acceptDateTime, syncToken, ifMatch, ifNoneMatch, fields, null, context);
         return remap(() -> toKeyValueResponse(service.getKeyValueWithResponse(key, options)));
     }
 
-    public static Mono<Response<KeyValue>> getKeyValueWithResponseAsync(AzureAppConfigurationImpl service, String key,
+    public static Mono<Response<KeyValue>> getKeyValueWithResponseAsync(ConfigurationClientImpl service, String key,
         String label, String acceptDateTime, String syncToken, String ifMatch, String ifNoneMatch,
         List<SettingFields> fields, Context context) {
         RequestOptions options
@@ -166,14 +170,14 @@ public final class ImplBridge {
     // deleteKeyValue (now deleteConfigurationSettingWithResponse)
     // -----------------------------------------------------------------------------------------------------
 
-    public static Response<KeyValue> deleteKeyValueWithResponse(AzureAppConfigurationImpl service, String key,
+    public static Response<KeyValue> deleteKeyValueWithResponse(ConfigurationClientImpl service, String key,
         String label, String ifMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
         return remap(() -> toKeyValueResponseAllowEmpty(service.deleteConfigurationSettingWithResponse(key, options)));
     }
 
-    public static Mono<Response<KeyValue>> deleteKeyValueWithResponseAsync(AzureAppConfigurationImpl service,
-        String key, String label, String ifMatch, Context context) {
+    public static Mono<Response<KeyValue>> deleteKeyValueWithResponseAsync(ConfigurationClientImpl service, String key,
+        String label, String ifMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, null, null, null, context);
         return service.deleteConfigurationSettingWithResponseAsync(key, options)
             .onErrorMap(HttpResponseException.class, ImplBridge::remap)
@@ -184,13 +188,13 @@ public final class ImplBridge {
     // putLock / deleteLock (read-only)
     // -----------------------------------------------------------------------------------------------------
 
-    public static Response<KeyValue> putLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
+    public static Response<KeyValue> putLockWithResponse(ConfigurationClientImpl service, String key, String label,
         String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         return remap(() -> toKeyValueResponse(service.putLockWithResponse(key, options)));
     }
 
-    public static Mono<Response<KeyValue>> putLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
+    public static Mono<Response<KeyValue>> putLockWithResponseAsync(ConfigurationClientImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         return service.putLockWithResponseAsync(key, options)
@@ -198,13 +202,13 @@ public final class ImplBridge {
             .map(ImplBridge::toKeyValueResponse);
     }
 
-    public static Response<KeyValue> deleteLockWithResponse(AzureAppConfigurationImpl service, String key, String label,
+    public static Response<KeyValue> deleteLockWithResponse(ConfigurationClientImpl service, String key, String label,
         String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         return remap(() -> toKeyValueResponse(service.deleteLockWithResponse(key, options)));
     }
 
-    public static Mono<Response<KeyValue>> deleteLockWithResponseAsync(AzureAppConfigurationImpl service, String key,
+    public static Mono<Response<KeyValue>> deleteLockWithResponseAsync(ConfigurationClientImpl service, String key,
         String label, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = singleKvOptions(label, null, null, ifMatch, ifNoneMatch, null, null, context);
         return service.deleteLockWithResponseAsync(key, options)
@@ -216,7 +220,7 @@ public final class ImplBridge {
     // listConfigurationSettings (was getKeyValues*)
     // -----------------------------------------------------------------------------------------------------
 
-    public static PagedResponse<KeyValue> getKeyValuesSinglePage(AzureAppConfigurationImpl service, String keyFilter,
+    public static PagedResponse<KeyValue> getKeyValuesSinglePage(ConfigurationClientImpl service, String keyFilter,
         String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields, String snapshotName,
         String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
@@ -224,7 +228,7 @@ public final class ImplBridge {
         return remap(() -> toKeyValuePage(service.listConfigurationSettingsSinglePage(options)));
     }
 
-    public static Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(AzureAppConfigurationImpl service,
+    public static Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(ConfigurationClientImpl service,
         String keyFilter, String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
         String snapshotName, String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
@@ -234,13 +238,13 @@ public final class ImplBridge {
             .map(ImplBridge::toKeyValuePage);
     }
 
-    public static PagedResponse<KeyValue> getKeyValuesNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
+    public static PagedResponse<KeyValue> getKeyValuesNextSinglePage(ConfigurationClientImpl service, String nextLink,
         String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
         return remap(() -> toKeyValuePage(service.listConfigurationSettingsNextSinglePage(nextLink, options)));
     }
 
-    public static Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(AzureAppConfigurationImpl service,
+    public static Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(ConfigurationClientImpl service,
         String nextLink, String acceptDateTime, String ifMatch, String ifNoneMatch, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, ifMatch, ifNoneMatch, context);
         return service.listConfigurationSettingsNextSinglePageAsync(nextLink, options)
@@ -309,7 +313,7 @@ public final class ImplBridge {
     // listRevisions
     // -----------------------------------------------------------------------------------------------------
 
-    public static PagedResponse<KeyValue> getRevisionsSinglePage(AzureAppConfigurationImpl service, String keyFilter,
+    public static PagedResponse<KeyValue> getRevisionsSinglePage(ConfigurationClientImpl service, String keyFilter,
         String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
         List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
@@ -317,7 +321,7 @@ public final class ImplBridge {
         return remap(() -> toKeyValuePage(service.getRevisionsSinglePage(options)));
     }
 
-    public static Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(AzureAppConfigurationImpl service,
+    public static Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(ConfigurationClientImpl service,
         String keyFilter, String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
         List<String> tagsFilter, Context context) {
         RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields, null,
@@ -327,13 +331,13 @@ public final class ImplBridge {
             .map(ImplBridge::toKeyValuePage);
     }
 
-    public static PagedResponse<KeyValue> getRevisionsNextSinglePage(AzureAppConfigurationImpl service, String nextLink,
+    public static PagedResponse<KeyValue> getRevisionsNextSinglePage(ConfigurationClientImpl service, String nextLink,
         String acceptDateTime, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
         return remap(() -> toKeyValuePage(service.getRevisionsNextSinglePage(nextLink, options)));
     }
 
-    public static Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(AzureAppConfigurationImpl service,
+    public static Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(ConfigurationClientImpl service,
         String nextLink, String acceptDateTime, Context context) {
         RequestOptions options = nextPageOptions(acceptDateTime, null, null, context);
         return service.getRevisionsNextSinglePageAsync(nextLink, options)
@@ -345,8 +349,8 @@ public final class ImplBridge {
     // getSnapshot / listSnapshots
     // -----------------------------------------------------------------------------------------------------
 
-    public static Response<ConfigurationSnapshot> getSnapshotWithResponse(AzureAppConfigurationImpl service,
-        String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> fields, Context context) {
+    public static Response<ConfigurationSnapshot> getSnapshotWithResponse(ConfigurationClientImpl service, String name,
+        String ifMatch, String ifNoneMatch, List<SnapshotFields> fields, Context context) {
         RequestOptions options = new RequestOptions();
         if (context != null && context != Context.NONE) {
             options.setContext(context);
@@ -367,7 +371,7 @@ public final class ImplBridge {
         });
     }
 
-    public static Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponseAsync(AzureAppConfigurationImpl service,
+    public static Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponseAsync(ConfigurationClientImpl service,
         String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> fields, Context context) {
         RequestOptions options = new RequestOptions();
         if (context != null && context != Context.NONE) {
@@ -388,7 +392,7 @@ public final class ImplBridge {
                 response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
     }
 
-    public static PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(AzureAppConfigurationImpl service,
+    public static PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(ConfigurationClientImpl service,
         String nameFilter, String syncToken, List<SnapshotFields> fields, List<ConfigurationSnapshotStatus> statuses,
         Context context) {
         RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
@@ -396,7 +400,7 @@ public final class ImplBridge {
     }
 
     public static Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
-        AzureAppConfigurationImpl service, String nameFilter, String syncToken, List<SnapshotFields> fields,
+        ConfigurationClientImpl service, String nameFilter, String syncToken, List<SnapshotFields> fields,
         List<ConfigurationSnapshotStatus> statuses, Context context) {
         RequestOptions options = snapshotListOptions(nameFilter, syncToken, fields, statuses, context);
         return service.getSnapshotsSinglePageAsync(options)
@@ -404,14 +408,14 @@ public final class ImplBridge {
             .map(ImplBridge::toSnapshotPage);
     }
 
-    public static PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(AzureAppConfigurationImpl service,
+    public static PagedResponse<ConfigurationSnapshot> getSnapshotsNextSinglePage(ConfigurationClientImpl service,
         String nextLink, Context context) {
         RequestOptions options = nextPageOptions(null, null, null, context);
         return remap(() -> toSnapshotPage(service.getSnapshotsNextSinglePage(nextLink, options)));
     }
 
     public static Mono<PagedResponse<ConfigurationSnapshot>>
-        getSnapshotsNextSinglePageAsync(AzureAppConfigurationImpl service, String nextLink, Context context) {
+        getSnapshotsNextSinglePageAsync(ConfigurationClientImpl service, String nextLink, Context context) {
         RequestOptions options = nextPageOptions(null, null, null, context);
         return service.getSnapshotsNextSinglePageAsync(nextLink, options)
             .onErrorMap(HttpResponseException.class, ImplBridge::remap)
@@ -443,7 +447,7 @@ public final class ImplBridge {
     // listLabels
     // -----------------------------------------------------------------------------------------------------
 
-    public static PagedIterable<SettingLabel> getLabels(AzureAppConfigurationImpl service, String nameFilter,
+    public static PagedIterable<SettingLabel> getLabels(ConfigurationClientImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields, Context context) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, context);
         return new PagedIterable<>(() -> remap(() -> toLabelPage(service.getLabelsSinglePage(options))),
@@ -451,7 +455,7 @@ public final class ImplBridge {
                 service.getLabelsNextSinglePage(nextLink, nextPageOptions(null, null, null, context)))));
     }
 
-    public static PagedFlux<SettingLabel> getLabelsAsync(AzureAppConfigurationImpl service, String nameFilter,
+    public static PagedFlux<SettingLabel> getLabelsAsync(ConfigurationClientImpl service, String nameFilter,
         String syncToken, String acceptDatetime, List<SettingLabelFields> fields) {
         RequestOptions options = labelListOptions(nameFilter, syncToken, acceptDatetime, fields, Context.NONE);
         return new PagedFlux<>(
@@ -492,14 +496,12 @@ public final class ImplBridge {
     // Response/page mappers
     // -----------------------------------------------------------------------------------------------------
 
+    // Treats absent/empty body and 304 Not Modified / 204 No Content responses as a null KeyValue.
     private static Response<KeyValue> toKeyValueResponse(Response<BinaryData> response) {
-        BinaryData body = response.getValue();
-        KeyValue kv = body == null ? null : body.toObject(KeyValue.class);
-        return new SimpleResponse<>(response, kv);
-    }
-
-    // DELETE may return a 204 with no body — treat as success with null KeyValue.
-    private static Response<KeyValue> toKeyValueResponseAllowEmpty(Response<BinaryData> response) {
+        int status = response.getStatusCode();
+        if (status == 304 || status == 204) {
+            return new SimpleResponse<>(response, null);
+        }
         BinaryData body = response.getValue();
         KeyValue kv;
         if (body == null) {
@@ -509,6 +511,10 @@ public final class ImplBridge {
             kv = (bytes == null || bytes.length == 0) ? null : body.toObject(KeyValue.class);
         }
         return new SimpleResponse<>(response, kv);
+    }
+
+    private static Response<KeyValue> toKeyValueResponseAllowEmpty(Response<BinaryData> response) {
+        return toKeyValueResponse(response);
     }
 
     private static PagedResponse<KeyValue> toKeyValuePage(PagedResponse<BinaryData> page) {
@@ -526,5 +532,128 @@ public final class ImplBridge {
             : page.getValue().stream().map(mapper).collect(Collectors.toList());
         return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), items,
             page.getContinuationToken(), null);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // checkKeyValues (HEAD on /kv) — returns Response<Void>; caller maps headers into a PagedResponse.
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<Void> checkKeyValuesWithResponse(ConfigurationClientImpl service, String keyFilter,
+        String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields, String snapshotName,
+        String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
+            snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
+        return remap(() -> service.checkKeyValuesWithResponse(options));
+    }
+
+    public static Mono<Response<Void>> checkKeyValuesWithResponseAsync(ConfigurationClientImpl service,
+        String keyFilter, String labelFilter, String syncToken, String acceptDateTime, List<SettingFields> fields,
+        String snapshotName, String ifMatch, String ifNoneMatch, List<String> tagsFilter, Context context) {
+        RequestOptions options = listKeyValuesOptions(keyFilter, labelFilter, syncToken, acceptDateTime, fields,
+            snapshotName, ifMatch, ifNoneMatch, tagsFilter, context);
+        return service.checkKeyValuesWithResponseAsync(options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // updateSnapshot (status change)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<ConfigurationSnapshot> updateSnapshotWithResponse(ConfigurationClientImpl service,
+        String name, ConfigurationSnapshotStatus status, String ifMatch, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        BinaryData entity = BinaryData.fromObject(new SnapshotUpdateParameters().setStatus(status));
+        return remap(() -> {
+            Response<BinaryData> response
+                = service.updateSnapshotWithResponse("application/merge-patch+json", name, entity, options);
+            return new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
+        });
+    }
+
+    public static Mono<Response<ConfigurationSnapshot>> updateSnapshotWithResponseAsync(ConfigurationClientImpl service,
+        String name, ConfigurationSnapshotStatus status, String ifMatch, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        if (ifMatch != null) {
+            options.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        BinaryData entity = BinaryData.fromObject(new SnapshotUpdateParameters().setStatus(status));
+        return service.updateSnapshotWithResponseAsync("application/merge-patch+json", name, entity, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // createSnapshot — returns ResponseBase with typed headers so callers can read Operation-Location.
+    // -----------------------------------------------------------------------------------------------------
+
+    public static ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot> createSnapshotWithResponse(
+        ConfigurationClientImpl service, String name, ConfigurationSnapshot snapshot, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        BinaryData entity = BinaryData.fromObject(snapshot);
+        return remap(() -> toCreateSnapshotResponse(
+            service.createSnapshotWithResponse("application/json", name, entity, options)));
+    }
+
+    public static Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>> createSnapshotWithResponseAsync(
+        ConfigurationClientImpl service, String name, ConfigurationSnapshot snapshot, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        BinaryData entity = BinaryData.fromObject(snapshot);
+        return service.createSnapshotWithResponseAsync("application/json", name, entity, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(ImplBridge::toCreateSnapshotResponse);
+    }
+
+    private static ResponseBase<CreateSnapshotHeaders, ConfigurationSnapshot>
+        toCreateSnapshotResponse(Response<BinaryData> response) {
+        ConfigurationSnapshot snapshot
+            = response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class);
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), snapshot,
+            new CreateSnapshotHeaders(response.getHeaders()));
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // getOperationDetails (LRO polling)
+    // -----------------------------------------------------------------------------------------------------
+
+    public static Response<OperationDetails> getOperationDetailsWithResponse(ConfigurationClientImpl service,
+        String snapshot, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        return remap(() -> {
+            Response<BinaryData> response = service.getOperationDetailsWithResponse(snapshot, options);
+            return new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(OperationDetails.class));
+        });
+    }
+
+    public static Mono<Response<OperationDetails>> getOperationDetailsWithResponseAsync(ConfigurationClientImpl service,
+        String snapshot, Context context) {
+        RequestOptions options = new RequestOptions();
+        if (context != null && context != Context.NONE) {
+            options.setContext(context);
+        }
+        return service.getOperationDetailsWithResponseAsync(snapshot, options)
+            .onErrorMap(HttpResponseException.class, ImplBridge::remap)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue() == null ? null : response.getValue().toObject(OperationDetails.class)));
     }
 }

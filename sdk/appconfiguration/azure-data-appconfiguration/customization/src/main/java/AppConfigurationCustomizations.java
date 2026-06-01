@@ -27,13 +27,16 @@ public class AppConfigurationCustomizations extends Customization {
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/data/appconfiguration/";
 
     private static final String IMPL_CLIENT_PATH
-        = ROOT_FILE_PATH + "implementation/AzureAppConfigurationImpl.java";
+        = ROOT_FILE_PATH + "implementation/ConfigurationClientImpl.java";
 
     private static final String[] FILES_TO_REMOVE = new String[] {
-        "AzureAppConfigurationClient.java",
-        "AzureAppConfigurationAsyncClient.java",
-        "AzureAppConfigurationBuilder.java",
-        "AzureAppConfigurationServiceVersion.java"
+        "AzureAppConfigurationServiceVersion.java",
+        // The public client surface is hand-written. Drop any codegen-emitted copies so the hand-written
+        // versions in the repo survive a regen.
+        "ConfigurationClient.java",
+        "ConfigurationAsyncClient.java",
+        "ConfigurationClientBuilder.java",
+        "ConfigurationServiceVersion.java"
     };
 
     // Matches: "    private Mono<PagedResponse<BinaryData>> fooSinglePageAsync("

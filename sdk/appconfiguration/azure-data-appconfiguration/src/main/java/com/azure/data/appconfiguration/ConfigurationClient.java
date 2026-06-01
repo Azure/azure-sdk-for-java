@@ -15,12 +15,12 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.ImplBridge;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
@@ -292,10 +292,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  */
 @ServiceClient(
     builder = ConfigurationClientBuilder.class,
-    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationClientService.class)
 public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
-    private final AzureAppConfigurationImpl serviceClient;
+    private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
@@ -304,11 +304,11 @@ public final class ConfigurationClient {
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
         this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
@@ -721,14 +721,14 @@ public final class ConfigurationClient {
         validateSetting(setting);
         try {
             final Response<KeyValue> response = ImplBridge.getKeyValueWithResponse(serviceClient, setting.getKey(),
-                setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null, null,
-                getETag(ifChanged, setting), null, context);
+                setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null /* syncToken */,
+                null /* ifMatch */, getETag(ifChanged, setting) /* ifNoneMatch */, null /* fields */, context);
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
             if (httpResponse.getStatusCode() == 304) {
-                return new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                    httpResponse.getHeaders(), null);
+                return new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                    httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null);
             }
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1152,17 +1152,17 @@ public final class ConfigurationClient {
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(() -> {
             try {
-                return toHeadPagedResponse(serviceClient.checkKeyValuesWithResponse(keyFilter, labelFilter, null,
-                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                return toHeadPagedResponse(ImplBridge.checkKeyValuesWithResponse(serviceClient, keyFilter, labelFilter,
+                    null, acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
                     tagsFilter, context));
             } catch (HttpResponseException ex) {
                 return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }
         }, afterToken -> {
             try {
-                return toHeadPagedResponse(serviceClient.checkKeyValuesWithResponse(keyFilter, labelFilter, afterToken,
-                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
-                    tagsFilter, context));
+                return toHeadPagedResponse(ImplBridge.checkKeyValuesWithResponse(serviceClient, keyFilter, labelFilter,
+                    afterToken, acceptDateTime, settingFields, null, null,
+                    getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context));
             } catch (HttpResponseException ex) {
                 return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }

@@ -17,14 +17,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.implementation.models.CheckKeyValuesHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -114,37 +110,17 @@ public class Utility {
         return Mono.just(setting);
     }
 
-    private static final String SNAPSHOT_UPDATE_CONTENT_TYPE = "application/merge-patch+json";
-
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient,
         Context context) {
-        final RequestOptions options = buildUpdateSnapshotOptions(matchConditions, context);
-        final BinaryData body = BinaryData.fromString("{\"status\":\"" + status + "\"}");
-        final Response<BinaryData> response
-            = serviceClient.updateSnapshotWithResponse(SNAPSHOT_UPDATE_CONTENT_TYPE, snapshotName, body, options);
-        return new SimpleResponse<>(response,
-            response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class));
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        return ImplBridge.updateSnapshotWithResponse(serviceClient, snapshotName, status, ifMatch, context);
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
-        final RequestOptions options = buildUpdateSnapshotOptions(matchConditions, null);
-        final BinaryData body = BinaryData.fromString("{\"status\":\"" + status + "\"}");
-        return serviceClient.updateSnapshotWithResponseAsync(SNAPSHOT_UPDATE_CONTENT_TYPE, snapshotName, body, options)
-            .map(response -> new SimpleResponse<>(response,
-                response.getValue() == null ? null : response.getValue().toObject(ConfigurationSnapshot.class)));
-    }
-
-    private static RequestOptions buildUpdateSnapshotOptions(MatchConditions matchConditions, Context context) {
-        RequestOptions options = new RequestOptions();
-        if (context != null && context != Context.NONE) {
-            options.setContext(context);
-        }
-        if (matchConditions != null && matchConditions.getIfMatch() != null) {
-            options.setHeader(HttpHeaderName.IF_MATCH, matchConditions.getIfMatch());
-        }
-        return options;
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient) {
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        return ImplBridge.updateSnapshotWithResponseAsync(serviceClient, snapshotName, status, ifMatch, Context.NONE);
     }
 
     // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"
@@ -227,8 +203,7 @@ public class Utility {
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
-    public static PagedResponse<ConfigurationSetting>
-        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+    public static PagedResponse<ConfigurationSetting> toHeadPagedResponse(Response<Void> response) {
         String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             Collections.emptyList(), continuationToken, null);

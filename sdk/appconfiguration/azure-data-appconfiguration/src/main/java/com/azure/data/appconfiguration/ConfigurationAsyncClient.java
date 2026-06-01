@@ -19,7 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.ImplBridge;
@@ -294,10 +294,10 @@ import reactor.core.publisher.Mono;
 @ServiceClient(
     builder = ConfigurationClientBuilder.class,
     isAsync = true,
-    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationClientService.class)
 public final class ConfigurationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClient.class);
-    private final AzureAppConfigurationImpl serviceClient;
+    private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
@@ -306,11 +306,11 @@ public final class ConfigurationAsyncClient {
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationAsyncClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationAsyncClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
         this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
@@ -717,14 +717,14 @@ public final class ConfigurationAsyncClient {
         OffsetDateTime acceptDateTime, boolean ifChanged) {
         return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> ImplBridge
             .getKeyValueWithResponseAsync(serviceClient, settingInternal.getKey(), settingInternal.getLabel(),
-                acceptDateTime == null ? null : acceptDateTime.toString(), null, null,
-                getETag(ifChanged, settingInternal), null, context)
+                acceptDateTime == null ? null : acceptDateTime.toString(), null /* syncToken */, null /* ifMatch */,
+                getETag(ifChanged, settingInternal) /* ifNoneMatch */, null /* fields */, context)
             .onErrorResume(HttpResponseException.class, (Function<Throwable, Mono<Response<KeyValue>>>) throwable -> {
                 HttpResponseException e = (HttpResponseException) throwable;
                 HttpResponse httpResponse = e.getResponse();
                 if (httpResponse.getStatusCode() == 304) {
                     return Mono.just(new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                        httpResponse.getHeaders(), (KeyValue) null));
+                        httpResponse.getHeaders(), null));
                 }
                 return Mono.error(throwable);
             })
@@ -1084,15 +1084,15 @@ public final class ConfigurationAsyncClient {
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedFlux<>(() -> withContext(context -> serviceClient
-            .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+        return new PagedFlux<>(() -> withContext(context -> ImplBridge
+            .checkKeyValuesWithResponseAsync(serviceClient, keyFilter, labelFilter, null, acceptDateTime, settingFields,
+                null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
             .map(Utility::toHeadPagedResponse)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)),
-            afterToken -> withContext(context -> serviceClient
-                .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, afterToken, acceptDateTime, settingFields,
-                    null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            afterToken -> withContext(context -> ImplBridge
+                .checkKeyValuesWithResponseAsync(serviceClient, keyFilter, labelFilter, afterToken, acceptDateTime,
+                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
                 .map(Utility::toHeadPagedResponse)
                 .onErrorResume(HttpResponseException.class,
                     (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)));

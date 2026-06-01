@@ -4,11 +4,6 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -53,17 +48,20 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
-
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AzureAppConfiguration type.
+ * Initializes a new instance of the ConfigurationClient type.
  */
-public final class AzureAppConfigurationImpl {
+public final class ConfigurationClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final AzureAppConfigurationService service;
+    private final ConfigurationClientService service;
 
     /**
      */
@@ -121,53 +119,53 @@ public final class AzureAppConfigurationImpl {
     }
 
     /**
-     * Initializes an instance of AzureAppConfiguration client.
+     * Initializes an instance of ConfigurationClient client.
      * 
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public AzureAppConfigurationImpl(String endpoint, ConfigurationServiceVersion serviceVersion) {
+    public ConfigurationClientImpl(String endpoint, ConfigurationServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of AzureAppConfiguration client.
+     * Initializes an instance of ConfigurationClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public AzureAppConfigurationImpl(HttpPipeline httpPipeline, String endpoint,
+    public ConfigurationClientImpl(HttpPipeline httpPipeline, String endpoint,
         ConfigurationServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of AzureAppConfiguration client.
+     * Initializes an instance of ConfigurationClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint
      * @param serviceVersion Service version.
      */
-    public AzureAppConfigurationImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+    public ConfigurationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
         ConfigurationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service
-            = RestProxy.create(AzureAppConfigurationService.class, this.httpPipeline, this.getSerializerAdapter());
+            = RestProxy.create(ConfigurationClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for AzureAppConfiguration to be used by the proxy service to perform REST
+     * The interface defining all the services for ConfigurationClient to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureAppConfiguration")
-    public interface AzureAppConfigurationService {
+    @ServiceInterface(name = "ConfigurationClient")
+    public interface ConfigurationClientService {
         @Get("/keys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
