@@ -901,10 +901,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @Disabled("Legacy threat detection policy doesn't support MI. The new Advanced Threat Protection(ATP) "
-        + "does not require storage account any more. "
-        + "See Oury Ba's answer: https://learn.microsoft.com/answers/questions/2276392/how-to-create-microsoft-sql-servers-securityalertp")
-    public void canCRUDSqlDatabase() throws Exception {
+    public void canCRUDSqlDatabase() {
         final String storageAccountName = generateRandomResourceName("sqlsa", 20);
         AzureUser user = azureCliSignedInUser();
 
@@ -918,20 +915,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withSystemAssignedManagedServiceIdentity()
             .create();
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-            .define(storageAccountName)
-            .withRegion(DEFAULT_REGION)
-            .withExistingResourceGroup(rgName)
-            .disableSharedKeyAccess()
-            .create();
-
-        authorizationManager.roleAssignments()
-            .define(generateRandomUuid())
-            .forObjectId(sqlServer.systemAssignedManagedServiceIdentityPrincipalId())
-            .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
-            .withResourceScope(storageAccount)
-            .create();
-
         Mono<SqlDatabase> resourceStream = sqlServer.databases()
             .define(SQL_DATABASE_NAME)
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -942,25 +925,41 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
-        String blobEntrypoint = storageAccount.endPoints().primary().blob();
-
-        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
-
-        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
-            .withPolicyEnabled()
-            .withStorageEndpoint(blobEntrypoint)
-            // use system-assigned MI
-            .withStorageAccountAccessKey(null)
-            .withAlertsFilter(disabledAlerts)
-            .create();
-
-        sqlDatabase.refresh();
-
-        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
-        Assertions.assertNotNull(alertPolicy);
-        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
-        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
-        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
+        //        Legacy threat detection policy doesn't support MI. The new Advanced Threat Protection(ATP) does not require
+        //        storage account any more. See Oury Ba's answer:
+        //        https://learn.microsoft.com/answers/questions/2276392/how-to-create-microsoft-sql-servers-securityalertp
+        //        StorageAccount storageAccount = storageManager.storageAccounts()
+        //            .define(storageAccountName)
+        //            .withRegion(DEFAULT_REGION)
+        //            .withExistingResourceGroup(rgName)
+        //            .disableSharedKeyAccess()
+        //            .create();
+        //
+        //        authorizationManager.roleAssignments()
+        //            .define(generateRandomUuid())
+        //            .forObjectId(sqlServer.systemAssignedManagedServiceIdentityPrincipalId())
+        //            .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
+        //            .withResourceScope(storageAccount)
+        //            .create();
+        //        String blobEntrypoint = storageAccount.endPoints().primary().blob();
+        //
+        //        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
+        //
+        //        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
+        //            .withPolicyEnabled()
+        //            .withStorageEndpoint(blobEntrypoint)
+        //            // use system-assigned MI
+        //            .withStorageAccountAccessKey(null)
+        //            .withAlertsFilter(disabledAlerts)
+        //            .create();
+        //
+        //        sqlDatabase.refresh();
+        //
+        //        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
+        //        Assertions.assertNotNull(alertPolicy);
+        //        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+        //        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
+        //        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
 
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();

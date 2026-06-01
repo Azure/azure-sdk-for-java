@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
@@ -55,11 +56,18 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     private Mono<Indexable> getOrCreateStorageAccountContainer(final StorageAccount storageAccount,
         final String containerName, final String fileName, final FunctionalTaskItem.Context context) {
         final SqlDatabaseImportRequestImpl self = this;
+        self.inner.withStorageUri(
+            String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
+
+        if (!storageAccount.isSharedKeyAccessAllowed()
+            // self.inner.storageKey could be set before, e.g. with managed identity ID
+            || !CoreUtils.isNullOrEmpty(self.inner.storageKey())) {
+            return context.voidMono();
+        }
+
         return storageAccount.getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
             .flatMap(storageAccountKey -> {
-                self.inner.withStorageUri(
-                    String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                 self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                 self.inner.withStorageKey(storageAccountKey.value());
                 return context.voidMono();

@@ -67,28 +67,37 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     private Mono<Indexable> getOrCreateStorageAccountContainer(final StorageAccount storageAccount,
         final String containerName, final String fileName, final FunctionalTaskItem.Context context) {
         final SqlDatabaseExportRequestImpl self = this;
+        self.inner.withStorageUri(
+            String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
+        BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
+        Mono<Indexable> container
+            = blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
+                .map(blobContainer -> (Indexable) blobContainer)
+                .onErrorResume(error -> {
+                    if (error instanceof ManagementException) {
+                        if (((ManagementException) error).getResponse().getStatusCode() == 404) {
+                            return blobContainers.defineContainer(containerName)
+                                .withExistingStorageAccount(parent().resourceGroupName(), storageAccount.name())
+                                .withPublicAccess(PublicAccess.NONE)
+                                .createAsync()
+                                .map(blobContainer -> (Indexable) blobContainer);
+                        }
+                    }
+                    return Mono.error(error);
+                });
+
+        if (!storageAccount.isSharedKeyAccessAllowed()
+            // self.inner.storageKey could be set before, e.g. with managed identity ID
+            || !CoreUtils.isNullOrEmpty(self.inner.storageKey())) {
+            return container;
+        }
+
         return storageAccount.getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
             .flatMap(storageAccountKey -> {
-                self.inner.withStorageUri(
-                    String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
-                if (storageAccount.isSharedKeyAccessAllowed() && CoreUtils.isNullOrEmpty(self.inner.storageKey())) {
-                    self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                    self.inner.withStorageKey(storageAccountKey.value());
-                }
-                BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
-                return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
-                    .onErrorResume(error -> {
-                        if (error instanceof ManagementException) {
-                            if (((ManagementException) error).getResponse().getStatusCode() == 404) {
-                                return blobContainers.defineContainer(containerName)
-                                    .withExistingStorageAccount(parent().resourceGroupName(), storageAccount.name())
-                                    .withPublicAccess(PublicAccess.NONE)
-                                    .createAsync();
-                            }
-                        }
-                        return Mono.error(error);
-                    });
+                self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                self.inner.withStorageKey(storageAccountKey.value());
+                return container;
             });
     }
 
