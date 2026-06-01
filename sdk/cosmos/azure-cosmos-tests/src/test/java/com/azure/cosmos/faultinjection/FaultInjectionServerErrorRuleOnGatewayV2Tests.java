@@ -748,7 +748,25 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             AssertionsForClassTypes.assertThat(gatewayStatistics.get("statusCode").asInt()).isEqualTo(statusCode);
             AssertionsForClassTypes.assertThat(gatewayStatistics.get("subStatusCode").asInt()).isEqualTo(subStatusCode);
             AssertionsForClassTypes.assertThat(gatewayStatistics.get("faultInjectionRuleId").asText()).isEqualTo(ruleId);
+
+            if (canRetryOnFaultInjectedError && statusCode == HttpConstants.StatusCodes.RETRY_WITH) {
+                this.validateRetryWithGatewayStatistics(gatewayStatisticsList);
+            }
         }
+    }
+
+    private void validateRetryWithGatewayStatistics(JsonNode gatewayStatisticsList) {
+        JsonNode retryGatewayStatistics = gatewayStatisticsList.get(1);
+        AssertionsForClassTypes.assertThat(retryGatewayStatistics).isNotNull();
+        AssertionsForClassTypes.assertThat(retryGatewayStatistics.get("statusCode").asInt())
+            .isNotEqualTo(HttpConstants.StatusCodes.RETRY_WITH);
+
+        JsonNode retryResponseTimeout = retryGatewayStatistics.get("httpNetworkResponseTimeout");
+        AssertionsForClassTypes.assertThat(retryResponseTimeout).isNotNull();
+
+        Duration retryTimeout = Duration.parse(retryResponseTimeout.asText());
+        AssertionsForClassTypes.assertThat(retryTimeout).isGreaterThan(Duration.ofSeconds(10));
+        AssertionsForClassTypes.assertThat(retryTimeout).isLessThanOrEqualTo(Duration.ofSeconds(30));
     }
 
     private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

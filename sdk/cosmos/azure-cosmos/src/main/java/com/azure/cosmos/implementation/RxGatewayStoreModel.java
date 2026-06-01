@@ -46,6 +46,7 @@ import reactor.core.publisher.SignalType;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,8 +54,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -806,14 +807,49 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         }
 
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<RxDocumentServiceResponse>> funcDelegate =
+            retryPolicyArg -> {
+                this.applyGatewayRetryPolicyArg(request, retryPolicyArg);
+                return invokeAsyncInternal(request).single();
+            };
 
         GatewayRetryWithRetryPolicy gatewayRetryWithRetryPolicy = new GatewayRetryWithRetryPolicy(
             request,
             this.globalEndpointManager,
             this.getGatewayRetryWithTimeoutInSeconds());
 
-        return BackoffRetryUtility.executeRetry(funcDelegate, gatewayRetryWithRetryPolicy);
+        return BackoffRetryUtility.executeAsync(
+            funcDelegate,
+            gatewayRetryWithRetryPolicy,
+            null,
+            Duration.ZERO,
+            request,
+            null);
+    }
+
+    private void applyGatewayRetryPolicyArg(
+        RxDocumentServiceRequest request,
+        Quadruple<Boolean, Boolean, Duration, Integer> retryPolicyArg) {
+
+        if (retryPolicyArg == null || !Boolean.TRUE.equals(retryPolicyArg.getValue1())) {
+            return;
+        }
+
+        Duration remainingTime = retryPolicyArg.getValue2();
+        Integer retryAttemptCount = retryPolicyArg.getValue3();
+
+        if (remainingTime != null) {
+            request.setResponseTimeout(remainingTime);
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
+                Long.toString(remainingTime.toMillis()));
+        }
+
+        if (retryAttemptCount != null) {
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.CLIENT_RETRY_ATTEMPT_COUNT,
+                retryAttemptCount.toString());
+        }
     }
 
     private int getGatewayRetryWithTimeoutInSeconds() {

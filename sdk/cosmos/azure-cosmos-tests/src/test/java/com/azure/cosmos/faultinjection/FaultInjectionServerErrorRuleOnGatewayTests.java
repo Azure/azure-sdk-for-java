@@ -592,7 +592,25 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             assertThat(gatewayStatistics.get("statusCode").asInt()).isEqualTo(statusCode);
             assertThat(gatewayStatistics.get("subStatusCode").asInt()).isEqualTo(subStatusCode);
             assertThat(gatewayStatistics.get("faultInjectionRuleId").asText()).isEqualTo(ruleId);
+
+            if (canRetryOnFaultInjectedError && statusCode == HttpConstants.StatusCodes.RETRY_WITH) {
+                this.validateRetryWithGatewayStatistics(gatewayStatisticsList);
+            }
         }
+    }
+
+    private void validateRetryWithGatewayStatistics(JsonNode gatewayStatisticsList) {
+        JsonNode retryGatewayStatistics = gatewayStatisticsList.get(1);
+        assertThat(retryGatewayStatistics).isNotNull();
+        assertThat(retryGatewayStatistics.get("statusCode").asInt())
+            .isNotEqualTo(HttpConstants.StatusCodes.RETRY_WITH);
+
+        JsonNode retryResponseTimeout = retryGatewayStatistics.get("httpNetworkResponseTimeout");
+        assertThat(retryResponseTimeout).isNotNull();
+
+        Duration retryTimeout = Duration.parse(retryResponseTimeout.asText());
+        assertThat(retryTimeout).isGreaterThan(Duration.ofSeconds(10));
+        assertThat(retryTimeout).isLessThanOrEqualTo(Duration.ofSeconds(30));
     }
 
     private void validateNoFaultInjectionApplied(
