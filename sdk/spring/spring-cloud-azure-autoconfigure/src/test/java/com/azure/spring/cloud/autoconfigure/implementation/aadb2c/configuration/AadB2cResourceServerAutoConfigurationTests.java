@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
+import java.time.Duration;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -139,6 +141,30 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testB2COnlyResourceServerBean() {
         getResourceServerContextRunner().run(b2CResourceServerBean());
+    }
+
+    @Test
+    void testB2CTimeoutDefaultValues() {
+        getResourceServerContextRunner().run(context -> {
+            AadB2cProperties properties = context.getBean(AadB2cProperties.class);
+            assertThat(properties.getJwtConnectTimeout())
+                .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
+            assertThat(properties.getJwtReadTimeout())
+                .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+        });
+    }
+
+    @Test
+    void testB2CTimeoutCustomValues() {
+        getResourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout=2000",
+                "spring.cloud.azure.active-directory.b2c.jwt-read-timeout=3000")
+            .run(context -> {
+                AadB2cProperties properties = context.getBean(AadB2cProperties.class);
+                assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
+                assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+            });
     }
 
     @Test

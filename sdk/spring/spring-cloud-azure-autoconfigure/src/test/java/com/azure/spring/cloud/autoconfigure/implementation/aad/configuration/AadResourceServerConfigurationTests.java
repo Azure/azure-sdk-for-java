@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -32,6 +33,7 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,6 +63,37 @@ class AadResourceServerConfigurationTests {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                assertThat(jwtDecoder).isNotNull();
+                assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+            });
+    }
+
+    @Test
+    void testJwtDecoderTimeoutDefaultValues() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout())
+                    .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
+                assertThat(properties.getJwtReadTimeout())
+                    .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+            });
+    }
+
+    @Test
+    void testJwtDecoderTimeoutCustomValues() {
+        resourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.jwt-connect-timeout=2000",
+                "spring.cloud.azure.active-directory.jwt-read-timeout=3000")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
+                assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+                // Verify JwtDecoder is still created successfully with custom timeouts
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);

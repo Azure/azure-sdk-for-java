@@ -90,24 +90,18 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500ms`.
      */
-    @Deprecated
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500ms`.
      */
-    @Deprecated
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
      * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
      */
-    @Deprecated
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
