@@ -31,24 +31,16 @@ public class GatewayRetryWithRetryPolicy implements IRetryPolicy {
     }
 
     @Override
+    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         return this.retryWithRetryPolicy.shouldRetry(exception).flatMap(retryWithResult -> {
             if (!retryWithResult.nonRelatedException) {
                 return Mono.just(retryWithResult);
             }
 
-            return this.metadataRequestRetryPolicy.shouldRetry(exception).map(metadataRequestRetryResult -> {
-                if (metadataRequestRetryResult.shouldRetry || metadataRequestRetryResult.nonRelatedException) {
-                    return metadataRequestRetryResult;
-                }
-
-                if (metadataRequestRetryResult.exception != null) {
-                    return ShouldRetryResult.errorOnNonRelatedException(metadataRequestRetryResult.exception);
-                }
-
-                return ShouldRetryResult.noRetryOnNonRelatedException();
-            });
+            return this.metadataRequestRetryPolicy.shouldRetry(exception);
         });
+    }
     }
 
     @Override
