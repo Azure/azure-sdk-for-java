@@ -1,14 +1,12 @@
 # Release History
 
-## 4.11.0-beta.2 (Unreleased)
+## 4.11.0 (2026-05-26)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version `V2025_07_01`.
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret()` and `getSecretWithResponse()` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
 
 ## 4.10.7 (2026-05-05)
 
