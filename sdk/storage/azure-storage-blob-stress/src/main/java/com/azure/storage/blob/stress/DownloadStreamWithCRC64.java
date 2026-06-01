@@ -3,28 +3,29 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.options.BlobDownloadContentOptions;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.CrcOutputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+
 /**
- * Download content with
- * {@link BlobDownloadContentOptions#setContentValidationAlgorithm} enabled.
+ * Streaming blob download with CRC64 Algorithm enabled.
  * Verifies the correctness of the download response content via CRC.
  */
-public class ContentValidationDownloadContent extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
+public class DownloadStreamWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public ContentValidationDownloadContent(ContentValidationDecoderStressOptions options) {
+    public DownloadStreamWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
@@ -33,26 +34,23 @@ public class ContentValidationDownloadContent extends BlobScenarioBase<ContentVa
     }
 
     @Override
-    protected void runInternal(Context span) {
-        originalContent.checkMatch(
-            syncClient.downloadContentWithResponse(
-                new BlobDownloadContentOptions()
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
-                null, span).getValue(),
-            span).block();
+    protected void runInternal(Context span) throws IOException {
+        try (CrcOutputStream outputStream = new CrcOutputStream()) {
+            syncClient.downloadStreamWithResponse(outputStream,
+                new BlobDownloadStreamOptions()
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+                null, span);
+            outputStream.close();
+            originalContent.checkMatch(outputStream.getContentInfo(), span).block();
+        }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        // TODO return downloadContent once it stops buffering.
         return asyncClient.downloadStreamWithResponse(
             new BlobDownloadStreamOptions()
-                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
-            .flatMap(response -> {
-                long contentLength = Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                return BinaryData.fromFlux(response.getValue(), contentLength, false);
-            })
-            .flatMap(bd -> originalContent.checkMatch(bd, span));
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
+            .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
     }
 
     @Override

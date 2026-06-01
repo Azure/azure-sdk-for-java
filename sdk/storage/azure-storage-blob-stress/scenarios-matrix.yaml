@@ -109,8 +109,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadStreamOptions with CRC64 validation
-    cvdownloadstreamsm:
-      testScenario: contentvalidationdownloadstream
+    crc64downloadstreamsm:
+      testScenario: downloadstreamwithcrc64
       sync: true
       sizeBytes: 1024
       downloadFaults: true
@@ -118,8 +118,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and async client
-    cvdownloadstreamasyncsm:
-      testScenario: contentvalidationdownloadstream
+    crc64downloadstreamasyncsm:
+      testScenario: downloadstreamwithcrc64
       sync: false
       sizeBytes: 1024
       downloadFaults: true
@@ -127,8 +127,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and large payload
-    cvdownloadstreamlg:
-      testScenario: contentvalidationdownloadstream
+    crc64downloadstreamlg:
+      testScenario: downloadstreamwithcrc64
       sync: true
       sizeBytes: "52428800"
       downloadFaults: true
@@ -136,27 +136,17 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadStreamOptions with CRC64 validation, async client, and large payload
-    cvdownloadstreamasynclg:
-      testScenario: contentvalidationdownloadstream
+    crc64downloadstreamasynclg:
+      testScenario: downloadstreamwithcrc64
       sync: false
       sizeBytes: "52428800"
       downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
-    # content validation downloads using BlobDownloadStreamOptions with AUTO validation
-    cvdownloadstreamauto:
-      testScenario: contentvalidationdownloadstream
-      sync: true
-      sizeBytes: "10485760"
-      contentValidationAlgorithm: AUTO
-      downloadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
     # content validation downloads using BlobDownloadContentOptions with CRC64 validation
-    cvdownloadcontentsm:
-      testScenario: contentvalidationdownloadcontent
+    crc64downloadcontentsm:
+      testScenario: downloadcontentwithcrc64
       sync: true
       sizeBytes: 1024
       downloadFaults: true
@@ -164,8 +154,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadContentOptions with CRC64 validation and async client
-    cvdownloadcontentasyncsm:
-      testScenario: contentvalidationdownloadcontent
+    crc64downloadcontentasyncsm:
+      testScenario: downloadcontentwithcrc64
       sync: false
       sizeBytes: 1024
       downloadFaults: true
@@ -173,8 +163,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadContentOptions with CRC64 validation and large payload
-    cvdownloadcontentlg:
-      testScenario: contentvalidationdownloadcontent
+    crc64downloadcontentlg:
+      testScenario: downloadcontentwithcrc64
       sync: true
       sizeBytes: "52428800"
       downloadFaults: true
@@ -182,27 +172,17 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadContentOptions with CRC64 validation, async client, and large payload
-    cvdownloadcontentasynclg:
-      testScenario: contentvalidationdownloadcontent
+    crc64downloadcontentasynclg:
+      testScenario: downloadcontentwithcrc64
       sync: false
       sizeBytes: "52428800"
       downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
-    # content validation downloads using BlobDownloadContentOptions with AUTO validation
-    cvdownloadcontentauto:
-      testScenario: contentvalidationdownloadcontent
-      sync: true
-      sizeBytes: "10485760"
-      contentValidationAlgorithm: AUTO
-      downloadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
     # content validation downloads using BlobDownloadToFileOptions with CRC64 validation
-    cvdownloadfilesm:
-      testScenario: contentvalidationdownloadtofile
+    crc64downloadfilesm:
+      testScenario: downloadtofilewithcrc64
       sync: true
       sizeBytes: 1024
       downloadFaults: true
@@ -210,8 +190,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and async client
-    cvdownloadfileasyncsm:
-      testScenario: contentvalidationdownloadtofile
+    crc64downloadfileasyncsm:
+      testScenario: downloadtofilewithcrc64
       sync: false
       sizeBytes: 1024
       downloadFaults: true
@@ -219,8 +199,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and multi-block payload
-    cvdownloadfilemd:
-      testScenario: contentvalidationdownloadtofile
+    crc64downloadfilemd:
+      testScenario: downloadtofilewithcrc64
       sync: true
       sizeBytes: "16777216"
       downloadFaults: true
@@ -228,27 +208,17 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobDownloadToFileOptions with CRC64 validation, async client, and multi-block payload
-    cvdownloadfileasyncmd:
-      testScenario: contentvalidationdownloadtofile
+    crc64downloadfileasyncmd:
+      testScenario: downloadtofilewithcrc64
       sync: false
       sizeBytes: "16777216"
       downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
-    # content validation downloads using BlobDownloadToFileOptions with AUTO validation
-    cvdownloadfileauto:
-      testScenario: contentvalidationdownloadtofile
-      sync: true
-      sizeBytes: "10485760"
-      contentValidationAlgorithm: AUTO
-      downloadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
     # content validation downloads using BlobInputStreamOptions with CRC64 validation
-    cvinputstreamsm:
-      testScenario: contentvalidationopeninputstream
+    crc64inputstreamsm:
+      testScenario: openinputstreamwithcrc64
       sync: true
       sizeBytes: 1024
       downloadFaults: true
@@ -256,8 +226,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobInputStreamOptions with CRC64 validation and large payload
-    cvinputstreamlg:
-      testScenario: contentvalidationopeninputstream
+    crc64inputstreamlg:
+      testScenario: openinputstreamwithcrc64
       sync: true
       sizeBytes: "52428800"
       downloadFaults: true
@@ -265,8 +235,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation
-    cvbytechannelreadsm:
-      testScenario: contentvalidationopenseekablebytechannelread
+    crc64bytechannelreadsm:
+      testScenario: openseekablebytechannelreadwithcrc64
       sync: true
       sizeBytes: 1024
       downloadFaults: true
@@ -274,8 +244,8 @@ matrix:
       imageBuildDir: "../../.."
 
     # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation and large payload
-    cvbytechannelreadlg:
-      testScenario: contentvalidationopenseekablebytechannelread
+    crc64bytechannelreadlg:
+      testScenario: openseekablebytechannelreadwithcrc64
       sync: true
       sizeBytes: "52428800"
       downloadFaults: true

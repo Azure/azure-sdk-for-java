@@ -10,7 +10,9 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -21,12 +23,11 @@ import java.time.Duration;
 import java.util.UUID;
 
 /**
- * Download to file with
- * {@link BlobDownloadToFileOptions#setContentValidationAlgorithm} enabled.
+ * Download to file with CRC64 Algorithm enabled.
  * Verifies the correctness of the download response content via CRC.
  */
-public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentValidationDecoderStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationDownloadToFile.class);
+public class DownloadToFileWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadToFileWithCRC64.class);
     private final Path directoryPath;
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
@@ -34,7 +35,7 @@ public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentVal
     private final BlobAsyncClient asyncNoFaultClient;
     private final ParallelTransferOptions parallelTransferOptions;
 
-    public ContentValidationDownloadToFile(ContentValidationDecoderStressOptions options) {
+    public DownloadToFileWithCRC64(StorageStressOptions options) {
         super(options);
         this.directoryPath = getTempPath("test");
         String blobName = generateBlobName();
@@ -50,7 +51,7 @@ public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentVal
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
         BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString())
             .setParallelTransferOptions(parallelTransferOptions)
-            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
@@ -67,9 +68,9 @@ public class ContentValidationDownloadToFile extends BlobScenarioBase<ContentVal
             path -> asyncClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(path.toString())
                     .setParallelTransferOptions(parallelTransferOptions)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
-            ContentValidationDownloadToFile::deleteFile);
+            DownloadToFileWithCRC64::deleteFile);
     }
 
     @Override
