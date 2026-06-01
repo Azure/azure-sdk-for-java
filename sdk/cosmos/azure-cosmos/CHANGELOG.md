@@ -9,6 +9,7 @@
 
 #### Bugs Fixed
 * Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 
 #### Other Changes
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
