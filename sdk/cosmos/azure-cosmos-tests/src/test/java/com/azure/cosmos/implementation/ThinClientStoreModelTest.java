@@ -1,7 +1,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -187,6 +189,68 @@ public class ThinClientStoreModelTest {
         // Verify that no workload-id header was injected
         assertThat(dsr.getHeaders().get(HttpConstants.HttpHeaders.WORKLOAD_ID))
             .as("workload-id header should NOT be present when additionalHeaders is null")
+            .isNull();
+    }
+
+    @Test(groups = "unit")
+    public void thinClientDoesNotAddNoRetry449Header() throws Exception {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+        Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
+        Mockito
+            .doReturn(ImplementationBridgeHelpers
+                .CosmosDiagnosticsHelper
+                .getCosmosDiagnosticsAccessor()
+                .create(clientContext, 1d))
+            .when(clientContext).createDiagnostics();
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Mockito.doReturn("1#100#1=20#2=5#3=30").when(sessionContainer).resolveGlobalSessionToken(any());
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost:8080"));
+        regionalRoutingContext.setThinclientRegionalEndpoint(new URI("https://localhost:8081"));
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(regionalRoutingContext).when(globalEndpointManager).resolveServiceEndpoint(any());
+        DatabaseAccount databaseAccount = Mockito.mock(DatabaseAccount.class);
+        Mockito.doReturn("test-account").when(databaseAccount).getId();
+        Mockito.doReturn(databaseAccount).when(globalEndpointManager).getLatestDatabaseAccount();
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> requestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(requestCaptor.capture(), any()))
+            .thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        ThinClientStoreModel storeModel = new ThinClientStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setPaths(Collections.singletonList("/partitionKey"));
+        request.setPartitionKeyDefinition(partitionKeyDefinition);
+        request.setPartitionKeyInternal(PartitionKeyInternal.fromObjectArray(Collections.singletonList("testPk"), true));
+
+        try {
+            storeModel.performRequest(request).block();
+        } catch (Exception e) {
+            // Expected - mock HTTP client throws ConnectTimeoutException
+        }
+
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.NO_RETRY_449))
+            .as("ThinClient request headers should not include the Gateway V1 no-retry-449 header")
+            .isNull();
+
+        HttpHeaders httpHeaders = ReflectionUtils.getHttpHeaders(requestCaptor.getValue());
+        assertThat(httpHeaders.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449))
+            .as("ThinClient HTTP framing headers should not include the Gateway V1 no-retry-449 header")
             .isNull();
     }
 
