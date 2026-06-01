@@ -10,23 +10,24 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
 /**
- * Single-shot block blob upload with request content validation
- * ({@link BlockBlobSimpleUploadOptions#setContentValidationAlgorithm}).
+ * Single-shot block blob upload with request content validation with CRC64 enabled.
  */
-public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentValidationStressOptions> {
+public class BlockBlobUploadWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public ContentValidationBlockBlobUpload(ContentValidationStressOptions options) {
+    public BlockBlobUploadWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
@@ -40,7 +41,7 @@ public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentVa
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             blockBlobClient.uploadWithResponse(
                 new BlockBlobSimpleUploadOptions(inputStream, options.getSize())
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -53,7 +54,7 @@ public class ContentValidationBlockBlobUpload extends BlobScenarioBase<ContentVa
         BlockBlobAsyncClient blockBlobAsyncClient = asyncClient.getBlockBlobAsyncClient();
         return blockBlobAsyncClient.uploadWithResponse(
                 new BlockBlobSimpleUploadOptions(byteBufferFlux, options.getSize())
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

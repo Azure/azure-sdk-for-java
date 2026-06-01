@@ -11,23 +11,25 @@ import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
 /**
- * Page blob upload pages with {@link PageBlobUploadPagesOptions#setContentValidationAlgorithm}.
+ * Page blob upload pages with CRC64 enabled.
  */
-public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentValidationStressOptions> {
+public class UploadPagesWithCRC64 extends PageBlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
     private final PageBlobAsyncClient tempSetupPageBlobClient;
 
-    public ContentValidationUploadPages(ContentValidationStressOptions options) {
+    public UploadPagesWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
@@ -46,7 +48,7 @@ public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentVa
             PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
             pageBlobClient.uploadPagesWithResponse(
                 new PageBlobUploadPagesOptions(range, inputStream)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -60,7 +62,7 @@ public class ContentValidationUploadPages extends PageBlobScenarioBase<ContentVa
         PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
         return pageBlobAsyncClient.uploadPagesWithResponse(
                 new PageBlobUploadPagesOptions(range, byteBufferFlux)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

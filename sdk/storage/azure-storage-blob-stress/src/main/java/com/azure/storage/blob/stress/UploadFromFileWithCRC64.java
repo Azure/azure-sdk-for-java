@@ -13,7 +13,9 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -26,10 +28,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 /**
- * Upload from file with {@link BlobUploadFromFileOptions#setContentValidationAlgorithm}.
+ * Upload from file with CRC64 enabled.
  */
-public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentValidationStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationUploadFromFile.class);
+public class UploadFromFileWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(UploadFromFileWithCRC64.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
@@ -37,7 +39,7 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
     private final BlobAsyncClient asyncNoFaultClient;
     private final ParallelTransferOptions parallelTransferOptions;
 
-    public ContentValidationUploadFromFile(ContentValidationStressOptions options) {
+    public UploadFromFileWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
@@ -58,7 +60,7 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
             syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
                     .setParallelTransferOptions(parallelTransferOptions)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             syncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadPath.toString()), null, span);
@@ -86,7 +88,7 @@ public class ContentValidationUploadFromFile extends BlobScenarioBase<ContentVal
 
         return asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
                 .setParallelTransferOptions(parallelTransferOptions)
-                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadFilePath.toString())))
             .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(downloadFilePath), span))

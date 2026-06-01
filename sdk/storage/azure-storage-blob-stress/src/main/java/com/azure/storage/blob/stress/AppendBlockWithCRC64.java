@@ -6,65 +6,73 @@ package com.azure.storage.blob.stress;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
+import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
 /**
- * Parallel blob upload with {@link com.azure.storage.blob.options.BlobParallelUploadOptions#setContentValidationAlgorithm}
- * enabled. Verifies the correctness of the upload request content via CRC (see {@code BlobContentValidationUploadTests}).
+ * Append block with CRC64 enabled.
  */
-public class ContentValidationUpload extends BlobScenarioBase<ContentValidationStressOptions> {
+public class AppendBlockWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
-    private final ParallelTransferOptions parallelTransferOptions;
+    private final BlobAsyncClient tempSetupBlobClient;
 
-    public ContentValidationUpload(ContentValidationStressOptions options) {
+    public AppendBlockWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
+        String tempBlobName = generateBlobName();
+
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
-        parallelTransferOptions = new ParallelTransferOptions()
-            .setMaxConcurrency(options.getMaxConcurrency())
-            .setMaxSingleUploadSizeLong(4 * 1024 * 1024L);
+        this.tempSetupBlobClient = getAsyncContainerClientNoFault().getBlobAsyncClient(tempBlobName);
     }
 
     @Override
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
-            syncClient.uploadWithResponse(new BlobParallelUploadOptions(inputStream)
-                .setParallelTransferOptions(parallelTransferOptions)
-                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()), null, span);
+            AppendBlobClient appendBlobClient = syncClient.getAppendBlobClient();
+            appendBlobClient.appendBlockWithResponse(
+                new AppendBlobAppendBlockOptions(inputStream, options.getSize())
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+                null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
+        AppendBlobAsyncClient appendBlobAsyncClient = asyncClient.getAppendBlobAsyncClient();
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
             .convertStreamToByteBuffer();
-        return asyncClient.uploadWithResponse(new BlobParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(parallelTransferOptions)
-                .setContentValidationAlgorithm(options.getContentValidationAlgorithm()))
+        return appendBlobAsyncClient.appendBlockWithResponse(
+                new AppendBlobAppendBlockOptions(byteBufferFlux, options.getSize())
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync().then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
+        return super.setupAsync().then(asyncNoFaultClient.getAppendBlobAsyncClient().create())
+            .then(originalContent.setupBlob(tempSetupBlobClient, options.getSize()));
     }
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.deleteIfExists()
+        return asyncNoFaultClient.getAppendBlobAsyncClient().deleteIfExists()
+            .onErrorResume(e -> Mono.empty())
+            .then(tempSetupBlobClient.deleteIfExists())
             .then(super.cleanupAsync());
     }
 }

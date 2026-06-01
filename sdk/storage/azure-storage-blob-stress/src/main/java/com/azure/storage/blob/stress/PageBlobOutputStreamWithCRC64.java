@@ -13,7 +13,9 @@ import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -22,17 +24,17 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Page blob output stream with {@link PageBlobOutputStreamOptions#setContentValidationAlgorithm} (sync only).
+ * Page blob output stream with CRC64 enabled (sync only).
  */
-public class ContentValidationPageBlobOutputStream extends PageBlobScenarioBase<ContentValidationStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationPageBlobOutputStream.class);
+public class PageBlobOutputStreamWithCRC64 extends PageBlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(PageBlobOutputStreamWithCRC64.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
     /** Page blob used only to seed {@link OriginalContent} (same pattern as {@link PageBlobOutputStream}). */
     private final PageBlobAsyncClient tempSetupPageBlobClient;
 
-    public ContentValidationPageBlobOutputStream(ContentValidationStressOptions options) {
+    public PageBlobOutputStreamWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
@@ -48,7 +50,7 @@ public class ContentValidationPageBlobOutputStream extends PageBlobScenarioBase<
         PageBlobClient pageBlobClient = syncClient.getPageBlobClient();
         PageBlobOutputStreamOptions streamOptions = new PageBlobOutputStreamOptions(
             new PageRange().setStart(0).setEnd(options.getSize() - 1))
-            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(streamOptions)) {

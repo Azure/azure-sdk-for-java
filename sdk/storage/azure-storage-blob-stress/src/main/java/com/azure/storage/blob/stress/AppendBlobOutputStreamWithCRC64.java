@@ -3,14 +3,32 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.core.util.Context;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.options.AppendBlobOutputStreamOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Mono;
 
@@ -19,17 +37,17 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Append blob output stream with {@link AppendBlobOutputStreamOptions#setContentValidationAlgorithm} (sync only).
+ * Append blob output stream with CRC64 enabled (sync only).
  */
-public class ContentValidationAppendBlobOutputStream extends BlobScenarioBase<ContentValidationStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationAppendBlobOutputStream.class);
+public class AppendBlobOutputStreamWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobOutputStreamWithCRC64.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
     /** Separate blob used to upload reference content for {@link OriginalContent} checksum (block blob). */
     private final BlobAsyncClient tempSetupBlobClient;
 
-    public ContentValidationAppendBlobOutputStream(ContentValidationStressOptions options) {
+    public AppendBlobOutputStreamWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
@@ -51,7 +69,7 @@ public class ContentValidationAppendBlobOutputStream extends BlobScenarioBase<Co
         appendBlobClient.create(true);
 
         AppendBlobOutputStreamOptions streamOptions = new AppendBlobOutputStreamOptions()
-            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream(streamOptions)) {

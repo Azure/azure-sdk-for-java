@@ -13,7 +13,9 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,16 +25,16 @@ import java.util.Base64;
 import java.util.Collections;
 
 /**
- * Stage block with request content validation on the faulted client, then commit via the non-faulted client.
+ * Stage block with CRC64 enabled on the faulted client, then commit via the non-faulted client.
  */
-public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidationStressOptions> {
+public class StageBlockWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobClient syncNoFaultClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public ContentValidationStageBlock(ContentValidationStressOptions options) {
+    public StageBlockWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.syncNoFaultClient = getSyncContainerClientNoFault().getBlobClient(blobName);
@@ -51,7 +53,7 @@ public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidat
             BinaryData data = BinaryData.fromStream(inputStream, options.getSize());
             blockBlobClient.stageBlockWithResponse(
                 new BlockBlobStageBlockOptions(blockId, data)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             blockBlobClientNoFault.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId)), null, span);
@@ -70,7 +72,7 @@ public class ContentValidationStageBlock extends BlobScenarioBase<ContentValidat
         return BinaryData.fromFlux(byteBufferFlux, options.getSize(), false)
             .flatMap(binaryData -> blockBlobAsyncClient.stageBlockWithResponse(
                 new BlockBlobStageBlockOptions(blockId, binaryData)
-                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm())))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
             .then(blockBlobAsyncClientNoFault.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(Collections.singletonList(blockId))))
             .then(originalContent.checkMatch(byteBufferFlux, span));

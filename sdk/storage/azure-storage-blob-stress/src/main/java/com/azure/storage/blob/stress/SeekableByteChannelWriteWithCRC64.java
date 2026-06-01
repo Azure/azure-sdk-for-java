@@ -10,8 +10,10 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,16 +24,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE;
 
 /**
- * Block-blob seekable byte channel write with {@link BlockBlobSeekableByteChannelWriteOptions#setContentValidationAlgorithm}.
- * Matches {@link com.azure.storage.blob.BlobContentValidationUploadTests} seekable-channel scenarios (sync only).
+ * Block-blob seekable byte channel write with CRC64 enabled (sync only).
  */
-public class ContentValidationSeekableByteChannelWrite extends BlobScenarioBase<ContentValidationStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationSeekableByteChannelWrite.class);
+public class SeekableByteChannelWriteWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(SeekableByteChannelWriteWithCRC64.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public ContentValidationSeekableByteChannelWrite(ContentValidationStressOptions options) {
+    public SeekableByteChannelWriteWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
@@ -42,7 +43,7 @@ public class ContentValidationSeekableByteChannelWrite extends BlobScenarioBase<
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobSeekableByteChannelWriteOptions writeOptions = new BlockBlobSeekableByteChannelWriteOptions(OVERWRITE)
-            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try (CrcInputStream crcInput = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             Flux<ByteBuffer> byteBufferFlux = crcInput.convertStreamToByteBuffer();

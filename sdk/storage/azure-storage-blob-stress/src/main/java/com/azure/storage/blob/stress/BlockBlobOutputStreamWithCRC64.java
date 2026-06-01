@@ -12,7 +12,9 @@ import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.stress.CrcInputStream;
+import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -20,16 +22,16 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Block blob output stream with {@link BlockBlobOutputStreamOptions#setContentValidationAlgorithm} (sync only).
+ * Block blob output stream with CRC64 enabled (sync only).
  */
-public class ContentValidationBlockBlobOutputStream extends BlobScenarioBase<ContentValidationStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContentValidationBlockBlobOutputStream.class);
+public class BlockBlobOutputStreamWithCRC64 extends BlobScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(BlockBlobOutputStreamWithCRC64.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
     private final ParallelTransferOptions parallelTransferOptions;
 
-    public ContentValidationBlockBlobOutputStream(ContentValidationStressOptions options) {
+    public BlockBlobOutputStreamWithCRC64(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
@@ -42,7 +44,7 @@ public class ContentValidationBlockBlobOutputStream extends BlobScenarioBase<Con
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
         BlockBlobOutputStreamOptions streamOptions = new BlockBlobOutputStreamOptions()
             .setParallelTransferOptions(parallelTransferOptions)
-            .setContentValidationAlgorithm(options.getContentValidationAlgorithm());
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
              BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(streamOptions, span)) {
