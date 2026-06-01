@@ -2538,11 +2538,12 @@ public class ShareFileClient {
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         try {
             BiFunction<String, Integer, PagedResponse<ShareFileRange>> retriever = (marker, pageSize) -> {
                 ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(range,
-                    requestConditions, null, null, marker, pageSize, timeout, finalContext);
+                    finalRequestConditions, null, null, marker, pageSize, timeout, finalContext);
 
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     response.getValue()
