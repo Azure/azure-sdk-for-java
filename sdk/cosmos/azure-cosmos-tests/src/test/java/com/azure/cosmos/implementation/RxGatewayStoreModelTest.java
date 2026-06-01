@@ -596,6 +596,97 @@ public class RxGatewayStoreModelTest {
         assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isNull();
     }
 
+    @Test(groups = "unit")
+    public void gatewayAddsNoRetry449Header() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(request).block();
+            fail("Request should fail");
+        } catch (Exception expectedException) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpClientRequestCaptor.getValue());
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449)).isEqualTo("true");
+    }
+
+    @Test(groups = "unit")
+    public void gatewayOverridesNoRetry449Header() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.NO_RETRY_449, "false");
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+        request.getHeaders().put(HttpConstants.HttpHeaders.NO_RETRY_449, "false");
+
+        try {
+            storeModel.performRequest(request).block();
+            fail("Request should fail");
+        } catch (Exception expectedException) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpClientRequestCaptor.getValue());
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449)).isEqualTo("true");
+    }
+
     enum SessionTokenType {
         NONE, // no session token applied
         USER, // userControlled session token

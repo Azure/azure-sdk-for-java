@@ -73,6 +73,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
+    private static final int GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 30;
+    private static final int STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS = 60;
     private static final List<String> headersNeedToBeEscaped = Arrays.asList(
         HttpConstants.HttpHeaders.PARTITION_KEY,
         HttpConstants.HttpHeaders.POST_TRIGGER_EXCLUDE,
@@ -298,6 +300,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
             }
 
+            this.applyGatewayRetryWithHeaders(request);
+
             URI uri = getUri(request);
             request.requestContext.resourcePhysicalAddress = uri.toString();
 
@@ -313,6 +317,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     protected boolean partitionKeyRangeResolutionNeeded(RxDocumentServiceRequest request) {
         return false;
+    }
+
+    protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
+        request.getHeaders().put(HttpConstants.HttpHeaders.NO_RETRY_449, "true");
     }
 
     /**
@@ -794,12 +802,28 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
+        if (request.requestContext.cosmosDiagnostics == null) {
+            request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        }
+
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
 
-        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
-        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+        GatewayRetryWithRetryPolicy gatewayRetryWithRetryPolicy = new GatewayRetryWithRetryPolicy(
+            request,
+            this.globalEndpointManager,
+            this.getGatewayRetryWithTimeoutInSeconds());
 
-        return BackoffRetryUtility.executeRetry(funcDelegate, metadataRequestRetryPolicy);
+        return BackoffRetryUtility.executeRetry(funcDelegate, gatewayRetryWithRetryPolicy);
+    }
+
+    private int getGatewayRetryWithTimeoutInSeconds() {
+        ConsistencyLevel effectiveConsistencyLevel = this.gatewayServiceConfigurationReader != null
+            ? this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel()
+            : this.defaultConsistencyLevel;
+
+        return effectiveConsistencyLevel == ConsistencyLevel.STRONG
+            ? STRONG_GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS
+            : GATEWAY_RETRY_WITH_TIMEOUT_IN_SECONDS;
     }
 
     @Override

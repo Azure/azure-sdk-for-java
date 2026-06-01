@@ -123,7 +123,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, check for multi-region setup, errorStatusCode, errorSubStatusCode
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, false, 500, 0 },
-            { FaultInjectionServerErrorType.RETRY_WITH, false, false, 449, 0 },
+            { FaultInjectionServerErrorType.RETRY_WITH, true, false, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, false, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, false, 404, 1002 },
             { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, true, 503, 21008 }
