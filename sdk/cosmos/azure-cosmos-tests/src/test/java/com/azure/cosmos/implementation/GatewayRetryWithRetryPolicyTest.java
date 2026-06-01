@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import io.netty.channel.ConnectTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
@@ -53,6 +54,20 @@ public class GatewayRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         assertThat(shouldRetryResult.nonRelatedException).isFalse();
         assertThat(shouldRetryResult.exception).isSameAs(goneException);
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldDelegateRetryableNetworkExceptionToMetadataPolicy() throws Exception {
+        GatewayRetryWithRetryPolicy retryPolicy = new GatewayRetryWithRetryPolicy(
+            createRequest(),
+            Mockito.mock(GlobalEndpointManager.class),
+            30);
+
+        ShouldRetryResult shouldRetryResult = retryPolicy.shouldRetry(new ConnectTimeoutException()).block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(shouldRetryResult.nonRelatedException).isFalse();
+        assertThat(shouldRetryResult.exception).isNull();
+        assertThat(shouldRetryResult.backOffTime).isNotNull();
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
