@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,124 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.2 (2026-05-26)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-03-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ManagedComputeDeployment$Update` was added
+
+* `models.Compute$DefinitionStages` was added
+
+* `models.ManagedComputeDeploymentInfo` was added
+
+* `models.VmPriority` was added
+
+* `models.Compute$UpdateStages` was added
+
+* `models.Workbench$DefinitionStages` was added
+
+* `models.ComputeType` was added
+
+* `models.ManagedComputeDeployments` was added
+
+* `models.Workbench$Definition` was added
+
+* `models.ManagedComputeCapacities` was added
+
+* `models.EvaluateDeploymentPoliciesResponse` was added
+
+* `models.Compute$Definition` was added
+
+* `models.ManagedComputeDeployment$UpdateStages` was added
+
+* `models.ComputeProperties` was added
+
+* `models.EvaluateDeploymentPoliciesDeploymentProperties` was added
+
+* `models.ManagedComputeDeployment` was added
+
+* `models.Workbench$Update` was added
+
+* `models.ManagedComputeCapacity` was added
+
+* `models.EvaluateDeploymentPoliciesRequest` was added
+
+* `models.PolicyExpressionEvaluationDetails` was added
+
+* `models.Computes` was added
+
+* `models.Pool` was added
+
+* `models.ManagedComputeUsage` was added
+
+* `models.ConnectivityEndpoints` was added
+
+* `models.SshSettings` was added
+
+* `models.Compute$Update` was added
+
+* `models.ManagedComputeUsagesOperationGroups` was added
+
+* `models.DeploymentPolicyEvaluationResult` was added
+
+* `models.ManagedComputeDeploymentProvisioningDetails` was added
+
+* `models.ManagedComputeDeployment$DefinitionStages` was added
+
+* `models.ManagedComputeDeploymentProperties` was added
+
+* `models.WorkbenchProperties` was added
+
+* `models.PatchResourceSku` was added
+
+* `models.ContainerInstanceComputeProperties` was added
+
+* `models.DeploymentSizeCapacity` was added
+
+* `models.Workbench$UpdateStages` was added
+
+* `models.Compute` was added
+
+* `models.ManagedComputeCapacityProperties` was added
+
+* `models.ManagedComputeDeployment$Definition` was added
+
+* `models.Workbenches` was added
+
+* `models.PolicyEvaluationOutcome` was added
+
+* `models.ComputeProvisioningState` was added
+
+* `models.ClusterComputeProperties` was added
+
+* `models.PolicyAssignmentEvaluationDetails` was added
+
+* `models.EvaluateDeploymentPoliciesDeployment` was added
+
+* `models.ManagedComputeDeploymentRoutes` was added
+
+* `models.Workbench` was added
+
+#### `models.Accounts` was modified
+
+* `evaluateDeploymentPolicies(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest)` was added
+* `evaluateDeploymentPoliciesWithResponse(java.lang.String,java.lang.String,models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `managedComputeUsagesOperationGroups()` was added
+* `workbenches()` was added
+* `managedComputeCapacities()` was added
+* `computes()` was added
+* `managedComputeDeployments()` was added
+
+#### `models.Account` was modified
+
+* `evaluateDeploymentPoliciesWithResponse(models.EvaluateDeploymentPoliciesRequest,com.azure.core.util.Context)` was added
+* `evaluateDeploymentPolicies(models.EvaluateDeploymentPoliciesRequest)` was added
 
 ## 1.5.0-beta.1 (2026-04-30)
 

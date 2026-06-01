@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,211 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2026-05-20)
+
+- Azure Resource Manager App Compliance Automation client library for Java. This package contains Microsoft Azure SDK for App Compliance Automation Management SDK. App Compliance Automation Tool for Microsoft 365 API spec. Package api-version 2024-06-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ReportResourceListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WebhookResourceListResult` was removed
+
+#### `models.EvidenceResourceListResult` was removed
+
+#### `models.ScopingConfigurationResourceListResult` was removed
+
+#### `models.SnapshotResourceListResult` was removed
+
+#### `models.CertSyncRecord` was modified
+
+* `validate()` was removed
+
+#### `models.ReportResourcePatch` was modified
+
+* `validate()` was removed
+
+#### `models.ReportPatchProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ControlFamily` was modified
+
+* `ControlFamily()` was changed to private access
+* `validate()` was removed
+
+#### `models.OverviewStatus` was modified
+
+* `OverviewStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.ControlSyncRecord` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerEvaluationProperty` was modified
+
+* `validate()` was removed
+
+#### `models.DownloadResponseComplianceDetailedPdfReport` was modified
+
+* `validate()` was removed
+
+#### `models.ComplianceResult` was modified
+
+* `ComplianceResult()` was changed to private access
+* `validate()` was removed
+
+#### `models.Control` was modified
+
+* `Control()` was changed to private access
+* `validate()` was removed
+
+#### `models.GetOverviewStatusRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerEvaluationRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ListInUseStorageAccountsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.RecommendationSolution` was modified
+
+* `RecommendationSolution()` was changed to private access
+* `validate()` was removed
+
+#### `models.ReportComplianceStatus` was modified
+
+* `ReportComplianceStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.SnapshotDownloadRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceItem` was modified
+
+* `validate()` was removed
+
+#### `models.ResponsibilityResource` was modified
+
+* `ResponsibilityResource()` was changed to private access
+* `validate()` was removed
+* `withRecommendationIds(java.util.List)` was removed
+
+#### `models.ScopingAnswer` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.StatusItem` was modified
+
+* `validate()` was removed
+
+#### `models.ScopingConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceMetadata` was modified
+
+* `validate()` was removed
+
+#### `models.ComplianceReportItem` was modified
+
+* `validate()` was removed
+
+#### `models.QuickAssessment` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookResourcePatch` was modified
+
+* `validate()` was removed
+
+#### `models.OnboardRequest` was modified
+
+* `validate()` was removed
+
+#### `models.StorageInfo` was modified
+
+* `validate()` was removed
+
+#### `models.SyncCertRecordRequest` was modified
+
+* `validate()` was removed
+
+#### `models.EvidenceFileDownloadResponseEvidenceFile` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SnapshotProperties` was modified
+
+* `SnapshotProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.Category` was modified
+
+* `Category()` was changed to private access
+* `validate()` was removed
+
+#### `models.EvidenceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ScopingQuestion` was modified
+
+* `validate()` was removed
+
+#### `models.GetCollectionCountRequest` was modified
+
+* `validate()` was removed
+
+#### `models.EvidenceFileDownloadRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DownloadResponseCompliancePdfReport` was modified
+
+* `validate()` was removed
+
+#### `AppComplianceAutomationManager` was modified
+
+* `fluent.AppComplianceAutomationClient serviceClient()` -> `fluent.AppComplianceAutomationManagementClient serviceClient()`
+
+#### `models.Responsibility` was modified
+
+* `Responsibility()` was changed to private access
+* `withTotalResourceCount(java.lang.Integer)` was removed
+* `withEvidenceFiles(java.util.List)` was removed
+* `validate()` was removed
+* `withFailedResourceCount(java.lang.Integer)` was removed
+
+#### `models.ReportProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Recommendation` was modified
+
+* `Recommendation()` was changed to private access
+* `validate()` was removed
 
 ## 1.0.0 (2024-06-27)
 

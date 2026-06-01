@@ -100,4 +100,46 @@ public class SearchServiceTests extends SearchTestBase {
         assertTrue(searchServiceCounters.getStorageSizeCounter().getQuota() >= 1);
         assertTrue(searchServiceCounters.getSynonymMapCounter().getQuota() >= 1);
     }
+
+    @Test
+    public void serviceStatsIncludesKnowledgeBaseCounterSync() {
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchServiceStatistics stats = serviceClient.getServiceStatistics();
+        SearchServiceCounters counters = stats.getCounters();
+
+        Assertions.assertNotNull(counters.getKnowledgeBaseCounter());
+        assertTrue(counters.getKnowledgeBaseCounter().getUsage() >= 0);
+    }
+
+    @Test
+    public void serviceStatsIncludesKnowledgeBaseCounterAsync() {
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatistics())
+            .assertNext(stats -> {
+                SearchServiceCounters counters = stats.getCounters();
+                Assertions.assertNotNull(counters.getKnowledgeBaseCounter());
+                assertTrue(counters.getKnowledgeBaseCounter().getUsage() >= 0);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void serviceStatsIncludesKnowledgeSourceCounterSync() {
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchServiceStatistics stats = serviceClient.getServiceStatistics();
+        SearchServiceCounters counters = stats.getCounters();
+
+        Assertions.assertNotNull(counters.getKnowledgeSourceCounter());
+        assertTrue(counters.getKnowledgeSourceCounter().getUsage() >= 0);
+    }
+
+    @Test
+    public void serviceStatsIncludesKnowledgeSourceCounterAsync() {
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatistics())
+            .assertNext(stats -> {
+                SearchServiceCounters counters = stats.getCounters();
+                Assertions.assertNotNull(counters.getKnowledgeSourceCounter());
+                assertTrue(counters.getKnowledgeSourceCounter().getUsage() >= 0);
+            })
+            .verifyComplete();
+    }
 }
