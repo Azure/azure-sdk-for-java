@@ -31,7 +31,6 @@ public class GatewayRetryWithRetryPolicy implements IRetryPolicy {
     }
 
     @Override
-    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         return this.retryWithRetryPolicy.shouldRetry(exception).flatMap(retryWithResult -> {
             if (!retryWithResult.nonRelatedException) {
@@ -40,7 +39,6 @@ public class GatewayRetryWithRetryPolicy implements IRetryPolicy {
 
             return this.metadataRequestRetryPolicy.shouldRetry(exception);
         });
-    }
     }
 
     @Override
