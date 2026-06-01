@@ -492,6 +492,22 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
         return new CertificatePolicy("Self", "CN=DefaultPolicy");
     }
 
+    /**
+     * Creates a certificate policy for a platform-managed certificate. The returned policy contains
+     * only the platform-managed configuration (and optionally key properties set via subsequent calls
+     * such as {@link #setKeyType(CertificateKeyType)} or {@link #setKeySize(Integer)}). Issuer and
+     * X.509 certificate properties are intentionally left unset — the service rejects create requests
+     * that specify them when {@code platformManaged} is set.
+     *
+     * @param platformManaged the platform-managed certificate configuration.
+     * @return a {@link CertificatePolicy} suitable for creating a platform-managed certificate.
+     */
+    public static CertificatePolicy forPlatformManaged(PlatformManaged platformManaged) {
+        return new CertificatePolicy(
+            new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
+                .setPlatformManaged(platformManaged));
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return impl.toJson(jsonWriter);

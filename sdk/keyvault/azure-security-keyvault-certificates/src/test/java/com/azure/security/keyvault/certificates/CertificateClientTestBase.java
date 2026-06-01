@@ -574,9 +574,13 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     static CertificatePolicy setupPlatformManagedPolicy() {
-        return CertificatePolicy.getDefault()
-            .setPlatformManaged(
-                new PlatformManaged("serverAuth").setMetadata(Collections.singletonMap("source", "java-sdk-test")));
+        Map<String, Object> sans = new HashMap<>();
+        sans.put("dns_names", Collections.singletonList("onecertdomain.contoso.com"));
+
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("sans", sans);
+
+        return CertificatePolicy.forPlatformManaged(new PlatformManaged("PublicTLSServerAuth").setMetadata(metadata));
     }
 
     static void assertPolicy(CertificatePolicy expected, CertificatePolicy actual) {

@@ -5,7 +5,9 @@
 ### Features Added
 
 - Added an experimental `models.PlatformManaged` certificate policy property for Azure Key Vault internal usage.
-  Any calls using this property will fail and it is not recommended to be used at this point.
+- Added `CertificatePolicy.forPlatformManaged(PlatformManaged)` static factory to construct a policy with
+  only `platformManaged` set (no issuer or X.509 properties), which is required by the service when
+  `platformManaged` is in use.
 
 ## 4.9.0 (2026-05-26)
 
