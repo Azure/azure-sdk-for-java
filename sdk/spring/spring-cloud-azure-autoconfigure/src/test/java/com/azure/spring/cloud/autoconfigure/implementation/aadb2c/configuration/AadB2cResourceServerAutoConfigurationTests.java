@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -148,13 +148,13 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
         getResourceServerContextRunner().run(context -> {
             AadB2cProperties properties = context.getBean(AadB2cProperties.class);
             assertThat(properties.getJwtConnectTimeout())
-                .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
+                .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT));
             assertThat(properties.getJwtReadTimeout())
-                .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+                .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
             // Verify the default timeouts are applied to the RestTemplate used by the ResourceRetriever
             verifyResourceRetrieverRestTemplateTimeouts(context,
-                RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT,
-                RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+                JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
         });
     }
 

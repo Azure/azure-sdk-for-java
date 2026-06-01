@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -76,14 +76,14 @@ class AadResourceServerConfigurationTests {
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertThat(properties.getJwtConnectTimeout())
-                    .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT));
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT));
                 assertThat(properties.getJwtReadTimeout())
-                    .isEqualTo(Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT));
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
                 // Verify the default timeouts are applied to the RestTemplate used by the JwtDecoder
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 verifyJwtDecoderRestTemplateTimeouts(jwtDecoder,
-                    RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT,
-                    RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+                    JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                    JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
             });
     }
 

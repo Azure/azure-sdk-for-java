@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -91,21 +91,21 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      * Connection Timeout (duration) for the JWKSet Remote URL call.
-     * The default value is {@value com.nimbusds.jose.jwk.source.RemoteJWKSet#DEFAULT_HTTP_CONNECT_TIMEOUT} milliseconds.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_CONNECT_TIMEOUT} milliseconds.
      */
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+    private Duration jwtConnectTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
      * Read Timeout (duration) for the JWKSet Remote URL call.
-     * The default value is {@value com.nimbusds.jose.jwk.source.RemoteJWKSet#DEFAULT_HTTP_READ_TIMEOUT} milliseconds.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_READ_TIMEOUT} milliseconds.
      */
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+    private Duration jwtReadTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
      * Size limit in Bytes of the JWKSet Remote URL call.
-     * The default value is {@value com.nimbusds.jose.jwk.source.RemoteJWKSet#DEFAULT_HTTP_SIZE_LIMIT} bytes.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_SIZE_LIMIT} bytes.
      */
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
+    private int jwtSizeLimit = JWKSourceBuilder.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * The lifespan (duration) of the cached JWK set before it expires.
