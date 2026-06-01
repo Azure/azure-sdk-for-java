@@ -40,7 +40,11 @@ import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
+
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -603,7 +607,35 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getPlatformManaged());
         assertEquals(expected.getPlatformManaged().getCertificateUsage(),
             actual.getPlatformManaged().getCertificateUsage());
-        assertEquals(expected.getPlatformManaged().getMetadata(), actual.getPlatformManaged().getMetadata());
+        // Compare metadata via JSON normalization rather than Map.equals: readUntyped returns
+        // Integer/Long/Double based on numeric form and LinkedHashMap/ArrayList for nested containers,
+        // so a raw equals can fail on legitimate round-trips. Service may also enrich the bag (the
+        // schema is intentionally undefined per the spec), so we assert one-way containment:
+        // every key the client sent must round-trip with an equivalent JSON value, but the service
+        // is allowed to add keys we didn't send.
+        Map<String, Object> expectedMetadata = expected.getPlatformManaged().getMetadata();
+        Map<String, Object> actualMetadata = actual.getPlatformManaged().getMetadata();
+        if (expectedMetadata == null || expectedMetadata.isEmpty()) {
+            return;
+        }
+        assertNotNull(actualMetadata);
+        for (Map.Entry<String, Object> entry : expectedMetadata.entrySet()) {
+            assertTrue(actualMetadata.containsKey(entry.getKey()),
+                "Service response missing expected metadata key '" + entry.getKey() + "'.");
+            assertEquals(toCanonicalJson(entry.getValue()), toCanonicalJson(actualMetadata.get(entry.getKey())),
+                "Metadata value mismatch for key '" + entry.getKey() + "'.");
+        }
+    }
+
+    private static String toCanonicalJson(Object value) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+            JsonWriter writer = JsonProviders.createWriter(out)) {
+            writer.writeUntyped(value);
+            writer.flush();
+            return out.toString("UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize metadata value for comparison.", e);
+        }
     }
 
     static void assertCertificate(KeyVaultCertificate expected, KeyVaultCertificate actual) {
