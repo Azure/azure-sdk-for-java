@@ -5,7 +5,7 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -14,7 +14,7 @@ matrix:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -23,7 +23,7 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -32,7 +32,7 @@ matrix:
       testScenario: downloadstream
       sync: true
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -41,7 +41,7 @@ matrix:
       testScenario: downloadstream
       sync: false
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -50,7 +50,7 @@ matrix:
       testScenario: downloadstream
       sync: true
       sizeBytes: "52428800"
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -59,7 +59,7 @@ matrix:
       testScenario: downloadcontent
       sync: true
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -68,7 +68,7 @@ matrix:
       testScenario: downloadcontent
       sync: true
       sizeBytes: "52428800"
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -77,7 +77,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -86,7 +86,7 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -95,7 +95,7 @@ matrix:
       testScenario: openseekablebytechannelread
       sync: true
       sizeBytes: 1024
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -104,7 +104,7 @@ matrix:
       testScenario: openseekablebytechannelread
       sync: true
       sizeBytes: "52428800"
-      downloadFaults: false
+      downloadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -113,7 +113,7 @@ matrix:
       testScenario: appendblock
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -122,7 +122,7 @@ matrix:
       testScenario: appendblock
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -131,7 +131,7 @@ matrix:
       testScenario: appendblock
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
 
@@ -140,7 +140,7 @@ matrix:
       testScenario: appendbloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -149,7 +149,7 @@ matrix:
       testScenario: appendbloboutputstream
       sync: true
       sizeBytes: "10240"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -158,7 +158,7 @@ matrix:
       testScenario: blockblobupload
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -167,7 +167,7 @@ matrix:
       testScenario: blockblobupload
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -176,7 +176,7 @@ matrix:
       testScenario: blockbloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -185,7 +185,7 @@ matrix:
       testScenario: blockbloboutputstream
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -194,7 +194,7 @@ matrix:
       testScenario: commitblocklist
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -203,7 +203,7 @@ matrix:
       testScenario: commitblocklist
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -212,7 +212,7 @@ matrix:
       testScenario: openseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -221,7 +221,7 @@ matrix:
       testScenario: openseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -230,7 +230,7 @@ matrix:
       testScenario: stageblock
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -239,7 +239,7 @@ matrix:
       testScenario: stageblock
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -248,7 +248,7 @@ matrix:
       testScenario: pagebloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -257,7 +257,7 @@ matrix:
       testScenario: pagebloboutputstream
       sync: true
       sizeBytes: "10240"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -266,7 +266,7 @@ matrix:
       testScenario: uploadpages
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -275,7 +275,7 @@ matrix:
       testScenario: uploadpages
       sync: true
       sizeBytes: "4194304"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -284,7 +284,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -293,7 +293,7 @@ matrix:
       testScenario: upload
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -302,7 +302,7 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -311,7 +311,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -320,7 +320,7 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -331,7 +331,7 @@ matrix:
       testScenario: contentvalidationappendblock
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -339,7 +339,7 @@ matrix:
       testScenario: contentvalidationappendblock
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
 
@@ -347,7 +347,7 @@ matrix:
       testScenario: contentvalidationappendblock
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -355,7 +355,7 @@ matrix:
       testScenario: contentvalidationappendblock
       sync: false
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."
 
@@ -363,7 +363,7 @@ matrix:
       testScenario: contentvalidationappendbloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -371,7 +371,7 @@ matrix:
       testScenario: contentvalidationappendbloboutputstream
       sync: true
       sizeBytes: "10240"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -379,7 +379,7 @@ matrix:
       testScenario: contentvalidationblockblobupload
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -387,7 +387,7 @@ matrix:
       testScenario: contentvalidationblockblobupload
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -395,7 +395,7 @@ matrix:
       testScenario: contentvalidationblockbloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -403,7 +403,7 @@ matrix:
       testScenario: contentvalidationblockbloboutputstream
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -411,7 +411,7 @@ matrix:
       testScenario: contentvalidationseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -419,7 +419,7 @@ matrix:
       testScenario: contentvalidationseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -427,7 +427,7 @@ matrix:
       testScenario: contentvalidationstageblock
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -435,7 +435,7 @@ matrix:
       testScenario: contentvalidationstageblock
       sync: true
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -443,7 +443,7 @@ matrix:
       testScenario: contentvalidationstageblock
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -451,7 +451,7 @@ matrix:
       testScenario: contentvalidationstageblock
       sync: false
       sizeBytes: "26214400"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -459,7 +459,7 @@ matrix:
       testScenario: contentvalidationpagebloboutputstream
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -467,7 +467,7 @@ matrix:
       testScenario: contentvalidationpagebloboutputstream
       sync: true
       sizeBytes: "10240"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -475,7 +475,7 @@ matrix:
       testScenario: contentvalidationuploadpages
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -483,7 +483,7 @@ matrix:
       testScenario: contentvalidationuploadpages
       sync: true
       sizeBytes: "4194304"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -491,7 +491,7 @@ matrix:
       testScenario: contentvalidationuploadpages
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -499,7 +499,7 @@ matrix:
       testScenario: contentvalidationuploadpages
       sync: false
       sizeBytes: "4194304"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -507,7 +507,7 @@ matrix:
       testScenario: contentvalidationupload
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -515,7 +515,7 @@ matrix:
       testScenario: contentvalidationupload
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -523,7 +523,7 @@ matrix:
       testScenario: contentvalidationupload
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -531,7 +531,7 @@ matrix:
       testScenario: contentvalidationupload
       sync: false
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -539,7 +539,7 @@ matrix:
       testScenario: contentvalidationuploadfromfile
       sync: true
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -547,7 +547,7 @@ matrix:
       testScenario: contentvalidationuploadfromfile
       sync: true
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
 
@@ -555,7 +555,7 @@ matrix:
       testScenario: contentvalidationuploadfromfile
       sync: false
       sizeBytes: 1024
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -563,6 +563,6 @@ matrix:
       testScenario: contentvalidationuploadfromfile
       sync: false
       sizeBytes: "52428800"
-      uploadFaults: false
+      uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
