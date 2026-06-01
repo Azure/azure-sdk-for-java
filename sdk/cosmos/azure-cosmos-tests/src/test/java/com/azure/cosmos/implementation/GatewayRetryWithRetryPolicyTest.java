@@ -51,7 +51,7 @@ public class GatewayRetryWithRetryPolicyTest {
 
         ShouldRetryResult shouldRetryResult = retryPolicy.shouldRetry(goneException).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
-        assertThat(shouldRetryResult.nonRelatedException).isTrue();
+        assertThat(shouldRetryResult.nonRelatedException).isFalse();
         assertThat(shouldRetryResult.exception).isSameAs(goneException);
     }
 
