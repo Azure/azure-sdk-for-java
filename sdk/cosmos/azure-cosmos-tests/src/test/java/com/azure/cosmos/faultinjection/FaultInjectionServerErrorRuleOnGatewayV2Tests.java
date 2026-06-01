@@ -4,6 +4,7 @@
 package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -766,7 +767,16 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
         Duration retryTimeout = Duration.parse(retryResponseTimeout.asText());
         AssertionsForClassTypes.assertThat(retryTimeout).isGreaterThan(Duration.ofSeconds(10));
-        AssertionsForClassTypes.assertThat(retryTimeout).isLessThanOrEqualTo(Duration.ofSeconds(30));
+        AssertionsForClassTypes.assertThat(retryTimeout).isLessThanOrEqualTo(this.getMaxRetryWithTimeout());
+    }
+
+    private Duration getMaxRetryWithTimeout() {
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
+        ConsistencyLevel consistencyLevel = asyncDocumentClient.getConsistencyLevel() != null
+            ? asyncDocumentClient.getConsistencyLevel()
+            : asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
+
+        return consistencyLevel == ConsistencyLevel.STRONG ? Duration.ofSeconds(60) : Duration.ofSeconds(30);
     }
 
     private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
