@@ -302,7 +302,7 @@
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
-          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client|ClientBuilder)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
         },
         {
@@ -312,12 +312,11 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
-          "code": "java.annotation.removed",
-          "new": {
-            "matcher": "regex",
-            "match": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*"
-          },
-          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
+          "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
+          "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
         },
         {
           "code": "java.method.removed",
@@ -973,6 +972,32 @@
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.STANDARD",
           "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.CreatedByType",
+          "justification": "CreatedByType was a duplicate of com.azure.core.management.CreatedByType; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.SecurityPerimeterSystemData",
+          "justification": "SecurityPerimeterSystemData was a duplicate of com.azure.core.management.SystemData; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
         },
         {
           "code": "java.method.removed",
@@ -1797,6 +1822,63 @@
           "code": "java.method.returnTypeChanged",
           "old" : "method com.azure.resourcemanager.monitor.models.ConditionOperator[] com.azure.resourcemanager.monitor.models.ConditionOperator::values()",
           "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, values() return type changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com.azure.search.documents.SearchServiceVersion.V2026_04_01",
+          "justification": "Non-breaking change: new API version V2026_05_01_PREVIEW inserted before existing version."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
+          },
+          "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieve\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieve() signature restructured, knowledgeBaseName removed from parameters."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieveWithResponse\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieveWithResponse() signature restructured."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.knowledgebases.models.AIServices",
+          "justification": "Intentional rename in knowledgebases preview: AIServices renamed to AiServices per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeBaseModelWebSummarizationActivityRecord::get(Input|Output)Tokens\\(\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getInputTokens()/getOutputTokens() renamed to getInputTokensCount()/getOutputTokensCount() per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeSourceIngestionParameters::(get|set)AIServices\\(.*\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getAIServices()/setAIServices() renamed to getAiServices()/setAiServices() following AIServices to AiServices rename per archboard guidance."
         }
       ]
     }

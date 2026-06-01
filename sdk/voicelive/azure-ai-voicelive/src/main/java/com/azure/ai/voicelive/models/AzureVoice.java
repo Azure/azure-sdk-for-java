@@ -83,6 +83,8 @@ public class AzureVoice implements JsonSerializable<AzureVoice> {
                     return AzureStandardVoice.fromJson(readerToUse.reset());
                 } else if ("azure-personal".equals(discriminatorValue)) {
                     return AzurePersonalVoice.fromJson(readerToUse.reset());
+                } else if ("avatar-voice-sync".equals(discriminatorValue)) {
+                    return AzureAvatarVoiceSyncVoice.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

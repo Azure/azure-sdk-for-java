@@ -79,6 +79,8 @@ public final class FunctionShellToolParameter extends Tool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,11 +104,71 @@ public final class FunctionShellToolParameter extends Tool {
                 } else if ("environment".equals(fieldName)) {
                     deserializedFunctionShellToolParameter.environment
                         = FunctionShellToolParamEnvironment.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedFunctionShellToolParameter;
         });
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setDescription(String description) {
+        this.description = description;
+        return this;
     }
 }

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This event is the output of audio transcription for user audio written to the
@@ -116,6 +117,8 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
         jsonWriter.writeIntField("content_index", this.contentIndex);
         jsonWriter.writeStringField("transcript", this.transcript);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("phrases", this.phrases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +141,8 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
             int contentIndex = 0;
             String transcript = null;
             ServerEventType type = ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED;
+            List<LogProbProperties> logprobs = null;
+            List<TranscriptionPhrase> phrases = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -151,6 +156,10 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
                     transcript = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ServerEventType.fromString(reader.getString());
+                } else if ("logprobs".equals(fieldName)) {
+                    logprobs = reader.readArray(reader1 -> LogProbProperties.fromJson(reader1));
+                } else if ("phrases".equals(fieldName)) {
+                    phrases = reader.readArray(reader1 -> TranscriptionPhrase.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -159,7 +168,41 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionCompleted
                 = new SessionUpdateConversationItemInputAudioTranscriptionCompleted(itemId, contentIndex, transcript);
             deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.setEventId(eventId);
             deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.type = type;
+            deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.logprobs = logprobs;
+            deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted.phrases = phrases;
             return deserializedSessionUpdateConversationItemInputAudioTranscriptionCompleted;
         });
+    }
+
+    /*
+     * The log probabilities of the transcription tokens.
+     */
+    @Generated
+    private List<LogProbProperties> logprobs;
+
+    /*
+     * The transcription phrases with timing information.
+     */
+    @Generated
+    private List<TranscriptionPhrase> phrases;
+
+    /**
+     * Get the logprobs property: The log probabilities of the transcription tokens.
+     *
+     * @return the logprobs value.
+     */
+    @Generated
+    public List<LogProbProperties> getLogprobs() {
+        return this.logprobs;
+    }
+
+    /**
+     * Get the phrases property: The transcription phrases with timing information.
+     *
+     * @return the phrases value.
+     */
+    @Generated
+    public List<TranscriptionPhrase> getPhrases() {
+        return this.phrases;
     }
 }

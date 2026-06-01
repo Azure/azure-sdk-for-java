@@ -221,6 +221,20 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The SkillsImpl object to access its operations.
+     */
+    private final SkillsImpl skills;
+
+    /**
+     * Gets the SkillsImpl object to access its operations.
+     * 
+     * @return the SkillsImpl object.
+     */
+    public SkillsImpl getSkills() {
+        return this.skills;
+    }
+
+    /**
      * Initializes an instance of AIProjectClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
@@ -278,5 +292,6 @@ public final class AIProjectClientImpl {
         this.evaluators = new EvaluatorsImpl(this);
         this.insights = new InsightsImpl(this);
         this.schedules = new SchedulesImpl(this);
+        this.skills = new SkillsImpl(this);
     }
 }

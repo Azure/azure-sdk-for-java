@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> whisperTranscriptionParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -117,7 +117,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testInputAudioTranscriptionWithGpt4oTranscribe(String transcriptionModel, String apiVersion)
         throws InterruptedException, IOException {
-        String model = "gpt-4o-realtime-preview";
+        String model = "gpt-realtime";
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");

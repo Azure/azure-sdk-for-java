@@ -1,14 +1,46 @@
 # Release History
 
-## 1.3.0-beta.4 (Unreleased)
+## 1.3.0-beta.4 (2026-05-28)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-03-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ClusterMeshProfile$Update` was added
 
-### Bugs Fixed
+* `models.ClusterMeshProfile$UpdateStages` was added
 
-### Other Changes
+* `models.ClusterMeshProfileProvisioningState` was added
+
+* `models.ClusterMeshProfiles` was added
+
+* `models.MeshMemberStatus` was added
+
+* `models.CiliumProperties` was added
+
+* `models.MeshMemberState` was added
+
+* `models.ClusterMeshProfileStatus` was added
+
+* `models.ClusterMeshState` was added
+
+* `models.MeshProperties` was added
+
+* `models.ClusterMeshProfile$Definition` was added
+
+* `models.MemberSelector` was added
+
+* `models.ClusterMeshProfile$DefinitionStages` was added
+
+* `models.ClusterMeshProfile` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `clusterMeshProfiles()` was added
+
+#### `models.FleetMember` was modified
+
+* `meshProperties()` was added
 
 ## 1.3.0-beta.3 (2026-03-24)
 

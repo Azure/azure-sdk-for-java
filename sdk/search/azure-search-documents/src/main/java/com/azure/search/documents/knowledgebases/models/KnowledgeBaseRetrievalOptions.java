@@ -184,10 +184,15 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("maxRuntimeInSeconds", this.maxRuntimeInSeconds);
+        jsonWriter.writeNumberField("maxOutputSize", this.maxOutputSize);
+        jsonWriter.writeNumberField("maxOutputDocuments", this.maxOutputDocuments);
         jsonWriter.writeNumberField("maxOutputSizeInTokens", this.maxOutputSizeInTokens);
+        jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
         jsonWriter.writeBooleanField("includeActivity", this.includeActivity);
+        jsonWriter.writeStringField("outputMode", this.outputMode == null ? null : this.outputMode.toString());
         jsonWriter.writeArrayField("knowledgeSourceParams", this.knowledgeSourceParams,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -209,19 +214,34 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("intents".equals(fieldName)) {
+                if ("messages".equals(fieldName)) {
+                    List<KnowledgeBaseMessage> messages
+                        = reader.readArray(reader1 -> KnowledgeBaseMessage.fromJson(reader1));
+                    deserializedKnowledgeBaseRetrievalOptions.messages = messages;
+                } else if ("intents".equals(fieldName)) {
                     List<KnowledgeRetrievalIntent> intents
                         = reader.readArray(reader1 -> KnowledgeRetrievalIntent.fromJson(reader1));
                     deserializedKnowledgeBaseRetrievalOptions.intents = intents;
                 } else if ("maxRuntimeInSeconds".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxRuntimeInSeconds
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("maxOutputSize".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalOptions.maxOutputSize = reader.getNullable(JsonReader::getInt);
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalOptions.maxOutputDocuments
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("maxOutputSizeInTokens".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxOutputSizeInTokens
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("retrievalReasoningEffort".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalOptions.retrievalReasoningEffort
+                        = KnowledgeRetrievalReasoningEffort.fromJson(reader);
                 } else if ("includeActivity".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.includeActivity
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("outputMode".equals(fieldName)) {
+                    deserializedKnowledgeBaseRetrievalOptions.outputMode
+                        = KnowledgeRetrievalOutputMode.fromString(reader.getString());
                 } else if ("knowledgeSourceParams".equals(fieldName)) {
                     List<KnowledgeSourceParams> knowledgeSourceParams
                         = reader.readArray(reader1 -> KnowledgeSourceParams.fromJson(reader1));
@@ -232,5 +252,146 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
             }
             return deserializedKnowledgeBaseRetrievalOptions;
         });
+    }
+
+    /*
+     * A list of chat message style input.
+     */
+    @Generated
+    private List<KnowledgeBaseMessage> messages;
+
+    /*
+     * Limits the maximum size of the content in the output.
+     */
+    @Generated
+    private Integer maxOutputSize;
+
+    /*
+     * Limits the maximum number of documents in the output.
+     */
+    @Generated
+    private Integer maxOutputDocuments;
+
+    /*
+     * The retrieval reasoning effort configuration.
+     */
+    @Generated
+    private KnowledgeRetrievalReasoningEffort retrievalReasoningEffort;
+
+    /*
+     * The output configuration for this retrieval.
+     */
+    @Generated
+    private KnowledgeRetrievalOutputMode outputMode;
+
+    /**
+     * Get the messages property: A list of chat message style input.
+     *
+     * @return the messages value.
+     */
+    @Generated
+    public List<KnowledgeBaseMessage> getMessages() {
+        return this.messages;
+    }
+
+    /**
+     * Set the messages property: A list of chat message style input.
+     *
+     * @param messages the messages value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions setMessages(List<KnowledgeBaseMessage> messages) {
+        this.messages = messages;
+        return this;
+    }
+
+    /**
+     * Get the maxOutputSize property: Limits the maximum size of the content in the output.
+     *
+     * @return the maxOutputSize value.
+     */
+    @Generated
+    public Integer getMaxOutputSize() {
+        return this.maxOutputSize;
+    }
+
+    /**
+     * Set the maxOutputSize property: Limits the maximum size of the content in the output.
+     *
+     * @param maxOutputSize the maxOutputSize value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions setMaxOutputSize(Integer maxOutputSize) {
+        this.maxOutputSize = maxOutputSize;
+        return this;
+    }
+
+    /**
+     * Get the maxOutputDocuments property: Limits the maximum number of documents in the output.
+     *
+     * @return the maxOutputDocuments value.
+     */
+    @Generated
+    public Integer getMaxOutputDocuments() {
+        return this.maxOutputDocuments;
+    }
+
+    /**
+     * Set the maxOutputDocuments property: Limits the maximum number of documents in the output.
+     *
+     * @param maxOutputDocuments the maxOutputDocuments value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions setMaxOutputDocuments(Integer maxOutputDocuments) {
+        this.maxOutputDocuments = maxOutputDocuments;
+        return this;
+    }
+
+    /**
+     * Get the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
+     *
+     * @return the retrievalReasoningEffort value.
+     */
+    @Generated
+    public KnowledgeRetrievalReasoningEffort getRetrievalReasoningEffort() {
+        return this.retrievalReasoningEffort;
+    }
+
+    /**
+     * Set the retrievalReasoningEffort property: The retrieval reasoning effort configuration.
+     *
+     * @param retrievalReasoningEffort the retrievalReasoningEffort value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions
+        setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffort retrievalReasoningEffort) {
+        this.retrievalReasoningEffort = retrievalReasoningEffort;
+        return this;
+    }
+
+    /**
+     * Get the outputMode property: The output configuration for this retrieval.
+     *
+     * @return the outputMode value.
+     */
+    @Generated
+    public KnowledgeRetrievalOutputMode getOutputMode() {
+        return this.outputMode;
+    }
+
+    /**
+     * Set the outputMode property: The output configuration for this retrieval.
+     *
+     * @param outputMode the outputMode value to set.
+     * @return the KnowledgeBaseRetrievalOptions object itself.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalOptions setOutputMode(KnowledgeRetrievalOutputMode outputMode) {
+        this.outputMode = outputMode;
+        return this;
     }
 }

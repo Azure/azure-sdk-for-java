@@ -61,6 +61,7 @@ import java.util.Objects;
         EvaluatorsClient.class,
         InsightsClient.class,
         SchedulesClient.class,
+        SkillsClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
@@ -70,7 +71,8 @@ import java.util.Objects;
         EvaluationTaxonomiesAsyncClient.class,
         EvaluatorsAsyncClient.class,
         InsightsAsyncClient.class,
-        SchedulesAsyncClient.class })
+        SchedulesAsyncClient.class,
+        SkillsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -538,46 +540,112 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of OpenAIClient class with a default setup for OpenAI
+     * Builds an instance of OpenAIClient class with a default setup for OpenAI.
+     * The base URL is set to {@code {endpoint}/openai/v1}.
      *
      * @return an instance of OpenAIClient
      */
     public OpenAIClient buildOpenAIClient() {
-        return getOpenAIClientBuilder().build()
+        return getOpenAIClientBuilder(null).build()
             .withOptions(optionBuilder -> optionBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
     }
 
     /**
-     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI
+     * Builds an instance of OpenAIClient class configured to use the specified agent's endpoint.
+     * The base URL is set to {@code {endpoint}/agents/{agentName}/endpoint/protocols/openai}.
      *
-     * @return an instance of OpenAIAsyncClient
+     * @param agentName the name of the agent whose endpoint to target. Must not be null or empty.
+     * @return an instance of OpenAIClient
+     * @throws IllegalArgumentException if agentName is null or empty.
      */
-    public OpenAIClientAsync buildOpenAIAsyncClient() {
-        return getOpenAIAsyncClientBuilder().build()
+    public OpenAIClient buildAgentScopedOpenAIClient(String agentName) {
+        if (CoreUtils.isNullOrEmpty(agentName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
+        }
+        return getOpenAIClientBuilder(agentName).build()
             .withOptions(optionBuilder -> optionBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
     }
 
-    private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
+    /**
+     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI.
+     * The base URL is set to {@code {endpoint}/openai/v1}.
+     *
+     * @return an instance of OpenAIAsyncClient
+     */
+    public OpenAIClientAsync buildOpenAIAsyncClient() {
+        return getOpenAIAsyncClientBuilder(null).build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    /**
+     * Builds an instance of OpenAIAsyncClient class configured to use the specified agent's endpoint.
+     * The base URL is set to {@code {endpoint}/agents/{agentName}/endpoint/protocols/openai}.
+     *
+     * @param agentName the name of the agent whose endpoint to target. Must not be null or empty.
+     * @return an instance of OpenAIAsyncClient
+     * @throws IllegalArgumentException if agentName is null or empty.
+     */
+    public OpenAIClientAsync buildAgentScopedOpenAIAsyncClient(String agentName) {
+        if (CoreUtils.isNullOrEmpty(agentName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
+        }
+        return getOpenAIAsyncClientBuilder(agentName).build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    private String getDefaultBaseUrl() {
+        return this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1");
+    }
+
+    private String getAgentEndpointBaseUrl(String agentName) {
+        String base
+            = this.endpoint.endsWith("/") ? this.endpoint.substring(0, this.endpoint.length() - 1) : this.endpoint;
+        return base + "/agents/" + agentName + "/endpoint/protocols/openai";
+    }
+
+    private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
+        builder.baseUrl(CoreUtils.isNullOrEmpty(agentName) ? getDefaultBaseUrl() : getAgentEndpointBaseUrl(agentName));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }
 
-    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder() {
+    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai/v1" : "/openai/v1"));
+        builder.baseUrl(CoreUtils.isNullOrEmpty(agentName) ? getDefaultBaseUrl() : getAgentEndpointBaseUrl(agentName));
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AIProjectClientBuilder.class);
+
+    /**
+     * Builds an instance of SkillsAsyncClient class.
+     *
+     * @return an instance of SkillsAsyncClient.
+     */
+    @Generated
+    public SkillsAsyncClient buildSkillsAsyncClient() {
+        return new SkillsAsyncClient(buildInnerClient().getSkills());
+    }
+
+    /**
+     * Builds an instance of SkillsClient class.
+     *
+     * @return an instance of SkillsClient.
+     */
+    @Generated
+    public SkillsClient buildSkillsClient() {
+        return new SkillsClient(buildInnerClient().getSkills());
+    }
 }

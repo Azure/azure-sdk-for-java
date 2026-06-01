@@ -103,7 +103,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(Arrays.asList("en-US", "es-ES"))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5));
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true).setMaxSpeakers(5));
 
         TranscriptionResult result = client.transcribe(options);
 
@@ -144,8 +144,8 @@ public class TranscriptionClientJavaDocCodeSnippets {
         if (result.getPhrases() != null) {
             result.getPhrases().forEach(phrase -> {
                 System.out.printf("Phrase (%.2f-%.2fs): %s%n",
-                    phrase.getOffset() / 1000.0,
-                    (phrase.getOffset() + phrase.getDuration().toMillis()) / 1000.0,
+                    phrase.getOffset().toMillis() / 1000.0,
+                    (phrase.getOffset().toMillis() + phrase.getDuration().toMillis()) / 1000.0,
                     phrase.getText());
 
                 // Get word-level timing information
@@ -153,7 +153,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
                     phrase.getWords().forEach(word -> {
                         System.out.printf("  Word: \"%s\" at %.2fs%n",
                             word.getText(),
-                            word.getOffset() / 1000.0);
+                            word.getOffset().toMillis() / 1000.0);
                     });
                 }
             });

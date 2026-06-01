@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservicefleet.models.UpgradeChannel;
  */
 public final class AutoUpgradeProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an AutoUpgradeProfile.

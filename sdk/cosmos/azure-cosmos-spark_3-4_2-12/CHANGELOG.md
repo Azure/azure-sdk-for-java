@@ -1,5 +1,16 @@
 ## Release History
 
+### 4.49.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Improved partition planning performance for change feed with large number of feed ranges. - See [PR 49086](https://github.com/Azure/azure-sdk-for-java/pull/49086)
+
+#### Other Changes
+
 ### 4.48.0 (2026-05-01)
 
 #### Features Added
