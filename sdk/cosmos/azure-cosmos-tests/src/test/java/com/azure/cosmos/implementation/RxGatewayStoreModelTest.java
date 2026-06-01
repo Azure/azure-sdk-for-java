@@ -669,6 +669,40 @@ public class RxGatewayStoreModelTest {
 
             // Request RCS=EVENTUAL beats client RCS=Session → no token
             {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.EVENTUAL, ReadConsistencyStrategy.SESSION.toString(), false},
+
+            // ── Quorum-read RCS (LATEST_COMMITTED / GLOBAL_STRONG) must NEVER attach a session token ──
+            // These strategies execute quorum reads server-side; sending a session token would mask
+            // any future regression that weakens them back to session reads.
+
+            // Request RCS=LATEST_COMMITTED on SESSION-default account → no token
+            {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.LATEST_COMMITTED, null, false},
+
+            // Request RCS=LATEST_COMMITTED on EVENTUAL-default account → no token
+            {ConsistencyLevel.EVENTUAL, null, ReadConsistencyStrategy.LATEST_COMMITTED, null, false},
+
+            // Request RCS=LATEST_COMMITTED on STRONG-default account → no token
+            {ConsistencyLevel.STRONG, null, ReadConsistencyStrategy.LATEST_COMMITTED, null, false},
+
+            // Request RCS=GLOBAL_STRONG on STRONG-default account → no token
+            {ConsistencyLevel.STRONG, null, ReadConsistencyStrategy.GLOBAL_STRONG, null, false},
+
+            // Client header RCS=LatestCommitted on SESSION-default account → no token
+            {ConsistencyLevel.SESSION, null, null, ReadConsistencyStrategy.LATEST_COMMITTED.toString(), false},
+
+            // Client header RCS=GlobalStrong on STRONG-default account → no token
+            {ConsistencyLevel.STRONG, null, null, ReadConsistencyStrategy.GLOBAL_STRONG.toString(), false},
+
+            // Request RCS=LATEST_COMMITTED beats client header RCS=Session → no token (quorum wins)
+            {ConsistencyLevel.SESSION, null, ReadConsistencyStrategy.LATEST_COMMITTED, ReadConsistencyStrategy.SESSION.toString(), false},
+
+            // Request RCS=SESSION beats client header RCS=LatestCommitted → token applied (session wins by request-level priority)
+            {ConsistencyLevel.EVENTUAL, null, ReadConsistencyStrategy.SESSION, ReadConsistencyStrategy.LATEST_COMMITTED.toString(), true},
+
+            // ── Account default=STRONG without any RCS override → quorum read, no token ──
+            {ConsistencyLevel.STRONG, null, null, null, false},
+
+            // Account default=STRONG with request CL=SESSION → request CL wins → token applied
+            {ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, null, null, true},
         };
     }
 
