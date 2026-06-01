@@ -9,11 +9,9 @@
 
 - [List](#operations_list)
 
-## WorkspaceOperation
+## SuiteOffers
 
-- [CheckNameAvailability](#workspaceoperation_checknameavailability)
-- [ListKeys](#workspaceoperation_listkeys)
-- [RegenerateKeys](#workspaceoperation_regeneratekeys)
+- [List](#suiteoffers_list)
 
 ## Workspaces
 
@@ -31,16 +29,15 @@
  */
 public final class OfferingsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/offeringsList.json
+     * x-ms-original-file: 2025-12-15-preview/Offerings_List.json
      */
     /**
-     * Sample code: OfferingsList.
+     * Sample code: Offerings_List.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void offeringsList(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.offerings().list("westus2", com.azure.core.util.Context.NONE);
+        manager.offerings().list("westus2", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -53,97 +50,36 @@ public final class OfferingsListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/operations.json
+     * x-ms-original-file: 2025-12-15-preview/Operations_List.json
      */
     /**
-     * Sample code: Operations.
+     * Sample code: Operations_List.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void operations(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void operationsList(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### WorkspaceOperation_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.quantum.models.CheckNameAvailabilityParameters;
-
-/**
- * Samples for WorkspaceOperation CheckNameAvailability.
- */
-public final class WorkspaceOperationCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
-     * quantumWorkspacesCheckNameAvailability.json
-     */
-    /**
-     * Sample code: QuantumWorkspacesCheckNameAvailability.
-     * 
-     * @param manager Entry point to AzureQuantumManager.
-     */
-    public static void
-        quantumWorkspacesCheckNameAvailability(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations()
-            .checkNameAvailabilityWithResponse("westus2",
-                new CheckNameAvailabilityParameters().withName("sample-workspace-name")
-                    .withType("Microsoft.Quantum/Workspaces"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkspaceOperation_ListKeys
+### SuiteOffers_List
 
 ```java
 /**
- * Samples for WorkspaceOperation ListKeys.
+ * Samples for SuiteOffers List.
  */
-public final class WorkspaceOperationListKeysSamples {
+public final class SuiteOffersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/listKeys.json
+     * x-ms-original-file: 2025-12-15-preview/SuiteOffers_ListBySubscription.json
      */
     /**
-     * Sample code: ListKeys.
+     * Sample code: SuiteOffers_ListBySubscription.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void listKeys(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations()
-            .listKeysWithResponse("quantumResourcegroup", "quantumworkspace1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkspaceOperation_RegenerateKeys
-
-```java
-import com.azure.resourcemanager.quantum.models.ApiKeys;
-import com.azure.resourcemanager.quantum.models.KeyType;
-import java.util.Arrays;
-
-/**
- * Samples for WorkspaceOperation RegenerateKeys.
- */
-public final class WorkspaceOperationRegenerateKeysSamples {
-    /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/regenerateKey.json
-     */
-    /**
-     * Sample code: RegenerateKey.
-     * 
-     * @param manager Entry point to AzureQuantumManager.
-     */
-    public static void regenerateKey(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations()
-            .regenerateKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
-                new ApiKeys().withKeys(Arrays.asList(KeyType.PRIMARY, KeyType.SECONDARY)),
-                com.azure.core.util.Context.NONE);
+    public static void suiteOffersListBySubscription(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+        manager.suiteOffers().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -152,6 +88,7 @@ public final class WorkspaceOperationRegenerateKeysSamples {
 
 ```java
 import com.azure.resourcemanager.quantum.models.Provider;
+import com.azure.resourcemanager.quantum.models.QuotaAllocations;
 import com.azure.resourcemanager.quantum.models.WorkspaceResourceProperties;
 import java.util.Arrays;
 
@@ -160,26 +97,31 @@ import java.util.Arrays;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/quantumWorkspacesPut
-     * .json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_CreateOrUpdate.json
      */
     /**
-     * Sample code: QuantumWorkspacesPut.
+     * Sample code: Workspaces_CreateOrUpdate.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void quantumWorkspacesPut(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesCreateOrUpdate(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces()
             .define("quantumworkspace1")
             .withRegion("West US")
             .withExistingResourceGroup("quantumResourcegroup")
-            .withProperties(new WorkspaceResourceProperties()
-                .withProviders(Arrays.asList(new Provider().withProviderId("Honeywell").withProviderSku("Basic"),
-                    new Provider().withProviderId("IonQ").withProviderSku("Basic"),
-                    new Provider().withProviderId("OneQBit").withProviderSku("Basic")))
-                .withStorageAccount(
-                    "/subscriptions/1C4B2828-7D49-494F-933D-061373BE28C2/resourceGroups/quantumResourcegroup/providers/Microsoft.Storage/storageAccounts/testStorageAccount"))
+            .withProperties(
+                new WorkspaceResourceProperties()
+                    .withProviders(
+                        Arrays.asList(new Provider().withProviderId("Honeywell").withProviderSku("Basic"),
+                            new Provider().withProviderId("IonQ").withProviderSku("Basic"),
+                            new Provider().withProviderId("OneQBit").withProviderSku("Basic"),
+                            new Provider().withProviderId("suiteProvider")
+                                .withProviderSku("Basic")
+                                .withQuotas(new QuotaAllocations()
+                                    .withStandardMinutesLifetime(500)
+                                    .withHighMinutesLifetime(50))))
+                    .withStorageAccount(
+                        "/subscriptions/1C4B2828-7D49-494F-933D-061373BE28C2/resourceGroups/quantumResourcegroup/providers/Microsoft.Storage/storageAccounts/testStorageAccount"))
             .create();
     }
 }
@@ -193,15 +135,14 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
-     * quantumWorkspacesDelete.json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_Delete.json
      */
     /**
-     * Sample code: QuantumWorkspacesDelete.
+     * Sample code: Workspaces_Delete.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void quantumWorkspacesDelete(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesDelete(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces().delete("quantumResourcegroup", "quantumworkspace1", com.azure.core.util.Context.NONE);
     }
 }
@@ -215,16 +156,14 @@ public final class WorkspacesDeleteSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/quantumWorkspacesGet
-     * .json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_Get.json
      */
     /**
-     * Sample code: QuantumWorkspacesGet.
+     * Sample code: Workspaces_Get.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void quantumWorkspacesGet(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesGet(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces()
             .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
                 com.azure.core.util.Context.NONE);
@@ -240,16 +179,14 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
-     * quantumWorkspacesListSubscription.json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_ListBySubscription.json
      */
     /**
-     * Sample code: QuantumWorkspacesListBySubscription.
+     * Sample code: Workspaces_ListBySubscription.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void
-        quantumWorkspacesListBySubscription(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesListBySubscription(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -263,16 +200,14 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
-     * quantumWorkspacesListResourceGroup.json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_ListByResourceGroup.json
      */
     /**
-     * Sample code: QuantumWorkspacesListByResourceGroup.
+     * Sample code: Workspaces_ListByResourceGroup.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void
-        quantumWorkspacesListByResourceGroup(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesListByResourceGroup(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces().listByResourceGroup("quantumResourcegroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -290,15 +225,14 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
-     * quantumWorkspacesPatch.json
+     * x-ms-original-file: 2025-12-15-preview/Workspaces_UpdateTags.json
      */
     /**
-     * Sample code: QuantumWorkspacesPatchTags.
+     * Sample code: Workspaces_UpdateTags.
      * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void quantumWorkspacesPatchTags(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void workspacesUpdateTags(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         QuantumWorkspace resource = manager.workspaces()
             .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
                 com.azure.core.util.Context.NONE)

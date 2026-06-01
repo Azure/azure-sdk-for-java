@@ -1,0 +1,4 @@
+directory: specification/quantum/Microsoft.Quantum.Management
+commit: b9f84851bcc14f356b1719575b89e2c85143619f
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
