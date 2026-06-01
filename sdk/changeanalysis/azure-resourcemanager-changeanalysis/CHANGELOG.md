@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.0 (2026-06-01)
+
+> Please note, this package has been deprecated and will no longer be maintained
+> after `2025-10-31`. The Change Analysis service has been retired and its
+> APIs are no longer available. There is no replacement package.
+
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
