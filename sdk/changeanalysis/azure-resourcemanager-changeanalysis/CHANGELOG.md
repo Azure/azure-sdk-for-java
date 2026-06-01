@@ -6,8 +6,6 @@
 > after `2025-10-31`. The Change Analysis service has been retired and its
 > APIs are no longer available. There is no replacement package.
 
-## 1.2.0-beta.1 (Unreleased)
-
 ### Features Added
 
 ### Breaking Changes
