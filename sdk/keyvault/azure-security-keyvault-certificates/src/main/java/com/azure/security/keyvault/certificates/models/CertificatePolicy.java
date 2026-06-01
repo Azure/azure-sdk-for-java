@@ -429,6 +429,11 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     /**
      * Get the platform managed certificate configuration.
      *
+     * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It is only populated when the policy was created against the preview service version
+     * {@code 2026-03-01-preview}. Third-party callers should not rely on this property; the underlying
+     * service contract may change without notice.
+     *
      * @return the platform managed certificate configuration.
      */
     public PlatformManaged getPlatformManaged() {
@@ -437,6 +442,11 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
 
     /**
      * Set the platform managed certificate configuration.
+     *
+     * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It is exposed under the preview service version {@code 2026-03-01-preview} and is not generally available.
+     * Third-party calls that supply a {@link PlatformManaged} configuration will be rejected by the service.
+     * Do not use this setter in production code.
      *
      * @param platformManaged the platform managed certificate configuration.
      * @return the updated CertificatePolicy object itself.
@@ -498,6 +508,10 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * such as {@link #setKeyType(CertificateKeyType)} or {@link #setKeySize(Integer)}). Issuer and
      * X.509 certificate properties are intentionally left unset — the service rejects create requests
      * that specify them when {@code platformManaged} is set.
+     *
+     * <p><strong>Warning: this factory is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It targets the preview service version {@code 2026-03-01-preview} and is not generally available. Third-party
+     * calls will be rejected by the service. Do not use in production code.
      *
      * @param platformManaged the platform-managed certificate configuration.
      * @return a {@link CertificatePolicy} suitable for creating a platform-managed certificate.

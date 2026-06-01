@@ -15,6 +15,13 @@ import java.util.Objects;
 
 /**
  * Properties of the platform managed certificate.
+ *
+ * <p><strong>Warning: this feature is currently intended for internal (first-party) Key Vault use only.</strong>
+ * It is exposed in the preview service version {@code 2026-03-01-preview} and is not generally available.
+ * Third-party calls that supply a {@link CertificatePolicy} configured via
+ * {@link CertificatePolicy#forPlatformManaged(PlatformManaged)} will be rejected by the service. The shape
+ * accepted under {@link #setMetadata(Map)} and the values accepted for {@link #setCertificateUsage(String)}
+ * are owned by the Key Vault service and may change without notice. Do not use this type in production code.
  */
 @Fluent
 public final class PlatformManaged implements JsonSerializable<PlatformManaged> {
@@ -112,6 +119,10 @@ public final class PlatformManaged implements JsonSerializable<PlatformManaged> 
                 } else {
                     reader.skipChildren();
                 }
+            }
+
+            if (deserializedPlatformManaged.certificateUsage == null) {
+                throw new IllegalStateException("Missing required property 'certificateUsage' on PlatformManaged.");
             }
 
             return deserializedPlatformManaged;

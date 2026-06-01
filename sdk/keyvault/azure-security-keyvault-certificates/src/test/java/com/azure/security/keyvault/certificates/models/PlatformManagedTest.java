@@ -100,6 +100,28 @@ class PlatformManagedTest {
         assertTrue(json.contains("\"service\""));
     }
 
+    @Test
+    void deserializeRejectsMissingCertificateUsage() {
+        String json = "{\"metadata\":{\"foo\":\"bar\"}}";
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> {
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                PlatformManaged.fromJson(reader);
+            }
+        });
+        assertTrue(ex.getMessage().contains("certificateUsage"));
+    }
+
+    @Test
+    void deserializeRejectsEmptyObject() {
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> {
+            try (JsonReader reader = JsonProviders.createReader("{}")) {
+                PlatformManaged.fromJson(reader);
+            }
+        });
+        assertTrue(ex.getMessage().contains("certificateUsage"));
+    }
+
     private static PlatformManaged roundTrip(PlatformManaged original) throws IOException {
         String json = toJsonString(original);
         try (JsonReader reader = JsonProviders.createReader(json)) {

@@ -25,6 +25,7 @@ public class CertificatesCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeError(libraryCustomization);
+        customizePlatformManaged(libraryCustomization);
         customizeCertificateKeyType(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
@@ -68,6 +69,22 @@ public class CertificatesCustomizations extends Customization {
                         clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body ->
                             method.setBody(StaticJavaParser.parseBlock(body.toString().replace(oldClassName, newClassName)))));
                     }));
+    }
+
+    private static void customizePlatformManaged(LibraryCustomization customization) {
+        // The hand-written public PlatformManaged class lives in
+        // src/main/java/com/azure/security/keyvault/certificates/models/PlatformManaged.java.
+        // On regeneration, autorest produces an impl twin at
+        // implementation/models/PlatformManaged.java. Remove the impl twin and ensure the
+        // generated impl CertificatePolicy references the public class instead, otherwise
+        // the public models.CertificatePolicy (which exposes PlatformManaged) won't compile.
+        String implModelsDirectory = "src/main/java/com/azure/security/keyvault/certificates/implementation/models/";
+        String publicPlatformManagedFqn = "com.azure.security.keyvault.certificates.models.PlatformManaged";
+
+        customization.getRawEditor().removeFile(implModelsDirectory + "PlatformManaged.java");
+
+        customization.getClass("com.azure.security.keyvault.certificates.implementation.models", "CertificatePolicy")
+            .customizeAst(ast -> ast.addImport(publicPlatformManagedFqn));
     }
 
     private static void customizeCertificateKeyUsage(LibraryCustomization customization) {
