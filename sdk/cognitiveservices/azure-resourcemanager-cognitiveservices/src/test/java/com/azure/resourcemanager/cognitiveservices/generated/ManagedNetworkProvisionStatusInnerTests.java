@@ -13,15 +13,15 @@ public final class ManagedNetworkProvisionStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNetworkProvisionStatusInner model
-            = BinaryData.fromString("{\"status\":\"Inactive\"}").toObject(ManagedNetworkProvisionStatusInner.class);
-        Assertions.assertEquals(ManagedNetworkStatus.INACTIVE, model.status());
+            = BinaryData.fromString("{\"status\":\"Active\"}").toObject(ManagedNetworkProvisionStatusInner.class);
+        Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedNetworkProvisionStatusInner model
-            = new ManagedNetworkProvisionStatusInner().withStatus(ManagedNetworkStatus.INACTIVE);
+            = new ManagedNetworkProvisionStatusInner().withStatus(ManagedNetworkStatus.ACTIVE);
         model = BinaryData.fromObject(model).toObject(ManagedNetworkProvisionStatusInner.class);
-        Assertions.assertEquals(ManagedNetworkStatus.INACTIVE, model.status());
+        Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, model.status());
     }
 }

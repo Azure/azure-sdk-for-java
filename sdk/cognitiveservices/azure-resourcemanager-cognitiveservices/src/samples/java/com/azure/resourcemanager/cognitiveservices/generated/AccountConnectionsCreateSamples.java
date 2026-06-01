@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 public final class AccountConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/AccountConnection/create.json
+     * x-ms-original-file: 2026-03-15-preview/AccountConnection/create.json
      */
     /**
      * Sample code: CreateAccountConnection.

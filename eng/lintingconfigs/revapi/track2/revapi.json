@@ -312,12 +312,11 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
-          "code": "java.annotation.removed",
-          "new": {
-            "matcher": "regex",
-            "match": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*"
-          },
-          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
+          "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
+          "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
         },
         {
           "code": "java.method.removed",
@@ -1880,6 +1879,90 @@
             "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeSourceIngestionParameters::(get|set)AIServices\\(.*\\)"
           },
           "justification": "Intentional rename in knowledgebases preview: getAIServices()/setAIServices() renamed to getAiServices()/setAiServices() following AIServices to AiServices rename per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.visibilityIncreased",
+          "old" : "method void com.azure.ai.agents.models.ChatSummaryMemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
+          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.ai.agents.models.HostedAgentDefinition::<init>(java.util.List<com.azure.ai.agents.models.ProtocolVersionRecord>, java.lang.String, java.lang.String)",
+          "justification": "Breaking change in beta operation: HostedAgentDefinition constructor parameters changed as containerProtocolVersions was removed from the model."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method java.util.List<com.azure.ai.agents.models.ProtocolVersionRecord> com.azure.ai.agents.models.HostedAgentDefinition::getContainerProtocolVersions()",
+          "justification": "Breaking change in beta operation: containerProtocolVersions property removed from HostedAgentDefinition."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.ai.agents.models.HostedAgentDefinition::getImage()",
+          "justification": "Breaking change in beta operation: image property removed from HostedAgentDefinition."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.ai.agents.models.HostedAgentDefinition com.azure.ai.agents.models.HostedAgentDefinition::setImage(java.lang.String)",
+          "justification": "Breaking change in beta operation: image property removed from HostedAgentDefinition."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method void com.azure.ai.agents.models.MemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
+          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method void com.azure.ai.agents.models.UserProfileMemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
+          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.ai.projects.models.EvaluationScheduleTask::<init>(java.lang.String, ===com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun===)",
+          "justification": "Breaking change in beta operation: EvaluationScheduleTask constructor parameter type changed from EvaluationScheduleTaskEvalRun to Map."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun com.azure.ai.projects.models.EvaluationScheduleTask::getEvalRun()",
+          "justification": "Breaking change in beta operation: getEvalRun() return type changed from EvaluationScheduleTaskEvalRun to Map."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun",
+          "justification": "Breaking change in beta operation: EvaluationScheduleTaskEvalRun class removed, replaced by Map<String, BinaryData>."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.projects.models.ModelSamplingParams::getMaxCompletionTokens()",
+          "justification": "Breaking change in beta operation: return type changed from primitive int to boxed Integer to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.projects.models.ModelSamplingParams::getSeed()",
+          "justification": "Breaking change in beta operation: return type changed from primitive int to boxed Integer to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTemperature()",
+          "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTopP()",
+          "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
         }
       ]
     }

@@ -2,10 +2,14 @@
 
 The AI Projects client library is part of the Azure AI Foundry SDK and provides easy access to resources in your Azure AI Foundry Project. Use it to:
 
-* **Create and run Agents** using the separate package `com.azure.azure-ai-agents`.
+* **Create and run Agents** using the separate package `com.azure:azure-ai-agents`.
 * **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
+* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `DataGenerationJobs` operations.
+* **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `Models` operations.
+* **Create and dispatch routines** using the preview `Routines` operations.
+* **Create and manage skills** using the preview `Skills` operations.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
 The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
@@ -31,7 +35,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.1.0-beta.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,6 +52,7 @@ The Azure AI Foundry provides a centralized spot to manage your AI Foundry resou
 AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
@@ -55,7 +60,9 @@ EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationT
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
 InsightsClient insightsClient = builder.buildInsightsClient();
+ModelsClient modelsClient = builder.buildModelsClient();
 RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
+RoutinesClient routinesClient = builder.buildRoutinesClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
 SkillsClient skillsClient = builder.buildSkillsClient();
 ```
@@ -65,6 +72,24 @@ In the particular case of the `Evals` feature, this client library exposes [Open
 ```java com.azure.ai.projects.evalsServices
 EvalService evalService = builder.buildOpenAIClient().evals();
 EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
+```
+
+When using Azure-specific evaluator models with OpenAI evaluations, use `EvaluationsHelper` to adapt the Azure model to
+the OpenAI request type. This keeps application code from depending on the serialization details used by the OpenAI SDK.
+
+```java com.azure.ai.projects.evaluationsHelper
+Map<String, String> dataMapping = new LinkedHashMap<>();
+dataMapping.put("query", "{{item.query}}");
+dataMapping.put("response", "{{sample.output_text}}");
+
+TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
+    "builtin.coherence")
+        .setInitializationParameters(Collections.singletonMap("deployment_name",
+            BinaryData.fromObject("gpt-4o-mini")))
+        .setDataMapping(dataMapping);
+
+EvalCreateParams.TestingCriterion testingCriterion
+    = EvaluationsHelper.toTestingCriterion(coherenceEvaluator);
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
@@ -92,17 +117,18 @@ Several operation groups in the AI Projects client library are in **preview** an
 |---|---|
 | `EvaluatorsClient` | `Evaluations=V1Preview` |
 | `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `ModelsClient` | `Models=V1Preview` |
 | `RedTeamsClient` | `RedTeams=V1Preview` |
 | `SchedulesClient` | `Schedules=V1Preview` |
 | `SkillsClient` | `Skills=V1Preview` |
 
-The `EvaluationRulesClient` and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling their methods (e.g., `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
+The `DataGenerationJobsClient`, `RoutinesClient`, `EvaluationRulesClient`, and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling methods that accept it (e.g., `FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW`, `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW`, `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
 
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`.
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
 
 ## Examples
 
-The examples below show common operations for each AI Projects sub-client. For complete runnable samples, see the [package samples][package_samples].
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
 
 ### Connections operations
 
@@ -630,21 +656,17 @@ Skills are a preview feature. The `SkillsClient` automatically sets the `Skills=
 
 #### Create a skill
 
-```java com.azure.ai.projects.SkillsSample.createSkill
+```java com.azure.ai.projects.SkillsSample.createSkillVersion
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-
-SkillDetails skill = skillsClient.createSkill(
-    "product-support-skill",
+SkillInlineContent inlineContent = new SkillInlineContent(
     "Answers product support questions using company policy.",
-    "You help answer product support questions using company policy and product guidance.",
-    metadata
+    "You help answer product support questions using company policy and product guidance."
 );
 
-System.out.println("Created skill: " + skill.getName());
-System.out.println("Skill ID: " + skill.getSkillId());
-System.out.println("Blob present: " + skill.isBlobPresent());
+SkillVersion skillVersion = skillsClient.createSkillVersion("product-support-skill", inlineContent, true);
+
+System.out.println("Created skill version: " + skillVersion.getName());
+System.out.println("Version: " + skillVersion.getVersion());
 
 ```
 
@@ -653,11 +675,11 @@ System.out.println("Blob present: " + skill.isBlobPresent());
 ```java com.azure.ai.projects.SkillsSample.getSkill
 
 String skillName = "product-support-skill";
-SkillDetails skill = skillsClient.getSkill(skillName);
+Skill skill = skillsClient.getSkill(skillName);
 
 System.out.println("Skill name: " + skill.getName());
-System.out.println("Skill ID: " + skill.getSkillId());
 System.out.println("Description: " + skill.getDescription());
+System.out.println("Default version: " + skill.getDefaultVersion());
 
 ```
 
@@ -667,20 +689,10 @@ System.out.println("Description: " + skill.getDescription());
 
 String skillName = "product-support-skill";
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-metadata.put("status", "updated");
-
-SkillDetails updated = skillsClient.updateSkill(
-    skillName,
-    "Updated description for the sample skill.",
-    null,
-    metadata
-);
+Skill updated = skillsClient.updateSkill(skillName, "2");
 
 System.out.println("Updated skill: " + updated.getName());
-System.out.println("Description: " + updated.getDescription());
-System.out.println("Metadata: " + updated.getMetadata());
+System.out.println("Default version: " + updated.getDefaultVersion());
 
 ```
 
@@ -688,11 +700,10 @@ System.out.println("Metadata: " + updated.getMetadata());
 
 ```java com.azure.ai.projects.SkillsSample.listSkills
 
-PagedIterable<SkillDetails> skills = skillsClient.listSkills();
-for (SkillDetails skill : skills) {
+PagedIterable<Skill> skills = skillsClient.listSkills();
+for (Skill skill : skills) {
     System.out.println("Skill name: " + skill.getName());
-    System.out.println("Skill ID: " + skill.getSkillId());
-    System.out.println("Blob present: " + skill.isBlobPresent());
+    System.out.println("Description: " + skill.getDescription());
     System.out.println("-------------------------------------------------");
 }
 
@@ -711,21 +722,18 @@ System.out.println("Deleted skill: " + skillName);
 
 #### Asynchronous skills operations
 
-```java com.azure.ai.projects.SkillsAsyncSample.createSkill
+```java com.azure.ai.projects.SkillsAsyncSample.createSkillVersion
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-
-return skillsAsyncClient.createSkill(
-    "product-support-skill",
+SkillInlineContent inlineContent = new SkillInlineContent(
     "Answers product support questions using company policy.",
-    "You help answer product support questions using company policy and product guidance.",
-    metadata
-).doOnNext(skill -> {
-    System.out.println("Created skill: " + skill.getName());
-    System.out.println("Skill ID: " + skill.getSkillId());
-    System.out.println("Blob present: " + skill.isBlobPresent());
-});
+    "You help answer product support questions using company policy and product guidance."
+);
+
+return skillsAsyncClient.createSkillVersion("product-support-skill", inlineContent, true)
+    .doOnNext(skillVersion -> {
+        System.out.println("Created skill version: " + skillVersion.getName());
+        System.out.println("Version: " + skillVersion.getVersion());
+    });
 
 ```
 
@@ -736,8 +744,8 @@ String skillName = "product-support-skill";
 return skillsAsyncClient.getSkill(skillName)
     .doOnNext(skill -> {
         System.out.println("Skill name: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
         System.out.println("Description: " + skill.getDescription());
+        System.out.println("Default version: " + skill.getDefaultVersion());
     });
 
 ```
@@ -746,20 +754,11 @@ return skillsAsyncClient.getSkill(skillName)
 
 String skillName = "product-support-skill";
 
-Map<String, String> metadata = new HashMap<>();
-metadata.put("domain", "support");
-metadata.put("status", "updated");
-
-return skillsAsyncClient.updateSkill(
-    skillName,
-    "Updated description for the sample skill.",
-    null,
-    metadata
-).doOnNext(updated -> {
-    System.out.println("Updated skill: " + updated.getName());
-    System.out.println("Description: " + updated.getDescription());
-    System.out.println("Metadata: " + updated.getMetadata());
-});
+return skillsAsyncClient.updateSkill(skillName, "2")
+    .doOnNext(updated -> {
+        System.out.println("Updated skill: " + updated.getName());
+        System.out.println("Default version: " + updated.getDefaultVersion());
+    });
 
 ```
 
@@ -768,8 +767,7 @@ return skillsAsyncClient.updateSkill(
 return skillsAsyncClient.listSkills()
     .doOnNext(skill -> {
         System.out.println("Skill name: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
-        System.out.println("Blob present: " + skill.isBlobPresent());
+        System.out.println("Description: " + skill.getDescription());
         System.out.println("-------------------------------------------------");
     });
 

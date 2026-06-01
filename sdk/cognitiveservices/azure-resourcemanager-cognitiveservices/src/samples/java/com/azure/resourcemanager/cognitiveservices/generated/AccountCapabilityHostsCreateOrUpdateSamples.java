@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CapabilityHostProperti
  */
 public final class AccountCapabilityHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/AccountCapabilityHost/createOrUpdate.json
+     * x-ms-original-file: 2026-03-15-preview/AccountCapabilityHost/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Account CapabilityHost.
