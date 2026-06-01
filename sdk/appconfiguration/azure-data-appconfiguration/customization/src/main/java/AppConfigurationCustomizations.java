@@ -32,7 +32,7 @@ public class AppConfigurationCustomizations extends Customization {
     private static final String[] FILES_TO_REMOVE = new String[] {
         "AzureAppConfigurationServiceVersion.java",
         // The public client surface is hand-written. Drop any codegen-emitted copies so the hand-written
-        // versions in the repo survive a regen.
+        // versions in the repo survive a regeneration.
         "ConfigurationClient.java",
         "ConfigurationAsyncClient.java",
         "ConfigurationClientBuilder.java",
