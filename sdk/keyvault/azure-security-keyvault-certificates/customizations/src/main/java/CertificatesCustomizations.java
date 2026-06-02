@@ -138,15 +138,11 @@ public class CertificatesCustomizations extends Customization {
             .addMarkerAnnotation("Override")
             .setBody(StaticJavaParser.parseBlock("{ return this.version; }"));
 
-        // Intentionally pin getLatest() to V2025_07_01. V2026_03_01_PREVIEW exposes the PlatformManaged
-        // certificate policy property, which is reserved for internal (1P) Key Vault use. Defaulting 3P
-        // customers to the preview version would invalidate existing recordings without unlocking new
-        // functionality for them; bump this only when a stable version supersedes V2025_07_01.
         enumDeclaration.addMethod("getLatest", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
             .setType("CertificateServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link CertificateServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2026_03_01_PREVIEW; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/certificates/CertificateServiceVersion.java",
