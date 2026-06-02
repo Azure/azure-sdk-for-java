@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -32,6 +33,7 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -64,6 +66,44 @@ class AadResourceServerConfigurationTests {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+            });
+    }
+
+    @Test
+    void testJwtDecoderTimeoutDefaultValues() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout())
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT));
+                assertThat(properties.getJwtReadTimeout())
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
+                // Verify the default timeouts are applied to the RestTemplate used by the JwtDecoder
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder,
+                    JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                    JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
+            });
+    }
+
+    @Test
+    void testJwtDecoderTimeoutCustomValues() {
+        resourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.jwt-connect-timeout=2000",
+                "spring.cloud.azure.active-directory.jwt-read-timeout=3000")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
+                assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+                // Verify JwtDecoder is still created successfully with custom timeouts
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                assertThat(jwtDecoder).isNotNull();
+                assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+                // Verify the configured timeouts are applied to the RestTemplate used by the JwtDecoder
+                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder, 2000, 3000);
             });
     }
 
@@ -363,5 +403,53 @@ class AadResourceServerConfigurationTests {
         public Collection<GrantedAuthority> convert(Jwt source) {
             return null;
         }
+    }
+
+    /**
+     * Verifies that the RestTemplate used by the NimbusJwtDecoder for JWK retrieval
+     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     */
+    @SuppressWarnings("unchecked")
+    private static void verifyJwtDecoderRestTemplateTimeouts(JwtDecoder jwtDecoder,
+                                                             int expectedConnectTimeoutMs,
+                                                             int expectedReadTimeoutMs) {
+        // NimbusJwtDecoder -> jwtProcessor (DefaultJWTProcessor)
+        Object jwtProcessor = ReflectionTestUtils.getField(jwtDecoder, "jwtProcessor");
+        assertThat(jwtProcessor).isInstanceOf(com.nimbusds.jwt.proc.DefaultJWTProcessor.class);
+
+        // DefaultJWTProcessor -> JWSKeySelector (JWSVerificationKeySelector)
+        com.nimbusds.jose.proc.JWSKeySelector<?> keySelector =
+            ((com.nimbusds.jwt.proc.DefaultJWTProcessor<?>) jwtProcessor).getJWSKeySelector();
+        assertThat(keySelector).isInstanceOf(com.nimbusds.jose.proc.JWSVerificationKeySelector.class);
+
+        // JWSVerificationKeySelector -> JWKSource (JWKSetBasedJWKSource)
+        com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
+            ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
+        assertThat(jwkSource).isInstanceOf(com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource.class);
+
+        // JWKSetBasedJWKSource -> JWKSetSource (CachingJWKSetSource -> JWKSetSourceWrapper -> actual source)
+        Object jwkSetSource =
+            ((com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource<?>) jwkSource).getJWKSetSource();
+
+        // Unwrap JWKSetSourceWrapper chain to find the source with restOperations
+        while (jwkSetSource instanceof com.nimbusds.jose.jwk.source.JWKSetSourceWrapper<?> wrapper) {
+            jwkSetSource = wrapper.getSource();
+        }
+
+        // actual source -> restOperations (RestTemplate)
+        Object restOperations = ReflectionTestUtils.getField(jwkSetSource, "restOperations");
+        assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
+
+        // RestTemplate -> ClientHttpRequestFactory
+        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
+            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
+
+        // Verify timeouts on the request factory (may be stored as Duration or int)
+        Object connectTimeoutValue = ReflectionTestUtils.getField(requestFactory, "connectTimeout");
+        Object readTimeoutValue = ReflectionTestUtils.getField(requestFactory, "readTimeout");
+        int connectTimeout = connectTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
+        int readTimeout = readTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
+        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
+        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }
 }

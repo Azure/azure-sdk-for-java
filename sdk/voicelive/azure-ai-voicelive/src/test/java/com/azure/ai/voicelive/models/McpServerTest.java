@@ -20,17 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
- * Unit tests for {@link MCPServer}.
+ * Unit tests for {@link McpServer}.
  */
-class MCPServerTest {
+class McpServerTest {
 
     private static final String TEST_SERVER_LABEL = "test-server";
     private static final String TEST_SERVER_URL = "http://localhost:8080";
-    private MCPServer mcpServer;
+    private McpServer mcpServer;
 
     @BeforeEach
     void setUp() {
-        mcpServer = new MCPServer(TEST_SERVER_LABEL, TEST_SERVER_URL);
+        mcpServer = new McpServer(TEST_SERVER_LABEL, TEST_SERVER_URL);
     }
 
     @Test
@@ -46,7 +46,7 @@ class MCPServerTest {
     void testConstructorWithNullServerLabel() {
         // Act & Assert
         assertDoesNotThrow(() -> {
-            MCPServer server = new MCPServer(null, TEST_SERVER_URL);
+            McpServer server = new McpServer(null, TEST_SERVER_URL);
             assertNull(server.getServerLabel());
         });
     }
@@ -55,7 +55,7 @@ class MCPServerTest {
     void testConstructorWithNullServerUrl() {
         // Act & Assert
         assertDoesNotThrow(() -> {
-            MCPServer server = new MCPServer(TEST_SERVER_LABEL, null);
+            McpServer server = new McpServer(TEST_SERVER_LABEL, null);
             assertNull(server.getServerUrl());
         });
     }
@@ -66,7 +66,7 @@ class MCPServerTest {
         String authorization = "Bearer test-token";
 
         // Act
-        MCPServer result = mcpServer.setAuthorization(authorization);
+        McpServer result = mcpServer.setAuthorization(authorization);
 
         // Assert
         assertEquals(authorization, mcpServer.getAuthorization());
@@ -90,7 +90,7 @@ class MCPServerTest {
         headers.put("X-Custom-Header", "test-value");
 
         // Act
-        MCPServer result = mcpServer.setHeaders(headers);
+        McpServer result = mcpServer.setHeaders(headers);
 
         // Assert
         assertEquals(headers, mcpServer.getHeaders());
@@ -127,7 +127,7 @@ class MCPServerTest {
         List<String> allowedTools = Arrays.asList("tool1", "tool2", "tool3");
 
         // Act
-        MCPServer result = mcpServer.setAllowedTools(allowedTools);
+        McpServer result = mcpServer.setAllowedTools(allowedTools);
 
         // Assert
         assertEquals(allowedTools, mcpServer.getAllowedTools());
@@ -160,10 +160,10 @@ class MCPServerTest {
     @Test
     void testSetAndGetRequireApproval() {
         // Arrange
-        BinaryData requireApproval = BinaryData.fromObject(MCPApprovalType.ALWAYS);
+        BinaryData requireApproval = BinaryData.fromObject(McpApprovalType.ALWAYS);
 
         // Act
-        MCPServer result = mcpServer.setRequireApproval(requireApproval);
+        McpServer result = mcpServer.setRequireApproval(requireApproval);
 
         // Assert
         assertEquals(requireApproval, mcpServer.getRequireApproval());
@@ -185,7 +185,7 @@ class MCPServerTest {
         assertEquals(ToolType.MCP, mcpServer.getType());
 
         // Create another instance to verify consistency
-        MCPServer anotherServer = new MCPServer("another-server", "http://localhost:9090");
+        McpServer anotherServer = new McpServer("another-server", "http://localhost:9090");
         assertEquals(ToolType.MCP, anotherServer.getType());
     }
 
@@ -196,10 +196,10 @@ class MCPServerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-API-Key", "secret");
         List<String> allowedTools = Arrays.asList("tool1", "tool2");
-        BinaryData requireApproval = BinaryData.fromObject(MCPApprovalType.NEVER);
+        BinaryData requireApproval = BinaryData.fromObject(McpApprovalType.NEVER);
 
         // Act - Test fluent method chaining
-        MCPServer result = mcpServer.setAuthorization(authorization)
+        McpServer result = mcpServer.setAuthorization(authorization)
             .setHeaders(headers)
             .setAllowedTools(allowedTools)
             .setRequireApproval(requireApproval);
@@ -244,8 +244,8 @@ class MCPServerTest {
     @Test
     void testMultipleInstancesAreIndependent() {
         // Arrange
-        MCPServer server1 = new MCPServer("server1", "http://server1.com");
-        MCPServer server2 = new MCPServer("server2", "http://server2.com");
+        McpServer server1 = new McpServer("server1", "http://server1.com");
+        McpServer server2 = new McpServer("server2", "http://server2.com");
 
         server1.setAuthorization("token1");
         server2.setAuthorization("token2");
@@ -259,13 +259,13 @@ class MCPServerTest {
 
     @Test
     void testComplexRequireApprovalConfiguration() {
-        // Test with MCPApprovalType.ALWAYS
-        BinaryData alwaysApproval = BinaryData.fromObject(MCPApprovalType.ALWAYS);
+        // Test with McpApprovalType.ALWAYS
+        BinaryData alwaysApproval = BinaryData.fromObject(McpApprovalType.ALWAYS);
         mcpServer.setRequireApproval(alwaysApproval);
         assertEquals(alwaysApproval, mcpServer.getRequireApproval());
 
-        // Test with MCPApprovalType.NEVER
-        BinaryData neverApproval = BinaryData.fromObject(MCPApprovalType.NEVER);
+        // Test with McpApprovalType.NEVER
+        BinaryData neverApproval = BinaryData.fromObject(McpApprovalType.NEVER);
         mcpServer.setRequireApproval(neverApproval);
         assertEquals(neverApproval, mcpServer.getRequireApproval());
     }

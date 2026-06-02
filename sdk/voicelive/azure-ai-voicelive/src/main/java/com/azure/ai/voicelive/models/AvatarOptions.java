@@ -16,7 +16,13 @@ import java.util.List;
  * Configuration for avatar streaming and behavior during the session.
  */
 @Fluent
-public final class AvatarConfiguration implements JsonSerializable<AvatarConfiguration> {
+public final class AvatarOptions implements JsonSerializable<AvatarOptions> {
+
+    /*
+     * Type of avatar to use.
+     */
+    @Generated
+    private AvatarConfigTypes type;
 
     /*
      * Optional list of ICE servers to use for WebRTC connection establishment.
@@ -37,6 +43,12 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
     private String style;
 
     /*
+     * Base model to use for the avatar. Required for photo avatar.
+     */
+    @Generated
+    private PhotoAvatarBaseModes model;
+
+    /*
      * Indicates whether the avatar is customized or not.
      */
     @Generated
@@ -48,16 +60,57 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
     @Generated
     private VideoParams video;
 
+    /*
+     * Configuration for the avatar's zoom level, position, rotation and movement amplitude in the video frame.
+     */
+    @Generated
+    private Scene scene;
+
+    /*
+     * Output protocol for avatar streaming. Default is 'webrtc'.
+     */
+    @Generated
+    private AvatarOutputProtocol outputProtocol;
+
+    /*
+     * When enabled, forwards audit audio via WebSocket for review/debugging purposes, even when avatar output is
+     * delivered via WebRTC.
+     */
+    @Generated
+    private Boolean outputAuditAudio;
+
     /**
-     * Creates an instance of AvatarConfiguration class.
+     * Creates an instance of AvatarOptions class.
      *
      * @param character the character value to set.
      * @param customized the customized value to set.
      */
     @Generated
-    public AvatarConfiguration(String character, boolean customized) {
+    public AvatarOptions(String character, boolean customized) {
         this.character = character;
         this.customized = customized;
+    }
+
+    /**
+     * Get the type property: Type of avatar to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public AvatarConfigTypes getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of avatar to use.
+     *
+     * @param type the type value to set.
+     * @return the AvatarOptions object itself.
+     */
+    @Generated
+    public AvatarOptions setType(AvatarConfigTypes type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -74,10 +127,10 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
      * Set the iceServers property: Optional list of ICE servers to use for WebRTC connection establishment.
      *
      * @param iceServers the iceServers value to set.
-     * @return the AvatarConfiguration object itself.
+     * @return the AvatarOptions object itself.
      */
     @Generated
-    public AvatarConfiguration setIceServers(List<IceServer> iceServers) {
+    public AvatarOptions setIceServers(List<IceServer> iceServers) {
         this.iceServers = iceServers;
         return this;
     }
@@ -106,11 +159,33 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
      * Set the style property: Optional avatar style, such as emotional tone or speaking style.
      *
      * @param style the style value to set.
-     * @return the AvatarConfiguration object itself.
+     * @return the AvatarOptions object itself.
      */
     @Generated
-    public AvatarConfiguration setStyle(String style) {
+    public AvatarOptions setStyle(String style) {
         this.style = style;
+        return this;
+    }
+
+    /**
+     * Get the model property: Base model to use for the avatar. Required for photo avatar.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public PhotoAvatarBaseModes getModel() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: Base model to use for the avatar. Required for photo avatar.
+     *
+     * @param model the model value to set.
+     * @return the AvatarOptions object itself.
+     */
+    @Generated
+    public AvatarOptions setModel(PhotoAvatarBaseModes model) {
+        this.model = model;
         return this;
     }
 
@@ -138,11 +213,81 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
      * Set the video property: Optional video configuration including resolution, bitrate, and codec.
      *
      * @param video the video value to set.
-     * @return the AvatarConfiguration object itself.
+     * @return the AvatarOptions object itself.
      */
     @Generated
-    public AvatarConfiguration setVideo(VideoParams video) {
+    public AvatarOptions setVideo(VideoParams video) {
         this.video = video;
+        return this;
+    }
+
+    /**
+     * Get the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
+     * the video frame.
+     *
+     * @return the scene value.
+     */
+    @Generated
+    public Scene getScene() {
+        return this.scene;
+    }
+
+    /**
+     * Set the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
+     * the video frame.
+     *
+     * @param scene the scene value to set.
+     * @return the AvatarOptions object itself.
+     */
+    @Generated
+    public AvatarOptions setScene(Scene scene) {
+        this.scene = scene;
+        return this;
+    }
+
+    /**
+     * Get the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
+     *
+     * @return the outputProtocol value.
+     */
+    @Generated
+    public AvatarOutputProtocol getOutputProtocol() {
+        return this.outputProtocol;
+    }
+
+    /**
+     * Set the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
+     *
+     * @param outputProtocol the outputProtocol value to set.
+     * @return the AvatarOptions object itself.
+     */
+    @Generated
+    public AvatarOptions setOutputProtocol(AvatarOutputProtocol outputProtocol) {
+        this.outputProtocol = outputProtocol;
+        return this;
+    }
+
+    /**
+     * Get the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
+     * purposes, even when avatar output is delivered via WebRTC.
+     *
+     * @return the outputAuditAudio value.
+     */
+    @Generated
+    public Boolean isOutputAuditAudio() {
+        return this.outputAuditAudio;
+    }
+
+    /**
+     * Set the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
+     * purposes, even when avatar output is delivered via WebRTC.
+     *
+     * @param outputAuditAudio the outputAuditAudio value to set.
+     * @return the AvatarOptions object itself.
+     */
+    @Generated
+    public AvatarOptions setOutputAuditAudio(Boolean outputAuditAudio) {
+        this.outputAuditAudio = outputAuditAudio;
         return this;
     }
 
@@ -168,16 +313,16 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
     }
 
     /**
-     * Reads an instance of AvatarConfiguration from the JsonReader.
+     * Reads an instance of AvatarOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AvatarConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AvatarOptions if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AvatarConfiguration.
+     * @throws IOException If an error occurs while reading the AvatarOptions.
      */
     @Generated
-    public static AvatarConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static AvatarOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String character = null;
             boolean customized = false;
@@ -216,161 +361,16 @@ public final class AvatarConfiguration implements JsonSerializable<AvatarConfigu
                     reader.skipChildren();
                 }
             }
-            AvatarConfiguration deserializedAvatarConfiguration = new AvatarConfiguration(character, customized);
-            deserializedAvatarConfiguration.type = type;
-            deserializedAvatarConfiguration.iceServers = iceServers;
-            deserializedAvatarConfiguration.style = style;
-            deserializedAvatarConfiguration.model = model;
-            deserializedAvatarConfiguration.video = video;
-            deserializedAvatarConfiguration.scene = scene;
-            deserializedAvatarConfiguration.outputProtocol = outputProtocol;
-            deserializedAvatarConfiguration.outputAuditAudio = outputAuditAudio;
-            return deserializedAvatarConfiguration;
+            AvatarOptions deserializedAvatarOptions = new AvatarOptions(character, customized);
+            deserializedAvatarOptions.type = type;
+            deserializedAvatarOptions.iceServers = iceServers;
+            deserializedAvatarOptions.style = style;
+            deserializedAvatarOptions.model = model;
+            deserializedAvatarOptions.video = video;
+            deserializedAvatarOptions.scene = scene;
+            deserializedAvatarOptions.outputProtocol = outputProtocol;
+            deserializedAvatarOptions.outputAuditAudio = outputAuditAudio;
+            return deserializedAvatarOptions;
         });
-    }
-
-    /*
-     * Type of avatar to use.
-     */
-    @Generated
-    private AvatarConfigTypes type;
-
-    /*
-     * Base model to use for the avatar. Required for photo avatar.
-     */
-    @Generated
-    private PhotoAvatarBaseModes model;
-
-    /*
-     * Output protocol for avatar streaming. Default is 'webrtc'.
-     */
-    @Generated
-    private AvatarOutputProtocol outputProtocol;
-
-    /**
-     * Get the type property: Type of avatar to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public AvatarConfigTypes getType() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Type of avatar to use.
-     *
-     * @param type the type value to set.
-     * @return the AvatarConfiguration object itself.
-     */
-    @Generated
-    public AvatarConfiguration setType(AvatarConfigTypes type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the model property: Base model to use for the avatar. Required for photo avatar.
-     *
-     * @return the model value.
-     */
-    @Generated
-    public PhotoAvatarBaseModes getModel() {
-        return this.model;
-    }
-
-    /**
-     * Set the model property: Base model to use for the avatar. Required for photo avatar.
-     *
-     * @param model the model value to set.
-     * @return the AvatarConfiguration object itself.
-     */
-    @Generated
-    public AvatarConfiguration setModel(PhotoAvatarBaseModes model) {
-        this.model = model;
-        return this;
-    }
-
-    /**
-     * Get the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
-     *
-     * @return the outputProtocol value.
-     */
-    @Generated
-    public AvatarOutputProtocol getOutputProtocol() {
-        return this.outputProtocol;
-    }
-
-    /**
-     * Set the outputProtocol property: Output protocol for avatar streaming. Default is 'webrtc'.
-     *
-     * @param outputProtocol the outputProtocol value to set.
-     * @return the AvatarConfiguration object itself.
-     */
-    @Generated
-    public AvatarConfiguration setOutputProtocol(AvatarOutputProtocol outputProtocol) {
-        this.outputProtocol = outputProtocol;
-        return this;
-    }
-
-    /*
-     * Configuration for the avatar's zoom level, position, rotation and movement amplitude in the video frame.
-     */
-    @Generated
-    private Scene scene;
-
-    /*
-     * When enabled, forwards audit audio via WebSocket for review/debugging purposes, even when avatar output is
-     * delivered via WebRTC.
-     */
-    @Generated
-    private Boolean outputAuditAudio;
-
-    /**
-     * Get the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
-     * the video frame.
-     *
-     * @return the scene value.
-     */
-    @Generated
-    public Scene getScene() {
-        return this.scene;
-    }
-
-    /**
-     * Set the scene property: Configuration for the avatar's zoom level, position, rotation and movement amplitude in
-     * the video frame.
-     *
-     * @param scene the scene value to set.
-     * @return the AvatarConfiguration object itself.
-     */
-    @Generated
-    public AvatarConfiguration setScene(Scene scene) {
-        this.scene = scene;
-        return this;
-    }
-
-    /**
-     * Get the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
-     * purposes, even when avatar output is delivered via WebRTC.
-     *
-     * @return the outputAuditAudio value.
-     */
-    @Generated
-    public Boolean isOutputAuditAudio() {
-        return this.outputAuditAudio;
-    }
-
-    /**
-     * Set the outputAuditAudio property: When enabled, forwards audit audio via WebSocket for review/debugging
-     * purposes, even when avatar output is delivered via WebRTC.
-     *
-     * @param outputAuditAudio the outputAuditAudio value to set.
-     * @return the AvatarConfiguration object itself.
-     */
-    @Generated
-    public AvatarConfiguration setOutputAuditAudio(Boolean outputAuditAudio) {
-        this.outputAuditAudio = outputAuditAudio;
-        return this;
     }
 }

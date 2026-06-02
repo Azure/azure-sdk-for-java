@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 public class VoiceLiveSessionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> apiVersionParams() {
-        return Stream.of(Arguments.of(API_VERSION_GA), Arguments.of(API_VERSION_PREVIEW));
+        return Arrays.stream(API_VERSIONS).map(Arguments::of);
     }
 
     @ParameterizedTest
@@ -52,7 +52,7 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
                     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                     .setInputAudioFormat(InputAudioFormat.PCM16);
 
-            session = client.startSession(TEST_MODEL).block(SESSION_TIMEOUT);
+            session = client.startSession(TEST_MODEL, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
             Assertions.assertTrue(session.isConnected(), "Session should be connected");

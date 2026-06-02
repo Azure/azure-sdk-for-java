@@ -12,39 +12,39 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link MCPApprovalType}.
+ * Unit tests for {@link McpApprovalType}.
  */
-class MCPApprovalTypeTest {
+class McpApprovalTypeTest {
 
     @Test
     void testNeverApprovalType() {
         // Assert
-        assertNotNull(MCPApprovalType.NEVER);
-        assertEquals("never", MCPApprovalType.NEVER.toString());
+        assertNotNull(McpApprovalType.NEVER);
+        assertEquals("never", McpApprovalType.NEVER.toString());
     }
 
     @Test
     void testAlwaysApprovalType() {
         // Assert
-        assertNotNull(MCPApprovalType.ALWAYS);
-        assertEquals("always", MCPApprovalType.ALWAYS.toString());
+        assertNotNull(McpApprovalType.ALWAYS);
+        assertEquals("always", McpApprovalType.ALWAYS.toString());
     }
 
     @Test
     void testFromString() {
         // Act
-        MCPApprovalType never = MCPApprovalType.fromString("never");
-        MCPApprovalType always = MCPApprovalType.fromString("always");
+        McpApprovalType never = McpApprovalType.fromString("never");
+        McpApprovalType always = McpApprovalType.fromString("always");
 
         // Assert
-        assertEquals(MCPApprovalType.NEVER, never);
-        assertEquals(MCPApprovalType.ALWAYS, always);
+        assertEquals(McpApprovalType.NEVER, never);
+        assertEquals(McpApprovalType.ALWAYS, always);
     }
 
     @Test
     void testFromStringWithCustomValue() {
         // Act
-        MCPApprovalType custom = MCPApprovalType.fromString("custom-approval-type");
+        McpApprovalType custom = McpApprovalType.fromString("custom-approval-type");
 
         // Assert
         assertNotNull(custom);
@@ -54,20 +54,20 @@ class MCPApprovalTypeTest {
     @Test
     void testValues() {
         // Act
-        Collection<MCPApprovalType> values = MCPApprovalType.values();
+        Collection<McpApprovalType> values = McpApprovalType.values();
 
         // Assert
         assertNotNull(values);
         assertTrue(values.size() >= 2); // At least NEVER and ALWAYS
-        assertTrue(values.contains(MCPApprovalType.NEVER));
-        assertTrue(values.contains(MCPApprovalType.ALWAYS));
+        assertTrue(values.contains(McpApprovalType.NEVER));
+        assertTrue(values.contains(McpApprovalType.ALWAYS));
     }
 
     @Test
     void testEquality() {
         // Arrange
-        MCPApprovalType never1 = MCPApprovalType.fromString("never");
-        MCPApprovalType never2 = MCPApprovalType.NEVER;
+        McpApprovalType never1 = McpApprovalType.fromString("never");
+        McpApprovalType never2 = McpApprovalType.NEVER;
 
         // Assert
         assertEquals(never1, never2);
@@ -77,9 +77,9 @@ class MCPApprovalTypeTest {
     @Test
     void testCaseInsensitivity() {
         // Act
-        MCPApprovalType lowercase = MCPApprovalType.fromString("never");
-        MCPApprovalType uppercase = MCPApprovalType.fromString("NEVER");
-        MCPApprovalType mixedCase = MCPApprovalType.fromString("Never");
+        McpApprovalType lowercase = McpApprovalType.fromString("never");
+        McpApprovalType uppercase = McpApprovalType.fromString("NEVER");
+        McpApprovalType mixedCase = McpApprovalType.fromString("Never");
 
         // Assert - ExpandableStringEnum is typically case-sensitive for string matching
         // but creates new instances for different cases

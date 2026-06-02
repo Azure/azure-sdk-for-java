@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Unit tests for MCP server event classes.
  */
-class MCPServerEventTest {
+class McpServerEventTest {
 
     @Test
     void testServerEventMcpListToolsInProgress() {
