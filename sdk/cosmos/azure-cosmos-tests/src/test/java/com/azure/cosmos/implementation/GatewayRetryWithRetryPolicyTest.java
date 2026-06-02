@@ -57,6 +57,21 @@ public class GatewayRetryWithRetryPolicyTest {
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldNotHandleThrottlingException() throws Exception {
+        GatewayRetryWithRetryPolicy retryPolicy = new GatewayRetryWithRetryPolicy(
+            createRequest(),
+            Mockito.mock(GlobalEndpointManager.class),
+            30);
+
+        CosmosException throttlingException = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+
+        ShouldRetryResult shouldRetryResult = retryPolicy.shouldRetry(throttlingException).block();
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.nonRelatedException).isTrue();
+        assertThat(shouldRetryResult.exception).isSameAs(throttlingException);
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void shouldDelegateRetryableNetworkExceptionToMetadataPolicy() throws Exception {
         GatewayRetryWithRetryPolicy retryPolicy = new GatewayRetryWithRetryPolicy(
             createRequest(),
