@@ -129,7 +129,7 @@ To run the configuration sample, you'll need to add the SDK to your project and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
