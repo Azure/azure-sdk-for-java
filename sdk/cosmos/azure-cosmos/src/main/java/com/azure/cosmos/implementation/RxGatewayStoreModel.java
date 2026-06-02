@@ -380,6 +380,35 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     /**
+     * Core normalization logic — {@code public static} for direct unit testing from cross-package
+     * test classes (e.g. {@code RntbdReadConsistencyStrategyHeaderTests} in {@code azure-cosmos-tests}).
+     * Avoids test drift from duplicated simulation logic.
+     *
+     * <p>Behavior is identical to the instance overload {@link #resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest)};
+     * see that method's javadoc for the priority rules.</p>
+     */
+    public static void resolveEffectiveConsistencyHeaders(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
+
+        ReadConsistencyStrategy effectiveRCS =
+            resolveEffectiveReadConsistencyStrategy(headers, requestContextReadConsistencyStrategy);
+
+        if (effectiveRCS != null) {
+            // Non-DEFAULT RCS wins — strip ConsistencyLevel to prevent dual-header rejection
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+            // Ensure the RCS header is set (requestContext-level may not have been written to headers yet)
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRCS.toString());
+        } else {
+            // No effective RCS — clean up any DEFAULT sentinel header, let ConsistencyLevel govern
+            String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (!Strings.isNullOrEmpty(rcsHeader)) {
+                headers.remove(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            }
+        }
+    }
+
+    /**
      * Resolves the effective non-DEFAULT {@link ReadConsistencyStrategy} for a request.
      *
      * <p>Priority: requestContext RCS (request-level) &gt; header RCS (client-level).
@@ -387,10 +416,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * to {@code ConsistencyLevel} or account-default logic.</p>
      *
      * <p>This is the single source of truth for "which RCS wins?" and is consumed by both
-     * {@link #resolveEffectiveConsistencyHeaders} (header mutation) and
+     * {@link #resolveEffectiveConsistencyHeaders(Map, ReadConsistencyStrategy)} (header mutation) and
      * {@link #isEffectiveSessionConsistency} (session-token decision).</p>
      */
-    static ReadConsistencyStrategy resolveEffectiveReadConsistencyStrategy(
+    private static ReadConsistencyStrategy resolveEffectiveReadConsistencyStrategy(
         Map<String, String> headers,
         ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
 
@@ -412,31 +441,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
 
         return null;
-    }
-
-    /**
-     * Core resolution logic — public for direct unit testing from cross-package test classes.
-     * Avoids test drift from duplicated simulation logic.
-     */
-    public static void resolveEffectiveConsistencyHeaders(
-        Map<String, String> headers,
-        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
-
-        ReadConsistencyStrategy effectiveRCS =
-            resolveEffectiveReadConsistencyStrategy(headers, requestContextReadConsistencyStrategy);
-
-        if (effectiveRCS != null) {
-            // Non-DEFAULT RCS wins — strip ConsistencyLevel to prevent dual-header rejection
-            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-            // Ensure the RCS header is set (requestContext-level may not have been written to headers yet)
-            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRCS.toString());
-        } else {
-            // No effective RCS — clean up any DEFAULT sentinel header, let ConsistencyLevel govern
-            String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            if (!Strings.isNullOrEmpty(rcsHeader)) {
-                headers.remove(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-            }
-        }
     }
 
     private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
