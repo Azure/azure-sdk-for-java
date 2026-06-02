@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.Disposable;
@@ -34,8 +35,11 @@ import java.util.stream.Stream;
 public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> whisperTranscriptionParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        // gpt-realtime uses WHISPER_1, which the 2026-04-10 service does not emit
+        // transcription.completed events for; restrict it to the GA version. gpt-4.1
+        // uses AZURE_SPEECH, which works on both API versions.
+        return Stream.concat(Stream.of(Arguments.of("gpt-realtime", API_VERSIONS[0])),
+            Arrays.stream(API_VERSIONS).map(v -> Arguments.of("gpt-4.1", v)));
     }
 
     @ParameterizedTest
@@ -59,7 +63,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
                 .setInputAudioFormat(InputAudioFormat.PCM16)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -92,8 +96,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -108,8 +112,10 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> gpt4oTranscribeParams() {
+        // gpt-4o-transcribe and gpt-4o-mini-transcribe do not emit transcription.completed
+        // events on the 2026-04-10 service; restrict to the GA version.
         return crossProduct(new String[] { "gpt-4o-transcribe", "gpt-4o-mini-transcribe" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+            new String[] { API_VERSIONS[0] });
     }
 
     @ParameterizedTest
@@ -135,7 +141,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setInputAudioTranscription(
                 new AudioInputTranscriptionOptions(transcriptionOptionsModel).setLanguage("en-US"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -168,8 +174,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 

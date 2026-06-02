@@ -104,16 +104,16 @@ class TranscriptionAndIncludeOptionsTest {
         assertEquals(0, event.getContentIndex());
         assertEquals("hello world", event.getTranscript());
 
-        List<LogProbProperties> logprobs = event.getLogprobs();
+        List<LogProbProperties> logprobs = event.getLogProbs();
         assertNotNull(logprobs);
         assertEquals(2, logprobs.size());
         assertEquals("hello", logprobs.get(0).getToken());
-        assertEquals(-0.12, logprobs.get(0).getLogprob());
+        assertEquals(-0.12, logprobs.get(0).getLogProb());
         assertNotNull(logprobs.get(0).getBytes());
         assertEquals(5, logprobs.get(0).getBytes().size());
         assertEquals(Integer.valueOf(104), logprobs.get(0).getBytes().get(0));
         assertEquals(" world", logprobs.get(1).getToken());
-        assertEquals(-0.34, logprobs.get(1).getLogprob());
+        assertEquals(-0.34, logprobs.get(1).getLogProb());
 
         List<TranscriptionPhrase> phrases = event.getPhrases();
         assertNotNull(phrases);
@@ -141,7 +141,7 @@ class TranscriptionAndIncludeOptionsTest {
 
         assertEquals("hi", event.getTranscript());
         assertEquals(3, event.getContentIndex());
-        assertNull(event.getLogprobs());
+        assertNull(event.getLogProbs());
         assertNull(event.getPhrases());
     }
 
@@ -158,11 +158,11 @@ class TranscriptionAndIncludeOptionsTest {
         SessionUpdateConversationItemInputAudioTranscriptionCompleted roundTripped = BinaryData.fromObject(original)
             .toObject(SessionUpdateConversationItemInputAudioTranscriptionCompleted.class);
 
-        assertNotNull(roundTripped.getLogprobs());
-        assertEquals(1, roundTripped.getLogprobs().size());
-        assertEquals("hi", roundTripped.getLogprobs().get(0).getToken());
-        assertEquals(-0.5, roundTripped.getLogprobs().get(0).getLogprob());
-        assertEquals(Arrays.asList(104, 105), roundTripped.getLogprobs().get(0).getBytes());
+        assertNotNull(roundTripped.getLogProbs());
+        assertEquals(1, roundTripped.getLogProbs().size());
+        assertEquals("hi", roundTripped.getLogProbs().get(0).getToken());
+        assertEquals(-0.5, roundTripped.getLogProbs().get(0).getLogProb());
+        assertEquals(Arrays.asList(104, 105), roundTripped.getLogProbs().get(0).getBytes());
 
         assertNotNull(roundTripped.getPhrases());
         assertEquals(1, roundTripped.getPhrases().size());
@@ -178,14 +178,14 @@ class TranscriptionAndIncludeOptionsTest {
             + "\"logprobs\":[{\"token\":\"yo\",\"logprob\":-0.1,\"bytes\":[121,111]}],"
             + "\"phrases\":[{\"offset_milliseconds\":0,\"duration_milliseconds\":50,\"text\":\"yo\"}]}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof SessionUpdateConversationItemInputAudioTranscriptionCompleted,
             "Expected SessionUpdateConversationItemInputAudioTranscriptionCompleted, got " + update.getClass());
         SessionUpdateConversationItemInputAudioTranscriptionCompleted typed
             = (SessionUpdateConversationItemInputAudioTranscriptionCompleted) update;
-        assertNotNull(typed.getLogprobs());
-        assertEquals(1, typed.getLogprobs().size());
+        assertNotNull(typed.getLogProbs());
+        assertEquals(1, typed.getLogProbs().size());
         assertNotNull(typed.getPhrases());
         assertEquals(1, typed.getPhrases().size());
     }
@@ -286,9 +286,9 @@ class TranscriptionAndIncludeOptionsTest {
 
         OutputTokenDetails details = BinaryData.fromString(json).toObject(OutputTokenDetails.class);
 
-        assertEquals(10, details.getTextTokens());
-        assertEquals(20, details.getAudioTokens());
-        assertEquals(Integer.valueOf(7), details.getReasoningTokens());
+        assertEquals(10, details.getTextTokenCount());
+        assertEquals(20, details.getAudioTokenCount());
+        assertEquals(Integer.valueOf(7), details.getReasoningTokenCount());
     }
 
     @Test
@@ -297,7 +297,7 @@ class TranscriptionAndIncludeOptionsTest {
 
         OutputTokenDetails details = BinaryData.fromString(json).toObject(OutputTokenDetails.class);
 
-        assertNull(details.getReasoningTokens());
+        assertNull(details.getReasoningTokenCount());
     }
 
     // -------- ResponseAudioTranscriptAnnotationAdded --------

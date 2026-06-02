@@ -14,15 +14,14 @@ public final class DiscoveryRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kvpuvksgplsaknyn\",\"resourceGraphQuery\":\"synljphuopxodl\",\"authenticationSetting\":\"iyntorzihle\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"deletionDate\":\"2021-11-21T17:53:40Z\",\"errorMessage\":\"rmslyzrpzbchckqq\",\"numberOfDiscoveredEntities\":893832741,\"entityName\":\"ox\"},\"id\":\"suiizynkedyat\",\"name\":\"wyhqmibzyhwits\",\"type\":\"ypyynpcdpumnzg\"}],\"nextLink\":\"z\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"xmaehvbbxu\",\"authenticationSetting\":\"iplt\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"baxk\",\"context\":[\"wrck\",\"yklyhpluodpvruud\"]},\"entityName\":\"gzibthostgktstv\"},\"id\":\"eclze\",\"name\":\"qbcvhzlhplod\",\"type\":\"kdl\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"u\",\"authenticationSetting\":\"lkxt\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"smlmbtxhwgfwsrta\",\"context\":[\"ezbrhubskh\",\"dyg\",\"ookk\"]},\"entityName\":\"fqjbvleo\"},\"id\":\"ml\",\"name\":\"iqtqzfavyvnq\",\"type\":\"ybar\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"jkqa\",\"authenticationSetting\":\"qgzsles\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"ernntiewdjcvbquw\",\"context\":[\"hwagohbuffkmrqe\",\"vvhmxtdrj\"]},\"entityName\":\"utacoe\"},\"id\":\"vewzcj\",\"name\":\"nmwcpmgu\",\"type\":\"adraufactkahzo\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"iuxxpshneekulfg\",\"authenticationSetting\":\"lqubkwdlen\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"tujbazpju\",\"context\":[\"inyflnorwmduvwp\",\"lvxwmyg\",\"xpgpq\"]},\"entityName\":\"hiszepnnbjcrxgib\"},\"id\":\"axconfozauo\",\"name\":\"sukokwbqplhl\",\"type\":\"nuuepzlrp\"}],\"nextLink\":\"zsoldwey\"}")
             .toObject(DiscoveryRuleListResult.class);
-        Assertions.assertEquals("kvpuvksgplsaknyn", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("synljphuopxodl", model.value().get(0).properties().resourceGraphQuery());
-        Assertions.assertEquals("iyntorzihle", model.value().get(0).properties().authenticationSetting());
+        Assertions.assertEquals("xmaehvbbxu", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("iplt", model.value().get(0).properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
             model.value().get(0).properties().discoverRelationships());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
+        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
             model.value().get(0).properties().addRecommendedSignals());
-        Assertions.assertEquals("z", model.nextLink());
+        Assertions.assertEquals("zsoldwey", model.nextLink());
     }
 }

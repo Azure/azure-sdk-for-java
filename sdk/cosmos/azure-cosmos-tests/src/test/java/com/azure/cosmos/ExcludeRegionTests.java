@@ -47,8 +47,11 @@ import static org.assertj.core.api.Assertions.fail;
 public class ExcludeRegionTests extends TestSuiteBase {
     private static final int TIMEOUT = 60000;
     private CosmosAsyncClient clientWithPreferredRegions;
+    private CosmosAsyncClient clientWithNonCanonicalPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
+    private CosmosAsyncContainer cosmosAsyncContainerNonCanonical;
     private List<String> preferredRegionList;
+    private List<String> nonCanonicalPreferredRegionList;
 
     private static final CosmosEndToEndOperationLatencyPolicyConfig INF_E2E_TIMEOUT
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(100)).build();
@@ -76,6 +79,23 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     .buildAsyncClient();
 
             this.cosmosAsyncContainer = getSharedSinglePartitionCosmosContainer(this.clientWithPreferredRegions);
+
+            // Build a second client with non-canonical preferred regions (space-stripped)
+            // e.g., "west us 3" → "westus3", "east us" → "eastus"
+            this.nonCanonicalPreferredRegionList = new ArrayList<>();
+            for (String region : this.preferredRegionList) {
+                this.nonCanonicalPreferredRegionList.add(region.replace(" ", ""));
+            }
+
+            this.clientWithNonCanonicalPreferredRegions =
+                this.getClientBuilder()
+                    .contentResponseOnWriteEnabled(true)
+                    .preferredRegions(this.nonCanonicalPreferredRegionList)
+                    .multipleWriteRegionsEnabled(true)
+                    .buildAsyncClient();
+
+            this.cosmosAsyncContainerNonCanonical =
+                getSharedSinglePartitionCosmosContainer(this.clientWithNonCanonicalPreferredRegions);
         } finally {
             safeClose(dummyClient);
         }
@@ -84,6 +104,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
+        safeClose(this.clientWithNonCanonicalPreferredRegions);
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS");
         System.clearProperty("COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS");
     }
@@ -137,7 +158,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 Thread.currentThread().interrupt();
                 throw new RuntimeException("Interrupted while waiting for replication", ie);
             }
-            
+
             try {
                 CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
                     cosmosAsyncContainer,
@@ -232,6 +253,78 @@ public class ExcludeRegionTests extends TestSuiteBase {
         } finally {
             serverErrorRule.disable();
         }
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "operationTypeArgProvider", timeOut = TIMEOUT)
+    public void excludeRegionTest_nonCanonicalPreferredRegions_shouldRouteCorrectly(OperationType operationType) throws InterruptedException {
+
+        if (this.nonCanonicalPreferredRegionList.size() <= 1) {
+            throw new SkipException("Test requires multi-master with multi-regions");
+        }
+
+        // Verify that a client built with space-stripped region names (e.g., "westus3")
+        // routes to the correct first preferred region — same as canonical names
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainerNonCanonical.createItem(createdItem).block();
+
+        Thread.sleep(2000);
+
+        CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
+            cosmosAsyncContainerNonCanonical, operationType, createdItem, null, INF_E2E_TIMEOUT);
+
+        // The contacted region should match the first preferred region (lowercased canonical form)
+        validateRegionsContacted(diagnostics, this.preferredRegionList.subList(0, 1));
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "operationTypeArgProvider", timeOut = TIMEOUT)
+    public void excludeRegionTest_nonCanonicalExcludeRegion_shouldSkipExcludedRegion(OperationType operationType) throws InterruptedException {
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("Test requires multi-master with multi-regions");
+        }
+
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainerNonCanonical.createItem(createdItem).block();
+
+        Thread.sleep(2000);
+
+        // Exclude the first preferred region using space-stripped name (e.g., "westus3")
+        String firstRegionNoSpaces = this.preferredRegionList.get(0).replace(" ", "");
+
+        CosmosDiagnosticsContext diagnosticsPostExclusion = this.performDocumentOperation(
+            cosmosAsyncContainerNonCanonical,
+            operationType,
+            createdItem,
+            Arrays.asList(firstRegionNoSpaces),
+            INF_E2E_TIMEOUT);
+
+        // Should route to the second preferred region, not the first
+        validateRegionsContacted(diagnosticsPostExclusion, this.preferredRegionList.subList(1, 2));
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
+    public void excludeRegionTest_uppercaseExcludeRegion_shouldSkipExcludedRegion() throws InterruptedException {
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("Test requires multi-master with multi-regions");
+        }
+
+        TestObject createdItem = TestObject.create();
+        this.cosmosAsyncContainer.createItem(createdItem).block();
+
+        Thread.sleep(2000);
+
+        // Exclude the first preferred region using UPPERCASE name
+        String firstRegionUppercase = this.preferredRegionList.get(0).toUpperCase();
+
+        CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
+            cosmosAsyncContainer,
+            OperationType.Read,
+            createdItem,
+            Arrays.asList(firstRegionUppercase),
+            INF_E2E_TIMEOUT);
+
+        validateRegionsContacted(diagnostics, this.preferredRegionList.subList(1, 2));
     }
 
     private List<String> getPreferredRegionList(CosmosAsyncClient client) {

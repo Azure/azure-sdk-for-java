@@ -9,14 +9,14 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Delete.
+     * Sample code: Fleets_Delete_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsDelete(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsDeleteMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().delete("rgazurefleet", "testFleet", com.azure.core.util.Context.NONE);
     }
 }

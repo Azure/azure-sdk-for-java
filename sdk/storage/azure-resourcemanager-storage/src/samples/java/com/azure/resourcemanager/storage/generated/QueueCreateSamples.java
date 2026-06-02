@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class QueueCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/QueueOperationPut.json
+     * x-ms-original-file: 2026-04-01/QueueOperationPut.json
      */
     /**
      * Sample code: QueueOperationPut.
@@ -28,7 +28,7 @@ public final class QueueCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/QueueOperationPutWithMetadata.json
+     * x-ms-original-file: 2026-04-01/QueueOperationPutWithMetadata.json
      */
     /**
      * Sample code: QueueOperationPutWithMetadata.
