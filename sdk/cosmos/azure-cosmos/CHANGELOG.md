@@ -39,7 +39,7 @@
 * Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
 
 #### Other Changes
-* Added client-side fast-fail validation for `ReadConsistencyStrategy.GLOBAL_STRONG`: requests that specify `GLOBAL_STRONG` against an account whose default consistency is not `STRONG` are now rejected client-side with a `BadRequestException` (HTTP 400) instead of being silently downgraded or sent to the service. - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
+* Added client-side fast-fail validation for `ReadConsistencyStrategy.GLOBAL_STRONG`: requests that specify `GLOBAL_STRONG` against an account whose default consistency is not `STRONG` are now rejected client-side with a `BadRequestException` (HTTP 400). - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
 
 ### 4.79.1 (2026-04-06)
 
