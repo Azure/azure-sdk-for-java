@@ -11,7 +11,7 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.test.TestProxyTestBase;
@@ -65,9 +65,8 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     protected static final int DEFAULT_SAMPLE_RATE = 24000;
     protected static final double DEFAULT_SILENCE_DURATION = 2.0;
 
-    // API version constants
-    protected static final String API_VERSION_GA = "2025-10-01";
-    protected static final String API_VERSION_PREVIEW = "2026-01-01-preview";
+    // API versions exercised by parameterized live tests.
+    protected static final String[] API_VERSIONS = { "2025-10-01", "2026-04-10" };
 
     protected String getEndpoint() {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");
@@ -112,7 +111,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> withApiVersions(Stream<Arguments> base) {
-        return withApiVersions(base, API_VERSION_GA, API_VERSION_PREVIEW);
+        return withApiVersions(base, API_VERSIONS);
     }
 
     protected static Stream<Arguments> withApiVersions(Stream<Arguments> base, String... apiVersions) {
@@ -164,7 +163,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
         return getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, DEFAULT_SILENCE_DURATION);
     }
 
-    protected void handleError(SessionUpdate event) {
+    protected void handleError(SessionServerEvent event) {
         if (event instanceof SessionUpdateError) {
             SessionUpdateError errorEvent = (SessionUpdateError) event;
             System.err.println(

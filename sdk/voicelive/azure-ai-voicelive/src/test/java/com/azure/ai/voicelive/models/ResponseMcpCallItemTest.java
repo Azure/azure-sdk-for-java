@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Unit tests for {@link ResponseMCPCallItem}.
+ * Unit tests for {@link ResponseMcpCallItem}.
  */
-class ResponseMCPCallItemTest {
+class ResponseMcpCallItemTest {
 
     @Test
     void testFromJsonWithRequiredFields() {
@@ -23,7 +23,7 @@ class ResponseMCPCallItemTest {
             + "\"name\":\"test-tool\"" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(json).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(json).toObject(ResponseMcpCallItem.class);
 
         // Assert
         assertNotNull(item);
@@ -43,7 +43,7 @@ class ResponseMCPCallItemTest {
             + "\"error\":{\"message\":\"error occurred\"}" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(json).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(json).toObject(ResponseMcpCallItem.class);
 
         // Assert
         assertNotNull(item);
@@ -63,7 +63,7 @@ class ResponseMCPCallItemTest {
             + "\"arguments\":\"{}\"," + "\"server_label\":\"server\"," + "\"name\":\"tool\"" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(json).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(json).toObject(ResponseMcpCallItem.class);
 
         // Assert
         assertEquals(ItemType.MCP_CALL, item.getType());
@@ -76,7 +76,7 @@ class ResponseMCPCallItemTest {
             + "\"arguments\":\"{\\\"test\\\":true}\"," + "\"server_label\":\"label\"," + "\"name\":\"toolname\"" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(json).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(json).toObject(ResponseMcpCallItem.class);
 
         // Assert
         assertNotNull(item);
@@ -93,14 +93,14 @@ class ResponseMCPCallItemTest {
             + "\"name\":\"test-tool\"," + "\"output\":\"result\"" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(originalJson).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(originalJson).toObject(ResponseMcpCallItem.class);
         String serializedJson = BinaryData.fromObject(item).toString();
 
         // Assert
         assertNotNull(serializedJson);
         // Deserialize again to verify round-trip
-        ResponseMCPCallItem deserializedItem
-            = BinaryData.fromString(serializedJson).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem deserializedItem
+            = BinaryData.fromString(serializedJson).toObject(ResponseMcpCallItem.class);
         assertEquals(item.getId(), deserializedItem.getId());
         assertEquals(item.getArguments(), deserializedItem.getArguments());
         assertEquals(item.getServerLabel(), deserializedItem.getServerLabel());
@@ -116,7 +116,7 @@ class ResponseMCPCallItemTest {
             + "\"name\":\"complex-tool\"" + "}";
 
         // Act
-        ResponseMCPCallItem item = BinaryData.fromString(json).toObject(ResponseMCPCallItem.class);
+        ResponseMcpCallItem item = BinaryData.fromString(json).toObject(ResponseMcpCallItem.class);
 
         // Assert
         assertNotNull(item.getArguments());

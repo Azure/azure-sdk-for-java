@@ -15,7 +15,7 @@ import java.util.List;
  * A response item that lists the tools available on an MCP server.
  */
 @Immutable
-public final class ResponseMCPListToolItem extends SessionResponseItem {
+public final class ResponseMcpListToolItem extends SessionResponseItem {
 
     /*
      * The type property.
@@ -27,7 +27,7 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
      * The tools available on the server.
      */
     @Generated
-    private final List<MCPTool> tools;
+    private final List<McpTool> tools;
 
     /*
      * The label of the server that provides the tools.
@@ -36,13 +36,13 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
     private final String serverLabel;
 
     /**
-     * Creates an instance of ResponseMCPListToolItem class.
+     * Creates an instance of ResponseMcpListToolItem class.
      *
      * @param tools the tools value to set.
      * @param serverLabel the serverLabel value to set.
      */
     @Generated
-    private ResponseMCPListToolItem(List<MCPTool> tools, String serverLabel) {
+    private ResponseMcpListToolItem(List<McpTool> tools, String serverLabel) {
         this.tools = tools;
         this.serverLabel = serverLabel;
     }
@@ -64,7 +64,7 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
      * @return the tools value.
      */
     @Generated
-    public List<MCPTool> getTools() {
+    public List<McpTool> getTools() {
         return this.tools;
     }
 
@@ -94,20 +94,20 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
     }
 
     /**
-     * Reads an instance of ResponseMCPListToolItem from the JsonReader.
+     * Reads an instance of ResponseMcpListToolItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponseMCPListToolItem if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of ResponseMcpListToolItem if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponseMCPListToolItem.
+     * @throws IOException If an error occurs while reading the ResponseMcpListToolItem.
      */
     @Generated
-    public static ResponseMCPListToolItem fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponseMcpListToolItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             ResponseItemObject object = null;
-            List<MCPTool> tools = null;
+            List<McpTool> tools = null;
             String serverLabel = null;
             ItemType type = ItemType.MCP_LIST_TOOLS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -118,7 +118,7 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
                 } else if ("object".equals(fieldName)) {
                     object = ResponseItemObject.fromString(reader.getString());
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> MCPTool.fromJson(reader1));
+                    tools = reader.readArray(reader1 -> McpTool.fromJson(reader1));
                 } else if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -127,12 +127,12 @@ public final class ResponseMCPListToolItem extends SessionResponseItem {
                     reader.skipChildren();
                 }
             }
-            ResponseMCPListToolItem deserializedResponseMCPListToolItem
-                = new ResponseMCPListToolItem(tools, serverLabel);
-            deserializedResponseMCPListToolItem.setId(id);
-            deserializedResponseMCPListToolItem.setObject(object);
-            deserializedResponseMCPListToolItem.type = type;
-            return deserializedResponseMCPListToolItem;
+            ResponseMcpListToolItem deserializedResponseMcpListToolItem
+                = new ResponseMcpListToolItem(tools, serverLabel);
+            deserializedResponseMcpListToolItem.setId(id);
+            deserializedResponseMcpListToolItem.setObject(object);
+            deserializedResponseMcpListToolItem.type = type;
+            return deserializedResponseMcpListToolItem;
         });
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when a file search call has completed.
  */
 @Immutable
-public final class ServerEventResponseFileSearchCallCompleted extends SessionUpdate {
+public final class ServerEventResponseFileSearchCallCompleted extends SessionServerEvent {
 
     /*
      * The type of event.

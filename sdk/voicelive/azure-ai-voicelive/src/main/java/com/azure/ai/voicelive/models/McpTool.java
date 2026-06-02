@@ -16,7 +16,7 @@ import java.io.IOException;
  * Represents a mcp tool definition.
  */
 @Immutable
-public final class MCPTool implements JsonSerializable<MCPTool> {
+public final class McpTool implements JsonSerializable<McpTool> {
 
     /*
      * The name of the tool.
@@ -43,13 +43,13 @@ public final class MCPTool implements JsonSerializable<MCPTool> {
     private BinaryData annotations;
 
     /**
-     * Creates an instance of MCPTool class.
+     * Creates an instance of McpTool class.
      *
      * @param name the name value to set.
      * @param inputSchema the inputSchema value to set.
      */
     @Generated
-    private MCPTool(String name, BinaryData inputSchema) {
+    private McpTool(String name, BinaryData inputSchema) {
         this.name = name;
         this.inputSchema = inputSchema;
     }
@@ -113,16 +113,16 @@ public final class MCPTool implements JsonSerializable<MCPTool> {
     }
 
     /**
-     * Reads an instance of MCPTool from the JsonReader.
+     * Reads an instance of McpTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MCPTool if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * @return An instance of McpTool if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MCPTool.
+     * @throws IOException If an error occurs while reading the McpTool.
      */
     @Generated
-    public static MCPTool fromJson(JsonReader jsonReader) throws IOException {
+    public static McpTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             BinaryData inputSchema = null;
@@ -145,10 +145,10 @@ public final class MCPTool implements JsonSerializable<MCPTool> {
                     reader.skipChildren();
                 }
             }
-            MCPTool deserializedMCPTool = new MCPTool(name, inputSchema);
-            deserializedMCPTool.description = description;
-            deserializedMCPTool.annotations = annotations;
-            return deserializedMCPTool;
+            McpTool deserializedMcpTool = new McpTool(name, inputSchema);
+            deserializedMcpTool.description = description;
+            deserializedMcpTool.annotations = annotations;
+            return deserializedMcpTool;
         });
     }
 }

@@ -8,13 +8,12 @@ import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ItemType;
-import com.azure.ai.voicelive.models.MCPApprovalResponseRequestItem;
-import com.azure.ai.voicelive.models.MCPApprovalType;
-import com.azure.ai.voicelive.models.MCPServer;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
-import com.azure.ai.voicelive.models.ResponseMCPApprovalRequestItem;
-import com.azure.ai.voicelive.models.ResponseMCPCallItem;
+import com.azure.ai.voicelive.models.McpApprovalResponseRequestItem;
+import com.azure.ai.voicelive.models.McpApprovalType;
+import com.azure.ai.voicelive.models.McpServer;
+import com.azure.ai.voicelive.models.AzureStandardVoice;
+import com.azure.ai.voicelive.models.ResponseMcpApprovalRequestItem;
+import com.azure.ai.voicelive.models.ResponseMcpCallItem;
 import com.azure.ai.voicelive.models.ServerEventResponseMcpCallArgumentsDone;
 import com.azure.ai.voicelive.models.ServerEventResponseMcpCallCompleted;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
@@ -22,7 +21,7 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseOutputItemDone;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionResponseItem;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
@@ -80,7 +79,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.MCPSample" -Dexec.classpathScope=test
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.McpSample" -Dexec.classpathScope=test
  * }</pre>
  *
  * <p><strong>Try asking:</strong></p>
@@ -89,7 +88,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>"Can you summarize Azure docs about VoiceLive?"</li>
  * </ul>
  */
-public final class MCPSample {
+public final class McpSample {
 
     // Service configuration
     private static final String DEFAULT_MODEL = "gpt-realtime";
@@ -101,7 +100,7 @@ public final class MCPSample {
     private static final int SAMPLE_SIZE_BITS = 16;
     private static final int CHUNK_SIZE = 1200;
 
-    private MCPSample() {
+    private McpSample() {
     }
 
     /**
@@ -120,7 +119,7 @@ public final class MCPSample {
         }
 
         try {
-            runMCPSample(endpoint);
+            runMcpSample(endpoint);
         } catch (Exception e) {
             System.err.println("❌ Error: " + e.getMessage());
             e.printStackTrace();
@@ -131,7 +130,7 @@ public final class MCPSample {
     /**
      * Run the MCP sample.
      */
-    private static void runMCPSample(String endpoint) {
+    private static void runMcpSample(String endpoint) {
         System.out.println("🔌 Connecting to VoiceLive API with MCP support...");
         System.out.println("📡 Endpoint: " + endpoint);
         System.out.println("🤖 Model: " + DEFAULT_MODEL);
@@ -146,14 +145,14 @@ public final class MCPSample {
         // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+            .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Start the session. Session lifetime is local to this reactive chain — the session is
         // captured by the lambda passed to flatMapMany and then threaded into per-event handling
         // via flatMap, so no instance field or shared holder is needed.
-        client.startSession(DEFAULT_MODEL)
+        client.startSession(DEFAULT_MODEL, null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
                 audioProcessorRef.set(new AudioProcessor(session));
@@ -208,13 +207,13 @@ public final class MCPSample {
         // Define MCP servers as tools
         List<VoiceLiveToolDefinition> mcpTools = Arrays.asList(
             // DeepWiki MCP server - no approval required
-            new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+            new McpServer("deepwiki", "https://mcp.deepwiki.com/mcp")
                 .setAllowedTools(Arrays.asList("read_wiki_structure", "ask_question"))
-                .setRequireApproval(BinaryData.fromObject(MCPApprovalType.NEVER)),
+                .setRequireApproval(BinaryData.fromObject(McpApprovalType.NEVER)),
 
             // Azure documentation MCP server - approval always required
-            new MCPServer("azure_doc", "https://learn.microsoft.com/api/mcp")
-                .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS))
+            new McpServer("azure_doc", "https://learn.microsoft.com/api/mcp")
+                .setRequireApproval(BinaryData.fromObject(McpApprovalType.ALWAYS))
         );
 
         // Create session options
@@ -224,7 +223,7 @@ public final class MCPSample {
                 + "You can use MCP tools to search for information when needed. "
                 + "When calling MCP tools, explain what you're doing and present the results naturally."
             )
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaNeural")))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -239,7 +238,7 @@ public final class MCPSample {
                 .setCreateResponse(true))
             .setTools(mcpTools)
             .setInputAudioTranscription(
-                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1)
+                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1).setLanguage("en")
             );
 
         return new ClientEventSessionUpdate(sessionOptions);
@@ -252,7 +251,7 @@ public final class MCPSample {
      */
     private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
-        SessionUpdate event,
+        SessionServerEvent event,
         AtomicReference<String> activeMCPCallId,
         AudioProcessor audioProcessor
     ) {
@@ -326,7 +325,7 @@ public final class MCPSample {
     private static void handleOutputItemDone(SessionUpdateResponseOutputItemDone event) {
         SessionResponseItem item = event.getItem();
         if (item != null && item.getType() == ItemType.MCP_CALL) {
-            ResponseMCPCallItem mcpCallItem = (ResponseMCPCallItem) item;
+            ResponseMcpCallItem mcpCallItem = (ResponseMcpCallItem) item;
             String output = mcpCallItem.getOutput();
 
             if (output != null && !output.isEmpty()) {
@@ -364,7 +363,7 @@ public final class MCPSample {
             System.out.println("📋 MCP list tools requested: id=" + itemCreated.getItem().getId());
 
         } else if (itemType == ItemType.MCP_CALL) {
-            ResponseMCPCallItem mcpCallItem = (ResponseMCPCallItem) itemCreated.getItem();
+            ResponseMcpCallItem mcpCallItem = (ResponseMcpCallItem) itemCreated.getItem();
             String callId = mcpCallItem.getId();
             activeMCPCallId.set(callId);
 
@@ -374,7 +373,7 @@ public final class MCPSample {
             System.out.println("   Call ID: " + callId);
 
         } else if (itemType == ItemType.MCP_APPROVAL_REQUEST) {
-            return handleMCPApprovalRequest(session, (ResponseMCPApprovalRequestItem) itemCreated.getItem());
+            return handleMCPApprovalRequest(session, (ResponseMcpApprovalRequestItem) itemCreated.getItem());
         }
 
         return Mono.empty();
@@ -385,7 +384,7 @@ public final class MCPSample {
      */
     private static Mono<Void> handleMCPApprovalRequest(
         VoiceLiveSessionAsyncClient session,
-        ResponseMCPApprovalRequestItem approvalItem
+        ResponseMcpApprovalRequestItem approvalItem
     ) {
         String approvalId = approvalItem.getId();
         String serverLabel = approvalItem.getServerLabel();
@@ -402,8 +401,8 @@ public final class MCPSample {
         // Get user approval
         boolean approved = getUserApproval();
 
-        MCPApprovalResponseRequestItem approvalResponse =
-            new MCPApprovalResponseRequestItem(approvalId, approved);
+        McpApprovalResponseRequestItem approvalResponse =
+            new McpApprovalResponseRequestItem(approvalId, approved);
 
         return session.sendEvent(new ClientEventConversationItemCreate().setItem(approvalResponse));
     }
@@ -506,13 +505,16 @@ public final class MCPSample {
                             int bytesRead = microphone.read(buffer, 0, buffer.length);
                             if (bytesRead > 0) {
                                 byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                                // sendInputAudio returns a cold Mono - it must be subscribed
-                                // for the audio to actually be sent over the WebSocket.
-                                session.sendInputAudio(BinaryData.fromBytes(audioData))
-                                    .subscribe(
-                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
-                                        error -> System.err.println("Error sending audio: " + error.getMessage())
-                                    );
+                                // sendInputAudio returns a cold Mono. Block on this capture thread so
+                                // sends are serialized; otherwise fire-and-forget subscribes can flood
+                                // the WebSocket send sink and trigger FAIL_OVERFLOW.
+                                try {
+                                    session.sendInputAudio(BinaryData.fromBytes(audioData)).block();
+                                } catch (Exception sendError) {
+                                    if (isCapturing.get()) {
+                                        System.err.println("Error sending audio: " + sendError.getMessage());
+                                    }
+                                }
                             }
                         } catch (Exception e) {
                             if (isCapturing.get()) {

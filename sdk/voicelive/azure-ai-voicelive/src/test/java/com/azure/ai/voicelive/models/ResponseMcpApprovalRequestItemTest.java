@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Unit tests for {@link ResponseMCPApprovalRequestItem}.
+ * Unit tests for {@link ResponseMcpApprovalRequestItem}.
  */
-class ResponseMCPApprovalRequestItemTest {
+class ResponseMcpApprovalRequestItemTest {
 
     @Test
     void testFromJsonWithRequiredFields() {
@@ -23,8 +23,8 @@ class ResponseMCPApprovalRequestItemTest {
                 + "\"name\":\"sensitive-tool\"," + "\"server_label\":\"production-server\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalRequestItem.class);
 
         // Assert
         assertNotNull(item);
@@ -42,8 +42,8 @@ class ResponseMCPApprovalRequestItemTest {
             + "\"arguments\":\"{\\\"resource_id\\\":\\\"res-123\\\"}\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalRequestItem.class);
 
         // Assert
         assertNotNull(item);
@@ -60,8 +60,8 @@ class ResponseMCPApprovalRequestItemTest {
             + "\"type\":\"mcp_approval_request\"," + "\"name\":\"tool\"," + "\"server_label\":\"server\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalRequestItem.class);
 
         // Assert
         assertEquals(ItemType.MCP_APPROVAL_REQUEST, item.getType());
@@ -75,8 +75,8 @@ class ResponseMCPApprovalRequestItemTest {
                 + "\"name\":\"no-arg-tool\"," + "\"server_label\":\"test-server\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalRequestItem.class);
 
         // Assert
         assertNotNull(item);
@@ -91,14 +91,14 @@ class ResponseMCPApprovalRequestItemTest {
             + "\"arguments\":\"{\\\"backup_type\\\":\\\"full\\\"}\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(originalJson).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(originalJson).toObject(ResponseMcpApprovalRequestItem.class);
         String serializedJson = BinaryData.fromObject(item).toString();
 
         // Assert
         assertNotNull(serializedJson);
-        ResponseMCPApprovalRequestItem deserializedItem
-            = BinaryData.fromString(serializedJson).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem deserializedItem
+            = BinaryData.fromString(serializedJson).toObject(ResponseMcpApprovalRequestItem.class);
         assertEquals(item.getId(), deserializedItem.getId());
         assertEquals(item.getName(), deserializedItem.getName());
         assertEquals(item.getServerLabel(), deserializedItem.getServerLabel());
@@ -114,8 +114,8 @@ class ResponseMCPApprovalRequestItemTest {
             + "\"arguments\":\"" + complexArgs.replace("\"", "\\\"") + "\"" + "}";
 
         // Act
-        ResponseMCPApprovalRequestItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalRequestItem.class);
+        ResponseMcpApprovalRequestItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalRequestItem.class);
 
         // Assert
         assertNotNull(item.getArguments());

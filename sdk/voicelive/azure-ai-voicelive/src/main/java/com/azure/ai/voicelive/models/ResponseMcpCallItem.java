@@ -15,7 +15,7 @@ import java.io.IOException;
  * A response item that represents a call to an MCP tool.
  */
 @Immutable
-public final class ResponseMCPCallItem extends SessionResponseItem {
+public final class ResponseMcpCallItem extends SessionResponseItem {
 
     /*
      * The type property.
@@ -60,14 +60,14 @@ public final class ResponseMCPCallItem extends SessionResponseItem {
     private BinaryData error;
 
     /**
-     * Creates an instance of ResponseMCPCallItem class.
+     * Creates an instance of ResponseMcpCallItem class.
      *
      * @param arguments the arguments value to set.
      * @param serverLabel the serverLabel value to set.
      * @param name the name value to set.
      */
     @Generated
-    private ResponseMCPCallItem(String arguments, String serverLabel, String name) {
+    private ResponseMcpCallItem(String arguments, String serverLabel, String name) {
         this.arguments = arguments;
         this.serverLabel = serverLabel;
         this.name = name;
@@ -167,16 +167,16 @@ public final class ResponseMCPCallItem extends SessionResponseItem {
     }
 
     /**
-     * Reads an instance of ResponseMCPCallItem from the JsonReader.
+     * Reads an instance of ResponseMcpCallItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponseMCPCallItem if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ResponseMcpCallItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponseMCPCallItem.
+     * @throws IOException If an error occurs while reading the ResponseMcpCallItem.
      */
     @Generated
-    public static ResponseMCPCallItem fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponseMcpCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             ResponseItemObject object = null;
@@ -212,14 +212,14 @@ public final class ResponseMCPCallItem extends SessionResponseItem {
                     reader.skipChildren();
                 }
             }
-            ResponseMCPCallItem deserializedResponseMCPCallItem = new ResponseMCPCallItem(arguments, serverLabel, name);
-            deserializedResponseMCPCallItem.setId(id);
-            deserializedResponseMCPCallItem.setObject(object);
-            deserializedResponseMCPCallItem.type = type;
-            deserializedResponseMCPCallItem.approvalRequestId = approvalRequestId;
-            deserializedResponseMCPCallItem.output = output;
-            deserializedResponseMCPCallItem.error = error;
-            return deserializedResponseMCPCallItem;
+            ResponseMcpCallItem deserializedResponseMcpCallItem = new ResponseMcpCallItem(arguments, serverLabel, name);
+            deserializedResponseMcpCallItem.setId(id);
+            deserializedResponseMcpCallItem.setObject(object);
+            deserializedResponseMcpCallItem.type = type;
+            deserializedResponseMcpCallItem.approvalRequestId = approvalRequestId;
+            deserializedResponseMcpCallItem.output = output;
+            deserializedResponseMcpCallItem.error = error;
+            return deserializedResponseMcpCallItem;
         });
     }
 }

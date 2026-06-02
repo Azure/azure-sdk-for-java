@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates the start of a new audio input turn.
  */
 @Fluent
-public final class ClientEventInputAudioTurnStart extends ClientEvent {
+public final class ClientEventInputAudioTurnStart extends SessionClientEvent {
 
     /*
      * The type of event.
