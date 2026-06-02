@@ -579,7 +579,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     static CertificatePolicy setupPlatformManagedPolicy() {
         Map<String, Object> sans = new HashMap<>();
-        sans.put("dns_names", Collections.singletonList("onecertdomain.contoso.com"));
+        sans.put("dns_names", Collections.singletonList("sanitized.example.invalid"));
 
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("sans", sans);
