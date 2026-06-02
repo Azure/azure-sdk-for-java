@@ -14,7 +14,7 @@ import com.azure.resourcemanager.storage.models.StorageConnectorPropertiesUpdate
  */
 public final class ConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Update.json
+     * x-ms-original-file: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Update.json
      */
     /**
      * Sample code: UpdateConnector.

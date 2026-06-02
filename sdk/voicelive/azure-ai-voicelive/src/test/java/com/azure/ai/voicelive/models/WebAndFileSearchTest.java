@@ -231,7 +231,7 @@ class WebAndFileSearchTest {
         String json = "{\"type\":\"response.web_search_call.completed\",\"event_id\":\"e4\","
             + "\"response_id\":\"r4\",\"item_id\":\"i4\",\"output_index\":2,\"sequence_number\":7}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof ServerEventResponseWebSearchCallCompleted,
             "Expected ServerEventResponseWebSearchCallCompleted, got " + update.getClass());

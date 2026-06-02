@@ -8,10 +8,17 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.util.BinaryData;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
+import com.openai.models.evals.EvalCreateParams;
 import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
@@ -19,6 +26,7 @@ public final class ReadmeSamples {
         AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+        DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
@@ -26,7 +34,9 @@ public final class ReadmeSamples {
         EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         InsightsClient insightsClient = builder.buildInsightsClient();
+        ModelsClient modelsClient = builder.buildModelsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
+        RoutinesClient routinesClient = builder.buildRoutinesClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
         SkillsClient skillsClient = builder.buildSkillsClient();
         // END: com.azure.ai.projects.clientInitialization
@@ -35,6 +45,21 @@ public final class ReadmeSamples {
         EvalService evalService = builder.buildOpenAIClient().evals();
         EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
         // END: com.azure.ai.projects.evalsServices
+
+        // BEGIN: com.azure.ai.projects.evaluationsHelper
+        Map<String, String> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("query", "{{item.query}}");
+        dataMapping.put("response", "{{sample.output_text}}");
+
+        TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
+            "builtin.coherence")
+                .setInitializationParameters(Collections.singletonMap("deployment_name",
+                    BinaryData.fromObject("gpt-4o-mini")))
+                .setDataMapping(dataMapping);
+
+        EvalCreateParams.TestingCriterion testingCriterion
+            = EvaluationsHelper.toTestingCriterion(coherenceEvaluator);
+        // END: com.azure.ai.projects.evaluationsHelper
 
         // BEGIN: com.azure.ai.projects.openAIClient
         OpenAIClient openAIClient = builder.buildOpenAIClient();

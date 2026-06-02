@@ -8,6 +8,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 
 #### Other Changes
 * Added an internal `emptyPagesAllowed` field on `CosmosChangeFeedRequestOptionsImpl` (default `false`; not exposed publicly). When set, `ChangeFeedFetcher` surfaces 304/empty pages to the caller. Consumed by the Cosmos Spark connector to fix an `OperationCancelledException` on sparse cross-partition change-feed workloads. Default behavior is unchanged. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)

@@ -128,14 +128,14 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Update.
+     * Sample code: Fleets_Update_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsUpdate(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsUpdateMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         Fleet resource = manager.fleets()
             .getByResourceGroupWithResponse("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE)
             .getValue();
