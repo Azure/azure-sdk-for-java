@@ -34,8 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  *         the broken connection and a subsequent request uses a new connection.
  * <p>
  * Run in Docker with --cap-add=NET_ADMIN (group: manual-http-network-fault).
- * Requires: HTTP/2 capable Cosmos DB account.
- * Does NOT require thin client -- only COSMOS.HTTP2_ENABLED=true.
+ * Requires: thin-client-enabled Cosmos DB account whose DatabaseAccount response
+ * exposes {@code thinClientReadableLocations}. PING is scoped to thin-client
+ * endpoints only, so both {@code COSMOS.HTTP2_ENABLED=true} and
+ * {@code COSMOS.THINCLIENT_ENABLED=true} must be set before client construction.
  */
 public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
@@ -59,8 +61,10 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = 120_000)
     public void beforeClass() {
-        // Enable HTTP/2 -- thin client is NOT required for PING tests
+        // Enable HTTP/2 and thin client BEFORE client construction.
+        // PING is scoped to thin-client endpoints; both flags are required.
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
@@ -75,6 +79,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     public void afterClass() {
         safeClose(this.client);
         System.clearProperty("COSMOS.HTTP2_ENABLED");
+        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
     }
 
     @BeforeMethod(groups = {"manual-http-network-fault"})
@@ -126,18 +131,20 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Warm-up read -- establish H2 connection
+            // Warm-up read -- establish H2 connection (over thin-client port 10250)
             String initialChannelId = readAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialChannelId);
 
-            // Extract gateway host + port for iptables rule
-            String gatewayHost = extractHostFromEndpoint(TestConfigurations.HOST);
-            int gatewayPort = 443;
-            logger.info("Gateway host: {}, port: {}", gatewayHost, gatewayPort);
+            // Thin-client traffic goes to port 10250 on regional thin-client endpoints
+            // (e.g., thin-client-mr-bs-ci-westcentralus.documents.azure.com:10250).
+            // The regional hostname differs from the account-level endpoint, so we
+            // blackhole by port only -- catching all thin-client traffic regardless of region.
+            int thinClientPort = 10250;
+            logger.info("Will blackhole port: {} (thin-client H2)", thinClientPort);
 
-            // Blackhole all traffic to gateway -- prevents PING ACKs from arriving
+            // Blackhole all traffic to thin-client port -- prevents PING ACKs from arriving
             String iptablesRule = String.format(
-                "%siptables -A OUTPUT -p tcp --dport %d -d %s -j DROP", SUDO, gatewayPort, gatewayHost);
+                "%siptables -A OUTPUT -p tcp --dport %d -j DROP", SUDO, thinClientPort);
             logger.info("Installing iptables DROP rule: {}", iptablesRule);
             execCommand(iptablesRule);
 
@@ -150,7 +157,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
             // Remove iptables rule BEFORE attempting recovery read
             String iptablesRemove = String.format(
-                "%siptables -D OUTPUT -p tcp --dport %d -d %s -j DROP", SUDO, gatewayPort, gatewayHost);
+                "%siptables -D OUTPUT -p tcp --dport %d -j DROP", SUDO, thinClientPort);
             logger.info("Removing iptables DROP rule: {}", iptablesRemove);
             execCommand(iptablesRemove);
 
@@ -176,9 +183,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         } finally {
             // Safety: remove any leftover iptables rules
             try {
-                String gatewayHost = extractHostFromEndpoint(TestConfigurations.HOST);
                 String cleanup = String.format(
-                    "%siptables -D OUTPUT -p tcp --dport 443 -d %s -j DROP 2>/dev/null", SUDO, gatewayHost);
+                    "%siptables -D OUTPUT -p tcp --dport 10250 -j DROP 2>/dev/null", SUDO);
                 execCommand(cleanup);
             } catch (Exception ignored) {}
 
