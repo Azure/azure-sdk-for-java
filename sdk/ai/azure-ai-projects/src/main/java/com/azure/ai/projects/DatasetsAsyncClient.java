@@ -125,7 +125,7 @@ public final class DatasetsAsyncClient {
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param filePath The path to the file to upload.
      * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a file
+     * @throws IllegalArgumentException If the provided path is not a file.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath) {
@@ -141,11 +141,58 @@ public final class DatasetsAsyncClient {
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
      * If null, the default Azure Storage Account connection will be used.
      * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
-     * @throws IllegalArgumentException If the provided path is not a file
+     * @throws IllegalArgumentException If the provided path is not a file.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath,
         String connectionName) {
+        RequestOptions requestOptions = new RequestOptions();
+        return createDatasetWithFileWithResponse(name, version, filePath, connectionName, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(data -> data.toObject(FileDatasetVersion.class));
+    }
+
+    /**
+     * Creates a dataset from a file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A FileDatasetVersion representing the created dataset along with {@link Response} on successful
+     * completion of {@link Mono}.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFileWithResponse(String name, String version, Path filePath,
+        RequestOptions requestOptions) {
+        return createDatasetWithFileWithResponse(name, version, filePath, null, requestOptions);
+    }
+
+    /**
+     * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A FileDatasetVersion representing the created dataset along with {@link Response} on successful
+     * completion of {@link Mono}.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFileWithResponse(String name, String version, Path filePath,
+        String connectionName, RequestOptions requestOptions) {
         if (!Files.isRegularFile(filePath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
@@ -153,21 +200,21 @@ public final class DatasetsAsyncClient {
         if (connectionName != null) {
             request.setConnectionName(connectionName);
         }
-        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
-                .blobName(filePath.getFileName().toString())
-                .buildAsyncClient();
-            return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
-        }).flatMap(blobUrl -> {
-            RequestOptions requestOptions = new RequestOptions();
-            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
-            return this
-                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
-                    requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(data -> data.toObject(FileDatasetVersion.class));
-        });
+        return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
+            .flatMap(pendingUploadResponse -> {
+                String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
+                BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
+                    .blobName(filePath.getFileName().toString())
+                    .buildAsyncClient();
+                return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
+            })
+            .flatMap(blobUrl -> {
+                FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
+                return this.createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
+                    requestOptions);
+            });
     }
 
     /**
@@ -198,6 +245,53 @@ public final class DatasetsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath,
         String connectionName) {
+        RequestOptions requestOptions = new RequestOptions();
+        return createDatasetWithFolderWithResponse(name, version, folderPath, connectionName, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(data -> data.toObject(FolderDatasetVersion.class));
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A FolderDatasetVersion representing the created dataset along with {@link Response} on successful
+     * completion of {@link Mono}.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
+        RequestOptions requestOptions) {
+        return createDatasetWithFolderWithResponse(name, version, folderPath, null, requestOptions);
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return A FolderDatasetVersion representing the created dataset along with {@link Response} on successful
+     * completion of {@link Mono}.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
+        String connectionName, RequestOptions requestOptions) {
         if (!Files.isDirectory(folderPath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
         }
@@ -205,34 +299,35 @@ public final class DatasetsAsyncClient {
         if (connectionName != null) {
             request.setConnectionName(connectionName);
         }
-        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
-            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-            BlobContainerAsyncClient containerClient
-                = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
-            try {
-                List<Path> files;
-                try (Stream<Path> fileStream = Files.walk(folderPath)) {
-                    files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
+        return this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(PendingUploadResponse.class))
+            .flatMap(pendingUploadResponse -> {
+                String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
+                String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
+                BlobContainerAsyncClient containerClient
+                    = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
+                try {
+                    List<Path> files;
+                    try (Stream<Path> fileStream = Files.walk(folderPath)) {
+                        files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
+                    }
+                    return Flux.fromIterable(files).flatMap(filePath -> {
+                        String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                        return containerClient.getBlobAsyncClient(relativePath)
+                            .upload(BinaryData.fromFile(filePath), true);
+                    }).then(Mono.just(containerUrl));
+                } catch (IOException e) {
+                    return Mono.error(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
+                } catch (RuntimeException e) {
+                    return Mono.error(e);
                 }
-                return Flux.fromIterable(files).flatMap(filePath -> {
-                    String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                    return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);
-                }).then(Mono.just(containerUrl));
-            } catch (IOException e) {
-                return Mono.error(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
-            } catch (RuntimeException e) {
-                return Mono.error(e);
-            }
-        }).flatMap(containerUrl -> {
-            RequestOptions requestOptions = new RequestOptions();
-            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
-            return this
-                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset),
-                    requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(data -> data.toObject(FolderDatasetVersion.class));
-        });
+            })
+            .flatMap(containerUrl -> {
+                FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
+                return this.createOrUpdateDatasetVersionWithResponse(name, version,
+                    BinaryData.fromObject(folderDataset), requestOptions);
+            });
     }
 
     /**
@@ -244,7 +339,7 @@ public final class DatasetsAsyncClient {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -264,7 +359,7 @@ public final class DatasetsAsyncClient {
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>

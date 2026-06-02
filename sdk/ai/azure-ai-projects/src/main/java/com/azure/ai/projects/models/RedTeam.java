@@ -44,8 +44,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     private List<AttackStrategy> attackStrategies;
 
     /*
-     * Simulation-only or Simulation + Evaluation. Default false, if true the scan outputs conversation not evaluation
-     * result.
+     * Simulation-only or Simulation + Evaluation. If `true` the scan outputs conversation not evaluation result. The
+     * service defaults to `false` if a value is not specified by the caller.
      */
     @Generated
     private Boolean simulationOnly;
@@ -85,16 +85,6 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
      */
     @Generated
     private final TargetConfig target;
-
-    /**
-     * Creates an instance of RedTeam class.
-     *
-     * @param target the target value to set.
-     */
-    @Generated
-    public RedTeam(TargetConfig target) {
-        this.target = target;
-    }
 
     /**
      * Get the name property: Identifier of the red team run.
@@ -173,8 +163,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     }
 
     /**
-     * Get the simulationOnly property: Simulation-only or Simulation + Evaluation. Default false, if true the scan
-     * outputs conversation not evaluation result.
+     * Get the simulationOnly property: Simulation-only or Simulation + Evaluation. If `true` the scan outputs
+     * conversation not evaluation result. The service defaults to `false` if a value is not specified by the caller.
      *
      * @return the simulationOnly value.
      */
@@ -184,8 +174,8 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
     }
 
     /**
-     * Set the simulationOnly property: Simulation-only or Simulation + Evaluation. Default false, if true the scan
-     * outputs conversation not evaluation result.
+     * Set the simulationOnly property: Simulation-only or Simulation + Evaluation. If `true` the scan outputs
+     * conversation not evaluation result. The service defaults to `false` if a value is not specified by the caller.
      *
      * @param simulationOnly the simulationOnly value to set.
      * @return the RedTeam object itself.
@@ -394,5 +384,15 @@ public final class RedTeam implements JsonSerializable<RedTeam> {
             deserializedRedTeam.status = status;
             return deserializedRedTeam;
         });
+    }
+
+    /**
+     * Creates an instance of RedTeam class.
+     *
+     * @param target the target value to set.
+     */
+    @Generated
+    public RedTeam(TargetConfig target) {
+        this.target = target;
     }
 }

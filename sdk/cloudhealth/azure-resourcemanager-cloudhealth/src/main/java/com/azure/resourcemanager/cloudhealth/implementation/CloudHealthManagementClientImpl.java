@@ -247,7 +247,7 @@ public final class CloudHealthManagementClientImpl implements CloudHealthManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01-preview";
+        this.apiVersion = "2026-01-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.healthModels = new HealthModelsClientImpl(this);
         this.signalDefinitions = new SignalDefinitionsClientImpl(this);

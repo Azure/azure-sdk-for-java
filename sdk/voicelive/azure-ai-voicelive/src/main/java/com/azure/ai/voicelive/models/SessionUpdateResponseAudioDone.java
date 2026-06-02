@@ -15,7 +15,7 @@ import java.io.IOException;
  * is interrupted, incomplete, or cancelled.
  */
 @Immutable
-public final class SessionUpdateResponseAudioDone extends SessionUpdate {
+public final class SessionUpdateResponseAudioDone extends SessionServerEvent {
 
     /*
      * The type of event.

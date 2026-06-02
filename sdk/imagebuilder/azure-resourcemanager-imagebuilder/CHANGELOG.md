@@ -1,14 +1,221 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-05-20)
 
-### Features Added
+- Azure Resource Manager ImageBuilder client library for Java. This package contains Microsoft Azure SDK for ImageBuilder Management SDK. Virtual Machine Image Template. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RunOutputCollection` was removed
 
-### Other Changes
+#### `models.TriggerCollection` was removed
+
+#### `models.ImageTemplateListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ImageTemplateVhdDistributor` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateUpdateParametersProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualNetworkConfig` was modified
+
+* `validate()` was removed
+
+#### `models.DistributeVersioner` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.ImageTemplateInVMValidator` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePropertiesOptimize` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePropertiesOptimizeVmBoot` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateShellCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateAutoRun` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePropertiesValidate` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateSource` was modified
+
+* `validate()` was removed
+
+#### `models.ProvisioningError` was modified
+
+* `ProvisioningError()` was changed to private access
+* `withProvisioningErrorCode(models.ProvisioningErrorCode)` was removed
+* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.TriggerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePropertiesErrorHandling` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateWindowsUpdateCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateDistributor` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateShellValidator` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateFileCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DistributeVersionerSource` was modified
+
+* `validate()` was removed
+
+#### `models.TargetRegion` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePowerShellCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.PlatformImagePurchasePlan` was modified
+
+* `validate()` was removed
+
+#### `models.DistributeVersionerLatest` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateSharedImageDistributor` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplatePlatformImageSource` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateVmProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateManagedImageDistributor` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateSharedImageVersionSource` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateRestartCustomizer` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateFileValidator` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateManagedImageSource` was modified
+
+* `validate()` was removed
+
+#### `models.ImageTemplateLastRunStatus` was modified
+
+* `ImageTemplateLastRunStatus()` was changed to private access
+* `withRunSubState(models.RunSubState)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withStartTime(java.time.OffsetDateTime)` was removed
+* `validate()` was removed
+* `withEndTime(java.time.OffsetDateTime)` was removed
+* `withRunState(models.RunState)` was removed
+
+#### `models.SourceImageTriggerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerStatus` was modified
+
+* `TriggerStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.ImageTemplatePowerShellValidator` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ReplicationMode` was added
+
+* `models.ImageTemplatePropertiesOptimizeWorkload` was added
+
+* `models.WorkloadOptimizationState` was added
+
+* `models.DataDisk` was added
+
+#### `models.ImageTemplatePropertiesOptimize` was modified
+
+* `workload()` was added
+* `withWorkload(models.ImageTemplatePropertiesOptimizeWorkload)` was added
+
+#### `models.ImageTemplateSharedImageDistributor` was modified
+
+* `replicationMode()` was added
+* `withReplicationMode(models.ReplicationMode)` was added
+
+#### `models.ImageTemplate` was modified
+
+* `additionalDataDisks()` was added
+
+#### `models.ImageTemplate$Definition` was modified
+
+* `withAdditionalDataDisks(java.util.List)` was added
 
 ## 1.2.0 (2024-12-19)
 

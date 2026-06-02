@@ -33,8 +33,7 @@ import java.util.stream.Stream;
 public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> voicePropertiesParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -61,7 +60,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
                 = new VoiceLiveSessionOptions().setVoice(BinaryData.fromObject(voice))
                     .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -94,8 +93,8 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);
 
@@ -110,8 +109,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> audioTimestampAndVisemeParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -133,10 +131,11 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-NancyNeural")))
-                .setAnimation(new AnimationOptions().setOutputs(Arrays.asList(AnimationOutputType.VISEME_ID)))
+                .setAnimationOptions(
+                    new AnimationOptions().setOutputTypes(Arrays.asList(AnimationOutputType.VISEME_ID)))
                 .setOutputAudioTimestampTypes(Arrays.asList(AudioTimestampType.WORD));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -171,7 +170,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             Thread.sleep(10000);
             collectingEvents.set(false);
