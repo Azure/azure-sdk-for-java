@@ -39,7 +39,7 @@ public final class NetworkMonitorsListByResourceGroupMockTests {
             = manager.networkMonitors().listByResourceGroup("tnnsjc", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("vii", response.iterator().next().location());
-        Assertions.assertEquals("fakeTokenPlaceholder", response.iterator().next().tags().get("bbxkeygmq"));
+        Assertions.assertEquals("qp", response.iterator().next().tags().get("bbxkeygmq"));
         Assertions.assertEquals(StationConfigurationState.DISABLED,
             response.iterator().next().bmpConfiguration().stationConfigurationState());
         Assertions.assertEquals("axuvazzptlda", response.iterator().next().bmpConfiguration().scopeResourceId());
