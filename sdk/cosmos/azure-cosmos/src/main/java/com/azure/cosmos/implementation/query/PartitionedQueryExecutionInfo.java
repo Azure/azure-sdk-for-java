@@ -43,7 +43,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     /**
      * Constructs with EPK hex string format expected for queryRanges.
      */
-    PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
+    public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
         super(content);
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
         this.expectedQueryRangesFormat = QueryRangesFormat.EPK_HEX_STRING;
