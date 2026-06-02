@@ -10,48 +10,48 @@ import java.util.Collection;
 /**
  * The available set of MCP approval types.
  */
-public final class MCPApprovalType extends ExpandableStringEnum<MCPApprovalType> {
+public final class McpApprovalType extends ExpandableStringEnum<McpApprovalType> {
 
     /**
      * Approval is never required.
      */
     @Generated
-    public static final MCPApprovalType NEVER = fromString("never");
+    public static final McpApprovalType NEVER = fromString("never");
 
     /**
      * Approval is always required.
      */
     @Generated
-    public static final MCPApprovalType ALWAYS = fromString("always");
+    public static final McpApprovalType ALWAYS = fromString("always");
 
     /**
-     * Creates a new instance of MCPApprovalType value.
+     * Creates a new instance of McpApprovalType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public MCPApprovalType() {
+    public McpApprovalType() {
     }
 
     /**
-     * Creates or finds a MCPApprovalType from its string representation.
+     * Creates or finds a McpApprovalType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding MCPApprovalType.
+     * @return the corresponding McpApprovalType.
      */
     @Generated
-    public static MCPApprovalType fromString(String name) {
-        return fromString(name, MCPApprovalType.class);
+    public static McpApprovalType fromString(String name) {
+        return fromString(name, McpApprovalType.class);
     }
 
     /**
-     * Gets known MCPApprovalType values.
+     * Gets known McpApprovalType values.
      *
-     * @return known MCPApprovalType values.
+     * @return known McpApprovalType values.
      */
     @Generated
-    public static Collection<MCPApprovalType> values() {
-        return values(MCPApprovalType.class);
+    public static Collection<McpApprovalType> values() {
+        return values(McpApprovalType.class);
     }
 }

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
+import java.time.Duration;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -139,6 +141,36 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testB2COnlyResourceServerBean() {
         getResourceServerContextRunner().run(b2CResourceServerBean());
+    }
+
+    @Test
+    void testB2CTimeoutDefaultValues() {
+        getResourceServerContextRunner().run(context -> {
+            AadB2cProperties properties = context.getBean(AadB2cProperties.class);
+            assertThat(properties.getJwtConnectTimeout())
+                .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT));
+            assertThat(properties.getJwtReadTimeout())
+                .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
+            // Verify the default timeouts are applied to the RestTemplate used by the ResourceRetriever
+            verifyResourceRetrieverRestTemplateTimeouts(context,
+                JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
+        });
+    }
+
+    @Test
+    void testB2CTimeoutCustomValues() {
+        getResourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout=2000",
+                "spring.cloud.azure.active-directory.b2c.jwt-read-timeout=3000")
+            .run(context -> {
+                AadB2cProperties properties = context.getBean(AadB2cProperties.class);
+                assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
+                assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+                // Verify the custom timeouts are applied to the RestTemplate used by the ResourceRetriever
+                verifyResourceRetrieverRestTemplateTimeouts(context, 2000, 3000);
+            });
     }
 
     @Test
@@ -300,5 +332,36 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 assertThat(jwsKeySelector).isNotNull();
                 assertThat(jwsKeySelector).isExactlyInstanceOf(AadIssuerJwsKeySelector.class);
             });
+    }
+
+    /**
+     * Verifies that the RestTemplate used by the ResourceRetriever for JWK retrieval
+     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     */
+    private static void verifyResourceRetrieverRestTemplateTimeouts(ApplicationContext context,
+                                                                     int expectedConnectTimeoutMs,
+                                                                     int expectedReadTimeoutMs) {
+        com.nimbusds.jose.util.ResourceRetriever resourceRetriever =
+            context.getBean(com.nimbusds.jose.util.ResourceRetriever.class);
+        assertThat(resourceRetriever).isNotNull();
+
+        // RestOperationsResourceRetriever -> restOperations (RestTemplate)
+        Object restOperations = org.springframework.test.util.ReflectionTestUtils
+            .getField(resourceRetriever, "restOperations");
+        assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
+
+        // RestTemplate -> ClientHttpRequestFactory
+        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
+            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
+
+        // Verify timeouts on the request factory (may be stored as Duration or int)
+        Object connectTimeoutValue = org.springframework.test.util.ReflectionTestUtils
+            .getField(requestFactory, "connectTimeout");
+        Object readTimeoutValue = org.springframework.test.util.ReflectionTestUtils
+            .getField(requestFactory, "readTimeout");
+        int connectTimeout = connectTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
+        int readTimeout = readTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
+        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
+        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
     }
 }

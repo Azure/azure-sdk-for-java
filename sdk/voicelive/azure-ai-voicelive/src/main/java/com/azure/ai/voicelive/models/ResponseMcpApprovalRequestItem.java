@@ -14,7 +14,7 @@ import java.io.IOException;
  * A response item that represents a request for approval to call an MCP tool.
  */
 @Immutable
-public final class ResponseMCPApprovalRequestItem extends SessionResponseItem {
+public final class ResponseMcpApprovalRequestItem extends SessionResponseItem {
 
     /*
      * The type property.
@@ -41,13 +41,13 @@ public final class ResponseMCPApprovalRequestItem extends SessionResponseItem {
     private final String serverLabel;
 
     /**
-     * Creates an instance of ResponseMCPApprovalRequestItem class.
+     * Creates an instance of ResponseMcpApprovalRequestItem class.
      *
      * @param name the name value to set.
      * @param serverLabel the serverLabel value to set.
      */
     @Generated
-    private ResponseMCPApprovalRequestItem(String name, String serverLabel) {
+    private ResponseMcpApprovalRequestItem(String name, String serverLabel) {
         this.name = name;
         this.serverLabel = serverLabel;
     }
@@ -110,16 +110,16 @@ public final class ResponseMCPApprovalRequestItem extends SessionResponseItem {
     }
 
     /**
-     * Reads an instance of ResponseMCPApprovalRequestItem from the JsonReader.
+     * Reads an instance of ResponseMcpApprovalRequestItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResponseMCPApprovalRequestItem if the JsonReader was pointing to an instance of it, or
+     * @return An instance of ResponseMcpApprovalRequestItem if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ResponseMCPApprovalRequestItem.
+     * @throws IOException If an error occurs while reading the ResponseMcpApprovalRequestItem.
      */
     @Generated
-    public static ResponseMCPApprovalRequestItem fromJson(JsonReader jsonReader) throws IOException {
+    public static ResponseMcpApprovalRequestItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             ResponseItemObject object = null;
@@ -146,13 +146,13 @@ public final class ResponseMCPApprovalRequestItem extends SessionResponseItem {
                     reader.skipChildren();
                 }
             }
-            ResponseMCPApprovalRequestItem deserializedResponseMCPApprovalRequestItem
-                = new ResponseMCPApprovalRequestItem(name, serverLabel);
-            deserializedResponseMCPApprovalRequestItem.setId(id);
-            deserializedResponseMCPApprovalRequestItem.setObject(object);
-            deserializedResponseMCPApprovalRequestItem.type = type;
-            deserializedResponseMCPApprovalRequestItem.arguments = arguments;
-            return deserializedResponseMCPApprovalRequestItem;
+            ResponseMcpApprovalRequestItem deserializedResponseMcpApprovalRequestItem
+                = new ResponseMcpApprovalRequestItem(name, serverLabel);
+            deserializedResponseMcpApprovalRequestItem.setId(id);
+            deserializedResponseMcpApprovalRequestItem.setObject(object);
+            deserializedResponseMcpApprovalRequestItem.type = type;
+            deserializedResponseMcpApprovalRequestItem.arguments = arguments;
+            return deserializedResponseMcpApprovalRequestItem;
         });
     }
 }

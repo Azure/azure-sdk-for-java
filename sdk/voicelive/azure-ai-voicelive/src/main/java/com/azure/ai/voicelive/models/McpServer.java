@@ -17,7 +17,7 @@ import java.util.Map;
  * The definition of an MCP server as used by the voicelive endpoint.
  */
 @Fluent
-public final class MCPServer extends VoiceLiveToolDefinition {
+public final class McpServer extends VoiceLiveToolDefinition {
 
     /*
      * The type property.
@@ -62,13 +62,13 @@ public final class MCPServer extends VoiceLiveToolDefinition {
     private BinaryData requireApproval;
 
     /**
-     * Creates an instance of MCPServer class.
+     * Creates an instance of McpServer class.
      *
      * @param serverLabel the serverLabel value to set.
      * @param serverUrl the serverUrl value to set.
      */
     @Generated
-    public MCPServer(String serverLabel, String serverUrl) {
+    public McpServer(String serverLabel, String serverUrl) {
         this.serverLabel = serverLabel;
         this.serverUrl = serverUrl;
     }
@@ -118,10 +118,10 @@ public final class MCPServer extends VoiceLiveToolDefinition {
      * Set the authorization property: The authorization property.
      *
      * @param authorization the authorization value to set.
-     * @return the MCPServer object itself.
+     * @return the McpServer object itself.
      */
     @Generated
-    public MCPServer setAuthorization(String authorization) {
+    public McpServer setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -140,10 +140,10 @@ public final class MCPServer extends VoiceLiveToolDefinition {
      * Set the headers property: The headers property.
      *
      * @param headers the headers value to set.
-     * @return the MCPServer object itself.
+     * @return the McpServer object itself.
      */
     @Generated
-    public MCPServer setHeaders(Map<String, String> headers) {
+    public McpServer setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }
@@ -162,10 +162,10 @@ public final class MCPServer extends VoiceLiveToolDefinition {
      * Set the allowedTools property: The allowed_tools property.
      *
      * @param allowedTools the allowedTools value to set.
-     * @return the MCPServer object itself.
+     * @return the McpServer object itself.
      */
     @Generated
-    public MCPServer setAllowedTools(List<String> allowedTools) {
+    public McpServer setAllowedTools(List<String> allowedTools) {
         this.allowedTools = allowedTools;
         return this;
     }
@@ -184,10 +184,10 @@ public final class MCPServer extends VoiceLiveToolDefinition {
      * Set the requireApproval property: The require_approval property.
      *
      * @param requireApproval the requireApproval value to set.
-     * @return the MCPServer object itself.
+     * @return the McpServer object itself.
      */
     @Generated
-    public MCPServer setRequireApproval(BinaryData requireApproval) {
+    public McpServer setRequireApproval(BinaryData requireApproval) {
         this.requireApproval = requireApproval;
         return this;
     }
@@ -214,16 +214,16 @@ public final class MCPServer extends VoiceLiveToolDefinition {
     }
 
     /**
-     * Reads an instance of MCPServer from the JsonReader.
+     * Reads an instance of McpServer from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MCPServer if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * @return An instance of McpServer if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MCPServer.
+     * @throws IOException If an error occurs while reading the McpServer.
      */
     @Generated
-    public static MCPServer fromJson(JsonReader jsonReader) throws IOException {
+    public static McpServer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
             String serverUrl = null;
@@ -254,13 +254,13 @@ public final class MCPServer extends VoiceLiveToolDefinition {
                     reader.skipChildren();
                 }
             }
-            MCPServer deserializedMCPServer = new MCPServer(serverLabel, serverUrl);
-            deserializedMCPServer.type = type;
-            deserializedMCPServer.authorization = authorization;
-            deserializedMCPServer.headers = headers;
-            deserializedMCPServer.allowedTools = allowedTools;
-            deserializedMCPServer.requireApproval = requireApproval;
-            return deserializedMCPServer;
+            McpServer deserializedMcpServer = new McpServer(serverLabel, serverUrl);
+            deserializedMcpServer.type = type;
+            deserializedMcpServer.authorization = authorization;
+            deserializedMcpServer.headers = headers;
+            deserializedMcpServer.allowedTools = allowedTools;
+            deserializedMcpServer.requireApproval = requireApproval;
+            return deserializedMcpServer;
         });
     }
 }

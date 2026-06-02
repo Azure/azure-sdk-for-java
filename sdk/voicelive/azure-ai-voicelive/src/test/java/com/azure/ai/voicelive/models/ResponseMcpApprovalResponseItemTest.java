@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link ResponseMCPApprovalResponseItem}.
+ * Unit tests for {@link ResponseMcpApprovalResponseItem}.
  */
-class ResponseMCPApprovalResponseItemTest {
+class ResponseMcpApprovalResponseItemTest {
 
     @Test
     void testFromJsonWithApprove() {
@@ -24,8 +24,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-123\"," + "\"approve\":true" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertNotNull(item);
@@ -43,8 +43,8 @@ class ResponseMCPApprovalResponseItemTest {
                 + "\"approval_request_id\":\"req-456\"," + "\"approve\":false" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertNotNull(item);
@@ -61,8 +61,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"reason\":\"Security policy violation\"" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertNotNull(item);
@@ -77,8 +77,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-999\"," + "\"approve\":true" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertEquals(ItemType.MCP_APPROVAL_RESPONSE, item.getType());
@@ -91,8 +91,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-111\"," + "\"approve\":true" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertNotNull(item);
@@ -107,14 +107,14 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"reason\":\"User denied the action\"" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(originalJson).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(originalJson).toObject(ResponseMcpApprovalResponseItem.class);
         String serializedJson = BinaryData.fromObject(item).toString();
 
         // Assert
         assertNotNull(serializedJson);
-        ResponseMCPApprovalResponseItem deserializedItem
-            = BinaryData.fromString(serializedJson).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem deserializedItem
+            = BinaryData.fromString(serializedJson).toObject(ResponseMcpApprovalResponseItem.class);
         assertEquals(item.getId(), deserializedItem.getId());
         assertEquals(item.getApprovalRequestId(), deserializedItem.getApprovalRequestId());
         assertEquals(item.isApprove(), deserializedItem.isApprove());
@@ -130,8 +130,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"reason\":\"" + detailedReason + "\"" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertNotNull(item);
@@ -147,8 +147,8 @@ class ResponseMCPApprovalResponseItemTest {
             + "\"reason\":\"User explicitly confirmed the action\"" + "}";
 
         // Act
-        ResponseMCPApprovalResponseItem item
-            = BinaryData.fromString(json).toObject(ResponseMCPApprovalResponseItem.class);
+        ResponseMcpApprovalResponseItem item
+            = BinaryData.fromString(json).toObject(ResponseMcpApprovalResponseItem.class);
 
         // Assert
         assertTrue(item.isApprove());
