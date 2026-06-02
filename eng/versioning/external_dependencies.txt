@@ -278,7 +278,6 @@ cosmos_org.apache.kafka:connect-runtime;3.6.0
 cosmos_org.testcontainers:testcontainers;1.21.4
 cosmos_org.testcontainers:kafka;1.21.4
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
-cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.4
 cosmos_org.apache.logging.log4j:log4j-api;2.25.3
 cosmos_org.apache.logging.log4j:log4j-core;2.25.3

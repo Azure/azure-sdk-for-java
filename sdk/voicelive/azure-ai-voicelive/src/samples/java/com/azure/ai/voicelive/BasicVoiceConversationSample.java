@@ -9,7 +9,7 @@ import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputTextContentPart;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseTextDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  *
  * <p><strong>Reactor pattern used by this sample:</strong></p>
  * <pre>{@code
- * client.startSession(model)
+ * client.startSession(model, null)
  *     .flatMap(session -> session.sendEvent(sessionUpdate).thenReturn(session))
  *     .flatMap(session -> session.sendEvent(conversationItemCreate).thenReturn(session))
  *     .flatMap(session -> session.sendEvent(responseCreate).thenReturn(session))
@@ -117,7 +117,8 @@ public final class BasicVoiceConversationSample {
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
         // Open a WebSocket session against the realtime model.
-        client.startSession("gpt-realtime")
+        // Pass null when no VoiceLiveRequestOptions value is needed.
+        client.startSession("gpt-realtime", null)
             // Configure the session (text-only modality, instructions).
             .flatMap(session -> {
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
@@ -160,7 +161,7 @@ public final class BasicVoiceConversationSample {
      * Handle incoming server events: print text deltas as they stream, and release the latch when
      * the response is complete or an error occurs.
      */
-    private static void handleEvent(SessionUpdate event, CountDownLatch completionLatch) {
+    private static void handleEvent(SessionServerEvent event, CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {

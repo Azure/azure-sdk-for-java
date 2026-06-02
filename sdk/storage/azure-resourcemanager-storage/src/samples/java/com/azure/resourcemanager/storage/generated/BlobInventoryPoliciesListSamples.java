@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class BlobInventoryPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountListBlobInventoryPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountListBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountGetBlobInventoryPolicy.

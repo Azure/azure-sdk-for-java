@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class AuthenticationSettingsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Get.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_Get.json
      */
     /**
      * Sample code: AuthenticationSettings_Get.

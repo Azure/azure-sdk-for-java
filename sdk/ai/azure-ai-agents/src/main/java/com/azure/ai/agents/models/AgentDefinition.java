@@ -112,6 +112,8 @@ public class AgentDefinition implements JsonSerializable<AgentDefinition> {
                     return PromptAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("workflow".equals(discriminatorValue)) {
                     return WorkflowAgentDefinition.fromJson(readerToUse.reset());
+                } else if ("external".equals(discriminatorValue)) {
+                    return ExternalAgentDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

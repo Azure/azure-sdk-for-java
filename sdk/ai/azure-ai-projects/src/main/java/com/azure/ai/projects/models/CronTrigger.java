@@ -32,7 +32,7 @@ public final class CronTrigger extends Trigger {
     private final String expression;
 
     /*
-     * Time zone for the cron schedule.
+     * Time zone for the cron schedule. Defaults to `UTC`.
      */
     @Generated
     private String timeZone;
@@ -71,7 +71,7 @@ public final class CronTrigger extends Trigger {
     }
 
     /**
-     * Get the timeZone property: Time zone for the cron schedule.
+     * Get the timeZone property: Time zone for the cron schedule. Defaults to `UTC`.
      *
      * @return the timeZone value.
      */
@@ -197,7 +197,7 @@ public final class CronTrigger extends Trigger {
     }
 
     /**
-     * Set the timeZone property: Time zone for the cron schedule.
+     * Set the timeZone property: Time zone for the cron schedule. Defaults to `UTC`.
      *
      * @param timeZone the timeZone value to set.
      * @return the CronTrigger object itself.
