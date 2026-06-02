@@ -200,7 +200,7 @@ This would allow you to distinguish telemetry coming from different containers.
 You would need to adjust the workbook to accommodate those changes.
 
 In addition to `test.run_duration`, we're also collecting:
-- [JVM metrics](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/runtime-telemetry/runtime-telemetry-java8/library/README.md) measured by OpenTelemetry:
+- [JVM metrics](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/runtime-telemetry/README.md) measured by OpenTelemetry:
     - CPU and memory usage
     - GC stats
     - Thread count
@@ -254,4 +254,4 @@ thread pool issues, or other performance issues in the code. So make sure to con
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
 [opentelemetry-logback]: https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/logback/logback-appender-1.0/library
-[logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md

@@ -44,18 +44,18 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> modelAndSamplingRateProvider() {
-        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", 16000), Arguments.of("gpt-4o-realtime", 44100),
-            Arguments.of("gpt-4o-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
-            Arguments.of("gpt-4.1", 8000)), API_VERSION_GA, API_VERSION_PREVIEW);
+        return withApiVersions(Stream.of(Arguments.of("gpt-realtime", 16000), Arguments.of("gpt-realtime", 44100),
+            Arguments.of("gpt-realtime", 8000), Arguments.of("gpt-4o", 16000), Arguments.of("gpt-4o", 44100),
+            Arguments.of("gpt-4.1", 8000)));
     }
 
     static Stream<Arguments> modelAndInputAudioFormatProvider() {
         return withApiVersions(Stream.of(Arguments.of("gpt-4o", "g711_ulaw", "azure_semantic_vad"),
             Arguments.of("gpt-4o", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_ulaw", "server_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "azure_semantic_vad"),
-            Arguments.of("gpt-4o-realtime-preview", "g711_alaw", "server_vad")));
+            Arguments.of("gpt-realtime", "g711_ulaw", "azure_semantic_vad"),
+            Arguments.of("gpt-realtime", "g711_ulaw", "server_vad"),
+            Arguments.of("gpt-realtime", "g711_alaw", "azure_semantic_vad"),
+            Arguments.of("gpt-realtime", "g711_alaw", "server_vad")));
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatAzureVoiceProvider() {
@@ -67,8 +67,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> modelAndOutputAudioFormatOpenAIVoiceProvider() {
-        return withApiVersions(Stream.of(Arguments.of("gpt-4o-realtime", "pcm16"),
-            Arguments.of("gpt-4o-realtime", "g711_ulaw"), Arguments.of("gpt-4o-realtime", "g711_alaw")));
+        return withApiVersions(Stream.of(Arguments.of("gpt-realtime", "pcm16"),
+            Arguments.of("gpt-realtime", "g711_ulaw"), Arguments.of("gpt-realtime", "g711_alaw")));
     }
 
     @ParameterizedTest
@@ -101,7 +101,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(turnDetection)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -155,8 +155,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 }
             }
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes(8000, 2.0)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(8000, 2.0))).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -199,11 +199,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model))
                 .setInstructions(
                     "You are a helpful assistant. Please respond briefly to the user's question about lakes.")
-                .setTurnDetection(API_VERSION_PREVIEW.equals(apiVersion)
+                .setTurnDetection(API_VERSIONS[1].equals(apiVersion)
                     ? new ServerVadTurnDetection().setSilenceDurationMs(200)
                     : new ServerVadTurnDetection());
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -263,8 +263,9 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                     "Expected sampling rate " + samplingRate + ", got " + actualSamplingRate);
             }
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes(samplingRate, 2.0)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(samplingRate, 2.0)))
+                .block(SEND_TIMEOUT);
 
             boolean speechStarted = speechStartedLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(speechStarted, "Should receive speech started event");
@@ -318,7 +319,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -351,8 +352,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -394,7 +395,7 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -427,8 +428,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 

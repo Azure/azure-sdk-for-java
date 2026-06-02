@@ -11,7 +11,7 @@ public final class HciEdgeDeviceStorageAdapterIpInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceStorageAdapterIpInfo model = BinaryData
-            .fromString("{\"physicalNode\":\"cgjokjljnhvlq\",\"ipv4Address\":\"ek\",\"subnetMask\":\"eksnbksdqhjvyk\"}")
+            .fromString("{\"physicalNode\":\"reuykbbmnwagl\",\"ipv4Address\":\"xoe\",\"subnetMask\":\"nqlnfwmyymvqd\"}")
             .toObject(HciEdgeDeviceStorageAdapterIpInfo.class);
     }
 }

@@ -5,6 +5,8 @@ package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.AgentSessionConfig;
 import com.azure.ai.voicelive.models.AudioEchoCancellation;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.AudioNoiseReduction;
 import com.azure.ai.voicelive.models.AudioNoiseReductionType;
 import com.azure.ai.voicelive.models.AzureStandardVoice;
@@ -15,7 +17,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDone;
@@ -26,6 +28,7 @@ import com.azure.ai.voicelive.models.ServerEventWarning;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -33,14 +36,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -55,22 +50,37 @@ import java.util.concurrent.atomic.AtomicInteger;
  * using AgentSessionConfig, rather than as a tool in the session. This allows the agent to be
  * the primary responder for the voice session.</p>
  *
+ * <p>Use this sample when you already have an Azure AI Foundry agent and want VoiceLive to talk to
+ * that agent directly instead of registering local tools or writing response orchestration logic in
+ * the sample itself.</p>
+ *
+ * <p>When you run it, the sample creates an {@code AgentSessionConfig}, opens a realtime session,
+ * sends the session configuration, waits for the service to report the session as ready, and then
+ * starts full-duplex microphone / speaker streaming.</p>
+ *
  * <p>Features demonstrated:</p>
  * <ul>
  *   <li>Using AgentSessionConfig to connect directly to an Azure AI Foundry agent</li>
  *   <li>Real-time audio capture and playback using javax.sound.sampled</li>
  *   <li>Sequence number based audio packet system for proper interrupt handling</li>
  *   <li>Azure Deep Noise Suppression and Echo Cancellation for audio quality</li>
- *   <li>Conversation logging to file</li>
  *   <li>Graceful shutdown handling</li>
  * </ul>
  *
  * <p>Required environment variables:</p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The Azure VoiceLive endpoint</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - (Required) The VoiceLive service endpoint URL</li>
  *   <li>AGENT_NAME - The name of your Azure AI Foundry agent</li>
  *   <li>AGENT_PROJECT_NAME - The name of the Foundry project containing the agent</li>
  * </ul>
+ *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
+ *
+ * <p><strong>How to Run:</strong></p>
+ * <pre>{@code
+ * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.AgentV2Sample" -Dexec.classpathScope=test
+ * }</pre>
  *
  * <p>Optional environment variables:</p>
  * <ul>
@@ -105,15 +115,6 @@ public class AgentV2Sample {
     private static final int TURN_DETECTION_PREFIX_PADDING_MS = 300;
     private static final int TURN_DETECTION_SILENCE_DURATION_MS = 500;
 
-    // Logging
-    private static final String LOG_DIR = "logs";
-    private static final String LOG_FILENAME;
-
-    static {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-        LOG_FILENAME = timestamp + "_agent_v2_conversation.log";
-    }
-
     public static void main(String[] args) {
         System.out.println("Agent V2 Voice Assistant with Azure VoiceLive SDK");
         System.out.println("==================================================");
@@ -128,13 +129,6 @@ public class AgentV2Sample {
         // Check audio system
         if (!checkAudioSystem()) {
             System.exit(1);
-        }
-
-        // Create logs directory
-        try {
-            Files.createDirectories(Paths.get(LOG_DIR));
-        } catch (IOException e) {
-            System.err.println("Warning: Could not create logs directory: " + e.getMessage());
         }
 
         // Run the assistant
@@ -172,12 +166,6 @@ public class AgentV2Sample {
             agentConfig,
             AGENT_VOICE
         );
-
-        // Setup shutdown hook for graceful termination
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("\nVoice assistant shut down. Goodbye!");
-            assistant.shutdown();
-        }));
 
         // Start the assistant
         assistant.start();
@@ -229,8 +217,8 @@ public class AgentV2Sample {
         private final AtomicBoolean running = new AtomicBoolean(false);
         private final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
-        private VoiceLiveSessionAsyncClient session;
-        private AudioProcessor audioProcessor;
+        // volatile: shared between the reactor event thread and the audio worker threads
+        private volatile AudioProcessor audioProcessor;
 
         AgentV2VoiceAssistant(String endpoint, AgentSessionConfig agentConfig, String voice) {
             this.endpoint = endpoint;
@@ -244,34 +232,33 @@ public class AgentV2Sample {
             System.out.println("\nConnecting to VoiceLive API with agent " + agentConfig.getAgentName()
                 + " for project " + agentConfig.getProjectName());
 
-            // Create client with DefaultAzureCredential
+            // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
+                .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
                 .buildAsyncClient();
 
-            // Connect using AgentSessionConfig
-            client.startSession(agentConfig)
-                .doOnSuccess(s -> {
-                    this.session = s;
+            // Connect using AgentSessionConfig.
+            client.startSession(agentConfig, null)
+                .flatMapMany(voiceLiveSession -> {
                     System.out.println("Connected to VoiceLive service");
-
-                    // Initialize audio processor
-                    this.audioProcessor = new AudioProcessor(s);
-
-                    // Configure session
-                    configureSession();
-
-                    // Subscribe to events
-                    subscribeToEvents();
+                    this.audioProcessor = new AudioProcessor(voiceLiveSession);
+                    return configureSession(voiceLiveSession)
+                        .thenReturn(voiceLiveSession)
+                        .flatMapMany(VoiceLiveSessionAsyncClient::receiveEvents);
                 })
-                .doOnError(e -> {
-                    System.err.println("Failed to connect: " + e.getMessage());
-                    running.set(false);
-                    shutdownLatch.countDown();
-                })
-                .subscribe();
+                .subscribe(
+                    this::handleEvent,
+                    error -> {
+                        System.err.println("Error receiving events: " + error.getMessage());
+                        shutdown();
+                    },
+                    () -> {
+                        System.out.println("Event stream completed");
+                        shutdown();
+                    }
+                );
 
             // Wait for shutdown
             try {
@@ -281,7 +268,7 @@ public class AgentV2Sample {
             }
         }
 
-        private void configureSession() {
+        private Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
             System.out.println("Setting up voice conversation session...");
             System.out.println("Enabling Azure Deep Noise Suppression");
             System.out.println("Enabling Echo Cancellation");
@@ -314,33 +301,19 @@ public class AgentV2Sample {
                 .setTurnDetection(turnDetection)
                 // Audio quality enhancements
                 .setInputAudioEchoCancellation(new AudioEchoCancellation())
-                .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION));
+                .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
+                .setInputAudioTranscription(
+                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.AZURE_SPEECH)
+                );
                 // Uncomment to enable interim responses
                 // .setInterimResponse(BinaryData.fromObject(interimResponseConfig));
 
             // Send session update
             ClientEventSessionUpdate sessionUpdate = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(sessionUpdate)
-                .doOnSuccess(v -> System.out.println("Session configuration sent"))
-                .doOnError(e -> System.err.println("Failed to configure session: " + e.getMessage()))
-                .subscribe();
+            return session.sendEvent(sessionUpdate).then();
         }
 
-        private void subscribeToEvents() {
-            session.receiveEvents()
-                .doOnNext(this::handleEvent)
-                .doOnError(e -> {
-                    System.err.println("Error receiving events: " + e.getMessage());
-                    shutdown();
-                })
-                .doOnComplete(() -> {
-                    System.out.println("Event stream completed");
-                    shutdown();
-                })
-                .subscribe();
-        }
-
-        private void handleEvent(SessionUpdate event) {
+        private void handleEvent(SessionServerEvent event) {
             ServerEventType eventType = event.getType();
 
             if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -349,9 +322,7 @@ public class AgentV2Sample {
                 String model = sessionEvent.getSession().getModel();
 
                 System.out.println("Session ready: " + sessionId);
-                writeConversationLog("SessionID: " + sessionId);
-                writeConversationLog("Model: " + model);
-                writeConversationLog("");
+                System.out.println("Model: " + model);
 
                 // Start audio capture once session is ready
                 audioProcessor.startCapture();
@@ -364,20 +335,17 @@ public class AgentV2Sample {
                     (SessionUpdateConversationItemInputAudioTranscriptionCompleted) event;
                 String transcript = transcriptionEvent.getTranscript();
                 System.out.println("You said: " + transcript);
-                writeConversationLog("User Input:\t" + transcript);
 
             } else if (eventType == ServerEventType.RESPONSE_TEXT_DONE) {
                 SessionUpdateResponseTextDone textEvent = (SessionUpdateResponseTextDone) event;
                 String text = textEvent.getText();
                 System.out.println("Agent responded with text: " + text);
-                writeConversationLog("Agent Text Response:\t" + text);
 
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
                 SessionUpdateResponseAudioTranscriptDone transcriptEvent =
                     (SessionUpdateResponseAudioTranscriptDone) event;
                 String transcript = transcriptEvent.getTranscript();
                 System.out.println("Agent responded with audio transcript: " + transcript);
-                writeConversationLog("Agent Audio Response:\t" + transcript);
 
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
                 System.out.println("Listening...");
@@ -441,22 +409,7 @@ public class AgentV2Sample {
                     audioProcessor.shutdown();
                 }
 
-                if (session != null) {
-                    session.closeAsync().subscribe();
-                }
-
                 shutdownLatch.countDown();
-            }
-        }
-
-        private void writeConversationLog(String message) {
-            try {
-                Path logPath = Paths.get(LOG_DIR, LOG_FILENAME);
-                try (PrintWriter writer = new PrintWriter(new FileWriter(logPath.toFile(), true))) {
-                    writer.println(message);
-                }
-            } catch (IOException e) {
-                System.err.println("Warning: Could not write to conversation log: " + e.getMessage());
             }
         }
     }
@@ -471,15 +424,17 @@ public class AgentV2Sample {
     static class AudioProcessor {
         private final VoiceLiveSessionAsyncClient session;
         private final AudioFormat format;
-        private final BlockingQueue<AudioPacket> playbackQueue = new LinkedBlockingQueue<>();
+        private final BlockingQueue<AudioPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicInteger nextSeqNum = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
         private final AtomicBoolean running = new AtomicBoolean(false);
 
-        private TargetDataLine inputLine;
-        private SourceDataLine outputLine;
-        private Thread captureThread;
-        private Thread playbackThread;
+        // volatile: shared between the reactor event thread (startCapture/Playback) and the
+        // audio capture/playback worker threads
+        private volatile TargetDataLine inputLine;
+        private volatile SourceDataLine outputLine;
+        private volatile Thread captureThread;
+        private volatile Thread playbackThread;
 
         AudioProcessor(VoiceLiveSessionAsyncClient session) {
             this.session = session;
@@ -520,8 +475,13 @@ public class AgentV2Sample {
                         ? buffer.clone()
                         : Arrays.copyOf(buffer, bytesRead);
 
-                    // Send audio to service (sendInputAudio takes byte[])
-                    session.sendInputAudio(audioData).subscribe();
+                    // sendInputAudio returns a cold Mono - it must be subscribed for the
+                    // audio to actually be sent over the WebSocket.
+                    session.sendInputAudio(BinaryData.fromBytes(audioData))
+                        .subscribe(
+                            noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
+                            error -> System.err.println("Error sending audio: " + error.getMessage())
+                        );
                 }
             }
         }
@@ -571,7 +531,10 @@ public class AgentV2Sample {
 
         void queueAudio(byte[] audioData) {
             int seqNum = nextSeqNum.getAndIncrement();
-            playbackQueue.offer(new AudioPacket(seqNum, audioData));
+            // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+            if (!playbackQueue.offer(new AudioPacket(seqNum, audioData))) {
+                System.err.println("Warning: playback queue full, dropping audio packet seq=" + seqNum);
+            }
         }
 
         void skipPendingAudio() {

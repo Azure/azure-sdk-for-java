@@ -16,7 +16,7 @@ import java.io.IOException;
  * cancelled.
  */
 @Immutable
-public final class SessionUpdateResponseAudioTranscriptDone extends SessionUpdate {
+public final class SessionUpdateResponseAudioTranscriptDone extends SessionServerEvent {
 
     /*
      * The type of event.

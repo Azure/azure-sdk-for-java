@@ -59,7 +59,7 @@ public class MemoryItem implements JsonSerializable<MemoryItem> {
      * @param content the content value to set.
      */
     @Generated
-    protected MemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
+    public MemoryItem(String memoryId, OffsetDateTime updatedAt, String scope, String content) {
         this.memoryId = memoryId;
         if (updatedAt == null) {
             this.updatedAt = 0L;
@@ -166,6 +166,8 @@ public class MemoryItem implements JsonSerializable<MemoryItem> {
                     return UserProfileMemoryItem.fromJson(readerToUse.reset());
                 } else if ("chat_summary".equals(discriminatorValue)) {
                     return ChatSummaryMemoryItem.fromJson(readerToUse.reset());
+                } else if ("procedural".equals(discriminatorValue)) {
+                    return ProceduralMemoryItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

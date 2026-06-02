@@ -94,7 +94,6 @@ public class DataSourceTests extends SearchTestBase {
         dataSourcesToDelete.add(dataSource2.getName());
 
         Map<String, SearchIndexerDataSourceConnection> actualDataSources = client.listDataSourceConnections()
-            .getDataSources()
             .stream()
             .collect(Collectors.toMap(SearchIndexerDataSourceConnection::getName, ds -> ds));
 
@@ -114,10 +113,8 @@ public class DataSourceTests extends SearchTestBase {
             = Flux.fromIterable(Arrays.asList(dataSource1, dataSource2))
                 .flatMap(asyncClient::createOrUpdateDataSourceConnection)
                 .doOnNext(ds -> dataSourcesToDelete.add(ds.getName()))
-                .then(asyncClient.listDataSourceConnections())
-                .map(result -> result.getDataSources()
-                    .stream()
-                    .collect(Collectors.toMap(SearchIndexerDataSourceConnection::getName, ds -> ds)));
+                .then(asyncClient.listDataSourceConnections()
+                    .collectMap(SearchIndexerDataSourceConnection::getName, ds -> ds));
 
         StepVerifier.create(listMono)
             .assertNext(actualDataSources -> compareMaps(expectedDataSources, actualDataSources,
@@ -139,7 +136,7 @@ public class DataSourceTests extends SearchTestBase {
         client.createOrUpdateDataSourceConnectionWithResponse(dataSource2, null);
         dataSourcesToDelete.add(dataSource2.getName());
 
-        Set<String> actualDataSources = new HashSet<>(client.listDataSourceConnectionNames());
+        Set<String> actualDataSources = client.listDataSourceConnectionNames().stream().collect(Collectors.toSet());
 
         assertEquals(expectedDataSources.size(), actualDataSources.size());
         expectedDataSources.forEach(ds -> assertTrue(actualDataSources.contains(ds), "Missing expected data source."));
@@ -157,8 +154,7 @@ public class DataSourceTests extends SearchTestBase {
         Mono<Set<String>> listMono = Flux.fromIterable(Arrays.asList(dataSource1, dataSource2))
             .flatMap(ds -> asyncClient.createOrUpdateDataSourceConnectionWithResponse(ds, null))
             .doOnNext(ds -> dataSourcesToDelete.add(ds.getValue().getName()))
-            .then(asyncClient.listDataSourceConnectionNames())
-            .map(HashSet::new);
+            .then(asyncClient.listDataSourceConnectionNames().collect(Collectors.toSet()));
 
         StepVerifier.create(listMono).assertNext(actualDataSources -> {
             assertEquals(expectedDataSources.size(), actualDataSources.size());

@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class ProtectionLevel extends ExpandableStringEnum<ProtectionLevel> {
     /**
-     * Static value Database for ProtectionLevel.
+     * Protected at database level.
      */
     public static final ProtectionLevel DATABASE = fromString("Database");
 
     /**
-     * Static value DatabaseUnderInstance for ProtectionLevel.
+     * Database protected under an instance.
      */
     public static final ProtectionLevel DATABASE_UNDER_INSTANCE = fromString("DatabaseUnderInstance");
 

@@ -12,21 +12,20 @@ public final class SubvolumeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"path\":\"lkwzdqybxceakxcp\",\"size\":2916503884742775477,\"parentPath\":\"yiaseqchkrttzraz\",\"provisioningState\":\"gyki\"},\"id\":\"mvanbwzo\",\"name\":\"mnrxxbsojkl\",\"type\":\"nhmdptysprqs\"}")
+            "{\"properties\":{\"path\":\"lxunsmjbnkppxy\",\"size\":8795706373981455807,\"parentPath\":\"vxei\",\"provisioningState\":\"gwklnsr\"},\"id\":\"feycxcktp\",\"name\":\"ymerteeammxq\",\"type\":\"ekkkzd\"}")
             .toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("lkwzdqybxceakxcp", model.path());
-        Assertions.assertEquals(2916503884742775477L, model.size());
-        Assertions.assertEquals("yiaseqchkrttzraz", model.parentPath());
+        Assertions.assertEquals("lxunsmjbnkppxy", model.path());
+        Assertions.assertEquals(8795706373981455807L, model.size());
+        Assertions.assertEquals("vxei", model.parentPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumeInfoInner model = new SubvolumeInfoInner().withPath("lkwzdqybxceakxcp")
-            .withSize(2916503884742775477L)
-            .withParentPath("yiaseqchkrttzraz");
+        SubvolumeInfoInner model
+            = new SubvolumeInfoInner().withPath("lxunsmjbnkppxy").withSize(8795706373981455807L).withParentPath("vxei");
         model = BinaryData.fromObject(model).toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("lkwzdqybxceakxcp", model.path());
-        Assertions.assertEquals(2916503884742775477L, model.size());
-        Assertions.assertEquals("yiaseqchkrttzraz", model.parentPath());
+        Assertions.assertEquals("lxunsmjbnkppxy", model.path());
+        Assertions.assertEquals(8795706373981455807L, model.size());
+        Assertions.assertEquals("vxei", model.parentPath());
     }
 }

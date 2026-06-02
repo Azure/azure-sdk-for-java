@@ -11,7 +11,7 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.test.TestProxyTestBase;
@@ -40,9 +40,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Model constants
     protected static final String MODEL_GPT_4O = "gpt-4o";
-    protected static final String MODEL_GPT_4O_REALTIME = "gpt-4o-realtime";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW = "gpt-4o-realtime-preview";
-    protected static final String MODEL_GPT_4O_REALTIME_PREVIEW_2025_06_03 = "gpt-4o-realtime-preview-2025-06-03";
+    protected static final String MODEL_GPT_REALTIME = "gpt-realtime";
     protected static final String MODEL_GPT_41 = "gpt-4.1";
     protected static final String MODEL_GPT_5 = "gpt-5";
     protected static final String MODEL_GPT_5_CHAT = "gpt-5-chat";
@@ -51,7 +49,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Default models for non-parameterized tests
     protected static final String TEST_MODEL = MODEL_GPT_4O;
-    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_4O_REALTIME_PREVIEW;
+    protected static final String TEST_MODEL_REALTIME = MODEL_GPT_REALTIME;
 
     // Timeout constants
     protected static final Duration SESSION_TIMEOUT = Duration.ofSeconds(30);
@@ -67,9 +65,8 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     protected static final int DEFAULT_SAMPLE_RATE = 24000;
     protected static final double DEFAULT_SILENCE_DURATION = 2.0;
 
-    // API version constants
-    protected static final String API_VERSION_GA = "2025-10-01";
-    protected static final String API_VERSION_PREVIEW = "2026-01-01-preview";
+    // API versions exercised by parameterized live tests.
+    protected static final String[] API_VERSIONS = { "2025-10-01", "2026-04-10" };
 
     protected String getEndpoint() {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");
@@ -114,7 +111,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> withApiVersions(Stream<Arguments> base) {
-        return withApiVersions(base, API_VERSION_GA, API_VERSION_PREVIEW);
+        return withApiVersions(base, API_VERSIONS);
     }
 
     protected static Stream<Arguments> withApiVersions(Stream<Arguments> base, String... apiVersions) {
@@ -166,7 +163,7 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
         return getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, DEFAULT_SILENCE_DURATION);
     }
 
-    protected void handleError(SessionUpdate event) {
+    protected void handleError(SessionServerEvent event) {
         if (event instanceof SessionUpdateError) {
             SessionUpdateError errorEvent = (SessionUpdateError) event;
             System.err.println(
@@ -175,10 +172,9 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
     }
 
     protected AudioInputTranscriptionOptions getSpeechRecognitionSetting(String model) {
-        AudioInputTranscriptionOptionsModel transcriptionModel
-            = model.startsWith("gpt-4o-realtime") || model.startsWith("gpt-4o-mini-realtime")
-                ? AudioInputTranscriptionOptionsModel.WHISPER_1
-                : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
+        AudioInputTranscriptionOptionsModel transcriptionModel = model.startsWith("gpt-realtime")
+            ? AudioInputTranscriptionOptionsModel.WHISPER_1
+            : AudioInputTranscriptionOptionsModel.AZURE_SPEECH;
         return new AudioInputTranscriptionOptions(transcriptionModel).setLanguage("en-US");
     }
 

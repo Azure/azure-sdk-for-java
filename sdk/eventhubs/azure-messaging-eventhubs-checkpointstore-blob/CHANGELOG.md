@@ -8,7 +8,31 @@
 
 ### Bugs Fixed
 
+- Fixed `BlobCheckpointStore.updateCheckpoint` so that it falls back to the deprecated
+  `Checkpoint.getOffset()` (Long) value when `Checkpoint.getOffsetString()` is not populated. This restores writing of
+  the `offset` blob metadata for callers that still build `Checkpoint` instances using the legacy long offset, fixing
+  a regression introduced in 1.21.0 that broke partition switch-over and consumer-group lag monitoring.
+  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+
 ### Other Changes
+
+## 1.21.6 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.33.4`.
+- Upgraded `azure-messaging-eventhubs` from `5.21.3` to version `5.21.4`.
+
+## 1.21.5 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
+
 
 ## 1.21.4 (2026-03-02)
 

@@ -22,7 +22,7 @@ public final class ConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"ywvtylbfpnc\",\"connectionStatus\":\"Rejected\",\"privateLinkServiceId\":\"oiwiithtywub\",\"privateEndpointName\":\"bihwqknfdnt\",\"privateEndpointResourceId\":\"chrdgoihxumwcto\",\"jobList\":[\"jl\"],\"provisioningState\":\"Failed\"},\"id\":\"dlwggytsbwtovv\",\"name\":\"gseinq\",\"type\":\"iufxqknpir\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"ronasxift\",\"connectionStatus\":\"Approved\",\"privateLinkServiceId\":\"yzhftwesgogczh\",\"privateEndpointName\":\"nxkrlgnyhmossxkk\",\"privateEndpointResourceId\":\"h\",\"jobList\":[\"hxjbdhqxvc\"],\"provisioningState\":\"Deleting\"},\"id\":\"pdso\",\"name\":\"bshrnsvbuswd\",\"type\":\"z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Connection> response
-            = manager.connections().list("lrcoolsttpki", "kkbnu", com.azure.core.util.Context.NONE);
+            = manager.connections().list("mqnrojlpijnkr", "frddhcrati", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ywvtylbfpnc", response.iterator().next().properties().description());
-        Assertions.assertEquals("oiwiithtywub", response.iterator().next().properties().privateLinkServiceId());
-        Assertions.assertEquals("jl", response.iterator().next().properties().jobList().get(0));
+        Assertions.assertEquals("ronasxift", response.iterator().next().properties().description());
+        Assertions.assertEquals("yzhftwesgogczh", response.iterator().next().properties().privateLinkServiceId());
+        Assertions.assertEquals("hxjbdhqxvc", response.iterator().next().properties().jobList().get(0));
     }
 }

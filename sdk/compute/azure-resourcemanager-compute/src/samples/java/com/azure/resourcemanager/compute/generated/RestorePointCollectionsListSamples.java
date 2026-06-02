@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class RestorePointCollectionsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
+     * x-ms-original-file: 2025-11-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
      */
     /**
      * Sample code: Gets the list of restore point collections in a subscription.

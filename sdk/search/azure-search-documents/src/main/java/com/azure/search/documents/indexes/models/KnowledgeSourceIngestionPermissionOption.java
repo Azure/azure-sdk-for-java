@@ -32,6 +32,12 @@ public final class KnowledgeSourceIngestionPermissionOption
     public static final KnowledgeSourceIngestionPermissionOption RBAC_SCOPE = fromString("rbacScope");
 
     /**
+     * Ingest Microsoft Purview sensitivity labels alongside document content.
+     */
+    @Generated
+    public static final KnowledgeSourceIngestionPermissionOption SENSITIVITY_LABELS = fromString("sensitivityLabels");
+
+    /**
      * Creates a new instance of KnowledgeSourceIngestionPermissionOption value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

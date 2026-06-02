@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFe
  */
 public final class FeatureSupportValidateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/BackupFeature_Validate.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/BackupFeature_Validate.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.

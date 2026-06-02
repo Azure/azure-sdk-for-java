@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class RegistryEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_CreateOrUpdate_MaximumSet.

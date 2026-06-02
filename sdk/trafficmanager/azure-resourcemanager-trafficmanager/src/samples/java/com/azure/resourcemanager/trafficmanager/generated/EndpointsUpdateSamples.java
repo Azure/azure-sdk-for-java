@@ -12,7 +12,7 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
  */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PATCH-External-Target.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
      */
     /**
      * Sample code: Endpoint-PATCH-External-Target.
@@ -24,11 +24,6 @@ public final class EndpointsUpdateSamples {
             .getEndpoints()
             .updateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187",
-                new EndpointInner().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187")
-                    .withName("azsmnet7187")
-                    .withType("Microsoft.Network/trafficManagerProfiles/externalEndpoints")
-                    .withTarget("another.foobar.contoso.com"),
-                com.azure.core.util.Context.NONE);
+                new EndpointInner().withTarget("another.foobar.contoso.com"), com.azure.core.util.Context.NONE);
     }
 }

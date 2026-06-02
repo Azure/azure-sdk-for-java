@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.1 (Unreleased)
+## 12.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.1.0-beta.1 (2026-05-28)
+
+### Features Added
+
+- Added support for the `2026-05-01-Preview` service version.
+- Added new knowledge source types: `FabricDataAgentKnowledgeSource`, `FabricOntologyKnowledgeSource`, `FileKnowledgeSource`, `IndexedSharePointKnowledgeSource`, `IndexedSqlKnowledgeSource`, `McpServerKnowledgeSource`, `RemoteSharePointKnowledgeSource`, and `WorkIQKnowledgeSource`.
+- Added MCP server knowledge source types including `McpServerAuthentication`, `McpServerOutputParsing`, and `McpServerTool`.
+- Added knowledge base reference types: `KnowledgeBaseFabricDataAgentReference`, `KnowledgeBaseFabricOntologyReference`, `KnowledgeBaseFileReference`, `KnowledgeBaseIndexedSharePointReference`, `KnowledgeBaseIndexedSqlReference`, `KnowledgeBaseMcpServerReference`, `KnowledgeBaseRemoteSharePointReference`, and `KnowledgeBaseWorkIQReference`.
+- Added `FreshnessPolicy` model for knowledge source freshness configuration.
+- Added `ContentColumnMapping` and `EmbeddingColumnMapping` models.
+- Added `SharePointConnectorAppRegistration` for SharePoint connector authentication.
+- Added `PurviewSensitivityLabelInfo` model.
+- Added `WorkIQAttribution` model.
+- Added `AssetStore` model.
+- Added `failOnError`, `maxOutputDocuments`, and `enableImageServing` properties to knowledge source parameters.
+- Added knowledge source params subtypes: `FabricDataAgentKnowledgeSourceParams`, `FabricOntologyKnowledgeSourceParams`, `FileKnowledgeSourceParams`, `IndexedSharePointKnowledgeSourceParams`, `IndexedSqlKnowledgeSourceParams`, `McpServerKnowledgeSourceParams`, `RemoteSharePointKnowledgeSourceParams`, and `WorkIQKnowledgeSourceParams`.
+- Added `ImageServingStatistics` model for knowledge base image content retrieval.
+
+### Breaking Changes
+
+- Renamed `AIServices` to `AiServices`, including `getAIServices()`/`setAIServices()` to `getAiServices()`/`setAiServices()` on `KnowledgeSourceIngestionParameters`.
+- Renamed `getInputTokens()`/`getOutputTokens()` to `getInputTokensCount()`/`getOutputTokensCount()` on `KnowledgeBaseModelWebSummarizationActivityRecord`.
+- Changed `KnowledgeBaseRetrievalClient` and `KnowledgeBaseRetrievalAsyncClient` `retrieve()` and `retrieveWithResponse()` signatures — client is now scoped to a single knowledge base at construction; `knowledgeBaseName` parameter replaced with `KnowledgeBaseRetrievalOptions`.
+
+
+
+## 12.0.0 (2026-04-10)
+
+### Features Added
+- Added support for the `2026-04-01` service version
+- Added `KnowledgeBaseRetrievalClient` for retrieval operations on knowledge bases
+- Added management types for knowledge bases, including `KnowledgeBase`, `KnowledgeBaseModel`,`KnowledgeBaseAzureOpenAIModel`, and `KnowledgeSourceReference`
+- Added support for new knowledge source types such as Azure Blob, Search Index, Web, and OneLake knowledge sources
+- Added knowledge base retrieval request and response models, including message content and reference metadata
+- Added knowledge base activity tracking models `KnowledgeBaseActivityRecord` and `KnowledgeBaseActivityRecordType`
+- Added knowledge source ingestion and status models `KnowledgeSourceIngestionParameters`, `KnowledgeSourceStatistics`, `KnowledgeSourceStatus` and `SynchronizationState`
+- Added AI skill types `ChatCompletionSkill`, `ContentUnderstandingSkill`, and `DocumentIntelligenceLayoutSkill` 
+- Added `AzureMachineLearningParameters` and `AzureMachineLearningVectorizer` for Azure Machine Learning integration
+- Added `SearchIndexResponse` for handling search responses with knowledge base results
+- Added `NativeBlobSoftDeleteDeletionDetectionPolicy` for Azure Blob Storage data source soft delete detection
+- Added `VectorizableImageBinaryQuery` and `VectorizableImageUrlQuery` for image-based vector queries
+- Added `DebugInfo` support for image-based queries
+- Added `aliasCounter` to `SearchServiceCounters` for alias resource tracking
+- Added `maxCumulativeIndexerRuntimeSeconds` to `ServiceLimits` for monitoring indexer runtime limits
+- Added `LookupDocument` model for document lookup responses
+- Added `AIServicesAccountIdentity` and `AIServicesAccountKey` for Azure AI Services authentication
+
+
+### Breaking Changes
+- Removed `EntityRecognitionSkill`, `EntityRecognitionSkillVersion`, `SentimentSkill`, and `SentimentSkillVersion`
+  which were previously deprecated. Use `EntityRecognitionSkillV3` and `SentimentSkillV3` instead.
+
 
 ## 11.8.1 (2026-01-29)
 
@@ -36,7 +89,7 @@
 - Added required `runtime` property to `SearchIndexerStatus` and `indexersRuntime` property to `ServiceStatistics`.
 - Added `product` enum value to `ScoringFunctionAggregation`.
 - Added enhanced knowledge source parameters: `sourceDataFields`, `searchFields`, `semanticConfigurationName` in `SearchIndexKnowledgeSourceParameters`.
-- Added Azure Data Lake Storage Gen2 support with `isADLSGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
+- Added Azure Data Lake Storage Gen2 support with `isAdlsGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
 - Added partial content response support (HTTP 206) for knowledge base operations.
 - Added `error` property to `KnowledgeBaseActivityRecord` for enhanced error handling.
 - Added enhanced knowledge source parameters: `includeReferences`, `includeReferenceSourceData`, `alwaysQuerySource`, `rerankerThreshold` in `SearchIndexKnowledgeSourceParams`.

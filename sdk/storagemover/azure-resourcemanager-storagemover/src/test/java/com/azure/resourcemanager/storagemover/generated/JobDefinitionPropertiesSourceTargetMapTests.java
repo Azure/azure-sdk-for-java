@@ -11,7 +11,7 @@ public final class JobDefinitionPropertiesSourceTargetMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobDefinitionPropertiesSourceTargetMap model = BinaryData.fromString(
-            "{\"value\":[{\"sourceEndpoint\":{\"properties\":{\"name\":\"oqqnwvlryav\",\"sourceEndpointResourceId\":\"heun\",\"awsS3BucketId\":\"qhgyxzkonocukok\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"xuconu\",\"targetEndpointResourceId\":\"zf\",\"azureStorageAccountResourceId\":\"eyp\",\"azureStorageBlobContainerName\":\"rmjmwvvjektc\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"nhwlrsffrzpwvl\",\"sourceEndpointResourceId\":\"q\",\"awsS3BucketId\":\"iqylihkaetck\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"civfsnkymuctq\",\"targetEndpointResourceId\":\"fbebrjcxer\",\"azureStorageAccountResourceId\":\"wutttxfvjrbi\",\"azureStorageBlobContainerName\":\"hxepcyvahfnlj\"}}}]}")
+            "{\"value\":[{\"sourceEndpoint\":{\"properties\":{\"name\":\"bfs\",\"sourceEndpointResourceId\":\"nehmpvecx\",\"awsS3BucketId\":\"debfqkkrbmpukgri\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"zlfbxzpuzycispnq\",\"targetEndpointResourceId\":\"hmgkbrpyy\",\"azureStorageAccountResourceId\":\"ibnuqqkpik\",\"azureStorageBlobContainerName\":\"rgvtqag\"}}},{\"sourceEndpoint\":{\"properties\":{\"name\":\"ynhijggme\",\"sourceEndpointResourceId\":\"siarbutrcvpn\",\"awsS3BucketId\":\"zmhjrunmp\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"dbhrbnlankxm\",\"targetEndpointResourceId\":\"k\",\"azureStorageAccountResourceId\":\"henbtkcxywnytn\",\"azureStorageBlobContainerName\":\"yn\"}}}]}")
             .toObject(JobDefinitionPropertiesSourceTargetMap.class);
     }
 

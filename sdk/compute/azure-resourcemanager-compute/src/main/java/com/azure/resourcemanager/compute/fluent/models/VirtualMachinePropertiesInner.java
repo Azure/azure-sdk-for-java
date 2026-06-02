@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
+import com.azure.resourcemanager.compute.models.ResiliencyProfile;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
@@ -203,6 +204,11 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
      * Specifies the time at which the Virtual Machine resource was created. Minimum api-version: 2021-11-01.
      */
     private OffsetDateTime timeCreated;
+
+    /*
+     * Resiliency profile for the virtual machine.
+     */
+    private ResiliencyProfile resiliencyProfile;
 
     /**
      * Creates an instance of VirtualMachinePropertiesInner class.
@@ -791,6 +797,26 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
     }
 
     /**
+     * Get the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @return the resiliencyProfile value.
+     */
+    public ResiliencyProfile resiliencyProfile() {
+        return this.resiliencyProfile;
+    }
+
+    /**
+     * Set the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @param resiliencyProfile the resiliencyProfile value to set.
+     * @return the VirtualMachinePropertiesInner object itself.
+     */
+    public VirtualMachinePropertiesInner withResiliencyProfile(ResiliencyProfile resiliencyProfile) {
+        this.resiliencyProfile = resiliencyProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -835,6 +861,9 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
         if (applicationProfile() != null) {
             applicationProfile().validate();
         }
+        if (resiliencyProfile() != null) {
+            resiliencyProfile().validate();
+        }
     }
 
     /**
@@ -867,6 +896,7 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
         jsonWriter.writeStringField("userData", this.userData);
         jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
         jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
+        jsonWriter.writeJsonField("resiliencyProfile", this.resiliencyProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -949,6 +979,8 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resiliencyProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.resiliencyProfile = ResiliencyProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

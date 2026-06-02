@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabil
  */
 public final class StorageAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCheckNameAvailability.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCheckNameAvailability.json
      */
     /**
      * Sample code: StorageAccountCheckNameAvailability.

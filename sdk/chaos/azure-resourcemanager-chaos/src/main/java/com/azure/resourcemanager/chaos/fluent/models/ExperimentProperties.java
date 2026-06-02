@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
 import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
+import com.azure.resourcemanager.chaos.models.CustomerDataStorageProperties;
 import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +35,11 @@ public final class ExperimentProperties implements JsonSerializable<ExperimentPr
      * List of selectors.
      */
     private List<ChaosTargetSelector> selectors;
+
+    /*
+     * Optional customer-managed Storage account where Experiment schema will be stored.
+     */
+    private CustomerDataStorageProperties customerDataStorage;
 
     /**
      * Creates an instance of ExperimentProperties class.
@@ -91,6 +97,28 @@ public final class ExperimentProperties implements JsonSerializable<ExperimentPr
     }
 
     /**
+     * Get the customerDataStorage property: Optional customer-managed Storage account where Experiment schema will be
+     * stored.
+     * 
+     * @return the customerDataStorage value.
+     */
+    public CustomerDataStorageProperties customerDataStorage() {
+        return this.customerDataStorage;
+    }
+
+    /**
+     * Set the customerDataStorage property: Optional customer-managed Storage account where Experiment schema will be
+     * stored.
+     * 
+     * @param customerDataStorage the customerDataStorage value to set.
+     * @return the ExperimentProperties object itself.
+     */
+    public ExperimentProperties withCustomerDataStorage(CustomerDataStorageProperties customerDataStorage) {
+        this.customerDataStorage = customerDataStorage;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -98,6 +126,7 @@ public final class ExperimentProperties implements JsonSerializable<ExperimentPr
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("steps", this.steps, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("selectors", this.selectors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("customerDataStorage", this.customerDataStorage);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,6 +157,9 @@ public final class ExperimentProperties implements JsonSerializable<ExperimentPr
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExperimentProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("customerDataStorage".equals(fieldName)) {
+                    deserializedExperimentProperties.customerDataStorage
+                        = CustomerDataStorageProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

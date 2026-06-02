@@ -12,16 +12,15 @@ public final class AuthenticationSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationSettingProperties model = BinaryData.fromString(
-            "{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"osvexcsonpclhoc\"}")
+            "{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"uimjmvx\"}")
             .toObject(AuthenticationSettingProperties.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.displayName());
+        Assertions.assertEquals("uimjmvx", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthenticationSettingProperties model
-            = new AuthenticationSettingProperties().withDisplayName("osvexcsonpclhoc");
+        AuthenticationSettingProperties model = new AuthenticationSettingProperties().withDisplayName("uimjmvx");
         model = BinaryData.fromObject(model).toObject(AuthenticationSettingProperties.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.displayName());
+        Assertions.assertEquals("uimjmvx", model.displayName());
     }
 }

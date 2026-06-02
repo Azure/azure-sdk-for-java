@@ -25,12 +25,6 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
     public static final KnowledgeBaseReferenceType AZURE_BLOB = fromString("azureBlob");
 
     /**
-     * Indexed SharePoint document reference.
-     */
-    @Generated
-    public static final KnowledgeBaseReferenceType INDEXED_SHARE_POINT = fromString("indexedSharePoint");
-
-    /**
      * Indexed OneLake document reference.
      */
     @Generated
@@ -41,12 +35,6 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
      */
     @Generated
     public static final KnowledgeBaseReferenceType WEB = fromString("web");
-
-    /**
-     * Remote SharePoint document reference.
-     */
-    @Generated
-    public static final KnowledgeBaseReferenceType REMOTE_SHARE_POINT = fromString("remoteSharePoint");
 
     /**
      * Creates a new instance of KnowledgeBaseReferenceType value.
@@ -78,4 +66,52 @@ public final class KnowledgeBaseReferenceType extends ExpandableStringEnum<Knowl
     public static Collection<KnowledgeBaseReferenceType> values() {
         return values(KnowledgeBaseReferenceType.class);
     }
+
+    /**
+     * Indexed SharePoint document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType INDEXED_SHARE_POINT = fromString("indexedSharePoint");
+
+    /**
+     * Remote SharePoint document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType REMOTE_SHARE_POINT = fromString("remoteSharePoint");
+
+    /**
+     * Work IQ document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType WORK_IQ = fromString("workIQ");
+
+    /**
+     * Fabric Data Agent document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType FABRIC_DATA_AGENT = fromString("fabricDataAgent");
+
+    /**
+     * Fabric Ontology document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType FABRIC_ONTOLOGY = fromString("fabricOntology");
+
+    /**
+     * MCP server document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType MCP_SERVER = fromString("mcpServer");
+
+    /**
+     * File document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType FILE = fromString("file");
+
+    /**
+     * Indexed SQL document reference.
+     */
+    @Generated
+    public static final KnowledgeBaseReferenceType INDEXED_SQL = fromString("indexedSql");
 }
