@@ -49,6 +49,12 @@ public final class KeyValueFields extends ExpandableStringEnum<KeyValueFields> {
     public static final KeyValueFields TAGS = fromString("tags");
 
     /**
+     * Description field.
+     */
+    @Generated
+    public static final KeyValueFields DESCRIPTION = fromString("description");
+
+    /**
      * Locked field.
      */
     @Generated

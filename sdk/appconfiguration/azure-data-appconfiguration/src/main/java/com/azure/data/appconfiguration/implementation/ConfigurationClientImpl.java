@@ -1005,6 +1005,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1081,6 +1082,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1156,6 +1158,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1231,6 +1234,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1405,6 +1409,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1470,6 +1475,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1527,6 +1533,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1546,6 +1553,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1611,6 +1619,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1630,6 +1639,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1690,6 +1700,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1746,6 +1757,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -1908,6 +1920,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -1979,6 +1992,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2049,6 +2063,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2119,6 +2134,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2255,6 +2271,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2324,6 +2341,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2461,6 +2479,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2491,6 +2510,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2551,6 +2571,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2581,6 +2602,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2641,6 +2663,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2671,6 +2694,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2737,6 +2761,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2767,6 +2792,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2849,6 +2875,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -2924,6 +2951,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -3329,6 +3357,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3387,6 +3416,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3444,6 +3474,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3502,6 +3533,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3567,6 +3599,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3634,6 +3667,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3700,6 +3734,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3766,6 +3801,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -3996,6 +4032,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -4055,6 +4092,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -4116,6 +4154,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -4177,6 +4216,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     etag: String (Optional)
      * }
      * }
@@ -4313,6 +4353,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
@@ -4366,6 +4407,7 @@ public final class ConfigurationClientImpl {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     description: String (Optional)
      *     locked: Boolean (Optional)
      *     etag: String (Optional)
      * }
