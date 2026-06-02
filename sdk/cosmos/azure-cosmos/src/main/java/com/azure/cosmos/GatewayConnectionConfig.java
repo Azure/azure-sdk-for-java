@@ -143,7 +143,6 @@ public final class GatewayConnectionConfig {
      * Get the http2 connection config.
      * @return the {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig getHttp2ConnectionConfig() {
         return http2ConnectionConfig;
     }
@@ -152,7 +151,6 @@ public final class GatewayConnectionConfig {
      * Set the http2 connection config.
      * @param http2ConnectionConfig the {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GatewayConnectionConfig setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
         checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
 

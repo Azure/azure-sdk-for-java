@@ -24,7 +24,6 @@ import java.util.Map;
  * <p>
  * NOTE: The ReadConsistencyStrategy is currently only working when using direct mode
  */
-@Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ReadConsistencyStrategy {
 
     /**

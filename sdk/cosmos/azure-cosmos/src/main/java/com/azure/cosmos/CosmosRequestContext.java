@@ -44,7 +44,6 @@ public final class CosmosRequestContext {
      *
      * @return the read consistency strategy. It could be null if not defined or called on an irrelevant operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return requestOptions.getReadConsistencyStrategy();
     }

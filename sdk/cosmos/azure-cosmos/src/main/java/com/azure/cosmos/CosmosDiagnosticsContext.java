@@ -256,7 +256,6 @@ public final class CosmosDiagnosticsContext {
      * The effective read consistency strategy used for the operation
      * @return the effective read consistency strategy used for the operation
      */
-    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
         return this.readConsistencyStrategy;
     }

@@ -576,7 +576,6 @@ public class CosmosClientBuilder implements
      * @param readConsistencyStrategy {@link ReadConsistencyStrategy}
      * @return current Builder
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder readConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.readConsistencyStrategy = readConsistencyStrategy;
         return this;
