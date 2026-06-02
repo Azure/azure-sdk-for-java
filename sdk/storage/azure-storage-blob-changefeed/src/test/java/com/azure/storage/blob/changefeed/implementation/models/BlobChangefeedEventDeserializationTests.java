@@ -3,10 +3,15 @@
 
 package com.azure.storage.blob.changefeed.implementation.models;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType;
 import com.azure.storage.blob.changefeed.models.BlobOperationName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -210,6 +215,38 @@ public class BlobChangefeedEventDeserializationTests {
         assertEquals(RESTORED_CONTAINER_VERSION, event.getData().getRestoredContainerVersion());
     }
 
+    // ======================== JSON File Loading ========================
+
+    @Test
+    public void schemaV6JsonFileDeserializes() throws IOException {
+        Map<String, Object> eventMap = loadJsonAsAvroMap("EventSchemaV6.json");
+        InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
+        assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
+        assertNull(event.getData().getLastAccessTime());
+        assertNull(event.getData().getRestoredContainerVersion());
+    }
+
+    @Test
+    public void schemaV7JsonFileDeserializes() throws IOException {
+        Map<String, Object> eventMap = loadJsonAsAvroMap("EventSchemaV7.json");
+        InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
+        assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
+        assertEquals(OffsetDateTime.parse(LAST_ACCESS_TIME), event.getData().getLastAccessTime());
+        assertNull(event.getData().getRestoredContainerVersion());
+    }
+
+    @Test
+    public void schemaV8JsonFileDeserializes() throws IOException {
+        Map<String, Object> eventMap = loadJsonAsAvroMap("EventSchemaV8.json");
+        InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
+        assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
+        assertEquals(OffsetDateTime.parse(LAST_ACCESS_TIME), event.getData().getLastAccessTime());
+        assertEquals(RESTORED_CONTAINER_VERSION, event.getData().getRestoredContainerVersion());
+    }
+
     // ======================== Regression Tests ========================
 
     @Test
@@ -279,6 +316,52 @@ public class BlobChangefeedEventDeserializationTests {
     @FunctionalInterface
     private interface MapCustomizer {
         void customize(Map<String, Object> map);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> loadJsonAsAvroMap(String resourceName) throws IOException {
+        try (InputStream is = BlobChangefeedEventDeserializationTests.class.getClassLoader()
+                .getResourceAsStream(resourceName);
+             JsonReader reader = JsonProviders.createReader(is)) {
+            reader.nextToken();
+            Map<String, Object> map = readJsonObject(reader);
+            map.put("$record", "BlobChangeEvent");
+            Map<String, Object> data = (Map<String, Object>) map.get("data");
+            if (data != null) {
+                data.put("$record", "BlobChangeEventData");
+            }
+            return map;
+        }
+    }
+
+    private static Map<String, Object> readJsonObject(JsonReader reader) throws IOException {
+        Map<String, Object> map = new HashMap<>();
+        while (reader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = reader.getFieldName();
+            reader.nextToken();
+            map.put(fieldName, readJsonValue(reader));
+        }
+        return map;
+    }
+
+    private static Object readJsonValue(JsonReader reader) throws IOException {
+        switch (reader.currentToken()) {
+            case NULL:
+                return null;
+            case STRING:
+                return reader.getString();
+            case NUMBER:
+                return reader.getLong();
+            case BOOLEAN:
+                return reader.getBoolean();
+            case START_OBJECT:
+                return readJsonObject(reader);
+            case START_ARRAY:
+                reader.skipChildren();
+                return null;
+            default:
+                return null;
+        }
     }
 
     private static Map<String, Object> buildEventRecord(MapCustomizer customizer) {

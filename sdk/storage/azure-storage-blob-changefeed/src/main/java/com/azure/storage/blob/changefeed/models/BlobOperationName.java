@@ -12,64 +12,22 @@ import java.util.Collection;
  */
 public final class BlobOperationName extends ExpandableStringEnum<BlobOperationName> {
 
-    /** Static value UnspecifiedApi for BlobOperationName. */
-    public static final BlobOperationName UNSPECIFIED_API = fromString("UnspecifiedApi");
-
-    /** Static value PutBlob for BlobOperationName. */
-    public static final BlobOperationName PUT_BLOB = fromString("PutBlob");
-
-    /** Static value PutBlockList for BlobOperationName. */
-    public static final BlobOperationName PUT_BLOCK_LIST = fromString("PutBlockList");
-
-    /** Static value CopyBlob for BlobOperationName. */
-    public static final BlobOperationName COPY_BLOB = fromString("CopyBlob");
-
-    /** Static value DeleteBlob for BlobOperationName. */
-    public static final BlobOperationName DELETE_BLOB = fromString("DeleteBlob");
-
-    /** Static value SetBlobMetadata for BlobOperationName. */
-    public static final BlobOperationName SET_BLOB_METADATA = fromString("SetBlobMetadata");
-
-    /** Static value ControlEvent for BlobOperationName. */
-    public static final BlobOperationName CONTROL_EVENT = fromString("ControlEvent");
-
-    /** Static value UndeleteBlob for BlobOperationName. */
-    public static final BlobOperationName UNDELETE_BLOB = fromString("UndeleteBlob");
-
-    /** Static value SetBlobProperties for BlobOperationName. */
-    public static final BlobOperationName SET_BLOB_PROPERTIES = fromString("SetBlobProperties");
-
-    /** Static value SnapshotBlob for BlobOperationName. */
-    public static final BlobOperationName SNAPSHOT_BLOB = fromString("SnapshotBlob");
-
-    /** Static value SetBlobTier for BlobOperationName. */
-    public static final BlobOperationName SET_BLOB_TIER = fromString("SetBlobTier");
-
-    /** Static value AbortCopyBlob for BlobOperationName. */
-    public static final BlobOperationName ABORT_COPY_BLOB = fromString("AbortCopyBlob");
-
-    /** Static value SetBlobTags for BlobOperationName. */
-    public static final BlobOperationName SET_BLOB_TAGS = fromString("SetBlobTags");
-
-    /** Static value CreateRestorePointMarker for BlobOperationName. */
-    public static final BlobOperationName CREATE_RESTORE_POINT_MARKER = fromString("CreateRestorePointMarker");
-
-    /** Static value AppendBlock for BlobOperationName. Schema V6. */
+    /** Static value AppendBlock for BlobOperationName. */
     public static final BlobOperationName APPEND_BLOCK = fromString("AppendBlock");
 
-    /** Static value UpdateLastAccessTime for BlobOperationName. Schema V7. */
+    /** Static value UpdateLastAccessTime for BlobOperationName. */
     public static final BlobOperationName UPDATE_LAST_ACCESS_TIME = fromString("UpdateLastAccessTime");
 
-    /** Static value CreateContainer for BlobOperationName. Schema V8. */
+    /** Static value CreateContainer for BlobOperationName. */
     public static final BlobOperationName CREATE_CONTAINER = fromString("ContainerCreated");
 
-    /** Static value DeleteContainer for BlobOperationName. Schema V8. */
+    /** Static value DeleteContainer for BlobOperationName. */
     public static final BlobOperationName DELETE_CONTAINER = fromString("ContainerDeleted");
 
-    /** Static value RestoreContainer for BlobOperationName. Schema V8. */
+    /** Static value RestoreContainer for BlobOperationName. */
     public static final BlobOperationName RESTORE_CONTAINER = fromString("RestoreContainer");
 
-    /** Static value SetContainerMetadata for BlobOperationName. Schema V8. */
+    /** Static value SetContainerMetadata for BlobOperationName. */
     public static final BlobOperationName SET_CONTAINER_METADATA = fromString("SetContainerMetadata");
 
     /**
