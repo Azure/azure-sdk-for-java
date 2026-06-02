@@ -335,27 +335,43 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     /**
-     * Resolves contention between ConsistencyLevel and ReadConsistencyStrategy headers.
-     * Gateways (V1 HTTP and V2 RNTBD) reject requests carrying both headers.
+     * Resolves contention between the {@code x-ms-consistency-level} and
+     * {@code x-ms-cosmos-read-consistency-strategy} request headers so that, after this method runs,
+     * the request carries <b>at most one</b> of the two.
      *
-     * Rules:
-     * 1. Request-level readConsistencyStrategy (requestContext) > client-level readConsistencyStrategy (header)
-     * 2. readConsistencyStrategy > ConsistencyLevel — strip CL when non-DEFAULT readConsistencyStrategy is effective
-     * 3. DEFAULT readConsistencyStrategy is transparent — CL stays
+     * <p>Both Gateway transports reject requests that carry both headers simultaneously:</p>
+     * <ul>
+     *   <li>Gateway V1 (HTTP) — rejects with HTTP 400.</li>
+     *   <li>Gateway V2 / thin-client proxy (RNTBD) — rejects with HTTP 400.</li>
+     * </ul>
      *
-     * After this method, the request headers contain at most ONE of the two consistency headers.
-     * GW V1 serializes the surviving header as HTTP; GW V2 (ThinClientStoreModel) encodes it as RNTBD.
+     * <p><b>Priority rules</b> (highest to lowest):</p>
+     * <ol>
+     *   <li><b>Request-level {@code ReadConsistencyStrategy}</b> on {@code requestContext}
+     *       beats the client-level value carried in the header.</li>
+     *   <li><b>{@code ReadConsistencyStrategy}</b> beats {@code ConsistencyLevel} —
+     *       when a non-{@code DEFAULT} {@code ReadConsistencyStrategy} is effective, the
+     *       {@code ConsistencyLevel} header is stripped.</li>
+     *   <li><b>{@code DEFAULT} {@code ReadConsistencyStrategy} is transparent</b> —
+     *       the {@code ConsistencyLevel} header is left untouched.</li>
+     * </ol>
      *
-     * <p><b>Java SDK-specific behavior:</b> When a non-DEFAULT {@code ReadConsistencyStrategy} is effective,
-     * the {@code ConsistencyLevel} header is proactively stripped from the request. The .NET SDK does
-     * <em>not</em> strip this header. This divergence is intentional — it prevents dual-header rejection
-     * (HTTP 400) by the compute gateway / thin-client proxy, which does not expect both headers simultaneously.</p>
+     * <p>Once resolved, GW V1 serializes the surviving header as HTTP; GW V2
+     * ({@code ThinClientStoreModel}) encodes it as RNTBD.</p>
      *
-     * Thread safety: availability-strategy clones each receive their own deep-copied
-     * {@link java.util.HashMap} of headers (see {@link RxDocumentServiceRequest#clone()}),
-     * so concurrent hedged requests do not race on the same map instance. The mutations
-     * performed here ({@code remove(CONSISTENCY_LEVEL)} and {@code put(READ_CONSISTENCY_STRATEGY, ...)})
-     * are therefore safe by isolation — each clone mutates its own map.
+     * <p><b>Java SDK-specific behavior.</b> When a non-{@code DEFAULT} {@code ReadConsistencyStrategy}
+     * is effective, the {@code ConsistencyLevel} header is proactively stripped from the request.
+     * The .NET SDK does <em>not</em> strip this header. This divergence is intentional —
+     * it prevents the dual-header HTTP 400 rejection described above, which the compute gateway and
+     * thin-client proxy enforce.</p>
+     *
+     * <p><b>Thread safety.</b> Availability-strategy clones each receive their own deep-copied
+     * {@link java.util.HashMap} of headers (see {@link RxDocumentServiceRequest#clone()}), so
+     * concurrent hedged requests do not race on the same map instance. The mutations performed
+     * here ({@code remove(CONSISTENCY_LEVEL)} and {@code put(READ_CONSISTENCY_STRATEGY, ...)})
+     * are therefore safe by isolation — each clone mutates its own map.</p>
+     *
+     * @param request the in-flight request whose consistency headers are normalized in place.
      */
     private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
         resolveEffectiveConsistencyHeaders(
