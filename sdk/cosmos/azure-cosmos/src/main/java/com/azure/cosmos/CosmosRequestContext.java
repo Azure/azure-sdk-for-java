@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.util.Beta;
 
 import java.util.List;
 import java.util.Set;

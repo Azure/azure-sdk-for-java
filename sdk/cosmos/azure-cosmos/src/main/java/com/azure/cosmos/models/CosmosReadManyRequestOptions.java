@@ -12,7 +12,6 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.List;

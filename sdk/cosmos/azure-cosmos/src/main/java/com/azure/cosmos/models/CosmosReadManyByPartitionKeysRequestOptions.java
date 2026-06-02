@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyByPartitionKeysRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.List;

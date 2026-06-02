@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 

@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.util.Beta;
 
 /***
  * Represents the http2 connection config associated with Cosmos Client in the Azure Cosmos DB database service.

@@ -25,7 +25,6 @@ import com.azure.cosmos.models.CosmosAdditionalHeaderName;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.util.Beta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

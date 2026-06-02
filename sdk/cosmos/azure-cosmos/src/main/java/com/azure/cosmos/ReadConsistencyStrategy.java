@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.HashMap;
