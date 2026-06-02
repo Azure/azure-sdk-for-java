@@ -13,24 +13,24 @@ public final class VmssDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmssDataDisk model = BinaryData.fromString(
-            "{\"lun\":1624424669,\"diskSizeGB\":1007403747,\"diskType\":\"Premium_LRS\",\"diskLetter\":\"tlhflsjcdhszf\"}")
+            "{\"lun\":210534625,\"diskSizeGB\":605018835,\"diskType\":\"Standard_LRS\",\"diskLetter\":\"ipmdscwx\"}")
             .toObject(VmssDataDisk.class);
-        Assertions.assertEquals(1624424669, model.lun());
-        Assertions.assertEquals(1007403747, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.PREMIUM_LRS, model.diskType());
-        Assertions.assertEquals("tlhflsjcdhszf", model.diskLetter());
+        Assertions.assertEquals(210534625, model.lun());
+        Assertions.assertEquals(605018835, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
+        Assertions.assertEquals("ipmdscwx", model.diskLetter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmssDataDisk model = new VmssDataDisk().withLun(1624424669)
-            .withDiskSizeGB(1007403747)
-            .withDiskType(DiskType.PREMIUM_LRS)
-            .withDiskLetter("tlhflsjcdhszf");
+        VmssDataDisk model = new VmssDataDisk().withLun(210534625)
+            .withDiskSizeGB(605018835)
+            .withDiskType(DiskType.STANDARD_LRS)
+            .withDiskLetter("ipmdscwx");
         model = BinaryData.fromObject(model).toObject(VmssDataDisk.class);
-        Assertions.assertEquals(1624424669, model.lun());
-        Assertions.assertEquals(1007403747, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.PREMIUM_LRS, model.diskType());
-        Assertions.assertEquals("tlhflsjcdhszf", model.diskLetter());
+        Assertions.assertEquals(210534625, model.lun());
+        Assertions.assertEquals(605018835, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
+        Assertions.assertEquals("ipmdscwx", model.diskLetter());
     }
 }
