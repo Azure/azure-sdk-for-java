@@ -528,33 +528,42 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        initIdentity(IdentityType.SYSTEM_ASSIGNED);
         return this;
     }
 
     @Override
     public SqlServerImpl withPrimaryUserAssignedManagedServiceIdentity(String identityResourceId) {
         Objects.requireNonNull(identityResourceId, "'identityResourceId' cannot be null.");
-        ResourceIdentity existing = this.innerModel().identity();
-        IdentityType type;
-        Map<String, UserIdentity> identities;
-        if (existing == null || existing.type() == null || existing.type() == IdentityType.NONE) {
-            type = IdentityType.USER_ASSIGNED;
-            identities = new HashMap<>();
-        } else if (existing.type() == IdentityType.SYSTEM_ASSIGNED) {
-            type = IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED;
-            identities = new HashMap<>();
-        } else {
-            type = existing.type();
-            identities = existing.userAssignedIdentities() == null
-                ? new HashMap<>()
-                : new HashMap<>(existing.userAssignedIdentities());
-        }
-        identities.put(identityResourceId, new UserIdentity());
-        this.innerModel()
-            .withIdentity(new ResourceIdentity().withType(type).withUserAssignedIdentities(identities))
-            .withPrimaryUserAssignedIdentityId(identityResourceId);
+        initIdentity(IdentityType.USER_ASSIGNED);
+        this.innerModel().identity().userAssignedIdentities().put(identityResourceId, new UserIdentity());
+        this.innerModel().withPrimaryUserAssignedIdentityId(identityResourceId);
         return this;
+    }
+
+    /**
+     * Initializes or merges the identity on the inner model so that the requested
+     * {@code desiredType} is present. When both SYSTEM_ASSIGNED and USER_ASSIGNED
+     * are requested (in any order), the resulting type is SYSTEM_ASSIGNED_USER_ASSIGNED.
+     * Existing user-assigned identities are preserved across calls.
+     */
+    private void initIdentity(IdentityType desiredType) {
+        ResourceIdentity existing = this.innerModel().identity();
+        if (existing == null || existing.type() == null || existing.type() == IdentityType.NONE) {
+            this.innerModel()
+                .withIdentity(new ResourceIdentity().withType(desiredType).withUserAssignedIdentities(new HashMap<>()));
+        } else if (existing.type() == desiredType || existing.type() == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED) {
+            // Already has the desired type (or already combined) — nothing to change.
+            if (existing.userAssignedIdentities() == null) {
+                existing.withUserAssignedIdentities(new HashMap<>());
+            }
+        } else {
+            // One of SYSTEM_ASSIGNED + USER_ASSIGNED → combine
+            existing.withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            if (existing.userAssignedIdentities() == null) {
+                existing.withUserAssignedIdentities(new HashMap<>());
+            }
+        }
     }
 
     @Override

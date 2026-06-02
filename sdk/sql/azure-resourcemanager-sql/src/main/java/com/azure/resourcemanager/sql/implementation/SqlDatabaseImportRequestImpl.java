@@ -132,6 +132,10 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         this.inner.withAdministratorLogin(managedIdentityResourceId);
         // No administrator password is required for managed identity authentication.
         this.inner.withAdministratorLoginPassword(null);
+
+        // Use the same MI for storage account access.
+        this.inner.withStorageKeyType(StorageKeyType.MANAGED_IDENTITY);
+        this.inner.withStorageKey(managedIdentityResourceId);
         return this;
     }
 

@@ -26,6 +26,7 @@ import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolSku;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
+import com.azure.resourcemanager.sql.models.IdentityType;
 import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
@@ -128,6 +129,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlDatabase dbSync = sqlPrimaryServer.databases().get(dbSyncName);
         SqlDatabase dbMember = sqlPrimaryServer.databases().get(dbMemberName);
 
+        // SQL Data Sync requires SQL authentication for connections to the hub and member databases. Microsoft Entra (Azure AD)
+        // authentication isn't supported by SQL Data Sync. Because SQL authentication relies on static passwords,
+        // it doesn't benefit from modern protections like multifactor authentication (MFA), Conditional Access, or managed identities.
+        // This can increase exposure for the entire SQL instance to credential theft, brute‑force attacks, and operational
+        // overhead for password rotation and policy enforcement. Where possible, prefer solutions that support Microsoft
+        // Entra authentication or managed identities. Since SQL Data Sync is scheduled for retirement, migrate to an
+        // alternative that aligns with your organization's security standards.
+        // See https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-data-sql-server-sql-database?view=azuresql
         SqlSyncGroup sqlSyncGroup = dbSync.syncGroups()
             .define(syncGroupName)
             .withSyncDatabaseId(dbSource.id())
@@ -195,6 +204,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlDatabase dbSource = sqlPrimaryServer.databases().get(dbName);
         SqlDatabase dbSync = sqlPrimaryServer.databases().get(dbSyncName);
 
+        // SQL Data Sync requires SQL authentication for connections to the hub and member databases. Microsoft Entra (Azure AD)
+        // authentication isn't supported by SQL Data Sync. Because SQL authentication relies on static passwords,
+        // it doesn't benefit from modern protections like multifactor authentication (MFA), Conditional Access, or managed identities.
+        // This can increase exposure for the entire SQL instance to credential theft, brute‑force attacks, and operational
+        // overhead for password rotation and policy enforcement. Where possible, prefer solutions that support Microsoft
+        // Entra authentication or managed identities. Since SQL Data Sync is scheduled for retirement, migrate to an
+        // alternative that aligns with your organization's security standards.
+        // See https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-data-sql-server-sql-database?view=azuresql
         SqlSyncGroup sqlSyncGroup = dbSync.syncGroups()
             .define(syncGroupName)
             .withSyncDatabaseId(dbSource.id())
@@ -611,9 +628,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withAzureActiveDirectoryOnlyAuthentication()
             .withExternalActiveDirectoryAdministrator(uamiName, uami.principalId(), PrincipalType.APPLICATION)
             .withPrimaryUserAssignedManagedServiceIdentity(uami.id())
+            .withSystemAssignedManagedServiceIdentity()
             .create();
 
         Assertions.assertTrue(sqlServer.isAzureActiveDirectoryOnlyAuthenticationEnabled());
+        Assertions.assertSame(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, sqlServer.managedServiceIdentityType());
 
         SqlDatabase dbFromSample = sqlServer.databases()
             .define("db-from-sample")
@@ -641,6 +660,18 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(dbFromImport);
         Assertions.assertEquals("ep1", dbFromImport.elasticPoolName());
 
+        // Test importBacpac with managed identity on an existing empty database
+        SqlDatabase dbForImportBacpac
+            = sqlServer.databases().define("db-for-import-bacpac").withBasicEdition().create();
+        Assertions.assertNotNull(dbForImportBacpac);
+
+        SqlDatabaseImportExportResponse importBacpacResponse
+            = dbForImportBacpac.importBacpac(storageAccount, "from-sample", "dbfromsample.bacpac")
+                .withManagedIdentity(uami.id())
+                .execute();
+        Assertions.assertNotNull(importBacpacResponse);
+
+        dbForImportBacpac.delete();
         dbFromImport.delete();
         dbFromSample.delete();
         sqlServer.elasticPools().delete("ep1");
@@ -898,7 +929,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlDatabase() {
-        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
         AzureUser user = azureCliSignedInUser();
 
         // Create
@@ -921,6 +951,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
+//        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
         //        Legacy threat detection policy doesn't support MI. The new Advanced Threat Protection(ATP) does not require
         //        storage account any more. See Oury Ba's answer:
         //        https://learn.microsoft.com/answers/questions/2276392/how-to-create-microsoft-sql-servers-securityalertp

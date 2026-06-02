@@ -95,11 +95,11 @@ public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDa
              * Contributor}), and it must be mapped to a database user with the required privileges. When this method
              * is used, no administrator password is sent to the service.</p>
              *
-             * <p>This method is for user-assigned managed identity. To use the server's system-assigned managed
-             * identity, enable SAMI on the server and pass the SAMI's resource identifier as well. The signed-in
-             * user's object ID is not a managed identity and cannot be used here.</p>
+             * <p>This method is for user-assigned managed identity. System-assigned managed identity is not supported.
+             * See <a href="https://learn.microsoft.com/azure/azure-sql/database/database-import-export-managed-identity?view=azuresql&tabs=azure-portal#limitations">Limitations</a></p>
              *
              * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             *                                  for both SQL and storage access
              * @return next definition stage
              */
             default SqlDatabaseImportRequest.DefinitionStages.WithExecute
