@@ -465,7 +465,7 @@ public interface NetworkBootstrapDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     NetworkBootstrapDeviceRebootResponse reboot();
 
@@ -476,7 +476,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     NetworkBootstrapDeviceRebootResponse reboot(Context context);
 
@@ -485,7 +485,7 @@ public interface NetworkBootstrapDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration();
 
@@ -496,7 +496,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration(Context context);
 
@@ -507,7 +507,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     NetworkBootstrapDeviceUpgradeResponse upgrade(UpdateVersion body);
 
@@ -519,7 +519,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     NetworkBootstrapDeviceUpgradeResponse upgrade(UpdateVersion body, Context context);
 
@@ -530,7 +530,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     NetworkBootstrapDeviceUpdateAdministrativeStateResponse
         updateAdministrativeState(UpdateDeviceAdministrativeState body);
@@ -543,7 +543,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     NetworkBootstrapDeviceUpdateAdministrativeStateResponse
         updateAdministrativeState(UpdateDeviceAdministrativeState body, Context context);
@@ -556,7 +556,7 @@ public interface NetworkBootstrapDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords();
 
@@ -570,7 +570,7 @@ public interface NetworkBootstrapDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords(Context context);
 }

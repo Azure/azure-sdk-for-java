@@ -581,7 +581,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body);
 
@@ -593,7 +593,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body,
         Context context);
@@ -605,7 +605,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body);
 
@@ -617,7 +617,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
@@ -628,7 +628,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return nNI Bidirectional Forwarding Detection (BFD) Administrative State response.
      */
     NniUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(NniUpdateBfdAdministrativeStateRequest body);
 
@@ -640,7 +640,7 @@ public interface NetworkToNetworkInterconnect {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return nNI Bidirectional Forwarding Detection (BFD) Administrative State response.
      */
     NniUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(NniUpdateBfdAdministrativeStateRequest body,
         Context context);

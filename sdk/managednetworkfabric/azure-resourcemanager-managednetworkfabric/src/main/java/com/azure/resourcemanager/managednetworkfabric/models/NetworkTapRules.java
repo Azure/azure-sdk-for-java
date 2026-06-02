@@ -113,7 +113,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
         String networkTapRuleName, UpdateAdministrativeState body);
@@ -128,7 +128,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName,
         String networkTapRuleName, UpdateAdministrativeState body, Context context);
@@ -141,7 +141,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for Network Tap Rule resync operation.
      */
     NetworkTapRuleResyncResponse resync(String resourceGroupName, String networkTapRuleName);
 
@@ -154,7 +154,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for Network Tap Rule resync operation.
      */
     NetworkTapRuleResyncResponse resync(String resourceGroupName, String networkTapRuleName, Context context);
 
@@ -166,7 +166,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName);
 
@@ -179,7 +179,7 @@ public interface NetworkTapRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkTapRuleName,
         Context context);

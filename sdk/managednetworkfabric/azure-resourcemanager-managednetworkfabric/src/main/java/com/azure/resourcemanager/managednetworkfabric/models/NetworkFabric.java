@@ -998,7 +998,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult provision();
 
@@ -1009,7 +1009,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult provision(Context context);
 
@@ -1018,7 +1018,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult deprovision();
 
@@ -1029,7 +1029,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult deprovision(Context context);
 
@@ -1040,7 +1040,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult upgrade(UpgradeNetworkFabricProperties body);
 
@@ -1052,7 +1052,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult upgrade(UpgradeNetworkFabricProperties body, Context context);
 
@@ -1061,7 +1061,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult refreshConfiguration();
 
@@ -1072,7 +1072,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult refreshConfiguration(Context context);
 
@@ -1084,7 +1084,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body);
 
@@ -1097,7 +1097,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body,
         Context context);
@@ -1109,7 +1109,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(UpdateAdministrativeState body);
 
@@ -1121,7 +1121,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(UpdateAdministrativeState body,
         Context context);
@@ -1133,7 +1133,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body);
 
@@ -1145,7 +1145,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration(ValidateConfigurationProperties body, Context context);
 
@@ -1174,7 +1174,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return commit Configuration Response.
      */
     CommitConfigurationResponse commitConfiguration();
 
@@ -1186,7 +1186,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return commit Configuration Response.
      */
     CommitConfigurationResponse commitConfiguration(CommitConfigurationRequest body, Context context);
 
@@ -1197,7 +1197,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return commit Batch Status Response.
      */
     CommitBatchStatusOperationResponse commitBatchStatus(CommitBatchStatusRequest body);
 
@@ -1209,7 +1209,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return commit Batch Status Response.
      */
     CommitBatchStatusOperationResponse commitBatchStatus(CommitBatchStatusRequest body, Context context);
 
@@ -1220,7 +1220,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return discard Commit Batch Response.
      */
     DiscardCommitBatchOperationResponse discardCommitBatch(DiscardCommitBatchRequest body);
 
@@ -1232,7 +1232,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return discard Commit Batch Response.
      */
     DiscardCommitBatchOperationResponse discardCommitBatch(DiscardCommitBatchRequest body, Context context);
 
@@ -1243,7 +1243,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult lockFabric(NetworkFabricLockRequest body);
 
@@ -1255,7 +1255,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult lockFabric(NetworkFabricLockRequest body, Context context);
 
@@ -1264,7 +1264,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return view Device Configuration Response V2.
      */
     ViewDeviceConfigurationOperationResponse viewDeviceConfiguration();
 
@@ -1275,7 +1275,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return view Device Configuration Response V2.
      */
     ViewDeviceConfigurationOperationResponse viewDeviceConfiguration(Context context);
 
@@ -1284,7 +1284,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return arm Configuration Diff Response V2.
      */
     ArmConfigurationDiffOperationResponse armConfigurationDiff();
 
@@ -1295,7 +1295,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return arm Configuration Diff Response V2.
      */
     ArmConfigurationDiffOperationResponse armConfigurationDiff(Context context);
 
@@ -1312,7 +1312,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RotatePasswords request on a Network Fabric.
      */
     NetworkFabricRotatePasswordsResponse rotatePasswords();
 
@@ -1331,7 +1331,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RotatePasswords request on a Network Fabric.
      */
     NetworkFabricRotatePasswordsResponse rotatePasswords(Context context);
 
@@ -1344,7 +1344,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Fabric.
      */
     NetworkFabricResyncPasswordsResponse resyncPasswords();
 
@@ -1359,7 +1359,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Fabric.
      */
     NetworkFabricResyncPasswordsResponse resyncPasswords(Context context);
 
@@ -1371,7 +1371,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RotateCertificates request on a Network Fabric.
      */
     NetworkFabricRotateCertificatesResponse rotateCertificates();
 
@@ -1385,7 +1385,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RotateCertificates request on a Network Fabric.
      */
     NetworkFabricRotateCertificatesResponse rotateCertificates(Context context);
 
@@ -1397,7 +1397,7 @@ public interface NetworkFabric {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates();
 
@@ -1411,7 +1411,7 @@ public interface NetworkFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates(Context context);
 }

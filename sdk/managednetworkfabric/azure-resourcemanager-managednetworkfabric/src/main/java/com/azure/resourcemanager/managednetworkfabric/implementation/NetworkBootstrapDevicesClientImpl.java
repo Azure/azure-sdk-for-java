@@ -1119,7 +1119,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return network Bootstrap Device reboot Response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rebootWithResponseAsync(String resourceGroupName,
@@ -1139,7 +1140,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device reboot Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkBootstrapDeviceName) {
@@ -1157,7 +1158,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device reboot Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
@@ -1175,7 +1176,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of network Bootstrap Device reboot Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkBootstrapDeviceRebootResponseInner>, NetworkBootstrapDeviceRebootResponseInner>
@@ -1195,7 +1196,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device reboot Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceRebootResponseInner>, NetworkBootstrapDeviceRebootResponseInner>
@@ -1216,7 +1217,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device reboot Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkBootstrapDeviceRebootResponseInner>, NetworkBootstrapDeviceRebootResponseInner>
@@ -1236,7 +1237,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return network Bootstrap Device reboot Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkBootstrapDeviceRebootResponseInner> rebootAsync(String resourceGroupName,
@@ -1253,7 +1254,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRebootResponseInner reboot(String resourceGroupName,
@@ -1270,7 +1271,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRebootResponseInner reboot(String resourceGroupName, String networkBootstrapDeviceName,
@@ -1286,7 +1287,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an refresh configuration async operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
@@ -1306,7 +1308,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an refresh configuration async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName,
@@ -1325,7 +1327,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an refresh configuration async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName,
@@ -1343,7 +1345,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1365,7 +1367,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1387,7 +1389,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1409,7 +1411,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the current status of an refresh configuration async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkBootstrapDeviceRefreshConfigurationResponseInner>
@@ -1426,7 +1428,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -1443,7 +1445,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -1460,7 +1462,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return network Bootstrap Device upgrade Response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1483,7 +1486,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device upgrade Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
@@ -1505,7 +1508,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device upgrade Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkBootstrapDeviceName,
@@ -1526,7 +1529,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of network Bootstrap Device upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1549,7 +1552,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1572,7 +1575,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1595,7 +1598,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return network Bootstrap Device upgrade Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkBootstrapDeviceUpgradeResponseInner> upgradeAsync(String resourceGroupName,
@@ -1613,7 +1616,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpgradeResponseInner upgrade(String resourceGroupName,
@@ -1631,7 +1634,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpgradeResponseInner upgrade(String resourceGroupName,
@@ -1648,7 +1651,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return network Bootstrap Device Administrative State Update Response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1671,7 +1675,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device Administrative State Update Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
@@ -1693,7 +1697,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Bootstrap Device Administrative State Update Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
@@ -1714,7 +1718,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of network Bootstrap Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1738,7 +1742,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1763,7 +1767,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Bootstrap Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1787,7 +1791,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return network Bootstrap Device Administrative State Update Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner> updateAdministrativeStateAsync(
@@ -1805,7 +1809,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(
@@ -1823,7 +1827,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(
@@ -1844,7 +1848,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncPasswordsWithResponseAsync(String resourceGroupName,
@@ -1867,7 +1872,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName,
@@ -1889,7 +1894,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName,
@@ -1910,7 +1915,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body for a ResyncPasswords request on a Network Bootstrap
+     * Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1935,7 +1941,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Bootstrap
+     * Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1960,7 +1967,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Bootstrap
+     * Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1985,7 +1993,8 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkBootstrapDeviceResyncPasswordsResponseInner> resyncPasswordsAsync(String resourceGroupName,
@@ -2005,7 +2014,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,
@@ -2025,7 +2034,7 @@ public final class NetworkBootstrapDevicesClientImpl implements NetworkBootstrap
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkBootstrapDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,

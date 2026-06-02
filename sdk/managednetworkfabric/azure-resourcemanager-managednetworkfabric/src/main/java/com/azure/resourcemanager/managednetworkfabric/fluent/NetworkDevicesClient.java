@@ -289,7 +289,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReboot(String resourceGroupName,
@@ -305,7 +305,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReboot(String resourceGroupName,
@@ -320,7 +320,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName, RebootProperties body);
@@ -335,7 +335,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName, RebootProperties body,
@@ -349,7 +349,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceRefreshConfigurationResponseInner>, NetworkDeviceRefreshConfigurationResponseInner>
@@ -364,7 +364,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceRefreshConfigurationResponseInner>, NetworkDeviceRefreshConfigurationResponseInner>
@@ -378,7 +378,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -393,7 +393,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -408,7 +408,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceUpdateAdministrativeStateResponseInner>, NetworkDeviceUpdateAdministrativeStateResponseInner>
@@ -425,7 +425,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceUpdateAdministrativeStateResponseInner>, NetworkDeviceUpdateAdministrativeStateResponseInner>
@@ -441,7 +441,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -457,7 +457,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -472,7 +472,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner>
@@ -488,7 +488,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner> beginUpgrade(
@@ -503,7 +503,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
@@ -519,7 +519,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
@@ -534,7 +534,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>
@@ -550,7 +550,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>
@@ -565,7 +565,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
@@ -581,7 +581,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
@@ -596,7 +596,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
@@ -612,7 +612,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
@@ -627,7 +627,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
@@ -643,7 +643,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
@@ -660,7 +660,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
@@ -678,7 +678,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
@@ -695,7 +695,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName, String networkDeviceName);
@@ -712,7 +712,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName, String networkDeviceName,
@@ -729,7 +729,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricResyncCertificatesResponseInner>, NetworkFabricResyncCertificatesResponseInner>
@@ -747,7 +747,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricResyncCertificatesResponseInner>, NetworkFabricResyncCertificatesResponseInner>
@@ -764,7 +764,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName, String networkDeviceName);
@@ -781,7 +781,7 @@ public interface NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName, String networkDeviceName,

@@ -479,7 +479,7 @@ public interface L2IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body);
 
@@ -491,7 +491,7 @@ public interface L2IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
@@ -500,7 +500,7 @@ public interface L2IsolationDomain {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration();
 
@@ -511,7 +511,7 @@ public interface L2IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the action validate configuration.
      */
     ValidateConfigurationResponse validateConfiguration(Context context);
 
@@ -520,7 +520,7 @@ public interface L2IsolationDomain {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate commitConfiguration();
 
@@ -531,7 +531,7 @@ public interface L2IsolationDomain {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return common response for the state updates.
      */
     CommonPostActionResponseForStateUpdate commitConfiguration(Context context);
 }

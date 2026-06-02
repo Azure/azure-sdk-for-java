@@ -112,7 +112,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     NetworkBootstrapDeviceRebootResponse reboot(String resourceGroupName, String networkBootstrapDeviceName);
 
@@ -125,7 +125,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device reboot Response.
      */
     NetworkBootstrapDeviceRebootResponse reboot(String resourceGroupName, String networkBootstrapDeviceName,
         Context context);
@@ -138,7 +138,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName,
         String networkBootstrapDeviceName);
@@ -152,7 +152,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName,
         String networkBootstrapDeviceName, Context context);
@@ -166,7 +166,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     NetworkBootstrapDeviceUpgradeResponse upgrade(String resourceGroupName, String networkBootstrapDeviceName,
         UpdateVersion body);
@@ -181,7 +181,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device upgrade Response.
      */
     NetworkBootstrapDeviceUpgradeResponse upgrade(String resourceGroupName, String networkBootstrapDeviceName,
         UpdateVersion body, Context context);
@@ -195,7 +195,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     NetworkBootstrapDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body);
@@ -210,7 +210,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Bootstrap Device Administrative State Update Response.
      */
     NetworkBootstrapDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body, Context context);
@@ -226,7 +226,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName,
         String networkBootstrapDeviceName);
@@ -243,7 +243,7 @@ public interface NetworkBootstrapDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Bootstrap Device.
      */
     NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName,
         String networkBootstrapDeviceName, Context context);

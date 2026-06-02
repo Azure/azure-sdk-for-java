@@ -1162,7 +1162,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> rebootWithResponseAsync(String resourceGroupName, String networkDeviceName,
@@ -1183,7 +1184,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1205,7 +1206,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1225,7 +1226,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
@@ -1245,7 +1246,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
@@ -1265,7 +1266,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
@@ -1284,7 +1285,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> rebootAsync(String resourceGroupName, String networkDeviceName,
@@ -1302,7 +1303,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName,
@@ -1320,7 +1321,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName, RebootProperties body,
@@ -1336,7 +1337,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an refresh configuration async operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
@@ -1356,7 +1358,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an refresh configuration async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkDeviceName) {
@@ -1374,7 +1376,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an refresh configuration async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1392,7 +1394,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1414,7 +1416,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1436,7 +1438,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1457,7 +1459,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the current status of an refresh configuration async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceRefreshConfigurationResponseInner> refreshConfigurationAsync(String resourceGroupName,
@@ -1474,7 +1476,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -1491,7 +1493,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
@@ -1508,7 +1510,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return network Device Administrative State Update Response along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1531,7 +1534,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Device Administrative State Update Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
@@ -1553,7 +1556,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Device Administrative State Update Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
@@ -1573,7 +1576,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1597,7 +1600,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1622,7 +1625,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1646,7 +1649,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return network Device Administrative State Update Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceUpdateAdministrativeStateResponseInner> updateAdministrativeStateAsync(
@@ -1664,7 +1667,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -1682,7 +1685,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -1699,7 +1702,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return network Device Upgrade Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1720,7 +1723,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Device Upgrade Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1742,7 +1745,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return network Device Upgrade Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1762,7 +1765,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner>
@@ -1782,7 +1785,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner>
@@ -1802,7 +1805,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner> beginUpgrade(
@@ -1821,7 +1824,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return network Device Upgrade Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceUpgradeResponseInner> upgradeAsync(String resourceGroupName, String networkDeviceName,
@@ -1839,7 +1842,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
@@ -1857,7 +1860,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
@@ -1874,7 +1877,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runRoCommandWithResponseAsync(String resourceGroupName,
@@ -1897,7 +1901,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRoCommandWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1919,7 +1923,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRoCommandWithResponse(String resourceGroupName, String networkDeviceName,
@@ -1939,7 +1943,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -1963,7 +1967,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1986,7 +1990,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2008,7 +2012,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>
@@ -2026,7 +2030,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
@@ -2044,7 +2048,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
@@ -2061,7 +2065,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body for a RunRwCommand request on a Network Device along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runRwCommandWithResponseAsync(String resourceGroupName,
@@ -2084,7 +2089,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a RunRwCommand request on a Network Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRwCommandWithResponse(String resourceGroupName, String networkDeviceName,
@@ -2106,7 +2111,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a RunRwCommand request on a Network Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRwCommandWithResponse(String resourceGroupName, String networkDeviceName,
@@ -2126,7 +2131,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
@@ -2147,7 +2152,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
@@ -2168,7 +2173,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
@@ -2188,7 +2193,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body for a RunRwCommand request on a Network Device on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceRunRwCommandResponseInner> runRwCommandAsync(String resourceGroupName,
@@ -2206,7 +2211,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
@@ -2224,7 +2229,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
@@ -2243,7 +2248,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body for a ResyncPasswords request on a Network Device along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncPasswordsWithResponseAsync(String resourceGroupName,
@@ -2266,7 +2272,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncPasswords request on a Network Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName, String networkDeviceName) {
@@ -2287,7 +2293,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncPasswords request on a Network Device along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName, String networkDeviceName,
@@ -2308,7 +2314,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
@@ -2331,7 +2337,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
@@ -2355,7 +2361,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
@@ -2378,7 +2384,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body for a ResyncPasswords request on a Network Device on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceResyncPasswordsResponseInner> resyncPasswordsAsync(String resourceGroupName,
@@ -2398,7 +2404,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,
@@ -2418,7 +2424,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName, String networkDeviceName,
@@ -2437,7 +2443,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response body for a ResyncCertificates request on a Network Fabric along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncCertificatesWithResponseAsync(String resourceGroupName,
@@ -2460,7 +2467,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncCertificates request on a Network Fabric along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncCertificatesWithResponse(String resourceGroupName, String networkDeviceName) {
@@ -2481,7 +2488,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response body for a ResyncCertificates request on a Network Fabric along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncCertificatesWithResponse(String resourceGroupName, String networkDeviceName,
@@ -2502,7 +2509,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -2527,7 +2534,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2552,7 +2559,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -2576,7 +2583,8 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response body for a ResyncCertificates request on a Network Fabric on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricResyncCertificatesResponseInner> resyncCertificatesAsync(String resourceGroupName,
@@ -2596,7 +2604,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName,
@@ -2616,7 +2624,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName,

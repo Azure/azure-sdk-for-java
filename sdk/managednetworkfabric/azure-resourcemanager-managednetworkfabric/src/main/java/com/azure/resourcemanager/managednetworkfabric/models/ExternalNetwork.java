@@ -471,7 +471,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body);
 
@@ -483,7 +483,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
@@ -494,7 +494,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body);
 
@@ -506,7 +506,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body,
         Context context);
@@ -518,7 +518,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return external Network Update Administrative State response.
      */
     ExternalNetworkUpdateBfdAdministrativeStateResponse
         updateBfdAdministrativeState(ExternalNetworkUpdateBfdAdministrativeStateRequest body);
@@ -531,7 +531,7 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return external Network Update Administrative State response.
      */
     ExternalNetworkUpdateBfdAdministrativeStateResponse
         updateBfdAdministrativeState(ExternalNetworkUpdateBfdAdministrativeStateRequest body, Context context);

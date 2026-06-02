@@ -527,7 +527,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult reboot(RebootProperties body);
 
@@ -539,7 +539,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult reboot(RebootProperties body, Context context);
 
@@ -548,7 +548,7 @@ public interface NetworkDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkDeviceRefreshConfigurationResponse refreshConfiguration();
 
@@ -559,7 +559,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkDeviceRefreshConfigurationResponse refreshConfiguration(Context context);
 
@@ -570,7 +570,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(UpdateDeviceAdministrativeState body);
 
@@ -582,7 +582,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(UpdateDeviceAdministrativeState body,
         Context context);
@@ -594,7 +594,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     NetworkDeviceUpgradeResponse upgrade(NetworkDeviceUpgradeRequest body);
 
@@ -606,7 +606,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     NetworkDeviceUpgradeResponse upgrade(NetworkDeviceUpgradeRequest body, Context context);
 
@@ -617,7 +617,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     CommonPostActionResponseForDeviceROCommandsOperationStatusResult runRoCommand(DeviceRoCommand body);
 
@@ -629,7 +629,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     CommonPostActionResponseForDeviceROCommandsOperationStatusResult runRoCommand(DeviceRoCommand body,
         Context context);
@@ -641,7 +641,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     NetworkDeviceRunRwCommandResponse runRwCommand(DeviceRwCommand body);
 
@@ -653,7 +653,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     NetworkDeviceRunRwCommandResponse runRwCommand(DeviceRwCommand body, Context context);
 
@@ -665,7 +665,7 @@ public interface NetworkDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     NetworkDeviceResyncPasswordsResponse resyncPasswords();
 
@@ -679,7 +679,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     NetworkDeviceResyncPasswordsResponse resyncPasswords(Context context);
 
@@ -691,7 +691,7 @@ public interface NetworkDevice {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates();
 
@@ -705,7 +705,7 @@ public interface NetworkDevice {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates(Context context);
 }

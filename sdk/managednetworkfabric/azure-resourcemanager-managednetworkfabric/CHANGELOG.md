@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2026-04-01)
+## 1.2.0 (2026-06-02)
 
 - Azure Resource Manager Managed Network Fabric client library for Java. This package contains Microsoft Azure SDK for Managed Network Fabric Management SDK. Self service experience for Azure Network Fabric API. Package api-version 2025-07-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 

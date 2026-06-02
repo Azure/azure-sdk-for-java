@@ -276,7 +276,7 @@ public interface NeighborGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for Neighbor Group Resync operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NeighborGroupResyncResponseInner>, NeighborGroupResyncResponseInner>
@@ -291,7 +291,7 @@ public interface NeighborGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for Neighbor Group Resync operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NeighborGroupResyncResponseInner>, NeighborGroupResyncResponseInner>
@@ -305,7 +305,7 @@ public interface NeighborGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for Neighbor Group Resync operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NeighborGroupResyncResponseInner resync(String resourceGroupName, String neighborGroupName);
@@ -319,7 +319,7 @@ public interface NeighborGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for Neighbor Group Resync operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NeighborGroupResyncResponseInner resync(String resourceGroupName, String neighborGroupName, Context context);

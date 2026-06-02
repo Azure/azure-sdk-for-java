@@ -101,7 +101,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
         String externalNetworkName, UpdateAdministrativeState body);
@@ -117,7 +117,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
         String externalNetworkName, UpdateAdministrativeState body, Context context);
@@ -132,7 +132,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body);
@@ -148,7 +148,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName, UpdateAdministrativeState body, Context context);
@@ -163,7 +163,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return external Network Update Administrative State response.
      */
     ExternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName,
@@ -180,7 +180,7 @@ public interface ExternalNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return external Network Update Administrative State response.
      */
     ExternalNetworkUpdateBfdAdministrativeStateResponse updateBfdAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, String externalNetworkName,

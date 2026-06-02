@@ -282,7 +282,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
@@ -300,7 +300,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
@@ -317,7 +317,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -334,7 +334,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
@@ -350,7 +350,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of internal Network Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InternalNetworkUpdateBgpAdministrativeStateResponseInner>, InternalNetworkUpdateBgpAdministrativeStateResponseInner>
@@ -368,7 +368,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of internal Network Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InternalNetworkUpdateBgpAdministrativeStateResponseInner>, InternalNetworkUpdateBgpAdministrativeStateResponseInner>
@@ -385,7 +385,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return internal Network Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     InternalNetworkUpdateBgpAdministrativeStateResponseInner updateBgpAdministrativeState(String resourceGroupName,
@@ -403,7 +403,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return internal Network Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     InternalNetworkUpdateBgpAdministrativeStateResponseInner updateBgpAdministrativeState(String resourceGroupName,
@@ -420,7 +420,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
@@ -438,7 +438,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
@@ -455,7 +455,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateAdministrativeStateResponseInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
@@ -472,7 +472,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return update Administrative State Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpdateAdministrativeStateResponseInner updateStaticRouteBfdAdministrativeState(String resourceGroupName,
@@ -488,7 +488,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of internal Network BFD Administrative State response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InternalNetworkUpdateBfdAdministrativeStateResponseInner>, InternalNetworkUpdateBfdAdministrativeStateResponseInner>
@@ -506,7 +506,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of internal Network BFD Administrative State response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InternalNetworkUpdateBfdAdministrativeStateResponseInner>, InternalNetworkUpdateBfdAdministrativeStateResponseInner>
@@ -523,7 +523,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return internal Network BFD Administrative State response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     InternalNetworkUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(String resourceGroupName,
@@ -541,7 +541,7 @@ public interface InternalNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return internal Network BFD Administrative State response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     InternalNetworkUpdateBfdAdministrativeStateResponseInner updateBfdAdministrativeState(String resourceGroupName,

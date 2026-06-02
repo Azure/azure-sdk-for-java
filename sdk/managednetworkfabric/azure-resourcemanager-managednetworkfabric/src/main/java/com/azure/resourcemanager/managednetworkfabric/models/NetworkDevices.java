@@ -113,7 +113,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult reboot(String resourceGroupName, String networkDeviceName, RebootProperties body);
 
@@ -127,7 +127,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult reboot(String resourceGroupName, String networkDeviceName, RebootProperties body,
         Context context);
@@ -140,7 +140,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName, String networkDeviceName);
 
@@ -153,7 +153,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an refresh configuration async operation.
      */
     NetworkDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName, String networkDeviceName,
         Context context);
@@ -167,7 +167,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkDeviceName, UpdateDeviceAdministrativeState body);
@@ -182,7 +182,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Administrative State Update Response.
      */
     NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
@@ -196,7 +196,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     NetworkDeviceUpgradeResponse upgrade(String resourceGroupName, String networkDeviceName,
         NetworkDeviceUpgradeRequest body);
@@ -211,7 +211,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return network Device Upgrade Response.
      */
     NetworkDeviceUpgradeResponse upgrade(String resourceGroupName, String networkDeviceName,
         NetworkDeviceUpgradeRequest body, Context context);
@@ -225,7 +225,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     CommonPostActionResponseForDeviceROCommandsOperationStatusResult runRoCommand(String resourceGroupName,
         String networkDeviceName, DeviceRoCommand body);
@@ -240,7 +240,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     CommonPostActionResponseForDeviceROCommandsOperationStatusResult runRoCommand(String resourceGroupName,
         String networkDeviceName, DeviceRoCommand body, Context context);
@@ -254,7 +254,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     NetworkDeviceRunRwCommandResponse runRwCommand(String resourceGroupName, String networkDeviceName,
         DeviceRwCommand body);
@@ -269,7 +269,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a RunRwCommand request on a Network Device.
      */
     NetworkDeviceRunRwCommandResponse runRwCommand(String resourceGroupName, String networkDeviceName,
         DeviceRwCommand body, Context context);
@@ -285,7 +285,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     NetworkDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName, String networkDeviceName);
 
@@ -301,7 +301,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncPasswords request on a Network Device.
      */
     NetworkDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName, String networkDeviceName,
         Context context);
@@ -317,7 +317,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates(String resourceGroupName, String networkDeviceName);
 
@@ -333,7 +333,7 @@ public interface NetworkDevices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body for a ResyncCertificates request on a Network Fabric.
      */
     NetworkFabricResyncCertificatesResponse resyncCertificates(String resourceGroupName, String networkDeviceName,
         Context context);
