@@ -358,6 +358,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuerySpec,
             resourceLink,
             queryRequestOptions,
+            null,
             queryPlanCachingEnabled,
             queryPlanCache);
     }
