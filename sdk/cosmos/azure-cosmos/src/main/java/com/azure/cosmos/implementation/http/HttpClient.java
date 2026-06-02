@@ -10,6 +10,7 @@ import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
+import java.util.function.BooleanSupplier;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -91,4 +92,25 @@ public interface HttpClient {
      * Shutdown the Http Client and clean up resources
      */
     void shutdown();
+
+    /**
+     * Sets a late-bound supplier that gates installation of HTTP/2 PING keepalive
+     * to channels where the supplier returns {@code true}. The supplier is invoked
+     * inside {@code doOnConnected} for the parent (TCP) channel; when it returns
+     * {@code false}, no PING handler is installed.
+     *
+     * <p>The supplier must be a bound method reference that does <strong>not</strong>
+     * capture references to the owning {@code CosmosAsyncClient} /
+     * {@code RxDocumentClientImpl}. See
+     * {@code GlobalEndpointManager#getHasThinClientReadLocationsRef()} for the
+     * rationale; the recommended pattern is {@code atomicBoolean::get}.
+     *
+     * <p>If never set, PING installation falls back to the prior behavior gated only
+     * by {@link Configs#isHttp2PingHealthEnabled()}.
+     *
+     * <p>Default no-op so non-Netty implementations and tests need not override.
+     */
+    default void setHttp2PingScopeSupplier(BooleanSupplier supplier) {
+        // no-op by default; ReactorNettyClient overrides.
+    }
 }
