@@ -126,6 +126,7 @@ public class QueryValidationTests extends TestSuiteBase {
         ).block();
 
         CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        waitForCollectionToBeAvailableToRead(container);
 
         int partitionDocCount = 5;
         int pageSize = partitionDocCount + 1;
@@ -381,6 +382,7 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
         CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        waitForCollectionToBeAvailableToRead(container);
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
         //Insert some documents
@@ -492,6 +494,7 @@ public class QueryValidationTests extends TestSuiteBase {
         createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
 
         CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        waitForCollectionToBeAvailableToRead(container);
         CosmosContainerResponse containerResponse = container.read().block();
         assert (containerResponse != null);
         CosmosContainerProperties properties = containerResponse.getProperties();
@@ -579,6 +582,7 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
         CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        waitForCollectionToBeAvailableToRead(container);
         //id as partitionkey > 100bytes
         String itemID1 = "cosmosdb" +
                              "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";
@@ -612,6 +616,20 @@ public class QueryValidationTests extends TestSuiteBase {
                                                                               .collectList().block();
         partitionFeedResponseList.forEach(f -> partitionKeyRanges.addAll(f.getResults()));
         return partitionKeyRanges;
+    }
+
+    private static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container) {
+        // Creating a container is an async task - especially with multiple regions it can
+        // take some time until the container is available in the remote regions as well.
+        // When the container does not exist yet, metadata reads or item operations can
+        // fail with 404/1013 "Collection is not yet available for read".
+        // So, adding this delay after container creation to minimize risk of hitting these errors.
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
     }
 
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
