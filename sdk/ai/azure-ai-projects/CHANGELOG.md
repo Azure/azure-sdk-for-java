@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- `Skill` renamed to `SkillDetails`. `SkillsClient` and `SkillsAsyncClient` methods such as `getSkill`, `listSkills`, and `updateSkill` now return `SkillDetails` / `PagedIterable<SkillDetails>` / `PagedFlux<SkillDetails>` instead of `Skill`.
+
 ### Bugs Fixed
 
 ### Other Changes

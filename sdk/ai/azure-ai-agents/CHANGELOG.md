@@ -4,8 +4,11 @@
 
 ### Features Added
 
+- Added protocol-style `listOptimizationCandidates(String, com.azure.core.http.rest.RequestOptions)` overloads on `AgentsClient` and `AgentsAsyncClient` for listing raw optimization candidate pages as `BinaryData`.
+
 ### Breaking Changes
 
+- `listOptimizationCandidates` on `AgentsClient` and `AgentsAsyncClient` now returns paged optimization candidates (`PagedIterable<OptimizationCandidate>` / `PagedFlux<OptimizationCandidate>`) instead of `OptimizationCandidatePagedResult` / `Mono<OptimizationCandidatePagedResult>`. The `OptimizationCandidatePagedResult` model was removed. The protocol methods where adjusted accordingly.
 ### Bugs Fixed
 
 ### Other Changes

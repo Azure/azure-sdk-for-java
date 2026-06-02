@@ -675,7 +675,7 @@ System.out.println("Version: " + skillVersion.getVersion());
 ```java com.azure.ai.projects.SkillsSample.getSkill
 
 String skillName = "product-support-skill";
-Skill skill = skillsClient.getSkill(skillName);
+SkillDetails skill = skillsClient.getSkill(skillName);
 
 System.out.println("Skill name: " + skill.getName());
 System.out.println("Description: " + skill.getDescription());
@@ -689,7 +689,7 @@ System.out.println("Default version: " + skill.getDefaultVersion());
 
 String skillName = "product-support-skill";
 
-Skill updated = skillsClient.updateSkill(skillName, "2");
+SkillDetails updated = skillsClient.updateSkill(skillName, "2");
 
 System.out.println("Updated skill: " + updated.getName());
 System.out.println("Default version: " + updated.getDefaultVersion());
@@ -700,8 +700,8 @@ System.out.println("Default version: " + updated.getDefaultVersion());
 
 ```java com.azure.ai.projects.SkillsSample.listSkills
 
-PagedIterable<Skill> skills = skillsClient.listSkills();
-for (Skill skill : skills) {
+PagedIterable<SkillDetails> skills = skillsClient.listSkills();
+for (SkillDetails skill : skills) {
     System.out.println("Skill name: " + skill.getName());
     System.out.println("Description: " + skill.getDescription());
     System.out.println("-------------------------------------------------");
