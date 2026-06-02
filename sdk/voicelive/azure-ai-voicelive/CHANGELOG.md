@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2026-06-01)
 
 This is the first General Availability (GA) release of the Azure VoiceLive client library for Java.
