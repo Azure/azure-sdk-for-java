@@ -891,6 +891,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager.init();
             this.initializePerPartitionCircuitBreaker();
 
+            // Wire the gateway HttpClient's HTTP/2 PING scope supplier to track the
+            // GlobalEndpointManager's live "hasThinClientReadLocations" signal.
+            //
+            // MEMORY SAFETY: We deliberately capture only the AtomicBoolean reference
+            // (via the bound method reference 'hasThinClientReadLocationsRef::get'),
+            // NOT the GlobalEndpointManager. GlobalEndpointManager retains
+            // DatabaseAccountManagerInternal owner, which IS this RxDocumentClientImpl
+            // (and therefore the owning CosmosAsyncClient). Capturing GEM in the
+            // supplier closure -- which is stored on the long-lived
+            // ReactorNettyClient pipeline lambda graph -- would pin the entire client
+            // and break close()-driven cleanup. The AtomicBoolean is mutated in place
+            // on every DatabaseAccount refresh, so the supplier still sees live values.
+            AtomicBoolean hasThinClientReadLocationsRef =
+                this.globalEndpointManager.getHasThinClientReadLocationsRef();
+            this.reactorHttpClient.setHttp2PingScopeSupplier(hasThinClientReadLocationsRef::get);
+
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
@@ -1674,7 +1690,54 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
         }
 
+        if (!isHttp2PingHealthEffectivelyEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2PingHealth);
+        }
+
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
+    }
+
+    /**
+     * Returns true when HTTP/2 PING keepalive is effectively enabled for this client,
+     * mirroring the gating used by {@link com.azure.cosmos.implementation.http.ReactorNettyClient}
+     * to actually install the PING handler:
+     *
+     * <ul>
+     *   <li>The global kill-switch {@link Configs#isHttp2PingHealthEnabled()} is true.</li>
+     *   <li>HTTP/2 is effectively enabled (either via {@link Configs#isHttp2Enabled()} or
+     *       an explicit {@link Http2ConnectionConfig#isEnabled()} override).</li>
+     *   <li>{@link GlobalEndpointManager#hasThinClientReadLocations()} is true -- i.e. the
+     *       account is configured to expose thin-client endpoints, which is the only place
+     *       H2 is negotiated today.</li>
+     *   <li>This client is NOT using {@link SharedGatewayHttpClient};
+     *       PING is defensively disabled on shared HttpClient instances because they
+     *       back multiple CosmosAsyncClient instances with potentially differing
+     *       thin-client configurations.</li>
+     * </ul>
+     */
+    private boolean isHttp2PingHealthEffectivelyEnabled() {
+        if (!Configs.isHttp2PingHealthEnabled()) {
+            return false;
+        }
+
+        boolean h2EffectivelyEnabled = Configs.isHttp2Enabled();
+        if (this.connectionPolicy.getHttp2ConnectionConfig() != null
+            && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled() != null) {
+            h2EffectivelyEnabled = this.connectionPolicy.getHttp2ConnectionConfig().isEnabled();
+        }
+        if (!h2EffectivelyEnabled) {
+            return false;
+        }
+
+        if (this.globalEndpointManager == null) {
+            return false;
+        }
+
+        if (this.reactorHttpClient instanceof SharedGatewayHttpClient) {
+            return false;
+        }
+
+        return this.globalEndpointManager.hasThinClientReadLocations();
     }
 
     @Override
