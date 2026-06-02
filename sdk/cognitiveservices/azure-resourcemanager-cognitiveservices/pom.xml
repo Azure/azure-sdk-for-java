@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-cognitiveservices</artifactId>
-  <version>1.5.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
+  <version>1.5.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for CognitiveServices Management</name>
-  <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package api-version 2026-01-15-preview.</description>
+  <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package api-version 2026-03-15-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

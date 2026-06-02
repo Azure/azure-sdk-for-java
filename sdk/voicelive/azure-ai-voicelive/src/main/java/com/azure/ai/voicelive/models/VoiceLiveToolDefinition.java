@@ -80,7 +80,7 @@ public class VoiceLiveToolDefinition implements JsonSerializable<VoiceLiveToolDe
                 if ("function".equals(discriminatorValue)) {
                     return VoiceLiveFunctionDefinition.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
-                    return MCPServer.fromJson(readerToUse.reset());
+                    return McpServer.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

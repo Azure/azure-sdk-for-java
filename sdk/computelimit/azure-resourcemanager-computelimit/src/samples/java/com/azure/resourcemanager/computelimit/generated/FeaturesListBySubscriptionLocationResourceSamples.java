@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class FeaturesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_List.json
+     * x-ms-original-file: 2026-06-01/Features_List.json
      */
     /**
      * Sample code: List features.

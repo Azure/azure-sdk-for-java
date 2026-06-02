@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class FileServicesListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesList.json
+     * x-ms-original-file: 2026-04-01/FileServicesList.json
      */
     /**
      * Sample code: ListFileServices.

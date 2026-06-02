@@ -335,6 +335,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             String version = null;
             String displayName = null;
             Map<String, String> metadata = null;
+            EvaluatorGenerationArtifacts generationArtifacts = null;
             String id = null;
             String description = null;
             Map<String, String> tags = null;
@@ -363,6 +364,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                     displayName = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("generation_artifacts".equals(fieldName)) {
+                    generationArtifacts = EvaluatorGenerationArtifacts.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("description".equals(fieldName)) {
@@ -381,10 +384,30 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             deserializedEvaluatorVersion.version = version;
             deserializedEvaluatorVersion.displayName = displayName;
             deserializedEvaluatorVersion.metadata = metadata;
+            deserializedEvaluatorVersion.generationArtifacts = generationArtifacts;
             deserializedEvaluatorVersion.id = id;
             deserializedEvaluatorVersion.description = description;
             deserializedEvaluatorVersion.tags = tags;
             return deserializedEvaluatorVersion;
         });
+    }
+
+    /*
+     * Provenance artifacts from the generation pipeline. Read-only; present only on evaluator versions created via an
+     * EvaluatorGenerationJob. Each artifact resolves to a versioned Foundry Dataset.
+     */
+    @Generated
+    private EvaluatorGenerationArtifacts generationArtifacts;
+
+    /**
+     * Get the generationArtifacts property: Provenance artifacts from the generation pipeline. Read-only; present only
+     * on evaluator versions created via an EvaluatorGenerationJob. Each artifact resolves to a versioned Foundry
+     * Dataset.
+     *
+     * @return the generationArtifacts value.
+     */
+    @Generated
+    public EvaluatorGenerationArtifacts getGenerationArtifacts() {
+        return this.generationArtifacts;
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0 (2026-06-01)
+
+### Features Added
+
+- Added new preview `DataGenerationJobsClient` and `DataGenerationJobsAsyncClient` sub-clients for creating, retrieving, listing, canceling, and deleting data generation jobs, with related data generation source, output, token usage, and options models.
+- Added new preview `ModelsClient` and `ModelsAsyncClient` sub-clients for registering and managing model weights as Foundry `ModelVersion` resources, including pending upload, asynchronous model-version creation, listing, retrieving, updating, deleting, and credential retrieval operations.
+- Added new preview `RoutinesClient` and `RoutinesAsyncClient` sub-clients for creating or updating routines, retrieving, enabling, disabling, listing, deleting, listing runs, and dispatching routines, with related routine trigger, action, dispatch payload, and run models.
+- Added evaluator generation job operations to `EvaluatorsClient` and `EvaluatorsAsyncClient`, including create, get, list, cancel, and delete operations, plus evaluator pending-upload and credential helper operations.
+- Added versioned skill management on `SkillsClient` and `SkillsAsyncClient`, including `createSkillVersion`, `createSkillVersionFromFiles`, `listSkillVersions`, `getSkillVersion`, `getSkillContent`, `getSkillVersionContent`, and `deleteSkillVersion`.
+- Added `EvaluationsHelper` and Azure evaluator model types, such as `TestingCriterionAzureAIEvaluator` and `GraderAzureAIEvaluator`, to adapt Azure evaluator definitions to OpenAI evaluation request types.
+- Added protocol-style `WithResponse` overloads with `RequestOptions` for connection retrieval and dataset file/folder upload helpers.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `ROUTINES_V1_PREVIEW` (`Routines=V1Preview`), `DATA_GENERATION_JOBS_V1_PREVIEW` (`DataGenerationJobs=V1Preview`), `MODELS_V1_PREVIEW` (`Models=V1Preview`), and `AGENTS_OPTIMIZATION_V1_PREVIEW` (`AgentsOptimization=V1Preview`).
+
+### Breaking Changes
+
+- The Skills API is now versioned. `SkillDetails` was removed and replaced by `Skill` and `SkillVersion`. Use `createSkillVersion` instead of `createSkill`, `createSkillVersionFromFiles` instead of `createSkillFromPackage`, `getSkillContent`/`getSkillVersionContent` instead of `downloadSkill`, and `deleteSkillVersion` for deleting a specific skill version. `updateSkill` now updates the default version only.
+- The `body` parameter on `EvaluationTaxonomiesClient.createEvaluationTaxonomy`, `EvaluationTaxonomiesClient.updateEvaluationTaxonomy`, and their async counterparts was renamed to `taxonomy`.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Added samples for data generation jobs, model management, evaluator helper usage, and packaged skill upload/download.
 
 ## 2.1.0-beta.1 (2026-05-12)
 

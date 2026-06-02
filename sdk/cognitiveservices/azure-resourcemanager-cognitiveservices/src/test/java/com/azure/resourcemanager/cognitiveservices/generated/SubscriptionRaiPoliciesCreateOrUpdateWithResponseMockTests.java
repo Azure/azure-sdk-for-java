@@ -33,7 +33,7 @@ public final class SubscriptionRaiPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"nosdkvi\",\"contentFilters\":[{\"name\":\"gmat\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"ANNOTATING\"},{\"name\":\"ujktzb\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"PostRun\",\"action\":\"ANNOTATING\"},{\"name\":\"pnw\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PostToolCall\",\"action\":\"HITL\"}],\"customBlocklists\":[{\"source\":\"PostRun\",\"blocklistName\":\"g\",\"blocking\":true},{\"source\":\"PostRun\",\"blocklistName\":\"h\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"Prompt\",\"safetyProviderName\":\"jjkj\",\"blocking\":true},{\"source\":\"PreToolCall\",\"safetyProviderName\":\"zmxjqif\",\"blocking\":true},{\"source\":\"Completion\",\"safetyProviderName\":\"cmlzaahz\",\"blocking\":true},{\"source\":\"Completion\",\"safetyProviderName\":\"lkolirhhmoj\",\"blocking\":false}]},\"etag\":\"gfjzcvaax\",\"tags\":{\"kmkcz\":\"lahfxwccokdxk\",\"jqkx\":\"nuhhoqeqshav\"},\"id\":\"qolnthbbn\",\"name\":\"gzukw\",\"type\":\"r\"}";
+            = "{\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"ddwnhczb\",\"contentFilters\":[{\"name\":\"cgjtirjwayhicqq\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"PostRun\",\"action\":\"HITL\"}],\"customBlocklists\":[{\"source\":\"PostToolCall\",\"blocklistName\":\"iabvnsrgek\",\"blocking\":false},{\"source\":\"PostToolCall\",\"blocklistName\":\"yfhbmwkh\",\"blocking\":true},{\"source\":\"Completion\",\"blocklistName\":\"spvkhglaqjsgyz\",\"blocking\":false},{\"source\":\"PostToolCall\",\"blocklistName\":\"xrk\",\"blocking\":false}],\"safetyProviders\":[{\"source\":\"PostRun\",\"safetyProviderName\":\"yehi\",\"blocking\":false},{\"source\":\"PostToolCall\",\"safetyProviderName\":\"yuqwrldaxurfqazc\",\"blocking\":true},{\"source\":\"PostRun\",\"safetyProviderName\":\"dzciggb\",\"blocking\":false},{\"source\":\"PostToolCall\",\"safetyProviderName\":\"walzyxwhoeamoeo\",\"blocking\":false}]},\"etag\":\"ysfpnimtwu\",\"tags\":{\"wmnfeubtzjyrkwfu\":\"uegn\",\"mnqdu\":\"iphrrku\",\"fopueoqusvwluj\":\"hz\"},\"id\":\"wnibittoz\",\"name\":\"j\",\"type\":\"qumqvfmwcaddt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,67 +43,61 @@ public final class SubscriptionRaiPoliciesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiPolicy response = manager.subscriptionRaiPolicies()
-            .createOrUpdateWithResponse("j",
-                new RaiPolicyInner()
-                    .withProperties(new RaiPolicyProperties().withMode(RaiPolicyMode.DEFAULT)
-                        .withBasePolicyName("wjzebecuvlb")
-                        .withContentFilters(Arrays.asList(
-                            new RaiPolicyContentFilter().withName("cljkxpyl")
-                                .withEnabled(false)
-                                .withSeverityThreshold(ContentLevel.MEDIUM)
-                                .withBlocking(false)
-                                .withSource(RaiPolicyContentSource.POST_RUN)
-                                .withAction(RaiActionType.RETRY),
-                            new RaiPolicyContentFilter().withName("ijeypdvrbkerdkdk")
-                                .withEnabled(false)
-                                .withSeverityThreshold(ContentLevel.HIGH)
-                                .withBlocking(true)
-                                .withSource(RaiPolicyContentSource.PRE_RUN)
-                                .withAction(RaiActionType.HITL)))
-                        .withCustomBlocklists(Arrays.asList(
-                            new CustomBlocklistConfig().withBlocklistName("ygzqpjoisfmn")
-                                .withBlocking(false)
-                                .withSource(RaiPolicyContentSource.PROMPT),
-                            new CustomBlocklistConfig().withBlocklistName("xumentqontwhy")
-                                .withBlocking(true)
-                                .withSource(RaiPolicyContentSource.POST_RUN),
-                            new CustomBlocklistConfig().withBlocklistName("wi")
-                                .withBlocking(true)
-                                .withSource(RaiPolicyContentSource.PRE_RUN)))
-                        .withSafetyProviders(Arrays.asList(
-                            new SafetyProviderConfig().withSafetyProviderName("sycoybajasqub")
-                                .withBlocking(false)
-                                .withSource(RaiPolicyContentSource.COMPLETION),
-                            new SafetyProviderConfig().withSafetyProviderName("hjqwmchqoh")
-                                .withBlocking(false)
-                                .withSource(RaiPolicyContentSource.PRE_TOOL_CALL),
-                            new SafetyProviderConfig().withSafetyProviderName("pukiymjzpwdlvwt")
-                                .withBlocking(true)
-                                .withSource(RaiPolicyContentSource.PRE_TOOL_CALL),
-                            new SafetyProviderConfig().withSafetyProviderName("aonhqnamppul")
-                                .withBlocking(true)
-                                .withSource(RaiPolicyContentSource.PRE_RUN))))
-                    .withTags(mapOf("cyizy", "aj", "e", "dcvxodkrvfsxxby", "pwgoljt", "qlvge")),
+            .createOrUpdateWithResponse("ombcdtajdopggo", new RaiPolicyInner()
+                .withProperties(new RaiPolicyProperties().withMode(RaiPolicyMode.ASYNCHRONOUS_FILTER)
+                    .withBasePolicyName("otpvclp")
+                    .withContentFilters(Arrays.asList(
+                        new RaiPolicyContentFilter().withName("lmwkptskwxjg")
+                            .withEnabled(false)
+                            .withSeverityThreshold(ContentLevel.MEDIUM)
+                            .withBlocking(true)
+                            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL)
+                            .withAction(RaiActionType.BLOCKING),
+                        new RaiPolicyContentFilter().withName("ookbpu")
+                            .withEnabled(false)
+                            .withSeverityThreshold(ContentLevel.MEDIUM)
+                            .withBlocking(true)
+                            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL)
+                            .withAction(RaiActionType.HITL),
+                        new RaiPolicyContentFilter().withName("ktfowzkroyrdur")
+                            .withEnabled(true)
+                            .withSeverityThreshold(ContentLevel.HIGH)
+                            .withBlocking(true)
+                            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL)
+                            .withAction(RaiActionType.ANNOTATING)))
+                    .withCustomBlocklists(Arrays.asList(
+                        new CustomBlocklistConfig().withBlocklistName("lfejlzuqloiw")
+                            .withBlocking(true)
+                            .withSource(RaiPolicyContentSource.POST_TOOL_CALL),
+                        new CustomBlocklistConfig().withBlocklistName("vrmitcdqlhchwh")
+                            .withBlocking(false)
+                            .withSource(RaiPolicyContentSource.PRE_RUN)))
+                    .withSafetyProviders(Arrays.asList(new SafetyProviderConfig().withSafetyProviderName("ibfiplhxfnsm")
+                        .withBlocking(false)
+                        .withSource(RaiPolicyContentSource.PROMPT))))
+                .withTags(
+                    mapOf("hnxlzbuwodmachb", "sqc", "qplehmumkzdllczd", "vnrpbjrmvg", "ivrakfrryn", "rwnhkgqggoxsst")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(RaiPolicyMode.BLOCKING, response.properties().mode());
-        Assertions.assertEquals("nosdkvi", response.properties().basePolicyName());
-        Assertions.assertEquals("gmat", response.properties().contentFilters().get(0).name());
-        Assertions.assertTrue(response.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.MEDIUM, response.properties().contentFilters().get(0).severityThreshold());
-        Assertions.assertFalse(response.properties().contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
-            response.properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiActionType.ANNOTATING, response.properties().contentFilters().get(0).action());
-        Assertions.assertEquals("g", response.properties().customBlocklists().get(0).blocklistName());
-        Assertions.assertTrue(response.properties().customBlocklists().get(0).blocking());
+        Assertions.assertEquals("ddwnhczb", response.properties().basePolicyName());
+        Assertions.assertEquals("cgjtirjwayhicqq", response.properties().contentFilters().get(0).name());
+        Assertions.assertFalse(response.properties().contentFilters().get(0).enabled());
+        Assertions.assertEquals(ContentLevel.HIGH, response.properties().contentFilters().get(0).severityThreshold());
+        Assertions.assertTrue(response.properties().contentFilters().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.POST_RUN,
+            response.properties().contentFilters().get(0).source());
+        Assertions.assertEquals(RaiActionType.HITL, response.properties().contentFilters().get(0).action());
+        Assertions.assertEquals("iabvnsrgek", response.properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertFalse(response.properties().customBlocklists().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_TOOL_CALL,
             response.properties().customBlocklists().get(0).source());
-        Assertions.assertEquals("jjkj", response.properties().safetyProviders().get(0).safetyProviderName());
-        Assertions.assertTrue(response.properties().safetyProviders().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, response.properties().safetyProviders().get(0).source());
-        Assertions.assertEquals("lahfxwccokdxk", response.tags().get("kmkcz"));
+        Assertions.assertEquals("yehi", response.properties().safetyProviders().get(0).safetyProviderName());
+        Assertions.assertFalse(response.properties().safetyProviders().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.POST_RUN,
+            response.properties().safetyProviders().get(0).source());
+        Assertions.assertEquals("uegn", response.tags().get("wmnfeubtzjyrkwfu"));
     }
 
     // Use "Map.of" if available

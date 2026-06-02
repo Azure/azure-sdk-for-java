@@ -17,33 +17,33 @@ public final class ServiceTagOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"ydmxzj\",\"protocol\":\"p\",\"portRanges\":\"aurkihcirlde\",\"action\":\"Deny\",\"addressPrefixes\":[\"oxnbkkjanurnnqbn\"]},\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"qltgrd\",\"parentRuleNames\":[\"pxrxvbfihwu\",\"vctafsrb\"]}")
+            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"cnkottlwuhva\",\"protocol\":\"ailfemjjzak\",\"portRanges\":\"jiqul\",\"action\":\"Deny\",\"addressPrefixes\":[\"mvrscmqerndbrny\"]},\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"nnxrkad\",\"parentRuleNames\":[\"n\",\"fmu\",\"iiripfohykfkxbbc\"]}")
             .toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("ydmxzj", model.destination().serviceTag());
-        Assertions.assertEquals("p", model.destination().protocol());
-        Assertions.assertEquals("aurkihcirlde", model.destination().portRanges());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
+        Assertions.assertEquals("cnkottlwuhva", model.destination().serviceTag());
+        Assertions.assertEquals("ailfemjjzak", model.destination().protocol());
+        Assertions.assertEquals("jiqul", model.destination().portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.destination().action());
-        Assertions.assertEquals("oxnbkkjanurnnqbn", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals("mvrscmqerndbrny", model.destination().addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.DEPENDENCY)
-            .withStatus(RuleStatus.DELETING)
-            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("ydmxzj")
-                .withProtocol("p")
-                .withPortRanges("aurkihcirlde")
+        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.RECOMMENDED)
+            .withStatus(RuleStatus.PROVISIONING)
+            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("cnkottlwuhva")
+                .withProtocol("ailfemjjzak")
+                .withPortRanges("jiqul")
                 .withAction(RuleAction.DENY)
-                .withAddressPrefixes(Arrays.asList("oxnbkkjanurnnqbn")));
+                .withAddressPrefixes(Arrays.asList("mvrscmqerndbrny")));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("ydmxzj", model.destination().serviceTag());
-        Assertions.assertEquals("p", model.destination().protocol());
-        Assertions.assertEquals("aurkihcirlde", model.destination().portRanges());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
+        Assertions.assertEquals("cnkottlwuhva", model.destination().serviceTag());
+        Assertions.assertEquals("ailfemjjzak", model.destination().protocol());
+        Assertions.assertEquals("jiqul", model.destination().portRanges());
         Assertions.assertEquals(RuleAction.DENY, model.destination().action());
-        Assertions.assertEquals("oxnbkkjanurnnqbn", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals("mvrscmqerndbrny", model.destination().addressPrefixes().get(0));
     }
 }
