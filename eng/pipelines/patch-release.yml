@@ -1,45 +1,41 @@
 trigger: none
 pr: none
-
 parameters:
 - name: TestPipeline
   displayName: Test Run Without Version Changes
   type: boolean
   default: false
-
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     TestPipeline: ${{ parameters.TestPipeline }}
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-messaging-eventhubs-checkpointstore-blob
       groupId: com.azure
-      safeName: azuresdktemplate
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
-      groupId: com.azure
-      safeName: azuresdktemplatetwo
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
-      groupId: com.azure
-      safeName: azuresdktemplatethree
-      skipPublishDocMs: true
-      ServiceDirectory: template
-    - name: azure-sdk-template
-      groupId: com.azure.v2
-      safeName: azuresdktemplate
-      skipPublishDocMs: true
-      ServiceDirectory: template-v2
-    - name: azure-sdk-template-two
-      groupId: com.azure.v2
-      safeName: azuresdktemplatetwo
-      skipPublishDocMs: true
-      ServiceDirectory: template-v2
-    - name: azure-sdk-template-three
-      groupId: com.azure.v2
-      safeName: azuresdktemplatethree
-      skipPublishDocMs: true
-      ServiceDirectory: template-v2
+      safeName: azuremessagingeventhubscheckpointstoreblob
+      ServiceDirectory: eventhubs
+    - name: azure-resourcemanager-keyvault
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerkeyvault
+      ServiceDirectory: keyvault/azure-resourcemanager-keyvault
+    - name: azure-resourcemanager-compute
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercompute
+      ServiceDirectory: compute
+    - name: azure-resourcemanager-sql
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagersql
+      ServiceDirectory: sql
+    - name: azure-resourcemanager-appservice
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerappservice
+      ServiceDirectory: appservice
+    - name: azure-resourcemanager-eventhubs
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagereventhubs
+      ServiceDirectory: eventhubs
+    - name: azure-resourcemanager-containerinstance
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercontainerinstance
+      ServiceDirectory: containerinstance
 
