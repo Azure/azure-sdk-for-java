@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#49210](https://github.com/Azure/azure-sdk-for-net/pull/49210)
+- Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#49210](https://github.com/Azure/azure-sdk-for-java/pull/49210)
 
 ### Other Changes
 
