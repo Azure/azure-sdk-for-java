@@ -2481,6 +2481,72 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
+        int rangeLength = Constants.KB;
+        primaryFileClient.create(Constants.MB);
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
+
+        ShareFileRange rangeToClear = rangeFromOffsetAndLength(0, rangeLength);
+        uploadRangeFromFile(uploadFilePath, rangeToClear);
+
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+
+        ShareFileRange populatedRange = rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
+        ClearRange clearedRange = clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        uploadRangeFromFile(uploadFilePath, populatedRange);
+        primaryFileClient.clearRangeWithResponse(512, clearedRange.getStart(), null, null);
+
+        ShareSnapshotInfo snapshot = shareClient.createSnapshot();
+        ShareFileClient snapshotFileClient
+            = fileBuilderHelper(shareName, filePath).snapshot(snapshot.getSnapshot()).buildFileClient();
+        ShareFileRangeList ranges = snapshotFileClient
+            .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()), null, null)
+            .getValue();
+
+        assertEquals(1, ranges.getRanges().size());
+        assertFileRangeEquals(populatedRange, ranges.getRanges().get(0));
+        assertEquals(1, ranges.getClearRanges().size());
+        assertClearRangeEquals(clearedRange, ranges.getClearRanges().get(0));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listRangesDiffAccessConditions() {
+        int uploadFileSize = Constants.MB;
+        primaryFileClient.create(uploadFileSize);
+        ShareFileRange uploadRange = rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+        String leaseId = setupFileLeaseCondition(primaryFileClient, RECEIVED_LEASE_ID);
+        ShareFileListRangesDiffOptions options
+            = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+
+        Response<ShareFileRangeList> response = primaryFileClient.listRangesDiffWithResponse(options, null, null);
+
+        assertNotNull(response.getValue());
+        FileShareTestHelper.assertResponseStatusCode(response, 200);
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listRangesDiffAccessConditionsFail() {
+        int uploadFileSize = Constants.MB;
+        primaryFileClient.create(uploadFileSize);
+        ShareFileRange uploadRange = rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+        String leaseId = setupFileLeaseCondition(primaryFileClient, GARBAGE_LEASE_ID);
+        ShareFileListRangesDiffOptions options
+            = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+
+        assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.listRangesDiffWithResponse(options, null, null));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void listRangesDiffOAuth() {
@@ -3622,5 +3688,28 @@ class FileApiTests extends FileShareTestBase {
 
     private static ShareFileRange rangeFromOffsetAndLength(long offset, long length) {
         return new ShareFileRange(offset, offset + length - 1);
+    }
+
+    private static ClearRange clearRangeFromOffsetAndLength(long offset, long length) {
+        return new ClearRange().setStart(offset).setEnd(offset + length - 1);
+    }
+
+    private void uploadRangeFromFile(Path uploadFilePath, ShareFileRange range) throws IOException {
+        try (InputStream uploadStream = new BufferedInputStream(Files.newInputStream(uploadFilePath))) {
+            long length = range.getEnd() - range.getStart() + 1;
+            ShareFileUploadRangeOptions uploadRangeOptions
+                = new ShareFileUploadRangeOptions(uploadStream, length).setOffset(range.getStart());
+            primaryFileClient.uploadRangeWithResponse(uploadRangeOptions, null, Context.NONE);
+        }
+    }
+
+    private static void assertFileRangeEquals(ShareFileRange expected, FileRange actual) {
+        assertEquals(expected.getStart(), actual.getStart());
+        assertEquals(expected.getEnd(), actual.getEnd());
+    }
+
+    private static void assertClearRangeEquals(ClearRange expected, ClearRange actual) {
+        assertEquals(expected.getStart(), actual.getStart());
+        assertEquals(expected.getEnd(), actual.getEnd());
     }
 }
