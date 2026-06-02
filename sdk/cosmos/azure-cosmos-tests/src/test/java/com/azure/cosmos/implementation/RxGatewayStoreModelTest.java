@@ -795,6 +795,112 @@ public class RxGatewayStoreModelTest {
         }
     }
 
+    /**
+     * Matrix for {@link RxGatewayStoreModel#resolveEffectiveConsistencyHeaders(Map, ReadConsistencyStrategy)}.
+     *
+     * Columns:
+     *   requestContextRCS    – request-level ReadConsistencyStrategy (nullable)
+     *   initialHeaderRCS     – existing x-ms-cosmos-read-consistency-strategy header value (nullable = absent)
+     *   initialHeaderCL      – existing x-ms-consistency-level header value (nullable = absent)
+     *   expectedHeaderRCS    – expected RCS header value after the call (null = must be absent)
+     *   expectedHeaderCL     – expected CL header value after the call (null = must be absent)
+     */
+    @DataProvider(name = "resolveEffectiveConsistencyHeadersProvider")
+    public Object[][] resolveEffectiveConsistencyHeadersProvider() {
+        return new Object[][]{
+            // 1. Request-level non-DEFAULT wins → CL stripped, RCS set from requestContext
+            {ReadConsistencyStrategy.LATEST_COMMITTED, null, "Session",
+                ReadConsistencyStrategy.LATEST_COMMITTED.toString(), null},
+
+            // 2. Request-level DEFAULT is transparent → header RCS (Eventual) wins → CL stripped
+            {ReadConsistencyStrategy.DEFAULT, ReadConsistencyStrategy.EVENTUAL.toString(), "Session",
+                ReadConsistencyStrategy.EVENTUAL.toString(), null},
+
+            // 3. Both null → CL governs, RCS stays absent
+            {null, null, "Session",
+                null, "Session"},
+
+            // 4. Both null/DEFAULT → strip stale DEFAULT sentinel from header, CL untouched
+            {ReadConsistencyStrategy.DEFAULT, ReadConsistencyStrategy.DEFAULT.toString(), "Session",
+                null, "Session"},
+
+            // 5. Header-only non-DEFAULT (GlobalStrong) → CL stripped, RCS preserved
+            {null, ReadConsistencyStrategy.GLOBAL_STRONG.toString(), "Session",
+                ReadConsistencyStrategy.GLOBAL_STRONG.toString(), null},
+
+            // 6. Request-level beats header on conflict → request RCS overwrites header, CL stripped
+            {ReadConsistencyStrategy.EVENTUAL, ReadConsistencyStrategy.LATEST_COMMITTED.toString(), "Strong",
+                ReadConsistencyStrategy.EVENTUAL.toString(), null},
+
+            // 7. Empty header value treated as absent (Strings.isNullOrEmpty) → no-op on headers
+            {null, "", "Session",
+                "", "Session"},
+
+            // 8. Unknown header value (not a known RCS) → helper returns null → stale header stripped
+            {null, "Bogus", "Session",
+                null, "Session"},
+
+            // 9. Request-level SESSION wins → CL stripped, RCS set to Session
+            {ReadConsistencyStrategy.SESSION, null, "Eventual",
+                ReadConsistencyStrategy.SESSION.toString(), null},
+
+            // 10. No CL present, request-level non-DEFAULT → RCS set, CL stays absent
+            {ReadConsistencyStrategy.GLOBAL_STRONG, null, null,
+                ReadConsistencyStrategy.GLOBAL_STRONG.toString(), null},
+        };
+    }
+
+    /**
+     * Validates that {@link RxGatewayStoreModel#resolveEffectiveConsistencyHeaders(Map, ReadConsistencyStrategy)}:
+     * <ul>
+     *   <li>strips {@code x-ms-consistency-level} when an effective non-DEFAULT RCS is resolved,</li>
+     *   <li>strips a stale {@code x-ms-cosmos-read-consistency-strategy} header (including the
+     *       {@code DEFAULT} sentinel) when no effective non-DEFAULT RCS is resolved,</li>
+     *   <li>preserves {@code x-ms-consistency-level} when no RCS wins.</li>
+     * </ul>
+     *
+     * This is the cross-cutting safety net that protects both GW V1 (HTTP) and GW V2 (RNTBD via
+     * ThinClientStoreModel) from emitting a stale {@code DEFAULT} header on the wire.
+     */
+    @Test(groups = "unit", dataProvider = "resolveEffectiveConsistencyHeadersProvider")
+    public void resolveEffectiveConsistencyHeaders_stripsDefaultAndCanonicalizes(
+        ReadConsistencyStrategy requestContextRCS,
+        String initialHeaderRCS,
+        String initialHeaderCL,
+        String expectedHeaderRCS,
+        String expectedHeaderCL) {
+
+        Map<String, String> headers = new HashMap<>();
+        if (initialHeaderRCS != null) {
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, initialHeaderRCS);
+        }
+        if (initialHeaderCL != null) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, initialHeaderCL);
+        }
+
+        RxGatewayStoreModel.resolveEffectiveConsistencyHeaders(headers, requestContextRCS);
+
+        if (expectedHeaderRCS == null) {
+            assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+                .as("x-ms-cosmos-read-consistency-strategy should be absent")
+                .isNull();
+        } else {
+            assertThat(headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY))
+                .as("x-ms-cosmos-read-consistency-strategy should equal expected value")
+                .isEqualTo(expectedHeaderRCS);
+        }
+
+        if (expectedHeaderCL == null) {
+            assertThat(headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
+                .as("x-ms-consistency-level should be absent")
+                .isNull();
+        } else {
+            assertThat(headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL))
+                .as("x-ms-consistency-level should equal expected value")
+                .isEqualTo(expectedHeaderCL);
+        }
+    }
+
     enum SessionTokenType {
         NONE, // no session token applied
         USER, // userControlled session token
