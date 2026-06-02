@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests deserialization of BlobChangefeedEvent and BlobChangefeedEventData for schema versions V6, V7, and V8.
- * Test values mirror EventSchemaV6.json, EventSchemaV7.json, EventSchemaV8.json from the .NET PR.
  */
 public class BlobChangefeedEventDeserializationTests {
 
@@ -156,13 +155,11 @@ public class BlobChangefeedEventDeserializationTests {
 
     @Test
     public void schemaV8CreateContainerOperationNameDeserializes() {
-        // .NET: BlobOperationName.CreateContainer wraps string "ContainerCreated"
         assertEquals(BlobOperationName.CREATE_CONTAINER, BlobOperationName.fromString("ContainerCreated"));
     }
 
     @Test
     public void schemaV8DeleteContainerOperationNameDeserializes() {
-        // .NET: BlobOperationName.DeleteContainer wraps string "ContainerDeleted"
         assertEquals(BlobOperationName.DELETE_CONTAINER, BlobOperationName.fromString("ContainerDeleted"));
     }
 
