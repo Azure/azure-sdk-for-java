@@ -9,7 +9,7 @@ import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.SkillInlineContent;
 import com.azure.ai.projects.models.SkillVersion;
@@ -213,10 +213,10 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Skill getSkill(String name) {
+    public SkillDetails getSkill(String name) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillWithResponse(name, requestOptions).getValue().toObject(Skill.class);
+        return getSkillWithResponse(name, requestOptions).getValue().toObject(SkillDetails.class);
     }
 
     /**
@@ -242,7 +242,7 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Skill> listSkills(Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -257,7 +257,8 @@ public final class SkillsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listSkills(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Skill.class));
+        return serviceClient.listSkills(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
     /**
@@ -272,10 +273,11 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Skill> listSkills() {
+    public PagedIterable<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listSkills(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Skill.class));
+        return serviceClient.listSkills(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SkillDetails.class));
     }
 
     /**
@@ -567,12 +569,13 @@ public final class SkillsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Skill updateSkill(String name, String defaultVersion) {
+    public SkillDetails updateSkill(String name, String defaultVersion) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest(defaultVersion);
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).getValue().toObject(Skill.class);
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).getValue()
+            .toObject(SkillDetails.class);
     }
 
     /**

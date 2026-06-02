@@ -9,7 +9,7 @@ import com.azure.ai.projects.implementation.SkillsImpl;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.SkillInlineContent;
 import com.azure.ai.projects.models.SkillVersion;
@@ -219,11 +219,11 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Skill> getSkill(String name) {
+    public Mono<SkillDetails> getSkill(String name) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSkillWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Skill.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 
     /**
@@ -249,7 +249,7 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Skill> listSkills(Integer limit, PageOrder order, String after, String before) {
+    public PagedFlux<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -269,11 +269,11 @@ public final class SkillsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Skill>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Skill.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -291,7 +291,7 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Skill> listSkills() {
+    public PagedFlux<SkillDetails> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
@@ -299,11 +299,11 @@ public final class SkillsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Skill>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Skill.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -599,13 +599,13 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Skill> updateSkill(String name, String defaultVersion) {
+    public Mono<SkillDetails> updateSkill(String name, String defaultVersion) {
         // Generated convenience method for updateSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest(defaultVersion);
         BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
         return updateSkillWithResponse(name, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Skill.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 
     /**
